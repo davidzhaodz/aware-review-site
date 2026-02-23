@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair — Salon Outreach Dashboard</title>
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #102B26;
+    --teal-light: #1a3d36;
+    --teal-muted: #2a5248;
+    --teal-subtle: rgba(16,43,38,0.06);
+    --cream: #F4EFE9;
+    --cream-warm: #F8F6F3;
+    --gold: #D4A574;
+    --gold-light: #e2c4a0;
+    --gold-subtle: rgba(212,165,116,0.12);
+    --sage: #7D8471;
+    --sage-light: #9AA38F;
+    --charcoal: #1A1A1A;
+    --border: #e4d9ca;
+    --border-light: rgba(228,217,202,0.5);
+    --text-primary: #102B26;
+    --text-secondary: #5a6b68;
+    --text-muted: #8a9490;
+    --surface: #FDFBF8;
+    --white: #ffffff;
+    --red: #C45C3E;
+    --blue: #6B9AB8;
+    --font-display: "orpheuspro", Georgia, "Times New Roman", serif;
+    --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--cream);
+    color: var(--text-primary);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Topbar ─────────────────────────────────── */
+  .topbar {
+    background: var(--teal);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 0 rgba(16,43,38,0.15);
+  }
+  .topbar-logo { height: 20px; opacity: 0.92; }
+  .topbar-right { display: flex; align-items: center; gap: 20px; }
+  .topbar-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--sage-light);
+    font-weight: 500;
+  }
+  .topbar-date { font-size: 11px; color: rgba(244,239,233,0.4); }
+
+  /* ── Header ─────────────────────────────────── */
+  .header {
+    padding: 44px 40px 0;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+  .header h1 {
+    font-family: var(--font-display);
+    font-size: 34px;
+    font-weight: 400;
+    color: var(--teal);
+    letter-spacing: -0.4px;
+    margin-bottom: 4px;
+  }
+  .header-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+  .header-sub strong { color: var(--teal); font-weight: 600; }
+
+  /* ── Stat Cards ─────────────────────────────── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+    padding: 0 40px 28px;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 18px 18px 14px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .stat-card:hover { border-color: var(--gold); transform: translateY(-1px); }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--teal) 0%, transparent 100%);
+    opacity: 0.12;
+  }
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 400;
+    color: var(--teal);
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .stat-accent .stat-number { color: var(--gold); }
+  .stat-accent::before { background: linear-gradient(90deg, var(--gold) 0%, transparent 100%); opacity: 0.3; }
+
+  /* ── Filter Sections ────────────────────────── */
+  .filter-section {
+    padding: 0 40px 14px;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-label {
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-right: 4px;
+    flex-shrink: 0;
+    width: 64px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.18s;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .chip:hover { border-color: var(--teal); color: var(--teal); }
+  .chip.active {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: var(--cream);
+  }
+  .chip .chip-count {
+    font-size: 10px;
+    opacity: 0.55;
+    font-weight: 400;
+  }
+  .chip.active .chip-count { opacity: 0.7; }
+  .chip .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .chip.active .dot { background: var(--gold) !important; }
+  .dot-integrity { background: var(--teal); }
+  .dot-education { background: var(--blue); }
+  .dot-exclusivity { background: var(--gold); }
+  .dot-wellness { background: var(--sage); }
+
+  .chip-region.active { background: var(--teal-muted); }
+  .chip-city.active { background: var(--sage); border-color: var(--sage); }
+
+  /* ── Controls Bar ───────────────────────────── */
+  .controls {
+    padding: 0 40px 18px;
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .search-box {
+    flex: 1;
+    min-width: 260px;
+    position: relative;
+  }
+  .search-box input {
+    width: 100%;
+    padding: 9px 14px 9px 38px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 13px;
+    background: var(--white);
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-box input:focus { border-color: var(--teal); }
+  .search-box input::placeholder { color: var(--text-muted); }
+  .search-box svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+  .sort-select {
+    padding: 9px 30px 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 13px;
+    background: var(--white);
+    color: var(--text-primary);
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235a6b68' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+  .result-count {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .export-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 1px solid var(--teal);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    color: var(--teal);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+    white-space: nowrap;
+  }
+  .export-btn:hover { background: var(--teal); color: var(--cream); }
+  .export-btn svg { width: 14px; height: 14px; }
+
+  /* ── Table ──────────────────────────────────── */
+  .table-wrap {
+    padding: 0 40px 60px;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+  .table-container {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead {
+    background: var(--cream-warm);
+    position: sticky;
+    top: 48px;
+    z-index: 10;
+  }
+  thead th {
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s;
+  }
+  thead th:hover { color: var(--teal); }
+  thead th.sorted { color: var(--teal); }
+  thead th .arrow { margin-left: 3px; opacity: 0.3; font-size: 9px; }
+  thead th.sorted .arrow { opacity: 1; }
+  tbody tr {
+    border-bottom: 1px solid var(--border-light);
+    transition: background 0.1s;
+    cursor: pointer;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(244,239,233,0.45); }
+  tbody td { padding: 11px 14px; vertical-align: middle; }
+
+  /* ── Cell Styles ────────────────────────────── */
+  .salon-name {
+    font-weight: 600;
+    color: var(--teal);
+    font-size: 13px;
+    display: block;
+    margin-bottom: 1px;
+  }
+  .salon-city { font-size: 11px; color: var(--text-secondary); }
+  .email-cell {
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    font-family: "SF Mono", "Fira Code", "Menlo", monospace;
+    letter-spacing: -0.3px;
+  }
+  .email-cell a { color: var(--text-secondary); text-decoration: none; transition: color 0.15s; }
+  .email-cell a:hover { color: var(--teal); }
+  .phone-cell { font-size: 12px; color: var(--text-secondary); white-space: nowrap; }
+  .rating-cell { display: flex; align-items: center; gap: 5px; }
+  .rating-stars { display: flex; gap: 1px; }
+  .star { width: 11px; height: 11px; color: var(--gold); }
+  .star-empty { color: var(--border); }
+  .rating-num { font-weight: 600; font-size: 12px; color: var(--teal); }
+  .reviews-cell { font-size: 12px; color: var(--text-secondary); }
+  .score-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    padding: 3px 9px;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 11px;
+  }
+  .score-high { background: rgba(16,43,38,0.08); color: var(--teal); }
+  .score-mid { background: var(--gold-subtle); color: #8a6a3e; }
+  .score-low { background: rgba(196,92,62,0.08); color: var(--red); }
+  .seq-tag {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .seq-integrity { background: var(--teal-subtle); color: var(--teal); }
+  .seq-education { background: rgba(107,154,184,0.1); color: #3a6d8a; }
+  .seq-wellness { background: rgba(125,132,113,0.1); color: var(--sage); }
+  .seq-exclusivity { background: var(--gold-subtle); color: #8a6a3e; }
+  .brands-cell {
+    font-size: 11px;
+    color: var(--text-muted);
+    max-width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .source-tag {
+    font-size: 9px;
+    color: var(--text-muted);
+    background: rgba(0,0,0,0.03);
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  /* ── Empty State ────────────────────────────── */
+  .empty-state {
+    text-align: center;
+    padding: 56px 20px;
+    color: var(--text-muted);
+    display: none;
+  }
+  .empty-state h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+
+  /* ── Drawer ─────────────────────────────────── */
+  .drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(16,43,38,0.25);
+    backdrop-filter: blur(2px);
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+  }
+  .drawer-overlay.open { opacity: 1; visibility: visible; }
+  .drawer {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 420px;
+    max-width: 90vw;
+    background: var(--white);
+    z-index: 201;
+    transform: translateX(100%);
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
+    box-shadow: -6px 0 32px rgba(16,43,38,0.1);
+  }
+  .drawer.open { transform: translateX(0); }
+  .drawer-header {
+    padding: 26px 26px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .drawer-close {
+    position: absolute;
+    top: 18px; right: 18px;
+    width: 30px; height: 30px;
+    border: none;
+    background: var(--cream);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 16px;
+    transition: all 0.15s;
+  }
+  .drawer-close:hover { background: var(--teal); color: var(--cream); }
+  .drawer-salon-name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--teal);
+    margin-bottom: 3px;
+    padding-right: 40px;
+  }
+  .drawer-city { font-size: 13px; color: var(--text-secondary); }
+  .drawer-body { padding: 22px 26px 40px; }
+  .drawer-section { margin-bottom: 22px; }
+  .drawer-section-title {
+    font-size: 9px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .drawer-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(228,217,202,0.3);
+  }
+  .drawer-field:last-child { border-bottom: none; }
+  .drawer-field-label { font-size: 11px; color: var(--text-muted); flex-shrink: 0; margin-right: 14px; }
+  .drawer-field-value {
+    font-size: 12px;
+    color: var(--text-primary);
+    font-weight: 500;
+    text-align: right;
+    word-break: break-all;
+  }
+  .drawer-field-value a { color: var(--teal); text-decoration: none; }
+  .drawer-field-value a:hover { text-decoration: underline; }
+
+  /* ── Responsive ─────────────────────────────── */
+  @media (max-width: 1100px) { .stats-row { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 768px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .topbar, .header, .controls, .table-wrap, .filter-section { padding-left: 16px; padding-right: 16px; }
+    .header h1 { font-size: 26px; }
+    .filter-label { width: auto; margin-right: 2px; }
+  }
+
+  /* ── Animations ─────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .stat-card { animation: fadeUp 0.4s ease both; }
+  .stat-card:nth-child(2) { animation-delay: 0.05s; }
+  .stat-card:nth-child(3) { animation-delay: 0.1s; }
+  .stat-card:nth-child(4) { animation-delay: 0.15s; }
+  .stat-card:nth-child(5) { animation-delay: 0.2s; }
+  .stat-card:nth-child(6) { animation-delay: 0.25s; }
+  .table-container { animation: fadeUp 0.5s ease 0.2s both; }
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <img src="https://www.awarehair.com/cdn/shop/files/aware-logo-light.png" alt="AWARE Hair" class="topbar-logo">
+  <div class="topbar-right">
+    <span class="topbar-label">Salon Outreach</span>
+    <span class="topbar-date" id="currentDate"></span>
+  </div>
+</div>
+
+<!-- Header -->
+<div class="header">
+  <h1>Feb 2026 Campaign Leads</h1>
+  <p class="header-sub">
+    <strong id="totalLeads">0</strong> salons across <strong>2 active campaigns</strong> - paused, pending review
+  </p>
+</div>
+
+<!-- Stats -->
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-number" id="statTotal">0</div>
+    <div class="stat-label">Total Leads</div>
+  </div>
+  <div class="stat-card stat-accent">
+    <div class="stat-number" id="statAvgScore">0</div>
+    <div class="stat-label">Avg Fit Score</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number" id="statAvgRating">0</div>
+    <div class="stat-label">Avg Rating</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number" id="statWithRating">0</div>
+    <div class="stat-label">Have Ratings</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number" id="statCities">0</div>
+    <div class="stat-label">Cities</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number" id="statKM">0</div>
+    <div class="stat-label">KM Salons</div>
+  </div>
+</div>
+
+<!-- Campaign Filter -->
+<div class="filter-section" id="campaignFilters">
+  <div class="filter-row">
+    <span class="filter-label">Campaign</span>
+    <div id="campaignChips"></div>
+  </div>
+</div>
+
+<!-- Region Filter -->
+<div class="filter-section" id="regionFilters">
+  <div class="filter-row">
+    <span class="filter-label">Region</span>
+    <div id="regionChips"></div>
+  </div>
+</div>
+
+<!-- City Filter -->
+<div class="filter-section" id="cityFilters">
+  <div class="filter-row">
+    <span class="filter-label">City</span>
+    <div id="cityChips"></div>
+  </div>
+</div>
+
+<!-- Controls -->
+<div class="controls">
+  <div class="search-box">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="searchInput" placeholder="Search salon, city, email..." oninput="applyFilters()">
+  </div>
+  <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+    <option value="score_desc">Score (high-low)</option>
+    <option value="score_asc">Score (low-high)</option>
+    <option value="rating_desc">Rating (high-low)</option>
+    <option value="rating_asc">Rating (low-high)</option>
+    <option value="reviews_desc">Reviews (most)</option>
+    <option value="name_asc">Name (A-Z)</option>
+    <option value="name_desc">Name (Z-A)</option>
+    <option value="city_asc">City (A-Z)</option>
+  </select>
+  <span class="result-count" id="resultCount"></span>
+  <button class="export-btn" onclick="exportCSV()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Export CSV
+  </button>
+</div>
+
+<!-- Table -->
+<div class="table-wrap">
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Salon</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Rating</th>
+          <th>Reviews</th>
+          <th>Score</th>
+          <th>Campaign</th>
+          <th>Brands</th>
+          <th>Source</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+    <div class="empty-state" id="emptyState">
+      <h3>No salons match</h3>
+      <p>Try adjusting your filters or search</p>
+    </div>
+  </div>
+</div>
+
+<!-- Drawer -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <button class="drawer-close" onclick="closeDrawer()">&#x2715;</button>
+    <div class="drawer-salon-name" id="drawerName"></div>
+    <div class="drawer-city" id="drawerCity"></div>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</div>
+
+<script>
+const EMBEDDED_DATA = [{"salon_name":"Blown Away LA","owner_name":"Owner TBD","owner_email":"theblownawayla@gmail.com","phone":"(310) 270-3838","website":"https://www.blownawayla.com/","instagram":"","address":"9463 GREGORY WAY","city":"BEVERLY HILLS","state":"CA","zip":"90212-3826","google_maps_link":"https://maps.google.com/?cid=13994415200833195477&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":103,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"Krimson Salon","owner_name":"Owner TBD","owner_email":"krimsonhairstudioburbank@gmail.com","phone":"(818) 848-8557","website":"http://krimsonsalon.com/","instagram":"","address":"3400 W BURBANK BLVD","city":"BURBANK","state":"CA","zip":"91505-2232","google_maps_link":"https://maps.google.com/?cid=11870053235731614745&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":66,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"Salty Blonde Cut Co.","owner_name":"Owner TBD","owner_email":"brittany@saltyblondecut.co","phone":"(949) 873-5667","website":"http://saltyblondecut.co/","instagram":"","address":"1656 SANTA ANA AVE","city":"COSTA MESA","state":"CA","zip":"92627-3850","google_maps_link":"https://maps.google.com/?cid=10665115607616910069&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.5,"review_count":51,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"Double O","owner_name":"Owner TBD","owner_email":"carlymontelongo@yahoo.com","phone":"(323) 254-1200","website":"http://doubleosalon.com/","instagram":"","address":"5046 EAGLE ROCK BLVD","city":"EAGLE ROCK","state":"CA","zip":"90041-1924","google_maps_link":"https://maps.google.com/?cid=5595483299341798923&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":183,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"The Parlour Encinitas","owner_name":"Owner TBD","owner_email":"theparlourencinitas@icloud.com","phone":"(760) 487-5875","website":"http://www.theparlourencinitas.com/","instagram":"","address":"467 ENCINITAS BLVD","city":"ENCINITAS","state":"CA","zip":"92024-3728","google_maps_link":"https://maps.google.com/?cid=17048465737319145314&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":96,"services_offered":"Premier hair salon, color specialists","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"Color specialist salon","_source":"km_locator+socal_research","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"Freebirds Salon","owner_name":"Owner TBD","owner_email":"theblade@freebirdslbc.com","phone":"(562) 247-3822","website":"http://www.freebirdslbc.com/","instagram":"","address":"851 PINE AVE","city":"LONG BEACH","state":"CA","zip":"90813-4323","google_maps_link":"https://maps.google.com/?cid=3690180036486090045&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":110,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"Hunny & Jade","owner_name":"Owner TBD","owner_email":"hunnyandjade@gmail.com","phone":"(562) 795-5885","website":"https://hunnyandjade.com/","instagram":"","address":"6481 E PACIFIC COAST HWY","city":"LONG BEACH","state":"CA","zip":"90803-4201","google_maps_link":"https://maps.google.com/?cid=1695013723886158975&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":107,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"Fellow Barber- Silverlake","owner_name":"Owner TBD","owner_email":"silverlake@fellowbarber.com","phone":"(323) 661-6535","website":"http://www.fellowbarber.com/","instagram":"","address":"4451 W SUNSET BLVD","city":"LOS ANGELES","state":"CA","zip":"90027-6017","google_maps_link":"https://maps.google.com/?cid=3317054964902062733&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.5,"review_count":95,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"Mi Curl Guru","owner_name":"Owner TBD","owner_email":"micurlguru@gmail.com","phone":"(901) 340-2561","website":"https://micurlguru.glossgenius.com/?fbclid=PAAaY16vA6I5FpRnNVqFz-Ne65rau_u9vAX_qHzDnHeDMiUmqepZG3Uie71I0_aem_Abap7Vf56W8RGjR-kmYZU20F1fFQ_-AjUvLW5nTBEpefbrLl9kx5Y1I3cuz1PY3Z1bw","instagram":"","address":"2605 BRIGHTON AVE","city":"LOS ANGELES","state":"CA","zip":"90018-2716","google_maps_link":"https://maps.google.com/?cid=2060985957233061581&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":111,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"Shorty’s Barbershop LLC","owner_name":"Owner TBD","owner_email":"management@shortysbarbershop.com","phone":"(323) 951-1191","website":"http://www.shortysbarbershop.com/","instagram":"","address":"755 N FAIRFAX AVE","city":"LOS ANGELES","state":"CA","zip":"90046-7261","google_maps_link":"https://maps.google.com/?cid=8568281092959973153&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":528,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"Belli Capelli (Sd)","owner_name":"Owner TBD","owner_email":"jasmined759@yahoo.com","phone":"(858) 483-0888","website":"https://bellicapellipb.com/","instagram":"","address":"944 GARNET AVE","city":"SAN DIEGO","state":"CA","zip":"92109-2728","google_maps_link":"https://maps.google.com/?cid=8551049278086594186&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":69,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"Details Salon and Spa","owner_name":"Owner TBD","owner_email":"detailssalonspa@gmail.com","phone":"(619) 222-6777","website":"https://detailssalonspa.com/","instagram":"","address":"4993 NIAGARA AVE","city":"SAN DIEGO","state":"CA","zip":"92107-3163","google_maps_link":"https://maps.google.com/?cid=5278911745626944999&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":57,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"Meraki Lounge","owner_name":"Owner TBD","owner_email":"management@merakiloungesd.com","phone":"(619) 535-7828","website":"https://merakiloungesd.com/","instagram":"","address":"369 10TH AVE","city":"SAN DIEGO","state":"CA","zip":"92101-7431","google_maps_link":"https://maps.google.com/?cid=7649544018135212499&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":128,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"Richard Joseph Salon","owner_name":"Owner TBD","owner_email":"richardjosephsalon1717@gmail.com","phone":"(619) 542-1144","website":"http://www.richardjosephs.com/","instagram":"","address":"1717 UNIVERSITY AVE","city":"SAN DIEGO","state":"CA","zip":"92103-3474","google_maps_link":"https://maps.google.com/?cid=2750848464670470070&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":106,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"The Lighthouse Salon","owner_name":"Owner TBD","owner_email":"lighthousesalon.roz@gmail.com","phone":"(619) 542-9077","website":"http://www.lighthouse-salon.com/","instagram":"","address":"3081 UNIVERSITY AVE","city":"SAN DIEGO","state":"CA","zip":"92104-3035","google_maps_link":"https://maps.google.com/?cid=9357833185732021281&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":102,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"bombSHELL [Santa Monica]","owner_name":"Owner TBD","owner_email":"frontdesk@bombshellsantamonica.com","phone":"(310) 450-0440","website":"http://bombshellsantamonica.com/","instagram":"","address":"2431 MAIN ST","city":"SANTA MONICA","state":"CA","zip":"90405-3539","google_maps_link":"https://maps.google.com/?cid=149964664685859317&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":85,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"Ecco Hair Studio","owner_name":"Owner TBD","owner_email":"eccohair@gmail.com","phone":"(626) 799-6446","website":"http://www.eccohairstudio.com/","instagram":"","address":"1017 EL CENTRO ST","city":"SOUTH PASADENA","state":"CA","zip":"91030-3117","google_maps_link":"https://maps.google.com/?cid=5205320486776578284&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":119,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"The Barber Den LA","owner_name":"Owner TBD","owner_email":"thebarberdenla@gmail.com","phone":"(323) 450-9095","website":"http://www.thebarberdenla.com/?y_source=1_MTQyMjMwMjEtNzE1LWxvY2F0aW9uLndlYnNpdGU%3D","instagram":"","address":"7748 SANTA MONICA BLVD","city":"WEST HOLLYWOOD","state":"CA","zip":"90046-6220","google_maps_link":"https://maps.google.com/?cid=17387735521473918550&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":276,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":65,"assigned_sequence":"4_integrity"},{"salon_name":"Luxbae (Glendale)","owner_name":"Owner TBD","owner_email":"s_sisakyan@icloud.com","phone":"(818) 422-7171","website":"https://luxbae.com/","instagram":"","address":"616 W GLENOAKS BLVD","city":"GLENDALE","state":"CA","zip":"91202-2821","google_maps_link":"https://maps.google.com/?cid=17714585928331977806&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":37,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":60,"assigned_sequence":"4_integrity"},{"salon_name":"Hairitage","owner_name":"Owner TBD","owner_email":"stephanieyc@me.com","phone":"(909) 451-3754","website":"http://hairitagela.com/","instagram":"","address":"5662 YORK BLVD","city":"HIGHLAND PARK","state":"CA","zip":"90042-2551","google_maps_link":"https://maps.google.com/?cid=878927494641154843&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":29,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":60,"assigned_sequence":"4_integrity"},{"salon_name":"Del Sol Hair Studio","owner_name":"Owner TBD","owner_email":"tannyaspeir@gmail.com","phone":"(714) 963-4247","website":"http://delsolhairstudio.com/","instagram":"","address":"9911 HAMILTON AVE","city":"HUNTINGTON BEACH","state":"CA","zip":"92646-8015","google_maps_link":"https://maps.google.com/?cid=1202382372248703734&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":40,"services_offered":"Balayage, precision cuts, color mastery, extensions, treatments","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"Boutique salon, award-winning","_source":"km_locator+socal_research","_enrichment_status":"enriched","fit_score":60,"assigned_sequence":"4_integrity"},{"salon_name":"Moxie Huntington Beach","owner_name":"Owner TBD","owner_email":"moxiehairhb@gmail.com","phone":"","website":"https://www.moxiehuntingtonbeach.com/","instagram":"","address":"16789 BEACH BLVD","city":"HUNTINGTON BEACH","state":"CA","zip":"92647-4848","google_maps_link":"https://maps.google.com/?cid=14850823728863597934&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":41,"services_offered":"Blondes specialist, various colorist specialties","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"Stylists built thriving clientele","_source":"km_locator+socal_research","_enrichment_status":"enriched","fit_score":60,"assigned_sequence":"4_integrity"},{"salon_name":"Belo Blow Dry Bar","owner_name":"Owner TBD","owner_email":"patricia@beloblowdrybar.com","phone":"(949) 338-5262","website":"http://beloblowdrybar.com/","instagram":"","address":"302 FOREST AVE","city":"LAGUNA BEACH","state":"CA","zip":"92651-2116","google_maps_link":"https://maps.google.com/?cid=14218234357068270641&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.6,"review_count":41,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":60,"assigned_sequence":"4_integrity"},{"salon_name":"The Hair Bungalow","owner_name":"Owner TBD","owner_email":"bprovancha91@gmail.com","phone":"(503) 713-3553","website":"https://www.instagram.com/thehairbungalowsalon?igsh=NTc4MTIwNjQ2YQ%3D%3D&utm_source=qr","instagram":"","address":"3908 E 4TH ST","city":"LONG BEACH","state":"CA","zip":"90814-1656","google_maps_link":"https://maps.google.com/?cid=13669493334834600185&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":34,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":60,"assigned_sequence":"4_integrity"},{"salon_name":"Ramos Carreon Salon","owner_name":"Owner TBD","owner_email":"brittany@ramoscarreonsalon.com","phone":"(323) 936-6775","website":"http://www.ramoscarreonsalon.com/","instagram":"","address":"7402 BEVERLY BLVD","city":"LOS ANGELES","state":"CA","zip":"90036-2725","google_maps_link":"https://maps.google.com/?cid=5074183267506377131&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":41,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":60,"assigned_sequence":"4_integrity"},{"salon_name":"Endless Summer","owner_name":"Owner TBD","owner_email":"endlesssummersalonmb@gmail.com","phone":"(310) 545-1006","website":"","instagram":"","address":"3417 HIGHLAND AVE","city":"MANHATTAN BEACH","state":"CA","zip":"90266-3364","google_maps_link":"https://maps.google.com/?cid=14617347566263349195&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":50,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":60,"assigned_sequence":"4_integrity"},{"salon_name":"Autumn Houston The Salon","owner_name":"Owner TBD","owner_email":"autumn.houston@ymail.com","phone":"(619) 546-5464","website":"http://www.autumnhouston.com/","instagram":"","address":"1760 KETTNER BLVD","city":"SAN DIEGO","state":"CA","zip":"92101-2524","google_maps_link":"https://maps.google.com/?cid=8553638432657921932&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":22,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":60,"assigned_sequence":"4_integrity"},{"salon_name":"The Park Salon","owner_name":"Owner TBD","owner_email":"lesliescavone@me.com","phone":"(619) 865-2080","website":"http://theparksalonsd.com/","instagram":"","address":"4640 PARK BLVD","city":"SAN DIEGO","state":"CA","zip":"92116-2629","google_maps_link":"https://maps.google.com/?cid=6170969190396891617&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.5,"review_count":22,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":60,"assigned_sequence":"4_integrity"},{"salon_name":"Fringe Santa Monica","owner_name":"Owner TBD","owner_email":"fringesalonla@yahoo.com","phone":"(310) 399-7100","website":"https://fringesalonla.com/","instagram":"","address":"3015 LINCOLN BLVD","city":"SANTA MONICA","state":"CA","zip":"90405-5734","google_maps_link":"https://maps.google.com/?cid=15996779068794178500&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":31,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":60,"assigned_sequence":"4_integrity"},{"salon_name":"D Miller Hair","owner_name":"Owner TBD","owner_email":"deborahmiller11@gmail.com","phone":"(818) 451-8114","website":"http://dmillerhairlounge.com/","instagram":"","address":"4054 LAUREL CANYON BLVD","city":"STUDIO CITY","state":"CA","zip":"91604-2017","google_maps_link":"https://maps.google.com/?cid=1896594213848966514&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":37,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":60,"assigned_sequence":"4_integrity"},{"salon_name":"Trim A Salon","owner_name":"Owner TBD","owner_email":"trimasalon@icloud.com","phone":"(818) 784-8746","website":"http://www.trimasalon.com/","instagram":"","address":"12153 Ventura Blvd","city":"STUDIO CITY","state":"CA","zip":"91604-2237","google_maps_link":"https://maps.google.com/?cid=13454254299396115054&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":31,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":60,"assigned_sequence":"4_integrity"},{"salon_name":"Telles Hair","owner_name":"Owner TBD","owner_email":"tribecatimtelles@gmail.com","phone":"(949) 285-3113","website":"http://timtelleshair.com/","instagram":"","address":"77 VANTIS DR","city":"ALISO VIEJO","state":"CA","zip":"92656-2600","google_maps_link":"https://maps.google.com/?cid=2894088854385241737&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":8,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"The Salon Venice","owner_name":"Owner TBD","owner_email":"ashair88@yahoo.com","phone":"(805) 341-6723","website":"http://thesalonvenice.com/","instagram":"","address":"701 VENICE BLVD B","city":"VENICE","state":"CA","zip":"90291-4802","google_maps_link":"https://maps.google.com/?cid=11464178928325508148&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":75,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Lucinda Ellery Hair","owner_name":"Owner TBD","owner_email":"lareception@lucindaellery.com","phone":"(310) 288-0788","website":"https://www.lucindaellery-hairloss.com/la-hair-replacement.php","instagram":"","address":"9022 BURTON WAY","city":"BEVERLY HILLS","state":"CA","zip":"90211-1618","google_maps_link":"https://maps.google.com/?cid=6428581700357126012&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":17,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Salon On First","owner_name":"Owner TBD","owner_email":"marilynklisser@gmail.com","phone":"(619) 996-3200","website":"https://www.salononfirstcoronado.com/","instagram":"","address":"1134 1ST ST","city":"CORONADO","state":"CA","zip":"92118-1407","google_maps_link":"https://maps.google.com/?cid=12479309254057820772&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":110,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Fellow Barber (Highland Park)","owner_name":"Owner TBD","owner_email":"highlandpark@fellowbarber.com","phone":"(323) 916-9960","website":"http://www.fellowbarber.com/","instagram":"","address":"5633 N FIGUEROA ST","city":"LOS ANGELES","state":"CA","zip":"90042-4101","google_maps_link":"https://maps.google.com/?cid=11501098753395101982&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.1,"review_count":45,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Sager French Salon","owner_name":"Owner TBD","owner_email":"sagerfrenchsalon@gmail.com","phone":"(310) 855-0300","website":"http://www.sagerfrench.com/","instagram":"","address":"123 S ROBERTSON BLVD","city":"LOS ANGELES","state":"CA","zip":"90048-3207","google_maps_link":"https://maps.google.com/?cid=11895702466727702336&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":7,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Hive Natural Beauty","owner_name":"Owner TBD","owner_email":"kelsey@hivebeauty.com","phone":"(805) 439-2255","website":"http://www.hivebeauty.com/","instagram":"","address":"2033 SANTA BARBARA AVE","city":"SAN LUIS OBISPO","state":"CA","zip":"93401-5200","google_maps_link":"https://maps.google.com/?cid=3401600003411498414&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":69,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Lucas Salon","owner_name":"Owner TBD","owner_email":"lisa-mayer@sbcglobal.net","phone":"(213) 250-7992","website":"http://www.lucasla.com/","instagram":"","address":"2828 NEWELL ST STE 1","city":"LOS ANGELES","state":"CA","zip":"90039-3817","google_maps_link":"https://maps.google.com/?cid=3618171803270907623&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":50,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Elli's Hair Studio","owner_name":"Owner TBD","owner_email":"epourpakchashm@yahoo.co.uk","phone":"(619) 634-4270","website":"https://www.ellishairstudio.com/","instagram":"","address":"1495 PACIFIC HWY STE 101","city":"SAN DIEGO","state":"CA","zip":"92101-2412","google_maps_link":"https://maps.google.com/?cid=15940948847055945084&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":126,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Tailored Hair","owner_name":"Owner TBD","owner_email":"lizzy@tailoredhair.com","phone":"(858) 444-7814","website":"https://www.tailoredhair.com/","instagram":"","address":"845 15TH ST STE 105","city":"SAN DIEGO","state":"CA","zip":"92101-8045","google_maps_link":"https://maps.google.com/?cid=15614031856842749415&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":326,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"The Hive Beauty Collective","owner_name":"Owner TBD","owner_email":"trishayourstylist@yahoo.com","phone":"(424) 384-5099","website":"http://www.thehivebc.com/","instagram":"","address":"11955 W WASHINGTON BLVD STE 105","city":"LOS ANGELES","state":"CA","zip":"90066-5826","google_maps_link":"https://maps.google.com/?cid=2960961553675741185&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":71,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Vanilla Salon","owner_name":"Owner TBD","owner_email":"lovetostyle@gmail.com","phone":"(714) 556-4256","website":"https://www.vanillasaloncm.com/","instagram":"","address":"1500 ADAMS AVE STE 107","city":"COSTA MESA","state":"CA","zip":"92626-3864","google_maps_link":"https://maps.google.com/?cid=14726660431414990949&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":148,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Summer House Salon","owner_name":"Owner TBD","owner_email":"susana@summerhouse.salon","phone":"(310) 316-5555","website":"http://summerhouse.salon/","instagram":"","address":"1300 S PACIFIC COAST HWY STE 109","city":"REDONDO BEACH","state":"CA","zip":"90277-5003","google_maps_link":"https://maps.google.com/?cid=17693367111057473335&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":61,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Nicole Martin Hair","owner_name":"Owner TBD","owner_email":"nicolemartinhair@yahoo.com","phone":"(949) 533-2782","website":"http://www.nicolemartinsalon.com/","instagram":"","address":"24391 AVENIDA DE LA CARLOTA STE 116","city":"LAGUNA HILLS","state":"CA","zip":"92653-3607","google_maps_link":"https://maps.google.com/?cid=2194680816238865887&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":209,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Red Angel Salon And Blow Dry Bar","owner_name":"Owner TBD","owner_email":"beautyby.blancaa1@gmail.com","phone":"(760) 574-5546","website":"https://www.redangelsalon.com/","instagram":"","address":"46600 WASHINGTON ST STE 2","city":"LA QUINTA","state":"CA","zip":"92253-2439","google_maps_link":"https://maps.google.com/?cid=14696130041707802910&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":73,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Dye Beauty Bar","owner_name":"Owner TBD","owner_email":"dyebeautysalon@gmail.com","phone":"(714) 532-6390","website":"http://www.dyebeautybar.com/","instagram":"","address":"190 S GLASSELL ST STE A","city":"ORANGE","state":"CA","zip":"92866-1422","google_maps_link":"https://maps.google.com/?cid=14198460338527634206&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.5,"review_count":86,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Lalena Ouidad Signature Salon","owner_name":"Owner TBD","owner_email":"alenkacotignola@gmail.com","phone":"(310) 740-0547","website":"https://lalenaouidad.com/","instagram":"","address":"739 10TH ST STE A","city":"SANTA MONICA","state":"CA","zip":"90402","google_maps_link":"https://maps.google.com/?cid=12681659229835115483&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":123,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Violet Salon","owner_name":"Owner TBD","owner_email":"retrojunkie1969@yahoo.com","phone":"(760) 696-3454","website":"http://www.violetbeauty.com/","instagram":"","address":"3138 ROOSEVELT ST STE A","city":"CARLSBAD","state":"CA","zip":"92008-3020","google_maps_link":"https://maps.google.com/?cid=9419071364713948624&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":72,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Bella Villa","owner_name":"Owner TBD","owner_email":"jvblonde2@gmail.com","phone":"(858) 794-2793","website":"http://www.lavillabellasanantonio.com/","instagram":"","address":"1130 CAMINO DEL MAR STE B","city":"DEL MAR","state":"CA","zip":"92014-2606","google_maps_link":"https://maps.google.com/?cid=8856524668831776966&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.6,"review_count":82,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Black Dagger Hair","owner_name":"Owner TBD","owner_email":"blackdaggerhair@gmail.com","phone":"(619) 796-9207","website":"https://www.blackdaggerhair.com/","instagram":"","address":"3275 ADAMS AVE STE G","city":"SAN DIEGO","state":"CA","zip":"92116-1647","google_maps_link":"https://maps.google.com/?cid=17311941390051735712&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":119,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Rua Salon","owner_name":"Owner TBD","owner_email":"azim91604@yahoo.com","phone":"(818) 209-9050","website":"http://pielbylucynunez.com/","instagram":"","address":"12445 VENTURA BLVD","city":"STUDIO CITY","state":"CA","zip":"91604-2407","google_maps_link":"https://maps.google.com/?cid=15310709609525348639&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.1,"review_count":34,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"The Canyon Salon","owner_name":"Owner TBD","owner_email":"info@thecanyonsalon.com","phone":"(805) 777-1140","website":"https://www.thecanyonsalon.com/","instagram":"","address":"3693 E THOUSAND OAKS BLVD","city":"THOUSAND OAKS","state":"CA","zip":"91362-3606","google_maps_link":"https://maps.google.com/?cid=10427690484100279882&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.6,"review_count":77,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Salon Xia","owner_name":"Owner TBD","owner_email":"mark@salonxia.com","phone":"(626) 796-0616","website":"https://www.salonxia.com/","instagram":"","address":"686 E UNION ST UNIT 170","city":"PASADENA","state":"CA","zip":"91101-1820","google_maps_link":"https://maps.google.com/?cid=12902125163712556135&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":58,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Salt + Mane","owner_name":"Owner TBD","owner_email":"saltandmane@gmail.com","phone":"(805) 653-0663","website":"http://saltandmane.com/","instagram":"","address":"654 E MAIN ST","city":"VENTURA","state":"CA","zip":"93001-2815","google_maps_link":"https://maps.google.com/?cid=8479844894912272954&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":116,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"4_integrity"},{"salon_name":"Hairroin Salon","owner_name":"Janine Jarman","owner_email":"janine@hairroinsalon.com","phone":"(323) 333-9458","website":"hairroinsalon.com","instagram":"@hairroinsalon","address":"4637 Hollywood Blvd","city":"Los Angeles","state":"CA","zip":"90027","google_maps_link":"https://maps.google.com/?cid=2089314915186562090&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":416,"services_offered":"Cuts, color, balayage, extensions, fantasy color","brands_carried":"","km_tier":"","hunter_confidence":99,"notes":"16K Instagram followers, est. 2005, 20+ years; Founder","_source":"socal_research","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"3_education"},{"salon_name":"Chignon Hair Salon","owner_name":"Alicia Dubois","owner_email":"travis@chignonsalon.com","phone":"(626) 683-3724","website":"chignonsalon.com","instagram":"@chignonsalon","address":"41 E Union St","city":"Pasadena","state":"CA","zip":"91103","google_maps_link":"https://maps.google.com/?cid=8352648163556840684&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":101,"services_offered":"Expert cuts, professional color, styling","brands_carried":"","km_tier":"","hunter_confidence":99,"notes":"Open since 1993, heart of Old Town Pasadena; Barber","_source":"socal_research","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"3_education"},{"salon_name":"Station Salon & Boutique","owner_name":"Dana Osinga","owner_email":"heythere@stationsalon.com","phone":"(760) 217-7990","website":"stationsalon.com","instagram":"@station_salon_","address":"594 S Coast Hwy 101","city":"Encinitas","state":"CA","zip":"92024","google_maps_link":"https://maps.google.com/?cid=11391857987701656010&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":278,"services_offered":"Balayage, custom highlights, hand-tied/tape-in extensions, precision cuts, smoothing treatments","brands_carried":"Davines, Natural Tech, Heart of Glass","km_tier":"","hunter_confidence":79,"notes":"Green Certified, 18-chair space, Davines Concept Salon, adjacent wellness boutique","_source":"socal_research","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"2_exclusivity"},{"salon_name":"Headlines The Salon","owner_name":"Gayle & David Linde","owner_email":"info@headlinesthesalon.com","phone":"(760) 436-1812","website":"headlinesthesalon.com","instagram":"","address":"121 N El Camino Real","city":"Encinitas","state":"CA","zip":"92024","google_maps_link":"https://maps.google.com/?cid=3058050572907063480&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":709,"services_offered":"Full service hair salon","brands_carried":"","km_tier":"","hunter_confidence":83,"notes":"Established 1987, team-based ultimate service","_source":"socal_research","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"3_education"},{"salon_name":"Sweet Jane Salon","owner_name":"Nicholas & Norman","owner_email":"info@sweetjanesalon.com","phone":"(619) 894-0388","website":"sweetjanesalon.com","instagram":"@sweetjanesalon","address":"1443 University Avenue Suite B","city":"San Diego","state":"CA","zip":"92103","google_maps_link":"https://maps.google.com/?cid=17663747331424739095&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":387,"services_offered":"Haircuts (shags, bangs, bobs, custom), styling, blow-outs","brands_carried":"","km_tier":"","hunter_confidence":99,"notes":"Eco-conscious California lifestyle, safe space, boutique","_source":"socal_research","_enrichment_status":"enriched","fit_score":55,"assigned_sequence":"3_education"},{"salon_name":"Ra Bar Beauty","owner_name":"Owner TBD","owner_email":"financials.ra@gmail.com","phone":"(323) 651-4545","website":"https://rahairhouse.com/","instagram":"","address":"7931 SANTA MONICA BLVD ENTRANCE ON HAYWORTH ST","city":"WEST HOLLYWOOD","state":"CA","zip":"90046-5107","google_maps_link":"https://maps.google.com/?cid=5689887608808343539&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":39,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"Made Man Salon","owner_name":"Owner TBD","owner_email":"yelena@mademansalon.com","phone":"(949) 290-8122","website":"http://www.mademansalon.com/","instagram":"","address":"2801 EL CAMINO REAL RM 28","city":"TUSTIN RANCH","state":"CA","zip":"92782-8904","google_maps_link":"https://maps.google.com/?cid=17188978298533610254&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":30,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"Luce Salon","owner_name":"Owner TBD","owner_email":"eandsalon@gmail.com","phone":"(805) 898-1133","website":"http://lucesalonsb.com/","instagram":"","address":"1822 CLIFF DR","city":"SANTA BARBARA","state":"CA","zip":"93109-1605","google_maps_link":"https://maps.google.com/?cid=6333437477985841752&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":23,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"Artisan Salon","owner_name":"Owner TBD","owner_email":"kara@artisansalonpalmdesert.com","phone":"(760) 636-4250","website":"http://artisan-salon.com/","instagram":"","address":"73920 EL PASEO STE 1","city":"PALM DESERT","state":"CA","zip":"92260-4321","google_maps_link":"https://maps.google.com/?cid=8632188728638365821&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":48,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"Studio M Hair & Day Spa","owner_name":"Owner TBD","owner_email":"hair4me98@gmail.com","phone":"(760) 771-1021","website":"http://studiomhairanddayspa.com/","instagram":"","address":"50680 EISENHOWER DR STE 1","city":"LA QUINTA","state":"CA","zip":"92253-2391","google_maps_link":"https://maps.google.com/?cid=11096269500967379240&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":23,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"Salon Delgado Inc","owner_name":"Owner TBD","owner_email":"sharla@salondelgado.com","phone":"(619) 203-0593","website":"http://salondelgado.com/","instagram":"","address":"404 CAMINO DEL RIO S STE 100 RM 26","city":"SAN DIEGO","state":"CA","zip":"92108-3500","google_maps_link":"https://maps.google.com/?cid=342967967501630359&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":30,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"Style Lounge (Carlsbad)","owner_name":"Owner TBD","owner_email":"tricia@thestyleloungecarlsbad.com","phone":"(760) 505-9965","website":"http://www.thestyleloungecarlsbad.com/","instagram":"","address":"355 CARLSBAD VILLAGE DR STE 101","city":"CARLSBAD","state":"CA","zip":"92008-2916","google_maps_link":"https://maps.google.com/?cid=4571668242397357049&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":45,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"Prism Salon","owner_name":"Owner TBD","owner_email":"colorme.courtney.km@gmail.com","phone":"(805) 914-9697","website":"https://www.prismsalonsb.com/","instagram":"","address":"550 PACIFIC COAST HWY STE 102","city":"SEAL BEACH","state":"CA","zip":"90740-5905","google_maps_link":"https://maps.google.com/?cid=1950064567879026374&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":28,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"Salon Platinum (Viejo) - Sarah Mcadoo","owner_name":"Owner TBD","owner_email":"sarahsuemcadoo@icloud.com","phone":"(949) 502-1954","website":"http://www.salonplatinum.com/","instagram":"","address":"27131 ALISO CREEK RD STE 165","city":"ALISO VIEJO","state":"CA","zip":"92656-3361","google_maps_link":"https://maps.google.com/?cid=10191310054367206231&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":41,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"Roots and Mane Hair Studio","owner_name":"Owner TBD","owner_email":"shanyceenglish@gmail.com","phone":"(760) 567-2247","website":"http://www.rootsandmanehairstudio.com/","instagram":"","address":"44630 MONTEREY AVE STE 200","city":"PALM DESERT","state":"CA","zip":"92260-3326","google_maps_link":"https://maps.google.com/?cid=10086441917302283930&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":45,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"Teddy Baker Beauty","owner_name":"Owner TBD","owner_email":"info@teddybakerbeauty.com","phone":"(646) 419-5200","website":"http://teddybakerbeauty.com/","instagram":"","address":"8550 SANTA MONICA BLVD STE 300 RM 112","city":"WEST HOLLYWOOD","state":"CA","zip":"90069-4119","google_maps_link":"https://maps.google.com/?cid=8565783724585261451&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":44,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"Capelli Lounge","owner_name":"Owner TBD","owner_email":"capellilounge2@icloud.com","phone":"(310) 824-2711","website":"http://www.capellilounge.com/","instagram":"","address":"1001 GAYLEY AVE STE 7","city":"LOS ANGELES","state":"CA","zip":"90024-3401","google_maps_link":"https://maps.google.com/?cid=1093168784064331099&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.6,"review_count":37,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"The Hair Extension Bar","owner_name":"Owner TBD","owner_email":"meetme@thehairextensionbar.com","phone":"(619) 416-8641","website":"https://www.thehairextensionbar.com/","instagram":"","address":"6 CREEKSIDE DR STE 700","city":"SAN MARCOS","state":"CA","zip":"92078-2353","google_maps_link":"https://maps.google.com/?cid=16408677740073046835&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.5,"review_count":34,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"Secrets Salon","owner_name":"Owner TBD","owner_email":"hairstylingbyerika949@gmail.com","phone":"(949) 267-8487","website":"http://www.secretssalonoc.com/","instagram":"","address":"24000 ALICIA PKWY STE 8","city":"MISSION VIEJO","state":"CA","zip":"92691-3900","google_maps_link":"https://maps.google.com/?cid=5899908704685715278&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":42,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"Kindred A Beauty Collective","owner_name":"Owner TBD","owner_email":"kindredbeautycollective@gmail.com","phone":"(805) 439-3773","website":"http://kindredabeautycollective.com/","instagram":"","address":"310 FRONT ST STE B","city":"AVILA BEACH","state":"CA","zip":"93424-3552","google_maps_link":"https://maps.google.com/?cid=15773863138844128634&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":40,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"Desa Salon","owner_name":"Owner TBD","owner_email":"desasalon@yahoo.com","phone":"(949) 645-0311","website":"http://www.desasalon.com/","instagram":"","address":"1835 NEWPORT BLVD STE D256","city":"ORANGE COUNTY","state":"CA","zip":"92627-5013","google_maps_link":"https://maps.google.com/?cid=14956340475584700408&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":33,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"Trilogy Hair Studio","owner_name":"Owner TBD","owner_email":"trilogyhairstudiola@gmail.com","phone":"(818) 753-0996","website":"http://trilogyhairstudio.com/","instagram":"","address":"12462 MAGNOLIA BLVD","city":"VALLEY VILLAGE","state":"CA","zip":"91607-2451","google_maps_link":"https://maps.google.com/?cid=12173504797546615740&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":48,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"4_integrity"},{"salon_name":"Juan Juan Salon - Brentwood","owner_name":"Elie & Sean Jahanbigloo","owner_email":"info@juanjuansalon.com","phone":"(310) 979-8081","website":"juanjuansalon.com","instagram":"@juanjuansalon_brentwood","address":"11674 San Vicente Blvd","city":"Los Angeles","state":"CA","zip":"90049","google_maps_link":"https://maps.google.com/?cid=15958166686629643360&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.5,"review_count":212,"services_offered":"Cuts, color, treatments, organic ingredients","brands_carried":"","km_tier":"","hunter_confidence":null,"notes":"30 years in business, rated by Elle & Vogue top 10 LA salons","_source":"socal_research","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"3_education"},{"salon_name":"The Local Salon","owner_name":"Rosie Fiore","owner_email":"Thelocalsalon@gmail.com","phone":"(818) 763-2977","website":"http://www.thelocalsalon.com/","instagram":"@thelocalsalon","address":"201 E Magnolia Suite 306","city":"Burbank","state":"CA","zip":"91502","google_maps_link":"https://maps.google.com/?cid=7644557456933610090&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":71,"services_offered":"Cuts, color, styling","brands_carried":"","km_tier":"","hunter_confidence":null,"notes":"Independent stylist at Salon Republic","_source":"socal_research","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"3_education"},{"salon_name":"Tesler Salon","owner_name":"Adriana Tesler","owner_email":"adriana@teslersalon.com","phone":"323.922.1003","website":"teslersalon.com","instagram":"@teslersalon","address":"2476 Glendale Blvd","city":"Los Angeles","state":"CA","zip":"90039","google_maps_link":"https://maps.google.com/?cid=1753812957441425647&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.6,"review_count":31,"services_offered":"Balayage, extensions, color correction, Hair Botox","brands_carried":"Davines, C & The Moon, French Girl Organics","km_tier":"","hunter_confidence":99,"notes":"Emmy-nominated celebrity stylist, Davines carrier; Owner","_source":"socal_research","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"2_exclusivity"},{"salon_name":"Crown Envy","owner_name":"Rachel & Ashleigh","owner_email":"info@crownenvy.com","phone":"(310) 394-6600","website":"https://www.crownenvy.com/","instagram":"@crownenvyhairextensions","address":"2634 Wilshire Blvd","city":"Santa Monica","state":"CA","zip":"90403","google_maps_link":"https://maps.google.com/?cid=13610335941868898375&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.4,"review_count":195,"services_offered":"Premium extensions, color, cuts","brands_carried":"L'Oreal, Redken, Olaplex, K18, Pureology","km_tier":"","hunter_confidence":99,"notes":"Hair extension specialists, luxury positioning, ethically sourced hair","_source":"socal_research","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"3_education"},{"salon_name":"Tress + Mane Salon","owner_name":"Yvette Gonzalez & Margie Dorantes","owner_email":"eleanor@tressandmanesalon.com","phone":"(424) 254-8487","website":"tressandmanesalon.com","instagram":"","address":"1040 Aviation Blvd","city":"Hermosa Beach","state":"CA","zip":"90254","google_maps_link":"https://maps.google.com/?cid=17948752877959798725&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":28,"services_offered":"Cuts, color, styling","brands_carried":"","km_tier":"","hunter_confidence":91,"notes":"20+ years combined experience; Hair Specialist","_source":"socal_research","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"3_education"},{"salon_name":"The British Hair Company","owner_name":"Paul Tracy","owner_email":"paul@britishhc.com","phone":"(949) 497-8345","website":"britishhc.com","instagram":"","address":"Laguna Beach","city":"Laguna Beach","state":"CA","zip":"92651","google_maps_link":"https://maps.google.com/?cid=10267766316471304899&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":148,"services_offered":"Precision cutting, dimensional color, healthy hair transformations","brands_carried":"Aveda","km_tier":"","hunter_confidence":67,"notes":"Aveda-trained stylists; Customer Service","_source":"socal_research","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"3_education"},{"salon_name":"Entourage Salon","owner_name":"Angelique Walters","owner_email":"angelique@entouragesalon.com","phone":"(760) 729-9000","website":"entouragesalon.com","instagram":"","address":"530 Carlsbad Village Drive","city":"Carlsbad","state":"CA","zip":"92008","google_maps_link":"https://maps.google.com/?cid=12195895143473675147&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":54,"services_offered":"Personalized hair services","brands_carried":"","km_tier":"","hunter_confidence":90,"notes":"Serving North County SD 28+ years","_source":"socal_research","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"3_education"},{"salon_name":"Gila Rut Salon","owner_name":"Karla Lopezmartinez","owner_email":"karla@gilarut.com","phone":"(619) 299-5750","website":"gilarut.com","instagram":"","address":"San Diego","city":"San Diego","state":"CA","zip":"92101","google_maps_link":"https://maps.google.com/?cid=11122431925121493043&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":285,"services_offered":"Hair cuts, color, Bellami extensions","brands_carried":"Aveda","km_tier":"","hunter_confidence":95,"notes":"Award-winning, Aveda carrier","_source":"socal_research","_enrichment_status":"enriched","fit_score":50,"assigned_sequence":"3_education"},{"salon_name":"Sadler Studio","owner_name":"Owner TBD","owner_email":"sadlerdoeshair@gmail.com","phone":"(714) 488-5396","website":"http://www.sadlerstrategic.com/","instagram":"","address":"13681 NEWPORT AVE STE 1 RM 10","city":"TUSTIN","state":"CA","zip":"92780-4688","google_maps_link":"https://maps.google.com/?cid=6773687428101311457&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":1,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"4_integrity"},{"salon_name":"Salon Pompei","owner_name":"Owner TBD","owner_email":"salonpompei949@yahoo.com","phone":"(949) 770-7200","website":"","instagram":"","address":"24451 ALICIA PKWY STE 10","city":"MISSION VIEJO","state":"CA","zip":"92691-4506","google_maps_link":"https://maps.google.com/?cid=16892728242260194507&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":49,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"4_integrity"},{"salon_name":"Shearly Blissfull","owner_name":"Owner TBD","owner_email":"lindseykaye84@hotmail.com","phone":"(916) 616-4137","website":"","instagram":"","address":"7041 YORKTOWN AVE STE 101 RM 30","city":"HUNTINGTON BEACH","state":"CA","zip":"92648-2463","google_maps_link":"https://maps.google.com/?cid=629533818636348423&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.6,"review_count":21,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"4_integrity"},{"salon_name":"SAS by Social Dry Lounge","owner_name":"Owner TBD","owner_email":"info@socialdrylounge.com","phone":"(949) 646-6345","website":"http://socialdrylounge.com/","instagram":"","address":"270 E 17TH ST STE 11","city":"ORANGE COUNTY","state":"CA","zip":"92627-3807","google_maps_link":"https://maps.google.com/?cid=15120920345538731753&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4,"review_count":27,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"4_integrity"},{"salon_name":"The Best Little Hair House","owner_name":"Owner TBD","owner_email":"thegrid1222@yahoo.com","phone":"(714) 847-2992","website":"","instagram":"","address":"16450 PACIFIC COAST HWY STE 200 STUDIO 11","city":"HUNTINGTON BEACH","state":"CA","zip":"92649-1812","google_maps_link":"https://maps.google.com/?cid=16308425020062818181&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":29,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"4_integrity"},{"salon_name":"Mira Bella Salon","owner_name":"Owner TBD","owner_email":"lauravalos@aol.com","phone":"(805) 962-2887","website":"http://www.mirabellasalonandspa.com/","instagram":"","address":"1819 CLIFF DR STE B","city":"SANTA BARBARA","state":"CA","zip":"93109-1645","google_maps_link":"https://maps.google.com/?cid=808590670243755292&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.1,"review_count":29,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"4_integrity"},{"salon_name":"Pure Studio Suites","owner_name":"Owner TBD","owner_email":"mariashell17@gmail.com","phone":"(619) 291-9215","website":"https://www.thepuresalonspa.com/","instagram":"","address":"2185 STATION VILLAGE WAY STE B","city":"SAN DIEGO","state":"CA","zip":"92108-6512","google_maps_link":"https://maps.google.com/?cid=8768861694510508129&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":11,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"4_integrity"},{"salon_name":"Salon 3835","owner_name":"Owner TBD","owner_email":"northranchbeauty@live.com","phone":"(805) 379-3545","website":"http://salon3835.com/","instagram":"","address":"3835 E THOUSAND OAKS BLVD STE B","city":"WESTLAKE VILLAGE","state":"CA","zip":"91362-3609","google_maps_link":"https://maps.google.com/?cid=4302709715656926809&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":17,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"4_integrity"},{"salon_name":"Dino Clark","owner_name":"Owner TBD","owner_email":"dinoclark2510@gmail.com","phone":"(310) 392-3951","website":"","instagram":"","address":"2510 MAIN ST STE D","city":"SANTA MONICA","state":"CA","zip":"90405-3518","google_maps_link":"https://maps.google.com/?cid=12468095504294655893&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":25,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"4_integrity"},{"salon_name":"Blossom Salon","owner_name":"Owner TBD","owner_email":"blossomsalonsb@gmail.com","phone":"(805) 884-4680","website":"","instagram":"","address":"1324 STATE ST STE G","city":"SANTA BARBARA","state":"CA","zip":"93101-8724","google_maps_link":"https://maps.google.com/?cid=18357846060685444587&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":24,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"4_integrity"},{"salon_name":"Whimsy Salon","owner_name":"Owner TBD","owner_email":"keli@whimsysalon.com","phone":"(310) 629-3169","website":"http://www.whimsysalon.com/","instagram":"","address":"1611 S CATALINA AVE STE L40","city":"REDONDO BEACH","state":"CA","zip":"90277-5211","google_maps_link":"https://maps.google.com/?cid=16117800671400079361&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":2,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"4_integrity"},{"salon_name":"Bravo Salon & Spa","owner_name":"Monique Montano","owner_email":"info@bravosalon.com","phone":"(626) 577-4777","website":"bravosalon.com","instagram":"@bravosalonpasadena","address":"455 South Lake Ave Suite 101","city":"Pasadena","state":"CA","zip":"91101","google_maps_link":"https://maps.google.com/?cid=15982799978416862823&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.5,"review_count":32,"services_offered":"Cuts, color, highlights, styling, spa","brands_carried":"","km_tier":"","hunter_confidence":null,"notes":"Voted Best Hair Salon Pasadena","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"Nova Arts Salon","owner_name":"Sal Salcedo","owner_email":"info@novaartssalon.com","phone":"(323) 244-4277","website":"novaartssalon.com","instagram":"@novaartssalon","address":"787 S Alameda St Suite 160","city":"Los Angeles","state":"CA","zip":"90021","google_maps_link":"https://maps.google.com/?cid=3446963517630610518&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.4,"review_count":90,"services_offered":"Haircuts, highlights, natural texture specialists","brands_carried":"","km_tier":"","hunter_confidence":null,"notes":"Creative inclusive salon, 35K Instagram followers, Arts District","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"Copa de Beauty","owner_name":"Erin M.","owner_email":"Ochairstylisterinm@gmail.com","phone":"(949) 503-1515","website":"copadebeauty.com","instagram":"@copa_de_beauty","address":"1151 Puerta Del Sol Suite B","city":"San Clemente","state":"CA","zip":"92673","google_maps_link":"https://maps.google.com/?cid=6962731659851073966&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":29,"services_offered":"Balayage color, handtied extensions, technical haircuts, glossing","brands_carried":"","km_tier":"","hunter_confidence":null,"notes":"Hidden gem in Talega, low maintenance specialist","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"Salvage Salon","owner_name":"Owner TBD","owner_email":"salvagesalonbooking@gmail.com","phone":"(619) 293-3292","website":"salvagesalon.com","instagram":"","address":"3800 Ray Street","city":"San Diego","state":"CA","zip":"92104","google_maps_link":"https://maps.google.com/?cid=6375634299063247793&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.6,"review_count":117,"services_offered":"Cuts, color, styling","brands_carried":"Davines","km_tier":"","hunter_confidence":null,"notes":"Davines carrier","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"2_exclusivity"},{"salon_name":"Purelux Scalp Spa - WeHo","owner_name":"Owner TBD","owner_email":"yiru@purelux-scalpspa.com","phone":"(310) 926-6957","website":"purelux-scalpspa.com","instagram":"","address":"8590 W Sunset Blvd Suite 9.1","city":"West Hollywood","state":"CA","zip":"90069","google_maps_link":"https://maps.google.com/?cid=3290392464398007235&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":122,"services_offered":"Scalp therapy, hair therapy, AI scalp analysis","brands_carried":"Oway, Davines, Rene Furterer, Agedor","km_tier":"","hunter_confidence":83,"notes":"Multi-location (5 total), trichology + TCM approach, 25+ organic brands","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"1_scalp_wellness"},{"salon_name":"Blow Me Away Organic Salon & Head Spa","owner_name":"Owner TBD","owner_email":"info@blowmeawayla.com","phone":"(323) 828-7348","website":"blowmeawayla.com","instagram":"@blowmeawaysalon","address":"8223 West 3rd Street","city":"Los Angeles","state":"CA","zip":"90048","google_maps_link":"https://maps.google.com/?cid=7697548442161597285&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":296,"services_offered":"Japanese head spa, organic color, extensions, scalp treatments","brands_carried":"Oway, O&M, Nekko Scalp Care, Head Kure","km_tier":"","hunter_confidence":94,"notes":"100% organic, Green Circle practices","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"1_scalp_wellness"},{"salon_name":"ROIL Salon Beverly Hills","owner_name":"Owner TBD","owner_email":"info@roilsalon.com","phone":"(310) 275-2808","website":"https://www.roilsalon.com/","instagram":"","address":"Beverly Hills","city":"Beverly Hills","state":"CA","zip":"90210","google_maps_link":"https://maps.google.com/?cid=3444677644897029960&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.6,"review_count":79,"services_offered":"Celebrity salon, Olaplex highlights/bleach","brands_carried":"Olaplex","km_tier":"","hunter_confidence":95,"notes":"Premium positioning, hair integrity focus","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"Bloom Salon","owner_name":"Owner TBD","owner_email":"info@bloomhighlandpark.com","phone":"(213) 291-0727","website":"bloomhighlandpark.com","instagram":"@bloomsalonhighlandpark","address":"5714 N Figuroa St","city":"Los Angeles","state":"CA","zip":"90012","google_maps_link":"https://maps.google.com/?cid=11166714740906426467&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":74,"services_offered":"Hair color, cuts, sustainable practices","brands_carried":"Davines","km_tier":"","hunter_confidence":99,"notes":"Davines carrier, inclusive space","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"2_exclusivity"},{"salon_name":"Hair Theory Salon","owner_name":"Owner TBD","owner_email":"info@hairtheorysalon.com","phone":"(657) 203-8250","website":"hairtheorysalon.com","instagram":"","address":"Huntington Beach","city":"Huntington Beach","state":"CA","zip":"92648","google_maps_link":"https://maps.google.com/?cid=6288413602156454338&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":114,"services_offered":"Cuts, colors, extensions, updos","brands_carried":"","km_tier":"","hunter_confidence":92,"notes":"Premier luxury salon with beach vibes","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"Christian Michael Salon","owner_name":"Owner TBD","owner_email":"info@christianmichaelhair.com","phone":"(714) 809-8280","website":"christianmichaelhair.com","instagram":"@christianmichaelsalon","address":"Huntington Beach","city":"Huntington Beach","state":"CA","zip":"92648","google_maps_link":"https://maps.google.com/?cid=3014147028235497725&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":160,"services_offered":"Hair extensions, bridal beauty, premium salon","brands_carried":"","km_tier":"","hunter_confidence":99,"notes":"Premier destination for extensions","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"Salon on 30th","owner_name":"Owner TBD","owner_email":"info@salonon30th.com","phone":"(619) 284-1687","website":"salonon30th.com","instagram":"@salonon30th","address":"2225 30th Street","city":"San Diego","state":"CA","zip":"92104","google_maps_link":"https://maps.google.com/?cid=1958476250319203427&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.6,"review_count":154,"services_offered":"Expert haircuts, color, styling","brands_carried":"Davines, Comfort Zone","km_tier":"","hunter_confidence":94,"notes":"Davines Concept Salon, socially & environmentally responsible, two locations","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"2_exclusivity"},{"salon_name":"The LAB A Salon","owner_name":"Owner TBD","owner_email":"info@thelabasalon.com","phone":"(619) 543-9952","website":"thelabasalon.com","instagram":"","address":"3034 University Ave","city":"San Diego","state":"CA","zip":"92104","google_maps_link":"https://maps.google.com/?cid=11100671781880558864&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":564,"services_offered":"Skilled, innovative, alternative styles","brands_carried":"","km_tier":"","hunter_confidence":77,"notes":"Boutique salon, North Park","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"Belli Belli Salon & Boutique","owner_name":"Owner TBD","owner_email":"connect@bellibelli.com","phone":"(858) 270-2288","website":"bellibelli.com","instagram":"@bellibellisalon","address":"3461 Ingraham St","city":"San Diego","state":"CA","zip":"92109","google_maps_link":"https://maps.google.com/?cid=7918211029003233403&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":469,"services_offered":"Cutting, coloring, balayage, extensions, keratin, blowouts","brands_carried":"Kerastase, Bumble and bumble, Moroccanoil","km_tier":"","hunter_confidence":60,"notes":"Luxury salon, in business since 2004","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"Jayden Presleigh Salon","owner_name":"Owner TBD","owner_email":"connect@jaydenpresleigh.com","phone":"(760) 720-2946","website":"jaydenpresleigh.com","instagram":"","address":"Carlsbad","city":"Carlsbad","state":"CA","zip":"92008","google_maps_link":"https://maps.google.com/?cid=5250733921821244936&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":203,"services_offered":"Luxury lived-in color, all types of extensions","brands_carried":"Oribe","km_tier":"","hunter_confidence":88,"notes":"Exclusive Oribe Salon, luxury experience","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"Kate Lane Salon","owner_name":"Owner TBD","owner_email":"hello@katelanesalon.com","phone":"(949) 632-5326","website":"http://katelanesalon.com/","instagram":"","address":"121 Avenida Granada","city":"San Clemente","state":"CA","zip":"92672","google_maps_link":"https://maps.google.com/?cid=1312972222639512558&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":114,"services_offered":"Lived-in color, blonding, premium hair extensions","brands_carried":"","km_tier":"","hunter_confidence":79,"notes":"Coastal haven, modern meets laid-back luxury","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"Cristophe Salon","owner_name":"Owner TBD","owner_email":"info@cristophenb.com","phone":"(949) 219-0920","website":"http://www.cristophenb.com/?utm_source=google&utm_medium=organic&utm_campaign=gbp","instagram":"","address":"200 Newport Center Dr Suite 103","city":"Newport Beach","state":"CA","zip":"92660","google_maps_link":"https://maps.google.com/?cid=11672084422058983592&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":219,"services_offered":"Hair services","brands_carried":"","km_tier":"","hunter_confidence":81,"notes":"Fashion Island location","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"The Color Collective Salon","owner_name":"Owner TBD","owner_email":"hello@thecolorcollectivesd.com","phone":"(619) 230-5900","website":"thecolorcollectivesd.com","instagram":"","address":"Hillcrest","city":"San Diego","state":"CA","zip":"92103","google_maps_link":"https://maps.google.com/?cid=7570454845651960705&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":71,"services_offered":"Hair color specialists, smoothing treatments, extensions","brands_carried":"","km_tier":"","hunter_confidence":84,"notes":"Specializes in all things color","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"Rinse Salon","owner_name":"Owner TBD","owner_email":"management@rinsesd.com","phone":"(619) 677-2078","website":"rinsesd.com","instagram":"","address":"North Park","city":"San Diego","state":"CA","zip":"92104","google_maps_link":"https://maps.google.com/?cid=15575785368159259889&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.5,"review_count":226,"services_offered":"Luxury hair salon","brands_carried":"","km_tier":"","hunter_confidence":99,"notes":"Luxury salon, North Park","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"PaperDoll Salon","owner_name":"Owner TBD","owner_email":"color@paperdollsalon.com","phone":"(858) 581-2393","website":"paperdollsalon.com","instagram":"","address":"Pacific Beach","city":"San Diego","state":"CA","zip":"92109","google_maps_link":"https://maps.google.com/?cid=4304085999804711628&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":114,"services_offered":"Cuts, color, highlights, blowouts, full service","brands_carried":"","km_tier":"","hunter_confidence":92,"notes":"Voted best hair salon in PB","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"Bonita Salon - Manhattan Beach","owner_name":"Owner TBD","owner_email":"info@bonitamanhattanbeach.com","phone":"(310) 545-2500","website":"bonitamanhattanbeach.com","instagram":"","address":"Manhattan Beach","city":"Manhattan Beach","state":"CA","zip":"90266","google_maps_link":"https://maps.google.com/?cid=14594723681377336957&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":55,"services_offered":"Balayage, blondes, extensions, luxury services","brands_carried":"","km_tier":"","hunter_confidence":99,"notes":"Top Manhattan Beach location","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"Canyon Salon","owner_name":"Nikki Corzine","owner_email":"info@thecanyonsalon.com","phone":"(805) 777-1140","website":"thecanyonsalon.com","instagram":"","address":"Westlake Village","city":"Westlake Village","state":"CA","zip":"91362","google_maps_link":"https://maps.google.com/?cid=10427690484100279882&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.6,"review_count":77,"services_offered":"Luxury hair services","brands_carried":"Amai (own non-toxic product line)","km_tier":"","hunter_confidence":81,"notes":"Created own non-toxic product line Amai, luxury meets personal touch","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"Heavenly Hair","owner_name":"Brian Moe","owner_email":"info@heavenlyhairsalonandcuts.com","phone":"(951) 698-0571","website":"http://www.heavenlyhairsalonandcuts.com/","instagram":"","address":"Inland Empire","city":"Riverside","state":"CA","zip":"92506","google_maps_link":"https://maps.google.com/?cid=12163163285782087358&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.5,"review_count":156,"services_offered":"Hair services","brands_carried":"","km_tier":"","hunter_confidence":99,"notes":"Family-owned business","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"Brien O'Brien Salon","owner_name":"Brien O'Brien","owner_email":"info@brienobriensalon.com","phone":"(760) 778-0333","website":"http://www.brienobriensalon.com/","instagram":"","address":"Palm Desert","city":"Palm Desert","state":"CA","zip":"92260","google_maps_link":"https://maps.google.com/?cid=8102102051623761175&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":92,"services_offered":"Modern haircutting, color techniques, balayage","brands_carried":"","km_tier":"","hunter_confidence":80,"notes":"Urban-level skilled team","_source":"socal_research","_enrichment_status":"enriched","fit_score":45,"assigned_sequence":"3_education"},{"salon_name":"Hair Lounge Suite 118","owner_name":"Owner TBD","owner_email":"kellyhairlounge@gmail.com","phone":"(760) 644-5331","website":"","instagram":"","address":"315 S HIGHWAY 101 RM 118","city":"SOLANA BEACH","state":"CA","zip":"92075-1808","google_maps_link":"https://maps.google.com/?cid=11752713694245135166&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4,"review_count":24,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":40,"assigned_sequence":"4_integrity"},{"salon_name":"Hair Designs by Ashley","owner_name":"Owner TBD","owner_email":"hairdesignsbyashley@gmail.com","phone":"(562) 879-8675","website":"","instagram":"","address":"10900 LOS ALAMITOS BLVD STE 160 RM 101","city":"LOS ALAMITOS","state":"CA","zip":"90720-2340","google_maps_link":"https://maps.google.com/?cid=14610453470849465436&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":1,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":40,"assigned_sequence":"4_integrity"},{"salon_name":"Bodhi Hair Salon","owner_name":"Owner TBD","owner_email":"bodhithesalon@gmail.com","phone":"(714) 505-0777","website":"http://bodhithesalon.com/","instagram":"","address":"17395 17TH ST STE A","city":"TUSTIN","state":"CA","zip":"92780-1971","google_maps_link":"https://maps.google.com/?cid=12615269685115098998&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.4,"review_count":7,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":40,"assigned_sequence":"4_integrity"},{"salon_name":"Salon Sirenetta","owner_name":"Owner TBD","owner_email":"vnewell1108@aol.com","phone":"(818) 884-1141","website":"","instagram":"","address":"21622 VENTURA BLVD","city":"WOODLAND HILLS","state":"CA","zip":"91364-1921","google_maps_link":"https://maps.google.com/?cid=17455610222069642242&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.6,"review_count":9,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":40,"assigned_sequence":"4_integrity"},{"salon_name":"The LivingRoom Salon & Art Gallery","owner_name":"Owner TBD","owner_email":"support@livingroomsalonsoha.com","phone":"(949) 631-0808","website":"livingroomsalonsoha.com","instagram":"@livingroomsalon","address":"125 Rochester Street","city":"Costa Mesa","state":"CA","zip":"92627","google_maps_link":"https://maps.google.com/?cid=16182971521961729329&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.7,"review_count":45,"services_offered":"Hair color, ombre, balayage, cutting, extensions, Brazilian blowouts, facials","brands_carried":"Davines, Olaplex","km_tier":"","hunter_confidence":75,"notes":"Woman-owned, Davines authorized, transformed auto warehouse into salon/gallery (2004)","_source":"socal_research","_enrichment_status":"enriched","fit_score":40,"assigned_sequence":"2_exclusivity"},{"salon_name":"The Hair Spa","owner_name":"Owner TBD","owner_email":"hello@thehairspashop.com","phone":"(760) 729-5051","website":"thehairspashop.com","instagram":"","address":"Carlsbad Village","city":"Carlsbad","state":"CA","zip":"92008","google_maps_link":"https://maps.google.com/?cid=5268540898407770282&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":29,"services_offered":"Hair color, precision cuts, extensions","brands_carried":"","km_tier":"","hunter_confidence":52,"notes":"Rejuvenating experience, Carlsbad Village","_source":"socal_research","_enrichment_status":"enriched","fit_score":40,"assigned_sequence":"3_education"},{"salon_name":"Summer Hours Salon","owner_name":"Amanda Riley","owner_email":"info@summerhourssalon.com","phone":"(323) 928-2264","website":"http://www.summerhourssalon.com/","instagram":"@amandarileyhairstylist","address":"2215 Hyperion Ave","city":"Los Angeles","state":"CA","zip":"90027","google_maps_link":"https://maps.google.com/?cid=2041436911727085148&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.3,"review_count":18,"services_offered":"Modern cuts, luxury styling, low maintenance color, balayage","brands_carried":"","km_tier":"","hunter_confidence":85,"notes":"Full service, est. 2008 stylist experience","_source":"socal_research","_enrichment_status":"enriched","fit_score":40,"assigned_sequence":"3_education"},{"salon_name":"Green Door Salon","owner_name":"Owner TBD","owner_email":"hello@greendoorsalonla.com","phone":"","website":"greendoorsalonla.com","instagram":"@greendoorsalon","address":"4532 Fountain Ave","city":"Los Angeles","state":"CA","zip":"90029","google_maps_link":"https://maps.google.com/?cid=3634898321974417460&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":7,"services_offered":"Short cuts, curly hair, creative cuts, balayage, platinum","brands_carried":"Aveda","km_tier":"","hunter_confidence":81,"notes":"Aveda carrier, extension & balayage specialists","_source":"socal_research","_enrichment_status":"enriched","fit_score":35,"assigned_sequence":"3_education"},{"salon_name":"Purelux Scalp Spa - Pasadena","owner_name":"Owner TBD","owner_email":"yiru@purelux-scalpspa.com","phone":"(626) 697-4228","website":"https://www.purelux-scalpspa.com/book/pasadena","instagram":"","address":"685 E Walnut St","city":"Pasadena","state":"CA","zip":"91101","google_maps_link":"https://maps.google.com/?cid=7456140720529510371&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":6,"services_offered":"Scalp therapy, AI scalp analysis","brands_carried":"Oway, Davines, Rene Furterer","km_tier":"","hunter_confidence":83,"notes":"Second location of Purelux chain","_source":"socal_research","_enrichment_status":"enriched","fit_score":35,"assigned_sequence":"1_scalp_wellness"},{"salon_name":"Extension Bar LA","owner_name":"Owner TBD","owner_email":"contact@extensionbarla.com","phone":"(818) 601-2544","website":"extensionbarla.com","instagram":"","address":"3949 Laurelgrove Ave","city":"Studio City","state":"CA","zip":"91604","google_maps_link":"https://maps.google.com/?cid=8149800405060466681&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":18,"services_offered":"Hair extension specialists, color-matching","brands_carried":"","km_tier":"","hunter_confidence":81,"notes":"Multiple extension methods","_source":"socal_research","_enrichment_status":"enriched","fit_score":35,"assigned_sequence":"3_education"},{"salon_name":"Pure YL Organic Salon","owner_name":"Owner TBD","owner_email":"info@pureorganicsalon.com","phone":"(949) 294-4416","website":"pureorganicsalon.com","instagram":"","address":"260 Forest Avenue Suite 5","city":"Laguna Beach","state":"CA","zip":"92651","google_maps_link":"https://maps.google.com/?cid=2086548356742658639&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":5,"review_count":15,"services_offered":"Holistic organic hair services, highlights without bleach/ammonia/aluminum","brands_carried":"","km_tier":"","hunter_confidence":81,"notes":"Crown Chakra care, toxin-free services","_source":"socal_research","_enrichment_status":"enriched","fit_score":35,"assigned_sequence":"3_education"},{"salon_name":"Lulu Hair Studio","owner_name":"Owner TBD","owner_email":"laguna@luluhairstudio.com","phone":"(949) 415-8581","website":"luluhairstudio.com","instagram":"","address":"Laguna Beach","city":"Laguna Beach","state":"CA","zip":"92651","google_maps_link":"https://maps.google.com/?cid=13484069035865785444&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.8,"review_count":5,"services_offered":"Organic Japanese hair treatments","brands_carried":"","km_tier":"","hunter_confidence":88,"notes":"Health-conscious values, all organic products","_source":"socal_research","_enrichment_status":"enriched","fit_score":35,"assigned_sequence":"3_education"},{"salon_name":"Lux Salon","owner_name":"Owner TBD","owner_email":"wade@luxsalon.com","phone":"(714) 525-3337","website":"luxsalon.com","instagram":"@luxofcourse","address":"219 E Commonwealth Ave","city":"Fullerton","state":"CA","zip":"92832","google_maps_link":"https://maps.google.com/?cid=16176407218474706037&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":1082,"services_offered":"Cuts, color, highlights, waxing, facials, massage, body wraps, extensions","brands_carried":"Aveda","km_tier":"","hunter_confidence":95,"notes":"Aveda Concept Salon","_source":"socal_research","_enrichment_status":"enriched","fit_score":35,"assigned_sequence":"3_education"},{"salon_name":"OC Scalp Spa","owner_name":"Owner TBD","owner_email":"contact@ocscalpspa.com","phone":"(714) 623-4968","website":"ocscalpspa.com","instagram":"","address":"Orange County","city":"Orange County","state":"CA","zip":"92627","google_maps_link":"https://maps.google.com/?cid=12478141754393389305&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":4.9,"review_count":302,"services_offered":"Head spa care, massages, facials, steam treatments, blow dry","brands_carried":"","km_tier":"","hunter_confidence":73,"notes":"Scalp-focused spa","_source":"socal_research","_enrichment_status":"enriched","fit_score":35,"assigned_sequence":"1_scalp_wellness"},{"salon_name":"Color Me Todd","owner_name":"Owner TBD","owner_email":"toddparkithere2@gmail.com","phone":"(323) 377-3636","website":"","instagram":"","address":"11239 VENTURA BLVD RM 20","city":"STUDIO CITY","state":"CA","zip":"91604-3136","google_maps_link":"https://maps.google.com/?cid=14029463110159341159&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":3.8,"review_count":19,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":30,"assigned_sequence":"4_integrity"},{"salon_name":"LYM Salon","owner_name":"Owner TBD","owner_email":"l.y.m.salon@gmail.com","phone":"(619) 993-0651","website":"http://lymsalon.biz/","instagram":"","address":"1550 FRONT ST RM 23","city":"SAN DIEGO","state":"CA","zip":"92101-2919","google_maps_link":"https://maps.google.com/?cid=14589599993107921819&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":null,"review_count":null,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":30,"assigned_sequence":"4_integrity"},{"salon_name":"Style by Tamara","owner_name":"Owner TBD","owner_email":"tamid@sbcglobal.net","phone":"(760) 525-7063","website":"https://tamaramazzesalon.wixsite.com/tamara-mazzei-salon","instagram":"","address":"1022 N EL CAMINO REAL STE 107 RM105","city":"ENCINITAS","state":"CA","zip":"92024-1320","google_maps_link":"https://maps.google.com/?cid=9521651191793391195&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":null,"review_count":null,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":30,"assigned_sequence":"4_integrity"},{"salon_name":"Beauty by Trisha Vine","owner_name":"Owner TBD","owner_email":"beautybytrishavine@gmail.com","phone":"(619) 846-1749","website":"https://beautybytrishatrang.as.me/","instagram":"","address":"5171 MISSION CENTER RD STE B-3 RM 18","city":"SAN DIEGO","state":"CA","zip":"92108-3212","google_maps_link":"https://maps.google.com/?cid=10216399958410761168&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":null,"review_count":null,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":30,"assigned_sequence":"4_integrity"},{"salon_name":"Salon 27 Eleven","owner_name":"Owner TBD","owner_email":"wendycurran@sbcglobal.net","phone":"(949) 640-1900","website":"","instagram":"","address":"2711 E COAST HWY STE 104","city":"CORONA DEL MAR","state":"CA","zip":"92625-2104","google_maps_link":"https://maps.google.com/?cid=513937415042816806&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":null,"review_count":null,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":25,"assigned_sequence":"4_integrity"},{"salon_name":"Wild Cat Salon","owner_name":"Owner TBD","owner_email":"bryandoeshair@gmail.com","phone":"(480) 228-6893","website":"","instagram":"","address":"7610 HAZARD CENTER DR STE 703 #407","city":"SAN DIEGO","state":"CA","zip":"92108-4529","google_maps_link":"https://maps.google.com/?cid=1154959469159691320&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":null,"review_count":null,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":25,"assigned_sequence":"4_integrity"},{"salon_name":"Montecito House","owner_name":"Owner TBD","owner_email":"montecitohousecm@gmail.com","phone":"(714) 315-2979","website":"","instagram":"","address":"1648 NEWPORT BLVD STE A","city":"ORANGE COUNTY","state":"CA","zip":"92627-3717","google_maps_link":"https://maps.google.com/?cid=15697670312208911887&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA","google_rating":null,"review_count":null,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"enriched","fit_score":25,"assigned_sequence":"4_integrity"},{"salon_name":"Scorpio Vanity","owner_name":"Owner TBD","owner_email":"courtneyriggshair@gmail.com","phone":"(760) 718-2939","website":"","instagram":"","address":"1 CREEKSIDE DR UNIT 80","city":"SAN MARCOS","state":"CA","zip":"92078-2349","google_maps_link":"","google_rating":null,"review_count":null,"services_offered":"","brands_carried":"Kevin Murphy (KEVIN.MURPHY)","km_tier":"KEVIN.MURPHY","hunter_confidence":100,"notes":"","_source":"km_locator","_enrichment_status":"not_found","fit_score":25,"assigned_sequence":"4_integrity"},{"salon_name":"Verina Organic Salon","owner_name":"Verina Schafer","owner_email":"verina@verinaorganicsalon.com","phone":"(424) 288-4316","website":"verinaorganicsalon.com","instagram":"@verinaorganicsalon","address":"359 S Robertson Blvd","city":"Beverly Hills","state":"CA","zip":"90211","google_maps_link":"https://maps.google.com/?q=Verina+Organic+Salon+Beverly+Hills+CA","google_rating":null,"review_count":null,"services_offered":"Organic color, cuts, styling, treatments","brands_carried":"Organic product lines","km_tier":"","hunter_confidence":null,"notes":"Voted Best Green Salon by Angeleno Luxury Magazine, est. 2010","_source":"socal_research","_enrichment_status":"","fit_score":25,"assigned_sequence":"2_exclusivity"}];
+</script>
+<script>
+// ── Region Definitions ──────────────────────────────
+const REGIONS = {
+  'Los Angeles': ['LOS ANGELES','BEVERLY HILLS','WEST HOLLYWOOD','STUDIO CITY','VALLEY VILLAGE','EAGLE ROCK','HIGHLAND PARK','GLENDALE','BURBANK','PASADENA','SOUTH PASADENA','WOODLAND HILLS'],
+  'South Bay': ['MANHATTAN BEACH','HERMOSA BEACH','REDONDO BEACH','LONG BEACH','SEAL BEACH','LOS ALAMITOS'],
+  'Westside': ['SANTA MONICA','VENICE','MARINA DEL REY','CULVER CITY'],
+  'Orange County': ['COSTA MESA','NEWPORT BEACH','CORONA DEL MAR','HUNTINGTON BEACH','LAGUNA BEACH','LAGUNA HILLS','ALISO VIEJO','MISSION VIEJO','ORANGE','FULLERTON','TUSTIN','TUSTIN RANCH','SAN CLEMENTE','IRVINE','DANA POINT','ORANGE COUNTY'],
+  'San Diego': ['SAN DIEGO','CORONADO','ENCINITAS','CARLSBAD','DEL MAR','SAN MARCOS','SOLANA BEACH','OCEANSIDE'],
+  'Central Coast': ['SANTA BARBARA','AVILA BEACH','SAN LUIS OBISPO','VENTURA','THOUSAND OAKS','WESTLAKE VILLAGE'],
+  'Desert': ['PALM DESERT','LA QUINTA','RIVERSIDE'],
+};
+
+// Build reverse lookup: city -> region
+const CITY_TO_REGION = {};
+Object.entries(REGIONS).forEach(([region, cities]) => {
+  cities.forEach(c => { CITY_TO_REGION[c] = region; });
+});
+
+const SEQ_LABELS = {
+  '4_integrity': 'KM Salon Outreach',
+  '3_education': 'Education',
+  '2_exclusivity': 'Exclusivity',
+  '1_scalp_wellness': 'Scalp Wellness',
+};
+const SEQ_CLASSES = {
+  '4_integrity': 'seq-integrity',
+  '3_education': 'seq-education',
+  '2_exclusivity': 'seq-exclusivity',
+  '1_scalp_wellness': 'seq-wellness',
+};
+const SOURCE_LABELS = {
+  'km_locator': 'KM',
+  'km_locator+socal_research': 'KM+SoCal',
+  'socal_research': 'SoCal',
+};
+
+let ALL_DATA = [];
+let filteredData = [];
+let currentCampaign = 'all';
+let currentRegion = 'all';
+let currentCity = 'all';
+
+// ── Init ────────────────────────────────────────────
+function init() {
+  ALL_DATA = EMBEDDED_DATA;
+
+  document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+  renderStats();
+  buildCampaignChips();
+  buildRegionChips();
+  buildCityChips();
+  applyFilters();
+}
+
+function renderStats() {
+  const d = ALL_DATA;
+  const total = d.length;
+  const withRating = d.filter(x => x.google_rating);
+  const avgScore = total ? Math.round(d.reduce((s, x) => s + (x.fit_score || 0), 0) / total) : 0;
+  const avgRating = withRating.length ? (withRating.reduce((s, x) => s + x.google_rating, 0) / withRating.length).toFixed(1) : '-';
+  const cities = new Set(d.map(x => (x.city || '').toUpperCase())).size;
+  const km = d.filter(x => x.km_tier).length;
+
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('totalLeads').textContent = total;
+  document.getElementById('statAvgScore').textContent = avgScore;
+  document.getElementById('statAvgRating').textContent = avgRating;
+  document.getElementById('statWithRating').textContent = withRating.length;
+  document.getElementById('statCities').textContent = cities;
+  document.getElementById('statKM').textContent = km;
+}
+
+// ── Campaign Chips ──────────────────────────────────
+function buildCampaignChips() {
+  const container = document.getElementById('campaignChips');
+  const counts = {};
+  ALL_DATA.forEach(x => { counts[x.assigned_sequence] = (counts[x.assigned_sequence] || 0) + 1; });
+
+  let html = '<div class="chip active" onclick="setCampaign(this,\'all\')">All <span class="chip-count">' + ALL_DATA.length + '</span></div>';
+
+  const campaigns = [
+    { key: '4_integrity', label: 'KM Salon Outreach', dot: 'dot-integrity' },
+    { key: '3_education', label: 'Education', dot: 'dot-education' },
+  ];
+  campaigns.forEach(c => {
+    const n = counts[c.key] || 0;
+    if (n > 0) {
+      html += '<div class="chip" onclick="setCampaign(this,\'' + c.key + '\')"><span class="dot ' + c.dot + '"></span>' + c.label + ' <span class="chip-count">' + n + '</span></div>';
+    }
+  });
+  container.innerHTML = html;
+}
+
+function setCampaign(el, val) {
+  currentCampaign = val;
+  document.querySelectorAll('#campaignChips .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  buildRegionChips();
+  buildCityChips();
+  applyFilters();
+}
+
+// ── Region Chips ────────────────────────────────────
+function buildRegionChips() {
+  const container = document.getElementById('regionChips');
+  const base = getBaseData();
+
+  const regionCounts = {};
+  base.forEach(x => {
+    const r = CITY_TO_REGION[(x.city || '').toUpperCase()] || 'Other';
+    regionCounts[r] = (regionCounts[r] || 0) + 1;
+  });
+
+  let html = '<div class="chip chip-region active" onclick="setRegion(this,\'all\')">All Regions <span class="chip-count">' + base.length + '</span></div>';
+
+  const order = ['Los Angeles', 'South Bay', 'Westside', 'Orange County', 'San Diego', 'Central Coast', 'Desert', 'Other'];
+  order.forEach(r => {
+    const n = regionCounts[r] || 0;
+    if (n > 0) {
+      html += '<div class="chip chip-region" onclick="setRegion(this,\'' + r + '\')">' + r + ' <span class="chip-count">' + n + '</span></div>';
+    }
+  });
+  container.innerHTML = html;
+  currentRegion = 'all';
+}
+
+function setRegion(el, val) {
+  currentRegion = val;
+  currentCity = 'all';
+  document.querySelectorAll('#regionChips .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  buildCityChips();
+  applyFilters();
+}
+
+// ── City Chips ──────────────────────────────────────
+function buildCityChips() {
+  const container = document.getElementById('cityChips');
+  const base = getBaseData();
+
+  // Filter by region first
+  let pool = base;
+  if (currentRegion !== 'all') {
+    pool = base.filter(x => {
+      const r = CITY_TO_REGION[(x.city || '').toUpperCase()] || 'Other';
+      return r === currentRegion;
+    });
+  }
+
+  const cityCounts = {};
+  pool.forEach(x => {
+    const c = (x.city || '').toUpperCase();
+    cityCounts[c] = (cityCounts[c] || 0) + 1;
+  });
+
+  // Sort by count desc, only show cities with 2+ OR if region is filtered
+  const sorted = Object.entries(cityCounts).sort((a, b) => b[1] - a[1]);
+  const threshold = currentRegion !== 'all' ? 1 : 2;
+  const shown = sorted.filter(([, n]) => n >= threshold);
+
+  let html = '<div class="chip chip-city active" onclick="setCity(this,\'all\')">All Cities <span class="chip-count">' + pool.length + '</span></div>';
+  shown.forEach(([city, n]) => {
+    const display = titleCase(city);
+    html += '<div class="chip chip-city" onclick="setCity(this,\'' + city.replace(/'/g, "\\'") + '\')">' + display + ' <span class="chip-count">' + n + '</span></div>';
+  });
+  container.innerHTML = html;
+  currentCity = 'all';
+}
+
+function setCity(el, val) {
+  currentCity = val;
+  document.querySelectorAll('#cityChips .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  applyFilters();
+}
+
+// ── Filtering ───────────────────────────────────────
+function getBaseData() {
+  let d = ALL_DATA;
+  if (currentCampaign !== 'all') {
+    d = d.filter(x => x.assigned_sequence === currentCampaign);
+  }
+  return d;
+}
+
+function applyFilters() {
+  const search = document.getElementById('searchInput').value.toLowerCase().trim();
+  const sort = document.getElementById('sortSelect').value;
+
+  let d = getBaseData();
+
+  // Region filter
+  if (currentRegion !== 'all') {
+    d = d.filter(x => {
+      const r = CITY_TO_REGION[(x.city || '').toUpperCase()] || 'Other';
+      return r === currentRegion;
+    });
+  }
+
+  // City filter
+  if (currentCity !== 'all') {
+    d = d.filter(x => (x.city || '').toUpperCase() === currentCity);
+  }
+
+  // Search
+  if (search) {
+    d = d.filter(x => {
+      const hay = [x.salon_name, x.city, x.state, x.owner_email, x.owner_name, x.brands_carried, x.phone, x.address].join(' ').toLowerCase();
+      return hay.includes(search);
+    });
+  }
+
+  // Sort
+  const [field, dir] = sort.split('_');
+  const asc = dir === 'asc' ? 1 : -1;
+  d.sort((a, b) => {
+    let va, vb;
+    switch (field) {
+      case 'score': va = a.fit_score || 0; vb = b.fit_score || 0; break;
+      case 'rating': va = a.google_rating || 0; vb = b.google_rating || 0; break;
+      case 'reviews': va = a.review_count || 0; vb = b.review_count || 0; break;
+      case 'name':
+        va = (a.salon_name || '').toLowerCase(); vb = (b.salon_name || '').toLowerCase();
+        return va < vb ? -asc : va > vb ? asc : 0;
+      case 'city':
+        va = (a.city || '').toLowerCase(); vb = (b.city || '').toLowerCase();
+        return va < vb ? -asc : va > vb ? asc : 0;
+      default: va = a.fit_score || 0; vb = b.fit_score || 0;
+    }
+    return (va - vb) * asc;
+  });
+
+  filteredData = d;
+  document.getElementById('resultCount').textContent = d.length + ' of ' + ALL_DATA.length + ' salons';
+  renderTable();
+}
+
+// ── Rendering ───────────────────────────────────────
+function renderStars(rating) {
+  if (!rating) return '<span style="color:var(--text-muted);font-size:10px">No data</span>';
+  let h = '<div class="rating-cell"><span class="rating-num">' + rating + '</span><div class="rating-stars">';
+  for (let i = 0; i < 5; i++) {
+    const cls = i < Math.floor(rating) ? 'star' : 'star star-empty';
+    h += '<svg class="' + cls + '" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.176 0l-3.37 2.448c-.784.57-1.838-.197-1.539-1.118l1.287-3.957a1 1 0 00-.364-1.118L2.062 9.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.286-3.957z"/></svg>';
+  }
+  h += '</div></div>';
+  return h;
+}
+
+function scoreClass(s) {
+  if (s >= 55) return 'score-high';
+  if (s >= 40) return 'score-mid';
+  return 'score-low';
+}
+
+function titleCase(str) {
+  return (str || '').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+}
+
+function formatCity(d) {
+  return titleCase(d.city || '') + (d.state ? ', ' + d.state : '');
+}
+
+function esc(s) {
+  if (!s) return '';
+  const div = document.createElement('div');
+  div.textContent = s;
+  return div.innerHTML;
+}
+
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  const empty = document.getElementById('emptyState');
+
+  if (filteredData.length === 0) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  tbody.innerHTML = filteredData.map((d, i) => `
+    <tr onclick="openDrawer(${i})">
+      <td>
+        <span class="salon-name">${esc(d.salon_name)}</span>
+        <span class="salon-city">${esc(formatCity(d))}</span>
+      </td>
+      <td class="email-cell"><a href="mailto:${esc(d.owner_email)}" onclick="event.stopPropagation()">${esc(d.owner_email)}</a></td>
+      <td class="phone-cell">${esc(d.phone || '-')}</td>
+      <td>${renderStars(d.google_rating)}</td>
+      <td class="reviews-cell">${d.review_count ? d.review_count.toLocaleString() : '-'}</td>
+      <td><span class="score-badge ${scoreClass(d.fit_score || 0)}">${d.fit_score || 0}</span></td>
+      <td><span class="seq-tag ${SEQ_CLASSES[d.assigned_sequence] || ''}">${SEQ_LABELS[d.assigned_sequence] || d.assigned_sequence}</span></td>
+      <td class="brands-cell" title="${esc(d.brands_carried || '')}">${esc(d.brands_carried || '-')}</td>
+      <td><span class="source-tag">${SOURCE_LABELS[d._source] || d._source || '-'}</span></td>
+    </tr>
+  `).join('');
+}
+
+// ── Drawer ──────────────────────────────────────────
+function openDrawer(index) {
+  const d = filteredData[index];
+  if (!d) return;
+
+  document.getElementById('drawerName').textContent = d.salon_name;
+  document.getElementById('drawerCity').textContent = formatCity(d);
+
+  const region = CITY_TO_REGION[(d.city || '').toUpperCase()] || 'Other';
+
+  let websiteHtml = '-';
+  if (d.website) {
+    try { websiteHtml = '<a href="' + esc(d.website) + '" target="_blank">' + new URL(d.website).hostname + '</a>'; }
+    catch(e) { websiteHtml = '<a href="' + esc(d.website) + '" target="_blank">' + esc(d.website) + '</a>'; }
+  }
+
+  document.getElementById('drawerBody').innerHTML = `
+    <div class="drawer-section">
+      <div class="drawer-section-title">Contact</div>
+      ${df('Email', d.owner_email ? '<a href="mailto:' + esc(d.owner_email) + '">' + esc(d.owner_email) + '</a>' : '-')}
+      ${df('Owner', d.owner_name && d.owner_name !== 'Owner TBD' ? esc(d.owner_name) : '<span style="color:var(--text-muted)">TBD</span>')}
+      ${df('Phone', esc(d.phone || '-'))}
+      ${df('Address', esc(titleCase(d.address || '-')))}
+      ${df('City', esc(formatCity(d)))}
+      ${df('Region', region)}
+      ${df('Zip', esc(d.zip || '-'))}
+    </div>
+    <div class="drawer-section">
+      <div class="drawer-section-title">Online Presence</div>
+      ${df('Website', websiteHtml)}
+      ${df('Google Rating', d.google_rating ? d.google_rating + ' / 5.0' : '-')}
+      ${df('Reviews', d.review_count ? d.review_count.toLocaleString() : '-')}
+      ${d.google_maps_link ? df('Maps', '<a href="' + esc(d.google_maps_link) + '" target="_blank">Open in Maps</a>') : ''}
+    </div>
+    <div class="drawer-section">
+      <div class="drawer-section-title">Campaign Details</div>
+      ${df('Fit Score', '<span class="score-badge ' + scoreClass(d.fit_score || 0) + '">' + (d.fit_score || 0) + '</span>')}
+      ${df('Campaign', '<span class="seq-tag ' + (SEQ_CLASSES[d.assigned_sequence] || '') + '">' + (SEQ_LABELS[d.assigned_sequence] || d.assigned_sequence) + '</span>')}
+      ${df('Brands', esc(d.brands_carried || '-'))}
+      ${d.km_tier ? df('KM Tier', esc(d.km_tier)) : ''}
+      ${df('Source', SOURCE_LABELS[d._source] || d._source || '-')}
+      ${df('Email Confidence', d.hunter_confidence ? d.hunter_confidence + '%' : '-')}
+    </div>
+  `;
+
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+}
+
+function closeDrawer() {
+  document.getElementById('drawerOverlay').classList.remove('open');
+  document.getElementById('drawer').classList.remove('open');
+}
+
+function df(label, value) {
+  return '<div class="drawer-field"><span class="drawer-field-label">' + label + '</span><span class="drawer-field-value">' + value + '</span></div>';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+// ── CSV Export ──────────────────────────────────────
+function exportCSV() {
+  // Match Google Sheet column layout:
+  // Salon Name, Owner, Email, Responsible, Sample?, OC?, Location, Status, Priority,
+  // First Touch, FU 1, Commission, Starting Price, Products, Notes,
+  // (extra columns): Phone, Website, Google Rating, Reviews, Fit Score, Source, Brands, Address, Zip
+  const OC_CITIES = new Set(['COSTA MESA','NEWPORT BEACH','CORONA DEL MAR','HUNTINGTON BEACH','LAGUNA BEACH','LAGUNA HILLS','ALISO VIEJO','MISSION VIEJO','ORANGE','FULLERTON','TUSTIN','TUSTIN RANCH','SAN CLEMENTE','IRVINE','DANA POINT','ORANGE COUNTY']);
+
+  const headers = [
+    'Salon Name', 'Owner', 'Email', 'Responsible', 'Sample?', 'OC?', 'Location',
+    'Status', 'Priority', 'First Touch', 'FU 1', 'Commission', 'Starting Price',
+    'Products', 'Notes',
+    'Phone', 'Website', 'Google Rating', 'Reviews', 'Fit Score', 'Source', 'Brands', 'Address', 'Zip'
+  ];
+
+  const rows = filteredData.map(d => {
+    const owner = d.owner_name && d.owner_name !== 'Owner TBD' ? d.owner_name.split(' ')[0] : '';
+    const isOC = OC_CITIES.has((d.city || '').toUpperCase()) ? 'Yes' : '';
+    const location = titleCase(d.city || '');
+
+    return [
+      d.salon_name || '',
+      owner,
+      d.owner_email || '',
+      'David',           // Responsible
+      '',                // Sample?
+      isOC,              // OC?
+      location,          // Location
+      'Cold Outreach',   // Status
+      '',                // Priority
+      '',                // First Touch
+      '',                // FU 1
+      '',                // Commission
+      '',                // Starting Price
+      '',                // Products
+      '',                // Notes
+      d.phone || '',
+      d.website || '',
+      d.google_rating || '',
+      d.review_count || '',
+      d.fit_score || '',
+      SOURCE_LABELS[d._source] || d._source || '',
+      d.brands_carried || '',
+      titleCase(d.address || ''),
+      d.zip || ''
+    ];
+  });
+
+  const csvContent = [headers, ...rows]
+    .map(row => row.map(cell => {
+      const s = String(cell);
+      // Escape commas and quotes
+      if (s.includes(',') || s.includes('"') || s.includes('\n')) {
+        return '"' + s.replace(/"/g, '""') + '"';
+      }
+      return s;
+    }).join(','))
+    .join('\n');
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'salon-outreach-' + new Date().toISOString().split('T')[0] + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── Go ──────────────────────────────────────────────
+init();
+</script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>
