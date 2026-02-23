@@ -1,0 +1,1248 @@
+<!-- AWARE Hair - Premium Scalp Environment Report Form -->
+<p> </p>
+<!-- Responsive design with integrated headline -->
+<style>
+  /* Premium Typography */
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=Inter:wght@300;400;500&display=swap');
+
+  .scalp-report-container * {
+    box-sizing: border-box;
+  }
+
+  .scalp-report-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 30px;
+    background: #F4EFE9;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  /* Main Form Card */
+  .report-form-wrapper {
+    background: #FFFFFF;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto 80px;
+    padding: 60px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Headline Section */
+  .form-headline {
+    text-align: center;
+    margin-bottom: 50px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .form-headline h2 {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 42px;
+    font-weight: 300;
+    line-height: 1.3;
+    margin: 0 0 20px 0;
+    color: #1a1a1a;
+    letter-spacing: -0.5px;
+  }
+
+  .form-headline p {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.7;
+    margin: 0 auto;
+    max-width: 520px;
+    font-weight: 300;
+  }
+
+  /* Form Section */
+  .form-section h2 {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 24px;
+    font-weight: 400;
+    margin: 0 0 10px 0;
+    color: #1a1a1a;
+    letter-spacing: -0.3px;
+  }
+
+  .form-section .subtitle {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 35px 0;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* Form Styling */
+  .scalp-report-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .form-field {
+    position: relative;
+  }
+
+  .form-field label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .form-field input {
+    width: 100%;
+    padding: 16px 0;
+    border: none;
+    border-bottom: 1px solid #d0d0d0;
+    background: transparent;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    color: #1a1a1a;
+    transition: border-color 0.3s ease;
+  }
+
+  .form-field input:focus {
+    outline: none;
+    border-bottom-color: #1a1a1a;
+  }
+
+  .form-field input::placeholder {
+    color: #999;
+    font-weight: 300;
+  }
+
+  .form-field input.error {
+    border-bottom-color: #d32f2f;
+  }
+
+  .form-field small {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #999;
+    font-weight: 300;
+  }
+
+  .form-field .error-message {
+    display: none;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #d32f2f;
+    font-weight: 400;
+  }
+
+  .form-field .error-message.show {
+    display: block;
+  }
+
+  /* Form Divider */
+  .form-divider {
+    height: 1px;
+    background: #e5e5e5;
+    margin: 35px 0;
+  }
+
+  /* Optional Section Toggle Button */
+  .optional-toggle-button {
+    width: 100%;
+    padding: 16px;
+    background: transparent;
+    color: #666;
+    border: 1px solid #e5e5e5;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    font-weight: 400;
+    cursor: pointer;
+    margin: 25px 0 0 0;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    text-align: center;
+  }
+
+  .optional-toggle-button:hover {
+    border-color: #999;
+    color: #1a1a1a;
+  }
+
+  .optional-toggle-button::after {
+    content: '▼';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    transition: transform 0.3s ease;
+  }
+
+  .optional-toggle-button.active::after {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  /* Optional Section */
+  .optional-section {
+    background: #fafafa;
+    padding: 0;
+    border-radius: 4px;
+    margin: 15px 0 0 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+  }
+
+  .optional-section.expanded {
+    max-height: 2000px;
+    padding: 30px;
+  }
+
+  .optional-header {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .optional-header h3 {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 18px;
+    font-weight: 400;
+    margin: 0 0 8px 0;
+    color: #1a1a1a;
+  }
+
+  .optional-header .optional-badge {
+    display: inline-block;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #999;
+    background: #fff;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+  }
+
+  .optional-header p {
+    font-size: 12px;
+    color: #666;
+    margin: 8px 0 0 0;
+    line-height: 1.5;
+  }
+
+  /* Radio & Checkbox Labels */
+  .radio-label, .checkbox-label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  /* Radio Button Group */
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .radio-option {
+    cursor: pointer;
+    padding: 10px 14px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    background: #fff;
+    display: block;
+    position: relative;
+  }
+
+  .radio-option:hover {
+    border-color: #999;
+  }
+
+  .radio-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .radio-option:has(input:checked) {
+    border-color: #1a1a1a;
+    background: #fff;
+  }
+
+  .radio-text {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.4;
+    font-weight: 400;
+    padding-left: 26px;
+    display: block;
+    position: relative;
+  }
+
+  .radio-text::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid #d0d0d0;
+    border-radius: 50%;
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+
+  .radio-option input[type="radio"]:checked ~ .radio-text {
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+
+  .radio-option input[type="radio"]:checked ~ .radio-text::before {
+    border-color: #1a1a1a;
+    background: #1a1a1a;
+    box-shadow: inset 0 0 0 3px #fff;
+  }
+
+  /* Checkbox Group */
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .checkbox-option {
+    cursor: pointer;
+    padding: 10px 14px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    background: #fff;
+    display: block;
+    position: relative;
+  }
+
+  .checkbox-option:hover {
+    border-color: #999;
+  }
+
+  .checkbox-option input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .checkbox-option:has(input:checked) {
+    border-color: #1a1a1a;
+    background: #fff;
+  }
+
+  .checkbox-text {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.4;
+    font-weight: 400;
+    padding-left: 26px;
+    display: block;
+    position: relative;
+  }
+
+  .checkbox-text::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid #d0d0d0;
+    border-radius: 2px;
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+
+  .checkbox-text::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 4px;
+    height: 8px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .checkbox-option input[type="checkbox"]:checked ~ .checkbox-text {
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+
+  .checkbox-option input[type="checkbox"]:checked ~ .checkbox-text::before {
+    border-color: #1a1a1a;
+    background: #1a1a1a;
+  }
+
+  .checkbox-option input[type="checkbox"]:checked ~ .checkbox-text::after {
+    opacity: 1;
+  }
+
+  /* Submit Button */
+  .submit-button {
+    width: 100%;
+    padding: 18px;
+    background: #1a1a1a;
+    color: #F4EFE9;
+    border: none;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+  }
+
+  .submit-button:hover:not(:disabled) {
+    background: #333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .submit-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .submit-button.loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid #F4EFE9;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spinner 0.6s linear infinite;
+  }
+
+  @keyframes spinner {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Messages */
+  .form-message {
+    text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 2px;
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .form-message.show {
+    display: block;
+  }
+
+  .form-message.success {
+    background: rgba(0, 228, 0, 0.08);
+    color: #006400;
+    border: 1px solid rgba(0, 228, 0, 0.2);
+  }
+
+  .form-message.error {
+    background: rgba(255, 0, 0, 0.08);
+    color: #8B0000;
+    border: 1px solid rgba(255, 0, 0, 0.2);
+  }
+
+  /* Privacy Notice */
+  .privacy-notice {
+    text-align: center;
+    color: #999;
+    font-size: 11px;
+    margin-top: 30px;
+    line-height: 1.6;
+    font-weight: 300;
+    padding-top: 30px;
+    border-top: 1px solid #e5e5e5;
+  }
+
+  .privacy-notice a {
+    color: #666;
+    text-decoration: underline;
+  }
+
+  /* Benefits Section */
+  .benefits-section {
+    max-width: 1000px;
+    margin: 0 auto 80px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+  }
+
+  .benefit-item {
+    text-align: center;
+  }
+
+  .benefit-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+
+  .benefit-item h3 {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 18px;
+    font-weight: 400;
+    margin: 0 0 10px 0;
+    color: #1a1a1a;
+  }
+
+  .benefit-item p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* Tablet Responsive */
+  @media (max-width: 900px) {
+    .scalp-report-container {
+      padding: 0 20px;
+      margin: 40px auto;
+    }
+
+    .report-form-wrapper {
+      padding: 50px 40px;
+    }
+
+    .form-headline h2 {
+      font-size: 36px;
+    }
+
+    .benefits-section {
+      gap: 40px;
+    }
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 600px) {
+    .scalp-report-container {
+      margin: 30px auto;
+      padding: 0 15px;
+    }
+
+    .report-form-wrapper {
+      padding: 40px 25px;
+      margin-bottom: 60px;
+    }
+
+    .form-headline {
+      margin-bottom: 35px;
+      padding-bottom: 30px;
+    }
+
+    .form-headline h2 {
+      font-size: 30px;
+    }
+
+    .form-headline p {
+      font-size: 14px;
+    }
+
+    .benefits-section {
+      grid-template-columns: 1fr;
+      gap: 50px;
+      margin-bottom: 60px;
+    }
+  }
+</style>
+
+<div class="scalp-report-container">
+  <!-- Main Form Card -->
+  <div class="report-form-wrapper">
+    <!-- Headline Section -->
+    <div class="form-headline">
+      <h2>Discover How Your Environment Affects Your Scalp</h2>
+      <p>Your local air quality, UV exposure, and water composition all influence scalp health. Receive a personalized analysis with tailored care recommendations.</p>
+    </div>
+
+    <!-- Form Section -->
+    <div class="form-section">
+      <h2>Request Your Report</h2>
+      <p class="subtitle">Complete the form below to receive your complimentary environmental scalp analysis.</p>
+
+      <form class="scalp-report-form" id="scalp-report-form" onsubmit="return false;">
+        <div class="form-field">
+          <label for="first_name">First Name</label>
+          <input
+            placeholder="Enter your first name"
+            required
+            name="first_name"
+            id="first_name"
+            type="text"
+            autocomplete="given-name"
+          >
+          <span class="error-message" id="first_name_error"></span>
+        </div>
+
+        <div class="form-field">
+          <label for="email">Email Address</label>
+          <input
+            placeholder="your@email.com"
+            required
+            name="email"
+            id="email"
+            type="email"
+            autocomplete="email"
+          >
+          <span class="error-message" id="email_error"></span>
+        </div>
+
+        <div class="form-field">
+          <label for="zip_code">Postal Code</label>
+          <input
+            placeholder="90210"
+            maxlength="5"
+            pattern="\d{5}"
+            required
+            name="zip_code"
+            id="zip_code"
+            type="text"
+            inputmode="numeric"
+            autocomplete="postal-code"
+          >
+          <small>United States ZIP codes only</small>
+          <span class="error-message" id="zip_code_error"></span>
+        </div>
+
+        <!-- Submit Button -->
+        <button class="submit-button" id="submit-btn" type="submit">
+          <span id="submit-text">Request Report</span>
+        </button>
+
+        <!-- Optional Details Toggle -->
+        <button type="button" class="optional-toggle-button" id="optional-toggle">
+          Add optional details to enhance your report
+        </button>
+
+        <!-- Hair & Scalp Questions (Optional, Collapsed by Default) -->
+        <div class="optional-section" id="optional-section">
+          <div class="optional-header">
+            <h3>Personalize Your Report</h3>
+            <span class="optional-badge">Optional</span>
+            <p>These details help us provide more tailored recommendations</p>
+          </div>
+
+          <div class="form-field">
+            <label class="radio-label">Which option best describes your hair?</label>
+            <div class="radio-group">
+              <label class="radio-option">
+                <input type="radio" name="hair_type" value="thinning_fine">
+                <span class="radio-text">Thinning or fine</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="hair_type" value="medium_wavy">
+                <span class="radio-text">Medium or wavy</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="hair_type" value="colored_damaged">
+                <span class="radio-text">Colored or damaged</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="hair_type" value="textured_curls">
+                <span class="radio-text">Textured curls or coils</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="radio-label">How does your scalp feel 1–2 days after washing?</label>
+            <div class="radio-group">
+              <label class="radio-option">
+                <input type="radio" name="scalp_feel" value="oily_greasy">
+                <span class="radio-text">Oily or quickly greasy</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="scalp_feel" value="balanced_normal">
+                <span class="radio-text">Balanced / normal</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="scalp_feel" value="dry_tight">
+                <span class="radio-text">Dry or tight</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="scalp_feel" value="itchy_flaky">
+                <span class="radio-text">Itchy and/or flaky</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="scalp_feel" value="sensitive_reactive">
+                <span class="radio-text">Sensitive or reactive</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="radio-label">Do any of these apply to you?</label>
+            <div class="checkbox-group">
+              <label class="checkbox-option">
+                <input type="checkbox" name="hair_stress" value="chemically_treated">
+                <span class="checkbox-text">Recently chemically treated</span>
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="hair_stress" value="frequent_heat">
+                <span class="checkbox-text">Frequent heat styling</span>
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="hair_stress" value="shedding_thinning">
+                <span class="checkbox-text">Noticeable shedding or thinning</span>
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="hair_stress" value="none">
+                <span class="checkbox-text">None of the above</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-message" id="form-message"></div>
+      </form>
+
+      <p class="privacy-notice">
+        By submitting this form, you expressly consent and agree to receive your personalized scalp environment report and marketing emails from AWARE Hair. Your data is handled in accordance with our <a href="/pages/privacy-policy">Privacy Policy</a>. You may unsubscribe at any time. No confirmation email is required.
+      </p>
+    </div>
+  </div>
+
+  <!-- Benefits Section -->
+  <div class="benefits-section">
+    <div class="benefit-item">
+      <div class="benefit-icon">☀️</div>
+      <h3>UV Analysis</h3>
+      <p>Real-time UV index data for your location with scalp protection recommendations.</p>
+    </div>
+
+    <div class="benefit-item">
+      <div class="benefit-icon">💨</div>
+      <h3>Air Quality</h3>
+      <p>Local pollution levels and their impact on scalp health and product absorption.</p>
+    </div>
+
+    <div class="benefit-item">
+      <div class="benefit-icon">💧</div>
+      <h3>Water Composition</h3>
+      <p>How your local water quality affects scalp health and product effectiveness.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // Configuration
+  const CONFIG = {
+    zapierWebhookUrl: 'https://hooks.zapier.com/hooks/catch/19966212/umr92ia/',
+    maxRetries: 2,
+    retryDelay: 1000, // ms
+    timeoutDuration: 10000, // 10 seconds
+    debugMode: true // Set to false in production
+  };
+
+  // Diagnostic logging
+  function log(message, data = null) {
+    if (!CONFIG.debugMode) return;
+    console.log(`[Scalp Report Form] ${message}`, data || '');
+  }
+
+  // Form elements
+  const form = document.getElementById('scalp-report-form');
+  const submitBtn = document.getElementById('submit-btn');
+  const submitText = document.getElementById('submit-text');
+  const messageDiv = document.getElementById('form-message');
+
+  // Input fields
+  const firstNameInput = document.getElementById('first_name');
+  const emailInput = document.getElementById('email');
+  const zipCodeInput = document.getElementById('zip_code');
+
+  // Error message elements
+  const firstNameError = document.getElementById('first_name_error');
+  const emailError = document.getElementById('email_error');
+  const zipCodeError = document.getElementById('zip_code_error');
+
+  // Validation functions
+  function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  }
+
+  function validateZipCode(zip) {
+    return /^\d{5}$/.test(zip);
+  }
+
+  function validateName(name) {
+    return name.trim().length >= 2;
+  }
+
+  function showFieldError(input, errorElement, message) {
+    input.classList.add('error');
+    errorElement.textContent = message;
+    errorElement.classList.add('show');
+  }
+
+  function clearFieldError(input, errorElement) {
+    input.classList.remove('error');
+    errorElement.textContent = '';
+    errorElement.classList.remove('show');
+  }
+
+  function clearAllErrors() {
+    clearFieldError(firstNameInput, firstNameError);
+    clearFieldError(emailInput, emailError);
+    clearFieldError(zipCodeInput, zipCodeError);
+  }
+
+  function validateForm() {
+    let isValid = true;
+    clearAllErrors();
+
+    // Validate first name
+    if (!validateName(firstNameInput.value)) {
+      showFieldError(firstNameInput, firstNameError, 'Please enter a valid first name (at least 2 characters)');
+      isValid = false;
+    }
+
+    // Validate email
+    if (!validateEmail(emailInput.value)) {
+      showFieldError(emailInput, emailError, 'Please enter a valid email address');
+      isValid = false;
+    }
+
+    // Validate ZIP code
+    if (!validateZipCode(zipCodeInput.value)) {
+      showFieldError(zipCodeInput, zipCodeError, 'Please enter a valid 5-digit US ZIP code');
+      isValid = false;
+    }
+
+    // Note: Hair/scalp questions are optional, no validation needed
+
+    return isValid;
+  }
+
+  // Real-time validation
+  emailInput.addEventListener('blur', function() {
+    if (this.value && !validateEmail(this.value)) {
+      showFieldError(this, emailError, 'Please enter a valid email address');
+    } else {
+      clearFieldError(this, emailError);
+    }
+  });
+
+  zipCodeInput.addEventListener('input', function() {
+    // Only allow numbers
+    this.value = this.value.replace(/\D/g, '');
+    if (this.value.length === 5) {
+      clearFieldError(this, zipCodeError);
+    }
+  });
+
+  firstNameInput.addEventListener('blur', function() {
+    if (this.value && !validateName(this.value)) {
+      showFieldError(this, firstNameError, 'Please enter a valid first name');
+    } else {
+      clearFieldError(this, firstNameError);
+    }
+  });
+
+  // Handle optional section toggle
+  const optionalToggleBtn = document.getElementById('optional-toggle');
+  const optionalSection = document.getElementById('optional-section');
+
+  if (optionalToggleBtn && optionalSection) {
+    optionalToggleBtn.addEventListener('click', function() {
+      const isExpanded = optionalSection.classList.contains('expanded');
+
+      if (isExpanded) {
+        // Collapse
+        optionalSection.classList.remove('expanded');
+        optionalToggleBtn.classList.remove('active');
+        optionalToggleBtn.textContent = 'Add optional details to enhance your report';
+      } else {
+        // Expand
+        optionalSection.classList.add('expanded');
+        optionalToggleBtn.classList.add('active');
+        optionalToggleBtn.textContent = 'Hide optional details';
+
+        // Scroll to the optional section smoothly
+        setTimeout(() => {
+          optionalSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+      }
+    });
+  }
+
+  // Handle "None of the above" checkbox logic
+  const hairStressCheckboxes = document.querySelectorAll('input[name="hair_stress"]');
+  const noneCheckbox = document.querySelector('input[name="hair_stress"][value="none"]');
+
+  if (noneCheckbox && hairStressCheckboxes.length > 0) {
+    // When "None" is checked, uncheck all others
+    noneCheckbox.addEventListener('change', function() {
+      if (this.checked) {
+        hairStressCheckboxes.forEach(checkbox => {
+          if (checkbox !== noneCheckbox) {
+            checkbox.checked = false;
+          }
+        });
+      }
+    });
+
+    // When any other checkbox is checked, uncheck "None"
+    hairStressCheckboxes.forEach(checkbox => {
+      if (checkbox !== noneCheckbox) {
+        checkbox.addEventListener('change', function() {
+          if (this.checked && noneCheckbox.checked) {
+            noneCheckbox.checked = false;
+          }
+        });
+      }
+    });
+  }
+
+  // Show message to user
+  function showMessage(message, type) {
+    messageDiv.textContent = message;
+    messageDiv.className = 'form-message show ' + type;
+
+    // Auto-hide success messages after 5 seconds
+    if (type === 'success') {
+      setTimeout(() => {
+        messageDiv.classList.remove('show');
+      }, 5000);
+    }
+  }
+
+  function hideMessage() {
+    messageDiv.classList.remove('show');
+  }
+
+  // Loading state
+  function setLoadingState(isLoading) {
+    if (isLoading) {
+      submitBtn.disabled = true;
+      submitBtn.classList.add('loading');
+      submitText.textContent = 'Sending...';
+    } else {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('loading');
+      submitText.textContent = 'Request Report';
+    }
+  }
+
+  // Send data to Zapier with retry logic
+  async function sendToZapier(data, retryCount = 0) {
+    log(`Sending to Zapier (attempt ${retryCount + 1}/${CONFIG.maxRetries + 1})`, {
+      submissionId: data.submission_id,
+      email: data.email,
+      zipCode: data.zip_code
+    });
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), CONFIG.timeoutDuration);
+
+    try {
+      const response = await fetch(CONFIG.zapierWebhookUrl, {
+        method: 'POST',
+        mode: 'no-cors', // Zapier webhooks don't support CORS, so we use no-cors
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+      log('Zapier request successful', { submissionId: data.submission_id });
+
+      // With no-cors mode, we can't read the response, but we can assume success if no error was thrown
+      return { success: true };
+
+    } catch (error) {
+      clearTimeout(timeoutId);
+      log(`Zapier request failed (attempt ${retryCount + 1})`, {
+        error: error.message,
+        submissionId: data.submission_id
+      });
+
+      // Handle timeout
+      if (error.name === 'AbortError') {
+        throw new Error('Request timed out. Please check your connection and try again.');
+      }
+
+      // Retry logic
+      if (retryCount < CONFIG.maxRetries) {
+        log(`Retrying in ${CONFIG.retryDelay * (retryCount + 1)}ms...`);
+        await new Promise(resolve => setTimeout(resolve, CONFIG.retryDelay * (retryCount + 1)));
+        return sendToZapier(data, retryCount + 1);
+      }
+
+      throw error;
+    }
+  }
+
+  // Track submission timestamp to prevent duplicate submissions
+  let lastSubmissionTime = 0;
+  const MIN_SUBMISSION_INTERVAL = 3000; // 3 seconds
+
+  // Form submission handler
+  function handleSubmit(e) {
+    // Aggressive prevention for iOS compatibility
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
+    if (e && e.stopPropagation) {
+      e.stopPropagation();
+    }
+
+    log('Form submit triggered', { userAgent: navigator.userAgent });
+
+    // Prevent rapid successive submissions
+    const now = Date.now();
+    if (now - lastSubmissionTime < MIN_SUBMISSION_INTERVAL) {
+      showMessage('Please wait a moment before submitting again.', 'error');
+      return false;
+    }
+
+    // Validate form
+    if (!validateForm()) {
+      showMessage('Please correct the errors above and try again.', 'error');
+      return false;
+    }
+
+    hideMessage();
+    setLoadingState(true);
+
+    // Run async submission separately (iOS compatibility)
+    submitFormAsync();
+
+    return false; // Extra prevention for iOS
+  }
+
+  // Async submission function (separated for iOS compatibility)
+  async function submitFormAsync() {
+    try {
+      // Generate unique submission ID for tracking
+      const submissionId = `form_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+      // Extract hair & scalp profile data
+      const hairType = document.querySelector('input[name="hair_type"]:checked');
+      const scalpFeel = document.querySelector('input[name="scalp_feel"]:checked');
+      const hairStressChecked = Array.from(document.querySelectorAll('input[name="hair_stress"]:checked'));
+
+      // Prepare data
+      const formData = {
+      // User data
+      first_name: firstNameInput.value.trim(),
+      email: emailInput.value.trim().toLowerCase(),
+      zip_code: zipCodeInput.value.trim(),
+
+      // Hair & Scalp Profile
+      hair_type: hairType ? hairType.value : '',
+      scalp_feel: scalpFeel ? scalpFeel.value : '',
+      hair_stress: hairStressChecked.length > 0
+        ? hairStressChecked.map(cb => cb.value).join(', ')
+        : 'none',
+
+      // Consent tracking (for Klaviyo single opt-in)
+      consent_given: true,
+      consent_method: 'website_form',
+      consent_timestamp: new Date().toISOString(),
+      consent_ip: '', // Will be captured by Zapier if needed
+
+      // Tracking metadata
+      submission_id: submissionId,
+      submitted_at: new Date().toISOString(),
+      source: 'shopify_scalp_report_form',
+      user_agent: navigator.userAgent,
+      page_url: window.location.href,
+
+      // Klaviyo-specific fields
+      double_opt_in: false, // Tell Klaviyo to skip confirmation email
+      confirm_opt_in: false
+    };
+
+    log('Preparing form submission', formData);
+
+    try {
+      // Send to Zapier
+      log('Submitting form data...');
+      await sendToZapier(formData);
+
+      // Update last submission time
+      lastSubmissionTime = Date.now();
+
+      log('✅ Form submitted successfully!', { submissionId: submissionId });
+
+      // Show success message
+      showMessage('Success! Check your email for your personalized scalp environment report.', 'success');
+
+      // Reset form
+      form.reset();
+      clearAllErrors();
+
+      // Optional: Track conversion (if you have analytics)
+      if (window.dataLayer) {
+        window.dataLayer.push({
+          'event': 'form_submission',
+          'form_name': 'scalp_report',
+          'form_id': 'scalp-report-form',
+          'submission_id': submissionId
+        });
+        log('Analytics event tracked');
+      }
+
+    } catch (error) {
+      log('❌ Form submission failed', {
+        submissionId: submissionId,
+        error: error.message,
+        stack: error.stack
+      });
+
+      let errorMessage = 'There was an error submitting your request. ';
+
+      if (error.message.includes('timed out')) {
+        errorMessage += 'The request timed out. Please check your internet connection and try again.';
+      } else if (error.message.includes('network')) {
+        errorMessage += 'Please check your internet connection and try again.';
+      } else {
+        errorMessage += 'Please try again in a moment or contact support if the issue persists.';
+      }
+
+      showMessage(errorMessage, 'error');
+
+      // Console error for debugging
+      console.error('❌ Scalp Report Form Error:', {
+        submissionId: submissionId,
+        error: error.message,
+        formData: {
+          email: formData.email,
+          zipCode: formData.zip_code,
+          timestamp: formData.submitted_at
+        }
+      });
+
+      } finally {
+        setLoadingState(false);
+      }
+
+    } catch (topLevelError) {
+      // Catch any unexpected errors at the top level (iOS safety net)
+      log('❌ Top-level error in submitFormAsync', {
+        error: topLevelError.message,
+        stack: topLevelError.stack
+      });
+
+      setLoadingState(false);
+      showMessage('An unexpected error occurred. Please try again or contact support.', 'error');
+
+      console.error('Top-level form submission error:', topLevelError);
+    }
+  }
+
+  // Attach event listener with capture phase for better iOS compatibility
+  form.addEventListener('submit', handleSubmit, true);
+
+  // Backup: also attach to submit button directly
+  submitBtn.addEventListener('click', function(e) {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
+    // Manually trigger form validation and submission
+    if (form.checkValidity && !form.checkValidity()) {
+      // Let HTML5 validation show
+      return true;
+    }
+    handleSubmit(e);
+    return false;
+  });
+
+  // Prevent form submission on Enter key in input fields (optional, remove if you want Enter to submit)
+  /*
+  const inputs = form.querySelectorAll('input');
+  inputs.forEach(input => {
+    input.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        // Move to next field or submit
+        const nextInput = this.parentElement.nextElementSibling?.querySelector('input');
+        if (nextInput) {
+          nextInput.focus();
+        } else {
+          form.dispatchEvent(new Event('submit'));
+        }
+      }
+    });
+  });
+  */
+
+  // Initialization log
+  log('✓ Form initialized and ready', {
+    zapierUrl: CONFIG.zapierWebhookUrl,
+    debugMode: CONFIG.debugMode,
+    formId: form.id,
+    platform: navigator.platform,
+    userAgent: navigator.userAgent
+  });
+
+  // Global error handler for debugging iOS issues
+  window.addEventListener('error', function(e) {
+    log('❌ JavaScript Error Detected', {
+      message: e.message,
+      filename: e.filename,
+      lineno: e.lineno,
+      colno: e.colno
+    });
+    console.error('Global error caught:', e);
+  });
+
+  // Unhandled promise rejection handler (important for iOS)
+  window.addEventListener('unhandledrejection', function(e) {
+    log('❌ Unhandled Promise Rejection', {
+      reason: e.reason
+    });
+    console.error('Unhandled rejection:', e.reason);
+  });
+
+})();
+</script>
+
+<p> </p>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>

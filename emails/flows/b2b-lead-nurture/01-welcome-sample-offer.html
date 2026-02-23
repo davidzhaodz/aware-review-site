@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ person.first_name|default:'Hi' }} - David from AWARE Hair</title>
+</head>
+<body style="margin:0; padding:0; background-color:#ffffff;">
+
+<!-- Plain text style email - intentionally minimal -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;">
+<tr>
+<td align="center" style="padding:40px 20px;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;">
+<tr>
+<td style="font-family:Arial, Helvetica, sans-serif; font-size:15px; line-height:1.7; color:#333333;">
+
+<!-- Dynamic greeting based on lead_source property -->
+{% if person|lookup:'lead_source' == 'cosmoprof' %}
+<p style="margin:0 0 20px 0;">{{ person.first_name|default:'Hi' }}, great meeting you at CosmoProf. David here from AWARE Hair.</p>
+{% elif person|lookup:'lead_source' == 'website' %}
+<p style="margin:0 0 20px 0;">{{ person.first_name|default:'Hi' }}, thanks for checking out the professional portal. David here from AWARE Hair.</p>
+{% elif person|lookup:'lead_source' == 'instagram' %}
+<p style="margin:0 0 20px 0;">{{ person.first_name|default:'Hi' }}, glad we connected on Instagram. David here from AWARE Hair.</p>
+{% elif person|lookup:'lead_source' == 'referral' %}
+<p style="margin:0 0 20px 0;">{{ person.first_name|default:'Hi' }}, {{ person|lookup:'referred_by'|default:'a colleague' }} mentioned you might be interested in what we're doing. David here from AWARE Hair.</p>
+{% elif person|lookup:'lead_source' == 'cold_outreach' %}
+<p style="margin:0 0 20px 0;">{{ person.first_name|default:'Hi' }}, thanks for getting back to me. David here from AWARE Hair.</p>
+{% else %}
+<p style="margin:0 0 20px 0;">{{ person.first_name|default:'Hi' }}, thanks for your interest in AWARE. David here.</p>
+{% endif %}
+
+<p style="margin:0 0 20px 0;">Quick background: AWARE is a professional scalp care line founded by a trichologist with 40 years of clinical experience. We're salon-exclusive - no Amazon, no Sephora - and we're now in 50+ partner salons across the country.</p>
+
+<p style="margin:0 0 20px 0;">I'd love to send you a complimentary sample kit - shampoo, conditioner, and leave-in - so you can try them yourself. No order required, no strings. Most salon partners tell us the products sell themselves once clients try them.</p>
+
+<p style="margin:0 0 20px 0;">If you're interested, just reply with your salon's shipping address and I'll get a kit out to you.</p>
+
+<p style="margin:0 0 20px 0;">Either way, happy to answer any questions you have about adding scalp care to your service menu.</p>
+
+<p style="margin:0 0 5px 0;">Talk soon,</p>
+<p style="margin:0 0 5px 0;">David</p>
+<p style="margin:0 0 3px 0; font-size:13px; color:#666666;">Co-Founder, AWARE Hair</p>
+<p style="margin:0 0 3px 0; font-size:13px; color:#666666;">562-589-2173</p>
+<p style="margin:0 0 3px 0; font-size:13px; color:#666666;"><a href="mailto:david@awarehair.com" style="color:#666666;">david@awarehair.com</a></p>
+<p style="margin:0 0 30px 0; font-size:13px; color:#999999;"><a href="https://awarehair.com/pages/professional-portal" style="color:#999999;">Professional Portal</a></p>
+
+<p style="margin:0; font-size:12px; color:#999999;">
+<a href="https://awarehair.com" style="color:#999999;">awarehair.com</a>&nbsp;&nbsp;|&nbsp;&nbsp;{% unsubscribe 'Unsubscribe' %}
+</p>
+
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

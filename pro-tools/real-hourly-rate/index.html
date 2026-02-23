@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Hourly Rate Calculator | AWARE Hair Pro</title>
+    <meta name="description" content="Calculate what you're actually earning per hour as a stylist. Most know what they charge - few know what they earn.">
+
+    <!-- AWARE Fonts -->
+    <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- PDF Export Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Klaviyo Client-Side SDK -->
+    <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=pk_1bcdfc5f9fa0dde4ab05653e3f64c5ebb5"></script>
+
+    <style>
+        /* ═══════════════════════════════════════════════════════════════
+           AWARE HAIR DESIGN SYSTEM
+           ═══════════════════════════════════════════════════════════════ */
+
+        :root {
+            /* Colors */
+            --color-background: #f4efe9;
+            --color-text: #102b26;
+            --color-text-secondary: #5a6b68;
+            --color-header-text: #031612;
+
+            --color-button-bg: #113035;
+            --color-button-text: #f4efe9;
+            --color-button-hover: #2a7682;
+
+            --color-border: #bdbfbf;
+            --color-border-light: #e4d9ca;
+            --color-accent: #102b26;
+            --color-success: #478947;
+            --color-warning: #c9842b;
+            --color-danger: #c94444;
+
+            --color-surface-light: #faf8f5;
+            --color-surface-dark: #102b26;
+            --color-overlay: rgba(16, 43, 38, 0.9);
+
+            /* Typography */
+            --font-heading: "orpheuspro", Georgia, "Times New Roman", serif;
+            --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+
+            --weight-normal: 400;
+            --weight-medium: 500;
+            --weight-semibold: 600;
+            --weight-bold: 700;
+
+            /* Spacing */
+            --spacing-1: 4px;
+            --spacing-2: 8px;
+            --spacing-3: 12px;
+            --spacing-4: 16px;
+            --spacing-5: 20px;
+            --spacing-6: 24px;
+            --spacing-8: 32px;
+            --spacing-10: 40px;
+            --spacing-12: 48px;
+
+            /* Animation */
+            --easing: cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-fast: 0.2s;
+            --duration-normal: 0.3s;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(16, 43, 38, 0.05);
+            --shadow-md: 0 4px 12px rgba(16, 43, 38, 0.08);
+            --shadow-lg: 0 8px 24px rgba(16, 43, 38, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: var(--spacing-5);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: var(--spacing-8) 0;
+            border-bottom: 1px solid var(--color-border-light);
+            margin-bottom: var(--spacing-6);
+        }
+
+        .logo {
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .header h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(1.75rem, 5vw, 2.25rem);
+            font-weight: var(--weight-normal);
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .header p {
+            font-family: var(--font-heading);
+            font-style: italic;
+            color: var(--color-text-secondary);
+            font-size: 1.0625rem;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: var(--spacing-6);
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .progress-step {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            font-weight: var(--weight-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .progress-step.active {
+            color: var(--color-accent);
+        }
+
+        .progress-step.completed {
+            color: var(--color-success);
+        }
+
+        .progress-bar {
+            height: 2px;
+            background: var(--color-border-light);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--color-accent);
+            transition: width var(--duration-normal) var(--easing);
+        }
+
+        /* Card */
+        .card {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-4);
+            transition: box-shadow var(--duration-normal) var(--easing);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: var(--weight-normal);
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-5);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+        }
+
+        .step-badge {
+            font-family: var(--font-body);
+            background: var(--color-button-bg);
+            color: var(--color-button-text);
+            font-size: 10px;
+            padding: 3px 10px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: var(--spacing-5);
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: var(--weight-medium);
+            margin-bottom: var(--spacing-2);
+            color: var(--color-text);
+        }
+
+        .label-hint {
+            font-weight: var(--weight-normal);
+            color: var(--color-text-secondary);
+            font-size: 13px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"] {
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-4);
+            border: 1px solid var(--color-border);
+            background: white;
+            font-size: 16px;
+            font-family: var(--font-body);
+            color: var(--color-text);
+            transition: border-color var(--duration-fast) var(--easing);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        input::placeholder {
+            color: var(--color-text-secondary);
+        }
+
+        .input-prefix {
+            position: relative;
+        }
+
+        .input-prefix input {
+            padding-left: 28px;
+        }
+
+        .input-prefix::before {
+            content: '$';
+            position: absolute;
+            left: var(--spacing-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-secondary);
+            font-size: 16px;
+        }
+
+        .input-suffix {
+            position: relative;
+        }
+
+        .input-suffix input {
+            padding-right: 45px;
+        }
+
+        .input-suffix::after {
+            content: attr(data-suffix);
+            position: absolute;
+            right: var(--spacing-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+
+        /* Time Grid */
+        .time-grid {
+            display: grid;
+            gap: var(--spacing-3);
+        }
+
+        .time-row {
+            display: grid;
+            grid-template-columns: 1fr 100px;
+            gap: var(--spacing-3);
+            align-items: center;
+        }
+
+        .time-label {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+
+        /* Radio/Toggle Group */
+        .toggle-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-3);
+        }
+
+        .toggle-option {
+            position: relative;
+        }
+
+        .toggle-option input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .toggle-option label {
+            display: block;
+            padding: var(--spacing-4);
+            text-align: center;
+            border: 1px solid var(--color-border);
+            background: white;
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--easing);
+            font-weight: var(--weight-medium);
+        }
+
+        .toggle-option input:checked + label {
+            border-color: var(--color-accent);
+            background: var(--color-surface-dark);
+            color: var(--color-button-text);
+        }
+
+        .toggle-option label:hover {
+            border-color: var(--color-accent);
+        }
+
+        /* Conditional Fields */
+        .conditional-fields {
+            margin-top: var(--spacing-4);
+            padding-top: var(--spacing-4);
+            border-top: 1px solid var(--color-border-light);
+            display: none;
+        }
+
+        .conditional-fields.visible {
+            display: block;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: var(--spacing-3);
+            margin-top: var(--spacing-6);
+        }
+
+        .btn {
+            flex: 1;
+            padding: var(--spacing-4) var(--spacing-5);
+            font-size: 14px;
+            font-weight: var(--weight-medium);
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--easing);
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--color-button-bg);
+            color: var(--color-button-text);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-button-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-text);
+            color: var(--color-button-text);
+            border-color: var(--color-text);
+        }
+
+        .btn-success {
+            background: var(--color-success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #3a7a3a;
+        }
+
+        /* Results Screen */
+        .results-container {
+            display: none;
+        }
+
+        .results-container.visible {
+            display: block;
+        }
+
+        .result-hero {
+            text-align: center;
+            padding: var(--spacing-10) var(--spacing-6);
+            background: var(--color-surface-dark);
+            color: var(--color-background);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .result-label {
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0.8;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .result-value {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 10vw, 3.5rem);
+            font-weight: var(--weight-normal);
+            letter-spacing: -0.02em;
+            margin-bottom: var(--spacing-1);
+        }
+
+        .result-subtitle {
+            font-family: var(--font-heading);
+            font-style: italic;
+            font-size: 15px;
+            opacity: 0.7;
+        }
+
+        .result-comparison {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-8);
+            margin-top: var(--spacing-6);
+            padding-top: var(--spacing-6);
+            border-top: 1px solid rgba(244, 239, 233, 0.2);
+        }
+
+        .comparison-item {
+            text-align: center;
+        }
+
+        .comparison-label {
+            font-size: 10px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        .comparison-value {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            margin-top: var(--spacing-1);
+        }
+
+        /* Breakdown Table */
+        .breakdown-card {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            overflow: hidden;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .breakdown-header {
+            padding: var(--spacing-4) var(--spacing-5);
+            background: var(--color-background);
+            font-family: var(--font-body);
+            font-size: 12px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-3) var(--spacing-5);
+            border-bottom: 1px solid var(--color-border-light);
+            font-size: 14px;
+        }
+
+        .breakdown-row:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-row.total {
+            background: var(--color-background);
+            font-weight: var(--weight-semibold);
+        }
+
+        .breakdown-row.highlight {
+            background: rgba(16, 43, 38, 0.05);
+            color: var(--color-accent);
+            font-weight: var(--weight-semibold);
+        }
+
+        .breakdown-label {
+            color: var(--color-text-secondary);
+        }
+
+        .breakdown-value {
+            font-weight: var(--weight-medium);
+        }
+
+        .breakdown-value.negative {
+            color: var(--color-danger);
+        }
+
+        .breakdown-value.positive {
+            color: var(--color-success);
+        }
+
+        /* Email Capture */
+        .email-capture {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .email-capture h3 {
+            font-family: var(--font-heading);
+            font-size: 1.125rem;
+            font-weight: var(--weight-normal);
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .email-capture p {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .email-input-group {
+            display: flex;
+            gap: var(--spacing-2);
+        }
+
+        .email-input-group input {
+            flex: 1;
+        }
+
+        .email-input-group .btn {
+            flex: 0 0 auto;
+            padding: var(--spacing-3) var(--spacing-5);
+        }
+
+        .email-success {
+            display: none;
+            text-align: center;
+            padding: var(--spacing-4);
+            background: rgba(71, 137, 71, 0.1);
+            color: var(--color-success);
+            font-weight: var(--weight-medium);
+        }
+
+        .email-success.visible {
+            display: block;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-6);
+        }
+
+        .action-btn {
+            padding: var(--spacing-4);
+            border: 1px solid var(--color-border-light);
+            background: var(--color-surface-light);
+            cursor: pointer;
+            text-align: center;
+            transition: all var(--duration-fast) var(--easing);
+        }
+
+        .action-btn:hover {
+            border-color: var(--color-accent);
+            background: white;
+        }
+
+        .action-btn-icon {
+            font-size: 20px;
+            margin-bottom: var(--spacing-1);
+        }
+
+        .action-btn-label {
+            font-size: 12px;
+            font-weight: var(--weight-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Insight Box */
+        .insight-box {
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d5c4 100%);
+            border: 1px solid var(--color-border-light);
+            padding: var(--spacing-5);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .insight-box h4 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-weight: var(--weight-normal);
+            margin-bottom: var(--spacing-2);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+            color: var(--color-header-text);
+        }
+
+        .insight-box p {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: var(--spacing-8) var(--spacing-6);
+            color: var(--color-text-secondary);
+            font-size: 13px;
+            border-top: 1px solid var(--color-border-light);
+            margin-top: var(--spacing-6);
+        }
+
+        .footer a {
+            color: var(--color-accent);
+            text-decoration: none;
+            transition: opacity var(--duration-fast) var(--easing);
+        }
+
+        .footer a:hover {
+            opacity: 0.7;
+        }
+
+        /* Screen visibility */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .screen.active {
+            animation: fadeIn 0.4s var(--easing);
+        }
+
+        /* Staggered List Reveals */
+        .breakdown-row,
+        .comparison-item {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.4s var(--easing), transform 0.4s var(--easing);
+        }
+
+        .breakdown-row.visible,
+        .comparison-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Enhanced Button Hover */
+        .btn-primary {
+            transition: all var(--duration-normal) var(--easing), transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(17, 48, 53, 0.15);
+        }
+
+        .btn-success {
+            transition: background var(--duration-fast) var(--easing), transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(71, 137, 71, 0.2);
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .screen.active {
+                animation: none;
+            }
+
+            .breakdown-row,
+            .comparison-item {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .btn-primary:hover,
+            .btn-success:hover {
+                transform: none;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: var(--spacing-4);
+            }
+
+            .result-value {
+                font-size: 2.5rem;
+            }
+
+            .email-input-group {
+                flex-direction: column;
+            }
+
+            .email-input-group .btn {
+                width: 100%;
+            }
+
+            .result-comparison {
+                gap: var(--spacing-6);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">AWARE Hair Pro Tools</div>
+            <h1>Real Hourly Rate Calculator</h1>
+            <p>What are you actually earning per hour?</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-steps">
+                <span class="progress-step active" data-step="1">Service</span>
+                <span class="progress-step" data-step="2">Costs</span>
+                <span class="progress-step" data-step="3">Hidden Time</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 33%"></div>
+            </div>
+        </div>
+
+        <!-- Step 1: Service Details -->
+        <div class="screen active" id="step1">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="step-badge">Step 1</span>
+                    The Service
+                </h2>
+
+                <div class="form-group">
+                    <label for="serviceName">Service Name <span class="label-hint">(optional)</span></label>
+                    <input type="text" id="serviceName" placeholder="e.g., Balayage, Men's Cut, Color + Cut">
+                </div>
+
+                <div class="form-group">
+                    <label for="servicePrice">What do you charge?</label>
+                    <div class="input-prefix">
+                        <input type="number" id="servicePrice" placeholder="200" min="0" step="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Time Breakdown</label>
+                    <div class="time-grid">
+                        <div class="time-row">
+                            <span class="time-label">Chair time</span>
+                            <div class="input-suffix" data-suffix="min">
+                                <input type="number" id="chairTime" placeholder="120" min="0">
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-label">Prep/mixing</span>
+                            <div class="input-suffix" data-suffix="min">
+                                <input type="number" id="prepTime" placeholder="15" min="0">
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-label">Cleanup</span>
+                            <div class="input-suffix" data-suffix="min">
+                                <input type="number" id="cleanupTime" placeholder="10" min="0">
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-label">Consultation</span>
+                            <div class="input-suffix" data-suffix="min">
+                                <input type="number" id="consultTime" placeholder="10" min="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="goToStep(2)">Continue</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Costs -->
+        <div class="screen" id="step2">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="step-badge">Step 2</span>
+                    Your Costs
+                </h2>
+
+                <div class="form-group">
+                    <label for="productCost">Product cost for this service</label>
+                    <div class="input-prefix">
+                        <input type="number" id="productCost" placeholder="35" min="0" step="0.01">
+                    </div>
+                    <span class="label-hint">Color, lightener, toner, etc.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="suppliesCost">Supplies/disposables</label>
+                    <div class="input-prefix">
+                        <input type="number" id="suppliesCost" placeholder="8" min="0" step="0.01">
+                    </div>
+                    <span class="label-hint">Foils, gloves, cape, etc.</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Your compensation model</label>
+                    <div class="toggle-group">
+                        <div class="toggle-option">
+                            <input type="radio" name="compModel" id="commission" value="commission">
+                            <label for="commission">Commission</label>
+                        </div>
+                        <div class="toggle-option">
+                            <input type="radio" name="compModel" id="boothRent" value="booth" checked>
+                            <label for="boothRent">Booth Rent</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Commission Fields -->
+                <div class="conditional-fields" id="commissionFields">
+                    <div class="form-group">
+                        <label for="commissionRate">What % do you keep?</label>
+                        <div class="input-suffix" data-suffix="%">
+                            <input type="number" id="commissionRate" placeholder="60" min="0" max="100">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booth Rent Fields -->
+                <div class="conditional-fields visible" id="boothFields">
+                    <div class="form-group">
+                        <label for="monthlyRent">Monthly rent</label>
+                        <div class="input-prefix">
+                            <input type="number" id="monthlyRent" placeholder="1200" min="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="hoursPerMonth">Hours you work per month</label>
+                        <div class="input-suffix" data-suffix="hrs">
+                            <input type="number" id="hoursPerMonth" placeholder="160" min="1">
+                        </div>
+                    </div>
+                    <p class="label-hint" id="hourlyOverhead">Your hourly overhead: $7.50/hr</p>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToStep(1)">Back</button>
+                    <button class="btn btn-primary" onclick="goToStep(3)">Continue</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Hidden Time -->
+        <div class="screen" id="step3">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="step-badge">Step 3</span>
+                    Hidden Time <span class="label-hint">(optional)</span>
+                </h2>
+
+                <p style="color: var(--color-text-secondary); font-size: 14px; margin-bottom: var(--spacing-5);">
+                    Time you spend that you don't charge for
+                </p>
+
+                <div class="form-group">
+                    <div class="time-grid">
+                        <div class="time-row">
+                            <span class="time-label">Booking/scheduling</span>
+                            <div class="input-suffix" data-suffix="min">
+                                <input type="number" id="bookingTime" placeholder="5" min="0">
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-label">Client texts/DMs</span>
+                            <div class="input-suffix" data-suffix="min">
+                                <input type="number" id="textsTime" placeholder="10" min="0">
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-label">Social media for client</span>
+                            <div class="input-suffix" data-suffix="min">
+                                <input type="number" id="socialTime" placeholder="5" min="0">
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-label">Photos/content</span>
+                            <div class="input-suffix" data-suffix="min">
+                                <input type="number" id="photoTime" placeholder="5" min="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToStep(2)">Back</button>
+                    <button class="btn btn-primary" onclick="calculateResults()">Calculate My Rate</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="screen" id="results">
+            <div id="resultsContent">
+                <!-- Hero Result -->
+                <div class="result-hero" id="resultHero">
+                    <div class="result-label">Your Real Hourly Rate</div>
+                    <div class="result-value" id="hourlyRate">$38.40</div>
+                    <div class="result-subtitle" id="resultSubtitle">You charge $200 but earn $38/hour</div>
+
+                    <div class="result-comparison">
+                        <div class="comparison-item">
+                            <div class="comparison-label">Total Time</div>
+                            <div class="comparison-value" id="totalTimeDisplay">2h 35m</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">Your Take</div>
+                            <div class="comparison-value" id="yourTakeDisplay">$157</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Insight Box -->
+                <div class="insight-box" id="insightBox">
+                    <h4>&#128161; Key Insight</h4>
+                    <p id="insightText">Your hidden time is costing you the most. 25 minutes of unbilled work drops your rate by $12/hour.</p>
+                </div>
+
+                <!-- Breakdown -->
+                <div class="breakdown-card">
+                    <div class="breakdown-header">Service Breakdown</div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Service Price</span>
+                        <span class="breakdown-value" id="breakdownPrice">$200.00</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Product Cost</span>
+                        <span class="breakdown-value negative" id="breakdownProduct">-$35.00</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Supplies</span>
+                        <span class="breakdown-value negative" id="breakdownSupplies">-$8.00</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label" id="breakdownCompLabel">Booth Overhead</span>
+                        <span class="breakdown-value negative" id="breakdownComp">-$0.00</span>
+                    </div>
+                    <div class="breakdown-row total">
+                        <span class="breakdown-label">Your Take-Home</span>
+                        <span class="breakdown-value positive" id="breakdownTakeHome">$157.00</span>
+                    </div>
+                </div>
+
+                <div class="breakdown-card">
+                    <div class="breakdown-header">Time Breakdown</div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Chair Time</span>
+                        <span class="breakdown-value" id="breakdownChair">120 min</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Prep + Cleanup + Consult</span>
+                        <span class="breakdown-value" id="breakdownPrepCleanup">35 min</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Hidden Time</span>
+                        <span class="breakdown-value" id="breakdownHidden">25 min</span>
+                    </div>
+                    <div class="breakdown-row total">
+                        <span class="breakdown-label">Total Time Investment</span>
+                        <span class="breakdown-value" id="breakdownTotalTime">180 min</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email Capture -->
+            <div class="email-capture" id="emailCapture">
+                <h3>Email yourself this breakdown</h3>
+                <p>Get your personalized report + a guide to raising your real hourly rate</p>
+                <div class="email-input-group" id="emailForm">
+                    <input type="email" id="emailInput" placeholder="your@email.com">
+                    <button class="btn btn-success" onclick="submitEmail()">Send</button>
+                </div>
+                <div class="email-success" id="emailSuccess">
+                    &#10003; Check your inbox! Your breakdown is on the way.
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="action-btn" onclick="downloadPDF()">
+                    <div class="action-btn-icon">&#128196;</div>
+                    <div class="action-btn-label">Download PDF</div>
+                </button>
+                <button class="action-btn" onclick="shareResults()">
+                    <div class="action-btn-icon">&#128279;</div>
+                    <div class="action-btn-label">Share Results</div>
+                </button>
+            </div>
+
+            <!-- Start Over -->
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="startOver()">Calculate Another Service</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Built by <a href="https://awarehair.com" target="_blank">AWARE Hair</a> for stylists who want to know the truth.</p>
+        </div>
+    </div>
+
+    <script>
+        // Value Counter Animation
+        function animateValue(el, end, duration, prefix, suffix) {
+            duration = duration || 1000;
+            prefix = prefix || '';
+            suffix = suffix || '';
+
+            // Respect reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                el.textContent = prefix + (Number.isInteger(end) ? end.toLocaleString() : end.toFixed(2)) + suffix;
+                return;
+            }
+
+            const start = 0;
+            const startTime = performance.now();
+
+            function update(now) {
+                const progress = Math.min((now - startTime) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3); // cubic ease-out
+                const value = start + (end - start) * eased;
+                const displayValue = Number.isInteger(end) ? Math.floor(value).toLocaleString() : value.toFixed(2);
+                el.textContent = prefix + displayValue + suffix;
+                if (progress < 1) requestAnimationFrame(update);
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        // Staggered reveal for list items
+        function revealListItems(selector, delay) {
+            delay = delay || 100;
+            const items = document.querySelectorAll(selector);
+
+            // Respect reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                items.forEach(item => item.classList.add('visible'));
+                return;
+            }
+
+            items.forEach((item, index) => {
+                setTimeout(() => item.classList.add('visible'), index * delay);
+            });
+        }
+
+        // State
+        let currentStep = 1;
+        let calculationData = {};
+
+        // DOM Elements
+        const progressSteps = document.querySelectorAll('.progress-step');
+        const progressFill = document.querySelector('.progress-fill');
+        const progressContainer = document.getElementById('progressContainer');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Compensation model toggle
+            document.querySelectorAll('input[name="compModel"]').forEach(radio => {
+                radio.addEventListener('change', toggleCompFields);
+            });
+
+            // Calculate overhead on input
+            document.getElementById('monthlyRent').addEventListener('input', updateOverhead);
+            document.getElementById('hoursPerMonth').addEventListener('input', updateOverhead);
+
+            toggleCompFields();
+        });
+
+        function toggleCompFields() {
+            const isCommission = document.getElementById('commission').checked;
+            document.getElementById('commissionFields').classList.toggle('visible', isCommission);
+            document.getElementById('boothFields').classList.toggle('visible', !isCommission);
+        }
+
+        function updateOverhead() {
+            const rent = parseFloat(document.getElementById('monthlyRent').value) || 0;
+            const hours = parseFloat(document.getElementById('hoursPerMonth').value) || 160;
+            const overhead = rent / hours;
+            document.getElementById('hourlyOverhead').textContent =
+                `Your hourly overhead: $${overhead.toFixed(2)}/hr`;
+        }
+
+        function goToStep(step) {
+            // Validate current step
+            if (step > currentStep && !validateStep(currentStep)) {
+                return;
+            }
+
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+
+            // Show target screen
+            document.getElementById(`step${step}`).classList.add('active');
+
+            // Update progress
+            currentStep = step;
+            updateProgress();
+        }
+
+        function validateStep(step) {
+            if (step === 1) {
+                const price = parseFloat(document.getElementById('servicePrice').value);
+                const chairTime = parseFloat(document.getElementById('chairTime').value);
+
+                if (!price || price <= 0) {
+                    alert('Please enter your service price');
+                    return false;
+                }
+                if (!chairTime || chairTime <= 0) {
+                    alert('Please enter your chair time');
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function updateProgress() {
+            const percentage = (currentStep / 3) * 100;
+            progressFill.style.width = `${percentage}%`;
+
+            progressSteps.forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index + 1 < currentStep) {
+                    step.classList.add('completed');
+                } else if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+        }
+
+        function calculateResults() {
+            // Gather all data
+            const serviceName = document.getElementById('serviceName').value || 'Your Service';
+            const servicePrice = parseFloat(document.getElementById('servicePrice').value) || 0;
+
+            // Time (convert to minutes)
+            const chairTime = parseFloat(document.getElementById('chairTime').value) || 0;
+            const prepTime = parseFloat(document.getElementById('prepTime').value) || 0;
+            const cleanupTime = parseFloat(document.getElementById('cleanupTime').value) || 0;
+            const consultTime = parseFloat(document.getElementById('consultTime').value) || 0;
+
+            // Hidden time
+            const bookingTime = parseFloat(document.getElementById('bookingTime').value) || 0;
+            const textsTime = parseFloat(document.getElementById('textsTime').value) || 0;
+            const socialTime = parseFloat(document.getElementById('socialTime').value) || 0;
+            const photoTime = parseFloat(document.getElementById('photoTime').value) || 0;
+
+            // Costs
+            const productCost = parseFloat(document.getElementById('productCost').value) || 0;
+            const suppliesCost = parseFloat(document.getElementById('suppliesCost').value) || 0;
+
+            // Compensation model
+            const isCommission = document.getElementById('commission').checked;
+            let compDeduction = 0;
+            let compLabel = '';
+
+            if (isCommission) {
+                const rate = parseFloat(document.getElementById('commissionRate').value) || 100;
+                compDeduction = servicePrice * ((100 - rate) / 100);
+                compLabel = 'Commission Split';
+            } else {
+                const rent = parseFloat(document.getElementById('monthlyRent').value) || 0;
+                const hours = parseFloat(document.getElementById('hoursPerMonth').value) || 160;
+                const totalMinutes = chairTime + prepTime + cleanupTime + consultTime + bookingTime + textsTime + socialTime + photoTime;
+                compDeduction = (rent / hours) * (totalMinutes / 60);
+                compLabel = 'Booth Overhead';
+            }
+
+            // Calculate totals
+            const visibleTime = chairTime + prepTime + cleanupTime + consultTime;
+            const hiddenTime = bookingTime + textsTime + socialTime + photoTime;
+            const totalTime = visibleTime + hiddenTime;
+
+            const totalDeductions = productCost + suppliesCost + compDeduction;
+            const takeHome = servicePrice - totalDeductions;
+
+            const hourlyRate = totalTime > 0 ? (takeHome / (totalTime / 60)) : 0;
+
+            // Store calculation data
+            calculationData = {
+                serviceName,
+                servicePrice,
+                chairTime,
+                prepTime,
+                cleanupTime,
+                consultTime,
+                hiddenTime,
+                totalTime,
+                productCost,
+                suppliesCost,
+                compDeduction,
+                compLabel,
+                takeHome,
+                hourlyRate,
+                isCommission
+            };
+
+            // Update UI
+            displayResults();
+        }
+
+        function displayResults() {
+            const d = calculationData;
+
+            // Static text updates
+            document.getElementById('resultSubtitle').textContent =
+                `You charge $${d.servicePrice} but earn $${d.hourlyRate.toFixed(0)}/hour`;
+
+            // Comparison static values
+            const hours = Math.floor(d.totalTime / 60);
+            const mins = d.totalTime % 60;
+            document.getElementById('totalTimeDisplay').textContent = `${hours}h ${mins}m`;
+
+            // Insight
+            generateInsight();
+
+            // Breakdown - Static labels and values
+            document.getElementById('breakdownCompLabel').textContent = d.compLabel;
+            document.getElementById('breakdownChair').textContent = `${d.chairTime} min`;
+            document.getElementById('breakdownPrepCleanup').textContent =
+                `${d.prepTime + d.cleanupTime + d.consultTime} min`;
+            document.getElementById('breakdownHidden').textContent = `${d.hiddenTime} min`;
+            document.getElementById('breakdownTotalTime').textContent = `${d.totalTime} min`;
+
+            // Show results screen first
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('results').classList.add('active');
+            progressContainer.style.display = 'none';
+            window.scrollTo(0, 0);
+
+            // Animate values after screen transition
+            setTimeout(() => {
+                // Hero value
+                animateValue(document.getElementById('hourlyRate'), d.hourlyRate, 1200, '$', '');
+
+                // Take home
+                animateValue(document.getElementById('yourTakeDisplay'), Math.round(d.takeHome), 900, '$', '');
+
+                // Breakdown - Money (animated)
+                animateValue(document.getElementById('breakdownPrice'), d.servicePrice, 700, '$', '');
+                animateValue(document.getElementById('breakdownProduct'), d.productCost, 750, '-$', '');
+                animateValue(document.getElementById('breakdownSupplies'), d.suppliesCost, 800, '-$', '');
+                animateValue(document.getElementById('breakdownComp'), d.compDeduction, 850, '-$', '');
+                animateValue(document.getElementById('breakdownTakeHome'), d.takeHome, 1000, '$', '');
+
+                // Reveal breakdown rows and comparison items with stagger
+                revealListItems('.breakdown-row', 80);
+                revealListItems('.comparison-item', 100);
+            }, 200);
+        }
+
+        function generateInsight() {
+            const d = calculationData;
+            let insight = '';
+
+            // Calculate what's eating the most
+            const hiddenCost = d.hiddenTime > 0 ? (d.takeHome / ((d.totalTime - d.hiddenTime) / 60)) - d.hourlyRate : 0;
+            const productPercent = (d.productCost / d.servicePrice) * 100;
+
+            if (d.hiddenTime > 20 && hiddenCost > 5) {
+                insight = `Your hidden time is costing you the most. ${d.hiddenTime} minutes of unbilled work drops your rate by $${hiddenCost.toFixed(0)}/hour.`;
+            } else if (productPercent > 20) {
+                insight = `Product costs are eating ${productPercent.toFixed(0)}% of your service price. Consider reviewing your color usage or adjusting prices.`;
+            } else if (d.hourlyRate < 40) {
+                insight = `At $${d.hourlyRate.toFixed(0)}/hour, a $20 price increase would boost your rate to $${((d.takeHome + 20) / (d.totalTime / 60)).toFixed(0)}/hour.`;
+            } else if (d.hourlyRate > 75) {
+                insight = `Great rate! You're earning above the industry average. Focus on consistency and building more clients at this price point.`;
+            } else {
+                insight = `Your rate is solid. Small optimizations in product costs or time efficiency could push you over $${(d.hourlyRate + 10).toFixed(0)}/hour.`;
+            }
+
+            document.getElementById('insightText').textContent = insight;
+        }
+
+        function submitEmail() {
+            const email = document.getElementById('emailInput').value;
+
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            // Klaviyo Client-Side Integration
+            const klaviyoProperties = {
+                '$email': email,
+                'calculator_used': 'real_hourly_rate',
+                'service_name': calculationData.serviceName,
+                'service_price': calculationData.servicePrice,
+                'hourly_rate': parseFloat(calculationData.hourlyRate.toFixed(2)),
+                'take_home': parseFloat(calculationData.takeHome.toFixed(2)),
+                'total_time_minutes': calculationData.totalTime,
+                'hidden_time_minutes': calculationData.hiddenTime,
+                'product_cost': calculationData.productCost,
+                'supplies_cost': calculationData.suppliesCost,
+                'comp_model': calculationData.isCommission ? 'commission' : 'booth_rent',
+                'calculation_date': new Date().toISOString()
+            };
+
+            // Method 1: Klaviyo Onsite SDK (if loaded)
+            if (typeof klaviyo !== 'undefined') {
+                // Identify the user
+                klaviyo.identify(klaviyoProperties);
+
+                // Track the event
+                klaviyo.track('Calculated Real Hourly Rate', {
+                    service_name: calculationData.serviceName,
+                    service_price: calculationData.servicePrice,
+                    hourly_rate: calculationData.hourlyRate.toFixed(2),
+                    take_home: calculationData.takeHome.toFixed(2),
+                    total_time: calculationData.totalTime,
+                    comp_model: calculationData.isCommission ? 'commission' : 'booth_rent'
+                });
+
+                console.log('Klaviyo: Profile identified and event tracked');
+            }
+
+            // Method 2: Klaviyo Client API (fallback/direct)
+            const KLAVIYO_LIST_ID = 'YOUR_PRO_TOOLS_LIST_ID'; // Replace with your list ID
+
+            fetch('https://a.klaviyo.com/client/subscriptions/?company_id=pk_1bcdfc5f9fa0dde4ab05653e3f64c5ebb5', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'revision': '2024-10-15'
+                },
+                body: JSON.stringify({
+                    data: {
+                        type: 'subscription',
+                        attributes: {
+                            custom_source: 'Pro Tools - Real Hourly Rate Calculator',
+                            profile: {
+                                data: {
+                                    type: 'profile',
+                                    attributes: {
+                                        email: email,
+                                        properties: {
+                                            calculator_used: 'real_hourly_rate',
+                                            service_price: calculationData.servicePrice,
+                                            hourly_rate: calculationData.hourlyRate.toFixed(2),
+                                            comp_model: calculationData.isCommission ? 'commission' : 'booth_rent'
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        relationships: {
+                            list: {
+                                data: {
+                                    type: 'list',
+                                    id: KLAVIYO_LIST_ID
+                                }
+                            }
+                        }
+                    }
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Klaviyo: Subscription created');
+                } else {
+                    console.log('Klaviyo: Response status', response.status);
+                }
+            })
+            .catch(error => {
+                console.log('Klaviyo error (non-blocking):', error);
+            });
+
+            // Show success immediately (don't wait for API)
+            document.getElementById('emailForm').style.display = 'none';
+            document.getElementById('emailSuccess').classList.add('visible');
+
+            // Track event (for analytics)
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'email_capture', {
+                    'calculator': 'real_hourly_rate',
+                    'hourly_rate': calculationData.hourlyRate.toFixed(2)
+                });
+            }
+        }
+
+        function downloadPDF() {
+            const element = document.getElementById('resultsContent');
+            const opt = {
+                margin: 10,
+                filename: `real-hourly-rate-${calculationData.serviceName.replace(/\s+/g, '-').toLowerCase()}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+
+            // Track event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'download_pdf', {
+                    'calculator': 'real_hourly_rate'
+                });
+            }
+        }
+
+        function shareResults() {
+            const text = `I just calculated my real hourly rate as a stylist: $${calculationData.hourlyRate.toFixed(2)}/hour. Most stylists know what they charge - few know what they earn. Try it: `;
+            const url = window.location.href;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Real Hourly Rate',
+                    text: text,
+                    url: url
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(text + url).then(() => {
+                    alert('Link copied to clipboard!');
+                });
+            }
+
+            // Track event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'share', {
+                    'calculator': 'real_hourly_rate'
+                });
+            }
+        }
+
+        function startOver() {
+            // Reset form
+            document.querySelectorAll('input[type="number"], input[type="text"], input[type="email"]').forEach(input => {
+                input.value = '';
+            });
+
+            // Reset to step 1
+            currentStep = 1;
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('step1').classList.add('active');
+            progressContainer.style.display = 'block';
+            updateProgress();
+
+            // Reset animation states for next calculation
+            document.querySelectorAll('.breakdown-row, .comparison-item').forEach(el => {
+                el.classList.remove('visible');
+            });
+
+            // Reset email capture
+            document.getElementById('emailForm').style.display = 'flex';
+            document.getElementById('emailSuccess').classList.remove('visible');
+
+            window.scrollTo(0, 0);
+        }
+    </script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

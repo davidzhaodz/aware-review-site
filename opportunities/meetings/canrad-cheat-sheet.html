@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CanRad Meeting - Feb 18 Cheat Sheet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2D4739;
+      --forest-deep: #1E3228;
+      --sage: #7A8F7D;
+      --cream: #F8F6F1;
+      --sand: #E8E4DC;
+      --charcoal: #2C2C2C;
+      --warm-gray: #6B6B6B;
+      --gold: #B8956E;
+      --gold-light: #C9A882;
+      --white: #FFFFFF;
+      --mist: #D5DDD8;
+      --divider: #D4CFC6;
+      --green-soft: #4A8C6B;
+      --green-bg: #F2F8F5;
+      --red-soft: #C45B4A;
+      --red-bg: #FDF5F4;
+      --amber-soft: #B8860B;
+      --amber-bg: #FFFBF0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      background: var(--sand);
+      color: var(--charcoal);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 920px;
+      margin: 0 auto;
+      background: var(--white);
+    }
+
+    /* ============ HEADER ============ */
+
+    .header {
+      background: var(--forest-deep);
+      padding: 36px 48px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 40%, transparent 100%);
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .header h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      font-size: 26px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--cream);
+    }
+
+    .header .meeting-info {
+      font-size: 14px;
+      color: var(--sage);
+      margin-top: 4px;
+    }
+
+    .header .meeting-info strong {
+      color: var(--gold-light);
+      font-weight: 500;
+    }
+
+    .header .goal-line {
+      margin-top: 14px;
+      font-size: 15px;
+      color: var(--cream);
+      opacity: 0.85;
+      max-width: 600px;
+      line-height: 1.5;
+    }
+
+    .header-right {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .header-right .label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sage);
+      opacity: 0.7;
+    }
+
+    /* ============ NAV STRIP ============ */
+
+    .nav-strip {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--divider);
+      background: var(--cream);
+      overflow-x: auto;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-strip a {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      text-decoration: none;
+      padding: 12px 16px;
+      white-space: nowrap;
+      border-right: 1px solid var(--divider);
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-strip a:hover {
+      color: var(--forest);
+      background: var(--white);
+    }
+
+    /* ============ CONTENT ============ */
+
+    .content {
+      padding: 0 48px 56px;
+    }
+
+    .section {
+      padding-top: 36px;
+    }
+
+    .section-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--divider);
+    }
+
+    /* ============ 1. PEOPLE ON THE CALL ============ */
+
+    .people-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--divider);
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .person-card {
+      background: var(--white);
+      padding: 18px 20px;
+    }
+
+    .person-name {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--forest);
+    }
+
+    .person-title {
+      font-size: 12.5px;
+      color: var(--warm-gray);
+      margin-top: 1px;
+    }
+
+    .person-note {
+      font-size: 13px;
+      margin-top: 8px;
+      color: var(--charcoal);
+      line-height: 1.5;
+    }
+
+    .person-note strong {
+      color: var(--forest-deep);
+    }
+
+    /* ============ 2. COMPANY SNAPSHOT ============ */
+
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .snap-card {
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      padding: 16px 20px;
+    }
+
+    .snap-card h4 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .snap-card p, .snap-card ul {
+      font-size: 14px;
+      color: var(--charcoal);
+    }
+
+    .snap-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .snap-card li {
+      padding: 3px 0;
+      border-bottom: 1px solid #F2F0EC;
+    }
+
+    .snap-card li:last-child { border-bottom: none; }
+
+    .snap-card .stat {
+      font-size: 22px;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      color: var(--forest);
+      line-height: 1.1;
+    }
+
+    .snap-card .stat-note {
+      font-size: 12px;
+      color: var(--warm-gray);
+      margin-top: 2px;
+    }
+
+    .snap-wide {
+      grid-column: 1 / -1;
+    }
+
+    .brand-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .brand-pill {
+      font-size: 11.5px;
+      padding: 3px 10px;
+      background: var(--cream);
+      border: 1px solid var(--divider);
+      border-radius: 2px;
+      color: var(--charcoal);
+    }
+
+    .brand-pill.scalp {
+      background: var(--forest-deep);
+      color: var(--cream);
+      border-color: var(--forest-deep);
+    }
+
+    .brand-pill.scalp-label {
+      background: none;
+      border: 1px dashed var(--sage);
+      color: var(--sage);
+      font-style: italic;
+    }
+
+    /* ============ 3. TALKING POINTS ============ */
+
+    .frame-card {
+      border-left: 3px solid var(--gold);
+      padding: 14px 20px;
+      margin-bottom: 14px;
+      background: linear-gradient(90deg, rgba(184,149,110,0.04) 0%, transparent 40%);
+      border-radius: 0 3px 3px 0;
+    }
+
+    .frame-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .frame-quote {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--charcoal);
+    }
+
+    .frame-quote strong {
+      color: var(--forest-deep);
+    }
+
+    /* ============ 4. PRICING ============ */
+
+    .tier-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14.5px;
+    }
+
+    .tier-table thead th {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      font-weight: 500;
+      padding: 0 12px 12px 0;
+      text-align: left;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .tier-table thead th:last-child { text-align: right; padding-right: 0; }
+
+    .tier-table tbody td {
+      padding: 12px 12px 12px 0;
+      border-bottom: 1px solid #EDEBE6;
+      vertical-align: top;
+    }
+
+    .tier-table tbody td:last-child { text-align: right; padding-right: 0; }
+
+    .tier-name { font-weight: 600; color: var(--charcoal); }
+    .tier-desc { font-size: 12px; color: var(--warm-gray); margin-top: 1px; }
+    .tier-price { font-size: 18px; font-weight: 600; color: var(--forest); }
+    .tier-pct { font-size: 12px; color: var(--warm-gray); }
+    .tier-margin { font-weight: 500; }
+
+    tr.rec {
+      background: linear-gradient(90deg, rgba(45,71,57,0.04) 0%, rgba(184,149,110,0.04) 100%);
+    }
+
+    tr.rec td { border-bottom-color: var(--sage); }
+
+    .rec-badge {
+      display: inline-block;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 2px 8px;
+      border-radius: 2px;
+      margin-left: 6px;
+      vertical-align: middle;
+      font-weight: 600;
+    }
+
+    .set-bar {
+      margin-top: 16px;
+      background: var(--forest-deep);
+      border-radius: 3px;
+      padding: 18px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .set-bar-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sage);
+    }
+
+    .set-figures { display: flex; gap: 40px; }
+
+    .set-fig { text-align: center; }
+
+    .set-fig .amount {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--cream);
+    }
+
+    .set-fig .lbl {
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-top: 1px;
+    }
+
+    .pricing-note {
+      font-size: 13px;
+      color: var(--warm-gray);
+      margin-top: 14px;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .pricing-note strong {
+      color: var(--forest);
+      font-style: normal;
+    }
+
+    /* ============ 5. COMPLIANCE ONE-LINER ============ */
+
+    .oneliner-box {
+      background: var(--forest-deep);
+      color: var(--cream);
+      padding: 24px 28px;
+      border-radius: 3px;
+      font-size: 16px;
+      line-height: 1.65;
+      position: relative;
+    }
+
+    .oneliner-box::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 64px;
+      color: var(--gold);
+      opacity: 0.3;
+      position: absolute;
+      top: 4px;
+      left: 16px;
+      line-height: 1;
+    }
+
+    .oneliner-box p {
+      position: relative;
+      z-index: 1;
+      padding-left: 24px;
+    }
+
+    .oneliner-box strong {
+      color: var(--gold-light);
+      font-weight: 500;
+    }
+
+    .compliance-pills {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .c-pill {
+      font-size: 12px;
+      padding: 6px 14px;
+      border: 1px solid var(--divider);
+      border-radius: 2px;
+      background: var(--cream);
+    }
+
+    .c-pill strong {
+      color: var(--forest);
+    }
+
+    /* ============ 6. OBJECTIONS ============ */
+
+    .objection-card {
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .objection-header {
+      padding: 12px 18px;
+      background: var(--cream);
+      font-weight: 600;
+      font-size: 14.5px;
+      color: var(--charcoal);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .objection-header .arrow {
+      font-size: 12px;
+      color: var(--warm-gray);
+      transition: transform 0.2s;
+    }
+
+    .objection-body {
+      padding: 14px 18px;
+      font-size: 14.5px;
+      line-height: 1.65;
+      border-top: 1px solid var(--divider);
+    }
+
+    .objection-body strong {
+      color: var(--forest-deep);
+    }
+
+    .objection-data {
+      font-size: 12px;
+      color: var(--warm-gray);
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    .obj-highlight {
+      border-left: 3px solid var(--gold);
+    }
+
+    /* ============ 7. QUESTIONS ============ */
+
+    .questions-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .questions-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid #F2F0EC;
+      font-size: 15px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .questions-list li:last-child { border-bottom: none; }
+
+    .q-priority {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 2px;
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .q-must {
+      background: var(--forest-deep);
+      color: var(--cream);
+    }
+
+    .q-should {
+      background: var(--cream);
+      color: var(--warm-gray);
+      border: 1px solid var(--divider);
+    }
+
+    .q-bonus {
+      background: var(--amber-bg);
+      color: var(--amber-soft);
+      border: 1px solid rgba(184,134,11,0.2);
+    }
+
+    /* ============ 8. SIGNALS ============ */
+
+    .signals-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .signal-col h4 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .signal-col.green h4 { color: var(--green-soft); }
+    .signal-col.red h4 { color: var(--red-soft); }
+
+    .signal-item {
+      padding: 8px 12px;
+      border-radius: 2px;
+      font-size: 13px;
+      margin-bottom: 6px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .signal-col.green .signal-item { background: var(--green-bg); border-left: 2px solid var(--green-soft); }
+    .signal-col.red .signal-item { background: var(--red-bg); border-left: 2px solid var(--red-soft); }
+
+    .signal-what {
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+
+    .signal-means {
+      color: var(--warm-gray);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .signal-move {
+      font-size: 12px;
+      font-style: italic;
+      color: var(--charcoal);
+      margin-top: 3px;
+    }
+
+    /* ============ 9. NEXT STEPS ============ */
+
+    .outcome-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--divider);
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .outcome-card {
+      background: var(--white);
+      padding: 20px;
+    }
+
+    .outcome-card h4 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .outcome-card.enthusiastic h4 { color: var(--green-soft); }
+    .outcome-card.cautious h4 { color: var(--gold); }
+    .outcome-card.lukewarm h4 { color: var(--red-soft); }
+
+    .outcome-card p {
+      font-size: 13.5px;
+      line-height: 1.6;
+    }
+
+    .outcome-card .bonus {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: var(--green-bg);
+      border-radius: 2px;
+      font-size: 12.5px;
+      color: var(--forest);
+    }
+
+    /* ============ 10. CHECKLIST ============ */
+
+    .checklist {
+      list-style: none;
+      padding: 0;
+      columns: 2;
+      column-gap: 24px;
+    }
+
+    .checklist li {
+      padding: 7px 0;
+      border-bottom: 1px solid #F2F0EC;
+      font-size: 13.5px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      break-inside: avoid;
+    }
+
+    .checklist .box {
+      width: 15px;
+      height: 15px;
+      border: 1.5px solid var(--sage);
+      border-radius: 2px;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .checklist .verify-box {
+      border-color: var(--amber-soft);
+      background: var(--amber-bg);
+    }
+
+    /* ============ RESPONSIVE ============ */
+
+    @media (max-width: 920px) {
+      .page { max-width: 100%; }
+      .header, .content { padding-left: 24px; padding-right: 24px; }
+      .people-grid, .outcome-cards { grid-template-columns: 1fr; }
+      .snapshot-grid { grid-template-columns: 1fr; }
+      .signals-grid { grid-template-columns: 1fr; }
+      .checklist { columns: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ======== HEADER ======== -->
+  <div class="header">
+    <div class="header-row">
+      <div>
+        <h1>CanRad Beauty</h1>
+        <div class="meeting-info">Tuesday, February 18, 2026 &mdash; <strong>Virtual follow-on from Cosmoprof</strong></div>
+        <div class="goal-line">Advance from introductory conversation to concrete next steps: pilot, terms discussion, or clear pass.</div>
+      </div>
+      <div class="header-right">
+        <div class="label">Context</div>
+        <div style="font-size: 13px; color: var(--sage); margin-top: 4px; max-width: 200px; text-align: right; line-height: 1.5;">
+          Main concern at Cosmoprof was <strong style="color: var(--gold-light);">price point</strong> and sell-through. They have the 2026 Brand Deck.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== NAV ======== -->
+  <div class="nav-strip">
+    <a href="#people">People</a>
+    <a href="#company">Company</a>
+    <a href="#competitive">Competitive</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#talking">Talking Points</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#compliance">Compliance</a>
+    <a href="#objections">Objections</a>
+    <a href="#questions">Questions</a>
+    <a href="#signals">Signals</a>
+    <a href="#nextsteps">Next Steps</a>
+    <a href="#checklist">Checklist</a>
+  </div>
+
+  <div class="content">
+
+    <!-- ======== 1. PEOPLE ======== -->
+    <div class="section" id="people">
+      <div class="section-label">Who's on the Call</div>
+      <div class="people-grid">
+        <div class="person-card">
+          <div class="person-name">Jack Stern</div>
+          <div class="person-title">EVP Sales & Marketing</div>
+          <div class="person-note">Two stints at CanRad. Was <strong>President at Saryna Key</strong> (2013-15), VP Sales Upper Canada, Director Sales Apollo H&B. <strong>Brand-side P&L experience</strong> - speak to him as a fellow brand builder. BA Communications, York U.</div>
+        </div>
+        <div class="person-card">
+          <div class="person-name">Stuart Lapowich</div>
+          <div class="person-title">Sr. EVP Operations</div>
+          <div class="person-note">18+ years. MA USC. Led <strong>Green Circle Salons partnership</strong> - values sustainability. His words: "partnerships with our community and environment." <strong>Scalp Environment Report will resonate.</strong></div>
+        </div>
+        <div class="person-card">
+          <div class="person-name">Kenny Wise</div>
+          <div class="person-title">CEO/President (not on call)</div>
+          <div class="person-note">4th-gen. GM since '86, CEO since '98. BA Philosophy. <strong>Final decision-maker.</strong> Brother Jeffrey is CFO. Values fit and longevity over growth-at-all-costs.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== 2. COMPANY ======== -->
+    <div class="section" id="company">
+      <div class="section-label">CanRad at a Glance</div>
+      <div class="snapshot-grid">
+        <div class="snap-card">
+          <h4>What They Are</h4>
+          <p>Canada's premier independent professional beauty distributor. Fourth-generation, family-owned (Wise family). 110+ year history. HQ: North York, Ontario.</p>
+        </div>
+        <div class="snap-card">
+          <h4>Scale</h4>
+          <div class="stat">10,000+</div>
+          <div class="stat-note">salon & spa customers</div>
+          <ul style="margin-top: 10px;">
+            <li>Ontario and Manitoba (SK expansion unconfirmed)</li>
+            <li>38 salon consultants</li>
+            <li>14 trade-only stores, 8 education facilities</li>
+          </ul>
+        </div>
+        <div class="snap-card snap-wide">
+          <h4>Portfolio - 60+ Brands</h4>
+          <div class="brand-pills">
+            <span class="brand-pill">Moroccanoil</span>
+            <span class="brand-pill">Paul Mitchell</span>
+            <span class="brand-pill">Schwarzkopf</span>
+            <span class="brand-pill">Wella</span>
+            <span class="brand-pill">L'ANZA</span>
+            <span class="brand-pill">Kenra</span>
+            <span class="brand-pill">amika</span>
+            <span class="brand-pill">Brazilian Blowout</span>
+            <span class="brand-pill scalp">Nioxin (scalp/thinning)</span>
+            <span class="brand-pill scalp">Zenagen (hair loss)</span>
+            <span class="brand-pill scalp">Biotop (scalp health)</span>
+            <span class="brand-pill scalp-label">No proactive scalp wellness ritual brand</span>
+          </div>
+        </div>
+        <div class="snap-card">
+          <h4>Why Independence Matters</h4>
+          <p>Unlike SalonCentric (L'Oreal) or CosmoProf (Sally Beauty), CanRad has no parent-brand conflict. They can promote AWARE without competing against in-house brands.</p>
+        </div>
+        <div class="snap-card">
+          <h4>Quaffed Program</h4>
+          <p>DTC extension - salons sell CanRad-warehoused products direct to consumers. App: iOS/Android, 4.4 stars. Lists <strong>"Scalp Care"</strong> as a shop-by-concern category.</p>
+        </div>
+        <div class="snap-card">
+          <h4>HairFest</h4>
+          <p>CanRad's annual proprietary trade show, <strong>May, Mississauga</strong>. Potential launch activation opportunity if meeting goes well.</p>
+        </div>
+        <div class="snap-card">
+          <h4>Canadian Brand Angle</h4>
+          <p>Highlights "Canadian Brands" as a special site category. AWARE is US-based - don't claim to be Canadian, but the wellness positioning resonates.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== 2B. COMPETITIVE PRICING ======== -->
+    <div class="section" id="competitive">
+      <div class="section-label">Competitive Pricing (Verified)</div>
+      <table class="tier-table">
+        <thead>
+          <tr>
+            <th>Brand</th>
+            <th>Product</th>
+            <th>Price</th>
+            <th>$/oz</th>
+            <th style="text-align: left;">Channel</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="rec">
+            <td><span class="tier-name">AWARE</span></td>
+            <td>Shampoo</td>
+            <td><span class="tier-price">$55</span></td>
+            <td>~$6.47</td>
+            <td style="text-align: left;"><strong>Salon-exclusive</strong></td>
+          </tr>
+          <tr>
+            <td><span class="tier-name">Nioxin</span></td>
+            <td>System 2 (10.1 oz)</td>
+            <td><span class="tier-price">$27</span></td>
+            <td>$2.67</td>
+            <td style="text-align: left;">Salon + Shoppers + DTC</td>
+          </tr>
+          <tr>
+            <td><span class="tier-name">Zenagen</span></td>
+            <td>Revolve (6.75 oz)</td>
+            <td><span class="tier-price">$60</span></td>
+            <td>$8.89</td>
+            <td style="text-align: left;">Salon + Walmart + Amazon</td>
+          </tr>
+          <tr>
+            <td><span class="tier-name">Biotop</span></td>
+            <td>04 Shedding (16.9 oz)</td>
+            <td><span class="tier-price">$45.75</span></td>
+            <td>$2.71</td>
+            <td style="text-align: left;">Salon + Amazon</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top: 12px; padding: 12px 16px; background: var(--green-bg); border-left: 2px solid var(--green-soft); border-radius: 2px; font-size: 13.5px;">
+        <strong>Key line:</strong> "Zenagen is $60 for 6.75 oz - $8.89/oz. AWARE is more accessible per ounce. And Zenagen is on Walmart and Amazon. We're the only genuine salon-exclusive option."
+      </div>
+    </div>
+
+    <!-- ======== 2C. PORTFOLIO INTEL ======== -->
+    <div class="section" id="portfolio">
+      <div class="section-label">Portfolio Intel (68 Brands)</div>
+      <div style="padding: 14px 18px; background: var(--green-bg); border-left: 3px solid var(--green-soft); border-radius: 3px; font-size: 14.5px; line-height: 1.6; margin-bottom: 14px;">
+        <strong>Zero brands in CanRad's 68-brand portfolio are genuinely salon-exclusive.</strong> Every care/treatment brand has channel leakage - Amazon, Shoppers Drug Mart, Walmart, or DTC. AWARE would be the first and only truly salon-exclusive brand they carry.
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+        <div style="border: 1px solid var(--divider); border-radius: 3px; padding: 16px 18px;">
+          <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--red-soft); font-weight: 600; margin-bottom: 8px;">Worst Channel Leakage</div>
+          <div style="font-size: 13.5px; line-height: 1.65;">
+            <div style="padding: 4px 0; border-bottom: 1px solid #F2F0EC;"><strong>Nioxin</strong> - 50% off at Shoppers/Woot</div>
+            <div style="padding: 4px 0; border-bottom: 1px solid #F2F0EC;"><strong>TruffLuv</strong> - own site sells 53% off MSRP</div>
+            <div style="padding: 4px 0; border-bottom: 1px solid #F2F0EC;"><strong>Revlon Pro</strong> - 60% off on Amazon.ca</div>
+            <div style="padding: 4px 0; border-bottom: 1px solid #F2F0EC;"><strong>Schwarzkopf</strong> - deliberately went to Amazon 2023</div>
+            <div style="padding: 4px 0;"><strong>Oligo</strong> - claims "salon-only" but is on Amazon</div>
+          </div>
+        </div>
+        <div style="border: 1px solid var(--divider); border-radius: 3px; padding: 16px 18px;">
+          <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 8px;">PE Ownership Risk</div>
+          <div style="font-size: 13.5px; line-height: 1.65;">
+            <div style="padding: 4px 0; border-bottom: 1px solid #F2F0EC;"><strong>KKR</strong> - Wella, Nioxin</div>
+            <div style="padding: 4px 0; border-bottom: 1px solid #F2F0EC;"><strong>Bansk</strong> - amika</div>
+            <div style="padding: 4px 0; border-bottom: 1px solid #F2F0EC;"><strong>Aurea</strong> - Zenagen (expanding to Amazon)</div>
+            <div style="padding: 4px 0; border-bottom: 1px solid #F2F0EC;"><strong>Henkel</strong> - Schwarzkopf, Kenra, Zotos</div>
+            <div style="padding: 4px 0;"><strong>AWARE</strong> - founder-owned, no PE, no mass plans</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size: 12px; color: var(--warm-gray); font-style: italic;">Full brand-by-brand analysis in the briefing doc. Paul Mitchell Tea Tree is the #1 salon scalp shampoo (~$24). Zotos Biotera has scalp microbiome positioning at $14.99. Mahdeen shares CanRad's address (likely house brand). 4 brands appear dormant (0 products listed).</div>
+    </div>
+
+    <!-- ======== 3. TALKING POINTS ======== -->
+    <div class="section" id="talking">
+      <div class="section-label">Core Narrative Frames</div>
+
+      <div class="frame-card">
+        <div class="frame-label">Channel Protection</div>
+        <div class="frame-quote">"We looked at your full portfolio. <strong>Nioxin is at Shoppers for half-price. Schwarzkopf deliberately went to Amazon. Even Oligo, which says 'salon-only,' is on Amazon.</strong> We enforce MSRP with zero exceptions. No Amazon. No Shoppers. No mass retail. When your salons carry AWARE, their clients can only buy it from them."</div>
+      </div>
+
+      <div class="frame-card">
+        <div class="frame-label">Category Gap</div>
+        <div class="frame-quote">"You carry 60+ brands including Nioxin and Zenagen - but those treat thinning and hair loss. Olaplex is bond repair. <strong>Nobody owns the proactive scalp wellness ritual.</strong> AWARE is the daily scalp care routine - it's the category your salons aren't serving yet."</div>
+      </div>
+
+      <div class="frame-card">
+        <div class="frame-label">Sell-Through, Not Shelf Price</div>
+        <div class="frame-quote">"The question isn't whether $55 is expensive. The question is whether it sells and reorders. <strong>96% of our B2B partners reorder within 2 months. Zero returns. 52% average sell-through rate.</strong> The price works because the product works."</div>
+      </div>
+
+      <div class="frame-card">
+        <div class="frame-label">Revenue Per Square Foot</div>
+        <div class="frame-quote">"A salon carrying the 3-SKU ritual generates <strong>~$170 retail per set sold. At 50% margin, that's $85 per client.</strong> How many of your current back-bar brands deliver that per transaction?"</div>
+      </div>
+
+      <div class="frame-card">
+        <div class="frame-label">Education as Pull</div>
+        <div class="frame-quote">"We don't just ship product. <strong>Tina does scalp consultations and co-develops education with each salon.</strong> That creates client demand that drives sell-through - your consultants aren't pushing product, they're fulfilling demand."</div>
+      </div>
+
+      <div class="frame-card">
+        <div class="frame-label">Why Independence Matters</div>
+        <div class="frame-quote">"We specifically chose to start with an independent. <strong>SalonCentric is L'Oreal. CosmoProf is Sally Beauty.</strong> Both have structural reasons to prioritize their parent brands. When CanRad recommends AWARE, it's because the brand is right for your salons, not because a parent company told you to push it."</div>
+      </div>
+
+      <div class="frame-card">
+        <div class="frame-label">Pilot Selection</div>
+        <div class="frame-quote">"We're not looking for your 50 biggest accounts - we want the 50 most likely to activate. <strong>Salons with scalp on the menu, Biotop buyers, consistent retail reorderers, Green Circle certified.</strong> Your consultants' gut: which owners actually come to HairFest? Transactional accounts don't launch brands."</div>
+      </div>
+
+      <div class="frame-card">
+        <div class="frame-label">Proactive vs. Reactive (Category Label)</div>
+        <div class="frame-quote">"Your scalp portfolio is excellent for treatment - Nioxin for thinning, Zenagen for loss, Biotop for active problems. What you don't have is the <strong>daily wellness ritual for the 90% of clients who don't have a problem yet</strong>. Same shift skincare made: from acne treatment to daily SPF and serums."</div>
+      </div>
+
+      <div class="frame-card">
+        <div class="frame-label">If Asked About Broader Canada</div>
+        <div class="frame-quote">"Our strategy is <strong>depth before breadth</strong>. We want to prove the model in Ontario and Manitoba with the right partner before expanding nationally. If this works the way we expect, <strong>we'd want CanRad to be part of that national conversation.</strong>"</div>
+      </div>
+
+      <div class="frame-card">
+        <div class="frame-label">Turnkey Salon Onboarding</div>
+        <div class="frame-quote">"We have <strong>4 opening packages from $623 to $2,801</strong> - each includes complimentary backbar, displays, merchandising, and education. This isn't 'here's product, good luck.' It's a <strong>turnkey launch program</strong> with white-glove support."</div>
+      </div>
+
+      <div class="frame-card">
+        <div class="frame-label">Scalp Specialist Certification</div>
+        <div class="frame-quote">"Free 3-4 hour program. <strong>Certificate, digital badge, directory listing.</strong> Positions stylists as scalp health experts. This drives consultations that convert to retail - your consultants can tell salons: 'This brand certifies your stylists for free.'"</div>
+      </div>
+
+      <div class="frame-card">
+        <div class="frame-label">Service Revenue Angle</div>
+        <div class="frame-quote">"Not just retail. We have a <strong>45-minute Scalp Detox + Reset treatment protocol</strong>, with 2 more add-on services launching June 2026. That's <strong>recurring service revenue plus retail</strong> from the same brand - dual revenue stream for your salons."</div>
+      </div>
+
+      <div class="frame-card">
+        <div class="frame-label">Client Proof Points</div>
+        <div class="frame-quote">"<strong>99% of clients recommend. 98% see visible improvement after first use. 91% report healthier scalp.</strong> Over 3,000 salon clients served. And named testimonials from stylists at Giuseppe Franco, The Maya, and other premium salons ready to reference."</div>
+      </div>
+    </div>
+
+    <!-- ======== 4. PRICING ======== -->
+    <div class="section" id="pricing">
+      <div class="section-label">Pricing Quick Reference</div>
+
+      <table class="tier-table">
+        <thead>
+          <tr>
+            <th style="width:28%">Tier</th>
+            <th style="width:18%">CanRad Pays</th>
+            <th style="width:14%">% of MSRP</th>
+            <th style="width:16%">Their Margin</th>
+            <th>Commitment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="tier-name">Standard</div><div class="tier-desc">Non-exclusive, standard terms</div></td>
+            <td><span class="tier-price">$22.00</span></td>
+            <td><span class="tier-pct">40%</span></td>
+            <td><span class="tier-margin">20%</span></td>
+            <td>$5K initial order</td>
+          </tr>
+          <tr class="rec">
+            <td><div class="tier-name">Preferred <span class="rec-badge">Target</span></div><div class="tier-desc">Better economics, preferred partner</div></td>
+            <td><span class="tier-price">$19.25</span></td>
+            <td><span class="tier-pct">35%</span></td>
+            <td><span class="tier-margin">30%</span></td>
+            <td>$25K+ annual</td>
+          </tr>
+          <tr>
+            <td><div class="tier-name">Exclusive</div><div class="tier-desc">Territory exclusive, maximum margin</div></td>
+            <td><span class="tier-price">$16.50</span></td>
+            <td><span class="tier-pct">30%</span></td>
+            <td><span class="tier-margin">40%</span></td>
+            <td>$50K+ annual + exclusivity</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="set-bar">
+        <div class="set-bar-label">Per 3-SKU Ritual Set at Preferred Tier</div>
+        <div class="set-figures">
+          <div class="set-fig">
+            <div class="amount">$170</div>
+            <div class="lbl">Consumer</div>
+          </div>
+          <div class="set-fig">
+            <div class="amount">$85</div>
+            <div class="lbl">Salon Profit</div>
+          </div>
+          <div class="set-fig">
+            <div class="amount">$25.50</div>
+            <div class="lbl">CanRad Profit</div>
+          </div>
+          <div class="set-fig">
+            <div class="amount">$59.50</div>
+            <div class="lbl">AWARE Revenue</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pricing-note">
+        <strong>Strategy:</strong> Open at 40% of MSRP. Negotiate to 35% for the right commitment. <strong>Absolute floor: 25%</strong> (only if massive commitment - yields thin $4.75/unit gross profit after $9 COGS). Hold 35% as target landing zone.
+      </div>
+    </div>
+
+    <!-- ======== 5. COMPLIANCE ======== -->
+    <div class="section" id="compliance">
+      <div class="section-label">Canada Market Entry - Ready Answer</div>
+
+      <div class="oneliner-box">
+        <p>"We're prepared for Canadian market entry. Our formulas are already <strong>EU-compliant</strong>, which exceeds Health Canada requirements. We'd handle <strong>bilingual sticker labeling</strong> on our end before shipping, and we'd provide <strong>CUSMA Certification of Origin</strong> documentation so your imports are <strong>duty-free</strong>. We'd want CanRad to serve as the Canadian Responsible Person for Health Canada notification - that's standard practice in these partnerships."</p>
+      </div>
+
+      <div class="compliance-pills">
+        <div class="c-pill"><strong>CUSMA Duty:</strong> 0% (US-made)</div>
+        <div class="c-pill"><strong>HS Codes:</strong> 3305.10, 3305.90</div>
+        <div class="c-pill"><strong>GST:</strong> 5% at import (their cost)</div>
+        <div class="c-pill"><strong>Timeline:</strong> 4-8 weeks to shelves</div>
+      </div>
+
+      <div style="margin-top: 16px; padding: 14px 18px; background: var(--amber-bg); border-left: 3px solid var(--amber-soft); border-radius: 3px; font-size: 13.5px; line-height: 1.6;">
+        <strong style="color: var(--charcoal);">If tariffs come up:</strong> "Canada's retaliatory tariffs were rolled back September 2025. CUSMA gives us 0% duty. We'd provide a blanket Certification of Origin covering a full year. <strong style="color: var(--forest);">Landed cost: ~$29-30 CAD per unit at preferred pricing</strong>, against $37.50 CAD wholesale to salons. Clean economics."
+      </div>
+      <div class="compliance-pills" style="margin-top: 10px;">
+        <div class="c-pill"><strong>USD/CAD:</strong> 1.3656</div>
+        <div class="c-pill"><strong>Landed:</strong> ~$29-30 CAD/unit</div>
+        <div class="c-pill"><strong>Counter-tariffs:</strong> Rolled back Sept '25</div>
+      </div>
+    </div>
+
+    <!-- ======== 6. OBJECTIONS ======== -->
+    <div class="section" id="objections">
+      <div class="section-label">Objection Responses</div>
+
+      <div class="objection-card obj-highlight">
+        <div class="objection-header">"We already carry Nioxin/Zenagen for scalp"</div>
+        <div class="objection-body">
+          "Nioxin treats thinning and hair loss - it's reactive. Zenagen is clinical hair loss treatment. AWARE is the daily ritual for <strong>proactive scalp wellness</strong> - think of it like the difference between <strong>acne treatment and a daily skincare routine</strong>. We complement Nioxin, we don't compete with it. Your salons can carry both."
+        </div>
+      </div>
+
+      <div class="objection-card obj-highlight">
+        <div class="objection-header">"Price point too high"</div>
+        <div class="objection-body">
+          "Zenagen on your shelf is $60 for 6.75 oz - that's $8.89 per ounce. <strong>AWARE is more accessible per ounce than Zenagen.</strong> And our partners see 96% repurchase, zero returns, 52% sell-through. The question isn't 'is $55 expensive?' - it's 'does it sell through and reorder?'"
+        </div>
+      </div>
+
+      <div class="objection-card">
+        <div class="objection-header">"Is scalp care sellable?"</div>
+        <div class="objection-body">
+          "Scalp health is the fastest-growing segment. K18's BSG deal shows the appetite for <strong>science-backed, clinical positioning</strong> in professional distribution. Existing brands treat problems - AWARE is preventative wellness. New revenue stream, not a replacement."
+          <div class="objection-data">Ref: positioning matrix, deck p.5</div>
+        </div>
+      </div>
+
+      <div class="objection-card">
+        <div class="objection-header">"What marketing support?"</div>
+        <div class="objection-body">
+          "Five things: (1) <strong>Scalp Specialist Certification</strong> - free, 3-4 hours, certificate + badge + directory listing; (2) <strong>Tina does in-salon education</strong> with every partner; (3) <strong>Scalp Environment Report</strong> - personalized tool using local environmental data; (4) <strong>Full marketing toolkit</strong> - social templates, email templates, co-branded content; (5) <strong>White-glove merchandising</strong> - custom displays, shelf talkers, seasonal refreshes. Plus a 45-min scalp treatment protocol for service revenue."
+          <div class="objection-data">Ref: deck p.23. 99% client recommendation rate, 3,000+ salon clients served.</div>
+        </div>
+      </div>
+
+      <div class="objection-card">
+        <div class="objection-header">"Exclusive for Canada?"</div>
+        <div class="objection-body">
+          "Yes, for the right commitment. ON/MB exclusivity at preferred or exclusive tier. <strong>Better margins tied to annual minimum.</strong> With 10,000+ customers, modest penetration makes minimums achievable."
+        </div>
+      </div>
+
+      <div class="objection-card">
+        <div class="objection-header">"MAP policy?"</div>
+        <div class="objection-body">
+          "<strong>We enforce MSRP. No discounting. No Amazon. No mass retail. Ever.</strong> Your salons are protected."
+        </div>
+      </div>
+
+      <div class="objection-card">
+        <div class="objection-header">"You're still small"</div>
+        <div class="objection-body">
+          "Six months: <strong>$125K revenue, 50+ salons, 96% repurchase, 18M organic social views.</strong> <strong>99% client recommendation, 98% visible results after first use, 3,000+ salon clients.</strong> We have a Scalp Specialist Certification program, a 45-min treatment protocol, 4 turnkey opening packages, and an ambassador program. LA Times, Beauty Independent, NewBeauty press. Early-stage with proven product-market fit and <strong>full salon infrastructure already built</strong>."
+        </div>
+      </div>
+
+      <div class="objection-card">
+        <div class="objection-header">"Margin isn't enough"</div>
+        <div class="objection-body">
+          "Let's talk about what works. Standard tier is 40% of retail, but committed partnerships get preferred and exclusive tiers. <strong>What volume would you look at?</strong> That determines the tier."
+        </div>
+      </div>
+
+      <div class="objection-card">
+        <div class="objection-header">"Can you supply us?"</div>
+        <div class="objection-body">
+          "We manufacture in LA, small-batch with 4-6 week lead times. <strong>50+ salon partners in 6 months without supply issues.</strong> We'd build inventory ahead of rollout and forecast together."
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ======== 7. QUESTIONS ======== -->
+    <div class="section" id="questions">
+      <div class="section-label">Questions to Ask</div>
+      <ul class="questions-list">
+        <li><span class="q-priority q-must">Must</span> "What does a successful brand launch look like through CanRad?"</li>
+        <li><span class="q-priority q-must">Must</span> "How do your consultants decide which new brands to introduce to accounts?"</li>
+        <li><span class="q-priority q-must">Must</span> "What would a realistic pilot look like - how many doors, which region, what timeline?"</li>
+        <li><span class="q-priority q-must">Must</span> "What sales velocity benchmarks tell you whether a brand launch is working?"</li>
+        <li><span class="q-priority q-should">Should</span> "Are any of your 8 education facilities focused on scalp or trichology content?"</li>
+        <li><span class="q-priority q-should">Should</span> "What's the split between Ontario and Manitoba? Are you expanding into Saskatchewan?"</li>
+        <li><span class="q-priority q-should">Should</span> "How does Quaffed work for new brands?"</li>
+        <li><span class="q-priority q-should">Should</span> "What's your process for extending into new categories?"</li>
+        <li><span class="q-priority q-bonus">Bonus</span> "Who else is involved in the onboarding decision?"</li>
+        <li><span class="q-priority q-bonus">Bonus</span> "What brands launched recently that exceeded your expectations, and what made them work?"</li>
+        <li><span class="q-priority q-bonus">Bonus</span> "Would you be open to Tina doing a scalp education session at one of your facilities as a next step?"</li>
+        <li><span class="q-priority q-should">Should</span> "How many of your Ontario accounts are buying Biotop or Zenagen regularly? Those would be our first-cut pilot candidates."</li>
+        <li><span class="q-priority q-should">Should</span> "Given your Green Circle partnership, how many of your accounts are certified? Sustainability alignment is a strong AWARE fit signal."</li>
+        <li><span class="q-priority q-bonus">Bonus</span> "What do you typically offer reps to incentivize a new brand launch? We've budgeted a SPIFF program."</li>
+        <li><span class="q-priority q-should">Should</span> "Do any of your brands currently offer a stylist certification program? We have one that's free and we think it drives retail conversion."</li>
+        <li><span class="q-priority q-bonus">Bonus</span> "How many of your salon accounts currently offer scalp treatments as a service? Our 45-min protocol could add a new revenue stream for them."</li>
+      </ul>
+    </div>
+
+    <!-- ======== 8. SIGNALS ======== -->
+    <div class="section" id="signals">
+      <div class="section-label">Reading the Room</div>
+      <div class="signals-grid">
+        <div class="signal-col green">
+          <h4>Green Lights</h4>
+          <div class="signal-item">
+            <div><div class="signal-what">Logistics questions</div><div class="signal-means">MOQ, shipping, case packs - thinking about execution</div></div>
+          </div>
+          <div class="signal-item">
+            <div><div class="signal-what">Education/training questions</div><div class="signal-means">Want to activate the brand</div></div>
+          </div>
+          <div class="signal-item">
+            <div><div class="signal-what">Naming specific salons/regions</div><div class="signal-means">Already thinking about placement</div></div>
+          </div>
+          <div class="signal-item">
+            <div><div class="signal-what">Jack references Saryna Key</div><div class="signal-means">Relating as fellow brand builder</div></div>
+          </div>
+          <div class="signal-item">
+            <div><div class="signal-what">Exclusivity with real numbers</div><div class="signal-means">Want to lock it up</div></div>
+          </div>
+          <div class="signal-item">
+            <div><div class="signal-what">Marketing calendar / launch timing</div><div class="signal-means">Planning ahead</div></div>
+          </div>
+        </div>
+        <div class="signal-col red">
+          <h4>Red Flags + Your Move</h4>
+          <div class="signal-item">
+            <div><div class="signal-what">Vague about next steps</div><div class="signal-move">"What specifically would you need to see to move forward?"</div></div>
+          </div>
+          <div class="signal-item">
+            <div><div class="signal-what">Only asking about price cuts</div><div class="signal-move">Redirect to differentiation and sell-through data</div></div>
+          </div>
+          <div class="signal-item">
+            <div><div class="signal-what">"We'll think about it"</div><div class="signal-move">"What's the main thing you'd need to resolve internally?"</div></div>
+          </div>
+          <div class="signal-item">
+            <div><div class="signal-what">"Checking with Kenny" no timeline</div><div class="signal-move">"When would a decision typically happen?"</div></div>
+          </div>
+          <div class="signal-item">
+            <div><div class="signal-what">Want exclusivity, no volume</div><div class="signal-move">Hold firm on minimums</div></div>
+          </div>
+          <div class="signal-item">
+            <div><div class="signal-what">Unfavorable brand comparison</div><div class="signal-move">Redirect to positioning matrix p.5</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== 9. NEXT STEPS ======== -->
+    <div class="section" id="nextsteps">
+      <div class="section-label">Next Steps to Propose</div>
+      <div class="outcome-cards">
+        <div class="outcome-card enthusiastic">
+          <h4>If Enthusiastic</h4>
+          <p>"Let's define a pilot. 10-15 salons in the GTA. Each gets a turnkey opening package - displays, backbar, merchandising. Free Scalp Specialist Certification for stylists. Treatment protocol added to their service menu. Tina flies to Toronto for in-salon events. 90-day pilot, sell-through review together."</p>
+          <div class="bonus"><strong>Bonus ask:</strong> "Would it make sense to plan an AWARE Scalp Consultation Station at HairFest 2026?"</div>
+        </div>
+        <div class="outcome-card cautious">
+          <h4>If Interested But Cautious</h4>
+          <p>"Let me send a sample kit for your team to try - the product is the best pitch. Follow-up in 2-3 weeks. I can provide sell-through reports, salon case studies, ingredient deep-dives - whatever would help."</p>
+        </div>
+        <div class="outcome-card lukewarm">
+          <h4>If Lukewarm</h4>
+          <p>"I appreciate the honest feedback. What would need to change for this to make sense for CanRad? Is it the category, the price, or the timing? We'd rather know now so we can address it directly."</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== 10. CHECKLIST ======== -->
+    <div class="section" id="checklist">
+      <div class="section-label">Pre-Meeting Checklist</div>
+      <ul class="checklist">
+        <li><div class="box"></div>Confirm Stuart's name spelling (Lapowich)</li>
+        <li><div class="box"></div>Decide: USD or CAD pricing?</li>
+        <li><div class="box"></div>Open brand deck to p.5 (positioning) and p.19 (B2B traction)</li>
+        <li><div class="box"></div>Have pricing reference ready to screen share</li>
+        <li><div class="box"></div>Brief Tina/Jade on role: founder story, education, formulation</li>
+        <li><div class="box"></div>2-3 salon partner names as references</li>
+        <li><div class="box"></div>Positioning matrix from p.5 ready to pull up</li>
+        <li><div class="box"></div>Test video/audio</li>
+        <li><div class="box verify-box"></div>Verify 96% repurchase rate (time period, sample size)</li>
+        <li><div class="box verify-box"></div>Verify 52% sell-through rate (definition, source)</li>
+        <li><div class="box verify-box"></div>Confirm $125K revenue from Shopify</li>
+        <li><div class="box verify-box"></div>Confirm 50+ salon count from Shopify B2B</li>
+        <li><div class="box verify-box"></div>Confirm 18M social views (platforms, period)</li>
+        <li><div class="box verify-box"></div>Have press links ready (LA Times, Beauty Independent, NewBeauty)</li>
+        <li><div class="box verify-box"></div>Verify client stats: 99% recommend, 98% first-use, 91% hydrated (sample size?)</li>
+        <li><div class="box verify-box"></div>Resolve ">60% vs 90%" scalp stat discrepancy - pick one consistent figure</li>
+        <li><div class="box"></div>Have salon deck ready to screen-share (opening packages, comparison chart)</li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

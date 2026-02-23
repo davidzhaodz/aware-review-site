@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWARE Email Flows</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #0d0d0d;
+            --bg-secondary: #161616;
+            --bg-tertiary: #1e1e1e;
+            --bg-card: #1a1a1a;
+            --bg-hover: #242424;
+            --text-primary: #e5e5e5;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666;
+            --border: #2a2a2a;
+            --border-light: #333;
+            --green: #22c55e;
+            --green-dim: rgba(34, 197, 94, 0.15);
+            --yellow: #eab308;
+            --yellow-dim: rgba(234, 179, 8, 0.15);
+            --red: #ef4444;
+            --red-dim: rgba(239, 68, 68, 0.15);
+            --blue: #3b82f6;
+            --blue-dim: rgba(59, 130, 246, 0.15);
+            --purple: #a855f7;
+            --purple-dim: rgba(168, 85, 247, 0.15);
+            --cyan: #06b6d4;
+            --cyan-dim: rgba(6, 182, 212, 0.15);
+            --orange: #f97316;
+            --orange-dim: rgba(249, 115, 22, 0.15);
+            --panel-left: 38%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 13px;
+            line-height: 1.4;
+            overflow: hidden;
+        }
+
+        /* ── Top Bar ─────────────────────────── */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-secondary);
+            height: 48px;
+            flex-shrink: 0;
+        }
+        .topbar-left { display: flex; align-items: center; gap: 12px; }
+        .topbar h1 {
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+        .topbar-dot {
+            width: 6px; height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            box-shadow: 0 0 6px rgba(34,197,94,0.4);
+        }
+        .topbar-stats { display: flex; gap: 20px; }
+        .topbar-stat {
+            display: flex; align-items: center; gap: 6px;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .topbar-stat strong {
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        /* ── Layout ──────────────────────────── */
+        .layout {
+            display: flex;
+            height: calc(100vh - 48px);
+        }
+        .panel-left {
+            width: var(--panel-left);
+            min-width: 280px;
+            background: var(--bg-primary);
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .panel-left::-webkit-scrollbar { width: 5px; }
+        .panel-left::-webkit-scrollbar-track { background: transparent; }
+        .panel-left::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+        /* Divider */
+        .divider {
+            width: 5px;
+            cursor: col-resize;
+            background: var(--border);
+            position: relative;
+            flex-shrink: 0;
+            transition: background 0.15s ease;
+        }
+        .divider:hover, .divider.dragging { background: var(--text-muted); }
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 3px; height: 32px;
+            border-radius: 2px;
+            background: var(--text-muted);
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+        .divider:hover::after, .divider.dragging::after { opacity: 0.5; }
+
+        .panel-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-secondary);
+            min-width: 300px;
+        }
+
+        /* ── Preview Header ──────────────────── */
+        .preview-header {
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 52px;
+            flex-shrink: 0;
+        }
+        .preview-badge {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .preview-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+            flex: 1;
+        }
+        .preview-subject {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .preview-path {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .preview-pos {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .preview-open {
+            font-size: 10px;
+            color: var(--text-muted);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 3px 10px;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-decoration: none;
+            transition: border-color 0.15s, color 0.15s;
+        }
+        .preview-open:hover {
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+        }
+
+        /* ── Preview Frame ───────────────────── */
+        .preview-frame {
+            flex: 1;
+            position: relative;
+            background: #fff;
+        }
+        .preview-frame iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #fff;
+        }
+        .preview-empty {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-primary);
+            gap: 12px;
+        }
+        .preview-empty-icon {
+            width: 48px; height: 48px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 20px;
+        }
+        .preview-empty p {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        /* ── Category ────────────────────────── */
+        .category {
+            border-radius: 8px;
+            overflow: clip;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            transition: border-color 0.15s ease;
+        }
+        .category.active { border-color: var(--border-light); }
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.15s ease;
+        }
+        .category-header:hover { background: var(--bg-hover); }
+        .category-chevron {
+            font-size: 10px;
+            color: var(--text-muted);
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+            width: 14px;
+            text-align: center;
+        }
+        .category.collapsed .category-chevron { transform: rotate(-90deg); }
+        .category-icon {
+            width: 26px; height: 26px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+        .category-name {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+            flex: 1;
+        }
+        .category-count {
+            font-size: 10px;
+            color: var(--text-muted);
+            padding: 2px 7px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .category-body {
+            padding: 4px 14px 12px 14px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            max-height: 400px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .category-body::-webkit-scrollbar { width: 4px; }
+        .category-body::-webkit-scrollbar-track { background: transparent; }
+        .category-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+        .category.collapsed .category-body {
+            display: none;
+        }
+
+        /* ── Flow connector lines ────────────── */
+        .flow-sequence {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .flow-connector {
+            width: 2px;
+            height: 8px;
+            margin-left: 18px;
+            position: relative;
+        }
+        .flow-connector::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 1px;
+        }
+        .flow-connector::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -2px;
+            width: 6px;
+            height: 6px;
+            border-left: 2px solid;
+            border-bottom: 2px solid;
+            transform: rotate(-45deg);
+            opacity: 0.5;
+        }
+
+        /* ── Email Node ──────────────────────── */
+        .email-node {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+            border: 1px solid transparent;
+        }
+        .email-node:hover {
+            background: var(--bg-hover);
+            border-color: var(--border);
+        }
+        .email-node.active {
+            border-color: var(--border-light);
+        }
+        .email-node .node-num {
+            width: 26px; height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            flex-shrink: 0;
+            transition: all 0.15s ease;
+            border: 2px solid;
+        }
+        .email-node .node-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .email-node .node-subject {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .email-node .node-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+        .email-node.dimmed {
+            opacity: 0.4;
+        }
+        .email-node.dimmed:hover {
+            opacity: 0.7;
+        }
+
+        /* Variant badge */
+        .variant-badge {
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            flex-shrink: 0;
+            position: relative;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+        }
+        .variant-badge:hover {
+            filter: brightness(1.2);
+            border-color: currentColor;
+        }
+
+        /* Variant dropdown */
+        .variant-dropdown {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 4px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 4px;
+            z-index: 100;
+            min-width: 220px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            display: none;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+        .variant-dropdown.open { display: block; }
+        .variant-dropdown::-webkit-scrollbar { width: 4px; }
+        .variant-dropdown::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+        .variant-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.12s ease;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .variant-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .variant-item.current {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .variant-item .v-dot {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ── Responsive ──────────────────────── */
+        @media (max-width: 900px) {
+            .layout { flex-direction: column; }
+            .panel-left {
+                width: 100% !important;
+                max-height: 40vh;
+                min-width: unset;
+            }
+            .divider {
+                width: 100%;
+                height: 5px;
+                cursor: row-resize;
+            }
+            .panel-right { min-width: unset; }
+        }
+
+        /* ── Keyboard focus ──────────────────── */
+        .email-node:focus-visible {
+            outline: 2px solid var(--blue);
+            outline-offset: 1px;
+        }
+
+        /* ── Loading shimmer ─────────────────── */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .preview-loading {
+            position: absolute;
+            inset: 0;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+        .preview-loading-bar {
+            width: 120px;
+            height: 3px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--border) 0%, var(--text-muted) 50%, var(--border) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s ease infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="topbar-dot"></div>
+            <h1>AWARE Email Flow System</h1>
+        </div>
+        <div class="topbar-stats">
+            <div class="topbar-stat"><strong>6</strong> flows</div>
+            <div class="topbar-stat"><strong>17</strong> emails</div>
+            <div class="topbar-stat"><strong>19</strong> variants</div>
+        </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="layout">
+        <div class="panel-left" id="panelLeft"></div>
+        <div class="divider" id="divider"></div>
+        <div class="panel-right">
+            <div class="preview-header" id="previewHeader">
+                <div class="preview-empty" id="previewEmpty" style="position:relative;flex:0 0 auto;">
+                    <p style="color:var(--text-muted);font-size:12px;">Select an email to preview</p>
+                </div>
+            </div>
+            <div class="preview-frame" id="previewFrame">
+                <div class="preview-empty" id="previewEmptyMain">
+                    <div class="preview-empty-icon">&#9993;</div>
+                    <p>Select an email from the flow map to preview</p>
+                    <p style="font-size:10px;color:var(--border-light);">or press arrow keys to navigate</p>
+                </div>
+                <iframe id="previewIframe" style="display:none;" sandbox="allow-same-origin"></iframe>
+            </div>
+        </div>
+    </div>
+
+<script>
+// ── Flow Data ───────────────────────────────────
+const FLOW_BASE = '../../emails/flows/';
+const CAMPAIGN_BASE = '../../emails/campaigns/';
+
+const flows = [
+    {
+        id: 'scalp-report',
+        name: 'Scalp Report Lead Gen',
+        color: 'cyan',
+        icon: '&#9878;',
+        emails: [
+            {
+                id: 'sr-1',
+                pos: 1,
+                subject: 'Your Personalized Scalp Environment Report',
+                label: 'Scalp Report',
+                file: FLOW_BASE + 'scalp-report-lead-gen/01-scalp-report.html',
+                variants: [
+                    { name: 'Scalp Report v1', file: FLOW_BASE + 'scalp-report-lead-gen/01-scalp-report-v1.html' },
+                    { name: 'Introduction', file: FLOW_BASE + 'scalp-report-lead-gen/01-introduction.html' },
+                ]
+            },
+            {
+                id: 'sr-2',
+                pos: 2,
+                subject: 'Why Scalp Care Matters',
+                label: 'Trust Builder',
+                file: FLOW_BASE + 'scalp-report-lead-gen/02-why-scalp-care.html',
+                variants: [
+                    { name: 'Trust Builder', file: FLOW_BASE + 'scalp-report-lead-gen/02-trust-builder.html' },
+                    { name: 'Why Scalp Care v5', file: FLOW_BASE + 'scalp-report-lead-gen/02-why-scalp-care-v5.html' },
+                    { name: 'Why Scalp Care v4', file: FLOW_BASE + 'scalp-report-lead-gen/02-why-scalp-care-v4.html' },
+                    { name: 'Why Scalp Care v3', file: FLOW_BASE + 'scalp-report-lead-gen/02-why-scalp-care-v3.html' },
+                    { name: 'Why Scalp Care v2', file: FLOW_BASE + 'scalp-report-lead-gen/02-why-scalp-care-v2.html' },
+                    { name: 'Why Scalp Care v1', file: FLOW_BASE + 'scalp-report-lead-gen/02-why-scalp-care-v1.html' },
+                    { name: 'Jolie Flow v2', file: FLOW_BASE + 'scalp-report-lead-gen/02-jolie-flow-v2.html' },
+                    { name: 'Jolie Flow v1', file: FLOW_BASE + 'scalp-report-lead-gen/02-jolie-flow.html' },
+                    { name: 'Style A - Refined Editorial', file: FLOW_BASE + 'scalp-report-lead-gen/02-style-A-refined-editorial.html' },
+                    { name: 'Style B - Bold Magazine', file: FLOW_BASE + 'scalp-report-lead-gen/02-style-B-bold-magazine.html' },
+                    { name: 'Style C - High Contrast', file: FLOW_BASE + 'scalp-report-lead-gen/02-style-C-high-contrast.html' },
+                    { name: 'Style D - Balanced', file: FLOW_BASE + 'scalp-report-lead-gen/02-style-D-balanced.html' },
+                    { name: 'Style E - Optimized', file: FLOW_BASE + 'scalp-report-lead-gen/02-style-E-optimized.html' },
+                ]
+            },
+            {
+                id: 'sr-3',
+                pos: 3,
+                subject: 'The AWARE Guarantee',
+                label: 'Guarantee',
+                file: FLOW_BASE + 'scalp-report-lead-gen/03-guarantee.html',
+                variants: [
+                    { name: 'Guarantee v4', file: FLOW_BASE + 'scalp-report-lead-gen/03-guarantee-v4.html' },
+                    { name: 'Guarantee v3', file: FLOW_BASE + 'scalp-report-lead-gen/03-guarantee-v3.html' },
+                    { name: 'Guarantee v2', file: FLOW_BASE + 'scalp-report-lead-gen/03-guarantee-v2.html' },
+                    { name: 'Guarantee v1', file: FLOW_BASE + 'scalp-report-lead-gen/03-guarantee-v1.html' },
+                    { name: 'Social Proof', file: FLOW_BASE + 'scalp-report-lead-gen/03-social-proof.html' },
+                ]
+            }
+        ]
+    },
+    {
+        id: 'abandoned-cart',
+        name: 'Abandoned Cart',
+        color: 'orange',
+        icon: '&#128722;',
+        emails: [
+            { id: 'ac-1', pos: 1, subject: 'You left something behind', label: 'Reminder', file: FLOW_BASE + 'abandoned-cart/01-reminder.html', variants: [] },
+            { id: 'ac-2', pos: 2, subject: 'Your cart expires soon', label: 'Urgency', file: FLOW_BASE + 'abandoned-cart/02-urgency.html', variants: [] },
+        ]
+    },
+    {
+        id: 'post-purchase',
+        name: 'Post-Purchase',
+        color: 'green',
+        icon: '&#10004;',
+        emails: [
+            { id: 'pp-1', pos: 1, subject: 'Welcome to AWARE', label: 'Welcome', file: FLOW_BASE + 'post-purchase/01-welcome.html', variants: [] },
+            { id: 'pp-2', pos: 2, subject: 'The Science Behind AWAREBIO Complex', label: 'AWAREBIO Complex', file: FLOW_BASE + 'post-purchase/02-awarebio-complex.html', variants: [] },
+            { id: 'pp-3', pos: 3, subject: 'The AWARE Scalp Care Ritual', label: 'How to Use', file: FLOW_BASE + 'post-purchase/02-how-to-use.html', variants: [] },
+            { id: 'pp-4', pos: 4, subject: 'What to Expect in Your First 30 Days', label: 'Results Timeline', file: FLOW_BASE + 'post-purchase/03-results-timeline.html', variants: [] },
+        ]
+    },
+    {
+        id: 'shipping',
+        name: 'Shipping & Delivery',
+        color: 'blue',
+        icon: '&#128230;',
+        emails: [
+            { id: 'sh-1', pos: 1, subject: 'Your AWARE Order Has Shipped', label: 'Shipment Confirmed', file: FLOW_BASE + 'shipping/01-shipment-confirmed.html', variants: [] },
+            { id: 'sh-2', pos: 2, subject: 'Your AWARE Order Arrives Today', label: 'Out for Delivery', file: FLOW_BASE + 'shipping/02-out-for-delivery.html', variants: [] },
+            { id: 'sh-3', pos: 3, subject: 'Your AWARE Order Has Arrived', label: 'Delivery Confirmed', file: FLOW_BASE + 'shipping/03-delivery-confirmed.html', variants: [] },
+        ]
+    },
+    {
+        id: 'referral',
+        name: 'Referral',
+        color: 'purple',
+        icon: '&#128279;',
+        emails: [
+            { id: 'rf-1', pos: 1, subject: 'Give a Friend Healthy Hair', label: 'Referral Program', file: FLOW_BASE + 'referral/01-referral-program.html', variants: [] },
+            { id: 'rf-2', pos: 2, subject: 'Try AWARE Free - You Were Referred', label: 'Referred Client', file: FLOW_BASE + 'referral/02-referred-client.html', variants: [] },
+        ]
+    },
+    {
+        id: 'retention',
+        name: 'Retention',
+        color: 'yellow',
+        icon: '&#9733;',
+        emails: [
+            { id: 'rt-1', pos: 1, subject: 'Your Experience Matters', label: 'Review Request', file: FLOW_BASE + 'retention/01-review-request.html', variants: [] },
+            { id: 'rt-2', pos: 2, subject: 'Your Scalp Misses You', label: 'Win-Back Reminder', file: FLOW_BASE + 'retention/02-winback-reminder.html', variants: [] },
+            { id: 'rt-3', pos: 3, subject: 'Last Chance', label: 'Win-Back Final', file: FLOW_BASE + 'retention/03-winback-last-chance.html', variants: [] },
+        ]
+    }
+];
+
+// ── Color Helpers ───────────────────────────────
+function getColor(c) { return getComputedStyle(document.documentElement).getPropertyValue('--' + c).trim(); }
+function getDim(c) { return getComputedStyle(document.documentElement).getPropertyValue('--' + c + '-dim').trim(); }
+
+// ── State ───────────────────────────────────────
+let activeEmailId = null;
+let activeFlowId = null;
+let openDropdownId = null;
+let allEmailNodes = [];
+
+// ── Render Flow Map ─────────────────────────────
+function renderFlows() {
+    const panel = document.getElementById('panelLeft');
+    panel.innerHTML = '';
+
+    flows.forEach(flow => {
+        const cat = document.createElement('div');
+        cat.className = 'category';
+        cat.dataset.flowId = flow.id;
+
+        const color = getColor(flow.color);
+        const dim = getDim(flow.color);
+
+        // Header
+        const header = document.createElement('div');
+        header.className = 'category-header';
+        header.innerHTML = `
+            <span class="category-chevron">&#9662;</span>
+            <div class="category-icon" style="background:${dim};color:${color};">${flow.icon}</div>
+            <span class="category-name">${flow.name}</span>
+            <span class="category-count">${flow.emails.length}</span>
+        `;
+        header.addEventListener('click', () => {
+            cat.classList.toggle('collapsed');
+        });
+        cat.appendChild(header);
+
+        // Body
+        const body = document.createElement('div');
+        body.className = 'category-body';
+
+        const seq = document.createElement('div');
+        seq.className = 'flow-sequence';
+
+        flow.emails.forEach((email, idx) => {
+            // Node
+            const node = document.createElement('div');
+            node.className = 'email-node';
+            node.tabIndex = 0;
+            node.dataset.emailId = email.id;
+            node.dataset.flowId = flow.id;
+
+            node.innerHTML = `
+                <div class="node-num" style="border-color:${color};color:${color};background:${dim};">${email.pos}</div>
+                <div class="node-info">
+                    <div class="node-subject">${email.subject}</div>
+                    <div class="node-label">${email.label}</div>
+                </div>
+                ${email.variants.length > 0 ? `<span class="variant-badge" style="background:${dim};color:${color};" data-email-id="${email.id}">+${email.variants.length}</span>` : ''}
+            `;
+
+            node.addEventListener('click', (e) => {
+                if (e.target.closest('.variant-badge') || e.target.closest('.variant-dropdown')) return;
+                selectEmail(flow.id, email.id, email.file, email.subject, email.label, email.pos, flow.emails.length, flow.name, flow.color);
+            });
+
+            // Variant badge click
+            const badge = node.querySelector('.variant-badge');
+            if (badge) {
+                badge.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleVariantDropdown(email, node, flow, color, dim);
+                });
+            }
+
+            node.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    selectEmail(flow.id, email.id, email.file, email.subject, email.label, email.pos, flow.emails.length, flow.name, flow.color);
+                }
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    const curIdx = allEmailNodes.indexOf(node);
+                    if (curIdx < allEmailNodes.length - 1) allEmailNodes[curIdx + 1].focus();
+                }
+                if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    const curIdx = allEmailNodes.indexOf(node);
+                    if (curIdx > 0) allEmailNodes[curIdx - 1].focus();
+                }
+            });
+
+            seq.appendChild(node);
+            allEmailNodes.push(node);
+
+            // Connector line
+            if (idx < flow.emails.length - 1) {
+                const conn = document.createElement('div');
+                conn.className = 'flow-connector';
+                conn.style.cssText = `--conn-color:${color};`;
+                conn.querySelector?.('::before')?.style;
+                // Style via inline for the pseudo-elements (use a wrapper)
+                const style = document.createElement('style');
+                style.textContent = `
+                    [data-flow-id="${flow.id}"] .flow-connector:nth-of-type(${idx + 1})::before { background: ${color}; opacity: 0.3; }
+                    [data-flow-id="${flow.id}"] .flow-connector:nth-of-type(${idx + 1})::after { border-color: ${color}; opacity: 0.3; }
+                `;
+                document.head.appendChild(style);
+                seq.appendChild(conn);
+            }
+        });
+
+        body.appendChild(seq);
+        cat.appendChild(body);
+        panel.appendChild(cat);
+    });
+}
+
+// ── Klaviyo Variable Replacement ────────────────
+// Replace Klaviyo/Liquid template variables with realistic sample values for preview
+const SAMPLE_PRODUCTS = [
+    {
+        title: '9-1 Professional Shampoo',
+        image: 'https://d3k81ch9hvuctc.cloudfront.net/company/UmRhdX/images/adc3635e-c06f-4df3-8883-018252b130c8.png',
+        price: '$65.00',
+        quantity: 1,
+    },
+    {
+        title: '9-1 Professional Conditioner',
+        image: 'https://d3k81ch9hvuctc.cloudfront.net/company/UmRhdX/images/4d082fc6-26e6-4bd1-85a1-2a0596be8c66.png',
+        price: '$65.00',
+        quantity: 1,
+    },
+    {
+        title: '9-1 Professional Leave-In Styling Conditioner',
+        image: 'https://d3k81ch9hvuctc.cloudfront.net/company/UmRhdX/images/ece00553-f3a8-497f-949e-dee1000f706d.png',
+        price: '$40.00',
+        quantity: 1,
+    },
+];
+
+function replaceKlaviyoVars(html) {
+    // 1. Expand {% for item in event.extra.line_items %} ... {% endfor %} loops
+    html = html.replace(
+        /\{%\s*for\s+item\s+in\s+event\.extra\.line_items\s*%\}([\s\S]*?)\{%\s*endfor\s*%\}/g,
+        (_, tpl) => SAMPLE_PRODUCTS.map(p => {
+            let row = tpl;
+            row = row.replace(/\{\{\s*item\.product\.images\.0\.src\s*\}\}/g, p.image);
+            row = row.replace(/\{\{\s*item\.product\.title\s*\}\}/g, p.title);
+            row = row.replace(/\{\{\s*item\.variant\.title\s*\}\}/g, '');
+            row = row.replace(/\{\{\s*item\.quantity\s*\}\}/g, String(p.quantity));
+            row = row.replace(/\{\{\s*item\.line_price\s*\}\}/g, p.price);
+            // Strip inner {% if %} blocks for variant title
+            row = row.replace(/\{%\s*(if|elsif|else|endif)[^%]*%\}/g, '');
+            return row;
+        }).join('')
+    );
+
+    // 2. Expand {% for item in event.line_items %} ... {% endfor %} loops
+    html = html.replace(
+        /\{%\s*for\s+item\s+in\s+event\.line_items\s*%\}([\s\S]*?)\{%\s*endfor\s*%\}/g,
+        (_, tpl) => SAMPLE_PRODUCTS.map(p => {
+            let row = tpl;
+            row = row.replace(/\{\{\s*item\.image_url\s*\}\}/g, p.image);
+            row = row.replace(/\{\{\s*item\.title\s*\}\}/g, p.title);
+            row = row.replace(/\{\{\s*item\.quantity\s*\}\}/g, String(p.quantity));
+            row = row.replace(/\{\{\s*item\.price\s*\}\}/g, p.price);
+            row = row.replace(/\{%\s*(if|elsif|else|endif)[^%]*%\}/g, '');
+            return row;
+        }).join('')
+    );
+
+    // 3. Simple variable replacements
+    const replacements = {
+        // Profile fields
+        "{{ person.location.city }}": "Los Angeles",
+        "{{ person.location.region }}": "California",
+        "{{ person.location.zip }}": "90028",
+        // Event/order fields
+        "{{ event.order_name }}": "#AW-1042",
+        "{{ event.tracking_number }}": "1Z999AA10123456784",
+        "{{ event.tracking_url }}": "https://awarehair.com",
+        "{{ event.extra.total_price }}": "$170.00",
+        "{{ event.extra.abandoned_checkout_url|default:'https://awarehair.com/cart' }}": "https://awarehair.com/cart",
+        "{{ event.extra.tracking_url|default:'https://awarehair.com' }}": "https://awarehair.com",
+    };
+
+    for (const [key, val] of Object.entries(replacements)) {
+        html = html.split(key).join(val);
+    }
+
+    // 4. Catch remaining {{ ... }} with smart fallbacks
+    html = html.replace(/\{\{[^}]+\}\}/g, match => {
+        const defaultMatch = match.match(/default:[\"']([^\"']+)[\"']/);
+        if (defaultMatch) return defaultMatch[1];
+        const nameMatch = match.match(/['"](\w+)['"]\s*\}\}/);
+        if (nameMatch) return nameMatch[1];
+        return '';
+    });
+
+    // 5. Handle {% if %}...{% else %}...{% endif %} - keep only the "if" branch
+    // Process from innermost outward to handle nesting
+    let prev = '';
+    while (prev !== html) {
+        prev = html;
+        // if/else/endif - keep if-branch, drop else-branch
+        html = html.replace(
+            /\{%\s*if\s[^%]*%\}([\s\S]*?)\{%\s*else\s*%\}[\s\S]*?\{%\s*endif\s*%\}/g,
+            '$1'
+        );
+        // if/endif without else - keep content
+        html = html.replace(
+            /\{%\s*if\s[^%]*%\}([\s\S]*?)\{%\s*endif\s*%\}/g,
+            '$1'
+        );
+        // unless/endunless - drop content (inverse of if)
+        html = html.replace(
+            /\{%\s*unless\s[^%]*%\}[\s\S]*?\{%\s*endunless\s*%\}/g,
+            ''
+        );
+    }
+    // Clean up any stray block tags
+    html = html.replace(/\{%\s*(if|elsif|else|endif|unless|endunless|for|endfor)[^%]*%\}/g, '');
+
+    // 6. Replace {% unsubscribe ... %} with plain link
+    html = html.replace(/\{%\s*unsubscribe\s+'([^']+)'\s*%\}/g, '<a href="#" style="color:#A09080;text-decoration:underline;">$1</a>');
+    html = html.replace(/\{%\s*unsubscribe_link\s*%\}/g, '#');
+
+    return html;
+}
+
+// ── Select Email ────────────────────────────────
+function selectEmail(flowId, emailId, file, subject, label, pos, total, flowName, colorKey) {
+    activeEmailId = emailId;
+    activeFlowId = flowId;
+    closeAllDropdowns();
+
+    const color = getColor(colorKey);
+    const dim = getDim(colorKey);
+
+    // Update node states - clear all first, then set active
+    document.querySelectorAll('.email-node').forEach(n => {
+        n.classList.remove('active', 'dimmed');
+        n.style.background = '';
+        n.style.borderColor = '';
+    });
+    const selNode = document.querySelector(`.email-node[data-email-id="${emailId}"]`);
+    if (selNode) {
+        selNode.classList.add('active');
+        selNode.style.background = dim;
+        selNode.style.borderColor = color;
+    }
+
+    // Update category highlights
+    document.querySelectorAll('.category').forEach(c => {
+        c.classList.toggle('active', c.dataset.flowId === flowId);
+    });
+
+    // Update preview header
+    const header = document.getElementById('previewHeader');
+    header.innerHTML = `
+        <span class="preview-badge" style="background:${dim};color:${color};">${flowName}</span>
+        <div class="preview-meta">
+            <div class="preview-subject">${subject}</div>
+            <div class="preview-path">${file.replace(/^\//, '')}</div>
+        </div>
+        <span class="preview-pos">Email ${pos} of ${total}</span>
+        <a class="preview-open" href="${file}" target="_blank" rel="noopener" title="Open in new tab to annotate">Open &#x2197;</a>
+    `;
+
+    // Load in iframe
+    const iframe = document.getElementById('previewIframe');
+    const emptyMain = document.getElementById('previewEmptyMain');
+    emptyMain.style.display = 'none';
+    iframe.style.display = 'block';
+
+    // Show loading
+    let loader = document.querySelector('.preview-loading');
+    if (!loader) {
+        loader = document.createElement('div');
+        loader.className = 'preview-loading';
+        loader.innerHTML = '<div class="preview-loading-bar"></div>';
+        document.getElementById('previewFrame').appendChild(loader);
+    }
+    loader.style.display = 'flex';
+
+    // Fetch HTML, replace Klaviyo variables with sample values, render via srcdoc
+    fetch(file)
+        .then(r => r.text())
+        .then(html => {
+            html = replaceKlaviyoVars(html);
+            iframe.srcdoc = html;
+            iframe.onload = () => { loader.style.display = 'none'; };
+        })
+        .catch(() => {
+            // Fallback to direct src if fetch fails
+            iframe.onload = () => { loader.style.display = 'none'; };
+            iframe.src = file;
+        });
+
+    // Scroll node into view
+    const activeNode = document.querySelector(`.email-node[data-email-id="${emailId}"]`);
+    if (activeNode) {
+        activeNode.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+}
+
+// ── Variant Dropdown ────────────────────────────
+function toggleVariantDropdown(email, node, flow, color, dim) {
+    const existing = node.querySelector('.variant-dropdown');
+    if (existing) {
+        existing.remove();
+        openDropdownId = null;
+        return;
+    }
+
+    closeAllDropdowns();
+
+    const dd = document.createElement('div');
+    dd.className = 'variant-dropdown open';
+    openDropdownId = email.id;
+
+    // Current (default) version
+    const currentItem = document.createElement('div');
+    currentItem.className = 'variant-item current';
+    currentItem.innerHTML = `<span class="v-dot" style="background:${color};"></span> Current (Latest)`;
+    currentItem.addEventListener('click', (e) => {
+        e.stopPropagation();
+        selectEmail(flow.id, email.id, email.file, email.subject, email.label, email.pos, flow.emails.length, flow.name, flow.color);
+        dd.remove();
+    });
+    dd.appendChild(currentItem);
+
+    // Variants
+    email.variants.forEach(v => {
+        const item = document.createElement('div');
+        item.className = 'variant-item';
+        item.innerHTML = `<span class="v-dot" style="background:${color};opacity:0.4;"></span> ${v.name}`;
+        item.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selectEmail(flow.id, email.id, v.file, email.subject + ' - ' + v.name, v.name, email.pos, flow.emails.length, flow.name, flow.color);
+            dd.remove();
+        });
+        dd.appendChild(item);
+    });
+
+    node.style.position = 'relative';
+    node.appendChild(dd);
+}
+
+function closeAllDropdowns() {
+    document.querySelectorAll('.variant-dropdown').forEach(d => d.remove());
+    openDropdownId = null;
+}
+
+// ── Resizable Divider ───────────────────────────
+(function initDivider() {
+    const divider = document.getElementById('divider');
+    const panelLeft = document.getElementById('panelLeft');
+    let isDragging = false;
+
+    divider.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        divider.classList.add('dragging');
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const pct = (e.clientX / window.innerWidth) * 100;
+        const clamped = Math.max(20, Math.min(65, pct));
+        panelLeft.style.width = clamped + '%';
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        divider.classList.remove('dragging');
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+    });
+})();
+
+// ── Close dropdowns on outside click ────────────
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.variant-badge') && !e.target.closest('.variant-dropdown')) {
+        closeAllDropdowns();
+    }
+});
+
+// ── Init ────────────────────────────────────────
+renderFlows();
+</script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

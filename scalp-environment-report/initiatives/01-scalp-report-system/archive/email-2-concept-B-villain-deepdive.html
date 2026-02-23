@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <title>{% if person.top_stressor == 'uv' %}What {{ person|lookup:'high_uv_days'|default:"200" }} UV days are doing to your scalp{% elif person.top_stressor == 'water' %}What {{ person|lookup:'water_hardness_ppm'|default:"240" }} ppm water is doing to your hair{% elif person.top_stressor == 'pollution' %}What {{ person.location.city }}'s air quality means for your scalp{% else %}Your biggest environmental threat (it's not what you think){% endif %}</title>
+
+  <style type="text/css">
+    @media (prefers-color-scheme: dark) {
+      .dark-mode-bg { background-color: #1a1a1a !important; }
+      .dark-mode-text { color: #f5f5f5 !important; }
+      .dark-mode-text-secondary { color: #cccccc !important; }
+      .dark-mode-card { background-color: #2d2d2d !important; }
+      .dark-mode-border { border-color: #404040 !important; }
+    }
+    [data-ogsc] .dark-mode-bg { background-color: #1a1a1a !important; }
+    [data-ogsc] .dark-mode-text { color: #f5f5f5 !important; }
+    @media only screen and (max-width: 600px) {
+      .mobile-padding { padding-left: 20px !important; padding-right: 20px !important; }
+      .mobile-full-width { width: 100% !important; }
+      .mobile-font-large { font-size: 26px !important; }
+      .mobile-font-medium { font-size: 18px !important; }
+      .mobile-button { padding: 16px 28px !important; font-size: 13px !important; }
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background-color: #F4EFE9;" class="dark-mode-bg">
+
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #F4EFE9;" class="dark-mode-bg">
+    <tr>
+      <td style="padding: 0;">
+
+        <!-- Top Banner -->
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #102B26;">
+          <tr>
+            <td style="padding: 15px 20px; text-align: center;">
+              <a href="https://www.awarehair.com" style="font-size: 11px; color: #F4EFE9; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; font-weight: 600;">
+                TRY AWARE HAIR RISK FREE | FREE RETURNS WITHIN 14 DAYS
+              </a>
+            </td>
+          </tr>
+        </table>
+
+        <!-- Main Container -->
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 640px; margin: 0 auto; background-color: #FFFFFF;" class="dark-mode-card">
+
+          <!-- ============================================ -->
+          <!-- UV VERSION -->
+          <!-- ============================================ -->
+          {% if person.top_stressor == 'uv' %}
+
+          <!-- Hero Section - UV -->
+          <tr>
+            <td style="padding: 50px 40px 35px 40px; text-align: center; background: linear-gradient(180deg, #FFF7ED 0%, #F4EFE9 100%);" class="mobile-padding">
+
+              <div style="font-size: 48px; margin-bottom: 15px;">☀️</div>
+
+              <div style="font-size: 11px; color: #F97316; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; font-weight: 600;">
+                Your #1 Environmental Stressor
+              </div>
+
+              <h1 style="font-family: Georgia, serif; font-size: 30px; font-weight: 400; color: #102B26; margin: 0 0 15px 0; line-height: 1.3;" class="mobile-font-large dark-mode-text">
+                What {{ person|lookup:'high_uv_days'|default:"200" }} High UV Days<br/>Are Doing to Your Scalp
+              </h1>
+
+              <p style="font-size: 16px; color: #666; margin: 0; line-height: 1.6; max-width: 480px; margin-left: auto; margin-right: auto;" class="dark-mode-text-secondary">
+                You're in the top {{ person|lookup:'uv_percentile'|default:"85" }}% nationally for UV exposure.<br/>Here's what that actually means.
+              </p>
+
+            </td>
+          </tr>
+
+          <!-- Personal Letter - UV -->
+          <tr>
+            <td style="padding: 40px 40px;" class="mobile-padding dark-mode-card">
+              <div style="max-width: 520px; margin: 0 auto;">
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 20px 0;" class="dark-mode-text">
+                  Hi {{ person|lookup:'first_name'|default:"there" }},
+                </p>
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 20px 0;" class="dark-mode-text-secondary">
+                  Yesterday I sent your Environmental Scalp Report. Your data showed something I want to explain in detail:
+                </p>
+
+                <div style="background-color: #FFF7ED; border-radius: 10px; padding: 22px; margin-bottom: 25px; border-left: 4px solid #F97316;">
+                  <p style="font-size: 14px; color: #9A3412; line-height: 1.6; margin: 0;">
+                    <strong>Your UV exposure:</strong> {{ person|lookup:'uv_multiplier_text'|default:"3.4x higher than safe levels" }}<br/>
+                    <strong>Annual high UV days:</strong> {{ person|lookup:'high_uv_days'|default:"200" }} days<br/>
+                    <strong>National ranking:</strong> Top {{ person|lookup:'uv_percentile'|default:"85" }}%
+                  </p>
+                </div>
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 20px 0;" class="dark-mode-text-secondary">
+                  Most people know UV damages skin. But almost nobody thinks about their scalp—even though it's the most sun-exposed part of your body.
+                </p>
+
+              </div>
+            </td>
+          </tr>
+
+          <!-- The Science - UV -->
+          <tr>
+            <td style="padding: 0 40px 45px 40px;" class="mobile-padding">
+              <div style="background: linear-gradient(135deg, #7C2D12 0%, #9A3412 100%); border-radius: 12px; padding: 35px; box-shadow: 0 4px 20px rgba(124, 45, 18, 0.2);">
+
+                <h2 style="font-family: Georgia, serif; font-size: 22px; font-weight: 400; color: #FFFFFF; margin: 0 0 20px 0; line-height: 1.4;">
+                  How UV Radiation Damages Your Scalp
+                </h2>
+
+                <p style="font-size: 15px; color: rgba(255, 255, 255, 0.9); line-height: 1.8; margin: 0 0 20px 0;">
+                  UV radiation doesn't just cause sunburn. It triggers a cascade of damage that accumulates invisibly over time:
+                </p>
+
+                <div style="margin-bottom: 20px;">
+                  <p style="font-size: 13px; color: #FED7AA; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;">1. Protein Breakdown</p>
+                  <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.7; margin: 0;">
+                    UV radiation breaks down keratin—the protein that gives hair its structure. Each high UV day weakens the bonds that keep your hair strong and flexible.
+                  </p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                  <p style="font-size: 13px; color: #FED7AA; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;">2. Scalp Barrier Degradation</p>
+                  <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.7; margin: 0;">
+                    Your scalp has a protective lipid barrier. UV exposure oxidizes these lipids, leaving your scalp defenseless against environmental stress and moisture loss.
+                  </p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                  <p style="font-size: 13px; color: #FED7AA; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;">3. Follicle Inflammation</p>
+                  <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.7; margin: 0;">
+                    Chronic UV exposure triggers low-grade inflammation around hair follicles. This disrupts the growth cycle and can lead to premature shedding.
+                  </p>
+                </div>
+
+                <div>
+                  <p style="font-size: 13px; color: #FED7AA; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;">4. Color & Texture Damage</p>
+                  <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.7; margin: 0;">
+                    UV degrades melanin (causing color fade) and roughens the cuticle layer (causing frizz and dullness). If you color your hair, UV makes it fade 2-3x faster.
+                  </p>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+          <!-- The Compound Effect - UV -->
+          <tr>
+            <td style="padding: 0 40px 45px 40px;" class="mobile-padding">
+              <div style="max-width: 520px; margin: 0 auto;">
+
+                <h3 style="font-family: Georgia, serif; font-size: 20px; font-weight: 400; color: #102B26; margin: 0 0 20px 0; line-height: 1.4;" class="dark-mode-text">
+                  The Compound Effect in {{ person.location.city|default:"Your Area" }}
+                </h3>
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 20px 0;" class="dark-mode-text-secondary">
+                  Here's what makes your situation different from someone in Seattle or Portland:
+                </p>
+
+                <div style="background-color: #F4EFE9; border-radius: 10px; padding: 25px; margin-bottom: 20px;" class="dark-mode-card">
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                    <tr>
+                      <td width="50%" style="text-align: center; padding: 10px; border-right: 1px solid #e5e5e5;">
+                        <p style="font-size: 32px; color: #F97316; font-weight: 700; margin: 0;">{{ person|lookup:'high_uv_days'|default:"200" }}</p>
+                        <p style="font-size: 11px; color: #666; margin: 5px 0 0 0; text-transform: uppercase; letter-spacing: 1px;">High UV Days/Year</p>
+                      </td>
+                      <td width="50%" style="text-align: center; padding: 10px;">
+                        <p style="font-size: 32px; color: #22C55E; font-weight: 700; margin: 0;">~90</p>
+                        <p style="font-size: 11px; color: #666; margin: 5px 0 0 0; text-transform: uppercase; letter-spacing: 1px;">US Average</p>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 20px 0;" class="dark-mode-text-secondary">
+                  That's <strong>{{ person|lookup:'high_uv_days'|default:"200"|add:"-90" }} extra days</strong> of UV assault on your scalp every year. Over 5 years, that's {{ person|lookup:'high_uv_days'|default:"200"|add:"-90"|multiply:"5" }}+ additional high-exposure days compared to average.
+                </p>
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0;" class="dark-mode-text-secondary">
+                  Most hair products are formulated for "average" UV exposure. They weren't designed for environments like {{ person.location.city|default:"yours" }}.
+                </p>
+
+              </div>
+            </td>
+          </tr>
+
+          <!-- How AWARE Addresses UV -->
+          <tr>
+            <td style="padding: 0 40px 45px 40px;" class="mobile-padding">
+              <div style="background-color: #FAFAFA; border-radius: 12px; padding: 35px;" class="dark-mode-card">
+
+                <div style="text-align: center; margin-bottom: 20px;">
+                  <span style="display: inline-block; padding: 6px 14px; background-color: #DCFCE7; border-radius: 20px; font-size: 10px; color: #166534; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">
+                    How AWARE Addresses This
+                  </span>
+                </div>
+
+                <h3 style="font-family: Georgia, serif; font-size: 20px; font-weight: 400; color: #102B26; margin: 0 0 20px 0; text-align: center; line-height: 1.4;" class="dark-mode-text">
+                  Formulated for High UV Environments
+                </h3>
+
+                <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #e5e5e5;">
+                  <p style="font-size: 13px; color: #102B26; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;" class="dark-mode-text">AWARE Conditioner</p>
+                  <p style="font-size: 14px; color: #555; line-height: 1.7; margin: 0;" class="dark-mode-text-secondary">
+                    Contains hydrolyzed keratin to repair UV-damaged protein bonds, plus panthenol to restore the protective cuticle layer. 5-minute deep absorption designed for high-damage environments.
+                  </p>
+                </div>
+
+                <div>
+                  <p style="font-size: 13px; color: #102B26; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;" class="dark-mode-text">AWARE Leave-In</p>
+                  <p style="font-size: 14px; color: #555; line-height: 1.7; margin: 0;" class="dark-mode-text-secondary">
+                    UV-filtering complex provides daily protection between washes. Antioxidant-rich formula neutralizes free radicals before they can damage your scalp barrier.
+                  </p>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+          {% elif person.top_stressor == 'water' %}
+          <!-- ============================================ -->
+          <!-- HARD WATER VERSION -->
+          <!-- ============================================ -->
+
+          <!-- Hero Section - Water -->
+          <tr>
+            <td style="padding: 50px 40px 35px 40px; text-align: center; background: linear-gradient(180deg, #EFF6FF 0%, #F4EFE9 100%);" class="mobile-padding">
+
+              <div style="font-size: 48px; margin-bottom: 15px;">💧</div>
+
+              <div style="font-size: 11px; color: #1976D2; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; font-weight: 600;">
+                Your #1 Environmental Stressor
+              </div>
+
+              <h1 style="font-family: Georgia, serif; font-size: 30px; font-weight: 400; color: #102B26; margin: 0 0 15px 0; line-height: 1.3;" class="mobile-font-large dark-mode-text">
+                What {{ person|lookup:'water_hardness_ppm'|default:"240" }} ppm Hard Water<br/>Is Doing to Your Hair
+              </h1>
+
+              <p style="font-size: 16px; color: #666; margin: 0; line-height: 1.6; max-width: 480px; margin-left: auto; margin-right: auto;" class="dark-mode-text-secondary">
+                You're in the top {{ person|lookup:'water_percentile'|default:"68" }}% nationally for water hardness.<br/>Here's what that actually means.
+              </p>
+
+            </td>
+          </tr>
+
+          <!-- Personal Letter - Water -->
+          <tr>
+            <td style="padding: 40px 40px;" class="mobile-padding dark-mode-card">
+              <div style="max-width: 520px; margin: 0 auto;">
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 20px 0;" class="dark-mode-text">
+                  Hi {{ person|lookup:'first_name'|default:"there" }},
+                </p>
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 20px 0;" class="dark-mode-text-secondary">
+                  Yesterday I sent your Environmental Scalp Report. Your data showed something I want to explain in detail:
+                </p>
+
+                <div style="background-color: #EFF6FF; border-radius: 10px; padding: 22px; margin-bottom: 25px; border-left: 4px solid #1976D2;">
+                  <p style="font-size: 14px; color: #1E40AF; line-height: 1.6; margin: 0;">
+                    <strong>Your water hardness:</strong> {{ person|lookup:'water_hardness_ppm'|default:"240" }} ppm ({{ person|lookup:'water_multiplier_text'|default:"4x harder than soft water" }})<br/>
+                    <strong>Classification:</strong> {% if person.water_hardness_ppm > 180 %}Very Hard{% elif person.water_hardness_ppm > 120 %}Hard{% else %}Moderately Hard{% endif %}<br/>
+                    <strong>National ranking:</strong> Top {{ person|lookup:'water_percentile'|default:"68" }}%
+                  </p>
+                </div>
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 20px 0;" class="dark-mode-text-secondary">
+                  Hard water is the most underestimated hair issue. You can't see it, smell it, or feel it in the shower. But every wash leaves an invisible deposit that accumulates over time.
+                </p>
+
+              </div>
+            </td>
+          </tr>
+
+          <!-- The Science - Water -->
+          <tr>
+            <td style="padding: 0 40px 45px 40px;" class="mobile-padding">
+              <div style="background: linear-gradient(135deg, #1E3A8A 0%, #1976D2 100%); border-radius: 12px; padding: 35px; box-shadow: 0 4px 20px rgba(30, 58, 138, 0.2);">
+
+                <h2 style="font-family: Georgia, serif; font-size: 22px; font-weight: 400; color: #FFFFFF; margin: 0 0 20px 0; line-height: 1.4;">
+                  How Hard Water Damages Your Hair
+                </h2>
+
+                <p style="font-size: 15px; color: rgba(255, 255, 255, 0.9); line-height: 1.8; margin: 0 0 20px 0;">
+                  Hard water contains dissolved calcium and magnesium minerals. Here's what happens with every shower:
+                </p>
+
+                <div style="margin-bottom: 20px;">
+                  <p style="font-size: 13px; color: #93C5FD; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;">1. Mineral Coating</p>
+                  <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.7; margin: 0;">
+                    Minerals bind to your hair shaft, creating an invisible film. This is why hair feels "coated," heavy, or waxy—even right after washing.
+                  </p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                  <p style="font-size: 13px; color: #93C5FD; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;">2. Product Blocking</p>
+                  <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.7; margin: 0;">
+                    The mineral layer blocks conditioners, treatments, and oils from penetrating. Products sit on top instead of absorbing. This is why "nothing works."
+                  </p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                  <p style="font-size: 13px; color: #93C5FD; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;">3. Scalp Disruption</p>
+                  <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.7; margin: 0;">
+                    Mineral deposits alter your scalp's pH and disrupt the natural microbiome. This can trigger dryness, itching, flaking, or excess oil production.
+                  </p>
+                </div>
+
+                <div>
+                  <p style="font-size: 13px; color: #93C5FD; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;">4. Breakage & Tangling</p>
+                  <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.7; margin: 0;">
+                    Mineral buildup roughens the hair cuticle, causing strands to catch and tangle. This leads to breakage during brushing and styling—especially when wet.
+                  </p>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+          <!-- The Compound Effect - Water -->
+          <tr>
+            <td style="padding: 0 40px 45px 40px;" class="mobile-padding">
+              <div style="max-width: 520px; margin: 0 auto;">
+
+                <h3 style="font-family: Georgia, serif; font-size: 20px; font-weight: 400; color: #102B26; margin: 0 0 20px 0; line-height: 1.4;" class="dark-mode-text">
+                  The Math of Hard Water Damage
+                </h3>
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 20px 0;" class="dark-mode-text-secondary">
+                  Let's make this concrete:
+                </p>
+
+                <div style="background-color: #F4EFE9; border-radius: 10px; padding: 25px; margin-bottom: 20px;" class="dark-mode-card">
+
+                  <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #e5e5e5;">
+                    <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 5px 0;">Per Shower</p>
+                    <p style="font-size: 18px; color: #1976D2; font-weight: 600; margin: 0;">{{ person|lookup:'water_hardness_ppm'|default:"240" }} ppm of minerals deposited</p>
+                  </div>
+
+                  <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #e5e5e5;">
+                    <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 5px 0;">Per Week (3-4 washes)</p>
+                    <p style="font-size: 18px; color: #1976D2; font-weight: 600; margin: 0;">~800-1,000 ppm accumulated</p>
+                  </div>
+
+                  <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #e5e5e5;">
+                    <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 5px 0;">Per Month</p>
+                    <p style="font-size: 18px; color: #1976D2; font-weight: 600; margin: 0;">Visible buildup begins</p>
+                  </div>
+
+                  <div>
+                    <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 5px 0;">Per Year</p>
+                    <p style="font-size: 18px; color: #DC2626; font-weight: 600; margin: 0;">Products stop working entirely</p>
+                  </div>
+
+                </div>
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0;" class="dark-mode-text-secondary">
+                  Standard shampoos can't dissolve mineral deposits—they're not designed to. You need chelating ingredients that specifically target calcium and magnesium bonds.
+                </p>
+
+              </div>
+            </td>
+          </tr>
+
+          <!-- How AWARE Addresses Water -->
+          <tr>
+            <td style="padding: 0 40px 45px 40px;" class="mobile-padding">
+              <div style="background-color: #FAFAFA; border-radius: 12px; padding: 35px;" class="dark-mode-card">
+
+                <div style="text-align: center; margin-bottom: 20px;">
+                  <span style="display: inline-block; padding: 6px 14px; background-color: #DCFCE7; border-radius: 20px; font-size: 10px; color: #166534; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">
+                    How AWARE Addresses This
+                  </span>
+                </div>
+
+                <h3 style="font-family: Georgia, serif; font-size: 20px; font-weight: 400; color: #102B26; margin: 0 0 20px 0; text-align: center; line-height: 1.4;" class="dark-mode-text">
+                  Chelating Technology for Hard Water Areas
+                </h3>
+
+                <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #e5e5e5;">
+                  <p style="font-size: 13px; color: #102B26; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;" class="dark-mode-text">AWARE Shampoo</p>
+                  <p style="font-size: 14px; color: #555; line-height: 1.7; margin: 0;" class="dark-mode-text-secondary">
+                    Contains EDTA and citric acid chelators that bind to calcium and magnesium ions, dissolving mineral deposits without stripping natural oils. Designed specifically for {{ person|lookup:'water_hardness_ppm'|default:"240" }}+ ppm water.
+                  </p>
+                </div>
+
+                <div>
+                  <p style="font-size: 13px; color: #102B26; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;" class="dark-mode-text">AWARE Leave-In</p>
+                  <p style="font-size: 14px; color: #555; line-height: 1.7; margin: 0;" class="dark-mode-text-secondary">
+                    Creates a protective barrier that reduces mineral adhesion between washes. Your hair stays cleaner longer, even in hard water environments.
+                  </p>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+          {% else %}
+          <!-- ============================================ -->
+          <!-- POLLUTION VERSION (Default) -->
+          <!-- ============================================ -->
+
+          <!-- Hero Section - Pollution -->
+          <tr>
+            <td style="padding: 50px 40px 35px 40px; text-align: center; background: linear-gradient(180deg, #F3F4F6 0%, #F4EFE9 100%);" class="mobile-padding">
+
+              <div style="font-size: 48px; margin-bottom: 15px;">💨</div>
+
+              <div style="font-size: 11px; color: #607D8B; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; font-weight: 600;">
+                Your #1 Environmental Stressor
+              </div>
+
+              <h1 style="font-family: Georgia, serif; font-size: 30px; font-weight: 400; color: #102B26; margin: 0 0 15px 0; line-height: 1.3;" class="mobile-font-large dark-mode-text">
+                What {{ person.location.city|default:"Your City" }}'s Air Quality<br/>Means for Your Scalp
+              </h1>
+
+              <p style="font-size: 16px; color: #666; margin: 0; line-height: 1.6; max-width: 480px; margin-left: auto; margin-right: auto;" class="dark-mode-text-secondary">
+                You're in the top {{ person|lookup:'aqi_percentile'|default:"72" }}% nationally for pollution exposure.<br/>Here's what that actually means.
+              </p>
+
+            </td>
+          </tr>
+
+          <!-- Personal Letter - Pollution -->
+          <tr>
+            <td style="padding: 40px 40px;" class="mobile-padding dark-mode-card">
+              <div style="max-width: 520px; margin: 0 auto;">
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 20px 0;" class="dark-mode-text">
+                  Hi {{ person|lookup:'first_name'|default:"there" }},
+                </p>
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 20px 0;" class="dark-mode-text-secondary">
+                  Yesterday I sent your Environmental Scalp Report. Your data showed something I want to explain in detail:
+                </p>
+
+                <div style="background-color: #F3F4F6; border-radius: 10px; padding: 22px; margin-bottom: 25px; border-left: 4px solid #607D8B;">
+                  <p style="font-size: 14px; color: #374151; line-height: 1.6; margin: 0;">
+                    <strong>Your average AQI:</strong> {{ person|lookup:'aqi_annual'|default:"75" }} ({{ person|lookup:'aqi_multiplier_text'|default:"50% above healthy levels" }})<br/>
+                    <strong>Elevated pollution days:</strong> {{ person|lookup:'moderate_aqi_days'|default:"180" }}/year<br/>
+                    <strong>National ranking:</strong> Top {{ person|lookup:'aqi_percentile'|default:"72" }}%
+                  </p>
+                </div>
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 20px 0;" class="dark-mode-text-secondary">
+                  Air pollution affects your lungs—everyone knows that. But your scalp? It's constantly exposed to the same particles, with no protection.
+                </p>
+
+              </div>
+            </td>
+          </tr>
+
+          <!-- The Science - Pollution -->
+          <tr>
+            <td style="padding: 0 40px 45px 40px;" class="mobile-padding">
+              <div style="background: linear-gradient(135deg, #374151 0%, #607D8B 100%); border-radius: 12px; padding: 35px; box-shadow: 0 4px 20px rgba(55, 65, 81, 0.2);">
+
+                <h2 style="font-family: Georgia, serif; font-size: 22px; font-weight: 400; color: #FFFFFF; margin: 0 0 20px 0; line-height: 1.4;">
+                  How Pollution Damages Your Scalp
+                </h2>
+
+                <p style="font-size: 15px; color: rgba(255, 255, 255, 0.9); line-height: 1.8; margin: 0 0 20px 0;">
+                  PM2.5 particles are 30x smaller than a human hair. They don't just sit on top—they penetrate into your follicles:
+                </p>
+
+                <div style="margin-bottom: 20px;">
+                  <p style="font-size: 13px; color: #D1D5DB; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;">1. Follicle Clogging</p>
+                  <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.7; margin: 0;">
+                    Microscopic particles settle into follicle openings, blocking sebum flow and trapping debris. This creates an environment where bacteria thrive.
+                  </p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                  <p style="font-size: 13px; color: #D1D5DB; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;">2. Oxidative Stress</p>
+                  <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.7; margin: 0;">
+                    Pollution particles contain heavy metals and PAHs (polycyclic aromatic hydrocarbons) that generate free radicals. These damage scalp cells and accelerate aging.
+                  </p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                  <p style="font-size: 13px; color: #D1D5DB; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;">3. Inflammation Cascade</p>
+                  <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.7; margin: 0;">
+                    Your scalp's immune response to pollution triggers chronic low-grade inflammation. This manifests as itching, redness, sensitivity, and increased shedding.
+                  </p>
+                </div>
+
+                <div>
+                  <p style="font-size: 13px; color: #D1D5DB; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;">4. Microbiome Disruption</p>
+                  <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.7; margin: 0;">
+                    Pollution alters the balance of bacteria and fungi on your scalp. An imbalanced microbiome leads to dandruff, excess oil, and persistent scalp issues.
+                  </p>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+          <!-- The Compound Effect - Pollution -->
+          <tr>
+            <td style="padding: 0 40px 45px 40px;" class="mobile-padding">
+              <div style="max-width: 520px; margin: 0 auto;">
+
+                <h3 style="font-family: Georgia, serif; font-size: 20px; font-weight: 400; color: #102B26; margin: 0 0 20px 0; line-height: 1.4;" class="dark-mode-text">
+                  The Daily Accumulation in {{ person.location.city|default:"Your City" }}
+                </h3>
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 20px 0;" class="dark-mode-text-secondary">
+                  Unlike a one-time exposure, pollution damage is continuous:
+                </p>
+
+                <div style="background-color: #F4EFE9; border-radius: 10px; padding: 25px; margin-bottom: 20px;" class="dark-mode-card">
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                    <tr>
+                      <td width="50%" style="text-align: center; padding: 10px; border-right: 1px solid #e5e5e5;">
+                        <p style="font-size: 32px; color: #607D8B; font-weight: 700; margin: 0;">{{ person|lookup:'moderate_aqi_days'|default:"180" }}</p>
+                        <p style="font-size: 11px; color: #666; margin: 5px 0 0 0; text-transform: uppercase; letter-spacing: 1px;">Pollution Days/Year</p>
+                      </td>
+                      <td width="50%" style="text-align: center; padding: 10px;">
+                        <p style="font-size: 32px; color: #22C55E; font-weight: 700; margin: 0;">~60</p>
+                        <p style="font-size: 11px; color: #666; margin: 5px 0 0 0; text-transform: uppercase; letter-spacing: 1px;">Rural Average</p>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0;" class="dark-mode-text-secondary">
+                  Standard shampoos weren't designed to remove embedded particulate matter. They clean surface dirt but leave the microscopic pollutants that cause real damage.
+                </p>
+
+              </div>
+            </td>
+          </tr>
+
+          <!-- How AWARE Addresses Pollution -->
+          <tr>
+            <td style="padding: 0 40px 45px 40px;" class="mobile-padding">
+              <div style="background-color: #FAFAFA; border-radius: 12px; padding: 35px;" class="dark-mode-card">
+
+                <div style="text-align: center; margin-bottom: 20px;">
+                  <span style="display: inline-block; padding: 6px 14px; background-color: #DCFCE7; border-radius: 20px; font-size: 10px; color: #166534; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">
+                    How AWARE Addresses This
+                  </span>
+                </div>
+
+                <h3 style="font-family: Georgia, serif; font-size: 20px; font-weight: 400; color: #102B26; margin: 0 0 20px 0; text-align: center; line-height: 1.4;" class="dark-mode-text">
+                  Anti-Pollution Defense for Urban Environments
+                </h3>
+
+                <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #e5e5e5;">
+                  <p style="font-size: 13px; color: #102B26; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;" class="dark-mode-text">AWARE Shampoo</p>
+                  <p style="font-size: 14px; color: #555; line-height: 1.7; margin: 0;" class="dark-mode-text-secondary">
+                    Deep-cleansing formula removes embedded particulate matter without harsh sulfates. Gentle enough for daily use in high-pollution environments.
+                  </p>
+                </div>
+
+                <div>
+                  <p style="font-size: 13px; color: #102B26; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; font-weight: 600;" class="dark-mode-text">AWARE Leave-In</p>
+                  <p style="font-size: 14px; color: #555; line-height: 1.7; margin: 0;" class="dark-mode-text-secondary">
+                    Antioxidant-rich formula neutralizes free radicals from pollution. Creates a protective film that reduces particle adhesion throughout the day.
+                  </p>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+          {% endif %}
+
+          <!-- Universal Testimonial Section -->
+          <tr>
+            <td style="padding: 0 40px 45px 40px;" class="mobile-padding">
+              <div style="max-width: 520px; margin: 0 auto;">
+
+                <div style="text-align: center; margin-bottom: 20px;">
+                  <span style="display: inline-block; padding: 6px 14px; background-color: #F0FDF4; border-radius: 20px; font-size: 10px; color: #166534; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">
+                    Similar Environment
+                  </span>
+                </div>
+
+                <div style="background-color: #FFFFFF; border-radius: 12px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #e5e5e5;" class="dark-mode-card dark-mode-border">
+
+                  {% if person.top_stressor == 'uv' %}
+                  <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 15px 0; font-style: italic;" class="dark-mode-text-secondary">
+                    "Living in Arizona, I'd given up on having healthy hair. Every product promised moisture but my hair always felt dry and straw-like. After switching to AWARE, my stylist asked what changed—she said my hair looked healthier than she'd seen it in years."
+                  </p>
+                  <p style="font-size: 13px; color: #102B26; margin: 0; font-weight: 500;" class="dark-mode-text">
+                    — Michelle, Phoenix · 280+ UV days/year
+                  </p>
+                  {% elif person.top_stressor == 'water' %}
+                  <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 15px 0; font-style: italic;" class="dark-mode-text-secondary">
+                    "My hair always felt coated and heavy—like there was a film on it no matter how much I rinsed. After two weeks with AWARE, that feeling was completely gone. My hair actually feels clean for the first time in years."
+                  </p>
+                  <p style="font-size: 13px; color: #102B26; margin: 0; font-weight: 500;" class="dark-mode-text">
+                    — Sarah, Las Vegas · Water hardness: 290 ppm
+                  </p>
+                  {% else %}
+                  <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 15px 0; font-style: italic;" class="dark-mode-text-secondary">
+                    "City pollution was making my scalp constantly itchy and my hair dull. I tried 'detox' shampoos but they just made things worse. AWARE actually calmed my scalp down—the difference was noticeable within a week."
+                  </p>
+                  <p style="font-size: 13px; color: #102B26; margin: 0; font-weight: 500;" class="dark-mode-text">
+                    — Lauren, Los Angeles · High pollution area
+                  </p>
+                  {% endif %}
+
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+          <!-- Closing Letter -->
+          <tr>
+            <td style="padding: 0 40px 45px 40px;" class="mobile-padding">
+              <div style="max-width: 520px; margin: 0 auto; border-top: 1px solid #e5e5e5; padding-top: 30px;" class="dark-mode-border">
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 20px 0;" class="dark-mode-text-secondary">
+                  Now you understand what your biggest environmental stressor is doing to your scalp. Tomorrow, I'll share what most people see in their first 14 days with AWARE—and why we're confident enough to offer a full refund if you don't.
+                </p>
+
+                <p style="font-size: 15px; color: #333; line-height: 1.8; margin: 0 0 8px 0;" class="dark-mode-text">
+                  Questions about your report? Just reply—I read everything.
+                </p>
+
+                <p style="font-family: 'Brush Script MT', cursive; font-size: 28px; color: #102B26; margin: 15px 0 8px 0;" class="dark-mode-text">
+                  Jade
+                </p>
+
+                <p style="font-size: 12px; color: #666; margin: 0;" class="dark-mode-text-secondary">
+                  Co-Founder, AWARE Hair
+                </p>
+
+              </div>
+            </td>
+          </tr>
+
+          <!-- CTA Section -->
+          <tr>
+            <td style="padding: 45px 40px; background-color: #F4EFE9; text-align: center;" class="mobile-padding dark-mode-bg">
+
+              <p style="font-size: 18px; color: #102B26; margin: 0 0 8px 0; font-weight: 500; line-height: 1.4;" class="dark-mode-text">
+                Ready to address {% if person.top_stressor == 'uv' %}UV damage{% elif person.top_stressor == 'water' %}hard water buildup{% else %}pollution exposure{% endif %}?
+              </p>
+
+              <p style="font-size: 14px; color: #666; margin: 0 0 25px 0;" class="dark-mode-text-secondary">
+                Try risk-free with our 14-day money-back guarantee.
+              </p>
+
+              <a href="https://awarehair.com/collections/aware-9-1-collection/products/9-1-discovery-kit" style="display: inline-block; padding: 18px 40px; background-color: #102B26; color: #F4EFE9; text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; border-radius: 6px; font-weight: 600; box-shadow: 0 4px 12px rgba(16, 43, 38, 0.2);" class="mobile-button">
+                Try the Discovery Kit — $75
+              </a>
+
+              <p style="font-size: 12px; color: #888; margin: 20px 0 0 0;" class="dark-mode-text-secondary">
+                Free shipping · Full refund if you don't feel a difference
+              </p>
+
+            </td>
+          </tr>
+
+          <!-- Email Series Progress -->
+          <tr>
+            <td style="padding: 30px 40px; background-color: #FFFFFF; text-align: center;" class="mobile-padding dark-mode-card">
+
+              <p style="font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 15px 0;" class="dark-mode-text-secondary">
+                Your Scalp Health Journey
+              </p>
+
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
+                <tr>
+                  <td style="padding: 0 6px; text-align: center;">
+                    <div style="width: 28px; height: 28px; background-color: #22C55E; border-radius: 50%; line-height: 28px; font-size: 11px; color: #FFFFFF; font-weight: 600;">&#10003;</div>
+                    <p style="font-size: 9px; color: #999; margin: 5px 0 0 0;">Report</p>
+                  </td>
+                  <td style="padding: 0 6px; text-align: center;">
+                    <div style="width: 28px; height: 28px; background-color: #102B26; border-radius: 50%; line-height: 28px; font-size: 11px; color: #FFFFFF; font-weight: 600;">2</div>
+                    <p style="font-size: 9px; color: #102B26; margin: 5px 0 0 0; font-weight: 600;">Today</p>
+                  </td>
+                  <td style="padding: 0 6px; text-align: center;">
+                    <div style="width: 28px; height: 28px; background-color: #E5E5E5; border-radius: 50%; line-height: 28px; font-size: 11px; color: #999;">3</div>
+                    <p style="font-size: 9px; color: #999; margin: 5px 0 0 0;">Timeline</p>
+                  </td>
+                  <td style="padding: 0 6px; text-align: center;">
+                    <div style="width: 28px; height: 28px; background-color: #E5E5E5; border-radius: 50%; line-height: 28px; font-size: 11px; color: #999;">4</div>
+                    <p style="font-size: 9px; color: #999; margin: 5px 0 0 0;">Results</p>
+                  </td>
+                  <td style="padding: 0 6px; text-align: center;">
+                    <div style="width: 28px; height: 28px; background-color: #E5E5E5; border-radius: 50%; line-height: 28px; font-size: 11px; color: #999;">5</div>
+                    <p style="font-size: 9px; color: #999; margin: 5px 0 0 0;">Decide</p>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 35px 40px; border-top: 1px solid #e5e5e5; background-color: #fafafa;" class="mobile-padding dark-mode-bg dark-mode-border">
+
+              <div style="text-align: center; margin-bottom: 15px;">
+                <span style="font-size: 13px; font-weight: 600; color: #102B26; letter-spacing: 1px;" class="dark-mode-text">AWARE HAIR</span>
+                <p style="font-size: 11px; color: #666; margin: 5px 0 0 0;" class="dark-mode-text-secondary">Environmental Defense for Your Scalp</p>
+              </div>
+
+              <div style="text-align: center; margin-bottom: 15px;">
+                <a href="https://www.awarehair.com" style="color: #555; text-decoration: none; font-size: 12px; margin: 0 8px;">Shop</a>
+                <span style="color: #ccc;">·</span>
+                <a href="https://instagram.com/awarehaircare" style="color: #555; text-decoration: none; font-size: 12px; margin: 0 8px;">Instagram</a>
+                <span style="color: #ccc;">·</span>
+                <a href="mailto:support@awarehair.com" style="color: #555; text-decoration: none; font-size: 12px; margin: 0 8px;">Contact</a>
+              </div>
+
+              <div style="text-align: center;">
+                <p style="font-size: 11px; color: #888; line-height: 1.6; margin: 0;" class="dark-mode-text-secondary">
+                  You're receiving this because you requested a scalp environment report.<br/>
+                  <a href="{% unsubscribe_link %}" style="color: #888; text-decoration: underline;">Unsubscribe</a> ·
+                  <a href="https://www.awarehair.com/pages/privacy-policy" style="color: #888; text-decoration: underline;">Privacy</a>
+                </p>
+              </div>
+
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

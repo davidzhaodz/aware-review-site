@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - 8-Week Distributor Sprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0e14;
+  --surface: #14171f;
+  --surface-2: #1b1f2a;
+  --surface-3: #222736;
+  --border: #2a2f3e;
+  --border-light: #353b4d;
+  --text: #e8eaf0;
+  --text-secondary: #9ba1b5;
+  --text-muted: #6b7186;
+  --gold: #c9a96e;
+  --gold-dim: rgba(201,169,110,0.12);
+  --gold-medium: rgba(201,169,110,0.25);
+  --green: #3dd68c;
+  --green-dim: rgba(61,214,140,0.10);
+  --blue: #5b9cf5;
+  --blue-dim: rgba(91,156,245,0.10);
+  --amber: #e5a84b;
+  --amber-dim: rgba(229,168,75,0.10);
+  --red: #e5534b;
+  --red-dim: rgba(229,83,75,0.10);
+  --purple: #a78bfa;
+  --purple-dim: rgba(167,139,250,0.10);
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout */
+.container { max-width: 1440px; margin: 0 auto; padding: 28px 32px; }
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.header-left h1 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  margin-bottom: 4px;
+}
+.header-left h1 .accent { color: var(--gold); }
+.header-left .subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+.header-right {
+  text-align: right;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.header-right .deadline {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--amber);
+  margin-bottom: 2px;
+}
+
+/* Navigation */
+.nav {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 28px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 4px;
+  overflow-x: auto;
+}
+.nav-btn {
+  padding: 9px 20px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.15s ease;
+  border: none;
+  background: transparent;
+  white-space: nowrap;
+}
+.nav-btn:hover { color: var(--text-secondary); background: var(--surface-2); }
+.nav-btn.active { background: var(--surface-3); color: var(--gold); }
+
+/* KPI Row */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.kpi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.kpi::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+}
+.kpi.kpi-gold::before { background: var(--gold); }
+.kpi.kpi-green::before { background: var(--green); }
+.kpi.kpi-blue::before { background: var(--blue); }
+.kpi.kpi-amber::before { background: var(--amber); }
+.kpi.kpi-red::before { background: var(--red); }
+.kpi.kpi-purple::before { background: var(--purple); }
+.kpi-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.kpi-value {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.kpi-value.gold { color: var(--gold); }
+.kpi-value.green { color: var(--green); }
+.kpi-value.blue { color: var(--blue); }
+.kpi-value.amber { color: var(--amber); }
+.kpi-value.red { color: var(--red); }
+.kpi-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Sections */
+.section { display: none; }
+.section.active { display: block; }
+.section-title {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  letter-spacing: -0.2px;
+}
+.section-sub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  max-width: 680px;
+}
+
+/* Cards */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.card-header {
+  padding: 14px 20px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card-body { padding: 0; }
+
+/* Pipeline Table */
+table { width: 100%; border-collapse: collapse; }
+th {
+  text-align: left;
+  padding: 11px 16px;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--text-muted);
+  font-weight: 600;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+}
+td {
+  padding: 12px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(201,169,110,0.03); }
+.dist-name { font-weight: 600; color: var(--text); }
+.dist-detail { font-size: 11.5px; color: var(--text-muted); margin-top: 1px; }
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+.badge-tier1 { background: var(--gold-dim); color: var(--gold); }
+.badge-tier2 { background: var(--blue-dim); color: var(--blue); }
+.badge-tier3 { background: var(--amber-dim); color: var(--amber); }
+.badge-tier4 { background: var(--purple-dim); color: var(--purple); }
+.badge-warm { background: var(--green-dim); color: var(--green); }
+.badge-cold { background: var(--surface-3); color: var(--text-muted); }
+.badge-ready { background: var(--green-dim); color: var(--green); }
+.badge-partial { background: var(--amber-dim); color: var(--amber); }
+.badge-missing { background: var(--red-dim); color: var(--red); }
+
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 28px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 13px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.score-9 { background: var(--green-dim); color: var(--green); }
+.score-8 { background: var(--blue-dim); color: var(--blue); }
+.score-7 { background: var(--amber-dim); color: var(--amber); }
+.score-6 { background: var(--red-dim); color: var(--red); }
+
+/* Status indicators */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+.status-dot.not-contacted { background: var(--text-muted); }
+.status-dot.warm { background: var(--gold); }
+.status-dot.outreach-sent { background: var(--blue); }
+.status-dot.in-conversation { background: var(--green); }
+.status-dot.negotiating { background: var(--amber); }
+
+/* Timeline */
+.timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+}
+.week-col {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+.week-col:hover { border-color: var(--border-light); }
+.week-col.current { border-color: var(--gold); }
+.week-col.current .week-header { background: var(--gold-dim); }
+.week-header {
+  padding: 12px 14px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+.week-num {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-secondary);
+}
+.week-date {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.week-body {
+  padding: 12px;
+  min-height: 200px;
+}
+.week-task {
+  padding: 7px 10px;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--text-secondary);
+  background: var(--surface-2);
+  border-left: 2px solid transparent;
+}
+.week-task.prep { border-left-color: var(--blue); }
+.week-task.outreach { border-left-color: var(--gold); }
+.week-task.followup { border-left-color: var(--amber); }
+.week-task.meeting { border-left-color: var(--green); }
+.week-task.checkpoint { border-left-color: var(--red); background: var(--red-dim); color: var(--text); }
+.week-task-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.week-task-label.prep-label { color: var(--blue); }
+.week-task-label.outreach-label { color: var(--gold); }
+.week-task-label.followup-label { color: var(--amber); }
+.week-task-label.meeting-label { color: var(--green); }
+.week-task-label.checkpoint-label { color: var(--red); }
+
+/* Map Section */
+.map-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.map-svg-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.map-svg-wrap svg { max-width: 100%; height: auto; }
+.map-legend {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.map-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+
+/* Coverage Grid */
+.coverage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+.coverage-item {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+}
+.coverage-region {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.coverage-dists {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Deal Terms */
+.terms-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.terms-table { width: 100%; }
+.terms-table td { padding: 10px 14px; font-size: 13px; }
+.terms-table .term-label { color: var(--text-secondary); font-weight: 500; }
+.terms-table .term-open { color: var(--green); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.terms-table .term-target { color: var(--blue); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.terms-table .term-floor { color: var(--red); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+.price-table { width: 100%; }
+.price-table th { font-size: 10px; padding: 10px 14px; }
+.price-table td { font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: right; }
+.price-table td:first-child { text-align: left; font-family: 'DM Sans', sans-serif; font-size: 13px; }
+
+.non-negotiable-list {
+  list-style: none;
+  padding: 16px 20px;
+}
+.non-negotiable-list li {
+  padding: 8px 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.non-negotiable-list li:last-child { border-bottom: none; }
+.nn-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background: var(--red-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--red);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Sweetener list */
+.sweetener-list {
+  list-style: none;
+  padding: 16px 20px;
+}
+.sweetener-list li {
+  padding: 8px 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sweetener-list li:last-child { border-bottom: none; }
+.sw-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background: var(--green-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--green);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Materials Checklist */
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.check-item {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.check-status {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 1px;
+}
+.check-status.done { background: var(--green-dim); color: var(--green); }
+.check-status.partial { background: var(--amber-dim); color: var(--amber); }
+.check-status.todo { background: var(--red-dim); color: var(--red); }
+.check-info .check-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.check-info .check-note { font-size: 11.5px; color: var(--text-muted); }
+
+/* Tracker */
+.tracker-row {
+  display: grid;
+  grid-template-columns: 200px 100px 120px 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+}
+.tracker-row > div {
+  background: var(--surface);
+  padding: 11px 14px;
+  font-size: 13px;
+}
+.tracker-header > div {
+  background: var(--surface-2);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 10px 14px;
+}
+
+/* Research callout */
+.callout {
+  background: var(--gold-dim);
+  border: 1px solid var(--gold-medium);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.callout-icon {
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+  color: var(--gold);
+  font-weight: 700;
+}
+.callout-text { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.callout-text strong { color: var(--text); }
+
+/* Tier filters */
+.filter-bar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.filter-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--border-light); color: var(--text-secondary); }
+.filter-btn.active { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+/* Print */
+@media print {
+  body { background: #fff; color: #111; }
+  .nav, .filter-bar { display: none; }
+  .section { display: block !important; page-break-inside: avoid; margin-bottom: 32px; }
+  .card { border: 1px solid #ddd; }
+  .kpi { border: 1px solid #ddd; }
+  .kpi-value { color: #111 !important; }
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .kpi-row { grid-template-columns: repeat(3, 1fr); }
+  .timeline-grid { grid-template-columns: repeat(4, 1fr); }
+  .terms-layout { grid-template-columns: 1fr; }
+  .checklist-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .container { padding: 16px; }
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .timeline-grid { grid-template-columns: 1fr; }
+  .checklist-grid { grid-template-columns: 1fr; }
+  .tracker-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <h1><span class="accent">AWARE Hair</span> Distributor Sprint</h1>
+      <div class="subtitle">8-Week Plan to Signed Distribution Agreement</div>
+    </div>
+    <div class="header-right">
+      <div class="deadline">Deadline: April 7, 2026</div>
+      <div>Created Feb 10, 2026</div>
+      <div>Owner: David Zhao</div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi kpi-gold">
+      <div class="kpi-label">Pipeline</div>
+      <div class="kpi-value gold">23</div>
+      <div class="kpi-sub">distributors across 4 tiers</div>
+    </div>
+    <div class="kpi kpi-green">
+      <div class="kpi-label">Warm Leads</div>
+      <div class="kpi-value green">2</div>
+      <div class="kpi-sub">Cosmoprof Miami contacts</div>
+    </div>
+    <div class="kpi kpi-red">
+      <div class="kpi-label">Contacted</div>
+      <div class="kpi-value red">0</div>
+      <div class="kpi-sub">outreach not yet sent</div>
+    </div>
+    <div class="kpi kpi-blue">
+      <div class="kpi-label">US Coverage</div>
+      <div class="kpi-value blue">45+</div>
+      <div class="kpi-sub">states reachable</div>
+    </div>
+    <div class="kpi kpi-amber">
+      <div class="kpi-label">Sprint</div>
+      <div class="kpi-value amber">8</div>
+      <div class="kpi-sub">weeks to signed deal</div>
+    </div>
+    <div class="kpi kpi-purple">
+      <div class="kpi-label">Goal</div>
+      <div class="kpi-value" style="color:var(--purple)">1</div>
+      <div class="kpi-sub">signed agreement (stretch: 2)</div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav">
+    <button class="nav-btn active" onclick="showSection('pipeline')">Pipeline</button>
+    <button class="nav-btn" onclick="showSection('timeline')">Timeline</button>
+    <button class="nav-btn" onclick="showSection('coverage')">Coverage</button>
+    <button class="nav-btn" onclick="showSection('terms')">Deal Terms</button>
+    <button class="nav-btn" onclick="showSection('materials')">Materials</button>
+    <button class="nav-btn" onclick="showSection('tracker')">Weekly Tracker</button>
+    <button class="nav-btn" onclick="showSection('research')">Research</button>
+  </div>
+
+  <!-- ===================== PIPELINE ===================== -->
+  <div class="section active" id="sec-pipeline">
+    <h2 class="section-title">Distributor Pipeline</h2>
+    <p class="section-sub">23 targets across 4 priority tiers. Tier 1 targets launch Week 1-2, with subsequent tiers activated on a rolling basis or as backup if early outreach stalls.</p>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterTier('all', this)">All (23)</button>
+      <button class="filter-btn" onclick="filterTier('tier1', this)">Tier 1 (4)</button>
+      <button class="filter-btn" onclick="filterTier('tier2', this)">Tier 2 (2)</button>
+      <button class="filter-btn" onclick="filterTier('tier3', this)">Tier 3 (4)</button>
+      <button class="filter-btn" onclick="filterTier('tier4', this)">Tier 4 (13)</button>
+      <button class="filter-btn" onclick="filterTier('scalp', this)">Scalp Care Validated (7)</button>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:40px">#</th>
+              <th>Distributor</th>
+              <th style="width:60px">Fit</th>
+              <th>Territory</th>
+              <th>Key Signal</th>
+              <th style="width:80px">Tier</th>
+              <th style="width:100px">Status</th>
+            </tr>
+          </thead>
+          <tbody id="pipeline-body">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TIMELINE ===================== -->
+  <div class="section" id="sec-timeline">
+    <h2 class="section-title">8-Week Execution Timeline</h2>
+    <p class="section-sub">Week-by-week breakdown. Week 6 is the critical decision checkpoint with three scenarios based on pipeline health.</p>
+
+    <div class="timeline-grid">
+      <!-- Week 1 -->
+      <div class="week-col current">
+        <div class="week-header">
+          <div class="week-num">Week 1</div>
+          <div class="week-date">Feb 10 - 16</div>
+        </div>
+        <div class="week-body">
+          <div class="week-task prep">
+            <div class="week-task-label prep-label">Prep</div>
+            Update email templates with current stats
+          </div>
+          <div class="week-task prep">
+            <div class="week-task-label prep-label">Prep</div>
+            Create generic brand deck
+          </div>
+          <div class="week-task prep">
+            <div class="week-task-label prep-label">Prep</div>
+            Create distributor sell sheet + pricing one-pager
+          </div>
+          <div class="week-task outreach">
+            <div class="week-task-label outreach-label">Outreach</div>
+            PA Beauty + Canrad follow-ups (David)
+          </div>
+          <div class="week-task prep">
+            <div class="week-task-label prep-label">Research</div>
+            Verify Bassett + Sweis contacts
+          </div>
+        </div>
+      </div>
+
+      <!-- Week 2 -->
+      <div class="week-col">
+        <div class="week-header">
+          <div class="week-num">Week 2</div>
+          <div class="week-date">Feb 17 - 23</div>
+        </div>
+        <div class="week-body">
+          <div class="week-task outreach">
+            <div class="week-task-label outreach-label">Tier 1</div>
+            Intro emails: Bassett, Sweis
+          </div>
+          <div class="week-task meeting">
+            <div class="week-task-label meeting-label">Local</div>
+            Propose in-person visits (SoCal)
+          </div>
+          <div class="week-task outreach">
+            <div class="week-task-label outreach-label">Tier 2</div>
+            Intro emails: Beauty Solutions, The Salon Center
+          </div>
+          <div class="week-task followup">
+            <div class="week-task-label followup-label">Follow-up</div>
+            Day 7: PA Beauty + Canrad
+          </div>
+          <div class="week-task prep">
+            <div class="week-task-label prep-label">Leverage</div>
+            Survey salon partners for distributor referrals
+          </div>
+        </div>
+      </div>
+
+      <!-- Week 3 -->
+      <div class="week-col">
+        <div class="week-header">
+          <div class="week-num">Week 3</div>
+          <div class="week-date">Feb 24 - Mar 2</div>
+        </div>
+        <div class="week-body">
+          <div class="week-task outreach">
+            <div class="week-task-label outreach-label">Tier 3</div>
+            Premier, Sullivan, SSG, DePasquale
+          </div>
+          <div class="week-task followup">
+            <div class="week-task-label followup-label">Day 7</div>
+            Bassett, Sweis, Beauty Solutions
+          </div>
+          <div class="week-task followup">
+            <div class="week-task-label followup-label">Day 14</div>
+            PA Beauty, Canrad (if silent)
+          </div>
+          <div class="week-task meeting">
+            <div class="week-task-label meeting-label">Meeting</div>
+            In-person with any Tier 1 responders
+          </div>
+        </div>
+      </div>
+
+      <!-- Week 4 -->
+      <div class="week-col">
+        <div class="week-header">
+          <div class="week-num">Week 4</div>
+          <div class="week-date">Mar 3 - 9</div>
+        </div>
+        <div class="week-body">
+          <div class="week-task followup">
+            <div class="week-task-label followup-label">Push</div>
+            Day 14 for Tier 1, Day 7 for Tier 3
+          </div>
+          <div class="week-task outreach">
+            <div class="week-task-label outreach-label">Phone</div>
+            Call any openers who didn't reply
+          </div>
+          <div class="week-task meeting">
+            <div class="week-task-label meeting-label">Convert</div>
+            Proposals to meeting targets
+          </div>
+          <div class="week-task checkpoint">
+            <div class="week-task-label checkpoint-label">Assess</div>
+            If &lt;3 conversations: activate Tier 4
+          </div>
+        </div>
+      </div>
+
+      <!-- Week 5 -->
+      <div class="week-col">
+        <div class="week-header">
+          <div class="week-num">Week 5</div>
+          <div class="week-date">Mar 10 - 16</div>
+        </div>
+        <div class="week-body">
+          <div class="week-task meeting">
+            <div class="week-task-label meeting-label">Negotiate</div>
+            Push warm leads to terms discussion
+          </div>
+          <div class="week-task outreach">
+            <div class="week-task-label outreach-label">Propose</div>
+            Send terms docs to interested
+          </div>
+          <div class="week-task meeting">
+            <div class="week-task-label meeting-label">Demo</div>
+            In-salon demo / education offer
+          </div>
+          <div class="week-task followup">
+            <div class="week-task-label followup-label">Day 30</div>
+            Monthly touch on non-responsive Tier 1
+          </div>
+        </div>
+      </div>
+
+      <!-- Week 6 -->
+      <div class="week-col">
+        <div class="week-header">
+          <div class="week-num">Week 6</div>
+          <div class="week-date">Mar 17 - 23</div>
+        </div>
+        <div class="week-body">
+          <div class="week-task checkpoint">
+            <div class="week-task-label checkpoint-label">Checkpoint</div>
+            <strong>Decision point - 3 scenarios</strong>
+          </div>
+          <div class="week-task meeting">
+            <div class="week-task-label meeting-label">A</div>
+            Negotiating: push to close
+          </div>
+          <div class="week-task followup">
+            <div class="week-task-label followup-label">B</div>
+            Interested: fly out, pilot program
+          </div>
+          <div class="week-task outreach">
+            <div class="week-task-label outreach-label">C</div>
+            Stalled: expand to Tier 4, trade shows
+          </div>
+        </div>
+      </div>
+
+      <!-- Week 7 -->
+      <div class="week-col">
+        <div class="week-header">
+          <div class="week-num">Week 7</div>
+          <div class="week-date">Mar 24 - 30</div>
+        </div>
+        <div class="week-body">
+          <div class="week-task meeting">
+            <div class="week-task-label meeting-label">Close</div>
+            Drive active deals to signature
+          </div>
+          <div class="week-task prep">
+            <div class="week-task-label prep-label">Legal</div>
+            Finalize terms, prepare logistics
+          </div>
+          <div class="week-task outreach">
+            <div class="week-task-label outreach-label">Pivot</div>
+            If no close: register ABS Chicago (Apr 18-20)
+          </div>
+          <div class="week-task outreach">
+            <div class="week-task-label outreach-label">Pivot</div>
+            LinkedIn strategy + Premiere Orlando First Look
+          </div>
+        </div>
+      </div>
+
+      <!-- Week 8 -->
+      <div class="week-col">
+        <div class="week-header">
+          <div class="week-num">Week 8</div>
+          <div class="week-date">Mar 31 - Apr 7</div>
+        </div>
+        <div class="week-body">
+          <div class="week-task meeting">
+            <div class="week-task-label meeting-label">Signed</div>
+            Onboarding prep, initial order, 90-day metrics
+          </div>
+          <div class="week-task followup">
+            <div class="week-task-label followup-label">Or</div>
+            Post-mortem, learnings doc, revised 90-day plan
+          </div>
+          <div class="week-task prep">
+            <div class="week-task-label prep-label">Next</div>
+            Plan for 2nd distributor / trade show Q2
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== COVERAGE ===================== -->
+  <div class="section" id="sec-coverage">
+    <h2 class="section-title">Geographic Coverage</h2>
+    <p class="section-sub">Pipeline covers 45+ US states plus Ontario, Canada. Multiple distributors overlap in key markets (CA, FL, NY), providing backup options.</p>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header">Regional Coverage by Distributor</div>
+      <div class="card-body" style="padding:20px">
+        <div class="coverage-grid">
+          <div class="coverage-item">
+            <div class="coverage-region">Southern California</div>
+            <div class="coverage-dists">
+              <span style="color:var(--gold)">Bassett</span> (9/10),
+              <span style="color:var(--gold)">Sweis</span> (9/10),
+              Lunica (backup)
+            </div>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-region">Northern California</div>
+            <div class="coverage-dists">
+              <span style="color:var(--blue)">Beauty Solutions</span> (9/10),
+              Bassett (overlap)
+            </div>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-region">Pacific Northwest</div>
+            <div class="coverage-dists">
+              Bassett (OR, WA, ID),
+              <span style="color:var(--purple)">Mountain Star</span> (7/10)
+            </div>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-region">Mountain West</div>
+            <div class="coverage-dists">
+              <span style="color:var(--purple)">Mountain Star</span> (14 states),
+              <span style="color:var(--purple)">MAKA Beauty</span> (AZ, NV, NM, UT)
+            </div>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-region">Texas / Southwest</div>
+            <div class="coverage-dists">
+              <span style="color:var(--purple)">Neill Corp</span> (TX, OK, AR),
+              SSG (TX), Mountain Star (NM, AZ)
+            </div>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-region">Gulf South</div>
+            <div class="coverage-dists">
+              <span style="color:var(--purple)">Liquid Assets</span> (8/10, LA),
+              <span style="color:var(--purple)">Riley Salon</span> (FL, LA, MS)
+            </div>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-region">Southeast / Florida</div>
+            <div class="coverage-dists">
+              <span style="color:var(--blue)">The Salon Center</span> (9/10),
+              <span style="color:var(--purple)">Breeze Beauty</span> (GA, NC, SC, TN),
+              Riley, Thomassen (FL)
+            </div>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-region">Carolinas</div>
+            <div class="coverage-dists">
+              <span style="color:var(--purple)">Breeze Beauty</span> (GA, NC, SC, TN),
+              <span style="color:var(--purple)">Prestige Salon</span> (NC, SC, GA)
+            </div>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-region">Mid-Atlantic</div>
+            <div class="coverage-dists">
+              <span style="color:var(--amber)">DePasquale</span> (NY, NJ, CT, PA),
+              <span style="color:var(--purple)">Emiliani Metro</span> (NJ, NY),
+              <span style="color:var(--purple)">Paramount</span> (ME to FL)
+            </div>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-region">New England</div>
+            <div class="coverage-dists">
+              <span style="color:var(--amber)">Sullivan Beauty</span> (8/10, all 6 states),
+              <span style="color:var(--purple)">Masello</span> (8/10, + Upstate NY)
+            </div>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-region">Midwest</div>
+            <div class="coverage-dists">
+              <span style="color:var(--amber)">Premier Beauty</span> (8/10, IL, IN, MI, OH),
+              <span style="color:var(--amber)">SSG</span> (8/10, 20 states),
+              <span style="color:var(--purple)">ManocoBlue</span> (IN, MI, OH)
+            </div>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-region">Pennsylvania / Tri-State</div>
+            <div class="coverage-dists">
+              <span style="color:var(--gold)">PA Beauty Supply</span> (8/10, WARM),
+              DePasquale (overlap)
+            </div>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-region">Canada (Ontario)</div>
+            <div class="coverage-dists">
+              <span style="color:var(--gold)">Canrad Beauty</span> (8/10, WARM),
+              38 consultants, 14 stores
+            </div>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-region">National (Specialty)</div>
+            <div class="coverage-dists">
+              <span style="color:var(--purple)">Simply Organic Beauty</span> (7/10),
+              Largest organic salon dist. in NA, scalp care focus
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== DEAL TERMS ===================== -->
+  <div class="section" id="sec-terms">
+    <h2 class="section-title">Deal Term Guardrails</h2>
+    <p class="section-sub">Pricing confirmed Feb 10, 2026. Floor is 50% of wholesale (25% of MSRP). At floor, distributor gets a 50% margin - competitive and attractive.</p>
+
+    <div class="terms-layout">
+      <!-- Pricing Table -->
+      <div class="card">
+        <div class="card-header">Product Pricing</div>
+        <div class="card-body">
+          <table class="price-table">
+            <thead>
+              <tr>
+                <th style="text-align:left">Product</th>
+                <th>MSRP</th>
+                <th>Salon (50%)</th>
+                <th>Open (65%w)</th>
+                <th>Target (57%w)</th>
+                <th>Floor (50%w)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Shampoo</td>
+                <td>$55.00</td>
+                <td>$27.50</td>
+                <td style="color:var(--green)">$17.88</td>
+                <td style="color:var(--blue)">$15.68</td>
+                <td style="color:var(--red)">$13.75</td>
+              </tr>
+              <tr>
+                <td>Conditioner</td>
+                <td>$55.00</td>
+                <td>$27.50</td>
+                <td style="color:var(--green)">$17.88</td>
+                <td style="color:var(--blue)">$15.68</td>
+                <td style="color:var(--red)">$13.75</td>
+              </tr>
+              <tr>
+                <td>Leave-In</td>
+                <td>$60.00</td>
+                <td>$30.00</td>
+                <td style="color:var(--green)">$19.50</td>
+                <td style="color:var(--blue)">$17.10</td>
+                <td style="color:var(--red)">$15.00</td>
+              </tr>
+              <tr>
+                <td>Discovery Kit</td>
+                <td>$75.00</td>
+                <td>$37.50</td>
+                <td style="color:var(--green)">$24.38</td>
+                <td style="color:var(--blue)">$21.38</td>
+                <td style="color:var(--red)">$18.75</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Negotiable Terms -->
+      <div class="card">
+        <div class="card-header">Negotiation Ranges</div>
+        <div class="card-body">
+          <table class="terms-table">
+            <thead>
+              <tr>
+                <th>Term</th>
+                <th>Open</th>
+                <th>Target</th>
+                <th>Floor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="term-label">Distributor cost</td>
+                <td class="term-open">65% wh</td>
+                <td class="term-target">55-60% wh</td>
+                <td class="term-floor">50% wh</td>
+              </tr>
+              <tr>
+                <td class="term-label">Initial order</td>
+                <td class="term-open">$10,000</td>
+                <td class="term-target">$5,000</td>
+                <td class="term-floor">$2,500</td>
+              </tr>
+              <tr>
+                <td class="term-label">Quarterly min</td>
+                <td class="term-open">$3,000</td>
+                <td class="term-target">$2,000</td>
+                <td class="term-floor">$1,500</td>
+              </tr>
+              <tr>
+                <td class="term-label">Payment</td>
+                <td class="term-open">Net 30</td>
+                <td class="term-target">Net 30</td>
+                <td class="term-floor">Net 45</td>
+              </tr>
+              <tr>
+                <td class="term-label">Exclusivity</td>
+                <td class="term-open">Non-excl</td>
+                <td class="term-target">Non-excl</td>
+                <td class="term-floor">6mo excl</td>
+              </tr>
+              <tr>
+                <td class="term-label">Contract</td>
+                <td class="term-open">Evergreen</td>
+                <td class="term-target">60-day term</td>
+                <td class="term-floor">12mo min</td>
+              </tr>
+              <tr>
+                <td class="term-label">Co-op fund</td>
+                <td class="term-open">3%</td>
+                <td class="term-target">4%</td>
+                <td class="term-floor">5% cap</td>
+              </tr>
+              <tr>
+                <td class="term-label">Samples</td>
+                <td class="term-open">$500</td>
+                <td class="term-target">$1,000</td>
+                <td class="term-floor">$2,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px">
+      <!-- Non-Negotiables -->
+      <div class="card">
+        <div class="card-header" style="color:var(--red)">Non-Negotiable Terms</div>
+        <div class="card-body">
+          <ul class="non-negotiable-list">
+            <li><span class="nn-icon">!</span> MAP enforcement - salons must sell at or above MSRP</li>
+            <li><span class="nn-icon">!</span> Professional-only - no Amazon, mass retail, or unauthorized channels</li>
+            <li><span class="nn-icon">!</span> Anti-diversion clause - product stays in salon channel</li>
+            <li><span class="nn-icon">!</span> Brand guidelines - all marketing follows AWARE standards</li>
+            <li><span class="nn-icon">!</span> Training requirement - distributor team completes AWARE education</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Sweeteners -->
+      <div class="card">
+        <div class="card-header" style="color:var(--green)">Deal Sweeteners (Use to Close)</div>
+        <div class="card-body">
+          <ul class="sweetener-list">
+            <li><span class="sw-icon">+</span> Free samples kit for first 10-20 salons ($500-1,500 value)</li>
+            <li><span class="sw-icon">+</span> Co-branded education event at AWARE's cost</li>
+            <li><span class="sw-icon">+</span> First order at most favorable pricing tier</li>
+            <li><span class="sw-icon">+</span> Extended Net 45 on first order</li>
+            <li><span class="sw-icon">+</span> David conducts first 3 salon trainings in their territory</li>
+            <li><span class="sw-icon">+</span> Exclusive "Scalp Bar" activation support for top salons</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== MATERIALS ===================== -->
+  <div class="section" id="sec-materials">
+    <h2 class="section-title">Materials Readiness</h2>
+    <p class="section-sub">Status of all materials needed for distributor outreach. HIGH priority items must be completed before Week 2 outreach begins.</p>
+
+    <h3 style="font-size:14px; color:var(--green); margin-bottom:12px; margin-top:8px">Ready to Send</h3>
+    <div class="checklist-grid" style="margin-bottom:24px">
+      <div class="check-item">
+        <div class="check-status done">ok</div>
+        <div class="check-info">
+          <div class="check-name">Brand Deck (28 pages)</div>
+          <div class="check-note">Needs generic version (current says "Element Dermatology")</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-status done">ok</div>
+        <div class="check-info">
+          <div class="check-name">7 Email Template Sets</div>
+          <div class="check-note">Need stat updates: $87K to $125K, 25 to 50+ salons</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-status done">ok</div>
+        <div class="check-info">
+          <div class="check-name">Contact Directory (23 targets)</div>
+          <div class="check-note">Some emails inferred, most verified</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-status done">ok</div>
+        <div class="check-info">
+          <div class="check-name">Product Samples</div>
+          <div class="check-note">Already sent to PA Beauty + Canrad</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-status done">ok</div>
+        <div class="check-info">
+          <div class="check-name">Product Liability Insurance</div>
+          <div class="check-note">Confirmed active</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-status done">ok</div>
+        <div class="check-info">
+          <div class="check-name">GS1 UPC Barcodes</div>
+          <div class="check-note">Confirmed on all products</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-status done">ok</div>
+        <div class="check-info">
+          <div class="check-name">Press Mentions</div>
+          <div class="check-note">LA Times, Beauty Independent, NewBeauty, Beauty Launchpad</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size:14px; color:var(--red); margin-bottom:12px">Needs Creation</h3>
+    <div class="checklist-grid" style="margin-bottom:24px">
+      <div class="check-item">
+        <div class="check-status todo">!</div>
+        <div class="check-info">
+          <div class="check-name">Generic Brand Deck</div>
+          <div class="check-note">HIGH - Remove "Element Dermatology", make universal</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-status todo">!</div>
+        <div class="check-info">
+          <div class="check-name">Distributor Sell Sheet (1-page)</div>
+          <div class="check-note">HIGH - Key stats, product line, margin structure, support</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-status todo">!</div>
+        <div class="check-info">
+          <div class="check-name">Margin/Pricing Sheet</div>
+          <div class="check-note">HIGH - Wholesale tiers, volume discounts, distributor economics</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-status partial">~</div>
+        <div class="check-info">
+          <div class="check-name">Salon Case Studies</div>
+          <div class="check-note">MED - 2-3 salon success stories with metrics</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-status partial">~</div>
+        <div class="check-info">
+          <div class="check-name">Product Line Sheet</div>
+          <div class="check-note">MED - All SKUs with images, UPCs, wholesale pricing</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-status partial">~</div>
+        <div class="check-info">
+          <div class="check-name">Training Overview</div>
+          <div class="check-note">MED - Education/onboarding summary for distributor teams</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-status todo">!</div>
+        <div class="check-info">
+          <div class="check-name">Anti-Diversion Policy</div>
+          <div class="check-note">MED - Formal document for distribution agreements</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TRACKER ===================== -->
+  <div class="section" id="sec-tracker">
+    <h2 class="section-title">Weekly Reporting Tracker</h2>
+    <p class="section-sub">Update every Friday. Track status progression: Not Contacted > Outreach Sent > In Conversation > Negotiating > Signed.</p>
+
+    <div class="card">
+      <div class="card-body" style="overflow-x:auto">
+        <div class="tracker-row tracker-header">
+          <div>Target</div>
+          <div>Tier</div>
+          <div>Status</div>
+          <div>Last Touch</div>
+          <div>Next Action</div>
+        </div>
+        <div class="tracker-row">
+          <div><span class="dist-name">PA Beauty Supply</span><br><span style="font-size:11px;color:var(--text-muted)">Bill Gunzburg</span></div>
+          <div><span class="badge badge-tier1">Tier 1</span></div>
+          <div><span class="status-dot warm"></span>Warm lead</div>
+          <div>Cosmoprof (Jan 29)</div>
+          <div>David handling follow-up</div>
+        </div>
+        <div class="tracker-row">
+          <div><span class="dist-name">Canrad Beauty</span><br><span style="font-size:11px;color:var(--text-muted)">Stuart Lapowich</span></div>
+          <div><span class="badge badge-tier1">Tier 1</span></div>
+          <div><span class="status-dot warm"></span>Warm lead</div>
+          <div>Cosmoprof (Jan 29)</div>
+          <div>David handling follow-up</div>
+        </div>
+        <div class="tracker-row">
+          <div><span class="dist-name">Bassett Salon Solutions</span><br><span style="font-size:11px;color:var(--text-muted)">Ward Bassett, Owner</span></div>
+          <div><span class="badge badge-tier1">Tier 1</span></div>
+          <div><span class="status-dot not-contacted"></span>Not contacted</div>
+          <div>-</div>
+          <div>Week 2 intro email</div>
+        </div>
+        <div class="tracker-row">
+          <div><span class="dist-name">Sweis Inc</span><br><span style="font-size:11px;color:var(--text-muted)">Karl Sweis, Owner</span></div>
+          <div><span class="badge badge-tier1">Tier 1</span></div>
+          <div><span class="status-dot not-contacted"></span>Not contacted</div>
+          <div>-</div>
+          <div>Week 2 intro email</div>
+        </div>
+        <div class="tracker-row">
+          <div><span class="dist-name">Beauty Solutions LLC</span><br><span style="font-size:11px;color:var(--text-muted)">NorCal, 7 states</span></div>
+          <div><span class="badge badge-tier2">Tier 2</span></div>
+          <div><span class="status-dot not-contacted"></span>Not contacted</div>
+          <div>-</div>
+          <div>Week 2 intro email</div>
+        </div>
+        <div class="tracker-row">
+          <div><span class="dist-name">The Salon Center</span><br><span style="font-size:11px;color:var(--text-muted)">Southeast, 8+ states</span></div>
+          <div><span class="badge badge-tier2">Tier 2</span></div>
+          <div><span class="status-dot not-contacted"></span>Not contacted</div>
+          <div>-</div>
+          <div>Week 2 intro email</div>
+        </div>
+        <div class="tracker-row">
+          <div><span class="dist-name">Premier Beauty Supply</span><br><span style="font-size:11px;color:var(--text-muted)">Midwest, family-owned</span></div>
+          <div><span class="badge badge-tier3">Tier 3</span></div>
+          <div><span class="status-dot not-contacted"></span>Not contacted</div>
+          <div>-</div>
+          <div>Week 3 intro email</div>
+        </div>
+        <div class="tracker-row">
+          <div><span class="dist-name">Sullivan Beauty</span><br><span style="font-size:11px;color:var(--text-muted)">New England, 3rd gen</span></div>
+          <div><span class="badge badge-tier3">Tier 3</span></div>
+          <div><span class="status-dot not-contacted"></span>Not contacted</div>
+          <div>-</div>
+          <div>Week 3 intro email</div>
+        </div>
+        <div class="tracker-row">
+          <div><span class="dist-name">Salon Service Group</span><br><span style="font-size:11px;color:var(--text-muted)">20 states, 71 stores</span></div>
+          <div><span class="badge badge-tier3">Tier 3</span></div>
+          <div><span class="status-dot not-contacted"></span>Not contacted</div>
+          <div>-</div>
+          <div>Week 3 intro email</div>
+        </div>
+        <div class="tracker-row">
+          <div><span class="dist-name">DePasquale Salon Systems</span><br><span style="font-size:11px;color:var(--text-muted)">NY/NJ, Zenagen dist.</span></div>
+          <div><span class="badge badge-tier3">Tier 3</span></div>
+          <div><span class="status-dot not-contacted"></span>Not contacted</div>
+          <div>-</div>
+          <div>Week 3 intro email</div>
+        </div>
+        <div class="tracker-row" style="opacity:0.7">
+          <div><span class="dist-name">Masello Salon Services</span><br><span style="font-size:11px;color:var(--text-muted)">New England, Zenagen</span></div>
+          <div><span class="badge badge-tier4">Tier 4</span></div>
+          <div><span class="status-dot not-contacted"></span>Not contacted</div>
+          <div>-</div>
+          <div>Week 4+ (backup)</div>
+        </div>
+        <div class="tracker-row" style="opacity:0.7">
+          <div><span class="dist-name">Liquid Assets LLC</span><br><span style="font-size:11px;color:var(--text-muted)">Gulf South, KEVIN.MURPHY</span></div>
+          <div><span class="badge badge-tier4">Tier 4</span></div>
+          <div><span class="status-dot not-contacted"></span>Not contacted</div>
+          <div>-</div>
+          <div>Week 4+ (backup)</div>
+        </div>
+        <div class="tracker-row" style="opacity:0.7">
+          <div><span class="dist-name">Breeze Beauty Group</span><br><span style="font-size:11px;color:var(--text-muted)">GA/NC/SC/TN, salon-excl</span></div>
+          <div><span class="badge badge-tier4">Tier 4</span></div>
+          <div><span class="status-dot not-contacted"></span>Not contacted</div>
+          <div>-</div>
+          <div>Week 4+ (backup)</div>
+        </div>
+        <div class="tracker-row" style="opacity:0.7">
+          <div><span class="dist-name">+ 10 more Tier 4 targets</span><br><span style="font-size:11px;color:var(--text-muted)">MAKA, Paramount, Mountain Star, Riley, Emiliani, Prestige, Simply Organic, Thomassen, Neill, ManocoBlue</span></div>
+          <div><span class="badge badge-tier4">Tier 4</span></div>
+          <div><span class="status-dot not-contacted"></span>Not contacted</div>
+          <div>-</div>
+          <div>Activate if Scenario C</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== RESEARCH ===================== -->
+  <div class="section" id="sec-research">
+    <h2 class="section-title">Research Findings</h2>
+    <p class="section-sub">Key market data and verified research supporting the sprint strategy. All claims labeled by verification status.</p>
+
+    <div class="callout">
+      <div class="callout-icon">i</div>
+      <div class="callout-text">All data points below are labeled <strong>[VERIFIED]</strong> with source links from the research phase. See the full plan document for complete source citations.</div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px">
+      <div class="card">
+        <div class="card-header">Market Tailwinds [VERIFIED]</div>
+        <div class="card-body">
+          <ul class="sweetener-list">
+            <li><span class="sw-icon" style="background:var(--blue-dim);color:var(--blue)">^</span> Scalp care category growing <strong style="color:var(--text)">19% YoY</strong> (first half 2025)</li>
+            <li><span class="sw-icon" style="background:var(--blue-dim);color:var(--blue)">^</span> Global scalp care market: $104B (2024) projected to <strong style="color:var(--text)">$110-148B by 2030</strong></li>
+            <li><span class="sw-icon" style="background:var(--blue-dim);color:var(--blue)">^</span> "Head spa" movement driving consumer awareness in professional channel</li>
+            <li><span class="sw-icon" style="background:var(--blue-dim);color:var(--blue)">^</span> L'Oreal acquired Color Wow (2025) - validates salon-channel premium brands</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">Warm vs Cold Effectiveness [VERIFIED]</div>
+        <div class="card-body">
+          <ul class="sweetener-list">
+            <li><span class="sw-icon" style="background:var(--gold-dim);color:var(--gold)">!</span> Warm introductions: <strong style="color:var(--text)">10-34% response rates</strong>, 5-10x more effective</li>
+            <li><span class="sw-icon" style="background:var(--gold-dim);color:var(--gold)">!</span> Cold email: only 8.5% response rate, 2% conversion to deals</li>
+            <li><span class="sw-icon" style="background:var(--gold-dim);color:var(--gold)">!</span> Trade shows are #1 warm introduction channel for professional beauty</li>
+            <li><span class="sw-icon" style="background:var(--gold-dim);color:var(--gold)">!</span> Strategy: Maximize warm paths (Cosmoprof, salon referrals, in-person)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">AWARE Competitive Position</div>
+        <div class="card-body">
+          <ul class="sweetener-list">
+            <li><span class="sw-icon" style="background:var(--purple-dim);color:var(--purple)">*</span> <strong style="color:var(--text)">$125K</strong> revenue in 6 months</li>
+            <li><span class="sw-icon" style="background:var(--purple-dim);color:var(--purple)">*</span> <strong style="color:var(--text)">50+</strong> active salon partners</li>
+            <li><span class="sw-icon" style="background:var(--purple-dim);color:var(--purple)">*</span> <strong style="color:var(--text)">96%</strong> B2B repurchase rate</li>
+            <li><span class="sw-icon" style="background:var(--purple-dim);color:var(--purple)">*</span> <strong style="color:var(--text)">0%</strong> return rate, <strong style="color:var(--text)">52%</strong> sell-through</li>
+            <li><span class="sw-icon" style="background:var(--purple-dim);color:var(--purple)">*</span> <strong style="color:var(--text)">18M+</strong> organic social views</li>
+            <li><span class="sw-icon" style="background:var(--purple-dim);color:var(--purple)">*</span> Press: LA Times, Beauty Independent, NewBeauty</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">Category Comps (Scalp Care Distributors)</div>
+        <div class="card-body">
+          <ul class="sweetener-list">
+            <li><span class="sw-icon" style="background:var(--amber-dim);color:var(--amber)">~</span> <strong style="color:var(--text)">Zenagen</strong> distributed by: Bassett, EISS, DePasquale, Masello, MAKA, Riley, ManocoBlue</li>
+            <li><span class="sw-icon" style="background:var(--amber-dim);color:var(--amber)">~</span> <strong style="color:var(--text)">K18</strong> distributed by: Sweis, Premier, Sullivan, SSG, Paramount, Prestige</li>
+            <li><span class="sw-icon" style="background:var(--amber-dim);color:var(--amber)">~</span> Both validate distributor appetite for scalp health category</li>
+            <li><span class="sw-icon" style="background:var(--amber-dim);color:var(--amber)">~</span> Briogeo entered pro channel 2023, expanded to 1,100 doors by 2024</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="card-header">Upcoming Trade Shows</div>
+      <div class="card-body">
+        <table>
+          <thead>
+            <tr>
+              <th>Event</th>
+              <th>Dates</th>
+              <th>Location</th>
+              <th>Relevance</th>
+              <th>Cost (Badge Only)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="dist-name">America's Beauty Show</td>
+              <td>Apr 18-20, 2026</td>
+              <td>Chicago, IL</td>
+              <td>103rd year, 450+ exhibitors. Meet Premier Beauty, Beauty Craft.</td>
+              <td>TBD</td>
+            </tr>
+            <tr>
+              <td class="dist-name">Premiere Orlando</td>
+              <td>May 30 - Jun 1, 2026</td>
+              <td>Orlando, FL</td>
+              <td>"First Look" emerging brand showcase at reduced cost.</td>
+              <td>TBD</td>
+            </tr>
+            <tr>
+              <td class="dist-name">Cosmoprof North America</td>
+              <td>Jul 13-15, 2026</td>
+              <td>Las Vegas, NV</td>
+              <td>25,000+ visitors, 1,100+ brands. Premier B2B event.</td>
+              <td>$170-175</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Pipeline data
+const distributors = [
+  { id:1, name:'PA Beauty Supply', fit:8, territory:'PA, WV, OH', signal:'WARM - Cosmoprof meeting, samples sent', tier:'tier1', status:'warm', contact:'Bill Gunzburg (Owner)', scalp:false, website:'pabeauty.com' },
+  { id:2, name:'Canrad Beauty', fit:8, territory:'Ontario, MB, SK (Canada)', signal:'WARM - Cosmoprof meeting, samples sent', tier:'tier1', status:'warm', contact:'Stuart Lapowich (EVP)', scalp:false, website:'canrad.com' },
+  { id:3, name:'Bassett Salon Solutions', fit:9, territory:'CA, AZ, NV, NM, UT, OR, WA, ID, MT, HI', signal:'Local SoCal, carries Zenagen (scalp), 28+ brands', tier:'tier1', status:'not-contacted', contact:'Ward Bassett (Owner)', scalp:true, website:'4bassett.com' },
+  { id:4, name:'Sweis Inc', fit:9, territory:'CA, NV, HI', signal:'Local SoCal, 80+ brands, $35M rev, 25+ yrs family', tier:'tier1', status:'not-contacted', contact:'Karl Sweis (Owner)', scalp:false, website:'sweisinc.com' },
+  { id:5, name:'Beauty Solutions LLC', fit:9, territory:'CA, NV, AZ, OR, WA, ID, UT', signal:'NorCal, KEVIN.MURPHY/Davines, no scalp brand', tier:'tier2', status:'not-contacted', contact:'TBD (verify Wes Brown)', scalp:false, website:'beautysolutions.com' },
+  { id:6, name:'The Salon Center', fit:9, territory:'FL, GA, AL, MS, LA, Caribbean', signal:'Southeast coverage, no scalp brand, growing portfolio', tier:'tier2', status:'not-contacted', contact:'support@thesaloncenter.com', scalp:false, website:'thesaloncenter.com' },
+  { id:7, name:'Premier Beauty Supply', fit:8, territory:'IL, IN, MI, OH', signal:'Midwest, family since 1988, 55K sqft, carries K18', tier:'tier3', status:'not-contacted', contact:'sales@pbsupply.com', scalp:true, website:'premierbeautysupply.com' },
+  { id:8, name:'Sullivan Beauty', fit:8, territory:'MA, CT, RI, NH, VT, ME', signal:'3rd gen family (est. 1945), 50+ brands, carries K18', tier:'tier3', status:'not-contacted', contact:'Tyler/Lauren/Kerry Sullivan', scalp:true, website:'sullivanbeauty.com' },
+  { id:9, name:'Salon Service Group', fit:8, territory:'20 states, 71 stores', signal:'Largest independent US distributor, carries K18/Shibui', tier:'tier3', status:'not-contacted', contact:'TBD', scalp:true, website:'salonservicegroup.com' },
+  { id:10, name:'DePasquale Salon Systems', fit:7, territory:'NY, NJ, CT, PA', signal:'Carries Zenagen (scalp validated), family business', tier:'tier3', status:'not-contacted', contact:'Joe Mastalia', scalp:true, website:'depasqualesalonsystems.com' },
+  { id:11, name:'Masello Salon Services', fit:8, territory:'CT, ME, MA, NH, NY, RI, VT', signal:'Family since 1920s, 30+ reps, carries Zenagen', tier:'tier4', status:'not-contacted', contact:'800-828-0030', scalp:true, website:'masello.com' },
+  { id:12, name:'MAKA Beauty', fit:7, territory:'AZ, NV, NM, UT', signal:'Southwest, carries Zenagen', tier:'tier4', status:'not-contacted', contact:'480-968-7980', scalp:true, website:'makabeauty.com' },
+  { id:13, name:'Riley Salon Resources', fit:7, territory:'FL, LA, MS', signal:'Florida focus, carries Zenagen "Rising Star Brands"', tier:'tier4', status:'not-contacted', contact:'727-865-4145', scalp:true, website:'rileysalonresources.com' },
+  { id:14, name:'ManocoBlue', fit:6, territory:'IN, MI, OH', signal:'Midwest, carries Zenagen', tier:'tier4', status:'not-contacted', contact:'888-767-7631', scalp:true, website:'shopmanocoblue.com' },
+  { id:15, name:'Liquid Assets LLC', fit:8, territory:'Louisiana / Gulf South', signal:'KEVIN.MURPHY + Davines dist, education-first', tier:'tier4', status:'not-contacted', contact:'225-292-6500', scalp:false, website:'liquidassetsllc.com' },
+  { id:16, name:'Breeze Beauty Group', fit:8, territory:'GA, NC, SC, TN', signal:'SALON-EXCLUSIVE ONLY, organic skincare focus', tier:'tier4', status:'not-contacted', contact:'678-708-9294', scalp:false, website:'breezebeautygroup.com' },
+  { id:17, name:'Mountain Star Salon Services', fit:7, territory:'14 states (CO, AZ, NM, UT + 10)', signal:'Independent family, massive Mountain West territory', tier:'tier4', status:'not-contacted', contact:'720-274-7100', scalp:false, website:'mountainstarsalon.com' },
+  { id:18, name:'Emiliani Metro', fit:7, territory:'NJ, NY Metro', signal:'70+ yr family, Paul Mitchell Focus Distributor', tier:'tier4', status:'not-contacted', contact:'888-530-3400', scalp:false, website:'emilianimetro.com' },
+  { id:19, name:'Paramount Beauty', fit:7, territory:'East Coast (ME to FL)', signal:'60+ yr family, 21+ stores, carries K18', tier:'tier4', status:'not-contacted', contact:'800-755-7475', scalp:true, website:'paramountbeauty.com' },
+  { id:20, name:'Prestige Salon Products', fit:7, territory:'NC, SC, GA', signal:'Independent, carries K18', tier:'tier4', status:'not-contacted', contact:'prestigesalonproducts.com', scalp:true, website:'prestigesalonproducts.com' },
+  { id:21, name:'Simply Organic Beauty', fit:7, territory:'National (specialty)', signal:'Largest organic salon dist in NA, head spa/scalp focus', tier:'tier4', status:'not-contacted', contact:'simplyorganicbeauty.com', scalp:true, website:'simplyorganicbeauty.com' },
+  { id:22, name:'Thomassen Beauty Supply', fit:6, territory:'Florida', signal:'Family since 2000, next-day FL delivery', tier:'tier4', status:'not-contacted', contact:'800-787-3559', scalp:false, website:'thomassenbeautysupply.com' },
+  { id:23, name:'Neill Corporation', fit:6, territory:'TX, OK, AR, LA, MS, TN, AL', signal:'$100M+ revenue, Aveda exclusive, 7-state Southeast', tier:'tier4', status:'not-contacted', contact:'neillinc.com', scalp:false, website:'neillinc.com' },
+];
+
+function renderPipeline(filter) {
+  const tbody = document.getElementById('pipeline-body');
+  let filtered = distributors;
+  if (filter === 'scalp') {
+    filtered = distributors.filter(d => d.scalp);
+  } else if (filter !== 'all') {
+    filtered = distributors.filter(d => d.tier === filter);
+  }
+
+  tbody.innerHTML = filtered.map(d => {
+    const tierLabel = d.tier === 'tier1' ? 'Tier 1' : d.tier === 'tier2' ? 'Tier 2' : d.tier === 'tier3' ? 'Tier 3' : 'Tier 4';
+    const tierClass = 'badge-' + d.tier;
+    const scoreClass = 'score-' + d.fit;
+    const statusLabel = d.status === 'warm' ? 'Warm lead' : 'Not contacted';
+    const statusDotClass = d.status;
+    return `<tr>
+      <td style="color:var(--text-muted);font-family:'JetBrains Mono',monospace;font-size:12px">${d.id}</td>
+      <td>
+        <div class="dist-name">${d.name}</div>
+        <div class="dist-detail">${d.contact}</div>
+      </td>
+      <td><span class="score-badge ${scoreClass}">${d.fit}</span></td>
+      <td style="font-size:12px;color:var(--text-secondary)">${d.territory}</td>
+      <td style="font-size:12px;color:var(--text-secondary)">${d.signal}${d.scalp ? ' <span style="color:var(--amber);font-size:10px;font-weight:600">[SCALP]</span>' : ''}</td>
+      <td><span class="badge ${tierClass}">${tierLabel}</span></td>
+      <td><span class="status-dot ${statusDotClass}"></span>${statusLabel}</td>
+    </tr>`;
+  }).join('');
+}
+
+function filterTier(tier, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPipeline(tier);
+}
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Initial render
+renderPipeline('all');
+</script>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

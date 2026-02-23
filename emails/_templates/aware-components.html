@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARE Hair Component Library</title>
+
+  <!--
+  ═══════════════════════════════════════════════════════════════════════════
+  AWARE HAIR COMPONENT LIBRARY
+  ═══════════════════════════════════════════════════════════════════════════
+
+  This file contains reusable component patterns for AWARE Hair interfaces.
+  Copy components as needed - each section is self-contained.
+
+  Last Updated: January 2026
+  ═══════════════════════════════════════════════════════════════════════════
+  -->
+
+  <!-- Required Font Imports -->
+  <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+       DESIGN TOKENS - Copy this entire block to any new file
+       ═══════════════════════════════════════════════════════════════ */
+
+    :root {
+      /* Colors */
+      --color-background: #f4efe9;
+      --color-text: #102b26;
+      --color-text-secondary: #5a6b68;
+      --color-header-text: #031612;
+      --color-button-bg: #113035;
+      --color-button-text: #f4efe9;
+      --color-button-hover: #2a7682;
+      --color-border: #bdbfbf;
+      --color-border-light: #e4d9ca;
+      --color-accent: #102b26;
+      --color-success: #478947;
+      --color-error: #c94444;
+      --color-surface-light: #faf8f5;
+      --color-surface-dark: #102b26;
+
+      /* Typography */
+      --font-heading: "orpheuspro", Georgia, "Times New Roman", serif;
+      --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+
+      /* Spacing */
+      --spacing-1: 4px;
+      --spacing-2: 8px;
+      --spacing-3: 12px;
+      --spacing-4: 16px;
+      --spacing-6: 24px;
+      --spacing-8: 32px;
+      --spacing-10: 40px;
+      --spacing-12: 48px;
+      --spacing-16: 64px;
+      --spacing-24: 96px;
+
+      /* Animation */
+      --easing: cubic-bezier(0.4, 0, 0.2, 1);
+      --duration-fast: 0.2s;
+      --duration-normal: 0.3s;
+      --duration-slow: 0.5s;
+
+      /* Shadows */
+      --shadow-sm: 0 1px 2px rgba(16, 43, 38, 0.05);
+      --shadow-md: 0 4px 12px rgba(16, 43, 38, 0.08);
+      --shadow-lg: 0 8px 24px rgba(16, 43, 38, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--color-text);
+      background-color: var(--color-background);
+    }
+
+    .component-section {
+      padding: var(--spacing-16) var(--spacing-6);
+      border-bottom: 1px solid var(--color-border-light);
+    }
+
+    .component-title {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .component-grid {
+      display: grid;
+      gap: var(--spacing-6);
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       COMPONENT: BUTTONS
+       ═══════════════════════════════════════════════════════════════ */
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-4) var(--spacing-8);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      color: var(--color-button-text);
+      background-color: var(--color-button-bg);
+      border: none;
+      border-radius: 0; /* Square corners - AWARE brand */
+      cursor: pointer;
+      transition: all var(--duration-normal) var(--easing);
+    }
+
+    .btn:hover {
+      background-color: var(--color-button-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .btn-secondary {
+      color: var(--color-text);
+      background-color: transparent;
+      border: 1px solid var(--color-text);
+    }
+
+    .btn-secondary:hover {
+      color: var(--color-button-text);
+      background-color: var(--color-text);
+    }
+
+    .btn-sm {
+      padding: var(--spacing-3) var(--spacing-6);
+      font-size: 12px;
+    }
+
+    .btn-lg {
+      padding: var(--spacing-6) var(--spacing-10);
+      font-size: 16px;
+    }
+
+    /* Button with arrow */
+    .btn-arrow::after {
+      content: '→';
+      margin-left: var(--spacing-2);
+      transition: transform var(--duration-fast) var(--easing);
+    }
+
+    .btn-arrow:hover::after {
+      transform: translateX(4px);
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       COMPONENT: TYPOGRAPHY
+       ═══════════════════════════════════════════════════════════════ */
+
+    h1, h2, h3, h4, h5, h6, .heading {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--color-header-text);
+    }
+
+    h1, .h1 { font-size: clamp(2.5rem, 6vw, 3.5rem); }
+    h2, .h2 { font-size: clamp(2rem, 5vw, 2.5rem); }
+    h3, .h3 { font-size: clamp(1.75rem, 4vw, 2rem); }
+    h4, .h4 { font-size: 1.5rem; }
+
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-3);
+    }
+
+    .lead {
+      font-size: 1.125rem;
+      line-height: 1.7;
+      color: var(--color-text-secondary);
+    }
+
+    .accent-text {
+      font-family: var(--font-heading);
+      font-style: italic;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       COMPONENT: CARDS
+       ═══════════════════════════════════════════════════════════════ */
+
+    .card {
+      background: var(--color-surface-light);
+      border: 1px solid var(--color-border-light);
+      padding: var(--spacing-8);
+      transition: all var(--duration-normal) var(--easing);
+    }
+
+    .card:hover {
+      border-color: var(--color-border);
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-image {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      margin-bottom: var(--spacing-6);
+    }
+
+    .card-title {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      margin-bottom: var(--spacing-3);
+    }
+
+    .card-text {
+      color: var(--color-text-secondary);
+      font-size: 15px;
+    }
+
+    /* Feature Card */
+    .feature-card {
+      text-align: center;
+      padding: var(--spacing-10);
+    }
+
+    .feature-card .icon {
+      font-size: 2.5rem;
+      margin-bottom: var(--spacing-4);
+    }
+
+    /* Testimonial Card */
+    .testimonial-card {
+      padding: var(--spacing-10);
+    }
+
+    .testimonial-card blockquote {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-style: italic;
+      line-height: 1.5;
+      margin-bottom: var(--spacing-6);
+    }
+
+    .testimonial-card cite {
+      display: block;
+      font-family: var(--font-body);
+      font-style: normal;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .testimonial-card .role {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      font-weight: 400;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       COMPONENT: FORMS
+       ═══════════════════════════════════════════════════════════════ */
+
+    .form-group {
+      margin-bottom: var(--spacing-6);
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: var(--spacing-2);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: var(--spacing-4);
+      font-family: var(--font-body);
+      font-size: 16px;
+      color: var(--color-text);
+      background: white;
+      border: 1px solid var(--color-border);
+      border-radius: 0;
+      transition: border-color var(--duration-fast) var(--easing);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--color-accent);
+    }
+
+    .form-input::placeholder {
+      color: var(--color-text-secondary);
+    }
+
+    .form-input-error {
+      border-color: var(--color-error);
+    }
+
+    .form-error-message {
+      font-size: 13px;
+      color: var(--color-error);
+      margin-top: var(--spacing-2);
+    }
+
+    .form-help {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      margin-top: var(--spacing-2);
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       COMPONENT: SECTIONS
+       ═══════════════════════════════════════════════════════════════ */
+
+    .section {
+      padding: var(--spacing-16) var(--spacing-6);
+    }
+
+    @media (min-width: 960px) {
+      .section {
+        padding: var(--spacing-24) var(--spacing-6);
+      }
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .container-narrow {
+      max-width: 800px;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin-bottom: var(--spacing-6);
+    }
+
+    .hero .lead {
+      max-width: 600px;
+      margin: 0 auto var(--spacing-8);
+    }
+
+    /* Dark Section */
+    .section-dark {
+      background-color: var(--color-surface-dark);
+      color: var(--color-background);
+    }
+
+    .section-dark h1,
+    .section-dark h2,
+    .section-dark h3,
+    .section-dark h4 {
+      color: var(--color-background);
+    }
+
+    .section-dark .eyebrow {
+      color: rgba(244, 239, 233, 0.7);
+    }
+
+    .section-dark .btn {
+      background-color: var(--color-background);
+      color: var(--color-text);
+    }
+
+    .section-dark .btn:hover {
+      background-color: white;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      text-align: center;
+      padding: var(--spacing-24) var(--spacing-6);
+    }
+
+    .cta-section h2 {
+      margin-bottom: var(--spacing-4);
+    }
+
+    .cta-section p {
+      margin-bottom: var(--spacing-8);
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       COMPONENT: GRID LAYOUTS
+       ═══════════════════════════════════════════════════════════════ */
+
+    .grid {
+      display: grid;
+      gap: var(--spacing-8);
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .flex-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flex-between {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       COMPONENT: ANIMATIONS
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* Scroll-triggered fade up */
+    [data-animate] {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity var(--duration-slow) var(--easing),
+                  transform var(--duration-slow) var(--easing);
+    }
+
+    [data-animate].visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Staggered delays */
+    [data-animate-delay="1"] { transition-delay: 0.1s; }
+    [data-animate-delay="2"] { transition-delay: 0.2s; }
+    [data-animate-delay="3"] { transition-delay: 0.3s; }
+    [data-animate-delay="4"] { transition-delay: 0.4s; }
+    [data-animate-delay="5"] { transition-delay: 0.5s; }
+
+    /* Image hover zoom */
+    .image-hover {
+      overflow: hidden;
+    }
+
+    .image-hover img {
+      transition: transform var(--duration-slow) var(--easing);
+    }
+
+    .image-hover:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Link underline animation */
+    .link-animate {
+      position: relative;
+      text-decoration: none;
+    }
+
+    .link-animate::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: currentColor;
+      transition: width var(--duration-normal) var(--easing);
+    }
+
+    .link-animate:hover::after {
+      width: 100%;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       COMPONENT: BADGES & TAGS
+       ═══════════════════════════════════════════════════════════════ */
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: var(--spacing-1) var(--spacing-3);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: var(--color-border-light);
+      color: var(--color-text);
+    }
+
+    .badge-success {
+      background: rgba(71, 137, 71, 0.15);
+      color: var(--color-success);
+    }
+
+    .badge-error {
+      background: rgba(201, 68, 68, 0.15);
+      color: var(--color-error);
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       COMPONENT: DIVIDERS
+       ═══════════════════════════════════════════════════════════════ */
+
+    .divider {
+      height: 1px;
+      background: var(--color-border-light);
+      margin: var(--spacing-8) 0;
+    }
+
+    .divider-thick {
+      height: 2px;
+      background: var(--color-text);
+      width: 60px;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       COMPONENT: EMAIL SPECIFIC
+       ═══════════════════════════════════════════════════════════════ */
+
+    .email-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+    }
+
+    .email-header {
+      padding: var(--spacing-8);
+      text-align: center;
+      border-bottom: 1px solid var(--color-border-light);
+    }
+
+    .email-body {
+      padding: var(--spacing-8);
+    }
+
+    .email-footer {
+      padding: var(--spacing-8);
+      text-align: center;
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      background: var(--color-surface-light);
+    }
+
+    /* Email-safe button (table-based) */
+    .email-btn {
+      display: inline-block;
+      padding: 16px 32px;
+      font-family: 'DM Sans', Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      color: #f4efe9 !important;
+      background-color: #113035;
+      mso-padding-alt: 16px 32px;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       UTILITY CLASSES
+       ═══════════════════════════════════════════════════════════════ */
+
+    .text-center { text-align: center; }
+    .text-left { text-align: left; }
+    .text-right { text-align: right; }
+
+    .mt-0 { margin-top: 0; }
+    .mt-4 { margin-top: var(--spacing-4); }
+    .mt-8 { margin-top: var(--spacing-8); }
+    .mb-0 { margin-bottom: 0; }
+    .mb-4 { margin-bottom: var(--spacing-4); }
+    .mb-8 { margin-bottom: var(--spacing-8); }
+
+    .hidden { display: none; }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       BUTTONS DEMO
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="component-section">
+    <div class="container">
+      <p class="component-title">Buttons</p>
+      <div class="component-grid" style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+        <a href="#" class="btn">Primary Button</a>
+        <a href="#" class="btn btn-secondary">Secondary Button</a>
+        <a href="#" class="btn btn-sm">Small Button</a>
+        <a href="#" class="btn btn-lg">Large Button</a>
+        <a href="#" class="btn btn-arrow">With Arrow</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       TYPOGRAPHY DEMO
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="component-section">
+    <div class="container container-narrow">
+      <p class="component-title">Typography</p>
+      <p class="eyebrow">Eyebrow Text</p>
+      <h1>Heading One</h1>
+      <h2 style="margin-top: 24px;">Heading Two</h2>
+      <h3 style="margin-top: 24px;">Heading Three</h3>
+      <h4 style="margin-top: 24px;">Heading Four</h4>
+      <p class="lead" style="margin-top: 24px;">Lead paragraph with larger text for introductions and key messages that need emphasis.</p>
+      <p style="margin-top: 16px;">Regular body text uses DM Sans for clean, modern readability. This is the default paragraph style used throughout AWARE interfaces.</p>
+      <p class="accent-text" style="margin-top: 16px;">Accent text uses Orpheus Pro italic for elegant emphasis.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       CARDS DEMO
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="component-section">
+    <div class="container">
+      <p class="component-title">Cards</p>
+      <div class="grid grid-3">
+
+        <!-- Standard Card -->
+        <div class="card">
+          <h4 class="card-title">Standard Card</h4>
+          <p class="card-text">Basic card component with hover effects. Use for content blocks, features, or navigation.</p>
+        </div>
+
+        <!-- Feature Card -->
+        <div class="card feature-card">
+          <div class="icon">🧴</div>
+          <h4 class="card-title">Feature Card</h4>
+          <p class="card-text">Centered layout for highlighting features or benefits.</p>
+        </div>
+
+        <!-- Testimonial Card -->
+        <div class="card testimonial-card">
+          <blockquote>"This product transformed my clients' scalp health."</blockquote>
+          <cite>Sarah M.</cite>
+          <span class="role">Master Stylist, NYC</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FORMS DEMO
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="component-section">
+    <div class="container container-narrow">
+      <p class="component-title">Forms</p>
+      <form>
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <input type="email" id="email" class="form-input" placeholder="you@example.com">
+          <p class="form-help">We'll never share your email.</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="salon">Salon Name</label>
+          <input type="text" id="salon" class="form-input form-input-error" value="Invalid input">
+          <p class="form-error-message">Please enter a valid salon name.</p>
+        </div>
+        <button type="submit" class="btn">Submit</button>
+      </form>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       DARK SECTION DEMO
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="section section-dark cta-section">
+    <div class="container">
+      <p class="eyebrow">Dark Section</p>
+      <h2>Ready to Transform Scalp Health?</h2>
+      <p class="lead">Join hundreds of salons already seeing results.</p>
+      <a href="#" class="btn">Get Started</a>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       BADGES DEMO
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="component-section">
+    <div class="container">
+      <p class="component-title">Badges</p>
+      <div style="display: flex; gap: 12px;">
+        <span class="badge">Default</span>
+        <span class="badge badge-success">Success</span>
+        <span class="badge badge-error">Error</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SCROLL ANIMATION SCRIPT
+       ═══════════════════════════════════════════════════════════════ -->
+  <script>
+    // Intersection Observer for scroll animations
+    // Add data-animate attribute to elements you want to animate
+    const animateElements = document.querySelectorAll('[data-animate]');
+
+    if (animateElements.length > 0) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      animateElements.forEach(el => observer.observe(el));
+    }
+  </script>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Tools | AWARE Hair</title>
+    <meta name="description" content="Free tools for salon professionals. Calculate your real earnings, decode ingredients, and discover your scalp health opportunity.">
+
+    <!-- AWARE Fonts -->
+    <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-background: #f4efe9;
+            --color-text: #102b26;
+            --color-text-secondary: #5a6b68;
+            --color-header-text: #031612;
+            --color-button-bg: #113035;
+            --color-button-text: #f4efe9;
+            --color-button-hover: #2a7682;
+            --color-border-light: #e4d9ca;
+            --color-surface-light: #faf8f5;
+            --color-surface-dark: #102b26;
+            --color-accent: #2a7682;
+
+            --font-heading: "orpheuspro", Georgia, serif;
+            --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+
+            --spacing-4: 16px;
+            --spacing-5: 20px;
+            --spacing-6: 24px;
+            --spacing-8: 32px;
+            --spacing-10: 40px;
+            --spacing-12: 48px;
+
+            --easing: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--spacing-5);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: var(--spacing-12) 0;
+            border-bottom: 1px solid var(--color-border-light);
+            margin-bottom: var(--spacing-8);
+        }
+
+        .logo {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .header h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 6vw, 3rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .header p {
+            font-size: 1.125rem;
+            color: var(--color-text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Section Headers */
+        .section-header {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-5);
+            padding-bottom: var(--spacing-4);
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .section {
+            margin-bottom: var(--spacing-10);
+        }
+
+        /* Tool Cards */
+        .tools-grid {
+            display: grid;
+            gap: var(--spacing-5);
+        }
+
+        .tool-card {
+            display: block;
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            padding: var(--spacing-6);
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s var(--easing);
+            position: relative;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(16, 43, 38, 0.1);
+            border-color: var(--color-accent);
+        }
+
+        .tool-card::after {
+            content: '→';
+            position: absolute;
+            right: var(--spacing-6);
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.25rem;
+            color: var(--color-accent);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .tool-card:hover::after {
+            opacity: 1;
+        }
+
+        .tool-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .tool-badge.calculator {
+            background: #e8f5f1;
+            color: #2a7682;
+        }
+
+        .tool-badge.quiz {
+            background: #f5ecd4;
+            color: #9a7b2c;
+        }
+
+        .tool-badge.tool {
+            background: #eee8f5;
+            color: #6b4a8c;
+        }
+
+        .tool-badge.new {
+            background: var(--color-surface-dark);
+            color: var(--color-button-text);
+        }
+
+        .tool-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-4);
+            padding-right: 40px;
+        }
+
+        .tool-description {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Featured Tool */
+        .featured-tool {
+            background: linear-gradient(135deg, var(--color-surface-dark) 0%, #1a4a50 100%);
+            color: var(--color-button-text);
+            padding: var(--spacing-8);
+        }
+
+        .featured-tool .tool-badge {
+            background: rgba(255, 255, 255, 0.15);
+            color: #7dd3e1;
+        }
+
+        .featured-tool .tool-title {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .featured-tool .tool-description {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .featured-tool::after {
+            color: #7dd3e1;
+        }
+
+        /* Existing Tools Section */
+        .existing-tools {
+            opacity: 0.7;
+        }
+
+        .existing-tools .tool-card {
+            padding: var(--spacing-5);
+        }
+
+        .existing-tools .tool-title {
+            font-size: 1rem;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .existing-tools .tool-description {
+            font-size: 13px;
+        }
+
+        /* CTA Banner */
+        .cta-banner {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            padding: var(--spacing-8);
+            text-align: center;
+            margin-top: var(--spacing-10);
+        }
+
+        .cta-banner h2 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .cta-banner p {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-5);
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: var(--spacing-4) var(--spacing-8);
+            background: var(--color-button-bg);
+            color: var(--color-button-text);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s var(--easing);
+        }
+
+        .cta-btn:hover {
+            background: var(--color-button-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: var(--spacing-10) 0;
+            color: var(--color-text-secondary);
+            font-size: 13px;
+            border-top: 1px solid var(--color-border-light);
+            margin-top: var(--spacing-10);
+        }
+
+        .footer a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (min-width: 600px) {
+            .tools-grid.two-col {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: var(--spacing-4);
+            }
+
+            .tool-card {
+                padding: var(--spacing-5);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">AWARE Hair</div>
+            <h1>Pro Tools</h1>
+            <p>Free calculators and tools to help salon professionals grow their business</p>
+        </div>
+
+        <!-- Featured: New Tools -->
+        <div class="section">
+            <div class="section-header">New Tools</div>
+            <div class="tools-grid">
+                <a href="scalp-revenue-calculator/" class="tool-card featured-tool">
+                    <span class="tool-badge new">New</span>
+                    <h2 class="tool-title">Scalp Service Revenue Calculator</h2>
+                    <p class="tool-description">Discover how much additional revenue you could earn by adding scalp consultations and AWARE retail. See the impact of our 50% wholesale margin.</p>
+                </a>
+
+                <a href="backbar-cost-calculator/" class="tool-card">
+                    <span class="tool-badge calculator">Calculator</span>
+                    <h2 class="tool-title">Backbar Cost-Per-Use Calculator</h2>
+                    <p class="tool-description">Calculate the true cost per client of your backbar products. Compare to AWARE's premium formulations and margin advantage.</p>
+                </a>
+
+                <a href="retail-commission-calculator/" class="tool-card">
+                    <span class="tool-badge calculator">Calculator</span>
+                    <h2 class="tool-title">Retail Commission Calculator</h2>
+                    <p class="tool-description">See how much you're earning from retail - and how AWARE's 50% margin means 25% more profit per sale than typical brands.</p>
+                </a>
+
+                <a href="scalp-health-quiz/" class="tool-card">
+                    <span class="tool-badge quiz">Quiz</span>
+                    <h2 class="tool-title">Client Scalp Health Quiz</h2>
+                    <p class="tool-description">A lead generation tool your clients can take. They get a personalized Scalp Environment Score, you get warm leads.</p>
+                </a>
+
+                <a href="ingredient-decoder/" class="tool-card">
+                    <span class="tool-badge tool">Tool</span>
+                    <h2 class="tool-title">Ingredient Decoder</h2>
+                    <p class="tool-description">Paste any ingredient list to identify sulfates, parabens, silicones, and other concerning ingredients. Compare to AWARE's EU-compliant formulations.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Existing Tools -->
+        <div class="section existing-tools">
+            <div class="section-header">Classic Tools</div>
+            <div class="tools-grid two-col">
+                <a href="real-hourly-rate/" class="tool-card">
+                    <span class="tool-badge calculator">Calculator</span>
+                    <h2 class="tool-title">Real Hourly Rate Calculator</h2>
+                    <p class="tool-description">Calculate what you're actually earning per hour after costs and hidden time.</p>
+                </a>
+
+                <a href="no-show-cost/" class="tool-card">
+                    <span class="tool-badge calculator">Calculator</span>
+                    <h2 class="tool-title">No-Show Cost Calculator</h2>
+                    <p class="tool-description">Calculate how much no-shows are really costing your business annually.</p>
+                </a>
+
+                <a href="trends-report-2026/" class="tool-card">
+                    <span class="tool-badge tool">Report</span>
+                    <h2 class="tool-title">2026 Salon Trends Report</h2>
+                    <p class="tool-description">Key trends shaping the salon industry in 2026 - scalp care, sustainability, and more.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-banner">
+            <h2>Ready to partner with AWARE?</h2>
+            <p>Join our growing network of salon professionals offering premium scalp care</p>
+            <a href="https://awarehair.com/pages/professional-program" class="cta-btn" target="_blank">Apply for Wholesale</a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Built by <a href="https://awarehair.com" target="_blank">AWARE Hair</a> for salon professionals</p>
+        </div>
+    </div>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

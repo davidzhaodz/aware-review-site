@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review Dashboard - CanRad Meeting Prep Updates | Feb 17, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2D4739;
+      --forest-deep: #1E3228;
+      --sage: #7A8F7D;
+      --cream: #F8F6F1;
+      --sand: #E8E4DC;
+      --charcoal: #2C2C2C;
+      --warm-gray: #6B6B6B;
+      --gold: #B8956E;
+      --gold-light: #C9A882;
+      --white: #FFFFFF;
+      --mist: #D5DDD8;
+      --divider: #D4CFC6;
+      --green: #4A8C6B;
+      --green-bg: #F2F8F5;
+      --red: #C45B4A;
+      --red-bg: #FDF5F4;
+      --amber: #B8860B;
+      --amber-bg: #FFFBF0;
+      --blue: #4A6E8C;
+      --blue-bg: #F0F5FA;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      background: var(--sand);
+      color: var(--charcoal);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      background: var(--white);
+      min-height: 100vh;
+    }
+
+    /* ---- HEADER ---- */
+    .header {
+      background: var(--forest-deep);
+      padding: 36px 48px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -3%;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(184,149,110,0.08) 0%, transparent 70%);
+    }
+    .header-badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(184,149,110,0.12);
+      padding: 4px 10px;
+      border-radius: 3px;
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      font-size: 28px;
+      color: var(--white);
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .header p {
+      color: var(--mist);
+      font-size: 15px;
+      opacity: 0.85;
+    }
+
+    /* ---- SUMMARY BAR ---- */
+    .summary-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-bottom: 1px solid var(--divider);
+    }
+    .summary-stat {
+      text-align: center;
+      padding: 20px 16px;
+      border-right: 1px solid var(--divider);
+    }
+    .summary-stat:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+    }
+
+    /* ---- SECTION ---- */
+    .section {
+      padding: 32px 48px;
+      border-bottom: 1px solid var(--divider);
+    }
+    .section:last-child { border-bottom: none; }
+    .slabel {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    h3 {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 19px;
+      font-weight: 500;
+      color: var(--forest);
+      margin-bottom: 12px;
+    }
+
+    /* ---- CHANGE CARDS ---- */
+    .change-grid {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .change-card {
+      border: 1px solid var(--divider);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .change-card:hover {
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .change-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: var(--cream);
+      border-bottom: 1px solid var(--divider);
+      flex-wrap: wrap;
+    }
+    .change-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--white);
+      background: var(--forest);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .change-title {
+      font-weight: 600;
+      font-size: 15px;
+      flex: 1;
+      min-width: 200px;
+    }
+    .change-file {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--warm-gray);
+      background: var(--white);
+      padding: 2px 8px;
+      border-radius: 3px;
+      border: 1px solid var(--divider);
+    }
+    .change-body {
+      padding: 14px 16px;
+    }
+    .change-body p {
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    .change-body p:last-child { margin-bottom: 0; }
+
+    /* ---- STATUS BADGES ---- */
+    .badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+    .badge-new { background: var(--green-bg); color: var(--green); }
+    .badge-fix { background: var(--amber-bg); color: var(--amber); }
+    .badge-critical { background: var(--red-bg); color: var(--red); }
+    .badge-verified { background: var(--green-bg); color: var(--green); border: 1px solid rgba(74,140,107,0.2); }
+    .badge-unverified { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(184,134,11,0.2); }
+    .badge-ai { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(74,110,140,0.2); }
+
+    /* ---- BEFORE / AFTER ---- */
+    .ba-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin: 10px 0;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--divider);
+    }
+    .ba-side {
+      padding: 12px 14px;
+      font-size: 13px;
+    }
+    .ba-before {
+      background: var(--red-bg);
+      border-right: 1px solid var(--divider);
+    }
+    .ba-after {
+      background: var(--green-bg);
+    }
+    .ba-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .ba-before .ba-label { color: var(--red); }
+    .ba-after .ba-label { color: var(--green); }
+    .ba-content {
+      line-height: 1.5;
+    }
+    .ba-content em {
+      font-style: normal;
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+    .ba-content strong {
+      background: rgba(74,140,107,0.1);
+      padding: 1px 3px;
+      border-radius: 2px;
+    }
+
+    /* ---- FILE SUMMARY TABLE ---- */
+    .file-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+    }
+    .file-table th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 2px solid var(--divider);
+      font-weight: 500;
+    }
+    .file-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--divider);
+      font-size: 14px;
+      vertical-align: top;
+    }
+    .file-table tr:last-child td { border-bottom: none; }
+    .file-table .fname {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--forest);
+    }
+
+    /* ---- VERIFICATION CHECKLIST ---- */
+    .check-list {
+      list-style: none;
+      margin: 12px 0;
+    }
+    .check-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+      font-size: 14px;
+    }
+    .check-list li:last-child { border-bottom: none; }
+    .check-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 11px;
+      margin-top: 2px;
+    }
+    .check-pass {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+    .check-warn {
+      background: var(--amber-bg);
+      color: var(--amber);
+    }
+
+    /* ---- ACTION ITEMS ---- */
+    .action-card {
+      background: var(--amber-bg);
+      border: 1px solid rgba(184,134,11,0.2);
+      border-radius: 6px;
+      padding: 16px 18px;
+      margin: 12px 0;
+    }
+    .action-card h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--amber);
+      margin-bottom: 6px;
+    }
+    .action-card p {
+      font-size: 14px;
+    }
+
+    /* ---- KEY CONTENT ---- */
+    .key-content {
+      background: var(--cream);
+      border-radius: 6px;
+      padding: 16px 18px;
+      margin: 10px 0;
+      border-left: 3px solid var(--gold);
+    }
+    .key-content p {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .key-content p:last-child { margin-bottom: 0; }
+
+    /* ---- SECTION PREVIEWS ---- */
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .preview-card {
+      border: 1px solid var(--divider);
+      border-radius: 6px;
+      padding: 16px;
+      background: var(--cream);
+    }
+    .preview-card h4 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--forest);
+      margin-bottom: 8px;
+    }
+    .preview-card ul {
+      list-style: none;
+      font-size: 13px;
+    }
+    .preview-card li {
+      padding: 3px 0;
+      padding-left: 12px;
+      position: relative;
+    }
+    .preview-card li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    /* ---- FOOTER ---- */
+    .footer {
+      background: var(--cream);
+      padding: 24px 48px;
+      text-align: center;
+      border-top: 1px solid var(--divider);
+    }
+    .footer p {
+      font-size: 13px;
+      color: var(--warm-gray);
+    }
+    .footer a {
+      color: var(--forest);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .footer a:hover { text-decoration: underline; }
+
+    /* ---- UTILITY ---- */
+    .mb-8 { margin-bottom: 8px; }
+    .mb-16 { margin-bottom: 16px; }
+    .text-sm { font-size: 13px; color: var(--warm-gray); }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-badge">Internal Review - Pre-Meeting</div>
+    <h1>CanRad Meeting Prep - Change Dashboard</h1>
+    <p>12 additions/corrections across 3 files - Feb 17, 2026 research session</p>
+  </div>
+
+  <!-- SUMMARY BAR -->
+  <div class="summary-bar">
+    <div class="summary-stat">
+      <div class="stat-num" style="color: var(--forest);">3</div>
+      <div class="stat-label">New Sections</div>
+    </div>
+    <div class="summary-stat">
+      <div class="stat-num" style="color: var(--gold);">5</div>
+      <div class="stat-label">New Talk Tracks</div>
+    </div>
+    <div class="summary-stat">
+      <div class="stat-num" style="color: var(--blue);">3</div>
+      <div class="stat-label">New Questions</div>
+    </div>
+    <div class="summary-stat">
+      <div class="stat-num" style="color: var(--amber);">1</div>
+      <div class="stat-label">Decision Needed</div>
+    </div>
+  </div>
+
+  <!-- FILES MODIFIED -->
+  <div class="section">
+    <div class="slabel">Files Modified</div>
+    <table class="file-table">
+      <thead>
+        <tr>
+          <th style="width:40%">File</th>
+          <th style="width:15%">Lines Added</th>
+          <th style="width:15%">Type</th>
+          <th style="width:30%">Summary</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="fname">canrad-full-briefing.html</span></td>
+          <td>~450 lines</td>
+          <td><span class="badge badge-new">New Sections</span></td>
+          <td>3 new sections between Market Context and Brand Readiness, plus 3 nav links</td>
+        </tr>
+        <tr>
+          <td><span class="fname">canrad-cheat-sheet.html</span></td>
+          <td>~25 lines</td>
+          <td><span class="badge badge-new">Additions</span></td>
+          <td>4 new talking point cards + 3 new questions</td>
+        </tr>
+        <tr>
+          <td><span class="fname">canrad-beauty-feb18-prep.md</span></td>
+          <td>~80 lines</td>
+          <td><span class="badge badge-new">Additions</span></td>
+          <td>3 new subsections between Intel Brief and Meeting Strategy</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 3 NEW BRIEFING SECTIONS -->
+  <div class="section">
+    <div class="slabel">New Sections in Full Briefing</div>
+    <p class="mb-16">Three major sections added to <span class="change-file" style="display:inline-block;">canrad-full-briefing.html</span> between the Market Context and Brand Readiness sections. Each corresponds to one parallel research agent.</p>
+
+    <div class="preview-grid">
+      <div class="preview-card">
+        <h4>#landscape</h4>
+        <ul>
+          <li>SalonCentric Canada (L'Oreal) - 36 locations</li>
+          <li>CosmoProf Canada (Sally Beauty) - 9 provinces</li>
+          <li>Modern Beauty - 59 locations, largest independent</li>
+          <li>West Coast Beauty - 10 BC locations, premium</li>
+          <li>Maritime Beauty - 17 Atlantic locations</li>
+          <li>CanRad strengths vs. vulnerabilities analysis</li>
+          <li>Corporate vs. independent onboarding</li>
+          <li>5-phase post-CanRad expansion roadmap</li>
+          <li>3 scripted "other distributors" talk tracks</li>
+        </ul>
+      </div>
+      <div class="preview-card">
+        <h4>#salon-targeting</h4>
+        <ul>
+          <li>CanRad network composition profile</li>
+          <li>Green Circle Salons partnership (Stuart's initiative)</li>
+          <li>6 GTA scalp-forward salons identified</li>
+          <li>Good Fit vs. Bad Fit pilot persona cards</li>
+          <li>7 targeting criteria for 38 consultants</li>
+          <li>"How We'd Select the 50 Doors" talk track</li>
+          <li>Pilot structure: 90-day window</li>
+          <li>Consultant nomination ask (5-10 reps)</li>
+        </ul>
+      </div>
+      <div class="preview-card">
+        <h4>#brand-positioning</h4>
+        <ul>
+          <li>"Proactive Scalp Wellness Ritual" label</li>
+          <li>Alternatives rejected with rationale</li>
+          <li>K18 case study (social-led pull)</li>
+          <li>Olaplex case study (independent-first)</li>
+          <li>Davines case study (values-driven)</li>
+          <li>90-day consultant mindshare playbook</li>
+          <li>SPIFF structure ($25/account, $750 cap)</li>
+          <li>Portfolio positioning talk tracks</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="mb-8">Nav Structure Change</h3>
+    <div class="ba-container">
+      <div class="ba-side ba-before">
+        <div class="ba-label">Before</div>
+        <div class="ba-content">
+          CanRad > Market > <em>Readiness</em> > Pricing > ...
+        </div>
+      </div>
+      <div class="ba-side ba-after">
+        <div class="ba-label">After</div>
+        <div class="ba-content">
+          CanRad > Market > <strong>Landscape</strong> > <strong>Pilot Targeting</strong> > <strong>Brand Strategy</strong> > Readiness > Pricing > ...
+        </div>
+      </div>
+    </div>
+    <p class="text-sm">Nav label "Brand Strategy" used instead of "Positioning" to avoid collision with existing #positioning section (meeting posture/approach).</p>
+  </div>
+
+  <!-- ALL 12 CHANGES -->
+  <div class="section">
+    <div class="slabel">All 12 Changes - Detail</div>
+
+    <div class="change-grid">
+      <!-- Change 1 -->
+      <div class="change-card">
+        <div class="change-header">
+          <div class="change-num">1</div>
+          <div class="change-title">Canadian Distributor Landscape Section</div>
+          <span class="badge badge-new">New</span>
+          <span class="change-file">briefing.html</span>
+        </div>
+        <div class="change-body">
+          <p>Complete competitive map of Canadian professional beauty distribution. 2 corporate distributors (SalonCentric, CosmoProf) and 3 independents (Modern Beauty, West Coast, Maritime) with territory, scale, brands, and source links.</p>
+          <div class="key-content">
+            <p><strong>Meeting value:</strong> If CanRad asks "are you talking to other distributors?" or "what about national coverage?", David has 3 scripted responses ready. Shows AWARE has done homework on the Canadian market.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Change 2 -->
+      <div class="change-card">
+        <div class="change-header">
+          <div class="change-num">2</div>
+          <div class="change-title">CanRad Strengths vs. Vulnerabilities</div>
+          <span class="badge badge-new">New</span>
+          <span class="change-file">briefing.html</span>
+        </div>
+        <div class="change-body">
+          <p>Side-by-side analysis. 6 strengths (no parent-brand conflict, fast decisions, 8 education facilities, Quaffed app, ~59% ON penetration, 110-year trust) and 4 vulnerabilities (geographic limit, brand density, modest revenue, conservative pace).</p>
+          <div class="key-content">
+            <p><strong>Meeting value:</strong> Knowing vulnerabilities prevents over-promising. Geographic limit means AWARE needs 2-3 more partners for national coverage - don't promise CanRad exclusivity beyond ON/MB.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Change 3 -->
+      <div class="change-card">
+        <div class="change-header">
+          <div class="change-num">3</div>
+          <div class="change-title">Corporate vs. Independent Onboarding Comparison</div>
+          <span class="badge badge-new">New</span>
+          <span class="change-file">briefing.html</span>
+        </div>
+        <div class="change-body">
+          <p>SalonCentric/CosmoProf: 6-18 month vendor process, ~40% margin, formal procurement. Independent (CanRad): 4-12 weeks, 20-30% margin, relationship-led.</p>
+          <div class="key-content">
+            <p><strong>Meeting value:</strong> Reinforces the "why independent" narrative and sets realistic CanRad timeline expectations.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Change 4 -->
+      <div class="change-card">
+        <div class="change-header">
+          <div class="change-num">4</div>
+          <div class="change-title">Post-CanRad 5-Phase Canada Expansion Roadmap</div>
+          <span class="badge badge-new">New</span>
+          <span class="change-file">briefing.html</span>
+        </div>
+        <div class="change-body">
+          <p>Phase 1: ON/MB (CanRad, now). Phase 2: BC (West Coast Beauty). Phase 3: AB/SK (Modern Beauty). Phase 4: QC (TBD - independents acquired). Phase 5: Maritimes (Maritime Beauty).</p>
+          <p class="text-sm">Includes Quebec warning: CONCEPT JP and La Maison Ami-Co both acquired by corporates. Bill 96 French labeling non-negotiable. Manitoba overlap caution for Modern Beauty.</p>
+          <div class="key-content">
+            <p><strong>Meeting value:</strong> Shows CanRad that AWARE has a national vision but is committed to depth-first. Can offer CanRad "first look" at broader conversation if pilot succeeds.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Change 5 -->
+      <div class="change-card">
+        <div class="change-header">
+          <div class="change-num">5</div>
+          <div class="change-title">Pilot Salon Targeting Section</div>
+          <span class="badge badge-new">New</span>
+          <span class="badge badge-unverified">Partly Unverified</span>
+          <span class="change-file">briefing.html</span>
+        </div>
+        <div class="change-body">
+          <p>Complete targeting framework: CanRad network profile, Green Circle partnership as targeting signal, 6 identified GTA salons (Pomme, Evolve, Biro, Revival, Skin and Scalp Haus, Damara), Good Fit/Bad Fit personas, 7 consultant targeting criteria.</p>
+          <div class="ba-container">
+            <div class="ba-side ba-before">
+              <div class="ba-label">Before</div>
+              <div class="ba-content">No pilot targeting framework. No answer for "which salons should we start with?"</div>
+            </div>
+            <div class="ba-side ba-after">
+              <div class="ba-label">After</div>
+              <div class="ba-content">7 specific criteria, named GTA salons as type examples, scripted "50 doors" talk track, 90-day pilot structure with 30/90-day checkpoints</div>
+            </div>
+          </div>
+          <p class="text-sm" style="margin-top: 8px;">All salon-CanRad affiliations are [UNVERIFIED]. Presented as "type examples" of the ideal salon profile, not confirmed CanRad accounts.</p>
+        </div>
+      </div>
+
+      <!-- Change 6 -->
+      <div class="change-card">
+        <div class="change-header">
+          <div class="change-num">6</div>
+          <div class="change-title">"Proactive Scalp Wellness Ritual" Category Positioning</div>
+          <span class="badge badge-new">New</span>
+          <span class="badge badge-ai">AI Analysis</span>
+          <span class="change-file">briefing.html</span>
+        </div>
+        <div class="change-body">
+          <p>Recommended category label to differentiate from Nioxin (reactive/thinning), Zenagen (reactive/loss), Biotop (reactive/problems). "Proactive vs. reactive" is the clearest positioning axis.</p>
+          <p>Alternatives rejected: "Clean Scalp Care" (genericized), "Scalp Health System" (clinical tone), "Microbiome Wellness" (needs explanation at distributor stage).</p>
+          <div class="ba-container">
+            <div class="ba-side ba-before">
+              <div class="ba-label">Before</div>
+              <div class="ba-content">Gap described as "no proactive, ritual-based scalp wellness brand" but no formal category label recommendation.</div>
+            </div>
+            <div class="ba-side ba-after">
+              <div class="ba-label">After</div>
+              <div class="ba-content">"Proactive Scalp Wellness Ritual" with word-by-word rationale, rejected alternatives, and scripted category introduction for the meeting.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Change 7 -->
+      <div class="change-card">
+        <div class="change-header">
+          <div class="change-num">7</div>
+          <div class="change-title">3 Verified Niche Brand Case Studies</div>
+          <span class="badge badge-new">New</span>
+          <span class="badge badge-verified">Sourced</span>
+          <span class="change-file">briefing.html</span>
+        </div>
+        <div class="change-body">
+          <p><strong>K18:</strong> 11B TikTok views, 2,000+ stylist ambassadors before SalonCentric partnership (Nov 2022). Pull, not push. Sources: BeautyLaunchpad, PRNewswire, BusinessWire.</p>
+          <p><strong>Olaplex:</strong> Independent-first, non-compete clauses, 4 years salon-exclusive. Created "bond repair" category. Sources: Business of Business, Latterly.</p>
+          <p><strong>Davines:</strong> Values-driven independent distributor selection. US salon sales +10.5% in 2025 vs. market -3%. Sources: Glossy, Manufacturing Today.</p>
+          <div class="key-content">
+            <p><strong>Meeting value:</strong> If Jack says "we've never launched a brand this small", cite K18 and Olaplex. Davines validates CanRad's family-owned/values approach - surface Stuart's "partnerships with our community and environment" language.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Change 8 -->
+      <div class="change-card">
+        <div class="change-header">
+          <div class="change-num">8</div>
+          <div class="change-title">90-Day Consultant Mindshare Playbook</div>
+          <span class="badge badge-new">New</span>
+          <span class="badge badge-ai">AI Analysis</span>
+          <span class="change-file">briefing.html</span>
+        </div>
+        <div class="change-body">
+          <p>3-phase plan for capturing attention from 38 reps carrying 60+ brands:</p>
+          <p><strong>Weeks 1-30 (Launch):</strong> Personal kits to all 38 reps (~$6,500 COGS), Tina virtual education, SPIFF launch ($25/account, 30-cap = $750 max)</p>
+          <p><strong>Weeks 31-60 (Build):</strong> Tina Toronto tour, first sell-through report, monthly consultant emails, champion salon identification</p>
+          <p><strong>Weeks 61-90 (Establish):</strong> HairFest 2026 activation planning, top performer recognition, formal 90-day review with Phase 2 proposal</p>
+        </div>
+      </div>
+
+      <!-- Change 9 -->
+      <div class="change-card">
+        <div class="change-header">
+          <div class="change-num">9</div>
+          <div class="change-title">4 New Cheat Sheet Talking Points</div>
+          <span class="badge badge-new">New</span>
+          <span class="change-file">cheat-sheet.html</span>
+        </div>
+        <div class="change-body">
+          <p>Added after existing "Education as Pull" card:</p>
+          <p>1. <strong>Why Independence Matters</strong> - SalonCentric is L'Oreal, CosmoProf is Sally Beauty, CanRad has no competing incentives</p>
+          <p>2. <strong>Pilot Selection</strong> - "50 most likely to activate, not 50 biggest" with specific criteria</p>
+          <p>3. <strong>Proactive vs. Reactive</strong> - the skincare analogy (acne treatment to daily SPF and serums)</p>
+          <p>4. <strong>Broader Canada</strong> - "depth before breadth" if national coverage comes up</p>
+        </div>
+      </div>
+
+      <!-- Change 10 -->
+      <div class="change-card">
+        <div class="change-header">
+          <div class="change-num">10</div>
+          <div class="change-title">3 New Cheat Sheet Questions</div>
+          <span class="badge badge-new">New</span>
+          <span class="change-file">cheat-sheet.html</span>
+        </div>
+        <div class="change-body">
+          <p>Added to Questions to Ask section:</p>
+          <p>1. <span class="badge" style="background:var(--amber-bg);color:var(--amber);font-size:9px;">Should</span> "How many Ontario accounts buy Biotop or Zenagen regularly?" - unlocks pilot list from CanRad's order history</p>
+          <p>2. <span class="badge" style="background:var(--amber-bg);color:var(--amber);font-size:9px;">Should</span> "How many accounts are Green Circle certified?" - Stuart's initiative, he'll know</p>
+          <p>3. <span class="badge" style="background:var(--blue-bg);color:var(--blue);font-size:9px;">Bonus</span> "What do you typically offer reps for a new brand launch? We've budgeted a SPIFF program."</p>
+        </div>
+      </div>
+
+      <!-- Change 11 -->
+      <div class="change-card">
+        <div class="change-header">
+          <div class="change-num">11</div>
+          <div class="change-title">Prep Doc - 3 New Subsections</div>
+          <span class="badge badge-new">New</span>
+          <span class="change-file">prep.md</span>
+        </div>
+        <div class="change-body">
+          <p>Inserted between Section 1 (CanRad Intel Brief) and Section 2 (Meeting Strategy):</p>
+          <p>1. <strong>Canadian Distributor Landscape</strong> - condensed landscape map, CanRad advantages, post-CanRad expansion path, 3 "if other distributors come up" scripted responses</p>
+          <p>2. <strong>Brand Positioning Strategy</strong> - "Proactive Scalp Wellness Ritual" label, K18/Olaplex/Davines case studies with source citations, SPIFF structure</p>
+          <p>3. <strong>Pilot Salon Targeting</strong> - ideal pilot persona, key questions, 5 named GTA salons as type examples</p>
+        </div>
+      </div>
+
+      <!-- Change 12 -->
+      <div class="change-card">
+        <div class="change-header">
+          <div class="change-num">12</div>
+          <div class="change-title">Nav Label Disambiguation</div>
+          <span class="badge badge-fix">Fix</span>
+          <span class="change-file">briefing.html</span>
+        </div>
+        <div class="change-body">
+          <p>New #brand-positioning section's nav link was labeled "Brand Strategy" instead of "Positioning" to avoid confusion with the existing #positioning section (meeting posture and approach strategy).</p>
+          <div class="ba-container">
+            <div class="ba-side ba-before">
+              <div class="ba-label">Would Have Been</div>
+              <div class="ba-content">Two nav items both labeled "Positioning" pointing to different sections</div>
+            </div>
+            <div class="ba-side ba-after">
+              <div class="ba-label">Fixed</div>
+              <div class="ba-content">"Brand Strategy" for category positioning, "Positioning" for meeting approach - distinct and clear</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERIFICATION STATUS -->
+  <div class="section">
+    <div class="slabel">Verification Status</div>
+    <p class="mb-16">Source verification per project rules (source-verification.md, ai-research-verification.md).</p>
+
+    <ul class="check-list">
+      <li>
+        <div class="check-icon check-pass">&#10003;</div>
+        <div><strong>All distributor claims have source URLs</strong> - SalonCentric.ca, CosmoProf.ca, ModernBeauty.com, West-Coast-Beauty.com, MaritimeBeauty.com linked inline</div>
+      </li>
+      <li>
+        <div class="check-icon check-pass">&#10003;</div>
+        <div><strong>Case studies trace to verifiable publications</strong> - BeautyLaunchpad, PRNewswire, BusinessWire, Glossy, Manufacturing Today. All links included in briefing.</div>
+      </li>
+      <li>
+        <div class="check-icon check-pass">&#10003;</div>
+        <div><strong>[UNVERIFIED] labels applied correctly</strong> - CosmoProf Canada store count (~8), CanRad revenue (~$7.3M), independent onboarding timelines (4-12 weeks), margin expectations (20-30%), all GTA salon-CanRad affiliations</div>
+      </li>
+      <li>
+        <div class="check-icon check-pass">&#10003;</div>
+        <div><strong>[AI-GENERATED ANALYSIS] labels applied</strong> - Category positioning recommendation, 90-day consultant playbook, SPIFF structure, pilot targeting criteria</div>
+      </li>
+      <li>
+        <div class="check-icon check-pass">&#10003;</div>
+        <div><strong>No duplication with existing sections</strong> - CanRad profile, competitive pricing, tariffs/compliance, brand readiness all remain in their original sections only</div>
+      </li>
+      <li>
+        <div class="check-icon check-pass">&#10003;</div>
+        <div><strong>HTML structure verified</strong> - All section IDs match nav links, proper open/close div tags, AWARE design system classes used correctly</div>
+      </li>
+      <li>
+        <div class="check-icon check-pass">&#10003;</div>
+        <div><strong>Green Circle partnership sourced</strong> - Stuart Lapowich LinkedIn article linked (original Sept 2016 announcement)</div>
+      </li>
+      <li>
+        <div class="check-icon check-warn">!</div>
+        <div><strong>GTA salon identifications are web research only</strong> - Pomme, Evolve, Biro, Revival, Skin and Scalp Haus, Damara. None confirmed as CanRad accounts. Presented as "type examples" with explicit caveat in all 3 files.</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ACTION ITEMS -->
+  <div class="section">
+    <div class="slabel">Pre-Meeting Action Required</div>
+
+    <div class="action-card">
+      <h4>SPIFF Budget Decision</h4>
+      <p>The briefing proposes a SPIFF structure: <strong>$25 per salon account opened, 60-day window, 30-account cap = $750 max exposure.</strong> If CanRad asks "what do you offer reps?", having a specific number is more credible than "we'll figure something out." Decide before the meeting whether this budget is authorized.</p>
+    </div>
+
+    <div class="key-content">
+      <p><strong>Recommended review order for tomorrow:</strong></p>
+      <p>1. Skim the 3 preview cards above for a 2-minute overview of all new content</p>
+      <p>2. Read the <a href="canrad-cheat-sheet.html" style="color:var(--forest);font-weight:600;">cheat sheet</a> - it has the condensed talking points you'll use in the meeting</p>
+      <p>3. If time allows, open <a href="canrad-full-briefing.html#brand-positioning" style="color:var(--forest);font-weight:600;">brand positioning section</a> for the case studies - K18 and Olaplex are the strongest proof points</p>
+    </div>
+  </div>
+
+  <!-- RESEARCH METHODOLOGY -->
+  <div class="section">
+    <div class="slabel">Research Methodology</div>
+    <p class="mb-8">3 parallel research agents ran on Feb 17, 2026. Each searched 30+ web sources independently.</p>
+    <table class="file-table">
+      <thead>
+        <tr>
+          <th style="width:30%">Agent</th>
+          <th style="width:35%">Focus</th>
+          <th style="width:35%">Key Sources</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="fname">Agent 1: Landscape</span></td>
+          <td>Canadian distributor mapping, corporate vs. independent comparison, expansion roadmap</td>
+          <td>SalonCentric.ca, CosmoProf.ca, L'Oreal Canada, Sally Beauty earnings, IBISWorld</td>
+        </tr>
+        <tr>
+          <td><span class="fname">Agent 2: Salon Network</span></td>
+          <td>CanRad network profile, GTA salon identification, pilot targeting criteria</td>
+          <td>CanRad.com, Instagram, Green Circle Salons, salon websites, Quaffed app</td>
+        </tr>
+        <tr>
+          <td><span class="fname">Agent 3: Positioning</span></td>
+          <td>Category naming, niche brand case studies, consultant mindshare playbook</td>
+          <td>BeautyLaunchpad, PRNewswire, Glossy, Manufacturing Today, Beauty Independent</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="text-sm" style="margin-top: 12px;">Cross-referenced across agents: distributor data consistent between Agent 1 and Agent 3 case studies. No contradictions found in synthesis.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Generated Feb 17, 2026 &middot; Meeting: Feb 18, 2026 &middot; <a href="canrad-full-briefing.html">Full Briefing</a> &middot; <a href="canrad-cheat-sheet.html">Cheat Sheet</a> &middot; <a href="canrad-beauty-feb18-prep.md">Prep Doc</a></p>
+  </div>
+
+</div>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

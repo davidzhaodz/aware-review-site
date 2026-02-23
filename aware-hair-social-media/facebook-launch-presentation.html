@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Facebook Launch Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#F5F1EC;--bg2:#FFFFFF;--bg3:#EDE8E2;
+  --sand:#8B7355;--sand-dim:rgba(139,115,85,.07);--sand-glow:rgba(139,115,85,.12);
+  --cream:#1C2420;--warm:#2a3630;
+  --text:#1C2420;--text2:#555555;--text3:#A09080;
+  --green:#2d6a4f;--amber:#b07d3a;--blue:#3a6b8c;--purple:#6b4f8c;--red:#b05050;
+  --border:rgba(139,115,85,.12);
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text)}
+body{font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;cursor:default}
+h1,h2,h3,.serif{font-family:'Playfair Display',Georgia,serif}
+
+/* Grain overlay */
+body::before{
+  content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
+  opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:200px;
+}
+
+/* Slide container */
+.deck{position:relative;width:100vw;height:100vh}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:80px 120px;
+  opacity:0;visibility:hidden;
+  transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1);
+  transform:translateY(12px);
+}
+.slide.active{opacity:1;visibility:visible;transform:translateY(0)}
+.slide.exiting{opacity:0;transform:translateY(-12px)}
+
+/* Slide counter */
+.counter{
+  position:fixed;bottom:32px;right:48px;z-index:100;
+  font-size:13px;letter-spacing:.5px;color:var(--text3);
+  font-variant-numeric:tabular-nums;
+}
+.counter .current{color:var(--green);font-weight:600}
+
+/* Progress bar */
+.progress{position:fixed;top:0;left:0;height:2px;background:var(--green);z-index:100;transition:width .4s ease}
+
+/* Nav hint */
+.nav-hint{
+  position:fixed;bottom:32px;left:48px;z-index:100;
+  font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);
+  opacity:.5;transition:opacity .3s;
+}
+.nav-hint:hover{opacity:1}
+
+/* Part label */
+.part-label{
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--green);
+  margin-bottom:16px;font-weight:600;
+}
+
+/* Title typography */
+.slide-title{
+  font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,64px);
+  font-weight:500;line-height:1.15;color:var(--cream);
+  max-width:900px;
+}
+.slide-subtitle{
+  font-size:18px;color:var(--text2);margin-top:20px;
+  max-width:700px;line-height:1.6;font-weight:300;
+}
+
+/* Big number */
+.big-num{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(80px,10vw,140px);font-weight:700;
+  line-height:1;color:var(--green);
+  letter-spacing:-2px;
+}
+.big-num-label{
+  font-size:15px;color:var(--text2);margin-top:8px;
+  letter-spacing:.5px;
+}
+
+/* Stat row */
+.stats{display:flex;gap:60px;margin-top:48px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column}
+.stat-val{font-family:'Playfair Display',serif;font-size:clamp(36px,4vw,56px);font-weight:600;color:var(--cream);line-height:1.1}
+.stat-val.sand{color:var(--green)}
+.stat-label{font-size:13px;color:var(--text3);margin-top:6px;max-width:160px;line-height:1.4}
+
+/* Content grid */
+.content-grid{display:grid;gap:32px;margin-top:40px}
+.content-grid.cols-2{grid-template-columns:1fr 1fr}
+.content-grid.cols-3{grid-template-columns:1fr 1fr 1fr}
+
+/* Card */
+.card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:12px;
+  padding:28px 32px;position:relative;
+}
+.card-accent{border-left:3px solid var(--green);padding-left:29px}
+.card-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--cream);margin-bottom:12px;font-weight:500}
+.card-body{font-size:14px;color:var(--text2);line-height:1.65}
+.card-tag{
+  display:inline-block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+  padding:4px 10px;border-radius:4px;font-weight:600;margin-bottom:12px;
+}
+.tag-blue{background:rgba(58,107,140,.1);color:var(--blue)}
+.tag-green{background:rgba(45,106,79,.1);color:var(--green)}
+.tag-purple{background:rgba(107,79,140,.1);color:var(--purple)}
+.tag-amber{background:rgba(176,125,58,.1);color:var(--amber)}
+.tag-sand{background:var(--sand-dim);color:var(--sand)}
+
+/* Flow diagram */
+.flow{display:flex;align-items:center;gap:0;margin-top:32px;flex-wrap:wrap}
+.flow-step{
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  padding:16px 22px;font-size:13px;color:var(--cream);
+  display:flex;flex-direction:column;gap:4px;min-width:130px;
+}
+.flow-step .step-num{font-size:10px;color:var(--green);letter-spacing:1.5px;text-transform:uppercase;font-weight:600}
+.flow-step .step-label{font-weight:500}
+.flow-step .step-detail{font-size:11px;color:var(--text3);line-height:1.4}
+.flow-arrow{color:var(--text3);font-size:18px;padding:0 8px;flex-shrink:0}
+
+/* Timeline */
+.timeline-row{display:flex;gap:0;margin-top:32px}
+.week-block{
+  flex:1;padding:20px 24px;border-right:1px solid var(--border);
+  position:relative;
+}
+.week-block:last-child{border-right:none}
+.week-num{font-family:'Playfair Display',serif;font-size:28px;color:var(--green);font-weight:600}
+.week-title{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-top:2px;font-weight:500}
+.week-items{margin-top:14px;display:flex;flex-direction:column;gap:6px}
+.week-item{font-size:12px;color:var(--text3);line-height:1.5;padding-left:12px;border-left:2px solid var(--border)}
+.week-item.highlight{color:var(--cream);border-left-color:var(--green)}
+
+/* Table */
+.data-table{width:100%;border-collapse:collapse;margin-top:24px}
+.data-table th{
+  font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);
+  text-align:left;padding:10px 16px;border-bottom:1px solid var(--border);font-weight:500;
+}
+.data-table td{
+  font-size:14px;color:var(--text2);padding:12px 16px;
+  border-bottom:1px solid rgba(139,115,85,.06);
+}
+.data-table td:first-child{color:var(--cream);font-weight:500}
+.data-table td.num{font-family:'Playfair Display',serif;font-size:18px;color:var(--green);font-weight:600}
+
+/* Funnel */
+.funnel{display:flex;flex-direction:column;gap:0;margin-top:20px}
+.funnel-step{
+  padding:14px 24px;font-size:13px;color:var(--cream);
+  border-left:2px solid var(--border);position:relative;
+  margin-left:0;transition:margin-left .3s;
+}
+.funnel-step:nth-child(2){margin-left:24px}
+.funnel-step:nth-child(3){margin-left:48px}
+.funnel-step:nth-child(4){margin-left:72px}
+.funnel-step:nth-child(5){margin-left:96px}
+.funnel-step:nth-child(6){margin-left:120px}
+.funnel-step::before{
+  content:'';position:absolute;left:-2px;top:0;bottom:0;width:2px;
+  background:var(--sand);opacity:0;transition:opacity .3s;
+}
+.funnel-step:hover::before{opacity:1}
+.funnel-detail{font-size:11px;color:var(--text3);margin-top:3px}
+
+/* Pill list */
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.pill{
+  font-size:12px;padding:6px 14px;border-radius:20px;
+  background:rgba(45,106,79,.06);color:var(--green);border:1px solid rgba(45,106,79,.12);
+}
+
+/* Property cards (slide 6) */
+.property-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:16px;
+  padding:32px;position:relative;overflow:hidden;
+}
+.property-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+}
+.property-card.page::after{background:var(--blue)}
+.property-card.profile::after{background:var(--amber)}
+.property-card.group::after{background:var(--green)}
+.property-icon{font-size:32px;margin-bottom:16px}
+.property-name{font-family:'Playfair Display',serif;font-size:22px;color:var(--cream);margin-bottom:8px;font-weight:500}
+.property-purpose{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:16px}
+.property-detail{font-size:12px;color:var(--text3);line-height:1.5}
+
+/* Divider */
+.divider{width:60px;height:1px;background:var(--green);margin:24px 0;opacity:.3}
+
+/* Two column layout */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.split-wide{display:grid;grid-template-columns:1.2fr .8fr;gap:60px;align-items:start}
+
+/* Decorative line */
+.accent-line{
+  position:absolute;top:0;right:120px;width:1px;height:100%;
+  background:linear-gradient(to bottom,transparent,rgba(45,106,79,.08),transparent);
+}
+
+/* Title slide special */
+.title-slide{text-align:center;align-items:center}
+.title-slide .slide-title{max-width:100%;font-size:clamp(42px,5vw,72px)}
+.title-brand{
+  font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--green);
+  margin-bottom:32px;font-weight:500;
+}
+.title-date{font-size:14px;color:var(--text3);margin-top:24px;font-weight:300}
+.title-divider{width:80px;height:1px;background:var(--green);margin:24px auto;opacity:.4}
+
+/* Questions slide */
+.questions-slide{text-align:center;align-items:center}
+
+/* Animate children on slide entry */
+.slide.active .fade-up{
+  animation:fadeUp .5s ease both;
+}
+.slide.active .fade-up:nth-child(1){animation-delay:.1s}
+.slide.active .fade-up:nth-child(2){animation-delay:.2s}
+.slide.active .fade-up:nth-child(3){animation-delay:.3s}
+.slide.active .fade-up:nth-child(4){animation-delay:.4s}
+.slide.active .fade-up:nth-child(5){animation-delay:.5s}
+.slide.active .fade-up:nth-child(6){animation-delay:.6s}
+.slide.active .fade-up:nth-child(7){animation-delay:.7s}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Discovery paths */
+.discovery-paths{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.discovery-path{
+  background:var(--bg2);border:1px solid var(--border);border-radius:14px;
+  padding:28px;position:relative;overflow:hidden;
+}
+.discovery-path::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+}
+.discovery-path:nth-child(1)::before{background:var(--amber)}
+.discovery-path:nth-child(2)::before{background:var(--green)}
+.discovery-path:nth-child(3)::before{background:var(--blue)}
+.path-icon{font-size:28px;margin-bottom:14px}
+.path-name{font-family:'Playfair Display',serif;font-size:20px;color:var(--cream);margin-bottom:6px;font-weight:500}
+.path-stat{font-family:'Playfair Display',serif;font-size:32px;font-weight:600;margin:12px 0 6px}
+.path-stat.amber{color:var(--amber)}
+.path-stat.green{color:var(--green)}
+.path-stat.blue{color:var(--blue)}
+.path-desc{font-size:12px;color:var(--text3);line-height:1.6}
+.path-ourplay{font-size:12px;color:var(--green);margin-top:14px;padding-top:12px;border-top:1px solid var(--border);line-height:1.5;font-weight:500}
+
+/* Tool grid */
+.tool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
+.tool-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  padding:18px 20px;
+}
+.tool-name{font-size:14px;color:var(--cream);font-weight:600;margin-bottom:4px}
+.tool-purpose{font-size:11px;color:var(--text3);line-height:1.5}
+.tool-cost{font-size:12px;color:var(--green);margin-top:8px;font-weight:500}
+
+/* Content pillar bar */
+.pillar-bar{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:20px 0 16px;gap:2px}
+.pillar-seg{border-radius:3px}
+.pillar-legend{display:flex;gap:24px;flex-wrap:wrap}
+.pillar-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2)}
+.pillar-dot{width:8px;height:8px;border-radius:50%}
+
+/* Role bars */
+.role-section{margin-top:28px}
+.role-name{font-family:'Playfair Display',serif;font-size:22px;color:var(--cream);font-weight:500}
+.role-hours{font-family:'Playfair Display',serif;font-size:36px;color:var(--green);font-weight:600;margin:4px 0 12px}
+.role-tasks{display:flex;flex-direction:column;gap:6px}
+.role-task{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:13px;padding:8px 14px;border-radius:6px;
+  background:var(--bg3);color:var(--text2);
+}
+.role-task span:last-child{color:var(--green);font-weight:500;font-size:12px}
+
+/* CTA card */
+.cta-card{
+  background:linear-gradient(135deg,rgba(45,106,79,.06),rgba(45,106,79,.02));
+  border:1px solid rgba(45,106,79,.15);border-radius:16px;
+  padding:40px;text-align:center;margin-top:40px;
+}
+.cta-card .slide-title{font-size:28px;margin:0 auto 16px}
+.cta-card .card-body{max-width:500px;margin:0 auto}
+
+/* Responsive */
+@media(max-width:1024px){
+  .slide{padding:60px 60px}
+  .content-grid.cols-3,.discovery-paths,.tool-grid{grid-template-columns:1fr 1fr}
+  .split,.split-wide{grid-template-columns:1fr}
+  .timeline-row{flex-direction:column}
+  .week-block{border-right:none;border-bottom:1px solid var(--border)}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="counter"><span class="current" id="currentSlide">1</span> / <span id="totalSlides">18</span></div>
+<div class="nav-hint">Arrow keys or click to navigate</div>
+
+<div class="deck" id="deck">
+
+<!-- ===== SLIDE 1: TITLE ===== -->
+<div class="slide title-slide active" data-slide="1">
+  <div class="fade-up title-brand">AWARE Hair</div>
+  <div class="fade-up title-divider"></div>
+  <h1 class="fade-up slide-title">Facebook Launch Plan</h1>
+  <div class="fade-up title-date">February 2026</div>
+</div>
+
+<!-- ===== SLIDE 2: FACEBOOK IN 2026 ===== -->
+<div class="slide" data-slide="2">
+  <div class="accent-line"></div>
+  <div class="fade-up part-label">Part 1 - Why Facebook</div>
+  <h1 class="fade-up slide-title">Facebook in 2026</h1>
+  <div class="fade-up slide-subtitle">The platform has fundamentally changed. It's no longer a social network - it's a discovery engine.</div>
+  <div class="fade-up stats">
+    <div class="stat"><div class="stat-val sand">3B</div><div class="stat-label">Monthly active users worldwide</div></div>
+    <div class="stat"><div class="stat-val sand">50%</div><div class="stat-label">Of your feed is now recommended content from people you don't follow</div></div>
+    <div class="stat"><div class="stat-val sand">22%</div><div class="stat-label">Higher engagement on Reels vs regular video</div></div>
+  </div>
+  <div class="fade-up" style="margin-top:32px;font-size:14px;color:var(--text2);max-width:700px;line-height:1.7">
+    Meta's shift from <strong style="color:var(--cream)">Social Graph</strong> (showing you friends' posts) to <strong style="color:var(--cream)">Discovery Engine</strong> (showing you content you care about) means new brands can reach people who have never heard of them. This is our window.
+  </div>
+</div>
+
+<!-- ===== SLIDE 3: OUR AUDIENCE LIVES HERE ===== -->
+<div class="slide" data-slide="3">
+  <div class="accent-line"></div>
+  <div class="fade-up part-label">Part 1 - Why Facebook</div>
+  <h1 class="fade-up slide-title">Our Audience Lives Here</h1>
+  <div class="fade-up slide-subtitle">Women 50+ are Facebook's most engaged demographic - and no one is speaking to them about scalp health.</div>
+  <div class="fade-up stats">
+    <div class="stat"><div class="stat-val">72%</div><div class="stat-label">of adults 50+ are on Facebook</div></div>
+    <div class="stat"><div class="stat-val">45</div><div class="stat-label">minutes per day - highest of any age group</div></div>
+    <div class="stat"><div class="stat-val">78%</div><div class="stat-label">have discovered products to buy on Facebook</div></div>
+  </div>
+  <div class="fade-up stats" style="margin-top:24px">
+    <div class="stat"><div class="stat-val sand">74%</div><div class="stat-label">of seniors actively participate in Facebook groups</div></div>
+    <div class="stat"><div class="stat-val sand">2.3x</div><div class="stat-label">higher sharing rate than Gen Z</div></div>
+    <div class="stat"><div class="stat-val sand">91%</div><div class="stat-label">check reviews before purchasing</div></div>
+  </div>
+  <div class="fade-up" style="margin-top:28px;font-size:12px;color:var(--text3)">Sources: Pew Research, DemandSage, Charle Agency, Creating Results Study - all verified</div>
+</div>
+
+<!-- ===== SLIDE 4: HOW PEOPLE DISCOVER ===== -->
+<div class="slide" data-slide="4">
+  <div class="fade-up part-label">Part 1 - Why Facebook</div>
+  <h1 class="fade-up slide-title">How People Discover on Facebook</h1>
+  <div class="fade-up slide-subtitle">Three distinct paths to reach new audiences - we're using all three.</div>
+  <div class="fade-up discovery-paths">
+    <div class="discovery-path">
+      <div class="path-name">Reels</div>
+      <div class="path-stat amber">50%</div>
+      <div class="path-desc">of time spent on platform. Primary way to reach non-followers. 15-30s videos get 45% higher completion rates.</div>
+      <div class="path-ourplay">Our play: Tina's AI talking-head Reels reach women who've never heard of AWARE</div>
+    </div>
+    <div class="discovery-path">
+      <div class="path-name">Groups</div>
+      <div class="path-stat green">1.8B</div>
+      <div class="path-desc">monthly group users. Highest organic reach of any format. Algorithm gives group posts major distribution advantage.</div>
+      <div class="path-ourplay">Our play: Tina contributes genuinely helpful advice in 27 groups where our audience already gathers</div>
+    </div>
+    <div class="discovery-path">
+      <div class="path-name">Feed</div>
+      <div class="path-stat blue">Saves</div>
+      <div class="path-desc">and shares are now the top ranking signals - more valuable than likes. Long-form comments trigger even more distribution.</div>
+      <div class="path-ourplay">Our play: Educational content that people save and share with friends who have scalp concerns</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 5: WHY THIS STRATEGY ===== -->
+<div class="slide" data-slide="5">
+  <div class="fade-up part-label">Part 1 - Why Facebook</div>
+  <h1 class="fade-up slide-title">Why This Strategy</h1>
+  <div class="fade-up split" style="margin-top:40px">
+    <div>
+      <div style="font-size:15px;color:var(--text2);line-height:1.8">
+        <p>Our audience discovers through <strong style="color:var(--cream)">Groups and Feed</strong>, not search or hashtags. They trust <strong style="color:var(--cream)">peer recommendations and professional credibility</strong> over brand marketing.</p>
+        <div class="divider"></div>
+        <p>Tina's 40 years behind the chair is our unfair advantage. She's not a brand spokesperson - she's a <strong style="color:var(--cream)">veteran colleague</strong> to salon pros and a <strong style="color:var(--cream)">trusted expert</strong> to consumers.</p>
+        <div class="divider"></div>
+        <p>Education-first matches exactly what this demographic wants. No one is doing clinical scalp care education on Facebook at the level we can.</p>
+      </div>
+    </div>
+    <div>
+      <div class="card card-accent">
+        <div class="card-title">The White Space</div>
+        <div class="card-body">
+          There is no dominant Facebook presence for scalp health targeting women 50+. No Group. No authority voice. No educator.
+          <br><br>
+          The competitors are either youth-focused TikTok brands or medical dermatology. Neither speaks to our audience the way Tina can.
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px;background:rgba(45,106,79,.05);border-color:rgba(45,106,79,.12)">
+        <div style="font-size:13px;color:var(--green);font-weight:500;margin-bottom:8px">Our Natural Advantages</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.7">
+          Tina's trichology credibility<br>
+          4R Protocol as educational framework<br>
+          Scalp Environment Report as lead magnet<br>
+          Salon-exclusive = premium signal<br>
+          96% B2B repurchase rate as proof
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 6: THREE PROPERTIES ===== -->
+<div class="slide" data-slide="6">
+  <div class="fade-up part-label">Part 2 - The Plan</div>
+  <h1 class="fade-up slide-title">Three Facebook Properties</h1>
+  <div class="fade-up slide-subtitle">Each property serves a distinct purpose. Together, they create a complete ecosystem.</div>
+  <div class="fade-up content-grid cols-3" style="margin-top:36px">
+    <div class="property-card page">
+      <div class="property-name">AWARE Hair Page</div>
+      <div class="property-purpose">Brand home base. Credibility anchor. Where ads point. Shopify Shop integration for direct sales.</div>
+      <div class="property-detail">
+        5-6 posts/week<br>
+        Mix of Reels, carousels, text<br>
+        Professional, clinical tone<br>
+        B2B content: 7-9 AM PT<br>
+        DTC content: 10 AM-12 PM PT
+      </div>
+    </div>
+    <div class="property-card profile">
+      <div class="property-name">Tina's Profile</div>
+      <div class="property-purpose">Human connection. The voice in Groups. Where trust is built one comment at a time.</div>
+      <div class="property-detail">
+        Professional Mode enabled<br>
+        Group participation hub<br>
+        Personal reflections + career stories<br>
+        Warm intros to AWARE (never pushy)<br>
+        Authentic peer engagement
+      </div>
+    </div>
+    <div class="property-card group">
+      <div class="property-name">"Scalp Health After 50"</div>
+      <div class="property-purpose">Our owned community. Long-term asset. Where Tina is the resident expert and members support each other.</div>
+      <div class="property-detail">
+        Launch: Week 3-4 (not Day 1)<br>
+        Gate: 50+ followers, 20 seed members<br>
+        Tina as primary admin<br>
+        Weekly rhythms + content<br>
+        Target: 500 members by 90 days
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 7: CONTENT STRATEGY ===== -->
+<div class="slide" data-slide="7">
+  <div class="fade-up part-label">Part 2 - The Plan</div>
+  <h1 class="fade-up slide-title">Content Strategy</h1>
+  <div class="fade-up split-wide" style="margin-top:36px">
+    <div>
+      <div style="font-size:15px;color:var(--text2);line-height:1.7;margin-bottom:24px">
+        Every piece of content is written in <strong style="color:var(--cream)">Tina's voice</strong>. David and Claude draft it. Tina reviews and approves. The audience sees only Tina.
+      </div>
+      <div class="pillar-bar">
+        <div class="pillar-seg" style="flex:4;background:var(--blue)"></div>
+        <div class="pillar-seg" style="flex:3;background:var(--sand)"></div>
+        <div class="pillar-seg" style="flex:2;background:var(--green)"></div>
+        <div class="pillar-seg" style="flex:1;background:var(--purple)"></div>
+      </div>
+      <div class="pillar-legend">
+        <div class="pillar-item"><div class="pillar-dot" style="background:var(--blue)"></div>Scalp Science 40%</div>
+        <div class="pillar-item"><div class="pillar-dot" style="background:var(--sand)"></div>Pro Education 30%</div>
+        <div class="pillar-item"><div class="pillar-dot" style="background:var(--green)"></div>Results + Stories 20%</div>
+        <div class="pillar-item"><div class="pillar-dot" style="background:var(--purple)"></div>Brand + Culture 10%</div>
+      </div>
+      <div style="margin-top:28px;font-size:13px;color:var(--text2);line-height:1.7">
+        <strong style="color:var(--cream)">Cadence:</strong> 5-6 posts/week on Page<br>
+        <strong style="color:var(--cream)">Formats:</strong> Reels (primary discovery), carousels (education), text posts (engagement)<br>
+        <strong style="color:var(--cream)">Hashtags:</strong> 5-10 per post, niche-specific (not trending)
+      </div>
+    </div>
+    <div>
+      <div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:14px;font-weight:600">First 5 Reels to Produce</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="card" style="padding:14px 18px">
+          <div class="card-tag tag-blue">Pro</div>
+          <div style="font-size:13px;color:var(--cream)">"The consultation question that changed my practice"</div>
+        </div>
+        <div class="card" style="padding:14px 18px">
+          <div class="card-tag tag-purple">Consumer</div>
+          <div style="font-size:13px;color:var(--cream)">"Your scalp is trying to tell you something"</div>
+        </div>
+        <div class="card" style="padding:14px 18px">
+          <div class="card-tag tag-blue">Pro</div>
+          <div style="font-size:13px;color:var(--cream)">"40 years and this is the biggest gap I see in salons"</div>
+        </div>
+        <div class="card" style="padding:14px 18px">
+          <div class="card-tag tag-purple">Consumer</div>
+          <div style="font-size:13px;color:var(--cream)">"The first thing I tell friends about their hair"</div>
+        </div>
+        <div class="card" style="padding:14px 18px">
+          <div class="card-tag tag-blue">Pro</div>
+          <div style="font-size:13px;color:var(--cream)">"The 4R approach I use with every client"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 8: GROUP ENGAGEMENT ===== -->
+<div class="slide" data-slide="8">
+  <div class="fade-up part-label">Part 2 - The Plan</div>
+  <h1 class="fade-up slide-title">Group Engagement</h1>
+  <div class="fade-up slide-subtitle">We join 27 groups where our audience already gathers. Help first. Mention brand almost never.</div>
+  <div class="fade-up split" style="margin-top:36px">
+    <div>
+      <div class="content-grid" style="grid-template-columns:1fr 1fr;gap:16px;margin-top:0">
+        <div class="card" style="padding:20px 24px">
+          <div style="font-family:'Playfair Display',serif;font-size:28px;color:var(--blue);font-weight:600">15</div>
+          <div style="font-size:13px;color:var(--cream);margin:4px 0">B2B Groups</div>
+          <div style="font-size:11px;color:var(--text3);line-height:1.5">Hairdressers Helping Hairdressers (140K), Behind the Chair (76K), Licensed Beauty Professionals (39K), and 12 more</div>
+        </div>
+        <div class="card" style="padding:20px 24px">
+          <div style="font-family:'Playfair Display',serif;font-size:28px;color:var(--purple);font-weight:600">12</div>
+          <div style="font-size:13px;color:var(--cream);margin:4px 0">DTC Groups</div>
+          <div style="font-size:11px;color:var(--text3);line-height:1.5">Menopause Support (100K), Women's Hair Loss (50K), Female Hair Loss (30K), and 9 more</div>
+        </div>
+      </div>
+      <div class="card card-accent" style="margin-top:16px">
+        <div class="card-title" style="font-size:16px">The 10:1 Rule</div>
+        <div class="card-body">Give genuinely helpful advice 10 times before any soft brand mention. Read group rules first. Never DM unsolicited. Never copy-paste responses. Be transparent about AWARE connection.</div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:14px;font-weight:600">Monitoring + Response Flow</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="card" style="padding:14px 18px;border-left:3px solid var(--amber)">
+          <div style="font-size:12px;color:var(--amber);font-weight:600;margin-bottom:4px">Devi AI scans 27 groups</div>
+          <div style="font-size:11px;color:var(--text3)">12 keywords: scalp, thinning, hair loss, itchy scalp, menopause hair, etc.</div>
+        </div>
+        <div style="text-align:center;color:var(--text3);font-size:14px">&#8595;</div>
+        <div class="card" style="padding:14px 18px;border-left:3px solid var(--blue)">
+          <div style="font-size:12px;color:var(--blue);font-weight:600;margin-bottom:4px">Alert sent to David via N8N webhook</div>
+          <div style="font-size:11px;color:var(--text3)">David assesses relevance, drafts response in Tina's voice</div>
+        </div>
+        <div style="text-align:center;color:var(--text3);font-size:14px">&#8595;</div>
+        <div class="card" style="padding:14px 18px;border-left:3px solid var(--green)">
+          <div style="font-size:12px;color:var(--green);font-weight:600;margin-bottom:4px">Tina reviews and posts</div>
+          <div style="font-size:11px;color:var(--text3)">10 ready-to-customize response templates (5 B2B, 5 DTC) in playbook</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 9: PAID ADS ===== -->
+<div class="slide" data-slide="9">
+  <div class="fade-up part-label">Part 2 - The Plan</div>
+  <h1 class="fade-up slide-title">Paid Ads Strategy</h1>
+  <div class="fade-up slide-subtitle">Three campaigns. Two funnels. Launches Week 3-4 after organic foundation is set.</div>
+  <div class="fade-up content-grid cols-3" style="margin-top:32px">
+    <div class="card" style="border-top:3px solid var(--blue)">
+      <div class="card-tag tag-blue">Campaign 1</div>
+      <div class="card-title" style="font-size:17px">B2B Authority</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:16px">
+        "After 40 years behind the chair..."<br><br>
+        Tina video ad targeting salon owners within 15-mile radius of LA, OC, San Diego.
+      </div>
+      <div style="display:flex;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border)">
+        <div><div style="font-size:11px;color:var(--text3)">Budget</div><div style="font-size:14px;color:var(--cream)">40%</div></div>
+        <div><div style="font-size:11px;color:var(--text3)">Target CPL</div><div style="font-size:14px;color:var(--blue);font-weight:600">&lt;$50</div></div>
+      </div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--purple)">
+      <div class="card-tag tag-purple">Campaign 2</div>
+      <div class="card-title" style="font-size:17px">DTC Problem/Solution</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:16px">
+        "Your scalp is trying to tell you something..."<br><br>
+        Tina video ad targeting women 55-70 nationally with scalp/thinning/menopause interests.
+      </div>
+      <div style="display:flex;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border)">
+        <div><div style="font-size:11px;color:var(--text3)">Budget</div><div style="font-size:14px;color:var(--cream)">60%</div></div>
+        <div><div style="font-size:11px;color:var(--text3)">Target CPL</div><div style="font-size:14px;color:var(--purple);font-weight:600">&lt;$8</div></div>
+      </div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--amber)">
+      <div class="card-tag tag-amber">Campaign 3</div>
+      <div class="card-title" style="font-size:17px">Retargeting</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:16px">
+        Testimonial + soft CTA. 15s video.<br><br>
+        Website visitors, Scalp Report starters, video viewers (50%+). Layered on Campaigns 1-2.
+      </div>
+      <div style="display:flex;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border)">
+        <div><div style="font-size:11px;color:var(--text3)">Budget</div><div style="font-size:14px;color:var(--cream)">From existing</div></div>
+        <div><div style="font-size:11px;color:var(--text3)">Starts</div><div style="font-size:14px;color:var(--amber);font-weight:600">Week 4+</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="fade-up content-grid cols-2" style="margin-top:20px">
+    <div class="card" style="padding:20px 24px">
+      <div style="font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:10px">B2B Funnel</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.8">Ad &#8594; Lead Form &#8594; David calls within 24 hrs &#8594; Consultation &#8594; Sample Kit &#8594; Wholesale Account</div>
+    </div>
+    <div class="card" style="padding:20px 24px">
+      <div style="font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--purple);font-weight:600;margin-bottom:10px">DTC Funnel</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.8">Ad &#8594; Scalp Environment Report &#8594; Assessment Results &#8594; Klaviyo Email Nurture (5 emails) &#8594; Purchase</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 10: 30/60/90 TARGETS ===== -->
+<div class="slide" data-slide="10">
+  <div class="fade-up part-label">Part 2 - The Plan</div>
+  <h1 class="fade-up slide-title">30/60/90 Day Targets</h1>
+  <div class="fade-up split" style="margin-top:36px">
+    <div>
+      <div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:14px;font-weight:600">Organic Growth</div>
+      <table class="data-table">
+        <tr><th>Metric</th><th>30 Day</th><th>60 Day</th><th>90 Day</th></tr>
+        <tr><td>Page Followers</td><td class="num">400</td><td class="num">700</td><td class="num">1,000</td></tr>
+        <tr><td>Engagement Rate</td><td class="num">&gt;3%</td><td class="num">&gt;3%</td><td class="num">&gt;3%</td></tr>
+        <tr><td>Group Members</td><td class="num">100</td><td class="num">250</td><td class="num">500</td></tr>
+        <tr><td>B2B Group Contributions</td><td class="num">20</td><td class="num">40</td><td class="num">60+</td></tr>
+        <tr><td>Avg Reel Views</td><td class="num">500</td><td class="num">1K</td><td class="num">2.5K</td></tr>
+      </table>
+    </div>
+    <div>
+      <div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:14px;font-weight:600">Business Outcomes</div>
+      <table class="data-table">
+        <tr><th>Metric</th><th>30 Day</th><th>60 Day</th><th>90 Day</th></tr>
+        <tr><td>New Salon Leads</td><td class="num">2-3</td><td class="num">4-6</td><td class="num">6-10</td></tr>
+        <tr><td>DTC Email Captures</td><td class="num">50</td><td class="num">100</td><td class="num">200</td></tr>
+        <tr><td>New Salon Partners</td><td class="num">1</td><td class="num">2-3</td><td class="num">3-8</td></tr>
+      </table>
+      <div class="card" style="margin-top:20px;padding:16px 20px;background:rgba(45,106,79,.05)">
+        <div style="font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:6px">Paid KPIs</div>
+        <div style="display:flex;gap:32px;font-size:13px;color:var(--text2)">
+          <div>B2B CPL: <strong style="color:var(--cream)">&lt;$50</strong></div>
+          <div>DTC CPL: <strong style="color:var(--cream)">&lt;$8</strong></div>
+          <div>CTR: <strong style="color:var(--cream)">&gt;1.5%</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 11: CONTENT MACHINE ===== -->
+<div class="slide" data-slide="11">
+  <div class="fade-up part-label">Part 3 - How It Works</div>
+  <h1 class="fade-up slide-title">The Content Machine</h1>
+  <div class="fade-up slide-subtitle">A 6-step pipeline that turns one video session into months of content.</div>
+  <div class="fade-up flow" style="margin-top:44px">
+    <div class="flow-step">
+      <div class="step-num">Step 1</div>
+      <div class="step-label">Script Writing</div>
+      <div class="step-detail">David + Claude draft in Tina's voice</div>
+    </div>
+    <div class="flow-arrow">&#8594;</div>
+    <div class="flow-step">
+      <div class="step-num">Step 2</div>
+      <div class="step-label">Tina Review</div>
+      <div class="step-detail">Approve, edit, or reject. 48-hr turnaround</div>
+    </div>
+    <div class="flow-arrow">&#8594;</div>
+    <div class="flow-step">
+      <div class="step-num">Step 3</div>
+      <div class="step-label">AI Video</div>
+      <div class="step-detail">HeyGen generates Tina talking head from script</div>
+    </div>
+    <div class="flow-arrow">&#8594;</div>
+    <div class="flow-step">
+      <div class="step-num">Step 4</div>
+      <div class="step-label">B-Roll Pairing</div>
+      <div class="step-detail">Max 5-8s talking head without a cut</div>
+    </div>
+    <div class="flow-arrow">&#8594;</div>
+    <div class="flow-step">
+      <div class="step-num">Step 5</div>
+      <div class="step-label">Caption + CTA</div>
+      <div class="step-detail">5-10 hashtags, platform-specific CTA</div>
+    </div>
+    <div class="flow-arrow">&#8594;</div>
+    <div class="flow-step">
+      <div class="step-num">Step 6</div>
+      <div class="step-label">Schedule</div>
+      <div class="step-detail">Meta Business Suite, optimized timing</div>
+    </div>
+  </div>
+  <div class="fade-up card" style="margin-top:36px;background:rgba(45,106,79,.05);border-color:rgba(45,106,79,.12);max-width:700px">
+    <div style="font-size:14px;color:var(--cream);line-height:1.7">
+      <strong style="color:var(--green)">The key insight:</strong> Production speed is limited by scripting and approval, not by filming availability. If we can write 20 scripts and Tina can review them, we can produce 20 videos.
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 12: AI VIDEO PRODUCTION ===== -->
+<div class="slide" data-slide="12">
+  <div class="fade-up part-label">Part 3 - How It Works</div>
+  <h1 class="fade-up slide-title">AI Video Production</h1>
+  <div class="fade-up slide-subtitle">One 60-90 minute filming session becomes months of professional video content.</div>
+  <div class="fade-up split" style="margin-top:40px">
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-tag tag-blue">HeyGen</div>
+        <div class="card-title" style="font-size:17px">Tina's Digital Twin</div>
+        <div class="card-body">
+          Upload reference footage. HeyGen creates a custom avatar that matches Tina's lip movements, expressions, and mannerisms to any new script. Output looks like Tina recorded that specific piece of content.
+        </div>
+        <div style="margin-top:12px;font-size:12px;color:var(--green)">~20 min training after footage upload</div>
+      </div>
+      <div class="card">
+        <div class="card-tag tag-amber">Kling AI 3.0</div>
+        <div class="card-title" style="font-size:17px">B-Roll Generation</div>
+        <div class="card-body">
+          Supplementary video clips: salon environments, product close-ups, scalp visuals, lifestyle footage. Director Memory feature maintains visual consistency across clips.
+        </div>
+        <div style="margin-top:12px;font-size:12px;color:var(--green)">30 min to 24 hr generation queue</div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:14px;font-weight:600">Reference Video Session</div>
+      <div class="card card-accent" style="margin-bottom:16px">
+        <div class="card-body" style="line-height:1.8">
+          <strong style="color:var(--cream)">Duration:</strong> 60-90 minutes<br>
+          <strong style="color:var(--cream)">Frequency:</strong> Quarterly (or as needed)<br>
+          <strong style="color:var(--cream)">What Tina does:</strong><br>
+          - Reads sample scripts naturally<br>
+          - Speaks on general topics<br>
+          - Multiple angles, lighting, outfits<br>
+          - Variety in expression and energy
+        </div>
+      </div>
+      <div class="card" style="background:rgba(45,106,79,.05);border-color:rgba(45,106,79,.12)">
+        <div style="font-size:13px;color:var(--cream);line-height:1.7">
+          <strong style="color:var(--green)">Important:</strong> Raw talking head footage is never used alone for more than 5-8 seconds. Every video pairs Tina speaking with relevant B-roll for a professional, natural feel.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 13: TOOL STACK ===== -->
+<div class="slide" data-slide="13">
+  <div class="fade-up part-label">Part 3 - How It Works</div>
+  <h1 class="fade-up slide-title" style="display:flex;align-items:baseline;gap:20px">Tool Stack <span style="font-family:'Playfair Display',serif;font-size:clamp(28px,3vw,42px);color:var(--green)">~$88/mo</span></h1>
+  <div class="fade-up tool-grid">
+    <div class="tool-card">
+      <div class="tool-name">Meta Business Suite</div>
+      <div class="tool-purpose">Scheduling, analytics, page management, ad account</div>
+      <div class="tool-cost">Free</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">Devi AI</div>
+      <div class="tool-purpose">Group keyword monitoring across 27 groups. Webhook alerts to N8N for automated draft pipeline</div>
+      <div class="tool-cost">$49/mo (after $1 trial)</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">HeyGen</div>
+      <div class="tool-purpose">Custom Tina avatar from reference footage. Industry-best lip sync for talking head videos</div>
+      <div class="tool-cost">$29/mo (Creator plan)</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">Kling AI 3.0</div>
+      <div class="tool-purpose">B-roll video generation. Director Memory for visual consistency across clips</div>
+      <div class="tool-cost">$10/mo (Standard)</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">Gemini Imagen</div>
+      <div class="tool-purpose">Static image generation for posts and graphics</div>
+      <div class="tool-cost">Already have</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">Claude Code</div>
+      <div class="tool-purpose">Script writing in Tina's voice, content drafting, response templates</div>
+      <div class="tool-cost">Already have</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">N8N</div>
+      <div class="tool-purpose">Automation: Devi webhook &#8594; Claude draft &#8594; review queue</div>
+      <div class="tool-cost">Already running</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">Ideogram</div>
+      <div class="tool-purpose">Text-heavy social graphics, quote cards, educational infographics</div>
+      <div class="tool-cost">Free</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 14: ROLES & TIME ===== -->
+<div class="slide" data-slide="14">
+  <div class="fade-up part-label">Part 3 - How It Works</div>
+  <h1 class="fade-up slide-title">Roles and Time Investment</h1>
+  <div class="fade-up split" style="margin-top:40px">
+    <div class="role-section">
+      <div class="role-name">David</div>
+      <div class="role-hours">6-9 hrs/week</div>
+      <div class="role-tasks">
+        <div class="role-task"><span>Content scripting (with Claude)</span><span>2-3 hrs</span></div>
+        <div class="role-task"><span>Devi AI monitoring + response drafts</span><span>1-2 hrs</span></div>
+        <div class="role-task"><span>Scheduling + posting</span><span>0.5 hr</span></div>
+        <div class="role-task"><span>Community monitoring</span><span>0.5 hr</span></div>
+        <div class="role-task"><span>Paid ads management</span><span>1-2 hrs</span></div>
+        <div class="role-task"><span>Weekly metrics + reporting</span><span>1 hr</span></div>
+      </div>
+    </div>
+    <div class="role-section">
+      <div class="role-name">Tina</div>
+      <div class="role-hours">~1 hr/week</div>
+      <div class="role-tasks">
+        <div class="role-task"><span>Content review + approval</span><span>30-45 min</span></div>
+        <div class="role-task"><span>Group comment review</span><span>10-15 min</span></div>
+      </div>
+      <div class="card" style="margin-top:20px;background:rgba(45,106,79,.05);border-color:rgba(45,106,79,.12);padding:20px">
+        <div style="font-size:13px;color:var(--green);font-weight:500;margin-bottom:6px">Plus Quarterly</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.6">Reference video session: 60-90 minutes<br>One session per quarter, scheduled at Tina's convenience</div>
+      </div>
+      <div style="margin-top:20px;font-size:14px;color:var(--text2);line-height:1.7">
+        <strong style="color:var(--cream)">The key:</strong> David handles all operational work. Tina's only job is to review content for voice accuracy and post approved group comments.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 15: WEEK 1-4 ROADMAP ===== -->
+<div class="slide" data-slide="15">
+  <div class="fade-up part-label">Part 3 - How It Works</div>
+  <h1 class="fade-up slide-title">Week 1-4 Roadmap</h1>
+  <div class="fade-up timeline-row">
+    <div class="week-block">
+      <div class="week-num">1</div>
+      <div class="week-title">Foundation</div>
+      <div class="week-items">
+        <div class="week-item highlight">Page fully optimized</div>
+        <div class="week-item highlight">All 4 tools active</div>
+        <div class="week-item">Join 5 B2B groups</div>
+        <div class="week-item">3 Page posts published</div>
+        <div class="week-item">Devi AI: 12 keywords configured</div>
+        <div class="week-item">Meta Business verification submitted</div>
+        <div class="week-item highlight">Tina video session date confirmed</div>
+      </div>
+    </div>
+    <div class="week-block">
+      <div class="week-num">2</div>
+      <div class="week-title">Content Ramp</div>
+      <div class="week-items">
+        <div class="week-item">Join 4-5 DTC groups</div>
+        <div class="week-item">Full posting cadence (5-6/week)</div>
+        <div class="week-item">8-10 group comments total</div>
+        <div class="week-item highlight">Tina video session (if ready)</div>
+        <div class="week-item">Upload footage to HeyGen</div>
+        <div class="week-item">Test Ideogram graphics</div>
+        <div class="week-item">Devi AI trial evaluation (Day 9)</div>
+      </div>
+    </div>
+    <div class="week-block">
+      <div class="week-num">3</div>
+      <div class="week-title">Full Cadence</div>
+      <div class="week-items">
+        <div class="week-item highlight">First AI Reel produced</div>
+        <div class="week-item">Meta Ads Manager setup</div>
+        <div class="week-item">Pixel + CAPI installed</div>
+        <div class="week-item">Custom Audiences created</div>
+        <div class="week-item">Seed member list for group</div>
+        <div class="week-item">15+ group comments total</div>
+      </div>
+    </div>
+    <div class="week-block">
+      <div class="week-num">4</div>
+      <div class="week-title">Paid Launch</div>
+      <div class="week-items">
+        <div class="week-item highlight">First 2-4 ad variations running</div>
+        <div class="week-item">Owned group launch assessment</div>
+        <div class="week-item">30-day metrics compiled</div>
+        <div class="week-item">Month 2 planning</div>
+        <div class="week-item">Test 12 creative variations</div>
+        <div class="week-item">$50 min spend per variation</div>
+      </div>
+    </div>
+  </div>
+  <div class="fade-up" style="margin-top:24px;display:flex;gap:24px;flex-wrap:wrap">
+    <div style="font-size:12px;padding:8px 16px;border-radius:6px;background:rgba(176,80,80,.08);border:1px solid rgba(176,80,80,.15);color:var(--red)">
+      <strong>Critical:</strong> If Tina's video session is delayed, Weeks 1-2 proceed with text + static images. Video catches up Weeks 3-4.
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 16: OWNED GROUP ===== -->
+<div class="slide" data-slide="16">
+  <div class="fade-up part-label">Part 4 - Looking Ahead</div>
+  <h1 class="fade-up slide-title">"Scalp Health After 50"</h1>
+  <div class="fade-up slide-subtitle">Our owned community. The highest-ROI organic play long-term. We launch it when we're ready, not before.</div>
+  <div class="fade-up split" style="margin-top:40px">
+    <div>
+      <div style="font-size:15px;color:var(--text2);line-height:1.8;margin-bottom:28px">
+        Research shows <strong style="color:var(--cream)">no dominant Facebook Group exists</strong> for women 50+ focused on scalp and hair health. This is white space. Tina serves as the resident expert. The group becomes a long-term asset that compounds over time.
+      </div>
+      <div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:14px;font-weight:600">Launch Criteria (All Must Be Met)</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text2)">
+          <div style="width:20px;height:20px;border-radius:4px;border:1.5px solid var(--border);flex-shrink:0"></div>
+          50+ Page followers first
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text2)">
+          <div style="width:20px;height:20px;border-radius:4px;border:1.5px solid var(--border);flex-shrink:0"></div>
+          20 seed members committed
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text2)">
+          <div style="width:20px;height:20px;border-radius:4px;border:1.5px solid var(--border);flex-shrink:0"></div>
+          Tina has capacity to engage
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card card-accent" style="margin-bottom:16px">
+        <div class="card-title" style="font-size:17px">The Vision</div>
+        <div class="card-body" style="line-height:1.7">
+          A community where women 50+ discuss scalp health, share what works, and get expert guidance from a professional with 40 years of experience.
+          <br><br>
+          Not a brand page. Not a sales channel. A genuine community where Tina happens to be the expert.
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:8px">Growth Targets</div>
+        <div style="display:flex;gap:20px">
+          <div><div style="font-family:'Playfair Display',serif;font-size:24px;color:var(--cream)">100</div><div style="font-size:11px;color:var(--text3)">30 days</div></div>
+          <div><div style="font-family:'Playfair Display',serif;font-size:24px;color:var(--cream)">250</div><div style="font-size:11px;color:var(--text3)">60 days</div></div>
+          <div><div style="font-family:'Playfair Display',serif;font-size:24px;color:var(--cream)">500</div><div style="font-size:11px;color:var(--text3)">90 days</div></div>
+          <div><div style="font-family:'Playfair Display',serif;font-size:24px;color:var(--green)">2,000</div><div style="font-size:11px;color:var(--text3)">End of 2026</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 17: NEXT STEPS ===== -->
+<div class="slide" data-slide="17">
+  <div class="fade-up part-label">Part 4 - Looking Ahead</div>
+  <h1 class="fade-up slide-title">What Happens Next</h1>
+  <div class="fade-up content-grid cols-3" style="margin-top:40px">
+    <div class="card card-accent" style="border-left-color:var(--red)">
+      <div class="card-tag tag-amber">This Week</div>
+      <div class="card-title" style="font-size:17px">Tina</div>
+      <div class="card-body" style="line-height:1.8">
+        Schedule reference video session (60-90 min, at your convenience)
+        <br><br>
+        Review and approve Tina's Profile bio text
+        <br><br>
+        Confirm comfort level with Facebook Professional Mode
+      </div>
+    </div>
+    <div class="card card-accent" style="border-left-color:var(--blue)">
+      <div class="card-tag tag-blue">This Week</div>
+      <div class="card-title" style="font-size:17px">David</div>
+      <div class="card-body" style="line-height:1.8">
+        Page optimization (Day 1)
+        <br><br>
+        Tool signups: Meta Business Suite, Devi AI, HeyGen, Kling AI
+        <br><br>
+        Join first 5 B2B groups
+        <br><br>
+        Draft first 3-4 posts in Tina's voice
+      </div>
+    </div>
+    <div class="card card-accent" style="border-left-color:var(--green)">
+      <div class="card-tag tag-green">This Month</div>
+      <div class="card-title" style="font-size:17px">Together</div>
+      <div class="card-body" style="line-height:1.8">
+        Full posting cadence by Week 2
+        <br><br>
+        First AI Reel by Week 3
+        <br><br>
+        Paid ads live by Week 3-4
+        <br><br>
+        30-day metrics review
+      </div>
+    </div>
+  </div>
+  <div class="fade-up cta-card" style="margin-top:32px;padding:28px 40px">
+    <div style="font-size:15px;color:var(--cream);line-height:1.7;max-width:600px;margin:0 auto">
+      The full playbook with scripts, templates, group lists, ad copy, and day-by-day instructions is written and ready. The only thing we're waiting on is <strong style="color:var(--green)">Tina's video session</strong> - and we can start organic content immediately without it.
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 18: QUESTIONS ===== -->
+<div class="slide questions-slide" data-slide="18">
+  <div class="fade-up title-brand">AWARE Hair</div>
+  <div class="fade-up title-divider"></div>
+  <h1 class="fade-up slide-title" style="font-size:clamp(48px,6vw,80px)">Questions?</h1>
+  <div class="fade-up" style="margin-top:32px;font-size:15px;color:var(--text2);line-height:1.8">
+    Full playbook and interactive dashboard available for reference
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+document.getElementById('totalSlides').textContent = total;
+
+function goTo(n) {
+  if (n < 0 || n >= total || n === current) return;
+  const prev = slides[current];
+  const next = slides[n];
+
+  // Reset fade-up animations on next slide
+  next.querySelectorAll('.fade-up').forEach(el => {
+    el.style.animation = 'none';
+    el.offsetHeight; // reflow
+    el.style.animation = '';
+  });
+
+  prev.classList.remove('active');
+  prev.classList.add('exiting');
+  setTimeout(() => prev.classList.remove('exiting'), 600);
+
+  next.classList.add('active');
+  current = n;
+
+  document.getElementById('currentSlide').textContent = current + 1;
+  document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+}
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+    e.preventDefault();
+    goTo(current + 1);
+  }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    goTo(current - 1);
+  }
+  if (e.key === 'Home') goTo(0);
+  if (e.key === 'End') goTo(total - 1);
+});
+
+// Click navigation (left third = back, right two thirds = forward)
+document.addEventListener('click', e => {
+  // Don't navigate if clicking interactive elements
+  if (e.target.closest('a, button, input, .check-box')) return;
+  const x = e.clientX / window.innerWidth;
+  if (x < 0.33) goTo(current - 1);
+  else goTo(current + 1);
+});
+
+// Touch support
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', e => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) goTo(current + 1);
+    else goTo(current - 1);
+  }
+});
+
+// Init progress
+document.getElementById('progress').style.width = (1 / total * 100) + '%';
+</script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

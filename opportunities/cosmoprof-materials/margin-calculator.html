@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARE Hair - Margin Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2D4739;
+      --forest-light: #3D5A4A;
+      --sage: #7A8F7D;
+      --cream: #F8F6F1;
+      --sand: #E8E4DC;
+      --charcoal: #2C2C2C;
+      --warm-gray: #6B6B6B;
+      --gold: #B8956E;
+      --gold-light: #D4B896;
+    }
+
+    @page {
+      size: letter;
+      margin: 0.4in;
+    }
+
+    @media print {
+      html, body {
+        width: 8.5in;
+        height: 11in;
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .page {
+        width: 100%;
+        height: 100%;
+        padding: 0.4in;
+        page-break-after: avoid;
+        page-break-inside: avoid;
+      }
+      .no-print { display: none !important; }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--charcoal);
+      line-height: 1.4;
+      font-size: 10px;
+    }
+
+    .page {
+      max-width: 8.5in;
+      height: 11in;
+      margin: 0 auto;
+      background: white;
+      padding: 0.4in;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--sand);
+      margin-bottom: 16px;
+    }
+
+    .logo {
+      height: 32px;
+      width: auto;
+    }
+
+    .document-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--charcoal);
+      text-align: right;
+    }
+
+    .document-subtitle {
+      font-size: 8px;
+      color: var(--warm-gray);
+      letter-spacing: 0.05em;
+    }
+
+    /* Hero Statement */
+    .hero {
+      text-align: center;
+      padding: 14px 30px;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--forest) 0%, var(--forest-light) 100%);
+      color: white;
+    }
+
+    .hero h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+
+    .hero p {
+      font-size: 9px;
+      opacity: 0.85;
+    }
+
+    /* Example Callout */
+    .example-callout {
+      background: var(--sand);
+      padding: 6px 12px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .example-callout span {
+      font-size: 8px;
+      color: var(--warm-gray);
+    }
+
+    .example-callout strong {
+      color: var(--charcoal);
+    }
+
+    /* Flow Diagram */
+    .flow-section {
+      margin-bottom: 18px;
+    }
+
+    .section-label {
+      font-size: 7px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      margin-bottom: 8px;
+    }
+
+    .flow-diagram {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      background: var(--cream);
+      padding: 14px;
+      position: relative;
+    }
+
+    .flow-step {
+      flex: 1;
+      text-align: center;
+      padding: 12px 10px;
+      position: relative;
+      background: white;
+      border: 1px solid var(--sand);
+    }
+
+    .flow-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-left: 10px solid var(--forest);
+      z-index: 2;
+    }
+
+    .flow-step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      right: -6px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px;
+      height: 2px;
+      background: var(--forest);
+      z-index: 1;
+    }
+
+    .step-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--forest);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 8px;
+      color: white;
+      font-size: 12px;
+    }
+
+    .step-label {
+      font-size: 7px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      margin-bottom: 3px;
+    }
+
+    .step-entity {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--charcoal);
+      margin-bottom: 6px;
+    }
+
+    .step-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--forest);
+    }
+
+    .step-percent {
+      font-size: 9px;
+      color: var(--sage);
+      margin-top: 2px;
+    }
+
+    .step-margin {
+      display: inline-block;
+      background: var(--gold-light);
+      color: var(--charcoal);
+      font-size: 8px;
+      font-weight: 600;
+      padding: 2px 6px;
+      margin-top: 6px;
+    }
+
+    /* Comparison Table */
+    .comparison-section {
+      margin-bottom: 18px;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .comparison-table th {
+      font-size: 7px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px 6px;
+      text-align: center;
+      background: var(--cream);
+      border-bottom: 2px solid var(--forest);
+    }
+
+    .comparison-table th:first-child {
+      text-align: left;
+    }
+
+    .comparison-table td {
+      padding: 8px 6px;
+      border-bottom: 1px solid var(--sand);
+      text-align: center;
+      font-size: 10px;
+    }
+
+    .comparison-table td:first-child {
+      text-align: left;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .comparison-table .highlight-col {
+      background: rgba(45, 71, 57, 0.05);
+    }
+
+    .tier-badge {
+      display: inline-block;
+      font-size: 6px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 4px;
+      background: var(--forest);
+      color: white;
+      margin-left: 3px;
+    }
+
+    /* Annual Projection */
+    .projection-section {
+      background: var(--forest);
+      color: white;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .projection-header {
+      font-size: 7px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 10px;
+    }
+
+    .projection-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .projection-item {
+      text-align: center;
+    }
+
+    .projection-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .projection-label {
+      font-size: 8px;
+      opacity: 0.7;
+      margin-top: 3px;
+    }
+
+    /* Two Column */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .info-box {
+      background: var(--cream);
+      padding: 12px;
+    }
+
+    .info-box h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--forest);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--sand);
+    }
+
+    .info-list {
+      list-style: none;
+    }
+
+    .info-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      font-size: 9px;
+      border-bottom: 1px dotted var(--sand);
+    }
+
+    .info-list li:last-child {
+      border-bottom: none;
+    }
+
+    .info-list .label {
+      color: var(--warm-gray);
+    }
+
+    .info-list .value {
+      font-weight: 500;
+      color: var(--charcoal);
+    }
+
+    /* Key Insight */
+    .insight-box {
+      border-left: 3px solid var(--gold);
+      padding: 10px 14px;
+      background: rgba(184, 149, 110, 0.1);
+      margin-bottom: 14px;
+    }
+
+    .insight-box p {
+      font-size: 10px;
+      color: var(--charcoal);
+      line-height: 1.5;
+    }
+
+    .insight-box strong {
+      color: var(--forest);
+    }
+
+    /* Footer */
+    .footer {
+      position: absolute;
+      bottom: 0.4in;
+      left: 0.4in;
+      right: 0.4in;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 10px;
+      border-top: 1px solid var(--sand);
+      font-size: 8px;
+      color: var(--warm-gray);
+    }
+
+    .footer strong {
+      color: var(--charcoal);
+    }
+
+    /* Print Button */
+    .print-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--forest);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .print-btn:hover {
+      background: var(--forest-light);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Header -->
+    <header class="header">
+      <img src="aware-logo.png" alt="AWARE Hair" class="logo">
+      <div>
+        <div class="document-title">Margin Calculator</div>
+        <div class="document-subtitle">Distribution Economics Overview</div>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <div class="hero">
+      <h2>Protected Margins at Every Level</h2>
+      <p>Salon-exclusive positioning with MAP pricing ensures healthy margins throughout the distribution chain</p>
+    </div>
+
+    <!-- Example Callout -->
+    <div class="example-callout">
+      <span>Example Product:</span>
+      <strong>9-1 Professional Shampoo (300ml) - $55 Retail</strong>
+    </div>
+
+    <!-- Flow Diagram -->
+    <div class="flow-section">
+      <div class="section-label">Pricing Flow - Standard Tier</div>
+      <div class="flow-diagram">
+        <div class="flow-step">
+          <div class="step-icon">1</div>
+          <div class="step-label">You Pay</div>
+          <div class="step-entity">Distributor Cost</div>
+          <div class="step-price">$22.00</div>
+          <div class="step-percent">40% of retail</div>
+        </div>
+        <div class="flow-step">
+          <div class="step-icon">2</div>
+          <div class="step-label">Salon Pays</div>
+          <div class="step-entity">Wholesale Price</div>
+          <div class="step-price">$27.50</div>
+          <div class="step-percent">50% of retail</div>
+          <div class="step-margin">Your Margin: $5.50 (20%)</div>
+        </div>
+        <div class="flow-step">
+          <div class="step-icon">3</div>
+          <div class="step-label">Consumer Pays</div>
+          <div class="step-entity">Retail Price (MAP)</div>
+          <div class="step-price">$55.00</div>
+          <div class="step-percent">100% MSRP</div>
+          <div class="step-margin">Salon Margin: $27.50 (50%)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparison Table -->
+    <div class="comparison-section">
+      <div class="section-label">Distributor Margin by Tier</div>
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Retail</th>
+            <th>Standard (40%)</th>
+            <th class="highlight-col">Preferred (38%)<span class="tier-badge">$25K+</span></th>
+            <th class="highlight-col">Exclusive (35%)<span class="tier-badge">$50K+</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Shampoo</td>
+            <td>$55.00</td>
+            <td>$22.00 <em style="color: var(--sage); font-size: 8px;">(20% margin)</em></td>
+            <td class="highlight-col">$20.90 <em style="color: var(--sage); font-size: 8px;">(24% margin)</em></td>
+            <td class="highlight-col">$19.25 <em style="color: var(--sage); font-size: 8px;">(30% margin)</em></td>
+          </tr>
+          <tr>
+            <td>Conditioner</td>
+            <td>$55.00</td>
+            <td>$22.00 <em style="color: var(--sage); font-size: 8px;">(20% margin)</em></td>
+            <td class="highlight-col">$20.90 <em style="color: var(--sage); font-size: 8px;">(24% margin)</em></td>
+            <td class="highlight-col">$19.25 <em style="color: var(--sage); font-size: 8px;">(30% margin)</em></td>
+          </tr>
+          <tr>
+            <td>Leave-in Treatment</td>
+            <td>$60.00</td>
+            <td>$24.00 <em style="color: var(--sage); font-size: 8px;">(20% margin)</em></td>
+            <td class="highlight-col">$22.80 <em style="color: var(--sage); font-size: 8px;">(24% margin)</em></td>
+            <td class="highlight-col">$21.00 <em style="color: var(--sage); font-size: 8px;">(30% margin)</em></td>
+          </tr>
+          <tr>
+            <td>Discovery Kit</td>
+            <td>$75.00</td>
+            <td>$30.00 <em style="color: var(--sage); font-size: 8px;">(20% margin)</em></td>
+            <td class="highlight-col">$28.50 <em style="color: var(--sage); font-size: 8px;">(24% margin)</em></td>
+            <td class="highlight-col">$26.25 <em style="color: var(--sage); font-size: 8px;">(30% margin)</em></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Annual Projection -->
+    <div class="projection-section">
+      <div class="projection-header">Annual Projection - 50 Salon Accounts (Exclusive Tier)</div>
+      <div class="projection-grid">
+        <div class="projection-item">
+          <div class="projection-value">50</div>
+          <div class="projection-label">Salon Accounts</div>
+        </div>
+        <div class="projection-item">
+          <div class="projection-value">$1,200</div>
+          <div class="projection-label">Avg Annual/Salon*</div>
+        </div>
+        <div class="projection-item">
+          <div class="projection-value">$60K</div>
+          <div class="projection-label">Annual Volume</div>
+        </div>
+        <div class="projection-item">
+          <div class="projection-value">$18K</div>
+          <div class="projection-label">Your Gross Profit</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two Column Info -->
+    <div class="two-col">
+      <div class="info-box">
+        <h3>Why Salons Reorder</h3>
+        <ul class="info-list">
+          <li>
+            <span class="label">B2B Repurchase Rate</span>
+            <span class="value">96%</span>
+          </li>
+          <li>
+            <span class="label">Avg Reorder Frequency</span>
+            <span class="value">Every 6-8 weeks</span>
+          </li>
+          <li>
+            <span class="label">Retail Revenue Lift</span>
+            <span class="value">+453% (case study)</span>
+          </li>
+          <li>
+            <span class="label">Client Demand</span>
+            <span class="value">18M+ organic views</span>
+          </li>
+        </ul>
+      </div>
+      <div class="info-box">
+        <h3>Margin Protection</h3>
+        <ul class="info-list">
+          <li>
+            <span class="label">MAP Enforced</span>
+            <span class="value">Yes - $55/$60/$75</span>
+          </li>
+          <li>
+            <span class="label">Salon-Exclusive</span>
+            <span class="value">No Amazon/Sephora</span>
+          </li>
+          <li>
+            <span class="label">Territory Options</span>
+            <span class="value">Available</span>
+          </li>
+          <li>
+            <span class="label">Online Undercutting</span>
+            <span class="value">None - controlled</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Key Insight -->
+    <div class="insight-box">
+      <p><strong>The AWARE Advantage:</strong> Our 96% B2B repurchase rate means products move off shelves consistently. Salon-exclusive positioning and enforced MAP pricing protect your margins - no race to the bottom. *Based on average salon partner annual purchases across 35 current accounts.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div><strong>AWARE Hair</strong> | sales@awarehair.com | awarehair.com</div>
+      <div>Cosmoprof Miami 2026 | January 27-29</div>
+    </footer>
+  </div>
+
+  <button class="print-btn no-print" onclick="window.print()">Print / Save PDF</button>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

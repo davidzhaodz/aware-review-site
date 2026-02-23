@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Your Personalized Scalp Environment Report</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;">
+
+  <!-- Preheader Text (hidden but shows in inbox preview) -->
+  <div style="display: none; max-height: 0; overflow: hidden; opacity: 0;">
+    Your personalized scalp health analysis for ZIP {{ person|lookup:'zip_code' }} is ready, {{ person|lookup:'first_name'|default:'there' }}
+  </div>
+
+  <!-- Full Width Background Table -->
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f5f5f5;">
+    <tr>
+      <td align="center" style="padding: 30px 15px;">
+
+        <!-- Main Email Container (600px max-width) -->
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px; width: 100%; background-color: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+
+          <!-- ============================================ -->
+          <!-- HEADER -->
+          <!-- ============================================ -->
+          <tr>
+            <td align="center" style="padding: 40px 30px 35px; background-color: #F4EFE9; border-bottom: 1px solid #e5e5e5;">
+              <!-- Logo/Brand -->
+              <div style="font-size: 10px; letter-spacing: 2px; color: #999; text-transform: uppercase; margin-bottom: 20px;">
+                AWARE HAIR
+              </div>
+
+              <!-- Headline -->
+              <h1 style="margin: 0 0 12px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 32px; font-weight: 300; color: #1a1a1a; line-height: 1.2;">
+                Your Personalized<br/>Scalp Environment Report
+              </h1>
+
+              <!-- Subheadline -->
+              <p style="margin: 0; font-size: 14px; color: #666; line-height: 1.6;">
+                Hi {{ person|lookup:'first_name'|default:'there' }}, here's your analysis for ZIP {{ person|lookup:'zip_code' }}
+              </p>
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- OVERALL RISK BADGE (HERO) -->
+          <!-- ============================================ -->
+          <tr>
+            <td align="center" style="padding: 45px 30px; background-color: {{ person|lookup:'risk_color'|default:'#4CAF50' }};">
+              <!-- Risk Emoji -->
+              <div style="font-size: 56px; margin-bottom: 15px; line-height: 1;">
+                {% if person|lookup:'risk_level' == 'LOW' %}🟢{% elif person|lookup:'risk_level' == 'MODERATE' %}🟡{% else %}🔴{% endif %}
+              </div>
+
+              <!-- Risk Badge Text -->
+              <h2 style="margin: 0 0 12px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 26px; font-weight: 400; color: #ffffff; line-height: 1.3;">
+                {{ person|lookup:'risk_badge'|default:'Favorable Conditions' }}
+              </h2>
+
+              <!-- Score -->
+              <p style="margin: 0; font-size: 18px; color: #ffffff; opacity: 0.95;">
+                Overall Risk Score: <strong>{{ person|lookup:'total_score'|default:'0' }}/100</strong>
+              </p>
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- ENVIRONMENTAL CONTEXT (AI) -->
+          <!-- ============================================ -->
+          <tr>
+            <td style="padding: 40px 30px; background-color: #ffffff;">
+              <h3 style="margin: 0 0 18px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 22px; font-weight: 400; color: #1a1a1a; line-height: 1.3;">
+                Your Environment
+              </h3>
+
+              <div style="font-size: 15px; line-height: 1.8; color: #333;">
+                {{ person|lookup:'environmental_context'|default:'Your local environmental factors have been analyzed.'|linebreaks }}
+              </div>
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- PRIMARY CONCERNS (AI - MOST IMPORTANT) -->
+          <!-- ============================================ -->
+          <tr>
+            <td style="padding: 40px 30px; background-color: #fafafa;">
+              <h3 style="margin: 0 0 18px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 22px; font-weight: 400; color: #1a1a1a; line-height: 1.3;">
+                Key Concerns for Your Hair
+              </h3>
+
+              <div style="font-size: 15px; line-height: 1.8; color: #333;">
+                {{ person|lookup:'primary_concerns'|default:'Based on your profile, we have identified several key concerns.'|linebreaks }}
+              </div>
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- SEASONAL CONSIDERATIONS (AI) -->
+          <!-- ============================================ -->
+          <tr>
+            <td style="padding: 40px 30px; background-color: #ffffff;">
+              <h3 style="margin: 0 0 18px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 22px; font-weight: 400; color: #1a1a1a; line-height: 1.3;">
+                Seasonal Factors
+              </h3>
+
+              <div style="font-size: 15px; line-height: 1.8; color: #333;">
+                {{ person|lookup:'seasonal_considerations'|default:'Current seasonal conditions affect your scalp health.'|linebreaks }}
+              </div>
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- YOUR PERSONALIZED ROUTINE (AI - ACTIONABLE) -->
+          <!-- DARK SECTION - STANDS OUT -->
+          <!-- ============================================ -->
+          <tr>
+            <td style="padding: 45px 35px; background-color: #1a1a1a;">
+
+              <!-- Section Header -->
+              <div align="center" style="margin-bottom: 35px;">
+                <h3 style="margin: 0 0 8px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 28px; font-weight: 400; color: #F4EFE9; line-height: 1.2;">
+                  Your AWARE Hair Routine
+                </h3>
+                <p style="margin: 0; font-size: 13px; color: rgba(244, 239, 233, 0.7); letter-spacing: 0.5px;">
+                  Personalized for your conditions
+                </p>
+              </div>
+
+              <!-- Shampoo Recommendation -->
+              {% if person|lookup:'shampoo_recommendation' %}
+              <div style="margin-bottom: 30px; padding-bottom: 30px; border-bottom: 1px solid rgba(244, 239, 233, 0.15);">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                  <tr>
+                    <td width="40" valign="top" style="padding-right: 15px;">
+                      <div style="font-size: 28px; line-height: 1;">🧴</div>
+                    </td>
+                    <td valign="top">
+                      <h4 style="margin: 0 0 10px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #F4EFE9; font-weight: 500;">
+                        Shampoo
+                      </h4>
+                      <div style="font-size: 14px; line-height: 1.7; color: rgba(244, 239, 233, 0.9);">
+                        {{ person|lookup:'shampoo_recommendation'|linebreaks }}
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              {% endif %}
+
+              <!-- Conditioner Recommendation -->
+              {% if person|lookup:'conditioner_recommendation' %}
+              <div style="margin-bottom: 30px; padding-bottom: 30px; border-bottom: 1px solid rgba(244, 239, 233, 0.15);">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                  <tr>
+                    <td width="40" valign="top" style="padding-right: 15px;">
+                      <div style="font-size: 28px; line-height: 1;">💧</div>
+                    </td>
+                    <td valign="top">
+                      <h4 style="margin: 0 0 10px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #F4EFE9; font-weight: 500;">
+                        Conditioner
+                      </h4>
+                      <div style="font-size: 14px; line-height: 1.7; color: rgba(244, 239, 233, 0.9);">
+                        {{ person|lookup:'conditioner_recommendation'|linebreaks }}
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              {% endif %}
+
+              <!-- Leave-In Recommendation -->
+              {% if person|lookup:'leavein_recommendation' %}
+              <div style="margin-bottom: 35px;">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                  <tr>
+                    <td width="40" valign="top" style="padding-right: 15px;">
+                      <div style="font-size: 28px; line-height: 1;">✨</div>
+                    </td>
+                    <td valign="top">
+                      <h4 style="margin: 0 0 10px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #F4EFE9; font-weight: 500;">
+                        Leave-In Styling Conditioner
+                      </h4>
+                      <div style="font-size: 14px; line-height: 1.7; color: rgba(244, 239, 233, 0.9);">
+                        {{ person|lookup:'leavein_recommendation'|linebreaks }}
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              {% endif %}
+
+              <!-- Shop CTA Button -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td align="center" style="padding-top: 20px;">
+                    <a href="https://www.awarehair.com/collections/all?utm_source=klaviyo&utm_medium=email&utm_campaign=scalp_report&utm_content={{ person|lookup:'zip_code' }}"
+                       style="display: inline-block; padding: 18px 45px; background-color: #F4EFE9; color: #1a1a1a; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; border-radius: 3px;">
+                      Shop Your Routine
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- DIVIDER -->
+          <!-- ============================================ -->
+          <tr>
+            <td style="height: 2px; background-color: #e5e5e5;"></td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- ENVIRONMENTAL DATA DASHBOARD -->
+          <!-- Supporting Detail Below the Fold -->
+          <!-- ============================================ -->
+          <tr>
+            <td style="padding: 45px 30px; background-color: #F4EFE9;">
+
+              <!-- Section Header -->
+              <div align="center" style="margin-bottom: 30px;">
+                <h3 style="margin: 0 0 8px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 24px; font-weight: 400; color: #1a1a1a; line-height: 1.2;">
+                  Your Environmental Factors
+                </h3>
+                <p style="margin: 0; font-size: 13px; color: #666;">
+                  Detailed breakdown of conditions affecting your scalp
+                </p>
+              </div>
+
+              <!-- Data Cards Table -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #ffffff; border-radius: 4px; overflow: hidden;">
+
+                <!-- UV Index -->
+                <tr>
+                  <td style="padding: 20px; border-bottom: 1px solid #f0f0f0;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tr>
+                        <td width="50" valign="top" style="padding-right: 15px;">
+                          <div style="font-size: 32px; line-height: 1;">☀️</div>
+                        </td>
+                        <td valign="top">
+                          <!-- Label -->
+                          <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #999; margin-bottom: 6px;">
+                            UV Index
+                          </div>
+
+                          <!-- Value & Risk -->
+                          <div style="font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px;">
+                            {{ person|lookup:'uv_index'|default:'0' }} — {{ person|lookup:'uv_risk'|default:'Low' }}
+                          </div>
+
+                          <!-- Progress Bar -->
+                          <div style="height: 8px; background-color: #f0f0f0; border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+                            <div style="height: 100%; background-color: {{ person|lookup:'uv_color'|default:'#4CAF50' }}; width: {% widthratio person|lookup:'uv_score' 25 100 %}%;"></div>
+                          </div>
+
+                          <!-- Impact -->
+                          <div style="font-size: 11px; color: #999;">
+                            Impact: {{ person|lookup:'uv_score'|default:'0' }}/25 points
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Air Quality -->
+                <tr>
+                  <td style="padding: 20px; border-bottom: 1px solid #f0f0f0;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tr>
+                        <td width="50" valign="top" style="padding-right: 15px;">
+                          <div style="font-size: 32px; line-height: 1;">💨</div>
+                        </td>
+                        <td valign="top">
+                          <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #999; margin-bottom: 6px;">
+                            Air Quality
+                          </div>
+                          <div style="font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px;">
+                            {{ person|lookup:'aqi'|default:'0' }} AQI — {{ person|lookup:'aqi_risk'|default:'Good' }}
+                          </div>
+                          <div style="height: 8px; background-color: #f0f0f0; border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+                            <div style="height: 100%; background-color: {{ person|lookup:'aqi_color'|default:'#4CAF50' }}; width: {% widthratio person|lookup:'aqi_score' 15 100 %}%;"></div>
+                          </div>
+                          <div style="font-size: 11px; color: #999;">
+                            Impact: {{ person|lookup:'aqi_score'|default:'0' }}/15 points
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Humidity -->
+                <tr>
+                  <td style="padding: 20px; border-bottom: 1px solid #f0f0f0;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tr>
+                        <td width="50" valign="top" style="padding-right: 15px;">
+                          <div style="font-size: 32px; line-height: 1;">💧</div>
+                        </td>
+                        <td valign="top">
+                          <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #999; margin-bottom: 6px;">
+                            Humidity
+                          </div>
+                          <div style="font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px;">
+                            {{ person|lookup:'humidity_pct'|default:'0' }}% — {{ person|lookup:'humidity_risk'|default:'Normal' }}
+                          </div>
+                          <div style="height: 8px; background-color: #f0f0f0; border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+                            <div style="height: 100%; background-color: {{ person|lookup:'humidity_color'|default:'#4CAF50' }}; width: {% widthratio person|lookup:'humidity_score' 22 100 %}%;"></div>
+                          </div>
+                          <div style="font-size: 11px; color: #999;">
+                            Impact: {{ person|lookup:'humidity_score'|default:'0' }}/22 points
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Temperature -->
+                <tr>
+                  <td style="padding: 20px; border-bottom: 1px solid #f0f0f0;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tr>
+                        <td width="50" valign="top" style="padding-right: 15px;">
+                          <div style="font-size: 32px; line-height: 1;">🌡️</div>
+                        </td>
+                        <td valign="top">
+                          <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #999; margin-bottom: 6px;">
+                            Temperature
+                          </div>
+                          <div style="font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px;">
+                            {{ person|lookup:'temperature_f'|default:'0' }}°F — {{ person|lookup:'temperature_risk'|default:'Normal' }}
+                          </div>
+                          <div style="height: 8px; background-color: #f0f0f0; border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+                            <div style="height: 100%; background-color: {{ person|lookup:'temperature_color'|default:'#4CAF50' }}; width: {% widthratio person|lookup:'temperature_score' 19 100 %}%;"></div>
+                          </div>
+                          <div style="font-size: 11px; color: #999;">
+                            Impact: {{ person|lookup:'temperature_score'|default:'0' }}/19 points
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Water Hardness -->
+                <tr>
+                  <td style="padding: 20px; border-bottom: 1px solid #f0f0f0;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tr>
+                        <td width="50" valign="top" style="padding-right: 15px;">
+                          <div style="font-size: 32px; line-height: 1;">🚿</div>
+                        </td>
+                        <td valign="top">
+                          <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #999; margin-bottom: 6px;">
+                            Water Hardness
+                          </div>
+                          <div style="font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px;">
+                            {{ person|lookup:'water_hardness_ppm'|default:'0' }} ppm — {{ person|lookup:'water_risk'|default:'Normal' }}
+                          </div>
+                          <div style="height: 8px; background-color: #f0f0f0; border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+                            <div style="height: 100%; background-color: {{ person|lookup:'water_color'|default:'#4CAF50' }}; width: {% widthratio person|lookup:'water_score' 12 100 %}%;"></div>
+                          </div>
+                          <div style="font-size: 11px; color: #999;">
+                            Impact: {{ person|lookup:'water_score'|default:'0' }}/12 points
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Ozone Level -->
+                <tr>
+                  <td style="padding: 20px;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tr>
+                        <td width="50" valign="top" style="padding-right: 15px;">
+                          <div style="font-size: 32px; line-height: 1;">🌫️</div>
+                        </td>
+                        <td valign="top">
+                          <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #999; margin-bottom: 6px;">
+                            Ozone Level
+                          </div>
+                          <div style="font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px;">
+                            {{ person|lookup:'ozone_aqi'|default:'0' }} — {{ person|lookup:'ozone_risk'|default:'Good' }}
+                          </div>
+                          <div style="height: 8px; background-color: #f0f0f0; border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+                            <div style="height: 100%; background-color: {{ person|lookup:'ozone_color'|default:'#4CAF50' }}; width: {% widthratio person|lookup:'ozone_score' 7 100 %}%;"></div>
+                          </div>
+                          <div style="font-size: 11px; color: #999;">
+                            Impact: {{ person|lookup:'ozone_score'|default:'0' }}/7 points
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+              </table>
+              <!-- End Data Cards -->
+
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- FOOTER -->
+          <!-- ============================================ -->
+          <tr>
+            <td align="center" style="padding: 40px 30px; background-color: #ffffff; border-top: 1px solid #e5e5e5;">
+
+              <!-- Support Text -->
+              <p style="margin: 0 0 20px 0; font-size: 14px; line-height: 1.7; color: #666;">
+                Questions about your report? Reply to this email — we're here to help with your scalp health journey.
+              </p>
+
+              <!-- Social Links -->
+              <div style="margin: 25px 0 30px 0;">
+                <a href="https://instagram.com/awarehair" style="display: inline-block; margin: 0 12px; color: #666; text-decoration: none; font-size: 13px;">Instagram</a>
+                <span style="color: #ddd;">•</span>
+                <a href="https://facebook.com/awarehair" style="display: inline-block; margin: 0 12px; color: #666; text-decoration: none; font-size: 13px;">Facebook</a>
+                <span style="color: #ddd;">•</span>
+                <a href="https://tiktok.com/@awarehair" style="display: inline-block; margin: 0 12px; color: #666; text-decoration: none; font-size: 13px;">TikTok</a>
+              </div>
+
+              <!-- Brand -->
+              <div style="margin-bottom: 20px;">
+                <strong style="font-size: 13px; letter-spacing: 1px; color: #1a1a1a;">AWARE HAIR</strong>
+                <div style="font-size: 12px; color: #999; margin-top: 5px;">Scalp Care Powered by Science</div>
+              </div>
+
+              <!-- Legal Links -->
+              <div style="padding-top: 20px; border-top: 1px solid #f0f0f0;">
+                <p style="margin: 0; font-size: 11px; color: #999; line-height: 1.8;">
+                  <a href="{{ unsubscribe_link }}" style="color: #999; text-decoration: underline;">Unsubscribe</a>
+                  <span style="margin: 0 8px;">|</span>
+                  <a href="https://www.awarehair.com/pages/privacy-policy" style="color: #999; text-decoration: underline;">Privacy Policy</a>
+                  <span style="margin: 0 8px;">|</span>
+                  <a href="https://www.awarehair.com/pages/contact" style="color: #999; text-decoration: underline;">Contact</a>
+                </p>
+              </div>
+
+            </td>
+          </tr>
+
+        </table>
+        <!-- End Main Email Container -->
+
+      </td>
+    </tr>
+  </table>
+  <!-- End Full Width Background Table -->
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scalp Health Quiz | AWARE Hair</title>
+    <meta name="description" content="Take our 2-minute scalp health quiz to discover your scalp environment score and get personalized recommendations for healthier hair.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="What's Your Scalp Health Score?">
+    <meta property="og:description" content="Take our 2-minute quiz to discover your scalp environment and get personalized recommendations.">
+    <meta property="og:type" content="website">
+
+    <!-- AWARE Fonts -->
+    <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Klaviyo Client-Side SDK -->
+    <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=pk_1bcdfc5f9fa0dde4ab05653e3f64c5ebb5"></script>
+
+    <style>
+        /* ═══════════════════════════════════════════════════════════════
+           AWARE HAIR - Scalp Health Quiz (Client-Facing)
+           ═══════════════════════════════════════════════════════════════ */
+
+        :root {
+            /* Colors - Softer, more approachable for consumers */
+            --color-background: #f8f6f3;
+            --color-text: #1a2e2a;
+            --color-text-secondary: #5a6b68;
+            --color-header-text: #0d1f1c;
+
+            --color-button-bg: #113035;
+            --color-button-text: #f4efe9;
+            --color-button-hover: #2a7682;
+
+            --color-border: #d4d6d5;
+            --color-border-light: #e8e4dd;
+            --color-accent: #2a7682;
+            --color-success: #478947;
+            --color-warning: #c9842b;
+
+            --color-surface-light: #ffffff;
+            --color-surface-dark: #113035;
+
+            /* Score colors */
+            --color-score-excellent: #2d8a4e;
+            --color-score-good: #5da34d;
+            --color-score-fair: #c9842b;
+            --color-score-needs-attention: #c94444;
+
+            /* Typography */
+            --font-heading: "orpheuspro", Georgia, serif;
+            --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+
+            --weight-normal: 400;
+            --weight-medium: 500;
+            --weight-semibold: 600;
+
+            /* Spacing */
+            --spacing-1: 4px;
+            --spacing-2: 8px;
+            --spacing-3: 12px;
+            --spacing-4: 16px;
+            --spacing-5: 20px;
+            --spacing-6: 24px;
+            --spacing-8: 32px;
+            --spacing-10: 40px;
+
+            /* Animation */
+            --easing: cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-fast: 0.2s;
+            --duration-normal: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: var(--spacing-5);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: var(--spacing-6) 0;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .logo {
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .header h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(1.75rem, 6vw, 2.5rem);
+            font-weight: var(--weight-normal);
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-3);
+        }
+
+        .header p {
+            font-size: 15px;
+            color: var(--color-text-secondary);
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .time-badge {
+            display: inline-block;
+            background: var(--color-accent);
+            color: white;
+            font-size: 11px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.05em;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin-top: var(--spacing-4);
+        }
+
+        /* Progress */
+        .progress-bar {
+            height: 4px;
+            background: var(--color-border-light);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: var(--spacing-6);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--color-accent);
+            border-radius: 2px;
+            transition: width 0.4s var(--easing);
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-4);
+        }
+
+        /* Question Card */
+        .question-card {
+            background: var(--color-surface-light);
+            border-radius: 16px;
+            padding: var(--spacing-6);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .question-number {
+            font-size: 12px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: var(--spacing-3);
+        }
+
+        .question-text {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: var(--weight-normal);
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-5);
+            line-height: 1.4;
+        }
+
+        /* Answer Options */
+        .options-grid {
+            display: grid;
+            gap: var(--spacing-3);
+        }
+
+        .option {
+            position: relative;
+        }
+
+        .option input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .option label {
+            display: block;
+            padding: var(--spacing-4);
+            border: 2px solid var(--color-border);
+            border-radius: 12px;
+            background: var(--color-surface-light);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--easing);
+            font-size: 15px;
+            color: var(--color-text);
+        }
+
+        .option label:hover {
+            border-color: var(--color-accent);
+            background: rgba(42, 118, 130, 0.05);
+        }
+
+        .option input:checked + label {
+            border-color: var(--color-accent);
+            background: rgba(42, 118, 130, 0.1);
+            color: var(--color-accent);
+            font-weight: var(--weight-medium);
+        }
+
+        .option input:checked + label::before {
+            content: '✓';
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-accent);
+            font-weight: bold;
+        }
+
+        /* Multi-select options */
+        .options-grid.multi-select .option label {
+            padding-right: 48px;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: var(--spacing-3);
+            margin-top: var(--spacing-5);
+        }
+
+        .btn {
+            flex: 1;
+            padding: var(--spacing-4) var(--spacing-5);
+            font-size: 14px;
+            font-weight: var(--weight-semibold);
+            font-family: var(--font-body);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--easing);
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--color-button-bg);
+            color: var(--color-button-text);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-button-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary:disabled {
+            background: var(--color-border);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-text-secondary);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-border-light);
+            color: var(--color-text);
+        }
+
+        /* Screen visibility */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.4s var(--easing);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Staggered List Reveals */
+        .concern-item {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.4s var(--easing), transform 0.4s var(--easing);
+        }
+
+        .concern-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Enhanced Button Hover */
+        .btn-primary {
+            transition: all var(--duration-normal) var(--easing), transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(17, 48, 53, 0.15);
+        }
+
+        .cta-button {
+            transition: all var(--duration-fast) var(--easing), transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(71, 137, 71, 0.2);
+        }
+
+        /* SVG Score Circle Animation */
+        .score-circle-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .score-circle-bg {
+            fill: none;
+            stroke: var(--color-border-light);
+            stroke-width: 6;
+        }
+
+        .score-circle-progress {
+            fill: none;
+            stroke: var(--score-color, var(--color-accent));
+            stroke-width: 6;
+            stroke-linecap: round;
+            stroke-dasharray: 452;
+            stroke-dashoffset: 452;
+            transition: stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .screen.active {
+                animation: none;
+            }
+
+            .concern-item {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .btn-primary:hover:not(:disabled),
+            .cta-button:hover {
+                transform: none;
+            }
+
+            .score-circle-progress {
+                transition: none;
+            }
+        }
+
+        /* Email Capture Screen */
+        .email-screen {
+            text-align: center;
+        }
+
+        .email-screen h2 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: var(--weight-normal);
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-3);
+        }
+
+        .email-screen p {
+            font-size: 15px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-5);
+        }
+
+        .email-form {
+            background: var(--color-surface-light);
+            border-radius: 16px;
+            padding: var(--spacing-6);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-4);
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: var(--weight-medium);
+            margin-bottom: var(--spacing-2);
+            color: var(--color-text);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-4);
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: var(--font-body);
+            transition: border-color var(--duration-fast) var(--easing);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        .optional-tag {
+            font-weight: var(--weight-normal);
+            color: var(--color-text-secondary);
+        }
+
+        /* Results Screen */
+        .results-screen {
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            margin: 0 auto var(--spacing-5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .score-value {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            font-weight: var(--weight-normal);
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 12px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-top: var(--spacing-1);
+        }
+
+        .score-rating {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-style: italic;
+            margin-bottom: var(--spacing-5);
+        }
+
+        .score-description {
+            font-size: 15px;
+            color: var(--color-text-secondary);
+            max-width: 360px;
+            margin: 0 auto var(--spacing-6);
+            line-height: 1.6;
+        }
+
+        /* Concerns List */
+        .concerns-card {
+            background: var(--color-surface-light);
+            border-radius: 16px;
+            padding: var(--spacing-5);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            margin-bottom: var(--spacing-4);
+            text-align: left;
+        }
+
+        .concerns-title {
+            font-size: 12px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-3);
+        }
+
+        .concern-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+            padding: var(--spacing-3) 0;
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .concern-item:last-child {
+            border-bottom: none;
+        }
+
+        .concern-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .concern-text {
+            font-size: 14px;
+            color: var(--color-text);
+        }
+
+        /* Recommendation Card */
+        .recommendation-card {
+            background: linear-gradient(135deg, #e8f5f1 0%, #d4ebe5 100%);
+            border-radius: 16px;
+            padding: var(--spacing-5);
+            margin-bottom: var(--spacing-4);
+            text-align: left;
+            border: 1px solid rgba(71, 137, 71, 0.15);
+        }
+
+        .recommendation-title {
+            font-family: var(--font-heading);
+            font-size: 1.125rem;
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .recommendation-text {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-4);
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: block;
+            width: 100%;
+            padding: var(--spacing-4);
+            background: var(--color-success);
+            color: white;
+            font-size: 14px;
+            font-weight: var(--weight-semibold);
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all var(--duration-fast) var(--easing);
+        }
+
+        .cta-button:hover {
+            background: #3a7a3a;
+            transform: translateY(-2px);
+        }
+
+        /* Share Section */
+        .share-section {
+            margin-top: var(--spacing-6);
+            padding-top: var(--spacing-6);
+            border-top: 1px solid var(--color-border-light);
+        }
+
+        .share-title {
+            font-size: 13px;
+            font-weight: var(--weight-medium);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-3);
+        }
+
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-3);
+        }
+
+        .share-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--color-border);
+            background: var(--color-surface-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--easing);
+        }
+
+        .share-btn:hover {
+            border-color: var(--color-accent);
+            background: rgba(42, 118, 130, 0.05);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: var(--spacing-6) 0;
+            color: var(--color-text-secondary);
+            font-size: 12px;
+        }
+
+        .footer a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: var(--spacing-4);
+            }
+
+            .question-card,
+            .email-form,
+            .concerns-card,
+            .recommendation-card {
+                padding: var(--spacing-5);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Intro Screen -->
+        <div class="screen active" id="intro">
+            <div class="header">
+                <div class="logo">AWARE Hair</div>
+                <h1>What's Your Scalp Health Score?</h1>
+                <p>Answer 7 quick questions to discover your scalp environment and get personalized recommendations</p>
+                <span class="time-badge">&#9202; 2 minutes</span>
+            </div>
+
+            <div class="btn-group" style="margin-top: var(--spacing-6);">
+                <button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
+            </div>
+        </div>
+
+        <!-- Questions -->
+        <div class="screen" id="questions">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 14.3%"></div>
+            </div>
+            <div class="progress-text" id="progressText">Question 1 of 7</div>
+
+            <!-- Question Container -->
+            <div id="questionContainer"></div>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary" id="backBtn" onclick="prevQuestion()" style="display: none;">Back</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Continue</button>
+            </div>
+        </div>
+
+        <!-- Email Capture -->
+        <div class="screen email-screen" id="emailScreen">
+            <h2>Almost there!</h2>
+            <p>Enter your email to see your personalized Scalp Environment Score and recommendations</p>
+
+            <div class="email-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="your@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="stylistName">Your Stylist's Name <span class="optional-tag">(optional)</span></label>
+                    <input type="text" id="stylistName" placeholder="e.g., Sarah at Studio 42">
+                </div>
+
+                <div class="form-group">
+                    <label for="zipCode">Your Zip Code <span class="optional-tag">(optional)</span></label>
+                    <input type="text" id="zipCode" placeholder="e.g., 90210" maxlength="5">
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; margin-top: var(--spacing-3);" onclick="submitEmail()">
+                    See My Results
+                </button>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div class="screen results-screen" id="results">
+            <div class="header" style="padding-bottom: 0;">
+                <div class="logo">Your Scalp Environment</div>
+            </div>
+
+            <div class="score-circle" id="scoreCircle">
+                <svg class="score-circle-svg" viewBox="0 0 160 160">
+                    <circle class="score-circle-bg" cx="80" cy="80" r="72"/>
+                    <circle class="score-circle-progress" id="scoreProgress" cx="80" cy="80" r="72"/>
+                </svg>
+                <div class="score-value" id="scoreValue">72</div>
+                <div class="score-label">out of 100</div>
+            </div>
+
+            <div class="score-rating" id="scoreRating">Good Foundation</div>
+
+            <p class="score-description" id="scoreDescription">
+                Your scalp environment has a solid foundation, but there are opportunities for improvement that could enhance your hair health.
+            </p>
+
+            <div class="concerns-card">
+                <div class="concerns-title">Top Concerns Identified</div>
+                <div id="concernsList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <div class="recommendation-card">
+                <div class="recommendation-title">Our Recommendation</div>
+                <p class="recommendation-text" id="recommendationText">
+                    A professional scalp consultation can provide deeper insights and personalized solutions for your specific concerns.
+                </p>
+                <a href="https://awarehair.com/pages/find-a-stylist" class="cta-button" target="_blank">
+                    Find an AWARE Partner Stylist
+                </a>
+            </div>
+
+            <div class="share-section">
+                <div class="share-title">Share your results</div>
+                <div class="share-buttons">
+                    <button class="share-btn" onclick="shareResults('copy')" title="Copy link">&#128279;</button>
+                    <button class="share-btn" onclick="shareResults('twitter')" title="Share on X">&#120143;</button>
+                    <button class="share-btn" onclick="shareResults('facebook')" title="Share on Facebook">&#102;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Powered by <a href="https://awarehair.com" target="_blank">AWARE Hair</a></p>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════
+        // SCALP HEALTH QUIZ - JavaScript
+        // ═══════════════════════════════════════════════════════════════
+
+        // Value Counter Animation
+        function animateValue(el, end, duration, prefix, suffix) {
+            duration = duration || 1000;
+            prefix = prefix || '';
+            suffix = suffix || '';
+
+            // Respect reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                el.textContent = prefix + Math.round(end) + suffix;
+                return;
+            }
+
+            var start = 0;
+            var startTime = performance.now();
+
+            function update(now) {
+                var progress = Math.min((now - startTime) / duration, 1);
+                var eased = 1 - Math.pow(1 - progress, 3); // cubic ease-out
+                var value = Math.floor(start + (end - start) * eased);
+                el.textContent = prefix + value + suffix;
+                if (progress < 1) requestAnimationFrame(update);
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        // SVG Score Circle Animation
+        function animateScoreCircle(score) {
+            var progressCircle = document.getElementById('scoreProgress');
+            var circumference = 2 * Math.PI * 72; // r = 72
+
+            // Respect reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                var offset = circumference - (score / 100) * circumference;
+                progressCircle.style.strokeDashoffset = offset;
+                return;
+            }
+
+            // Start hidden, animate to score
+            progressCircle.style.strokeDasharray = circumference;
+            progressCircle.style.strokeDashoffset = circumference;
+
+            // Trigger animation after a brief delay
+            setTimeout(function() {
+                var offset = circumference - (score / 100) * circumference;
+                progressCircle.style.strokeDashoffset = offset;
+            }, 100);
+        }
+
+        // Staggered reveal for list items
+        function revealListItems(selector, delay) {
+            delay = delay || 100;
+            var items = document.querySelectorAll(selector);
+
+            // Respect reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                items.forEach(function(item) {
+                    item.classList.add('visible');
+                });
+                return;
+            }
+
+            items.forEach(function(item, index) {
+                setTimeout(function() {
+                    item.classList.add('visible');
+                }, index * delay);
+            });
+        }
+
+        const questions = [
+            {
+                id: 'wash_frequency',
+                text: 'How often do you wash your hair?',
+                type: 'single',
+                options: [
+                    { value: 'daily', label: 'Daily', score: -10, concern: 'Over-washing' },
+                    { value: 'every_other', label: 'Every other day', score: 5, concern: null },
+                    { value: '2_3_week', label: '2-3 times per week', score: 10, concern: null },
+                    { value: 'weekly', label: 'Once a week or less', score: 0, concern: 'Potential buildup' }
+                ]
+            },
+            {
+                id: 'scalp_symptoms',
+                text: 'Do you experience any of these scalp concerns?',
+                type: 'multi',
+                options: [
+                    { value: 'itching', label: 'Itching', score: -8, concern: 'Scalp irritation' },
+                    { value: 'flaking', label: 'Flaking or dandruff', score: -10, concern: 'Flaking & buildup' },
+                    { value: 'oiliness', label: 'Excess oiliness', score: -6, concern: 'Oil imbalance' },
+                    { value: 'dryness', label: 'Dryness or tightness', score: -8, concern: 'Scalp dryness' },
+                    { value: 'sensitivity', label: 'Sensitivity or redness', score: -10, concern: 'Sensitivity' },
+                    { value: 'none', label: 'None of the above', score: 15, concern: null }
+                ]
+            },
+            {
+                id: 'hair_changes',
+                text: 'Have you noticed changes in your hair thickness or increased shedding?',
+                type: 'single',
+                options: [
+                    { value: 'significant', label: 'Yes, significant changes', score: -15, concern: 'Hair thinning' },
+                    { value: 'some', label: 'Some changes', score: -8, concern: 'Hair thinning' },
+                    { value: 'minimal', label: 'Minimal changes', score: 0, concern: null },
+                    { value: 'none', label: 'No changes noticed', score: 10, concern: null }
+                ]
+            },
+            {
+                id: 'heat_styling',
+                text: 'How often do you use heat styling tools?',
+                type: 'single',
+                options: [
+                    { value: 'daily', label: 'Daily', score: -10, concern: 'Heat damage risk' },
+                    { value: 'few_times', label: 'A few times a week', score: -5, concern: 'Heat damage risk' },
+                    { value: 'occasionally', label: 'Occasionally', score: 5, concern: null },
+                    { value: 'rarely', label: 'Rarely or never', score: 10, concern: null }
+                ]
+            },
+            {
+                id: 'stress_level',
+                text: 'How would you describe your current stress level?',
+                type: 'single',
+                options: [
+                    { value: 'high', label: 'High - frequently stressed', score: -10, concern: 'Stress-related concerns' },
+                    { value: 'moderate', label: 'Moderate - sometimes stressed', score: -3, concern: null },
+                    { value: 'low', label: 'Low - generally relaxed', score: 8, concern: null }
+                ]
+            },
+            {
+                id: 'environment',
+                text: 'What best describes your living environment?',
+                type: 'single',
+                options: [
+                    { value: 'urban_polluted', label: 'Urban area with pollution', score: -8, concern: 'Environmental exposure' },
+                    { value: 'urban', label: 'Urban area, moderate air quality', score: -3, concern: null },
+                    { value: 'suburban', label: 'Suburban area', score: 5, concern: null },
+                    { value: 'rural', label: 'Rural area with clean air', score: 10, concern: null }
+                ]
+            },
+            {
+                id: 'consultation_history',
+                text: 'Have you ever had a professional scalp consultation?',
+                type: 'single',
+                options: [
+                    { value: 'yes_recent', label: 'Yes, within the past year', score: 10, concern: null },
+                    { value: 'yes_long_ago', label: 'Yes, but over a year ago', score: 3, concern: null },
+                    { value: 'no', label: 'No, never', score: -5, concern: 'No professional assessment' }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+        let userData = {};
+
+        function startQuiz() {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('questions').classList.add('active');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('questionContainer');
+
+            let optionsHtml = q.options.map((opt, i) => `
+                <div class="option">
+                    <input type="${q.type === 'multi' ? 'checkbox' : 'radio'}"
+                           name="q${currentQuestion}"
+                           id="opt${i}"
+                           value="${opt.value}"
+                           onchange="handleAnswer()">
+                    <label for="opt${i}">${opt.label}</label>
+                </div>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="question-card">
+                    <div class="question-number">Question ${currentQuestion + 1}</div>
+                    <div class="question-text">${q.text}</div>
+                    <div class="options-grid ${q.type === 'multi' ? 'multi-select' : ''}">
+                        ${optionsHtml}
+                    </div>
+                    ${q.type === 'multi' ? '<p style="font-size: 12px; color: var(--color-text-secondary); margin-top: 12px; text-align: center;">Select all that apply</p>' : ''}
+                </div>
+            `;
+
+            // Update progress
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+
+            // Update buttons
+            document.getElementById('backBtn').style.display = currentQuestion > 0 ? 'block' : 'none';
+            document.getElementById('nextBtn').disabled = true;
+            document.getElementById('nextBtn').textContent = currentQuestion === questions.length - 1 ? 'See Results' : 'Continue';
+
+            // Restore previous answers if any
+            if (answers[q.id]) {
+                const prevAnswers = Array.isArray(answers[q.id]) ? answers[q.id] : [answers[q.id]];
+                prevAnswers.forEach(val => {
+                    const input = document.querySelector(`input[value="${val}"]`);
+                    if (input) input.checked = true;
+                });
+                document.getElementById('nextBtn').disabled = false;
+            }
+        }
+
+        function handleAnswer() {
+            const q = questions[currentQuestion];
+            const inputs = document.querySelectorAll(`input[name="q${currentQuestion}"]:checked`);
+
+            if (q.type === 'multi') {
+                answers[q.id] = Array.from(inputs).map(i => i.value);
+                // Handle "none" selection
+                if (answers[q.id].includes('none') && answers[q.id].length > 1) {
+                    // If "none" is selected with others, keep only the last selection
+                    const lastSelected = inputs[inputs.length - 1].value;
+                    if (lastSelected === 'none') {
+                        answers[q.id] = ['none'];
+                        document.querySelectorAll(`input[name="q${currentQuestion}"]`).forEach(i => {
+                            if (i.value !== 'none') i.checked = false;
+                        });
+                    } else {
+                        answers[q.id] = answers[q.id].filter(v => v !== 'none');
+                        document.querySelector('input[value="none"]').checked = false;
+                    }
+                }
+            } else {
+                answers[q.id] = inputs.length > 0 ? inputs[0].value : null;
+            }
+
+            document.getElementById('nextBtn').disabled = !answers[q.id] || (Array.isArray(answers[q.id]) && answers[q.id].length === 0);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                showEmailCapture();
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function showEmailCapture() {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('emailScreen').classList.add('active');
+        }
+
+        function submitEmail() {
+            const email = document.getElementById('email').value;
+            const stylistName = document.getElementById('stylistName').value;
+            const zipCode = document.getElementById('zipCode').value;
+
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            userData = { email, stylistName, zipCode };
+            calculateAndShowResults();
+        }
+
+        function calculateAndShowResults() {
+            let totalScore = 50; // Base score
+            let concerns = [];
+
+            questions.forEach(q => {
+                const answer = answers[q.id];
+                if (!answer) return;
+
+                const answerValues = Array.isArray(answer) ? answer : [answer];
+
+                answerValues.forEach(val => {
+                    const option = q.options.find(o => o.value === val);
+                    if (option) {
+                        totalScore += option.score;
+                        if (option.concern && !concerns.includes(option.concern)) {
+                            concerns.push(option.concern);
+                        }
+                    }
+                });
+            });
+
+            // Clamp score
+            totalScore = Math.max(0, Math.min(100, totalScore));
+
+            // Determine rating
+            let rating, description, color;
+            if (totalScore >= 80) {
+                rating = 'Excellent';
+                description = 'Your scalp environment is thriving! Keep up your current routine and consider periodic professional check-ins to maintain optimal scalp health.';
+                color = 'var(--color-score-excellent)';
+            } else if (totalScore >= 60) {
+                rating = 'Good Foundation';
+                description = 'Your scalp environment has a solid foundation with room for targeted improvements. A professional consultation could help optimize your routine.';
+                color = 'var(--color-score-good)';
+            } else if (totalScore >= 40) {
+                rating = 'Needs Attention';
+                description = 'Your scalp is sending signals that it needs more care. Professional guidance can help address your specific concerns and restore balance.';
+                color = 'var(--color-score-fair)';
+            } else {
+                rating = 'Immediate Care Recommended';
+                description = 'Your scalp environment needs focused attention. We strongly recommend a professional scalp consultation to develop a personalized care plan.';
+                color = 'var(--color-score-needs-attention)';
+            }
+
+            // Take top 3 concerns
+            concerns = concerns.slice(0, 3);
+
+            // Display results
+            displayResults(totalScore, rating, description, color, concerns);
+
+            // Send to Klaviyo
+            sendToKlaviyo(totalScore, rating, concerns);
+        }
+
+        function displayResults(score, rating, description, color, concerns) {
+            // Static text updates
+            document.getElementById('scoreRating').textContent = rating;
+            document.getElementById('scoreRating').style.color = color;
+            document.getElementById('scoreDescription').textContent = description;
+
+            // Score circle color
+            const circle = document.getElementById('scoreCircle');
+            circle.style.setProperty('--score-color', color);
+
+            // Set progress circle stroke color
+            const progressCircle = document.getElementById('scoreProgress');
+            progressCircle.style.stroke = color;
+
+            // Concerns list (with animation classes)
+            const concernsList = document.getElementById('concernsList');
+            if (concerns.length > 0) {
+                concernsList.innerHTML = concerns.map(concern => {
+                    const icons = {
+                        'Over-washing': '&#128167;',
+                        'Potential buildup': '&#128167;',
+                        'Scalp irritation': '&#127800;',
+                        'Flaking & buildup': '&#10052;',
+                        'Oil imbalance': '&#128167;',
+                        'Scalp dryness': '&#127797;',
+                        'Sensitivity': '&#9888;',
+                        'Hair thinning': '&#128136;',
+                        'Heat damage risk': '&#128293;',
+                        'Stress-related concerns': '&#128161;',
+                        'Environmental exposure': '&#127811;',
+                        'No professional assessment': '&#128269;'
+                    };
+                    return `
+                        <div class="concern-item">
+                            <div class="concern-icon" style="background: ${color}20;">${icons[concern] || '&#8226;'}</div>
+                            <div class="concern-text">${concern}</div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                concernsList.innerHTML = '<div class="concern-item"><div class="concern-text">No major concerns identified - great job!</div></div>';
+            }
+
+            // Update recommendation based on score
+            const recText = document.getElementById('recommendationText');
+            if (score >= 80) {
+                recText.textContent = 'Your scalp is in great shape! A periodic check-in with a scalp care specialist can help you maintain these results and catch any changes early.';
+            } else if (score >= 60) {
+                recText.textContent = 'A professional scalp consultation can provide personalized insights and product recommendations to take your scalp health to the next level.';
+            } else {
+                recText.textContent = 'We recommend scheduling a professional scalp consultation soon. A trained specialist can assess your specific concerns and create a targeted care plan.';
+            }
+
+            // Show results screen first
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('results').classList.add('active');
+            window.scrollTo(0, 0);
+
+            // Animate after screen transition
+            setTimeout(function() {
+                // Animate score value
+                animateValue(document.getElementById('scoreValue'), score, 1200, '', '');
+                document.getElementById('scoreValue').style.color = color;
+
+                // Animate score circle
+                animateScoreCircle(score);
+
+                // Reveal concern items with stagger
+                revealListItems('.concern-item', 120);
+            }, 200);
+        }
+
+        function sendToKlaviyo(score, rating, concerns) {
+            const properties = {
+                '$email': userData.email,
+                'quiz_taken': 'scalp_health',
+                'scalp_score': score,
+                'scalp_rating': rating,
+                'top_concerns': concerns.join(', '),
+                'stylist_referral': userData.stylistName || null,
+                'location': userData.zipCode || null,
+                'quiz_date': new Date().toISOString()
+            };
+
+            // Add individual answer properties
+            Object.keys(answers).forEach(key => {
+                const val = answers[key];
+                properties[`answer_${key}`] = Array.isArray(val) ? val.join(', ') : val;
+            });
+
+            if (typeof klaviyo !== 'undefined') {
+                klaviyo.identify(properties);
+
+                klaviyo.track('Completed Scalp Health Quiz', {
+                    scalp_score: score,
+                    scalp_rating: rating,
+                    top_concerns: concerns,
+                    stylist_referral: userData.stylistName || null,
+                    location: userData.zipCode || null
+                });
+            }
+
+            // Fallback API
+            fetch('https://a.klaviyo.com/client/subscriptions/?company_id=pk_1bcdfc5f9fa0dde4ab05653e3f64c5ebb5', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'revision': '2024-10-15' },
+                body: JSON.stringify({
+                    data: {
+                        type: 'subscription',
+                        attributes: {
+                            custom_source: 'Scalp Health Quiz',
+                            profile: {
+                                data: {
+                                    type: 'profile',
+                                    attributes: {
+                                        email: userData.email,
+                                        properties: {
+                                            scalp_score: score,
+                                            scalp_rating: rating,
+                                            top_concerns: concerns.join(', '),
+                                            stylist_referral: userData.stylistName,
+                                            zip_code: userData.zipCode
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+            }).catch(e => console.log('Klaviyo:', e));
+        }
+
+        function shareResults(platform) {
+            const score = document.getElementById('scoreValue').textContent;
+            const rating = document.getElementById('scoreRating').textContent;
+            const text = `I just took the AWARE Scalp Health Quiz and scored ${score}/100 (${rating})! Take the quiz to discover your scalp environment: `;
+            const url = window.location.href;
+
+            switch(platform) {
+                case 'copy':
+                    navigator.clipboard.writeText(text + url).then(() => alert('Link copied!'));
+                    break;
+                case 'twitter':
+                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+                    break;
+                case 'facebook':
+                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`, '_blank');
+                    break;
+            }
+
+            if (typeof klaviyo !== 'undefined') {
+                klaviyo.track('Shared Quiz Results', { platform, score });
+            }
+        }
+    </script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

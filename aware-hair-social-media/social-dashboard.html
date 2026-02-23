@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Social Media Command Center</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-2: #242835;
+    --surface-3: #2e3345;
+    --border: #2e3345;
+    --border-light: #3a3f52;
+    --text: #e2e4eb;
+    --text-dim: #8b8fa3;
+    --text-muted: #5a5f73;
+    --accent: #c8a97e;
+    --accent-dim: rgba(200,169,126,0.15);
+    --accent-strong: rgba(200,169,126,0.25);
+    --green: #4ade80;
+    --green-dim: rgba(74,222,128,0.12);
+    --yellow: #fbbf24;
+    --yellow-dim: rgba(251,191,36,0.12);
+    --red: #f87171;
+    --red-dim: rgba(248,113,113,0.12);
+    --blue: #60a5fa;
+    --blue-dim: rgba(96,165,250,0.12);
+    --purple: #c084fc;
+    --purple-dim: rgba(192,132,252,0.12);
+    --cyan: #22d3ee;
+    --cyan-dim: rgba(34,211,238,0.12);
+    --pink: #f472b6;
+    --pink-dim: rgba(244,114,182,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', sans-serif; background:var(--bg); color:var(--text); line-height:1.5; font-size:13px; }
+
+  /* Layout */
+  .shell { max-width:1440px; margin:0 auto; padding:20px 24px; }
+  header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid var(--border); }
+  header h1 { font-size:20px; font-weight:600; letter-spacing:-0.3px; }
+  header h1 span { color:var(--accent); }
+  .header-right { display:flex; align-items:center; gap:12px; }
+  .header-meta { font-size:11px; color:var(--text-muted); text-align:right; }
+  .header-meta strong { color:var(--text-dim); }
+
+  /* Tabs */
+  .tabs { display:flex; gap:4px; margin-bottom:20px; background:var(--surface); border-radius:10px; padding:4px; width:fit-content; }
+  .tab { padding:8px 18px; border-radius:8px; font-size:13px; font-weight:500; cursor:pointer; color:var(--text-dim); transition:all 0.15s; border:none; background:transparent; }
+  .tab:hover { color:var(--text); }
+  .tab.active { background:var(--surface-2); color:var(--accent); }
+  .tab .tab-count { font-size:10px; background:var(--surface-3); padding:1px 6px; border-radius:8px; margin-left:5px; color:var(--text-muted); }
+  .tab.active .tab-count { background:var(--accent-dim); color:var(--accent); }
+
+  /* Panels */
+  .panel { display:none; }
+  .panel.active { display:block; }
+
+  /* Stats row */
+  .stats { display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px; margin-bottom:24px; }
+  .stat { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; position:relative; }
+  .stat-label { font-size:10px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-muted); margin-bottom:2px; }
+  .stat-val { font-size:24px; font-weight:700; letter-spacing:-0.5px; }
+  .stat-val.gold { color:var(--accent); }
+  .stat-val.green { color:var(--green); }
+  .stat-val.blue { color:var(--blue); }
+  .stat-sub { font-size:10px; color:var(--text-muted); margin-top:2px; }
+  .stat-sub .up { color:var(--green); }
+  .stat-sub .down { color:var(--red); }
+  .stat-edit { position:absolute; top:8px; right:8px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:11px; opacity:0; transition:opacity 0.15s; padding:2px 4px; }
+  .stat:hover .stat-edit { opacity:1; }
+  .stat-input { background:var(--surface-2); border:1px solid var(--accent); border-radius:4px; color:var(--text); font-size:20px; font-weight:700; width:100%; padding:2px 4px; outline:none; }
+
+  /* Section */
+  .section { margin-bottom:24px; }
+  .section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+  .section-title { font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-muted); font-weight:600; }
+  .section-action { font-size:11px; color:var(--accent); cursor:pointer; background:none; border:none; }
+  .section-action:hover { text-decoration:underline; }
+
+  /* Cards */
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; transition:border-color 0.15s; }
+  .card:hover { border-color:var(--border-light); }
+  .card-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:12px; }
+  .card-grid-3 { display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; }
+  .card-grid-2 { display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; }
+
+  /* Story Architecture */
+  .story-arch { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px; }
+  .story-person { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; text-align:center; position:relative; }
+  .story-person::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:12px 12px 0 0; }
+  .story-person.tina::before { background:var(--purple); }
+  .story-person.jade::before { background:var(--pink); }
+  .story-person.david::before { background:var(--blue); }
+  .story-avatar { width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; margin:0 auto 10px; }
+  .story-person.tina .story-avatar { background:var(--purple-dim); }
+  .story-person.jade .story-avatar { background:var(--pink-dim); }
+  .story-person.david .story-avatar { background:var(--blue-dim); }
+  .story-name { font-size:15px; font-weight:600; margin-bottom:2px; }
+  .story-role { font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; }
+  .story-desc { font-size:12px; color:var(--text-dim); line-height:1.5; }
+  .story-tags { display:flex; flex-wrap:wrap; gap:4px; justify-content:center; margin-top:10px; }
+  .story-tag { font-size:10px; padding:2px 8px; border-radius:4px; background:var(--surface-2); color:var(--text-dim); }
+
+  /* Platform cards */
+  .platform-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; }
+  .platform-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .platform-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; }
+  .platform-icon.ig { background:linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color:#fff; }
+  .platform-icon.tt { background:#000; color:#fff; border:1px solid var(--border); }
+  .platform-icon.li { background:#0a66c2; color:#fff; }
+  .platform-icon.rd { background:#ff4500; color:#fff; }
+  .platform-icon.x { background:#000; color:#fff; border:1px solid var(--border); }
+  .platform-name { font-weight:600; font-size:14px; }
+  .platform-role { font-size:11px; color:var(--text-dim); }
+  .platform-stats { display:flex; gap:16px; margin:10px 0; }
+  .platform-stat-label { font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; }
+  .platform-stat-val { font-size:16px; font-weight:600; }
+  .platform-bar { height:4px; background:var(--surface-2); border-radius:2px; margin-top:8px; overflow:hidden; }
+  .platform-bar-fill { height:100%; border-radius:2px; transition:width 0.3s; }
+
+  /* Content Flow Diagram */
+  .flow-container { position:relative; padding:20px 0; }
+  .flow-row { display:flex; align-items:stretch; gap:0; margin-bottom:16px; }
+  .flow-pillar { flex:1; position:relative; border-radius:10px; padding:16px; cursor:pointer; transition:all 0.2s; border:1px solid transparent; }
+  .flow-pillar:hover { border-color:var(--border-light); transform:translateY(-2px); }
+  .flow-pillar.expanded { border-color:var(--accent); }
+  .flow-pillar-pct { font-size:28px; font-weight:800; margin-bottom:2px; }
+  .flow-pillar-name { font-size:13px; font-weight:600; margin-bottom:4px; }
+  .flow-pillar-desc { font-size:11px; opacity:0.7; line-height:1.4; }
+  .flow-arrow { display:flex; align-items:center; justify-content:center; width:32px; flex-shrink:0; color:var(--text-muted); font-size:18px; }
+  .flow-detail { display:none; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; margin-top:-4px; margin-bottom:16px; }
+  .flow-detail.show { display:block; }
+  .flow-detail-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  .flow-detail-item { padding:10px; background:var(--surface-2); border-radius:8px; }
+  .flow-detail-label { font-size:10px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-muted); margin-bottom:4px; }
+  .flow-detail-val { font-size:12px; color:var(--text); }
+  .flow-topics { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .flow-topic { font-size:11px; padding:4px 10px; border-radius:6px; cursor:pointer; transition:all 0.15s; }
+  .flow-topic:hover { filter:brightness(1.3); }
+
+  /* Content Bank - Topic Cards */
+  .topic-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:12px; }
+  .topic-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; cursor:pointer; transition:all 0.2s; }
+  .topic-card:hover { border-color:var(--border-light); }
+  .topic-card.expanded { border-color:var(--accent); }
+  .topic-header { padding:14px 16px; display:flex; justify-content:space-between; align-items:center; }
+  .topic-title { font-weight:600; font-size:13px; }
+  .topic-meta { display:flex; gap:6px; align-items:center; }
+  .topic-chevron { font-size:14px; color:var(--text-muted); transition:transform 0.2s; }
+  .topic-card.expanded .topic-chevron { transform:rotate(180deg); }
+  .topic-body { display:none; padding:0 16px 16px; }
+  .topic-card.expanded .topic-body { display:block; }
+  .topic-hooks { margin-bottom:12px; }
+  .topic-hook { font-size:12px; color:var(--text-dim); padding:6px 10px; background:var(--surface-2); border-radius:6px; margin-bottom:4px; cursor:pointer; transition:all 0.15s; display:flex; justify-content:space-between; align-items:center; }
+  .topic-hook:hover { color:var(--text); background:var(--surface-3); }
+  .topic-hook .copy-hint { font-size:10px; color:var(--text-muted); opacity:0; transition:opacity 0.15s; }
+  .topic-hook:hover .copy-hint { opacity:1; }
+  .topic-hook.copied { color:var(--green); }
+  .topic-script { font-size:11px; color:var(--text-dim); line-height:1.6; padding:10px 12px; background:var(--surface-2); border-radius:8px; border-left:3px solid var(--accent); margin-top:8px; }
+  .topic-cta-row { display:flex; gap:6px; margin-top:10px; }
+  .topic-btn { font-size:10px; padding:4px 10px; border-radius:4px; border:1px solid var(--border); background:transparent; color:var(--text-dim); cursor:pointer; transition:all 0.15s; }
+  .topic-btn:hover { color:var(--accent); border-color:var(--accent); }
+  .topic-btn.primary { background:var(--accent-dim); color:var(--accent); border-color:var(--accent); }
+
+  /* Calendar */
+  .calendar { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .cal-header { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:var(--surface-2); }
+  .cal-nav { display:flex; align-items:center; gap:12px; }
+  .cal-nav button { background:var(--surface); border:1px solid var(--border); color:var(--text-dim); width:28px; height:28px; border-radius:6px; cursor:pointer; font-size:12px; }
+  .cal-nav button:hover { color:var(--text); border-color:var(--border-light); }
+  .cal-week-label { font-weight:600; font-size:13px; }
+  .cal-grid { display:grid; grid-template-columns:repeat(7, 1fr); }
+  .cal-day-header { padding:8px; text-align:center; font-size:10px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-muted); border-bottom:1px solid var(--border); }
+  .cal-day { min-height:120px; padding:8px; border-right:1px solid var(--border); border-bottom:1px solid var(--border); position:relative; }
+  .cal-day:nth-child(7n) { border-right:none; }
+  .cal-day-num { font-size:11px; color:var(--text-muted); margin-bottom:6px; }
+  .cal-day.today .cal-day-num { color:var(--accent); font-weight:700; }
+  .cal-day.today { background:rgba(200,169,126,0.04); }
+  .cal-post { font-size:10px; padding:3px 6px; border-radius:4px; margin-bottom:3px; cursor:pointer; display:flex; align-items:center; gap:4px; line-height:1.3; transition:opacity 0.15s; }
+  .cal-post.done { opacity:0.4; text-decoration:line-through; }
+  .cal-post .check { width:12px; height:12px; border:1px solid var(--border-light); border-radius:3px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:8px; }
+  .cal-post.done .check { background:var(--green-dim); border-color:var(--green); color:var(--green); }
+  .cal-post.ig { background:var(--pink-dim); color:var(--pink); }
+  .cal-post.tt { background:var(--cyan-dim); color:var(--cyan); }
+  .cal-post.li { background:var(--blue-dim); color:var(--blue); }
+  .cal-post.rd { background:var(--purple-dim); color:var(--purple); }
+  .cal-post.x { background:var(--surface-2); color:var(--text-dim); }
+
+  /* Post list */
+  .post-list { display:flex; flex-direction:column; gap:6px; }
+  .post-item { display:flex; align-items:flex-start; gap:10px; padding:10px 14px; background:var(--surface); border:1px solid var(--border); border-radius:8px; cursor:pointer; transition:all 0.15s; }
+  .post-item:hover { border-color:var(--border-light); }
+  .post-item.done { opacity:0.5; }
+  .post-check { width:18px; height:18px; border:2px solid var(--border-light); border-radius:5px; flex-shrink:0; margin-top:1px; display:flex; align-items:center; justify-content:center; font-size:10px; cursor:pointer; transition:all 0.15s; }
+  .post-item.done .post-check { background:var(--green-dim); border-color:var(--green); color:var(--green); }
+  .post-body { flex:1; min-width:0; }
+  .post-title { font-weight:500; font-size:13px; margin-bottom:2px; }
+  .post-item.done .post-title { text-decoration:line-through; }
+  .post-meta { display:flex; gap:8px; flex-wrap:wrap; }
+  .post-tag { font-size:10px; padding:1px 6px; border-radius:4px; }
+  .post-tag.ig { background:var(--pink-dim); color:var(--pink); }
+  .post-tag.tt { background:var(--cyan-dim); color:var(--cyan); }
+  .post-tag.li { background:var(--blue-dim); color:var(--blue); }
+  .post-tag.rd { background:var(--purple-dim); color:var(--purple); }
+  .post-tag.reel { background:var(--accent-dim); color:var(--accent); }
+  .post-tag.carousel { background:var(--green-dim); color:var(--green); }
+  .post-tag.static { background:var(--surface-2); color:var(--text-dim); }
+  .post-tag.story { background:var(--yellow-dim); color:var(--yellow); }
+  .post-tag.person { background:var(--surface-2); color:var(--text-dim); }
+
+  /* Hooks bank */
+  .hooks-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:12px; }
+  .hook-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:14px; }
+  .hook-category { font-size:10px; text-transform:uppercase; letter-spacing:0.6px; color:var(--accent); margin-bottom:8px; font-weight:600; }
+  .hook-item { font-size:12px; color:var(--text-dim); padding:4px 0; border-bottom:1px solid var(--border); cursor:pointer; transition:color 0.15s; }
+  .hook-item:last-child { border-bottom:none; }
+  .hook-item:hover { color:var(--text); }
+  .hook-item.copied { color:var(--green); }
+
+  /* Timeline */
+  .timeline { position:relative; padding-left:24px; }
+  .timeline::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:2px; background:var(--border); }
+  .tl-item { position:relative; padding:12px 0 24px; }
+  .tl-item::before { content:''; position:absolute; left:-20px; top:16px; width:12px; height:12px; border-radius:50%; border:2px solid var(--border); background:var(--bg); }
+  .tl-item.active::before { border-color:var(--accent); background:var(--accent-dim); }
+  .tl-item.done::before { border-color:var(--green); background:var(--green-dim); }
+  .tl-week { font-size:10px; text-transform:uppercase; letter-spacing:0.8px; color:var(--accent); margin-bottom:4px; font-weight:600; }
+  .tl-theme { font-size:14px; font-weight:600; margin-bottom:4px; }
+  .tl-desc { font-size:12px; color:var(--text-dim); }
+  .tl-targets { display:flex; gap:8px; margin-top:6px; flex-wrap:wrap; }
+  .tl-target { font-size:10px; padding:2px 8px; border-radius:4px; background:var(--surface-2); color:var(--text-dim); }
+
+  /* Metrics table */
+  .metrics-table { width:100%; border-collapse:collapse; }
+  .metrics-table th { text-align:left; padding:10px 14px; font-size:10px; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-muted); background:var(--surface-2); border-bottom:1px solid var(--border); font-weight:600; }
+  .metrics-table td { padding:10px 14px; border-bottom:1px solid var(--border); }
+  .metrics-table tr:last-child td { border-bottom:none; }
+  .metrics-table tr:hover td { background:rgba(200,169,126,0.03); }
+  .metric-input { background:transparent; border:1px solid transparent; border-radius:4px; color:var(--text); font-size:13px; padding:2px 6px; width:80px; text-align:right; transition:border-color 0.15s; }
+  .metric-input:hover { border-color:var(--border); }
+  .metric-input:focus { border-color:var(--accent); outline:none; background:var(--surface-2); }
+  .metric-target { font-size:11px; color:var(--text-muted); }
+
+  /* Add post modal */
+  .modal-overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:100; align-items:center; justify-content:center; }
+  .modal-overlay.show { display:flex; }
+  .modal { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px; width:480px; max-width:90vw; max-height:90vh; overflow-y:auto; }
+  .modal h3 { font-size:16px; margin-bottom:16px; }
+  .modal label { display:block; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-muted); margin-bottom:4px; margin-top:12px; }
+  .modal input, .modal select, .modal textarea { width:100%; padding:8px 12px; background:var(--surface-2); border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:13px; }
+  .modal input:focus, .modal select:focus, .modal textarea:focus { outline:none; border-color:var(--accent); }
+  .modal textarea { resize:vertical; min-height:60px; font-family:inherit; }
+  .modal-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:20px; }
+  .btn { padding:8px 16px; border-radius:6px; font-size:12px; font-weight:500; cursor:pointer; border:1px solid var(--border); background:var(--surface-2); color:var(--text-dim); transition:all 0.15s; }
+  .btn:hover { color:var(--text); border-color:var(--border-light); }
+  .btn.primary { background:var(--accent); color:#0f1117; border-color:var(--accent); font-weight:600; }
+  .btn.primary:hover { opacity:0.9; }
+  .btn.danger { color:var(--red); }
+  .btn.danger:hover { background:var(--red-dim); }
+
+  /* Toast */
+  .toast { position:fixed; bottom:24px; right:24px; background:var(--surface-2); border:1px solid var(--border); padding:10px 18px; border-radius:8px; font-size:12px; color:var(--green); z-index:200; transform:translateY(60px); opacity:0; transition:all 0.2s; }
+  .toast.show { transform:translateY(0); opacity:1; }
+
+  /* Responsive */
+  @media (max-width:1024px) {
+    .story-arch { grid-template-columns:1fr; }
+    .card-grid-3 { grid-template-columns:1fr 1fr; }
+    .cal-grid { font-size:11px; }
+    .cal-day { min-height:80px; padding:4px; }
+  }
+  @media (max-width:768px) {
+    .shell { padding:12px; }
+    .tabs { width:100%; overflow-x:auto; }
+    .card-grid, .card-grid-3, .card-grid-2 { grid-template-columns:1fr; }
+    .stats { grid-template-columns:repeat(3, 1fr); }
+    .cal-grid { grid-template-columns:1fr; }
+    .cal-day-header { display:none; }
+    .cal-day { min-height:auto; border-right:none; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header>
+    <h1>AWARE <span>Social Command Center</span></h1>
+    <div class="header-right">
+      <div class="header-meta">
+        <div><strong>Q1 2026</strong> - 90-Day Sprint</div>
+        <div id="header-date"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('overview',event)">Strategy</button>
+    <button class="tab" onclick="switchTab('calendar',event)">Calendar <span class="tab-count" id="cal-pending-count">0</span></button>
+    <button class="tab" onclick="switchTab('today',event)">Today <span class="tab-count" id="today-count">0</span></button>
+    <button class="tab" onclick="switchTab('metrics',event)">Metrics</button>
+    <button class="tab" onclick="switchTab('content',event)">Content Bank</button>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- TAB 1: STRATEGY OVERVIEW -->
+  <!-- ============================================ -->
+  <div class="panel active" id="panel-overview">
+
+    <!-- Quick Stats -->
+    <div class="stats" id="overview-stats">
+      <div class="stat">
+        <div class="stat-label">IG Followers</div>
+        <div class="stat-val gold" data-metric="ig-followers">4,083</div>
+        <div class="stat-sub">Target: 8,000</div>
+        <button class="stat-edit" onclick="editStat(this)">Edit</button>
+      </div>
+      <div class="stat">
+        <div class="stat-label">TT Followers</div>
+        <div class="stat-val blue" data-metric="tt-followers">0</div>
+        <div class="stat-sub">Target: 10,000</div>
+        <button class="stat-edit" onclick="editStat(this)">Edit</button>
+      </div>
+      <div class="stat">
+        <div class="stat-label">LinkedIn</div>
+        <div class="stat-val" data-metric="li-connections">--</div>
+        <div class="stat-sub">Target: 2,000</div>
+        <button class="stat-edit" onclick="editStat(this)">Edit</button>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Posts This Week</div>
+        <div class="stat-val green" id="posts-this-week">0</div>
+        <div class="stat-sub">Target: 15-20</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Content Banked</div>
+        <div class="stat-val" data-metric="content-banked">0</div>
+        <div class="stat-sub">Videos ready</div>
+        <button class="stat-edit" onclick="editStat(this)">Edit</button>
+      </div>
+    </div>
+
+    <!-- Story Architecture -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">Story Architecture - Three Voices, One Mission</div>
+      </div>
+      <div class="story-arch">
+        <div class="story-person tina">
+          <div class="story-avatar">T</div>
+          <div class="story-name">Tina</div>
+          <div class="story-role">The Origin</div>
+          <div class="story-desc">40+ year stylist and trichologist. Trained under Vidal Sassoon. The reason the science works. Shown, not told - her expertise is visual.</div>
+          <div class="story-tags">
+            <span class="story-tag">Science deep dives</span>
+            <span class="story-tag">Application technique</span>
+            <span class="story-tag">B-roll / ASMR</span>
+            <span class="story-tag">40yr perspective</span>
+          </div>
+        </div>
+        <div class="story-person jade">
+          <div class="story-avatar">J</div>
+          <div class="story-name">Jade</div>
+          <div class="story-role">The Catalyst</div>
+          <div class="story-desc">Tina's daughter. Experienced scalp reactivity and shedding in her 20s. Tina told her: "Calm your scalp first." Watched her mom's colleagues die from formaldehyde. Left corporate to make sure it never happens again.</div>
+          <div class="story-tags">
+            <span class="story-tag">Mission / why</span>
+            <span class="story-tag">Personal story</span>
+            <span class="story-tag">Community building</span>
+            <span class="story-tag">Reddit voice</span>
+          </div>
+        </div>
+        <div class="story-person david">
+          <div class="story-avatar">D</div>
+          <div class="story-name">David</div>
+          <div class="story-role">The Builder</div>
+          <div class="story-desc">Saw what Tina and Jade built, went all-in. The business lens, strategic thinking, and "how do we scale this" energy. Building in public.</div>
+          <div class="story-tags">
+            <span class="story-tag">Startup journey</span>
+            <span class="story-tag">Science translator</span>
+            <span class="story-tag">LinkedIn / B2B</span>
+            <span class="story-tag">Industry education</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Platform Strategy -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">Platform Strategy</div>
+      </div>
+      <div class="card-grid" style="grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));">
+        <div class="platform-card">
+          <div class="platform-header">
+            <div class="platform-icon ig">IG</div>
+            <div>
+              <div class="platform-name">Instagram</div>
+              <div class="platform-role">Brand Home Base</div>
+            </div>
+          </div>
+          <div class="platform-stats">
+            <div><div class="platform-stat-label">Frequency</div><div class="platform-stat-val">5-6/wk</div></div>
+            <div><div class="platform-stat-label">Audience</div><div class="platform-stat-val">Mixed</div></div>
+          </div>
+          <div style="font-size:11px;color:var(--text-dim)">60% Universal / 25% Consumer / 15% Pro</div>
+          <div class="platform-bar"><div class="platform-bar-fill" style="width:40%;background:var(--pink)"></div></div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:4px">40% of effort</div>
+        </div>
+        <div class="platform-card">
+          <div class="platform-header">
+            <div class="platform-icon tt">TT</div>
+            <div>
+              <div class="platform-name">TikTok</div>
+              <div class="platform-role">Growth Engine</div>
+            </div>
+          </div>
+          <div class="platform-stats">
+            <div><div class="platform-stat-label">Frequency</div><div class="platform-stat-val">5-7/wk</div></div>
+            <div><div class="platform-stat-label">Audience</div><div class="platform-stat-val">Consumer</div></div>
+          </div>
+          <div style="font-size:11px;color:var(--text-dim)">70% Consumer / 20% Universal / 10% Pro</div>
+          <div class="platform-bar"><div class="platform-bar-fill" style="width:60%;background:var(--cyan)"></div></div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:4px">60% of effort - PRIMARY</div>
+        </div>
+        <div class="platform-card">
+          <div class="platform-header">
+            <div class="platform-icon li">in</div>
+            <div>
+              <div class="platform-name">LinkedIn</div>
+              <div class="platform-role">B2B Stage</div>
+            </div>
+          </div>
+          <div class="platform-stats">
+            <div><div class="platform-stat-label">Frequency</div><div class="platform-stat-val">3-4/wk</div></div>
+            <div><div class="platform-stat-label">Audience</div><div class="platform-stat-val">Pro/B2B</div></div>
+          </div>
+          <div style="font-size:11px;color:var(--text-dim)">80% Pro / 15% Universal / 5% Consumer</div>
+          <div class="platform-bar"><div class="platform-bar-fill" style="width:25%;background:var(--blue)"></div></div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:4px">David's primary platform</div>
+        </div>
+        <div class="platform-card">
+          <div class="platform-header">
+            <div class="platform-icon rd">R</div>
+            <div>
+              <div class="platform-name">Reddit</div>
+              <div class="platform-role">Community Trust</div>
+            </div>
+          </div>
+          <div class="platform-stats">
+            <div><div class="platform-stat-label">Frequency</div><div class="platform-stat-val">3-5/wk</div></div>
+            <div><div class="platform-stat-label">Audience</div><div class="platform-stat-val">Consumer</div></div>
+          </div>
+          <div style="font-size:11px;color:var(--text-dim)">90% Consumer / 10% Universal</div>
+          <div class="platform-bar"><div class="platform-bar-fill" style="width:15%;background:var(--purple)"></div></div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:4px">Jade's voice (u/JadefromAWAREHair)</div>
+        </div>
+        <div class="platform-card">
+          <div class="platform-header">
+            <div class="platform-icon x">X</div>
+            <div>
+              <div class="platform-name">X / Twitter</div>
+              <div class="platform-role">Industry Commentary</div>
+            </div>
+          </div>
+          <div class="platform-stats">
+            <div><div class="platform-stat-label">Frequency</div><div class="platform-stat-val">1-2/day</div></div>
+            <div><div class="platform-stat-label">Audience</div><div class="platform-stat-val">Mixed</div></div>
+          </div>
+          <div style="font-size:11px;color:var(--text-dim)">50% Pro / 40% Universal / 10% Consumer</div>
+          <div class="platform-bar"><div class="platform-bar-fill" style="width:10%;background:var(--text-muted)"></div></div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:4px">David's industry voice</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Pillars - Flow Diagram -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">Content Engine - Pillar Flow</div>
+        <span style="font-size:10px;color:var(--text-muted)">Click any pillar to expand</span>
+      </div>
+      <div class="flow-container">
+        <div class="flow-row">
+          <div class="flow-pillar" style="background:var(--pink-dim);color:var(--pink)" onclick="toggleFlow('origin')">
+            <div class="flow-pillar-pct">25%</div>
+            <div class="flow-pillar-name">Origin Story</div>
+            <div class="flow-pillar-desc">Mother-daughter narrative. Why AWARE exists. Jade + Tina.</div>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-pillar" style="background:var(--blue-dim);color:var(--blue)" onclick="toggleFlow('science')">
+            <div class="flow-pillar-pct">30%</div>
+            <div class="flow-pillar-name">Scalp Science</div>
+            <div class="flow-pillar-desc">4R Protocol, 9 Functions, ingredients. David translates.</div>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-pillar" style="background:var(--green-dim);color:var(--green)" onclick="toggleFlow('proof')">
+            <div class="flow-pillar-pct">20%</div>
+            <div class="flow-pillar-name">Results & Proof</div>
+            <div class="flow-pillar-desc">Before/after, testimonials, salon spotlights, UGC.</div>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-pillar" style="background:var(--cyan-dim);color:var(--cyan)" onclick="toggleFlow('build')">
+            <div class="flow-pillar-pct">15%</div>
+            <div class="flow-pillar-name">The Build</div>
+            <div class="flow-pillar-desc">David's startup journey. Building in public.</div>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-pillar" style="background:var(--purple-dim);color:var(--purple)" onclick="toggleFlow('proedu')">
+            <div class="flow-pillar-pct">10%</div>
+            <div class="flow-pillar-name">Pro Education</div>
+            <div class="flow-pillar-desc">Salon business case. Revenue per service.</div>
+          </div>
+        </div>
+        <!-- Expandable detail panels -->
+        <div class="flow-detail" id="flow-origin">
+          <div class="flow-detail-grid">
+            <div class="flow-detail-item"><div class="flow-detail-label">Voice</div><div class="flow-detail-val">Jade (primary), Tina (B-roll)</div></div>
+            <div class="flow-detail-item"><div class="flow-detail-label">Platforms</div><div class="flow-detail-val">IG Reels, TikTok, Reddit</div></div>
+            <div class="flow-detail-item"><div class="flow-detail-label">Frequency</div><div class="flow-detail-val">3x/week</div></div>
+          </div>
+          <div class="flow-topics">
+            <span class="flow-topic" style="background:var(--pink-dim);color:var(--pink)" onclick="copyHook(this,'9-episode founder story series')">9-ep founder series</span>
+            <span class="flow-topic" style="background:var(--pink-dim);color:var(--pink)" onclick="copyHook(this,'Mom taught me... (weekly Jade sharing Tina wisdom)')">Mom taught me...</span>
+            <span class="flow-topic" style="background:var(--pink-dim);color:var(--pink)" onclick="copyHook(this,'Mother-daughter moments - real, not staged')">Mother-daughter moments</span>
+            <span class="flow-topic" style="background:var(--pink-dim);color:var(--pink)" onclick="copyHook(this,'Tina in action - B-roll of hands, technique, ASMR')">Tina in action</span>
+            <span class="flow-topic" style="background:var(--pink-dim);color:var(--pink)" onclick="copyHook(this,'Why Jade left corporate after formaldehyde tragedy')">Why Jade left corporate</span>
+            <span class="flow-topic" style="background:var(--pink-dim);color:var(--pink)" onclick="copyHook(this,'Calm your scalp first - the advice that started it all')">Calm your scalp first</span>
+          </div>
+        </div>
+        <div class="flow-detail" id="flow-science">
+          <div class="flow-detail-grid">
+            <div class="flow-detail-item"><div class="flow-detail-label">Voice</div><div class="flow-detail-val">David (translator), Tina (visual authority)</div></div>
+            <div class="flow-detail-item"><div class="flow-detail-label">Platforms</div><div class="flow-detail-val">IG Carousels, TikTok, LinkedIn</div></div>
+            <div class="flow-detail-item"><div class="flow-detail-label">Frequency</div><div class="flow-detail-val">4x/week</div></div>
+          </div>
+          <div class="flow-topics">
+            <span class="flow-topic" style="background:var(--blue-dim);color:var(--blue)" onclick="copyHook(this,'9 Functions series - weekly deep dive on each function')">9 Functions series</span>
+            <span class="flow-topic" style="background:var(--blue-dim);color:var(--blue)" onclick="copyHook(this,'4R Protocol breakdown - Repair, Regulate, Restore, Revitalize')">4R Protocol</span>
+            <span class="flow-topic" style="background:var(--blue-dim);color:var(--blue)" onclick="copyHook(this,'Ingredient spotlight (Tahitian Microalgae, SymHair Force, Resisthyal)')">Ingredient spotlights</span>
+            <span class="flow-topic" style="background:var(--blue-dim);color:var(--blue)" onclick="copyHook(this,'Scalp environment 101 - hard water, pollution, UV, stress')">Scalp environment 101</span>
+            <span class="flow-topic" style="background:var(--blue-dim);color:var(--blue)" onclick="copyHook(this,'Myth-busting: what people get wrong about scalp care')">Myth-busting</span>
+            <span class="flow-topic" style="background:var(--blue-dim);color:var(--blue)" onclick="copyHook(this,'What is in most shampoos vs ours - ingredient comparison')">Shampoo comparison</span>
+            <span class="flow-topic" style="background:var(--blue-dim);color:var(--blue)" onclick="copyHook(this,'Hard water + scalp health - how minerals build up')">Hard water effects</span>
+          </div>
+        </div>
+        <div class="flow-detail" id="flow-proof">
+          <div class="flow-detail-grid">
+            <div class="flow-detail-item"><div class="flow-detail-label">Voice</div><div class="flow-detail-val">David (curation), customers (UGC)</div></div>
+            <div class="flow-detail-item"><div class="flow-detail-label">Platforms</div><div class="flow-detail-val">IG Posts, TikTok, Stories</div></div>
+            <div class="flow-detail-item"><div class="flow-detail-label">Frequency</div><div class="flow-detail-val">2-3x/week</div></div>
+          </div>
+          <div class="flow-topics">
+            <span class="flow-topic" style="background:var(--green-dim);color:var(--green)" onclick="copyHook(this,'Before/after transformation photos (with permission)')">Before/after</span>
+            <span class="flow-topic" style="background:var(--green-dim);color:var(--green)" onclick="copyHook(this,'Judge.me review highlights - quote card format')">Review highlights</span>
+            <span class="flow-topic" style="background:var(--green-dim);color:var(--green)" onclick="copyHook(this,'Salon partner spotlight - why they chose AWARE')">Salon spotlights</span>
+            <span class="flow-topic" style="background:var(--green-dim);color:var(--green)" onclick="copyHook(this,'UGC repost with credit - #AwareResults')">UGC reposts</span>
+            <span class="flow-topic" style="background:var(--green-dim);color:var(--green)" onclick="copyHook(this,'30-day scalp challenge results compilation')">30-day challenge</span>
+            <span class="flow-topic" style="background:var(--green-dim);color:var(--green)" onclick="copyHook(this,'96% B2B repurchase rate - what that means')">96% repurchase story</span>
+          </div>
+        </div>
+        <div class="flow-detail" id="flow-build">
+          <div class="flow-detail-grid">
+            <div class="flow-detail-item"><div class="flow-detail-label">Voice</div><div class="flow-detail-val">David (primary)</div></div>
+            <div class="flow-detail-item"><div class="flow-detail-label">Platforms</div><div class="flow-detail-val">LinkedIn, TikTok, IG Reels</div></div>
+            <div class="flow-detail-item"><div class="flow-detail-label">Frequency</div><div class="flow-detail-val">2x/week</div></div>
+          </div>
+          <div class="flow-topics">
+            <span class="flow-topic" style="background:var(--cyan-dim);color:var(--cyan)" onclick="copyHook(this,'Trade show recaps - CosmoProf, beauty events')">Trade show recaps</span>
+            <span class="flow-topic" style="background:var(--cyan-dim);color:var(--cyan)" onclick="copyHook(this,'Today we signed salon #___ - what I learned')">Salon signing milestones</span>
+            <span class="flow-topic" style="background:var(--cyan-dim);color:var(--cyan)" onclick="copyHook(this,'Why we said no to mass retail - salon-exclusive strategy')">Why we said no to retail</span>
+            <span class="flow-topic" style="background:var(--cyan-dim);color:var(--cyan)" onclick="copyHook(this,'We spend 20x more on fragrance - here is why')">20x fragrance cost</span>
+            <span class="flow-topic" style="background:var(--cyan-dim);color:var(--cyan)" onclick="copyHook(this,'$125K in 6 months, 96% repurchase, zero returns')">Revenue milestones</span>
+            <span class="flow-topic" style="background:var(--cyan-dim);color:var(--cyan)" onclick="copyHook(this,'What nobody tells you about starting a beauty brand')">Startup realities</span>
+          </div>
+        </div>
+        <div class="flow-detail" id="flow-proedu">
+          <div class="flow-detail-grid">
+            <div class="flow-detail-item"><div class="flow-detail-label">Voice</div><div class="flow-detail-val">David + Tina (demonstrations)</div></div>
+            <div class="flow-detail-item"><div class="flow-detail-label">Platforms</div><div class="flow-detail-val">LinkedIn, IG, YouTube (future)</div></div>
+            <div class="flow-detail-item"><div class="flow-detail-label">Frequency</div><div class="flow-detail-val">1-2x/week</div></div>
+          </div>
+          <div class="flow-topics">
+            <span class="flow-topic" style="background:var(--purple-dim);color:var(--purple)" onclick="copyHook(this,'Scalp consultation walkthrough - how to assess a client')">Consultation walkthrough</span>
+            <span class="flow-topic" style="background:var(--purple-dim);color:var(--purple)" onclick="copyHook(this,'Revenue per service - adding scalp care to your menu')">Revenue per service</span>
+            <span class="flow-topic" style="background:var(--purple-dim);color:var(--purple)" onclick="copyHook(this,'Client conversation scripts - how to talk about scalp health')">Client conversation scripts</span>
+            <span class="flow-topic" style="background:var(--purple-dim);color:var(--purple)" onclick="copyHook(this,'Why salons are adding scalp services - industry trend')">Scalp services trend</span>
+            <span class="flow-topic" style="background:var(--purple-dim);color:var(--purple)" onclick="copyHook(this,'Product application technique videos - Tina demonstrating')">Application technique</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 90-Day Timeline -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">90-Day Timeline</div>
+      </div>
+      <div class="card-grid-3">
+        <div class="card" style="border-top:3px solid var(--accent)">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--accent);margin-bottom:8px;font-weight:600">Month 1: Foundation & Story</div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:8px">Establish narrative & rhythm</div>
+          <div style="font-size:12px;color:var(--text-dim);margin-bottom:12px">Launch founder story series, set up all platforms, build content bank, start LinkedIn presence</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px">
+            <span class="tl-target">IG: 4K > 5.5K</span>
+            <span class="tl-target">TT: 0 > 3K</span>
+            <span class="tl-target">LI: 500+ new</span>
+            <span class="tl-target">20+ IG posts</span>
+            <span class="tl-target">20+ TT posts</span>
+          </div>
+        </div>
+        <div class="card" style="border-top:3px solid var(--blue)">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--blue);margin-bottom:8px;font-weight:600">Month 2: Authority & Community</div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:8px">Educational authority + engagement</div>
+          <div style="font-size:12px;color:var(--text-dim);margin-bottom:12px">9 Functions series, 4R Protocol content, UGC engine launch, micro-influencer seeding begins</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px">
+            <span class="tl-target">IG: 5.5K > 7K</span>
+            <span class="tl-target">TT: 3K > 7K</span>
+            <span class="tl-target">15+ UGC</span>
+            <span class="tl-target">150 emails</span>
+            <span class="tl-target">2%+ IG eng.</span>
+          </div>
+        </div>
+        <div class="card" style="border-top:3px solid var(--green)">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--green);margin-bottom:8px;font-weight:600">Month 3: Conversion & Scale</div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:8px">Convert awareness to action</div>
+          <div style="font-size:12px;color:var(--text-dim);margin-bottom:12px">30-day challenge, community compilation, conversion-focused content, B2B case studies</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px">
+            <span class="tl-target">IG: 8K+</span>
+            <span class="tl-target">TT: 10K+</span>
+            <span class="tl-target">$5K+ social rev</span>
+            <span class="tl-target">5+ salon leads</span>
+            <span class="tl-target">3 inbound B2B</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============================================ -->
+  <!-- TAB 2: CONTENT CALENDAR -->
+  <!-- ============================================ -->
+  <div class="panel" id="panel-calendar">
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">Content Calendar</div>
+        <div style="display:flex;gap:8px">
+          <button class="btn" onclick="openAddPost()">+ Add Post</button>
+        </div>
+      </div>
+      <div class="calendar">
+        <div class="cal-header">
+          <div class="cal-nav">
+            <button onclick="changeWeek(-1)">&larr;</button>
+            <span class="cal-week-label" id="cal-week-label">Week 1</span>
+            <button onclick="changeWeek(1)">&rarr;</button>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span style="font-size:10px;color:var(--text-muted)" id="cal-progress">0/0 posted</span>
+          </div>
+        </div>
+        <div class="cal-grid">
+          <div class="cal-day-header">Mon</div>
+          <div class="cal-day-header">Tue</div>
+          <div class="cal-day-header">Wed</div>
+          <div class="cal-day-header">Thu</div>
+          <div class="cal-day-header">Fri</div>
+          <div class="cal-day-header">Sat</div>
+          <div class="cal-day-header">Sun</div>
+          <div class="cal-day" id="cal-day-0"></div>
+          <div class="cal-day" id="cal-day-1"></div>
+          <div class="cal-day" id="cal-day-2"></div>
+          <div class="cal-day" id="cal-day-3"></div>
+          <div class="cal-day" id="cal-day-4"></div>
+          <div class="cal-day" id="cal-day-5"></div>
+          <div class="cal-day" id="cal-day-6"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- TAB 3: TODAY -->
+  <!-- ============================================ -->
+  <div class="panel" id="panel-today">
+    <div class="card-grid-2">
+      <div>
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">Today's Posts</div>
+            <button class="btn" onclick="openAddPost()">+ Add</button>
+          </div>
+          <div class="post-list" id="today-posts">
+            <div style="padding:20px;text-align:center;color:var(--text-muted);font-size:12px">No posts scheduled for today. Add some from the Calendar tab.</div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">Daily Checklist</div>
+          </div>
+          <div class="post-list" id="daily-checklist"></div>
+        </div>
+      </div>
+      <div>
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">Quick Stats</div>
+          </div>
+          <div class="card" style="margin-bottom:12px">
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">WEEK PROGRESS</div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span style="font-size:12px">Posts completed</span>
+              <span style="font-size:12px;font-weight:600" id="week-done">0</span>
+            </div>
+            <div class="platform-bar" style="margin:4px 0 12px"><div class="platform-bar-fill" style="background:var(--green)" id="week-bar"></div></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span style="font-size:12px">Posts remaining</span>
+              <span style="font-size:12px;font-weight:600" id="week-remaining">0</span>
+            </div>
+          </div>
+          <div class="card">
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">STORY SERIES PROGRESS</div>
+            <div id="story-progress"></div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">Quick Ideas</div>
+            <button class="section-action" onclick="generateIdea()">Generate</button>
+          </div>
+          <div class="card" id="quick-idea" style="font-size:12px;color:var(--text-dim)">
+            Click "Generate" for a random content idea based on your pillars and hooks.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- TAB 4: METRICS -->
+  <!-- ============================================ -->
+  <div class="panel" id="panel-metrics">
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">Weekly Metrics Tracker</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-size:10px;color:var(--text-muted)">Week:</span>
+          <select id="metrics-week-select" onchange="renderMetrics()" style="background:var(--surface);border:1px solid var(--border);color:var(--text);padding:4px 8px;border-radius:4px;font-size:11px">
+          </select>
+          <button class="btn" onclick="exportMetrics()">Export CSV</button>
+        </div>
+      </div>
+      <div class="card" style="overflow-x:auto">
+        <table class="metrics-table">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th style="text-align:center">Instagram</th>
+              <th style="text-align:center">TikTok</th>
+              <th style="text-align:center">LinkedIn</th>
+              <th style="text-align:center">Total</th>
+              <th style="text-align:center">Target</th>
+            </tr>
+          </thead>
+          <tbody id="metrics-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">Notes</div>
+      </div>
+      <div class="card">
+        <textarea id="metrics-notes" style="width:100%;min-height:80px;background:transparent;border:none;color:var(--text-dim);font-size:12px;resize:vertical;outline:none;font-family:inherit" placeholder="What worked this week? What didn't? Key observations..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- TAB 5: CONTENT BANK -->
+  <!-- ============================================ -->
+  <div class="panel" id="panel-content">
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">Content Topics</div>
+        <span style="font-size:10px;color:var(--text-muted)">Click to expand, then click hooks to copy</span>
+      </div>
+      <div class="topic-grid" id="content-topics"></div>
+    </div>
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">Caption Templates</div>
+      </div>
+      <div class="topic-grid" id="caption-templates"></div>
+    </div>
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">Hashtag Sets</div>
+        <span style="font-size:10px;color:var(--text-muted)">Click to copy set</span>
+      </div>
+      <div class="card-grid" id="hashtag-sets"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Add Post Modal -->
+<div class="modal-overlay" id="add-post-modal">
+  <div class="modal">
+    <h3>Add Post</h3>
+    <label>Title / Description</label>
+    <input type="text" id="post-title-input" placeholder="e.g. Story Ep 1 - Tina's salon legacy">
+    <label>Platform</label>
+    <select id="post-platform-input">
+      <option value="ig">Instagram</option>
+      <option value="tt">TikTok</option>
+      <option value="li">LinkedIn</option>
+      <option value="rd">Reddit</option>
+      <option value="x">X / Twitter</option>
+    </select>
+    <label>Format</label>
+    <select id="post-format-input">
+      <option value="reel">Reel / Video</option>
+      <option value="carousel">Carousel</option>
+      <option value="static">Static / Image</option>
+      <option value="story">Story</option>
+    </select>
+    <label>Person</label>
+    <select id="post-person-input">
+      <option value="jade">Jade</option>
+      <option value="david">David</option>
+      <option value="tina">Tina</option>
+    </select>
+    <label>Day of Week</label>
+    <select id="post-day-input">
+      <option value="0">Monday</option>
+      <option value="1">Tuesday</option>
+      <option value="2">Wednesday</option>
+      <option value="3">Thursday</option>
+      <option value="4">Friday</option>
+      <option value="5">Saturday</option>
+      <option value="6">Sunday</option>
+    </select>
+    <label>Notes (optional)</label>
+    <textarea id="post-notes-input" placeholder="Hook ideas, talking points, script notes..."></textarea>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeAddPost()">Cancel</button>
+      <button class="btn primary" onclick="savePost()">Add Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ==========================================
+// STATE MANAGEMENT
+// ==========================================
+const STORAGE_KEY = 'aware-social-dashboard';
+
+function getState() {
+  try {
+    const s = localStorage.getItem(STORAGE_KEY);
+    return s ? JSON.parse(s) : null;
+  } catch(e) { return null; }
+}
+
+function saveState(state) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+let state = getState() || {
+  currentWeek: 1,
+  stats: {
+    'ig-followers': '4,083',
+    'tt-followers': '0',
+    'li-connections': '--',
+    'content-banked': '0'
+  },
+  posts: getDefaultPosts(),
+  checklist: {},
+  metrics: {},
+  metricsNotes: {},
+  storyEpisodes: {}
+};
+
+function persist() { saveState(state); }
+
+// ==========================================
+// DEFAULT CONTENT
+// ==========================================
+function getDefaultPosts() {
+  return [
+    // Week 1
+    { id:'w1-1', week:1, day:0, title:'Story Ep 1 - Tina\'s salon legacy', platform:'ig', format:'reel', person:'jade', done:false, notes:'Direct to camera, 45-60 sec. Hook: "My mom has been a hairstylist for over 40 years..."' },
+    { id:'w1-2', week:1, day:1, title:'What is your scalp environment?', platform:'ig', format:'carousel', person:'david', done:false, notes:'8-slide breakdown of environmental factors affecting scalp' },
+    { id:'w1-3', week:1, day:3, title:'Why I\'m building a scalp care company', platform:'ig', format:'reel', person:'david', done:false, notes:'30-45 sec, direct to camera. Builder story angle.' },
+    { id:'w1-4', week:1, day:4, title:'Customer testimonial highlight', platform:'ig', format:'static', person:'david', done:false, notes:'Quote card design. Use real Judge.me review.' },
+    { id:'w1-5', week:1, day:5, title:'Tina demonstrates scalp care application', platform:'ig', format:'reel', person:'tina', done:false, notes:'ASMR B-roll of Tina\'s hands, product textures. David voiceover.' },
+    { id:'w1-t1', week:1, day:0, title:'Story Ep 1 (TikTok cut)', platform:'tt', format:'reel', person:'jade', done:false, notes:'Faster pacing, stronger hook for TikTok' },
+    { id:'w1-t2', week:1, day:1, title:'Why your shampoo is destroying your scalp', platform:'tt', format:'reel', person:'david', done:false, notes:'Educational, 30 sec' },
+    { id:'w1-t3', week:1, day:2, title:'ASMR product application', platform:'tt', format:'reel', person:'tina', done:false, notes:'Satisfying textures, Tina B-roll' },
+    { id:'w1-t4', week:1, day:3, title:'I quit my job to make shampoo', platform:'tt', format:'reel', person:'david', done:false, notes:'Startup story angle' },
+    { id:'w1-t5', week:1, day:4, title:'Things my trichologist mom taught me', platform:'tt', format:'reel', person:'jade', done:false, notes:'Relatable, warm' },
+    { id:'w1-t6', week:1, day:5, title:'Trend-reactive (TBD)', platform:'tt', format:'reel', person:'jade', done:false, notes:'Brand-appropriate trend of the week' },
+    { id:'w1-t7', week:1, day:6, title:'What\'s actually in most shampoos vs ours', platform:'tt', format:'reel', person:'david', done:false, notes:'Comparison angle' },
+    { id:'w1-l1', week:1, day:0, title:'Building a salon-exclusive beauty brand', platform:'li', format:'static', person:'david', done:false, notes:'$125K rev, 35 salons, 96% repurchase. Lessons learned.' },
+    { id:'w1-l2', week:1, day:2, title:'Calm your scalp first. Then decide.', platform:'li', format:'static', person:'david', done:false, notes:'Tina-Jade story, founding narrative, brand intro' },
+    { id:'w1-l3', week:1, day:4, title:'Industry insight: scalp care market shift', platform:'li', format:'static', person:'david', done:false, notes:'Thought leadership on scalp-first movement' },
+    // Week 2
+    { id:'w2-1', week:2, day:0, title:'Story Ep 2 - Jade\'s scalp crisis', platform:'ig', format:'reel', person:'jade', done:false, notes:'Personal hair struggle, what happened in her 20s' },
+    { id:'w2-2', week:2, day:1, title:'9 Functions #1 - Cleanses', platform:'ig', format:'carousel', person:'david', done:false, notes:'Deep dive on cleansing function, 8-10 slides' },
+    { id:'w2-3', week:2, day:3, title:'Customer result / testimonial', platform:'ig', format:'static', person:'david', done:false, notes:'Before/after or review highlight' },
+    { id:'w2-4', week:2, day:4, title:'Mom taught me... (weekly)', platform:'ig', format:'reel', person:'jade', done:false, notes:'Jade sharing Tina\'s wisdom' },
+    { id:'w2-5', week:2, day:5, title:'Salon partner #35 milestone', platform:'ig', format:'static', person:'david', done:false, notes:'Builder content - growth milestone' },
+    { id:'w2-t1', week:2, day:0, title:'Story Ep 2 (TikTok)', platform:'tt', format:'reel', person:'jade', done:false },
+    { id:'w2-t2', week:2, day:1, title:'9 Functions #1 quick explainer', platform:'tt', format:'reel', person:'david', done:false },
+    { id:'w2-t3', week:2, day:2, title:'Trend-reactive', platform:'tt', format:'reel', person:'jade', done:false },
+    { id:'w2-t4', week:2, day:3, title:'ASMR conditioner application', platform:'tt', format:'reel', person:'tina', done:false },
+    { id:'w2-t5', week:2, day:4, title:'Today we signed salon #36', platform:'tt', format:'reel', person:'david', done:false },
+    { id:'w2-t6', week:2, day:5, title:'Scalp barrier 101', platform:'tt', format:'reel', person:'david', done:false },
+    { id:'w2-l1', week:2, day:1, title:'Salon partner milestone + what we learned', platform:'li', format:'static', person:'david', done:false },
+    { id:'w2-l2', week:2, day:3, title:'Why we turned down mass retail', platform:'li', format:'static', person:'david', done:false },
+    // Week 3-4 (abbreviated, user will fill in)
+    { id:'w3-1', week:3, day:0, title:'Story Ep 3 - "Calm your scalp first"', platform:'ig', format:'reel', person:'jade', done:false },
+    { id:'w3-2', week:3, day:1, title:'9 Functions #2 - Nourishes', platform:'ig', format:'carousel', person:'david', done:false },
+    { id:'w3-3', week:3, day:3, title:'Tahitian Microalgae ingredient spotlight', platform:'ig', format:'carousel', person:'david', done:false },
+    { id:'w3-l1', week:3, day:1, title:'CosmoProf recap + industry insights', platform:'li', format:'static', person:'david', done:false },
+    { id:'w4-1', week:4, day:0, title:'Story Ep 4 - The tragedy', platform:'ig', format:'reel', person:'jade', done:false },
+    { id:'w4-2', week:4, day:1, title:'9 Functions #3 - Hydrates', platform:'ig', format:'carousel', person:'david', done:false },
+    { id:'w4-3', week:4, day:3, title:'Before/after transformation', platform:'ig', format:'carousel', person:'david', done:false },
+    { id:'w4-l1', week:4, day:1, title:'Business lesson: why salon-exclusive works', platform:'li', format:'static', person:'david', done:false },
+  ];
+}
+
+// ==========================================
+// HOOKS & CONTENT BANK DATA
+// ==========================================
+const CONTENT_TOPICS = [
+  {
+    id: 'founder-series',
+    title: '9-Episode Founder Story Series',
+    pillar: 'Origin',
+    color: 'pink',
+    voice: 'Jade',
+    platforms: ['IG Reel', 'TikTok'],
+    frequency: '1/week for 9 weeks',
+    hooks: [
+      'My mom has been behind the chair for 40 years...',
+      'I watched my mom\'s colleagues get sick from formaldehyde. Then some of them died.',
+      'I was losing my hair at 22. My mom said: "Calm your scalp first."',
+      'This is what 6 years of product development looks like...',
+      'We spent 20x more on fragrance. My mom wouldn\'t have it any other way.',
+    ],
+    script: 'Direct to camera, 45-60 sec per episode. Each ends with "Follow for the rest of our story." Episodes: 1) Tina\'s legacy 2) Jade\'s scalp crisis 3) "Calm your scalp first" 4) The tragedy 5) Leaving corporate 6) 6 years of R&D 7) Natural fragrance (20x cost) 8) First salon pilot 9) Where we\'re going',
+    notes: 'Jade is the narrator. Tina appears in B-roll, not talking. Authentic, not polished. Film in natural light.'
+  },
+  {
+    id: 'scalp-science',
+    title: '9 Functions Deep Dive Series',
+    pillar: 'Science',
+    color: 'blue',
+    voice: 'David',
+    platforms: ['IG Carousel', 'TikTok', 'LinkedIn'],
+    frequency: '1/week for 9 weeks',
+    hooks: [
+      'Your shampoo should do 9 things. Most do 1.',
+      'Your scalp has a microbiome. Most shampoos destroy it.',
+      'The difference between cleaning your scalp and caring for it.',
+      'Why your scalp itches after washing (hint: it shouldn\'t)',
+    ],
+    script: 'Each week covers one function: 1) Cleanses 2) Nourishes 3) Hydrates 4) Calms 5) Protects 6) Strengthens 7) Balances 8) Repairs 9) Revitalizes. IG carousel = 8-10 slides. TikTok = 30 sec explainer. LinkedIn = long-form post.',
+    notes: 'David translates Tina\'s clinical knowledge into normal language. Use "I asked Tina..." framing.'
+  },
+  {
+    id: 'ingredients',
+    title: 'Ingredient Spotlight Series',
+    pillar: 'Science',
+    color: 'blue',
+    voice: 'David',
+    platforms: ['IG Carousel', 'TikTok'],
+    frequency: 'Biweekly',
+    hooks: [
+      'This ingredient costs 20x more than synthetic. Here\'s why we use it.',
+      'Tahitian Microalgae: why we source from the other side of the world',
+      'Hard water is doing this to your scalp right now.',
+      'The science behind why [common belief] is wrong...',
+    ],
+    script: 'Format: Problem > Ingredient > How it works > Why it matters. Key ingredients: Tahitian Microalgae, SymHair Force, Resisthyal, Green Tea Extract, Turmeric, Keratin. Always connect back to scalp environment.',
+    notes: 'Reference actual research when possible. No medical claims. "Supports" not "treats."'
+  },
+  {
+    id: 'myth-busting',
+    title: 'Myth-Busting / What You\'re Getting Wrong',
+    pillar: 'Science',
+    color: 'blue',
+    voice: 'David + Jade',
+    platforms: ['TikTok', 'IG Reel'],
+    frequency: '2x/week',
+    hooks: [
+      'Everyone thinks [X] but actually...',
+      'Stop doing [common practice] - here\'s why...',
+      'You\'ve been washing your hair wrong - try this instead...',
+      'This hair advice went viral but it\'s actually harmful...',
+      'Your stylist won\'t tell you this but...',
+      '[X]% of people don\'t know this about their scalp...',
+    ],
+    script: 'Quick format, 15-30 sec. State the myth > explain why it\'s wrong > give the right answer. High share potential. Use green screen or split screen format.',
+    notes: 'Best performer for reach and shares. Don\'t trash specific brands, challenge ideas instead.'
+  },
+  {
+    id: 'builder-journey',
+    title: 'David\'s Builder / Startup Journey',
+    pillar: 'Build',
+    color: 'cyan',
+    voice: 'David',
+    platforms: ['LinkedIn', 'TikTok', 'IG Reel'],
+    frequency: '2-3x/week',
+    hooks: [
+      'Walked into a salon with a bag of samples and zero appointments...',
+      'Today we signed salon #___. Here\'s what I learned.',
+      '$125K in 6 months. 96% repurchase. Zero returns.',
+      'Everyone asked why we turned down [retailer]. Here\'s why.',
+      'What nobody tells you about starting a beauty brand...',
+      'What I learned from a 40-year trichologist...',
+    ],
+    script: 'LinkedIn: 200-400 word posts, vulnerable/real. TikTok: 30-60 sec direct to camera. Format: Moment > What happened > Lesson > Question for engagement.',
+    notes: 'LinkedIn is David\'s primary platform. Building in public, real numbers, honest lessons. Never brag, always teach.'
+  },
+  {
+    id: 'results-proof',
+    title: 'Results / Social Proof / UGC',
+    pillar: 'Proof',
+    color: 'green',
+    voice: 'David (curation) + customers',
+    platforms: ['IG Post', 'TikTok', 'Stories'],
+    frequency: '2-3x/week',
+    hooks: [
+      'What 30 days of scalp-first haircare looks like...',
+      'Before I fixed my scalp barrier vs after...',
+      'My hair felt this way until I learned...',
+      'The first time I used [product], this happened...',
+    ],
+    script: 'Quote cards from Judge.me reviews. Before/after with permission. Salon partner spotlights: "Why [salon name] chose AWARE." UGC reposts with credit. #AwareResults tag.',
+    notes: 'Always get permission for before/after. Tag and credit UGC creators. Salon spotlights double as B2B proof.'
+  },
+  {
+    id: 'mom-taught-me',
+    title: '"Mom Taught Me..." Weekly Series',
+    pillar: 'Origin',
+    color: 'pink',
+    voice: 'Jade',
+    platforms: ['TikTok', 'IG Reel'],
+    frequency: 'Weekly (recurring)',
+    hooks: [
+      'Things my trichologist mom taught me that nobody else will...',
+      'My mom has been a hairstylist for 40 years. This is what she taught me about [topic].',
+      'Growing up, my mom always said...',
+    ],
+    script: 'Jade sharing one piece of Tina\'s wisdom per week. Warm, relatable, not clinical. Format: "My mom always told me..." > what it means > why it matters to you.',
+    notes: 'Recurring series, builds familiarity. Can reference back to 9 Functions or ingredients naturally.'
+  },
+  {
+    id: 'pro-education',
+    title: 'Professional / Salon Education',
+    pillar: 'Pro',
+    color: 'purple',
+    voice: 'David + Tina (demonstrations)',
+    platforms: ['LinkedIn', 'IG'],
+    frequency: '1-2x/week',
+    hooks: [
+      'Your clients are asking about scalp care. Here\'s how to answer.',
+      'Adding scalp services increased this salon\'s revenue by [X]%',
+      'The business case for professional-exclusive scalp care',
+    ],
+    script: 'LinkedIn: Salon business case, revenue data, industry trends. IG: Tina demonstrating techniques (B-roll, no talking needed). Client conversation scripts for stylists.',
+    notes: 'B2B content. Speaks to salon owners and stylists as peers. Data-driven where possible.'
+  },
+  {
+    id: 'reddit-voice',
+    title: 'Reddit Community Engagement',
+    pillar: 'Proof',
+    color: 'purple',
+    voice: 'Jade (u/JadefromAWAREHair)',
+    platforms: ['Reddit'],
+    frequency: '3-5x/week',
+    hooks: [
+      'Fair question about pricing. Here\'s the breakdown...',
+      'I\'m a co-founder of AWARE Hair and here\'s what I can share...',
+      'My mom is a trichologist and she always says...',
+    ],
+    script: 'Empathetic opening > Science-based explanation > Practical recommendation > Full disclosure: "I\'m a co-founder of AWARE Hair, so take this with a grain of salt, but..."',
+    notes: 'Always transparent. Never hard-sell. Educate first. Follow reddit-brand-voice.md guidelines. Key subs: r/haircare, r/tressless, r/curlyhair.'
+  },
+];
+
+// Keep old HOOKS for backward compat with idea generator
+const HOOKS = {};
+CONTENT_TOPICS.forEach(t => { if (!HOOKS[t.pillar]) HOOKS[t.pillar] = []; HOOKS[t.pillar].push(...t.hooks); });
+
+const CAPTION_TEMPLATES = [
+  { title:'Educational Post', who:'David', template:'[Hook: surprising fact or question]\n\n[2-3 sentences of explanation]\n\n[Practical takeaway]\n\n[Soft CTA: "Save this" or "Share with someone who needs it"]' },
+  { title:'Founder Story', who:'Jade', template:'[Emotional moment or surprising fact]\n\n[2-3 sentences of personal context]\n\n[Connection to why AWARE exists]\n\n[CTA: "Have you experienced this?"]' },
+  { title:'Builder Journey', who:'David', template:'[Specific moment or metric]\n\n[What happened and why it matters]\n\n[Lesson or insight]\n\n[Question to drive engagement]' },
+  { title:'Product Feature', who:'David', template:'[Problem statement - relatable]\n\n[How this product addresses it]\n\n[One proof point]\n\n[CTA - link in bio, DM for samples]' },
+  { title:'Salon Spotlight', who:'David', template:'[Partner name + location]\n\n[Why they chose AWARE]\n\n[Results they\'ve seen]\n\n[Tag salon, CTA for other salons]' },
+  { title:'Reddit Response', who:'Jade', template:'[Empathetic opening]\n\n[Science-based explanation]\n\n[Practical recommendation]\n\n[Full disclosure: "I\'m a co-founder of AWARE Hair..."]' },
+];
+
+const HASHTAG_SETS = [
+  { name:'Primary (Every post)', tags:['#scalpcare','#scalphealth','#professionalhaircare','#awarehair'] },
+  { name:'Education', tags:['#scalpenvironment','#hairscience','#ingredienteducation','#trichology','#scalpbarrier'] },
+  { name:'Results', tags:['#awareresults','#hairtransformation','#healthyscalp','#scalpfirst','#beforeandafter'] },
+  { name:'Professional', tags:['#salonlife','#hairstylist','#salonowner','#backbar','#salonprofessional'] },
+  { name:'Story/Brand', tags:['#founderstory','#beautybrand','#startuplife','#missiondriven','#buildinpublic'] },
+];
+
+const DAILY_CHECKLIST_ITEMS = [
+  { id:'dc-1', label:'Respond to all comments (within 2 hrs of posting)' },
+  { id:'dc-2', label:'Reply to DMs' },
+  { id:'dc-3', label:'Post 1-2 Stories (BTS, polls, real-time)' },
+  { id:'dc-4', label:'Engage with 5-10 accounts in niche (comment, like)' },
+  { id:'dc-5', label:'Check for UGC / #AwareResults tags' },
+  { id:'dc-6', label:'Review trending audio/formats (TikTok)' },
+];
+
+const METRICS_ROWS = [
+  { key:'followers', label:'Followers', target:'Grow 5%/wk' },
+  { key:'posts', label:'Posts Published', target:'15-20' },
+  { key:'reach', label:'Reach', target:'Growing' },
+  { key:'engagement_rate', label:'Engagement Rate', target:'2%+ IG, 4%+ TT' },
+  { key:'saves', label:'Saves (IG)', target:'Growing' },
+  { key:'shares', label:'Shares', target:'Growing' },
+  { key:'profile_visits', label:'Profile Visits', target:'Growing' },
+  { key:'website_clicks', label:'Website Clicks', target:'50+/wk' },
+  { key:'dms', label:'DMs Received', target:'Track' },
+  { key:'ugc', label:'UGC Posts', target:'5+/wk' },
+  { key:'email_signups', label:'Email Signups (from social)', target:'50+/mo' },
+];
+
+// ==========================================
+// TAB SWITCHING
+// ==========================================
+function switchTab(name, e) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const src = e ? e.target.closest('.tab') : document.querySelector(`.tab[onclick*="${name}"]`);
+  if (src) src.classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
+  if (name === 'calendar') renderCalendar();
+  if (name === 'today') renderToday();
+  if (name === 'metrics') renderMetrics();
+  if (name === 'content') renderContentBank();
+}
+
+// ==========================================
+// STAT EDITING
+// ==========================================
+function editStat(btn) {
+  const card = btn.closest('.stat');
+  const valEl = card.querySelector('.stat-val');
+  const key = valEl.dataset.metric;
+  const current = valEl.textContent;
+  valEl.innerHTML = `<input class="stat-input" value="${current}" onblur="saveStat(this,'${key}')" onkeydown="if(event.key==='Enter')this.blur()">`;
+  valEl.querySelector('input').focus();
+  valEl.querySelector('input').select();
+}
+
+function saveStat(input, key) {
+  const val = input.value.trim() || '--';
+  state.stats[key] = val;
+  persist();
+  const valEl = input.closest('.stat-val');
+  valEl.textContent = val;
+  showToast('Saved');
+}
+
+function loadStats() {
+  Object.entries(state.stats).forEach(([key, val]) => {
+    const el = document.querySelector(`[data-metric="${key}"]`);
+    if (el) el.textContent = val;
+  });
+}
+
+// ==========================================
+// CALENDAR
+// ==========================================
+function renderCalendar() {
+  const week = state.currentWeek;
+  document.getElementById('cal-week-label').textContent = `Week ${week}`;
+  const weekPosts = state.posts.filter(p => p.week === week);
+  const done = weekPosts.filter(p => p.done).length;
+  document.getElementById('cal-progress').textContent = `${done}/${weekPosts.length} posted`;
+
+  for (let d = 0; d < 7; d++) {
+    const dayEl = document.getElementById('cal-day-' + d);
+    const dayNames = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const dayPosts = weekPosts.filter(p => p.day === d);
+    dayEl.innerHTML = `<div class="cal-day-num">${dayNames[d]}</div>` +
+      dayPosts.map(p => `
+        <div class="cal-post ${p.platform} ${p.done ? 'done' : ''}" onclick="togglePost('${p.id}')">
+          <span class="check">${p.done ? '&#10003;' : ''}</span>
+          <span>${truncate(p.title, 28)}</span>
+        </div>
+      `).join('');
+  }
+
+  // Update tab count
+  const pending = state.posts.filter(p => !p.done).length;
+  document.getElementById('cal-pending-count').textContent = pending;
+}
+
+function changeWeek(delta) {
+  state.currentWeek = Math.max(1, Math.min(12, state.currentWeek + delta));
+  persist();
+  renderCalendar();
+}
+
+function togglePost(id) {
+  const post = state.posts.find(p => p.id === id);
+  if (post) {
+    post.done = !post.done;
+    persist();
+    renderCalendar();
+    renderToday();
+    updateWeekStats();
+    showToast(post.done ? 'Marked as posted' : 'Marked as pending');
+  }
+}
+
+// ==========================================
+// TODAY VIEW
+// ==========================================
+function renderToday() {
+  const today = new Date().getDay();
+  const dayIndex = today === 0 ? 6 : today - 1; // Convert Sun=0 to Mon=0
+  const todayPosts = state.posts.filter(p => p.week === state.currentWeek && p.day === dayIndex);
+
+  const container = document.getElementById('today-posts');
+  document.getElementById('today-count').textContent = todayPosts.filter(p => !p.done).length;
+
+  if (todayPosts.length === 0) {
+    container.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:12px">No posts scheduled for today.</div>';
+  } else {
+    container.innerHTML = todayPosts.map(p => `
+      <div class="post-item ${p.done ? 'done' : ''}" onclick="togglePost('${p.id}')">
+        <div class="post-check">${p.done ? '&#10003;' : ''}</div>
+        <div class="post-body">
+          <div class="post-title">${p.title}</div>
+          <div class="post-meta">
+            <span class="post-tag ${p.platform}">${platformLabel(p.platform)}</span>
+            <span class="post-tag ${p.format}">${p.format}</span>
+            <span class="post-tag person">${p.person}</span>
+          </div>
+          ${p.notes ? `<div style="font-size:11px;color:var(--text-muted);margin-top:6px">${p.notes}</div>` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Daily checklist
+  const clContainer = document.getElementById('daily-checklist');
+  const todayKey = new Date().toISOString().split('T')[0];
+  if (!state.checklist[todayKey]) state.checklist[todayKey] = {};
+
+  clContainer.innerHTML = DAILY_CHECKLIST_ITEMS.map(item => {
+    const done = state.checklist[todayKey]?.[item.id] || false;
+    return `
+      <div class="post-item ${done ? 'done' : ''}" onclick="toggleChecklist('${todayKey}','${item.id}')">
+        <div class="post-check">${done ? '&#10003;' : ''}</div>
+        <div class="post-body">
+          <div class="post-title">${item.label}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  updateWeekStats();
+  renderStoryProgress();
+}
+
+function toggleChecklist(day, id) {
+  if (!state.checklist[day]) state.checklist[day] = {};
+  state.checklist[day][id] = !state.checklist[day][id];
+  persist();
+  renderToday();
+}
+
+function updateWeekStats() {
+  const weekPosts = state.posts.filter(p => p.week === state.currentWeek);
+  const done = weekPosts.filter(p => p.done).length;
+  const total = weekPosts.length;
+  document.getElementById('week-done').textContent = `${done}/${total}`;
+  document.getElementById('week-remaining').textContent = total - done;
+  document.getElementById('week-bar').style.width = total > 0 ? ((done/total)*100) + '%' : '0%';
+  document.getElementById('posts-this-week').textContent = done;
+}
+
+function renderStoryProgress() {
+  const container = document.getElementById('story-progress');
+  const episodes = [
+    { ep:1, title:'Tina\'s salon legacy' },
+    { ep:2, title:'Jade\'s scalp crisis' },
+    { ep:3, title:'"Calm your scalp first"' },
+    { ep:4, title:'Tina\'s colleagues - the formaldehyde tragedy' },
+    { ep:5, title:'Jade leaves corporate' },
+    { ep:6, title:'6 years of development' },
+    { ep:7, title:'Natural fragrance (20x cost)' },
+    { ep:8, title:'First salon pilot' },
+    { ep:9, title:'Where we\'re going' },
+  ];
+  container.innerHTML = episodes.map(ep => {
+    const done = state.storyEpisodes?.[ep.ep] || false;
+    return `
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0;cursor:pointer;${done?'opacity:0.5':''}" onclick="toggleEpisode(${ep.ep})">
+        <div style="width:14px;height:14px;border-radius:4px;border:1px solid ${done?'var(--green)':'var(--border-light)'};display:flex;align-items:center;justify-content:center;font-size:8px;${done?'background:var(--green-dim);color:var(--green)':''}">${done?'&#10003;':''}</div>
+        <span style="font-size:11px;color:var(--text-dim);${done?'text-decoration:line-through':''}">Ep ${ep.ep}: ${ep.title}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleEpisode(ep) {
+  if (!state.storyEpisodes) state.storyEpisodes = {};
+  state.storyEpisodes[ep] = !state.storyEpisodes[ep];
+  persist();
+  renderStoryProgress();
+}
+
+// ==========================================
+// METRICS
+// ==========================================
+function renderMetrics() {
+  // Populate week selector
+  const select = document.getElementById('metrics-week-select');
+  if (select.options.length === 0) {
+    for (let w = 1; w <= 12; w++) {
+      const opt = document.createElement('option');
+      opt.value = w;
+      opt.textContent = 'Week ' + w;
+      select.appendChild(opt);
+    }
+  }
+  const week = select.value;
+
+  if (!state.metrics[week]) state.metrics[week] = {};
+
+  const tbody = document.getElementById('metrics-tbody');
+  tbody.innerHTML = METRICS_ROWS.map(row => {
+    const data = state.metrics[week][row.key] || {};
+    return `
+      <tr>
+        <td style="font-weight:500">${row.label}</td>
+        <td style="text-align:center"><input class="metric-input" value="${data.ig||''}" onchange="saveMetric(${week},'${row.key}','ig',this.value)" placeholder="-"></td>
+        <td style="text-align:center"><input class="metric-input" value="${data.tt||''}" onchange="saveMetric(${week},'${row.key}','tt',this.value)" placeholder="-"></td>
+        <td style="text-align:center"><input class="metric-input" value="${data.li||''}" onchange="saveMetric(${week},'${row.key}','li',this.value)" placeholder="-"></td>
+        <td style="text-align:center;font-weight:600">${calcTotal(data)}</td>
+        <td style="text-align:center"><span class="metric-target">${row.target}</span></td>
+      </tr>
+    `;
+  }).join('');
+
+  // Notes
+  const notesEl = document.getElementById('metrics-notes');
+  notesEl.value = state.metricsNotes?.[week] || '';
+  notesEl.onchange = () => {
+    if (!state.metricsNotes) state.metricsNotes = {};
+    state.metricsNotes[week] = notesEl.value;
+    persist();
+  };
+}
+
+function saveMetric(week, key, platform, val) {
+  if (!state.metrics[week]) state.metrics[week] = {};
+  if (!state.metrics[week][key]) state.metrics[week][key] = {};
+  state.metrics[week][key][platform] = val;
+  persist();
+  renderMetrics();
+}
+
+function calcTotal(data) {
+  const vals = ['ig','tt','li'].map(k => parseFloat((data[k]||'').replace(/[,%]/g,''))).filter(v => !isNaN(v));
+  if (vals.length === 0) return '-';
+  if ((data.ig||'').includes('%') || (data.tt||'').includes('%')) {
+    return (vals.reduce((a,b) => a+b, 0) / vals.length).toFixed(1) + '%';
+  }
+  return vals.reduce((a,b) => a+b, 0).toLocaleString();
+}
+
+function exportMetrics() {
+  let csv = 'Week,Metric,Instagram,TikTok,LinkedIn\n';
+  Object.entries(state.metrics).forEach(([week, data]) => {
+    METRICS_ROWS.forEach(row => {
+      const d = data[row.key] || {};
+      csv += `${week},"${row.label}","${d.ig||''}","${d.tt||''}","${d.li||''}"\n`;
+    });
+  });
+  const blob = new Blob([csv], { type:'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'aware-social-metrics.csv';
+  a.click();
+  showToast('Exported CSV');
+}
+
+// ==========================================
+// FLOW DIAGRAM
+// ==========================================
+function toggleFlow(id) {
+  const el = document.getElementById('flow-' + id);
+  const isOpen = el.classList.contains('show');
+  document.querySelectorAll('.flow-detail').forEach(d => d.classList.remove('show'));
+  if (!isOpen) el.classList.add('show');
+}
+
+// ==========================================
+// CONTENT BANK
+// ==========================================
+function renderContentBank() {
+  // Topic Cards
+  const topicsContainer = document.getElementById('content-topics');
+  topicsContainer.innerHTML = CONTENT_TOPICS.map(t => {
+    const colorVar = `var(--${t.color})`;
+    const colorDimVar = `var(--${t.color}-dim)`;
+    return `
+      <div class="topic-card" id="topic-${t.id}" onclick="toggleTopic('${t.id}')">
+        <div class="topic-header">
+          <div>
+            <div class="topic-title">${t.title}</div>
+            <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">
+              <span style="font-size:10px;padding:2px 6px;border-radius:4px;background:${colorDimVar};color:${colorVar}">${t.pillar}</span>
+              <span style="font-size:10px;color:var(--text-muted)">${t.voice}</span>
+              <span style="font-size:10px;color:var(--text-muted)">${t.frequency}</span>
+            </div>
+          </div>
+          <div class="topic-meta">
+            ${t.platforms.map(p => `<span style="font-size:9px;padding:2px 5px;border-radius:3px;background:var(--surface-2);color:var(--text-muted)">${p}</span>`).join('')}
+            <span class="topic-chevron">&#9660;</span>
+          </div>
+        </div>
+        <div class="topic-body" onclick="event.stopPropagation()">
+          <div class="topic-hooks">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:6px;font-weight:600">Hooks (click to copy)</div>
+            ${t.hooks.map(h => `<div class="topic-hook" onclick="copyHook(this,'${escapeAttr(h)}')"><span>${h}</span><span class="copy-hint">copy</span></div>`).join('')}
+          </div>
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:6px;font-weight:600">Script / Format</div>
+          <div class="topic-script">${t.script}</div>
+          ${t.notes ? `<div style="font-size:11px;color:var(--text-muted);margin-top:8px;font-style:italic">Note: ${t.notes}</div>` : ''}
+          <div class="topic-cta-row">
+            <button class="topic-btn primary" onclick="copyFullTopic('${t.id}')">Copy All</button>
+            <button class="topic-btn" onclick="addTopicToCalendar('${t.id}')">+ Add to Calendar</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Caption templates
+  const captionContainer = document.getElementById('caption-templates');
+  captionContainer.innerHTML = CAPTION_TEMPLATES.map(t => `
+    <div class="topic-card" onclick="this.classList.toggle('expanded')">
+      <div class="topic-header">
+        <div>
+          <div class="topic-title">${t.title}</div>
+          <span style="font-size:10px;color:var(--text-muted)">${t.who}</span>
+        </div>
+        <span class="topic-chevron">&#9660;</span>
+      </div>
+      <div class="topic-body" onclick="event.stopPropagation()">
+        <pre style="font-size:11px;color:var(--text-dim);white-space:pre-wrap;font-family:inherit;line-height:1.6;margin-bottom:8px">${t.template}</pre>
+        <button class="topic-btn primary" onclick="copyCaption(this.closest('.topic-card'), '${escapeAttr(t.template)}')">Copy Template</button>
+      </div>
+    </div>
+  `).join('');
+
+  // Hashtag sets
+  const hashContainer = document.getElementById('hashtag-sets');
+  hashContainer.innerHTML = HASHTAG_SETS.map(set => `
+    <div class="card" style="cursor:pointer" onclick="copyHashtags(this, '${escapeAttr(set.tags.join(' '))}')">
+      <div style="font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;font-weight:600">${set.name}</div>
+      <div style="font-size:12px;color:var(--text-dim);word-spacing:4px">${set.tags.join(' ')}</div>
+    </div>
+  `).join('');
+}
+
+function toggleTopic(id) {
+  const el = document.getElementById('topic-' + id);
+  el.classList.toggle('expanded');
+}
+
+function copyFullTopic(id) {
+  const topic = CONTENT_TOPICS.find(t => t.id === id);
+  if (!topic) return;
+  const text = `${topic.title}\nVoice: ${topic.voice}\nPlatforms: ${topic.platforms.join(', ')}\nFrequency: ${topic.frequency}\n\nHooks:\n${topic.hooks.map(h => '- ' + h).join('\n')}\n\nScript/Format:\n${topic.script}\n\nNotes: ${topic.notes || 'None'}`;
+  navigator.clipboard.writeText(text);
+  showToast('Full topic copied');
+}
+
+function addTopicToCalendar(id) {
+  const topic = CONTENT_TOPICS.find(t => t.id === id);
+  if (!topic) return;
+  document.getElementById('post-title-input').value = topic.title;
+  const platformMap = {'IG Reel':'ig','IG Carousel':'ig','IG Post':'ig','TikTok':'tt','LinkedIn':'li','Reddit':'rd'};
+  const firstPlatform = platformMap[topic.platforms[0]] || 'ig';
+  document.getElementById('post-platform-input').value = firstPlatform;
+  document.getElementById('post-notes-input').value = topic.hooks[0] || '';
+  document.getElementById('add-post-modal').classList.add('show');
+}
+
+function copyHook(el, text) {
+  navigator.clipboard.writeText(text);
+  el.classList.add('copied');
+  setTimeout(() => el.classList.remove('copied'), 1000);
+  showToast('Copied to clipboard');
+}
+
+function copyCaption(el, text) {
+  navigator.clipboard.writeText(text);
+  showToast('Template copied');
+}
+
+function copyHashtags(el, text) {
+  navigator.clipboard.writeText(text);
+  showToast('Hashtags copied');
+}
+
+// ==========================================
+// ADD POST
+// ==========================================
+function openAddPost() {
+  document.getElementById('add-post-modal').classList.add('show');
+  document.getElementById('post-title-input').focus();
+}
+
+function closeAddPost() {
+  document.getElementById('add-post-modal').classList.remove('show');
+  document.getElementById('post-title-input').value = '';
+  document.getElementById('post-notes-input').value = '';
+}
+
+function savePost() {
+  const title = document.getElementById('post-title-input').value.trim();
+  if (!title) return;
+  const post = {
+    id: 'custom-' + Date.now(),
+    week: state.currentWeek,
+    day: parseInt(document.getElementById('post-day-input').value),
+    title,
+    platform: document.getElementById('post-platform-input').value,
+    format: document.getElementById('post-format-input').value,
+    person: document.getElementById('post-person-input').value,
+    done: false,
+    notes: document.getElementById('post-notes-input').value.trim()
+  };
+  state.posts.push(post);
+  persist();
+  closeAddPost();
+  renderCalendar();
+  renderToday();
+  showToast('Post added');
+}
+
+// ==========================================
+// QUICK IDEA GENERATOR
+// ==========================================
+function generateIdea() {
+  const allHooks = CONTENT_TOPICS.flatMap(t => t.hooks);
+  const pillars = ['Origin Story','Scalp Science','Results & Proof','The Build','Pro Education'];
+  const platforms = ['Instagram Reel','Instagram Carousel','TikTok','LinkedIn post'];
+  const people = ['Jade','David','Tina (B-roll)'];
+
+  const hook = allHooks[Math.floor(Math.random() * allHooks.length)];
+  const pillar = pillars[Math.floor(Math.random() * pillars.length)];
+  const platform = platforms[Math.floor(Math.random() * platforms.length)];
+  const person = people[Math.floor(Math.random() * people.length)];
+
+  document.getElementById('quick-idea').innerHTML = `
+    <div style="margin-bottom:8px"><span style="color:var(--accent);font-size:10px;text-transform:uppercase;letter-spacing:0.5px">Random Idea</span></div>
+    <div style="margin-bottom:6px"><strong>Hook:</strong> "${hook}"</div>
+    <div style="margin-bottom:6px"><strong>Pillar:</strong> ${pillar}</div>
+    <div style="margin-bottom:6px"><strong>Platform:</strong> ${platform}</div>
+    <div><strong>Person:</strong> ${person}</div>
+  `;
+}
+
+// ==========================================
+// UTILITIES
+// ==========================================
+function platformLabel(p) {
+  return { ig:'Instagram', tt:'TikTok', li:'LinkedIn', rd:'Reddit', x:'X' }[p] || p;
+}
+
+function truncate(str, len) {
+  return str.length > len ? str.substring(0, len) + '...' : str;
+}
+
+function escapeAttr(str) {
+  return str.replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, '\\n');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1500);
+}
+
+// ==========================================
+// INIT
+// ==========================================
+document.getElementById('header-date').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+loadStats();
+renderCalendar();
+renderToday();
+
+// Handle Escape on modal
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeAddPost();
+});
+document.getElementById('add-post-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeAddPost();
+});
+</script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

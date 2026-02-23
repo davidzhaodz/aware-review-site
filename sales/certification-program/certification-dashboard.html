@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Certification Implementation Dashboard</title>
+<style>
+  :root {
+    --bg: #0c0e14;
+    --surface: #141722;
+    --surface-2: #1c2030;
+    --surface-3: #252a3a;
+    --border: #272d40;
+    --border-hover: #3a4260;
+    --text: #e8eaf0;
+    --text-dim: #7d839a;
+    --text-muted: #4e5470;
+    --gold: #c8a97e;
+    --gold-bright: #dfc49e;
+    --gold-dim: rgba(200,169,126,0.10);
+    --gold-border: rgba(200,169,126,0.25);
+    --green: #34d399;
+    --green-dim: rgba(52,211,153,0.10);
+    --green-border: rgba(52,211,153,0.30);
+    --yellow: #fbbf24;
+    --yellow-dim: rgba(251,191,36,0.10);
+    --yellow-border: rgba(251,191,36,0.30);
+    --red: #f87171;
+    --red-dim: rgba(248,113,113,0.08);
+    --blue: #60a5fa;
+    --blue-dim: rgba(96,165,250,0.10);
+    --blue-border: rgba(96,165,250,0.30);
+    --purple: #a78bfa;
+    --purple-dim: rgba(167,139,250,0.10);
+    --teal: #2dd4bf;
+    --teal-dim: rgba(45,212,191,0.10);
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* Subtle grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .shell { max-width: 1320px; margin: 0 auto; padding: 28px 32px 60px; }
+
+  /* ─── Header ─── */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 24px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { display:flex; align-items:center; gap:14px; }
+  .brand-mark {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 16px; color: var(--bg);
+    letter-spacing: -0.5px;
+  }
+  header h1 {
+    font-size: 20px; font-weight: 600; letter-spacing: -0.4px;
+    color: var(--text);
+  }
+  header h1 em {
+    font-style: normal; color: var(--gold); font-weight: 500;
+  }
+  .header-meta { text-align:right; }
+  .header-meta p { font-size: 12px; color: var(--text-dim); }
+  .header-meta .updated { color: var(--text-muted); font-size: 11px; margin-top:2px; }
+
+  /* ─── Stats row ─── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .stat:nth-child(1)::after { background: var(--gold); }
+  .stat:nth-child(2)::after { background: var(--green); }
+  .stat:nth-child(3)::after { background: var(--yellow); }
+  .stat:nth-child(4)::after { background: var(--blue); }
+  .stat:nth-child(5)::after { background: var(--red); }
+  .stat-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+  .stat-val {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-val.gold { color: var(--gold); }
+  .stat-val.green { color: var(--green); }
+  .stat-val.yellow { color: var(--yellow); }
+  .stat-sub { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+
+  /* ─── Tabs ─── */
+  .tabs {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 24px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 3px;
+    width: fit-content;
+    border: 1px solid var(--border);
+  }
+  .tab {
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--text-dim);
+    transition: all 0.2s;
+    border: none;
+    background: transparent;
+    letter-spacing: 0.1px;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { background: var(--surface-2); color: var(--gold); box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+  .tab .count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-left: 6px;
+    padding: 0 5px;
+    background: var(--surface-3);
+    color: var(--text-dim);
+  }
+  .tab.active .count { background: var(--gold-dim); color: var(--gold); }
+
+  /* ─── Panels ─── */
+  .panel { display: none; animation: fadeIn 0.25s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ─── Phase sections ─── */
+  .phase-section {
+    margin-bottom: 24px;
+  }
+  .phase-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    margin-bottom: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .phase-header-left { display: flex; align-items: center; gap: 12px; }
+  .phase-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .phase-badge.p1 { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+  .phase-badge.free { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(45,212,191,0.30); }
+  .phase-badge.awards { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(167,139,250,0.30); }
+  .phase-badge.p2 { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue-border); }
+  .phase-badge.p3 { background: var(--yellow-dim); color: var(--yellow); border: 1px solid var(--yellow-border); }
+  .phase-badge.p4 { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--gold-border); }
+  .phase-title { font-size: 15px; font-weight: 600; letter-spacing: -0.2px; }
+  .phase-budget { font-size: 12px; color: var(--text-dim); font-weight: 500; }
+  .phase-progress-mini {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11px; color: var(--text-dim);
+  }
+  .phase-progress-bar {
+    width: 80px; height: 4px;
+    background: var(--surface-3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .phase-progress-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* ─── Cert cards ─── */
+  .cert-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .cert-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+  .cert-card:hover { border-color: var(--border-hover); }
+  .cert-card.expanded { border-color: var(--gold-border); }
+
+  .cert-main {
+    display: grid;
+    grid-template-columns: 42px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .cert-num {
+    width: 42px; height: 42px;
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700;
+    background: var(--surface-2);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  .cert-card.expanded .cert-num {
+    background: var(--gold-dim);
+    color: var(--gold);
+    border-color: var(--gold-border);
+  }
+
+  .cert-info { min-width: 0; }
+  .cert-name {
+    font-size: 14px; font-weight: 600; letter-spacing: -0.15px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .cert-org { font-size: 11px; color: var(--text-dim); margin-top: 1px; }
+
+  .cert-right {
+    display: flex; align-items: center; gap: 12px;
+    flex-shrink: 0;
+  }
+  .cert-cost {
+    font-size: 12px; font-weight: 600; color: var(--text-dim);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .cert-cost.free { color: var(--green); }
+
+  .cert-timeline {
+    font-size: 11px; color: var(--text-muted);
+    text-align: right;
+    min-width: 70px;
+  }
+
+  /* Status badges */
+  .status {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px; font-weight: 500;
+    white-space: nowrap;
+  }
+  .status-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+  }
+  .status-not-started { background: var(--surface-3); color: var(--text-dim); }
+  .status-not-started .status-dot { background: var(--text-muted); }
+  .status-ready { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+  .status-ready .status-dot { background: var(--green); }
+  .status-in-progress { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue-border); }
+  .status-in-progress .status-dot { background: var(--blue); animation: pulse 2s infinite; }
+  .status-blocked { background: var(--yellow-dim); color: var(--yellow); border: 1px solid var(--yellow-border); }
+  .status-blocked .status-dot { background: var(--yellow); }
+  .status-done { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+  .status-done .status-dot { background: var(--green); }
+  .status-urgent { background: var(--red-dim); color: var(--red); border: 1px solid rgba(248,113,113,0.30); }
+  .status-urgent .status-dot { background: var(--red); animation: pulse 1.5s infinite; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* Expand chevron */
+  .chevron {
+    width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+  .cert-card.expanded .chevron { transform: rotate(90deg); color: var(--gold); }
+
+  /* Expanded detail */
+  .cert-detail {
+    display: none;
+    padding: 0 18px 16px 74px;
+    animation: fadeIn 0.2s ease;
+  }
+  .cert-card.expanded .cert-detail { display: block; }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .detail-section h4 {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .detail-section p, .detail-section li {
+    font-size: 12px; color: var(--text-dim); line-height: 1.6;
+  }
+  .detail-section ul { list-style: none; }
+  .detail-section li::before {
+    content: '-';
+    margin-right: 6px;
+    color: var(--text-muted);
+  }
+  .detail-actions {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .action-btn {
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.2px;
+  }
+  .action-btn.primary {
+    background: var(--gold);
+    color: var(--bg);
+  }
+  .action-btn.primary:hover { background: var(--gold-bright); }
+  .action-btn.secondary {
+    background: var(--surface-3);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+  .action-btn.secondary:hover { color: var(--text); border-color: var(--border-hover); }
+
+  /* ─── Documents panel ─── */
+  .doc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .doc-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+  }
+  .doc-card h3 {
+    font-size: 13px; font-weight: 600; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .doc-icon {
+    width: 28px; height: 28px; border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .doc-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .doc-item:last-child { border-bottom: none; }
+  .doc-item-name { color: var(--text); }
+  .doc-status-tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .doc-status-tag.done { background: var(--green-dim); color: var(--green); }
+  .doc-status-tag.draft { background: var(--yellow-dim); color: var(--yellow); }
+  .doc-status-tag.needed { background: var(--red-dim); color: var(--red); }
+  .doc-status-tag.pending { background: var(--blue-dim); color: var(--blue); }
+  .doc-status-tag.filed { background: var(--green-dim); color: var(--green); }
+
+  /* ─── Budget panel ─── */
+  .budget-phases {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .budget-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+  }
+  .budget-card-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .budget-card h3 { font-size: 13px; font-weight: 600; }
+  .budget-range { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; color: var(--gold); }
+  .budget-bar-track {
+    height: 6px; background: var(--surface-3); border-radius: 3px;
+    margin-top: 10px; overflow: hidden;
+  }
+  .budget-bar-fill {
+    height: 100%; border-radius: 3px; transition: width 0.8s cubic-bezier(0.22,1,0.36,1);
+  }
+  .budget-bar-fill.p1 { background: var(--green); }
+  .budget-bar-fill.free { background: var(--teal); }
+  .budget-bar-fill.awards { background: var(--purple); }
+  .budget-bar-fill.p2 { background: var(--blue); }
+  .budget-bar-fill.p3 { background: var(--yellow); }
+  .budget-bar-fill.p4 { background: var(--gold); }
+  .budget-spent { font-size: 11px; color: var(--text-dim); margin-top: 6px; }
+  .budget-total-card {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .budget-total-label { font-size: 14px; font-weight: 500; color: var(--text-dim); }
+  .budget-total-val { font-size: 28px; font-weight: 700; color: var(--gold); letter-spacing: -1px; }
+
+  /* ─── Timeline panel ─── */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 11px; top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    padding-bottom: 28px;
+  }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-dot {
+    position: absolute;
+    left: -27px; top: 4px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    border: 2px solid;
+    background: var(--bg);
+  }
+  .timeline-dot.active { border-color: var(--gold); background: var(--gold-dim); }
+  .timeline-dot.upcoming { border-color: var(--text-muted); }
+  .timeline-dot.urgent { border-color: var(--red); background: var(--red-dim); animation: pulse 1.5s infinite; }
+  .timeline-dot.done { border-color: var(--green); background: var(--green-dim); }
+  .timeline-date {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.6px; color: var(--text-dim); margin-bottom: 4px;
+  }
+  .timeline-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+  .timeline-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+  .timeline-tag {
+    display: inline-block;
+    padding: 2px 8px; border-radius: 4px;
+    font-size: 10px; font-weight: 600; margin-top: 6px;
+    text-transform: uppercase; letter-spacing: 0.4px;
+  }
+  .timeline-tag.deadline { background: var(--red-dim); color: var(--red); }
+  .timeline-tag.milestone { background: var(--green-dim); color: var(--green); }
+  .timeline-tag.target { background: var(--blue-dim); color: var(--blue); }
+  .timeline-tag.window { background: var(--purple-dim); color: var(--purple); }
+
+  /* ─── Countdown ─── */
+  .countdown-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .countdown-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    text-align: center;
+  }
+  .countdown-card.urgent { border-color: rgba(248,113,113,0.30); }
+  .countdown-days {
+    font-size: 32px; font-weight: 800; letter-spacing: -1px;
+    font-variant-numeric: tabular-nums;
+  }
+  .countdown-days.warn { color: var(--red); }
+  .countdown-days.ok { color: var(--yellow); }
+  .countdown-days.safe { color: var(--green); }
+  .countdown-label { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+  .countdown-deadline { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+
+  /* ─── Utility ─── */
+  .section-title {
+    font-size: 13px; font-weight: 600; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.6px;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  /* Status toggle */
+  .status-select {
+    appearance: none;
+    background: var(--surface-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 24px 4px 8px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237d839a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    transition: border-color 0.15s;
+  }
+  .status-select:hover { border-color: var(--border-hover); }
+  .status-select:focus { outline: none; border-color: var(--gold-border); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .stats { grid-template-columns: repeat(3, 1fr); }
+    .doc-grid, .budget-phases { grid-template-columns: 1fr; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .countdown-strip { grid-template-columns: 1fr; }
+    .cert-main { grid-template-columns: 36px 1fr auto; }
+    .cert-detail { padding-left: 54px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-mark">A</div>
+      <div>
+        <h1>Certification <em>Implementation</em></h1>
+        <p style="font-size:12px; color:var(--text-dim); margin-top:1px;">Third-Party Certification Roadmap</p>
+      </div>
+    </div>
+    <div class="header-meta">
+      <p>AWARE Hair LLC</p>
+      <p class="updated">Last updated: <span id="lastUpdated"></span></p>
+    </div>
+  </header>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Total Certs</div>
+      <div class="stat-val gold">16</div>
+      <div class="stat-sub">Across 4 phases</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Ready to Act</div>
+      <div class="stat-val green" id="statReady">0</div>
+      <div class="stat-sub">Applications prepared</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">In Progress</div>
+      <div class="stat-val yellow" id="statProgress">0</div>
+      <div class="stat-sub">Active applications</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Completed</div>
+      <div class="stat-val" style="color:var(--blue)" id="statDone">0</div>
+      <div class="stat-sub">Certified</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Urgent</div>
+      <div class="stat-val" style="color:var(--red)" id="statUrgent">0</div>
+      <div class="stat-sub">Deadline approaching</div>
+    </div>
+  </div>
+
+  <!-- Countdown strip -->
+  <div class="countdown-strip" id="countdowns"></div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" data-tab="certifications">Certifications <span class="count">16</span></button>
+    <button class="tab" data-tab="documents">Documents <span class="count">8</span></button>
+    <button class="tab" data-tab="budget">Budget</button>
+    <button class="tab" data-tab="timeline">Timeline</button>
+  </div>
+
+  <!-- ═══ Panel: Certifications ═══ -->
+  <div class="panel active" id="panel-certifications"></div>
+
+  <!-- ═══ Panel: Documents ═══ -->
+  <div class="panel" id="panel-documents">
+    <div class="doc-grid">
+      <div class="doc-card">
+        <h3>
+          <span class="doc-icon" style="background:var(--gold-dim); color:var(--gold);">&#x1f4c4;</span>
+          Application Documents
+        </h3>
+        <div class="doc-item">
+          <span class="doc-item-name">Animal Testing Policy</span>
+          <span class="doc-status-tag draft">Drafted</span>
+        </div>
+        <div class="doc-item">
+          <span class="doc-item-name">Product Summary Sheet</span>
+          <span class="doc-status-tag draft">Drafted</span>
+        </div>
+        <div class="doc-item">
+          <span class="doc-item-name">Company Registration Details</span>
+          <span class="doc-status-tag needed">Needed</span>
+        </div>
+        <div class="doc-item">
+          <span class="doc-item-name">PETA Statement of Assurance</span>
+          <span class="doc-status-tag pending">Pending</span>
+        </div>
+      </div>
+      <div class="doc-card">
+        <h3>
+          <span class="doc-icon" style="background:var(--green-dim); color:var(--green);">&#x2705;</span>
+          INCI Ingredient Lists
+        </h3>
+        <div class="doc-item">
+          <span class="doc-item-name">9-1 Shampoo (INCI)</span>
+          <span class="doc-status-tag done">Complete</span>
+        </div>
+        <div class="doc-item">
+          <span class="doc-item-name">9-1 Conditioner (INCI)</span>
+          <span class="doc-status-tag needed">Needed</span>
+        </div>
+        <div class="doc-item">
+          <span class="doc-item-name">9-1 Leave-In (INCI)</span>
+          <span class="doc-status-tag needed">Needed</span>
+        </div>
+      </div>
+      <div class="doc-card">
+        <h3>
+          <span class="doc-icon" style="background:var(--blue-dim); color:var(--blue);">&#x1f4e9;</span>
+          Supplier Declarations
+        </h3>
+        <div class="doc-item">
+          <span class="doc-item-name">Teamwork Packaging / Ocean Blue Inc.</span>
+          <span class="doc-status-tag pending">Pending</span>
+        </div>
+        <div class="doc-item">
+          <span class="doc-item-name">OnScent Inc. (Chris Rivers)</span>
+          <span class="doc-status-tag pending">Pending</span>
+        </div>
+      </div>
+      <div class="doc-card">
+        <h3>
+          <span class="doc-icon" style="background:var(--purple-dim); color:var(--purple);">&#x1f4cb;</span>
+          On File
+        </h3>
+        <div class="doc-item">
+          <span class="doc-item-name">EU Allergen Report (PACIFIC AIR NF)</span>
+          <span class="doc-status-tag filed">On File</span>
+        </div>
+        <div class="doc-item">
+          <span class="doc-item-name">ISO 22716 (Manufacturer)</span>
+          <span class="doc-status-tag filed">On File</span>
+        </div>
+        <div class="doc-item">
+          <span class="doc-item-name">Manufacturing Agreement</span>
+          <span class="doc-status-tag filed">On File</span>
+        </div>
+        <div class="doc-item">
+          <span class="doc-item-name">IP Assignment (Formula)</span>
+          <span class="doc-status-tag filed">On File</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Panel: Budget ═══ -->
+  <div class="panel" id="panel-budget">
+    <div class="budget-phases" id="budgetGrid"></div>
+  </div>
+
+  <!-- ═══ Panel: Timeline ═══ -->
+  <div class="panel" id="panel-timeline">
+    <div class="section-title">Upcoming Deadlines & Milestones</div>
+    <div class="timeline" id="timelineList"></div>
+  </div>
+
+</div>
+
+<script>
+// ─── Data ───
+const CERTS = [
+  // Phase 1
+  { id:1, name:'Leaping Bunny', org:'CCIC (Coalition for Consumer Information on Cosmetics)', phase:'p1', phaseLabel:'Phase 1', cost:'$0 cert + $500-$4,500 logo', costNum:500, timeline:'2-8 weeks', status:'blocked', statusLabel:'Need supplier declarations', url:'leapingbunny.org/form/register-your-company', details:'Gold standard cruelty-free certification. Free certification, optional logo license based on revenue. Requires signed supplier declarations from all ingredient sources.', actions:['Send manufacturer declaration request','Send OnScent declaration request','Start online registration'], requirements:['Signed supplier declarations','Company animal testing policy','Product list','Fixed cut-off date for animal testing'] },
+  { id:2, name:'PETA Beauty Without Bunnies + Vegan', org:'PETA', phase:'p1', phaseLabel:'Phase 1', cost:'$0 cert + $350 logo', costNum:350, timeline:'4-6 weeks', status:'ready', statusLabel:'Ready to send email', url:'BeautyWithoutBunnies@peta.org', details:'Covers BOTH cruelty-free AND vegan in one application. Binding Statement of Assurance required. Logo license $350.', actions:['Send application email','Prepare ingredient lists'], requirements:['Email to BeautyWithoutBunnies@peta.org','Signed Statement of Assurance','Full ingredient lists','Supplier testing policies'] },
+  { id:3, name:'Vegan Action (Certified Vegan)', org:'Vegan Action', phase:'p1', phaseLabel:'Phase 1', cost:'$100 app + $600/yr', costNum:700, timeline:'4-6 weeks', status:'ready', statusLabel:'Ready to send email', url:'vegan.org/certification', details:'Most economical dedicated vegan cert. Unlimited SKUs per annual fee. $600/yr for AWARE\'s revenue tier ($100K-$500K). Application fee credited toward first year.', actions:['Send inquiry email','Prepare documentation'], requirements:['$100 application fee','Full ingredient lists','Manufacturer compliance docs','Confirmation no animal testing after 2009'] },
+  // Free Government
+  { id:4, name:'SBA WOSB', org:'U.S. Small Business Administration', phase:'free', phaseLabel:'Free', cost:'$0', costNum:0, timeline:'~8 months', status:'blocked', statusLabel:'Need SAM.gov first', url:'certifications.sba.gov', details:'Women-Owned Small Business certification. Free but ~8 month backlog. Tina must demonstrate 51%+ ownership AND daily operational control. Requires SAM.gov registration first (2-4 weeks).', actions:['Register on SAM.gov','Gather Tina\'s documents'], requirements:['SAM.gov registration (UEI)','Articles of organization','Operating agreement','Tax returns (business + personal)','Tina\'s ID + resume'] },
+  { id:5, name:'CA Small Business (DGS)', org:'California Dept. of General Services', phase:'free', phaseLabel:'Free', cost:'$0', costNum:0, timeline:'Few weeks', status:'ready', statusLabel:'Ready to apply', url:'caleprocure.ca.gov', details:'5% bid preference on state contracts. Automatic Micro Business designation (under 25 employees, under $5M revenue). Free workshop March 2, 2026.', actions:['Apply at caleprocure.ca.gov','Attend March 2 workshop'], requirements:['Federal tax returns (3 years)','IRS EIN documentation','LLC operating agreement','Under 100 employees, under $18M revenue'] },
+  // Awards
+  { id:6, name:'Green Parent Natural Beauty Awards', org:'Green Parent Media Ltd (UK)', phase:'awards', phaseLabel:'Awards', cost:'~$80 (GBP 65)', costNum:80, timeline:'Deadline Mar 16', status:'urgent', statusLabel:'Ship products to UK now', url:'thegreenparent.co.uk/natural-beauty-awards', details:'Clean/natural beauty awards. Ship 2 full-size products in retail packaging to UK. Testing Apr-Jun, results July 15 (digital), Sep 4 (print). GBP 55/product if entering 2+.', actions:['Enter online','Ship 2 products to UK'], requirements:['2 full-size retail products','Entry fee (GBP 65+VAT per product)','Ship to Lewes, BN7 2YN, United Kingdom'], deadline:'2026-03-16' },
+  { id:7, name:'C&T Alle Awards', org:'Cosmetics & Toiletries', phase:'awards', phaseLabel:'Awards', cost:'~$250', costNum:250, timeline:'Open now', status:'not-started', statusLabel:'Not started', url:'cosmeticsandtoiletries.com', details:'New "Hair and Scalp Treatments" category for 2026. Industry peer panel evaluation. Trade publication credibility for B2B sales.', actions:['Submit entry','Prepare product samples'], requirements:['~$250 entry fee','Product samples','Product documentation'] },
+  // Phase 2
+  { id:8, name:'MyMicrobiome AG', org:'MyMicrobiome AG (Switzerland)', phase:'p2', phaseLabel:'Phase 2', cost:'Custom quote', costNum:5000, timeline:'TBD', status:'not-started', statusLabel:'Not started', details:'Only ~100 brands certified globally. Tests product impact on scalp microbiome. Massive differentiator for AWARE\'s positioning. Requires 3x 30ml per product.', actions:['Email for quote + sample requirements'], requirements:['Custom quote request','3x 30ml product samples','Testing timeline TBD'] },
+  { id:9, name:'NPF Seal of Recognition', org:'National Psoriasis Foundation', phase:'p2', phaseLabel:'Phase 2', cost:'Custom quote', costNum:5000, timeline:'TBD', status:'not-started', statusLabel:'Not started', details:'Medical credibility from physician review panel. Psoriasis commonly affects scalp. Rare in haircare. More flexible on fragrance than NEA.', actions:['Contact NPF for application'], requirements:['Contact nkittelson@psoriasis.org','RIPT testing ($3K-$8K)','Physician panel review'] },
+  { id:10, name:'Dermatologist Tested (RIPT)', org:'Third-party lab', phase:'p2', phaseLabel:'Phase 2', cost:'~$4,500/product', costNum:4500, timeline:'6-10 weeks', status:'not-started', statusLabel:'Not started', details:'Repeat Insult Patch Test. Substantiates safety claims. Required for NEA/NPF anyway. Get quotes from 2-3 accredited cosmetics labs.', actions:['Get quotes from 2-3 labs'], requirements:['~$4,500 per product','Product samples','6-10 week testing period'] },
+  // Phase 3
+  { id:11, name:'EWG Verified', org:'Environmental Working Group', phase:'p3', phaseLabel:'Phase 3', cost:'$500 app + annual', costNum:1500, timeline:'2-3 months', status:'not-started', statusLabel:'Not started', details:'Strong consumer recognition for clean beauty. Requires full ingredient disclosure including fragrance components. Phenoxyethanol rated 1-4 (should pass). EU allergen report satisfies fragrance disclosure.', actions:['Review EWG ingredient list','Prepare disclosure'], requirements:['$500 application fee','Full fragrance component disclosure','Annual licensing fee'] },
+  { id:12, name:'MADE SAFE', org:'Nontoxic Certified', phase:'p3', phaseLabel:'Phase 3', cost:'Revenue-based', costNum:2000, timeline:'2-3 weeks + review', status:'not-started', statusLabel:'Not started', details:'Most rigorous clean beauty certification. BIPOC discounts available. Initial Look Evaluation (ILE) first, then full review. Contact programs@madesafe.org.', actions:['Email for Initial Look Evaluation'], requirements:['ILE application','Full formulation data','Revenue-based fee ($600-$200K)'] },
+  // Phase 4
+  { id:13, name:'1% for the Planet', org:'1% for the Planet', phase:'p4', phaseLabel:'Phase 4', cost:'$200 + $300/yr + 1% rev', costNum:700, timeline:'Immediate', status:'not-started', statusLabel:'Not started', details:'AWARE already mentions "1% Donated" on site. Formalize through official program. Low barrier. Need to confirm which nonprofit AWARE donates to.', actions:['Confirm current donation structure','Apply to formalize'], requirements:['$200 activation + $300 annual','1% of revenue donation to approved nonprofit','Confirm current nonprofit partner'] },
+  { id:14, name:'Climate Neutral', org:'The Change Climate Project', phase:'p4', phaseLabel:'Phase 4', cost:'$0-$2K', costNum:1000, timeline:'3-6 months', status:'not-started', statusLabel:'Not started', details:'Sustainability credibility. Free support for brands under $5M revenue. Requires emissions baseline and offset purchases.', actions:['Get emissions baseline'], requirements:['Emissions baseline measurement','Offset purchases','Annual renewal'] },
+  { id:15, name:'WBENC', org:'Women\'s Business Enterprise National Council', phase:'p4', phaseLabel:'Phase 4', cost:'$350+/yr', costNum:350, timeline:'2-4 months', status:'not-started', statusLabel:'Not started', details:'Tina confirmed 51%+ ownership. Opens corporate supplier diversity programs. More prestigious than SBA WOSB for private sector.', actions:['Apply after SBA WOSB obtained'], requirements:['$350+ annual fee','Ownership documentation','Site visit may be required'] },
+  { id:16, name:'How2Recycle', org:'Sustainable Packaging Coalition', phase:'p4', phaseLabel:'Phase 4', cost:'$1,750 + $2-6K/yr', costNum:3000, timeline:'Weeks', status:'not-started', statusLabel:'Not started', details:'California SB 343 requires accurate recyclability labeling by October 2026. Need to evaluate current packaging materials first.', actions:['Evaluate packaging recyclability'], requirements:['$1,750 setup fee','$2K-$6K annual fee','Packaging material assessment'], deadline:'2026-10-01' },
+];
+
+const PHASES = {
+  p1: { label:'Phase 1 - Quick Wins', badge:'p1', budget:'$500 - $1,500', budgetLow:500, budgetHigh:1500, timeline:'Month 1-2' },
+  free: { label:'Free Government Certs', badge:'free', budget:'$0', budgetLow:0, budgetHigh:0, timeline:'Immediate' },
+  awards: { label:'Awards', badge:'awards', budget:'$80 - $330', budgetLow:80, budgetHigh:330, timeline:'Urgent Deadlines' },
+  p2: { label:'Phase 2 - Scientific', badge:'p2', budget:'$5,000 - $15,000', budgetLow:5000, budgetHigh:15000, timeline:'Month 2-4' },
+  p3: { label:'Phase 3 - Clean Beauty', badge:'p3', budget:'$1,000 - $5,000', budgetLow:1000, budgetHigh:5000, timeline:'Month 4-6' },
+  p4: { label:'Phase 4 - Sustainability', badge:'p4', budget:'$2,000 - $5,000', budgetLow:2000, budgetHigh:5000, timeline:'Month 6-12' },
+};
+
+const DEADLINES = [
+  { label:'Green Parent Awards', date:'2026-03-16', desc:'Entry + products must arrive in UK' },
+  { label:'Non-GMO BIPOC Funding', date:'2026-03-31', desc:'Equitable Transfer Program deadline ($10K funding)' },
+  { label:'CA SB 343 (How2Recycle)', date:'2026-10-01', desc:'Recyclability labeling required' },
+];
+
+const TIMELINE_EVENTS = [
+  { date:'2026-02-11', title:'Phase 1 Kickoff', desc:'Send PETA + Vegan Action emails. Request supplier declarations. Start SAM.gov registration.', type:'active', tag:'milestone' },
+  { date:'2026-02-14', title:'Ship Green Parent Products', desc:'Ship 2 full-size products to UK via tracked international mail. Must arrive by March 16.', type:'urgent', tag:'deadline' },
+  { date:'2026-02-28', title:'Supplier Declarations Due', desc:'Follow up with Teamwork Packaging and OnScent. Submit Leaping Bunny application.', type:'upcoming', tag:'target' },
+  { date:'2026-03-02', title:'CA DGS Free Workshop', desc:'Optional: attend free hands-on workshop for California Small Business certification.', type:'upcoming', tag:'window' },
+  { date:'2026-03-16', title:'Green Parent Awards Deadline', desc:'Entry form and products must have arrived by this date.', type:'urgent', tag:'deadline' },
+  { date:'2026-03-31', title:'Non-GMO BIPOC Funding Deadline', desc:'Apply for Equitable Transfer Program if AWARE qualifies as BIPOC-led.', type:'urgent', tag:'deadline' },
+  { date:'2026-04-15', title:'Phase 1 Certs Expected', desc:'Expect Leaping Bunny, PETA, and Vegan Action approvals. Update packaging + website.', type:'upcoming', tag:'milestone' },
+  { date:'2026-05-01', title:'Phase 2 Begins', desc:'Email MyMicrobiome AG. Contact NPF. Get RIPT testing quotes.', type:'upcoming', tag:'target' },
+  { date:'2026-07-15', title:'Green Parent Results', desc:'Digital results published in Natural Beauty Bible.', type:'upcoming', tag:'milestone' },
+  { date:'2026-08-01', title:'Phase 3 Begins', desc:'Apply for EWG Verified and MADE SAFE.', type:'upcoming', tag:'target' },
+  { date:'2026-10-01', title:'CA SB 343 Deadline', desc:'How2Recycle or accurate recyclability labeling required.', type:'urgent', tag:'deadline' },
+];
+
+// ─── Helpers ───
+function daysUntil(dateStr) {
+  const target = new Date(dateStr + 'T00:00:00');
+  const now = new Date();
+  now.setHours(0,0,0,0);
+  return Math.ceil((target - now) / (1000*60*60*24));
+}
+
+function formatDate(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+}
+
+function statusClass(s) {
+  const map = { 'not-started':'not-started', 'ready':'ready', 'in-progress':'in-progress', 'blocked':'blocked', 'done':'done', 'urgent':'urgent' };
+  return map[s] || 'not-started';
+}
+
+function chevronSVG() {
+  return '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+
+// ─── Render Countdowns ───
+function renderCountdowns() {
+  const el = document.getElementById('countdowns');
+  el.innerHTML = DEADLINES.map(d => {
+    const days = daysUntil(d.date);
+    const cls = days <= 14 ? 'warn' : days <= 30 ? 'ok' : 'safe';
+    const urgent = days <= 14 ? ' urgent' : '';
+    return `<div class="countdown-card${urgent}">
+      <div class="countdown-days ${cls}">${days}</div>
+      <div class="countdown-label">${d.label}</div>
+      <div class="countdown-deadline">${formatDate(d.date)} - ${d.desc}</div>
+    </div>`;
+  }).join('');
+}
+
+// ─── Render Certifications ───
+function renderCerts() {
+  const el = document.getElementById('panel-certifications');
+  const phaseOrder = ['p1','free','awards','p2','p3','p4'];
+  let html = '';
+
+  phaseOrder.forEach(pKey => {
+    const phase = PHASES[pKey];
+    const certs = CERTS.filter(c => c.phase === pKey);
+    const done = certs.filter(c => c.status === 'done').length;
+    const pct = certs.length > 0 ? Math.round((done / certs.length) * 100) : 0;
+    const fillColor = `var(--${pKey === 'p1' ? 'green' : pKey === 'free' ? 'teal' : pKey === 'awards' ? 'purple' : pKey === 'p2' ? 'blue' : pKey === 'p3' ? 'yellow' : 'gold'})`;
+
+    html += `<div class="phase-section">
+      <div class="phase-header" onclick="this.parentElement.classList.toggle('collapsed')">
+        <div class="phase-header-left">
+          <span class="phase-badge ${phase.badge}">${phase.label}</span>
+          <span class="phase-budget">${phase.budget} / ${phase.timeline}</span>
+        </div>
+        <div class="phase-progress-mini">
+          <span>${done}/${certs.length}</span>
+          <div class="phase-progress-bar">
+            <div class="phase-progress-fill" style="width:${pct}%; background:${fillColor}"></div>
+          </div>
+        </div>
+      </div>
+      <div class="cert-grid">`;
+
+    certs.forEach(c => {
+      const isFree = c.costNum === 0;
+      const hasDeadline = c.deadline && daysUntil(c.deadline) <= 45;
+      const effectiveStatus = hasDeadline && c.status === 'not-started' ? 'urgent' : c.status;
+      const effectiveLabel = hasDeadline && c.status === 'not-started' ? 'Deadline approaching' : c.statusLabel;
+
+      html += `<div class="cert-card" data-id="${c.id}">
+        <div class="cert-main" onclick="toggleCard(${c.id})">
+          <div class="cert-num">${c.id}</div>
+          <div class="cert-info">
+            <div class="cert-name">${c.name}</div>
+            <div class="cert-org">${c.org}</div>
+          </div>
+          <div class="cert-right">
+            <span class="status status-${statusClass(effectiveStatus)}">
+              <span class="status-dot"></span>
+              ${effectiveLabel}
+            </span>
+            <span class="cert-cost${isFree ? ' free' : ''}">${isFree ? 'FREE' : c.cost}</span>
+            <span class="cert-timeline">${c.timeline}</span>
+            <span class="chevron">${chevronSVG()}</span>
+          </div>
+        </div>
+        <div class="cert-detail">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>Overview</h4>
+              <p>${c.details}</p>
+            </div>
+            <div class="detail-section">
+              <h4>Requirements</h4>
+              <ul>${(c.requirements||[]).map(r => `<li>${r}</li>`).join('')}</ul>
+            </div>
+          </div>
+          ${c.url ? `<div style="margin-top:10px; font-size:11px; color:var(--text-muted);">URL: <span style="color:var(--gold)">${c.url}</span></div>` : ''}
+          <div class="detail-actions">
+            ${(c.actions||[]).map((a, i) => `<button class="action-btn ${i===0?'primary':'secondary'}">${a}</button>`).join('')}
+            <select class="status-select" onchange="updateStatus(${c.id}, this.value)" title="Update status">
+              <option value="" disabled selected>Change status</option>
+              <option value="not-started">Not Started</option>
+              <option value="ready">Ready</option>
+              <option value="in-progress">In Progress</option>
+              <option value="blocked">Blocked</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
+        </div>
+      </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  el.innerHTML = html;
+}
+
+// ─── Render Budget ───
+function renderBudget() {
+  const el = document.getElementById('budgetGrid');
+  const phaseOrder = ['p1','free','awards','p2','p3','p4'];
+  let totalLow = 0, totalHigh = 0;
+
+  let html = '';
+  phaseOrder.forEach(pKey => {
+    const phase = PHASES[pKey];
+    totalLow += phase.budgetLow;
+    totalHigh += phase.budgetHigh;
+    const spent = 0;
+    const pctOfTotal = phase.budgetHigh > 0 ? Math.min(100, Math.round((spent / phase.budgetHigh) * 100)) : 0;
+
+    html += `<div class="budget-card">
+      <div class="budget-card-header">
+        <div>
+          <h3>${phase.label}</h3>
+          <div style="font-size:11px; color:var(--text-dim); margin-top:2px;">${phase.timeline}</div>
+        </div>
+        <div class="budget-range">${phase.budget}</div>
+      </div>
+      <div class="budget-bar-track">
+        <div class="budget-bar-fill ${phase.badge}" style="width:${pctOfTotal}%"></div>
+      </div>
+      <div class="budget-spent">$0 spent of ${phase.budget}</div>
+    </div>`;
+  });
+
+  html += `<div class="budget-total-card">
+    <div>
+      <div class="budget-total-label">Estimated Year 1 Total</div>
+      <div style="font-size:12px; color:var(--text-dim); margin-top:2px;">Across all phases + compliance + memberships + awards + IP</div>
+    </div>
+    <div class="budget-total-val">$11,150 - $35,100</div>
+  </div>`;
+
+  el.innerHTML = html;
+}
+
+// ─── Render Timeline ───
+function renderTimeline() {
+  const el = document.getElementById('timelineList');
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  el.innerHTML = TIMELINE_EVENTS.map(ev => {
+    const evDate = new Date(ev.date + 'T00:00:00');
+    const isPast = evDate < today;
+    const dotType = isPast ? 'done' : ev.type;
+    return `<div class="timeline-item">
+      <div class="timeline-dot ${dotType}"></div>
+      <div class="timeline-date">${formatDate(ev.date)}</div>
+      <div class="timeline-title">${ev.title}</div>
+      <div class="timeline-desc">${ev.desc}</div>
+      <span class="timeline-tag ${ev.tag}">${ev.tag}</span>
+    </div>`;
+  }).join('');
+}
+
+// ─── Update stats ───
+function updateStats() {
+  const counts = { ready:0, 'in-progress':0, done:0, urgent:0, blocked:0 };
+  CERTS.forEach(c => {
+    if (c.status === 'ready') counts.ready++;
+    if (c.status === 'in-progress') counts['in-progress']++;
+    if (c.status === 'done') counts.done++;
+    if (c.status === 'blocked') counts.blocked++;
+    if (c.status === 'urgent') counts.urgent++;
+    if (c.deadline && daysUntil(c.deadline) <= 45 && c.status !== 'done') counts.urgent++;
+  });
+  document.getElementById('statReady').textContent = counts.ready;
+  document.getElementById('statProgress').textContent = counts['in-progress'];
+  document.getElementById('statDone').textContent = counts.done;
+  document.getElementById('statUrgent').textContent = counts.urgent + counts.blocked;
+}
+
+// ─── Interactions ───
+function toggleCard(id) {
+  const card = document.querySelector(`.cert-card[data-id="${id}"]`);
+  const wasExpanded = card.classList.contains('expanded');
+  document.querySelectorAll('.cert-card.expanded').forEach(c => c.classList.remove('expanded'));
+  if (!wasExpanded) card.classList.add('expanded');
+}
+
+function updateStatus(id, newStatus) {
+  const cert = CERTS.find(c => c.id === id);
+  if (cert) {
+    cert.status = newStatus;
+    const labels = { 'not-started':'Not started', 'ready':'Ready', 'in-progress':'In progress', 'blocked':'Blocked', 'done':'Certified' };
+    cert.statusLabel = labels[newStatus] || newStatus;
+    renderCerts();
+    updateStats();
+    saveState();
+  }
+}
+
+// ─── Tabs ───
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+// ─── Persist state ───
+function saveState() {
+  const state = CERTS.map(c => ({ id:c.id, status:c.status, statusLabel:c.statusLabel }));
+  try { localStorage.setItem('aware-cert-state', JSON.stringify(state)); } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('aware-cert-state'));
+    if (saved) {
+      saved.forEach(s => {
+        const cert = CERTS.find(c => c.id === s.id);
+        if (cert) { cert.status = s.status; cert.statusLabel = s.statusLabel; }
+      });
+    }
+  } catch(e) {}
+}
+
+// ─── Init ───
+function init() {
+  document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  loadState();
+  renderCountdowns();
+  renderCerts();
+  renderBudget();
+  renderTimeline();
+  updateStats();
+}
+
+init();
+</script>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backbar Cost-Per-Use Calculator | AWARE Hair Pro</title>
+    <meta name="description" content="Calculate the true cost per client of your backbar products. Compare your current products to AWARE's premium formulations and 50% wholesale margin.">
+
+    <!-- AWARE Fonts -->
+    <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- PDF Export Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Klaviyo Client-Side SDK -->
+    <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=pk_1bcdfc5f9fa0dde4ab05653e3f64c5ebb5"></script>
+
+    <style>
+        /* ═══════════════════════════════════════════════════════════════
+           AWARE HAIR DESIGN SYSTEM - Backbar Cost Calculator
+           ═══════════════════════════════════════════════════════════════ */
+
+        :root {
+            /* Colors */
+            --color-background: #f4efe9;
+            --color-text: #102b26;
+            --color-text-secondary: #5a6b68;
+            --color-header-text: #031612;
+
+            --color-button-bg: #113035;
+            --color-button-text: #f4efe9;
+            --color-button-hover: #2a7682;
+
+            --color-border: #bdbfbf;
+            --color-border-light: #e4d9ca;
+            --color-accent: #102b26;
+            --color-success: #478947;
+            --color-warning: #c9842b;
+            --color-danger: #c94444;
+
+            --color-surface-light: #faf8f5;
+            --color-surface-dark: #102b26;
+
+            /* Comparison colors */
+            --color-your-product: #8b7355;
+            --color-aware: #2a7682;
+
+            /* Typography */
+            --font-heading: "orpheuspro", Georgia, "Times New Roman", serif;
+            --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+
+            --weight-normal: 400;
+            --weight-medium: 500;
+            --weight-semibold: 600;
+            --weight-bold: 700;
+
+            /* Spacing */
+            --spacing-1: 4px;
+            --spacing-2: 8px;
+            --spacing-3: 12px;
+            --spacing-4: 16px;
+            --spacing-5: 20px;
+            --spacing-6: 24px;
+            --spacing-8: 32px;
+            --spacing-10: 40px;
+            --spacing-12: 48px;
+
+            /* Animation */
+            --easing: cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-fast: 0.2s;
+            --duration-normal: 0.3s;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(16, 43, 38, 0.05);
+            --shadow-md: 0 4px 12px rgba(16, 43, 38, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: var(--spacing-5);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: var(--spacing-8) 0;
+            border-bottom: 1px solid var(--color-border-light);
+            margin-bottom: var(--spacing-6);
+        }
+
+        .logo {
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .header h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(1.75rem, 5vw, 2.25rem);
+            font-weight: var(--weight-normal);
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .header p {
+            font-family: var(--font-heading);
+            font-style: italic;
+            color: var(--color-text-secondary);
+            font-size: 1.0625rem;
+        }
+
+        /* Card */
+        .card {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: var(--weight-normal);
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-5);
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: var(--spacing-5);
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: var(--weight-medium);
+            margin-bottom: var(--spacing-2);
+            color: var(--color-text);
+        }
+
+        .label-hint {
+            font-weight: var(--weight-normal);
+            color: var(--color-text-secondary);
+            font-size: 13px;
+            display: block;
+            margin-top: var(--spacing-1);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-4);
+            border: 1px solid var(--color-border);
+            background: white;
+            font-size: 16px;
+            font-family: var(--font-body);
+            color: var(--color-text);
+            transition: border-color var(--duration-fast) var(--easing);
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235a6b68' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        .input-prefix {
+            position: relative;
+        }
+
+        .input-prefix input {
+            padding-left: 28px;
+        }
+
+        .input-prefix::before {
+            content: '$';
+            position: absolute;
+            left: var(--spacing-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-secondary);
+            font-size: 16px;
+        }
+
+        .input-suffix {
+            position: relative;
+        }
+
+        .input-suffix input {
+            padding-right: 45px;
+        }
+
+        .input-suffix::after {
+            content: attr(data-suffix);
+            position: absolute;
+            right: var(--spacing-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+
+        /* Input row for side-by-side */
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-3);
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: var(--spacing-3);
+            margin-top: var(--spacing-6);
+        }
+
+        .btn {
+            flex: 1;
+            padding: var(--spacing-4) var(--spacing-5);
+            font-size: 14px;
+            font-weight: var(--weight-medium);
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--easing);
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--color-button-bg);
+            color: var(--color-button-text);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-button-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-text);
+            color: var(--color-button-text);
+            border-color: var(--color-text);
+        }
+
+        /* Screen visibility */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.4s var(--easing);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Staggered List Reveals */
+        .breakdown-row,
+        .stat-item,
+        .comparison-side {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.4s var(--easing), transform 0.4s var(--easing);
+        }
+
+        .breakdown-row.visible,
+        .stat-item.visible,
+        .comparison-side.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Enhanced Button Hover */
+        .btn-primary {
+            transition: all var(--duration-normal) var(--easing), transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(17, 48, 53, 0.15);
+        }
+
+        .email-input-group .btn {
+            transition: background var(--duration-fast) var(--easing), transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .email-input-group .btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(71, 137, 71, 0.2);
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .screen.active {
+                animation: none;
+            }
+
+            .breakdown-row,
+            .stat-item,
+            .comparison-side {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .btn-primary:hover,
+            .email-input-group .btn:hover {
+                transform: none;
+            }
+        }
+
+        /* Results - Comparison Layout */
+        .comparison-hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            background: var(--color-border-light);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .comparison-side {
+            padding: var(--spacing-6) var(--spacing-4);
+            text-align: center;
+        }
+
+        .comparison-side.yours {
+            background: #f5f0eb;
+        }
+
+        .comparison-side.aware {
+            background: var(--color-surface-dark);
+            color: var(--color-background);
+        }
+
+        .comparison-eyebrow {
+            font-size: 10px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .comparison-side.yours .comparison-eyebrow {
+            color: var(--color-your-product);
+        }
+
+        .comparison-value {
+            font-family: var(--font-heading);
+            font-size: clamp(1.75rem, 8vw, 2.5rem);
+            font-weight: var(--weight-normal);
+            letter-spacing: -0.02em;
+            margin-bottom: var(--spacing-1);
+        }
+
+        .comparison-side.aware .comparison-value {
+            color: #7dd3e1;
+        }
+
+        .comparison-label {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        /* Verdict Banner */
+        .verdict-banner {
+            padding: var(--spacing-5);
+            text-align: center;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .verdict-banner.savings {
+            background: linear-gradient(135deg, #e8f5ed 0%, #d4e8db 100%);
+            border: 1px solid rgba(71, 137, 71, 0.2);
+        }
+
+        .verdict-banner.higher {
+            background: linear-gradient(135deg, #fef3cd 0%, #fff8e6 100%);
+            border: 1px solid rgba(201, 132, 43, 0.2);
+        }
+
+        .verdict-icon {
+            font-size: 28px;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .verdict-text {
+            font-family: var(--font-heading);
+            font-size: 1.125rem;
+            color: var(--color-header-text);
+        }
+
+        .verdict-subtext {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin-top: var(--spacing-2);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .stat-card {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            padding: var(--spacing-4);
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .stat-value {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--color-header-text);
+        }
+
+        .stat-value.danger {
+            color: var(--color-danger);
+        }
+
+        .stat-value.success {
+            color: var(--color-success);
+        }
+
+        /* Breakdown Table */
+        .breakdown-card {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            overflow: hidden;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .breakdown-header {
+            padding: var(--spacing-4) var(--spacing-5);
+            background: var(--color-background);
+            font-family: var(--font-body);
+            font-size: 12px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-3) var(--spacing-5);
+            border-bottom: 1px solid var(--color-border-light);
+            font-size: 14px;
+        }
+
+        .breakdown-row:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-row.total {
+            background: var(--color-background);
+            font-weight: var(--weight-semibold);
+        }
+
+        .breakdown-label {
+            color: var(--color-text-secondary);
+        }
+
+        .breakdown-value {
+            font-weight: var(--weight-medium);
+        }
+
+        .breakdown-value.positive {
+            color: var(--color-success);
+        }
+
+        /* Key Message */
+        .key-message {
+            background: linear-gradient(135deg, #e8f5ed 0%, #d4e8db 100%);
+            border: 1px solid rgba(71, 137, 71, 0.2);
+            padding: var(--spacing-5);
+            margin-bottom: var(--spacing-4);
+            position: relative;
+        }
+
+        .key-message::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--color-success);
+        }
+
+        .key-message h4 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-weight: var(--weight-normal);
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .key-message p {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        .key-message .highlight {
+            font-weight: var(--weight-semibold);
+            color: var(--color-success);
+        }
+
+        /* AWARE Product Info */
+        .aware-product-info {
+            background: var(--color-surface-dark);
+            color: var(--color-background);
+            padding: var(--spacing-5);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .aware-product-info h4 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-weight: var(--weight-normal);
+            margin-bottom: var(--spacing-3);
+        }
+
+        .aware-product-list {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .aware-product-list li {
+            padding: var(--spacing-1) 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Email Capture */
+        .email-capture {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .email-capture h3 {
+            font-family: var(--font-heading);
+            font-size: 1.125rem;
+            font-weight: var(--weight-normal);
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .email-capture p {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .email-input-group {
+            display: flex;
+            gap: var(--spacing-2);
+        }
+
+        .email-input-group input {
+            flex: 1;
+        }
+
+        .email-input-group .btn {
+            flex: 0 0 auto;
+            padding: var(--spacing-3) var(--spacing-5);
+            background: var(--color-success);
+            color: white;
+        }
+
+        .email-input-group .btn:hover {
+            background: #3a7a3a;
+        }
+
+        .email-success {
+            display: none;
+            text-align: center;
+            padding: var(--spacing-4);
+            background: rgba(71, 137, 71, 0.1);
+            color: var(--color-success);
+            font-weight: var(--weight-medium);
+        }
+
+        .email-success.visible {
+            display: block;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-6);
+        }
+
+        .action-btn {
+            padding: var(--spacing-4);
+            border: 1px solid var(--color-border-light);
+            background: var(--color-surface-light);
+            cursor: pointer;
+            text-align: center;
+            transition: all var(--duration-fast) var(--easing);
+        }
+
+        .action-btn:hover {
+            border-color: var(--color-accent);
+            background: white;
+        }
+
+        .action-btn-icon {
+            font-size: 20px;
+            margin-bottom: var(--spacing-1);
+        }
+
+        .action-btn-label {
+            font-size: 12px;
+            font-weight: var(--weight-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: var(--spacing-8) var(--spacing-6);
+            color: var(--color-text-secondary);
+            font-size: 13px;
+            border-top: 1px solid var(--color-border-light);
+            margin-top: var(--spacing-6);
+        }
+
+        .footer a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: var(--spacing-4);
+            }
+
+            .comparison-hero {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-value {
+                font-size: 2rem;
+            }
+
+            .email-input-group {
+                flex-direction: column;
+            }
+
+            .email-input-group .btn {
+                width: 100%;
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .email-capture,
+            .action-buttons,
+            .btn-group,
+            .footer {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">AWARE Hair Pro Tools</div>
+            <h1>Backbar Cost-Per-Use Calculator</h1>
+            <p>What does each client really cost you?</p>
+        </div>
+
+        <!-- Input Screen -->
+        <div class="screen active" id="inputScreen">
+            <div class="card">
+                <h2 class="card-title">Your Current Product</h2>
+
+                <div class="form-group">
+                    <label for="productType">Product Type</label>
+                    <select id="productType">
+                        <option value="shampoo">Shampoo</option>
+                        <option value="conditioner">Conditioner</option>
+                        <option value="leave-in">Leave-In Treatment</option>
+                        <option value="styling">Styling Product</option>
+                        <option value="treatment">Treatment / Mask</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="productName">Product Name <span style="font-weight: normal; color: var(--color-text-secondary);">(optional)</span></label>
+                    <input type="text" id="productName" placeholder="e.g., Brand X Hydrating Shampoo">
+                </div>
+
+                <div class="input-row">
+                    <div class="form-group">
+                        <label for="productSize">Size</label>
+                        <div class="input-suffix" data-suffix="oz">
+                            <input type="number" id="productSize" placeholder="32" min="1" value="32">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCost">Wholesale Cost</label>
+                        <div class="input-prefix">
+                            <input type="number" id="productCost" placeholder="28" min="0" step="0.01" value="28">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="usesPerBottle">Uses per bottle</label>
+                    <input type="number" id="usesPerBottle" placeholder="40" min="1" value="40">
+                    <span class="label-hint">How many clients does one bottle serve?</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="clientsPerWeek">Clients per week using this product</label>
+                    <input type="number" id="clientsPerWeek" placeholder="30" min="1" value="30">
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="calculateResults()">Calculate Cost Per Use</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="screen" id="results">
+            <div id="resultsContent">
+                <!-- Comparison Hero -->
+                <div class="comparison-hero">
+                    <div class="comparison-side yours">
+                        <div class="comparison-eyebrow">Your Product</div>
+                        <div class="comparison-value" id="yourCostPerUse">$0.70</div>
+                        <div class="comparison-label">per client</div>
+                    </div>
+                    <div class="comparison-side aware">
+                        <div class="comparison-eyebrow">AWARE Equivalent</div>
+                        <div class="comparison-value" id="awareCostPerUse">$0.62</div>
+                        <div class="comparison-label">per client</div>
+                    </div>
+                </div>
+
+                <!-- Verdict -->
+                <div class="verdict-banner savings" id="verdictBanner">
+                    <div class="verdict-icon" id="verdictIcon">&#128176;</div>
+                    <div class="verdict-text" id="verdictText">AWARE saves you $0.08 per client</div>
+                    <div class="verdict-subtext" id="verdictSubtext">That's $124.80 per year in backbar savings alone</div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Annual Backbar Cost</div>
+                        <div class="stat-value" id="annualCostYours">$1,092</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">With AWARE</div>
+                        <div class="stat-value success" id="annualCostAware">$967</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">% of Avg Service</div>
+                        <div class="stat-value" id="percentOfService">0.6%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Bottles Per Year</div>
+                        <div class="stat-value" id="bottlesPerYear">39</div>
+                    </div>
+                </div>
+
+                <!-- Key Message - Margin -->
+                <div class="key-message">
+                    <h4>But here's the real opportunity...</h4>
+                    <p>AWARE's <span class="highlight">50% wholesale margin</span> means when you sell the retail version of this product, you profit <span class="highlight" id="retailProfitAmount">$22.50</span> per bottle - that's <span class="highlight">25% more</span> than typical salon brands offering 40% margins.</p>
+                </div>
+
+                <!-- Breakdown -->
+                <div class="breakdown-card">
+                    <div class="breakdown-header">Cost Breakdown</div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Product Cost</span>
+                        <span class="breakdown-value" id="breakdownProductCost">$28.00</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Uses Per Bottle</span>
+                        <span class="breakdown-value" id="breakdownUses">40 clients</span>
+                    </div>
+                    <div class="breakdown-row total">
+                        <span class="breakdown-label">Cost Per Client</span>
+                        <span class="breakdown-value" id="breakdownCostPerUse">$0.70</span>
+                    </div>
+                </div>
+
+                <div class="breakdown-card">
+                    <div class="breakdown-header">Annual Projection</div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Clients Per Week</span>
+                        <span class="breakdown-value" id="breakdownClients">30</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Clients Per Year</span>
+                        <span class="breakdown-value" id="breakdownClientsYear">1,560</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Bottles Needed Yearly</span>
+                        <span class="breakdown-value" id="breakdownBottles">39</span>
+                    </div>
+                    <div class="breakdown-row total">
+                        <span class="breakdown-label">Total Annual Backbar Cost</span>
+                        <span class="breakdown-value" id="breakdownAnnualCost">$1,092</span>
+                    </div>
+                </div>
+
+                <!-- AWARE Product Reference -->
+                <div class="aware-product-info">
+                    <h4>AWARE Equivalent Products</h4>
+                    <ul class="aware-product-list" id="awareProductList">
+                        <li>
+                            <span>Scalp Prep Shampoo (8 oz)</span>
+                            <span>$20 wholesale</span>
+                        </li>
+                        <li>
+                            <span>Estimated uses per bottle</span>
+                            <span>~32 clients</span>
+                        </li>
+                        <li>
+                            <span>Cost per use</span>
+                            <span>$0.62</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Email Capture -->
+            <div class="email-capture" id="emailCapture">
+                <h3>Get this analysis + AWARE's wholesale catalog</h3>
+                <p>We'll send your cost breakdown and our full product lineup with pricing</p>
+                <div class="email-input-group" id="emailForm">
+                    <input type="email" id="emailInput" placeholder="your@email.com">
+                    <button class="btn" onclick="submitEmail()">Send</button>
+                </div>
+                <div class="email-success" id="emailSuccess">
+                    &#10003; Check your inbox! Your report is on the way.
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="action-btn" onclick="downloadPDF()">
+                    <div class="action-btn-icon">&#128196;</div>
+                    <div class="action-btn-label">Download PDF</div>
+                </button>
+                <button class="action-btn" onclick="shareResults()">
+                    <div class="action-btn-icon">&#128279;</div>
+                    <div class="action-btn-label">Share</div>
+                </button>
+            </div>
+
+            <!-- Start Over -->
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="startOver()">Calculate Another Product</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Built by <a href="https://awarehair.com" target="_blank">AWARE Hair</a> for stylists who know their numbers.</p>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════
+        // BACKBAR COST-PER-USE CALCULATOR - JavaScript
+        // ═══════════════════════════════════════════════════════════════
+
+        // Value Counter Animation
+        function animateValue(el, end, duration, prefix, suffix) {
+            duration = duration || 1000;
+            prefix = prefix || '';
+            suffix = suffix || '';
+
+            // Respect reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                el.textContent = prefix + (Number.isInteger(end) ? end.toLocaleString() : end.toFixed(2)) + suffix;
+                return;
+            }
+
+            var start = 0;
+            var startTime = performance.now();
+
+            function update(now) {
+                var progress = Math.min((now - startTime) / duration, 1);
+                var eased = 1 - Math.pow(1 - progress, 3); // cubic ease-out
+                var value = start + (end - start) * eased;
+                var displayValue = Number.isInteger(end) ? Math.floor(value).toLocaleString() : value.toFixed(2);
+                el.textContent = prefix + displayValue + suffix;
+                if (progress < 1) requestAnimationFrame(update);
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        // Staggered reveal for list items
+        function revealListItems(selector, delay) {
+            delay = delay || 100;
+            var items = document.querySelectorAll(selector);
+
+            // Respect reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                items.forEach(function(item) {
+                    item.classList.add('visible');
+                });
+                return;
+            }
+
+            items.forEach(function(item, index) {
+                setTimeout(function() {
+                    item.classList.add('visible');
+                }, index * delay);
+            });
+        }
+
+        // State
+        let calculationData = {};
+
+        // AWARE Product Reference Data (wholesale prices, estimated uses)
+        const AWARE_PRODUCTS = {
+            shampoo: {
+                name: 'Scalp Prep Shampoo',
+                size: 8,
+                wholesalePrice: 20,
+                retailPrice: 40,
+                usesPerBottle: 32
+            },
+            conditioner: {
+                name: 'Scalp Therapy Conditioner',
+                size: 8,
+                wholesalePrice: 22,
+                retailPrice: 44,
+                usesPerBottle: 32
+            },
+            'leave-in': {
+                name: 'Scalp Defense Leave-In',
+                size: 4,
+                wholesalePrice: 18,
+                retailPrice: 36,
+                usesPerBottle: 40
+            },
+            styling: {
+                name: 'Scalp + Style Cream',
+                size: 4,
+                wholesalePrice: 18,
+                retailPrice: 36,
+                usesPerBottle: 35
+            },
+            treatment: {
+                name: 'Scalp Reset Mask',
+                size: 6,
+                wholesalePrice: 26,
+                retailPrice: 52,
+                usesPerBottle: 24
+            }
+        };
+
+        const WEEKS_PER_YEAR = 52;
+        const AWARE_MARGIN = 0.50;
+        const TYPICAL_MARGIN = 0.40;
+
+        function calculateResults() {
+            // Gather inputs
+            const productType = document.getElementById('productType').value;
+            const productName = document.getElementById('productName').value || 'Your ' + productType;
+            const productSize = parseFloat(document.getElementById('productSize').value) || 32;
+            const productCost = parseFloat(document.getElementById('productCost').value) || 28;
+            const usesPerBottle = parseFloat(document.getElementById('usesPerBottle').value) || 40;
+            const clientsPerWeek = parseFloat(document.getElementById('clientsPerWeek').value) || 30;
+
+            // Get AWARE equivalent
+            const awareProduct = AWARE_PRODUCTS[productType];
+
+            // Calculate costs
+            const yourCostPerUse = productCost / usesPerBottle;
+            const awareCostPerUse = awareProduct.wholesalePrice / awareProduct.usesPerBottle;
+
+            // Annual calculations
+            const clientsPerYear = clientsPerWeek * WEEKS_PER_YEAR;
+            const bottlesPerYear = Math.ceil(clientsPerYear / usesPerBottle);
+            const annualCostYours = clientsPerYear * yourCostPerUse;
+
+            const awareBottlesPerYear = Math.ceil(clientsPerYear / awareProduct.usesPerBottle);
+            const annualCostAware = clientsPerYear * awareCostPerUse;
+
+            // Savings
+            const savingsPerUse = yourCostPerUse - awareCostPerUse;
+            const annualSavings = annualCostYours - annualCostAware;
+
+            // Retail profit comparison
+            const awareRetailProfit = awareProduct.retailPrice * AWARE_MARGIN;
+            const typicalRetailProfit = awareProduct.retailPrice * TYPICAL_MARGIN;
+            const marginAdvantage = awareRetailProfit - typicalRetailProfit;
+
+            // Assume average service is $100 for percentage calc
+            const avgServicePrice = 100;
+            const percentOfService = (yourCostPerUse / avgServicePrice) * 100;
+
+            // Store data
+            calculationData = {
+                productType,
+                productName,
+                productSize,
+                productCost,
+                usesPerBottle,
+                clientsPerWeek,
+                clientsPerYear,
+                bottlesPerYear,
+                yourCostPerUse,
+                awareCostPerUse,
+                annualCostYours,
+                annualCostAware,
+                savingsPerUse,
+                annualSavings,
+                awareProduct,
+                awareRetailProfit,
+                percentOfService
+            };
+
+            displayResults();
+        }
+
+        function displayResults() {
+            const d = calculationData;
+
+            // Verdict (static text update)
+            const verdictBanner = document.getElementById('verdictBanner');
+            const verdictIcon = document.getElementById('verdictIcon');
+            const verdictText = document.getElementById('verdictText');
+            const verdictSubtext = document.getElementById('verdictSubtext');
+
+            if (d.savingsPerUse > 0) {
+                verdictBanner.className = 'verdict-banner savings';
+                verdictIcon.innerHTML = '&#128176;';
+                verdictText.textContent = `AWARE saves you $${d.savingsPerUse.toFixed(2)} per client`;
+                verdictSubtext.textContent = `That's $${Math.round(d.annualSavings)} per year in backbar savings alone`;
+            } else if (d.savingsPerUse < 0) {
+                verdictBanner.className = 'verdict-banner higher';
+                verdictIcon.innerHTML = '&#9888;';
+                const diff = Math.abs(d.savingsPerUse);
+                verdictText.textContent = `AWARE costs $${diff.toFixed(2)} more per use`;
+                verdictSubtext.textContent = `But with 50% retail margins, you make it back on just one sale`;
+            } else {
+                verdictBanner.className = 'verdict-banner savings';
+                verdictIcon.innerHTML = '&#9989;';
+                verdictText.textContent = `Same cost per use - but AWARE offers better margins`;
+                verdictSubtext.textContent = `50% wholesale margin means more profit on every retail sale`;
+            }
+
+            // Static breakdown values
+            document.getElementById('breakdownUses').textContent = d.usesPerBottle + ' clients';
+            document.getElementById('breakdownClients').textContent = d.clientsPerWeek;
+            document.getElementById('breakdownClientsYear').textContent = d.clientsPerYear.toLocaleString();
+            document.getElementById('breakdownBottles').textContent = d.bottlesPerYear;
+
+            // AWARE product info
+            const awareList = document.getElementById('awareProductList');
+            awareList.innerHTML = `
+                <li>
+                    <span>${d.awareProduct.name} (${d.awareProduct.size} oz)</span>
+                    <span>$${d.awareProduct.wholesalePrice} wholesale</span>
+                </li>
+                <li>
+                    <span>Estimated uses per bottle</span>
+                    <span>~${d.awareProduct.usesPerBottle} clients</span>
+                </li>
+                <li>
+                    <span>Cost per use</span>
+                    <span>$${d.awareCostPerUse.toFixed(2)}</span>
+                </li>
+            `;
+
+            // Show results screen first
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('results').classList.add('active');
+            window.scrollTo(0, 0);
+
+            // Animate values after screen transition
+            setTimeout(function() {
+                // Comparison values
+                animateValue(document.getElementById('yourCostPerUse'), d.yourCostPerUse, 900, '$', '');
+                animateValue(document.getElementById('awareCostPerUse'), d.awareCostPerUse, 1000, '$', '');
+
+                // Stats grid (animated)
+                animateValue(document.getElementById('annualCostYours'), Math.round(d.annualCostYours), 800, '$', '');
+                animateValue(document.getElementById('annualCostAware'), Math.round(d.annualCostAware), 850, '$', '');
+                animateValue(document.getElementById('percentOfService'), d.percentOfService, 700, '', '%');
+                animateValue(document.getElementById('bottlesPerYear'), d.bottlesPerYear, 750, '', '');
+
+                // Retail profit highlight
+                animateValue(document.getElementById('retailProfitAmount'), d.awareRetailProfit, 900, '$', '');
+
+                // Breakdown values
+                animateValue(document.getElementById('breakdownProductCost'), d.productCost, 700, '$', '');
+                animateValue(document.getElementById('breakdownCostPerUse'), d.yourCostPerUse, 800, '$', '');
+                animateValue(document.getElementById('breakdownAnnualCost'), Math.round(d.annualCostYours), 900, '$', '');
+
+                // Reveal elements with stagger
+                revealListItems('.comparison-side', 150);
+                revealListItems('.stat-item', 100);
+                setTimeout(function() {
+                    revealListItems('.breakdown-row', 80);
+                }, 300);
+            }, 200);
+        }
+
+        function submitEmail() {
+            const email = document.getElementById('emailInput').value;
+
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            // Klaviyo properties
+            const klaviyoProperties = {
+                '$email': email,
+                'calculator_used': 'backbar_cost',
+                'product_type': calculationData.productType,
+                'cost_per_use': parseFloat(calculationData.yourCostPerUse.toFixed(2)),
+                'annual_backbar_cost': Math.round(calculationData.annualCostYours),
+                'margin_per_retail_sale': parseFloat(calculationData.awareRetailProfit.toFixed(2)),
+                'aware_savings_per_use': parseFloat(calculationData.savingsPerUse.toFixed(2)),
+                'annual_savings_potential': Math.round(calculationData.annualSavings),
+                'calculation_date': new Date().toISOString()
+            };
+
+            // Klaviyo Onsite SDK
+            if (typeof klaviyo !== 'undefined') {
+                klaviyo.identify(klaviyoProperties);
+
+                klaviyo.track('Calculated Backbar Cost', {
+                    product_type: calculationData.productType,
+                    cost_per_use: calculationData.yourCostPerUse.toFixed(2),
+                    annual_backbar_cost: Math.round(calculationData.annualCostYours),
+                    annual_savings: Math.round(calculationData.annualSavings)
+                });
+            }
+
+            // Klaviyo API fallback
+            fetch('https://a.klaviyo.com/client/subscriptions/?company_id=pk_1bcdfc5f9fa0dde4ab05653e3f64c5ebb5', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'revision': '2024-10-15'
+                },
+                body: JSON.stringify({
+                    data: {
+                        type: 'subscription',
+                        attributes: {
+                            custom_source: 'Pro Tools - Backbar Cost Calculator',
+                            profile: {
+                                data: {
+                                    type: 'profile',
+                                    attributes: {
+                                        email: email,
+                                        properties: {
+                                            calculator_used: 'backbar_cost',
+                                            product_type: calculationData.productType,
+                                            cost_per_use: calculationData.yourCostPerUse.toFixed(2),
+                                            annual_backbar_cost: Math.round(calculationData.annualCostYours)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+            }).catch(error => console.log('Klaviyo error:', error));
+
+            // Show success
+            document.getElementById('emailForm').style.display = 'none';
+            document.getElementById('emailSuccess').classList.add('visible');
+
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'email_capture', { 'calculator': 'backbar_cost' });
+            }
+        }
+
+        function downloadPDF() {
+            const element = document.getElementById('resultsContent');
+            const opt = {
+                margin: 10,
+                filename: `backbar-cost-analysis-${new Date().toISOString().split('T')[0]}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+
+            if (typeof klaviyo !== 'undefined') {
+                klaviyo.track('Downloaded PDF', { calculator: 'backbar_cost' });
+            }
+        }
+
+        function shareResults() {
+            const text = `I calculated my backbar cost at $${calculationData.yourCostPerUse.toFixed(2)} per client. AWARE Hair's equivalent is $${calculationData.awareCostPerUse.toFixed(2)} - plus they offer 50% retail margins! Calculate yours: `;
+            const url = window.location.href;
+
+            if (navigator.share) {
+                navigator.share({ title: 'Backbar Cost Analysis', text, url });
+            } else {
+                navigator.clipboard.writeText(text + url).then(() => {
+                    alert('Link copied to clipboard!');
+                });
+            }
+        }
+
+        function startOver() {
+            document.querySelectorAll('input[type="number"], input[type="text"]').forEach(input => {
+                input.value = input.placeholder || '';
+            });
+            document.getElementById('productType').value = 'shampoo';
+
+            // Reset animation states for next calculation
+            document.querySelectorAll('.breakdown-row, .stat-item, .comparison-side').forEach(function(el) {
+                el.classList.remove('visible');
+            });
+
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('inputScreen').classList.add('active');
+
+            document.getElementById('emailForm').style.display = 'flex';
+            document.getElementById('emailSuccess').classList.remove('visible');
+
+            window.scrollTo(0, 0);
+        }
+    </script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

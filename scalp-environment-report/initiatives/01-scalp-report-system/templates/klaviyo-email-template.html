@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Scalp Environment Report</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+        }
+        .header {
+            background-color: #1a1a1a;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .intro {
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .intro h2 {
+            color: #1a1a1a;
+            font-size: 20px;
+            margin: 0 0 10px 0;
+        }
+        .intro p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .report-section {
+            padding: 20px;
+            border-top: 1px solid #e5e5e5;
+        }
+        .data-card {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .data-card h3 {
+            color: #1a1a1a;
+            font-size: 18px;
+            margin: 0 0 15px 0;
+            display: flex;
+            align-items: center;
+        }
+        .data-card .icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .metric-label {
+            color: #666;
+            font-size: 14px;
+        }
+        .metric-value {
+            color: #1a1a1a;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        .badge-low { background-color: #00E400; }
+        .badge-moderate { background-color: #FFFF00; color: #1a1a1a; }
+        .badge-high { background-color: #FF7E00; }
+        .badge-very-high { background-color: #FF0000; }
+        .badge-extreme { background-color: #7E0023; }
+        .recommendation {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #856404;
+            line-height: 1.5;
+        }
+        .products-section {
+            background-color: #f0f8ff;
+            padding: 30px 20px;
+        }
+        .products-section h2 {
+            text-align: center;
+            color: #1a1a1a;
+            margin: 0 0 20px 0;
+        }
+        .product-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #e5e5e5;
+        }
+        .product-card h4 {
+            color: #1a1a1a;
+            margin: 0 0 10px 0;
+            font-size: 16px;
+        }
+        .product-card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .usage-instruction {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 13px;
+            color: #333;
+        }
+        .cta-button {
+            display: block;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            text-align: center;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            margin: 20px auto;
+            max-width: 200px;
+        }
+        .footer {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🌿 AWARE Hair</h1>
+        </div>
+
+        <!-- Introduction -->
+        <div class="intro">
+            <h2>Hi {% if person|lookup:'First Name' %}{{ person|lookup:'First Name' }}{% else %}there{% endif %},</h2>
+            <p>Your personalized scalp environment report for <strong>{{ person|lookup:'ZIP Code' }}</strong> is ready. Here's how your local environment is affecting your scalp health today.</p>
+        </div>
+
+        <!-- Environmental Data Section -->
+        <div class="report-section">
+
+            <!-- UV Index Card -->
+            <div class="data-card">
+                <h3><span class="icon">☀️</span> UV Exposure</h3>
+                <div class="metric">
+                    <span class="metric-label">Current UV Index</span>
+                    <span class="metric-value">{{ person|lookup:'UV Index'|default:"N/A" }}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Level</span>
+                    {% if person|lookup:'UV Level' == 'Low' %}
+                        <span class="badge badge-low">{{ person|lookup:'UV Level' }}</span>
+                    {% elif person|lookup:'UV Level' == 'Moderate' %}
+                        <span class="badge badge-moderate">{{ person|lookup:'UV Level' }}</span>
+                    {% elif person|lookup:'UV Level' == 'High' %}
+                        <span class="badge badge-high">{{ person|lookup:'UV Level' }}</span>
+                    {% elif person|lookup:'UV Level' == 'Very High' %}
+                        <span class="badge badge-very-high">{{ person|lookup:'UV Level' }}</span>
+                    {% else %}
+                        <span class="badge badge-extreme">{{ person|lookup:'UV Level'|default:"Unknown" }}</span>
+                    {% endif %}
+                </div>
+
+                {% if person|lookup:'UV Recommendation' %}
+                <div class="recommendation">
+                    <strong>Scalp Protection:</strong> {{ person|lookup:'UV Recommendation' }}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Air Quality Card (if available) -->
+            {% if person|lookup:'AQI' %}
+            <div class="data-card">
+                <h3><span class="icon">💨</span> Air Quality</h3>
+                <div class="metric">
+                    <span class="metric-label">Air Quality Index (AQI)</span>
+                    <span class="metric-value">{{ person|lookup:'AQI' }}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Category</span>
+                    {% if person|lookup:'AQI Category' == 'Good' %}
+                        <span class="badge badge-low">{{ person|lookup:'AQI Category' }}</span>
+                    {% elif person|lookup:'AQI Category' == 'Moderate' %}
+                        <span class="badge badge-moderate">{{ person|lookup:'AQI Category' }}</span>
+                    {% elif person|lookup:'AQI Category' == 'Unhealthy for Sensitive Groups' %}
+                        <span class="badge badge-high">{{ person|lookup:'AQI Category' }}</span>
+                    {% else %}
+                        <span class="badge badge-very-high">{{ person|lookup:'AQI Category' }}</span>
+                    {% endif %}
+                </div>
+                {% if person|lookup:'Air Quality Location' %}
+                <div class="metric">
+                    <span class="metric-label">Monitoring Station</span>
+                    <span style="font-size: 14px; color: #666;">{{ person|lookup:'Air Quality Location' }}</span>
+                </div>
+                {% endif %}
+
+                {% if person|lookup:'AQI'|floatformat:0|add:"0" > 50 %}
+                <div class="recommendation">
+                    <strong>Impact on Your Scalp:</strong> Elevated pollution levels can irritate your scalp and contribute to buildup. Use gentle cleansing products and consider more frequent washing.
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Pollen Card (if available) -->
+            {% if person|lookup:'Pollen Tree' %}
+            <div class="data-card">
+                <h3><span class="icon">🌸</span> Pollen Levels</h3>
+                <div class="metric">
+                    <span class="metric-label">Tree Pollen</span>
+                    <span class="metric-value">{{ person|lookup:'Pollen Tree Level'|default:"N/A" }}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Grass Pollen</span>
+                    <span class="metric-value">{{ person|lookup:'Pollen Grass Level'|default:"N/A" }}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Weed Pollen</span>
+                    <span class="metric-value">{{ person|lookup:'Pollen Weed Level'|default:"N/A" }}</span>
+                </div>
+
+                {% if person|lookup:'Pollen Tree'|floatformat:0|add:"0" > 2 or person|lookup:'Pollen Grass'|floatformat:0|add:"0" > 2 or person|lookup:'Pollen Weed'|floatformat:0|add:"0" > 2 %}
+                <div class="recommendation">
+                    <strong>Scalp Care Tip:</strong> High pollen can cause scalp irritation and inflammation. Consider using soothing, anti-inflammatory ingredients in your routine.
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Water Quality Card -->
+            <div class="data-card">
+                <h3><span class="icon">💧</span> Water Quality</h3>
+                <p style="color: #666; font-size: 14px;">Water quality data is based on public EPA sources. Mineral buildup from hard water can lead to dryness and scalp irritation. Regular clarifying treatments help maintain scalp health.</p>
+            </div>
+
+        </div>
+
+        <!-- Products Section -->
+        <div class="products-section">
+            <h2>Your Personalized Scalp Care Routine</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">Based on your environmental factors, here's how to use our products:</p>
+
+            <!-- Product 1 -->
+            <div class="product-card">
+                <h4>AWARE Scalp Cleanser</h4>
+                <p>Gentle yet effective cleansing for all scalp types.</p>
+                <div class="usage-instruction">
+                    <strong>Recommended Usage:</strong>
+                    {% if person|lookup:'AQI'|floatformat:0|add:"0" > 100 or person|lookup:'Pollen Tree'|floatformat:0|add:"0" > 3 %}
+                    Use daily to remove environmental pollutants and allergens that accumulate on your scalp.
+                    {% elif person|lookup:'AQI'|floatformat:0|add:"0" > 50 %}
+                    Use 4-5 times per week to manage pollution buildup.
+                    {% else %}
+                    Use 2-3 times per week for maintenance.
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card">
+                <h4>AWARE Scalp Treatment</h4>
+                <p>Targeted treatment for scalp health and balance.</p>
+                <div class="usage-instruction">
+                    <strong>Recommended Usage:</strong>
+                    {% if person|lookup:'UV Index'|floatformat:0|add:"0" > 6 or person|lookup:'Pollen Tree'|floatformat:0|add:"0" > 2 %}
+                    Apply daily to soothe irritation from UV exposure and environmental allergens.
+                    {% else %}
+                    Apply 3-4 times per week for ongoing scalp health.
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card">
+                <h4>AWARE Scalp Shield</h4>
+                <p>Protective barrier against environmental stressors.</p>
+                <div class="usage-instruction">
+                    <strong>Recommended Usage:</strong>
+                    {% if person|lookup:'UV Index'|floatformat:0|add:"0" > 8 %}
+                    Apply every morning before sun exposure. Reapply every 4 hours during peak UV hours.
+                    {% elif person|lookup:'UV Index'|floatformat:0|add:"0" > 5 %}
+                    Apply daily in the morning, especially before outdoor activities.
+                    {% else %}
+                    Apply as needed before extended outdoor exposure.
+                    {% endif %}
+                </div>
+            </div>
+
+            <a href="https://awarehair.com/collections/all" class="cta-button">Shop AWARE Hair</a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>This report is based on current environmental data for ZIP code {{ person|lookup:'ZIP Code' }}.</p>
+            <p>Data sources: EPA AirNow, NOAA/CurrentUVIndex, Tomorrow.io</p>
+            <p style="margin-top: 15px;">
+                <a href="https://awarehair.com">Visit Our Website</a> |
+                <a href="{% unsubscribe_link %}">Unsubscribe</a>
+            </p>
+            <p style="margin-top: 10px; color: #999;">© 2025 AWARE Hair. All rights reserved.</p>
+        </div>
+
+    </div>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

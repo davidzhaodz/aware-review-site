@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>No-Show Cost Calculator - AWARE Hair Pro</title>
+
+  <!-- AWARE Fonts -->
+  <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script async src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=pk_1bcdfc5f9fa0dde4ab05653e3f64c5ebb5"></script>
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+       AWARE HAIR DESIGN SYSTEM
+       ═══════════════════════════════════════════════════════════════ */
+
+    :root {
+      /* Colors */
+      --color-background: #f4efe9;
+      --color-text: #102b26;
+      --color-text-secondary: #5a6b68;
+      --color-header-text: #031612;
+
+      --color-button-bg: #113035;
+      --color-button-text: #f4efe9;
+      --color-button-hover: #2a7682;
+
+      --color-border: #bdbfbf;
+      --color-border-light: #e4d9ca;
+      --color-accent: #102b26;
+      --color-success: #478947;
+      --color-danger: #c94444;
+      --color-warning: #c9842b;
+
+      --color-surface-light: #faf8f5;
+      --color-surface-dark: #102b26;
+
+      /* Typography */
+      --font-heading: "orpheuspro", Georgia, "Times New Roman", serif;
+      --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+
+      --weight-normal: 400;
+      --weight-medium: 500;
+      --weight-semibold: 600;
+      --weight-bold: 700;
+
+      /* Spacing */
+      --spacing-1: 4px;
+      --spacing-2: 8px;
+      --spacing-3: 12px;
+      --spacing-4: 16px;
+      --spacing-5: 20px;
+      --spacing-6: 24px;
+      --spacing-8: 32px;
+      --spacing-10: 40px;
+
+      /* Animation */
+      --easing: cubic-bezier(0.4, 0, 0.2, 1);
+      --duration-fast: 0.2s;
+      --duration-normal: 0.3s;
+
+      /* Shadows */
+      --shadow-sm: 0 1px 2px rgba(16, 43, 38, 0.05);
+      --shadow-md: 0 4px 12px rgba(16, 43, 38, 0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-background);
+      color: var(--color-text);
+      min-height: 100vh;
+      padding: var(--spacing-5);
+    }
+
+    .pro-tool-noshow {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: var(--spacing-5);
+      background: var(--color-surface-light);
+      border: 1px solid var(--color-border-light);
+    }
+
+    /* Hero Section */
+    .ns-hero {
+      background: var(--color-surface-dark);
+      color: var(--color-background);
+      padding: var(--spacing-10) var(--spacing-6);
+      text-align: center;
+      margin-bottom: var(--spacing-6);
+    }
+
+    .ns-hero-icon {
+      font-size: 48px;
+      margin-bottom: var(--spacing-4);
+    }
+
+    .ns-hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 5vw, 1.75rem);
+      font-weight: var(--weight-normal);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin: 0 0 var(--spacing-2) 0;
+    }
+
+    .ns-hero p {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 1rem;
+      opacity: 0.85;
+      margin: 0;
+    }
+
+    /* Card */
+    .ns-card {
+      background: white;
+      border: 1px solid var(--color-border-light);
+      padding: var(--spacing-6);
+      margin-bottom: var(--spacing-4);
+    }
+
+    /* Form Elements */
+    .ns-form-group {
+      margin-bottom: var(--spacing-5);
+    }
+
+    .ns-form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .ns-label {
+      display: block;
+      font-size: 14px;
+      font-weight: var(--weight-medium);
+      color: var(--color-text);
+      margin-bottom: var(--spacing-2);
+    }
+
+    .ns-hint {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      margin-top: var(--spacing-1);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+    }
+
+    .ns-input-wrapper {
+      position: relative;
+    }
+
+    .ns-input-prefix {
+      position: absolute;
+      left: var(--spacing-4);
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--color-text-secondary);
+      font-weight: var(--weight-medium);
+    }
+
+    .ns-input-suffix {
+      position: absolute;
+      right: var(--spacing-4);
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--color-text-secondary);
+      font-weight: var(--weight-medium);
+    }
+
+    .ns-input {
+      width: 100%;
+      padding: var(--spacing-4);
+      font-size: 18px;
+      font-family: var(--font-body);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+      background: white;
+      transition: border-color var(--duration-fast) var(--easing);
+    }
+
+    .ns-input:focus {
+      outline: none;
+      border-color: var(--color-accent);
+    }
+
+    .ns-input.has-prefix {
+      padding-left: 32px;
+    }
+
+    .ns-input.has-suffix {
+      padding-right: 40px;
+    }
+
+    /* Radio Group */
+    .ns-radio-group {
+      display: flex;
+      gap: var(--spacing-3);
+    }
+
+    .ns-radio-option {
+      flex: 1;
+      position: relative;
+    }
+
+    .ns-radio-option input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .ns-radio-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--spacing-4);
+      border: 1px solid var(--color-border);
+      background: white;
+      font-weight: var(--weight-medium);
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--easing);
+    }
+
+    .ns-radio-option input:checked + .ns-radio-label {
+      border-color: var(--color-accent);
+      background: var(--color-surface-dark);
+      color: var(--color-button-text);
+    }
+
+    .ns-radio-label:hover {
+      border-color: var(--color-accent);
+    }
+
+    /* Buttons */
+    .ns-btn {
+      width: 100%;
+      padding: var(--spacing-4);
+      font-size: 14px;
+      font-weight: var(--weight-medium);
+      font-family: var(--font-body);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: none;
+      cursor: pointer;
+      transition: all var(--duration-normal) var(--easing);
+    }
+
+    .ns-btn-primary {
+      background: var(--color-button-bg);
+      color: var(--color-button-text);
+    }
+
+    .ns-btn-primary:hover {
+      background: var(--color-button-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .ns-btn-secondary {
+      background: transparent;
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+    }
+
+    .ns-btn-secondary:hover {
+      background: var(--color-text);
+      color: var(--color-button-text);
+      border-color: var(--color-text);
+    }
+
+    /* Step visibility */
+    .ns-step {
+      display: none;
+    }
+
+    .ns-step.active {
+      display: block;
+    }
+
+    /* Results Hero */
+    .ns-results-hero {
+      background: linear-gradient(135deg, #8b3030 0%, #6b2424 100%);
+      color: white;
+      padding: var(--spacing-8) var(--spacing-6);
+      text-align: center;
+      margin-bottom: var(--spacing-6);
+    }
+
+    .ns-results-label {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: var(--weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      opacity: 0.9;
+      margin-bottom: var(--spacing-2);
+    }
+
+    .ns-results-amount {
+      font-family: var(--font-heading);
+      font-size: clamp(2.5rem, 10vw, 3.5rem);
+      font-weight: var(--weight-normal);
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+
+    .ns-results-sublabel {
+      font-size: 14px;
+      opacity: 0.85;
+      margin-top: var(--spacing-2);
+    }
+
+    .ns-results-services {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 1rem;
+      margin-top: var(--spacing-3);
+      opacity: 0.9;
+    }
+
+    /* Breakdown Table */
+    .ns-breakdown {
+      margin-bottom: var(--spacing-6);
+    }
+
+    .ns-breakdown-title {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: var(--weight-semibold);
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--spacing-3);
+    }
+
+    .ns-breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--spacing-3) 0;
+      border-bottom: 1px solid var(--color-border-light);
+      font-size: 14px;
+    }
+
+    .ns-breakdown-row:last-child {
+      border-bottom: none;
+    }
+
+    .ns-breakdown-label {
+      color: var(--color-text-secondary);
+    }
+
+    .ns-breakdown-value {
+      font-weight: var(--weight-medium);
+      color: var(--color-text);
+    }
+
+    .ns-breakdown-row.total {
+      border-top: 2px solid var(--color-text);
+      margin-top: var(--spacing-2);
+      padding-top: var(--spacing-4);
+    }
+
+    .ns-breakdown-row.total .ns-breakdown-label,
+    .ns-breakdown-row.total .ns-breakdown-value {
+      font-weight: var(--weight-bold);
+      font-size: 16px;
+      color: var(--color-danger);
+    }
+
+    /* Perspective Cards */
+    .ns-perspective {
+      margin-bottom: var(--spacing-6);
+    }
+
+    .ns-perspective-card {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-3);
+      padding: var(--spacing-4);
+      background: #fdf3f3;
+      border: 1px solid #f5dede;
+      margin-bottom: var(--spacing-2);
+    }
+
+    .ns-perspective-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .ns-perspective-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .ns-perspective-text {
+      font-size: 14px;
+      color: #7f3030;
+      line-height: 1.5;
+    }
+
+    /* Fix Section */
+    .ns-fix {
+      background: linear-gradient(135deg, #e8f5e8 0%, #d4ecd4 100%);
+      border: 1px solid #c4dfc4;
+      padding: var(--spacing-5);
+      margin-bottom: var(--spacing-6);
+    }
+
+    .ns-fix-title {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: var(--weight-normal);
+      color: #2d5a2d;
+      margin-bottom: var(--spacing-2);
+    }
+
+    .ns-fix-text {
+      font-size: 14px;
+      color: #3a6b3a;
+      line-height: 1.6;
+    }
+
+    .ns-fix-amount {
+      font-weight: var(--weight-bold);
+      font-size: 1.125rem;
+    }
+
+    /* Email Capture */
+    .ns-email-capture {
+      background: var(--color-surface-dark);
+      padding: var(--spacing-6);
+      color: var(--color-background);
+      margin-bottom: var(--spacing-6);
+    }
+
+    .ns-email-title {
+      font-family: var(--font-heading);
+      font-size: 1.125rem;
+      font-weight: var(--weight-normal);
+      margin-bottom: var(--spacing-3);
+    }
+
+    .ns-email-list {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: var(--spacing-4);
+      padding-left: var(--spacing-5);
+    }
+
+    .ns-email-list li {
+      margin-bottom: var(--spacing-1);
+    }
+
+    .ns-email-input {
+      width: 100%;
+      padding: var(--spacing-4);
+      font-size: 16px;
+      font-family: var(--font-body);
+      border: none;
+      margin-bottom: var(--spacing-3);
+      box-sizing: border-box;
+    }
+
+    .ns-email-btn {
+      width: 100%;
+      padding: var(--spacing-4);
+      font-size: 14px;
+      font-weight: var(--weight-medium);
+      font-family: var(--font-body);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: var(--color-success);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background var(--duration-fast) var(--easing);
+    }
+
+    .ns-email-btn:hover {
+      background: #3a7a3a;
+    }
+
+    /* Success State */
+    .ns-success {
+      text-align: center;
+      padding: var(--spacing-5);
+      background: rgba(71, 137, 71, 0.1);
+    }
+
+    .ns-success-icon {
+      font-size: 48px;
+      margin-bottom: var(--spacing-3);
+    }
+
+    .ns-success-text {
+      font-size: 16px;
+      font-weight: var(--weight-medium);
+      color: var(--color-success);
+    }
+
+    /* Actions */
+    .ns-actions {
+      display: flex;
+      gap: var(--spacing-3);
+    }
+
+    .ns-actions .ns-btn {
+      flex: 1;
+    }
+
+    /* PDF specific styles */
+    .ns-pdf-header {
+      display: none;
+      text-align: center;
+      margin-bottom: var(--spacing-6);
+    }
+
+    .ns-pdf-header h2 {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: var(--weight-normal);
+      color: var(--color-header-text);
+      margin: 0;
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .ns-step.active {
+      animation: fadeIn 0.4s var(--easing);
+    }
+
+    /* Staggered List Reveals */
+    .ns-breakdown-row,
+    .ns-perspective-card {
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.4s var(--easing), transform 0.4s var(--easing);
+    }
+
+    .ns-breakdown-row.visible,
+    .ns-perspective-card.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Enhanced Button Hover */
+    .ns-btn-primary {
+      transition: all var(--duration-normal) var(--easing), transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .ns-btn-primary:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 24px rgba(17, 48, 53, 0.15);
+    }
+
+    .ns-email-btn {
+      transition: background var(--duration-fast) var(--easing), transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .ns-email-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 24px rgba(71, 137, 71, 0.2);
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      .ns-step.active {
+        animation: none;
+      }
+
+      .ns-breakdown-row,
+      .ns-perspective-card {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      .ns-btn-primary:hover,
+      .ns-email-btn:hover {
+        transform: none;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      body {
+        padding: var(--spacing-4);
+      }
+
+      .pro-tool-noshow {
+        padding: var(--spacing-4);
+      }
+
+      .ns-results-amount {
+        font-size: 2.5rem;
+      }
+
+      .ns-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="pro-tool-noshow" id="nsCalculator">
+    <!-- Step 1: Input Form -->
+    <div class="ns-step active" id="nsStep1">
+      <div class="ns-hero">
+        <div class="ns-hero-icon">📅</div>
+        <h1>No-Show Cost Calculator</h1>
+        <p>How much are no-shows actually costing you?</p>
+      </div>
+
+      <div class="ns-card">
+        <div class="ns-form-group">
+          <label class="ns-label">What's your average service price?</label>
+          <div class="ns-input-wrapper">
+            <span class="ns-input-prefix">$</span>
+            <input type="number" id="nsAvgPrice" class="ns-input has-prefix" placeholder="125" value="125">
+          </div>
+        </div>
+
+        <div class="ns-form-group">
+          <label class="ns-label">How many clients do you book per week?</label>
+          <div class="ns-input-wrapper">
+            <input type="number" id="nsWeeklyClients" class="ns-input" placeholder="20" value="20">
+          </div>
+        </div>
+
+        <div class="ns-form-group">
+          <label class="ns-label">What's your no-show/late-cancel rate?</label>
+          <div class="ns-input-wrapper">
+            <input type="number" id="nsNoshowRate" class="ns-input has-suffix" placeholder="12" value="12" step="0.1">
+            <span class="ns-input-suffix">%</span>
+          </div>
+          <div class="ns-hint">Not sure? Industry average is 10-15%</div>
+        </div>
+
+        <div class="ns-form-group">
+          <label class="ns-label">Do you currently require deposits?</label>
+          <div class="ns-radio-group">
+            <label class="ns-radio-option">
+              <input type="radio" name="nsDeposits" value="no" checked>
+              <span class="ns-radio-label">No</span>
+            </label>
+            <label class="ns-radio-option">
+              <input type="radio" name="nsDeposits" value="yes">
+              <span class="ns-radio-label">Yes</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <button class="ns-btn ns-btn-primary" onclick="nsCalculate()">
+        Calculate My Loss
+      </button>
+    </div>
+
+    <!-- Step 2: Results -->
+    <div class="ns-step" id="nsStep2">
+      <div id="nsPdfContent">
+        <div class="ns-pdf-header">
+          <h2>No-Show Cost Analysis</h2>
+        </div>
+
+        <div class="ns-results-hero">
+          <div class="ns-results-label">You're Losing</div>
+          <div class="ns-results-amount" id="nsYearlyLoss">$0</div>
+          <div class="ns-results-sublabel">per year</div>
+          <div class="ns-results-services" id="nsServicesLost">That's 0 services walking out the door</div>
+        </div>
+
+        <div class="ns-card ns-breakdown">
+          <div class="ns-breakdown-title">The Breakdown</div>
+          <div class="ns-breakdown-row">
+            <span class="ns-breakdown-label">Weekly clients</span>
+            <span class="ns-breakdown-value" id="nsDisplayClients">20</span>
+          </div>
+          <div class="ns-breakdown-row">
+            <span class="ns-breakdown-label">× No-show rate</span>
+            <span class="ns-breakdown-value" id="nsDisplayRate">12%</span>
+          </div>
+          <div class="ns-breakdown-row">
+            <span class="ns-breakdown-label">= No-shows per week</span>
+            <span class="ns-breakdown-value" id="nsWeeklyNoshows">2.4</span>
+          </div>
+          <div class="ns-breakdown-row">
+            <span class="ns-breakdown-label">× Average ticket</span>
+            <span class="ns-breakdown-value" id="nsDisplayPrice">$125</span>
+          </div>
+          <div class="ns-breakdown-row total">
+            <span class="ns-breakdown-label">Lost per week</span>
+            <span class="ns-breakdown-value" id="nsWeeklyLoss">$300</span>
+          </div>
+          <div class="ns-breakdown-row">
+            <span class="ns-breakdown-label">Lost per month</span>
+            <span class="ns-breakdown-value" id="nsMonthlyLoss">$1,300</span>
+          </div>
+          <div class="ns-breakdown-row">
+            <span class="ns-breakdown-label">Lost per year</span>
+            <span class="ns-breakdown-value" id="nsYearlyLossRow">$7,800</span>
+          </div>
+        </div>
+
+        <div class="ns-perspective">
+          <div class="ns-breakdown-title">Put It In Perspective</div>
+          <div class="ns-perspective-card">
+            <span class="ns-perspective-icon">💰</span>
+            <span class="ns-perspective-text" id="nsPerspective1">That's X weeks of income you're giving away</span>
+          </div>
+          <div class="ns-perspective-card">
+            <span class="ns-perspective-icon">✈️</span>
+            <span class="ns-perspective-text" id="nsPerspective2">Or a vacation you could have taken</span>
+          </div>
+          <div class="ns-perspective-card">
+            <span class="ns-perspective-icon">📚</span>
+            <span class="ns-perspective-text" id="nsPerspective3">Or $X/month toward retirement</span>
+          </div>
+        </div>
+
+        <div class="ns-fix" id="nsFix">
+          <div class="ns-fix-title">The Fix</div>
+          <div class="ns-fix-text">
+            A simple <strong>$50 deposit policy</strong> would recover approximately <span class="ns-fix-amount" id="nsRecovery">$3,900</span> of this (assuming 50% reduction in no-shows).
+          </div>
+        </div>
+      </div>
+
+      <div class="ns-email-capture" id="nsEmailCapture">
+        <div class="ns-email-title">Get the No-Show Elimination Toolkit</div>
+        <ul class="ns-email-list">
+          <li>Deposit policy templates</li>
+          <li>Announcement scripts (what to say to clients)</li>
+          <li>The booking confirmation that reduces no-shows</li>
+        </ul>
+        <input type="email" id="nsEmailInput" class="ns-email-input" placeholder="your@email.com">
+        <button class="ns-email-btn" onclick="nsSubmitEmail()">Send Me the Toolkit</button>
+      </div>
+
+      <div class="ns-success" id="nsSuccess" style="display: none;">
+        <div class="ns-success-icon">✅</div>
+        <div class="ns-success-text">Toolkit sent! Check your inbox.</div>
+      </div>
+
+      <div class="ns-actions">
+        <button class="ns-btn ns-btn-secondary" onclick="nsReset()">Calculate Again</button>
+        <button class="ns-btn ns-btn-primary" onclick="nsDownloadPDF()">Download PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var _learnq = window._learnq || [];
+    var nsResults = {};
+
+    // Value Counter Animation
+    function animateValue(el, end, duration, prefix, suffix) {
+      duration = duration || 1000;
+      prefix = prefix || '';
+      suffix = suffix || '';
+
+      // Respect reduced motion preference
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        el.textContent = prefix + Math.round(end).toLocaleString() + suffix;
+        return;
+      }
+
+      var start = 0;
+      var startTime = performance.now();
+
+      function update(now) {
+        var progress = Math.min((now - startTime) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3); // cubic ease-out
+        var value = Math.floor(start + (end - start) * eased);
+        el.textContent = prefix + value.toLocaleString() + suffix;
+        if (progress < 1) requestAnimationFrame(update);
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    // Staggered reveal for list items
+    function revealListItems(selector, delay) {
+      delay = delay || 100;
+      var items = document.querySelectorAll(selector);
+
+      // Respect reduced motion preference
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        items.forEach(function(item) {
+          item.classList.add('visible');
+        });
+        return;
+      }
+
+      items.forEach(function(item, index) {
+        setTimeout(function() {
+          item.classList.add('visible');
+        }, index * delay);
+      });
+    }
+
+    function nsCalculate() {
+      var avgPrice = parseFloat(document.getElementById('nsAvgPrice').value) || 0;
+      var weeklyClients = parseFloat(document.getElementById('nsWeeklyClients').value) || 0;
+      var noshowRate = parseFloat(document.getElementById('nsNoshowRate').value) || 0;
+      var hasDeposits = document.querySelector('input[name="nsDeposits"]:checked').value === 'yes';
+
+      var weeklyNoshows = weeklyClients * (noshowRate / 100);
+      var weeklyLoss = weeklyNoshows * avgPrice;
+      var monthlyLoss = weeklyLoss * 4.33;
+      var yearlyLoss = weeklyLoss * 52;
+      var servicesLost = Math.round(yearlyLoss / avgPrice);
+      var weeksOfIncome = Math.round(yearlyLoss / (avgPrice * weeklyClients));
+      var monthlyRetirement = Math.round(yearlyLoss / 12);
+      var potentialRecovery = Math.round(yearlyLoss * 0.5);
+
+      nsResults = {
+        avgPrice: avgPrice,
+        weeklyClients: weeklyClients,
+        noshowRate: noshowRate,
+        hasDeposits: hasDeposits,
+        weeklyNoshows: weeklyNoshows,
+        weeklyLoss: weeklyLoss,
+        monthlyLoss: monthlyLoss,
+        yearlyLoss: yearlyLoss,
+        servicesLost: servicesLost,
+        weeksOfIncome: weeksOfIncome,
+        potentialRecovery: potentialRecovery
+      };
+
+      // Static text updates (non-animated)
+      document.getElementById('nsServicesLost').textContent = "That's " + servicesLost + " services walking out the door";
+      document.getElementById('nsDisplayClients').textContent = weeklyClients;
+      document.getElementById('nsDisplayRate').textContent = noshowRate + '%';
+      document.getElementById('nsDisplayPrice').textContent = '$' + avgPrice;
+      document.getElementById('nsWeeklyNoshows').textContent = weeklyNoshows.toFixed(1);
+
+      document.getElementById('nsPerspective1').textContent = "That's " + weeksOfIncome + " weeks of income you're giving away";
+      document.getElementById('nsPerspective2').textContent = yearlyLoss >= 3000 ? "Or a vacation you could have taken" : "Or several nice dinners out each month";
+      document.getElementById('nsPerspective3').textContent = "Or $" + monthlyRetirement.toLocaleString('en-US') + "/month toward retirement";
+
+      document.getElementById('nsFix').style.display = hasDeposits ? 'none' : 'block';
+
+      // Show results screen first
+      document.getElementById('nsStep1').classList.remove('active');
+      document.getElementById('nsStep2').classList.add('active');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+
+      // Animate currency values after screen transition
+      setTimeout(function() {
+        animateValue(document.getElementById('nsYearlyLoss'), yearlyLoss, 1200, '$', '');
+        animateValue(document.getElementById('nsWeeklyLoss'), weeklyLoss, 800, '$', '');
+        animateValue(document.getElementById('nsMonthlyLoss'), Math.round(monthlyLoss), 900, '$', '');
+        animateValue(document.getElementById('nsYearlyLossRow'), yearlyLoss, 1000, '$', '');
+        animateValue(document.getElementById('nsRecovery'), potentialRecovery, 1100, '$', '');
+
+        // Reveal breakdown rows and perspective cards with stagger
+        revealListItems('.ns-breakdown-row', 80);
+        setTimeout(function() {
+          revealListItems('.ns-perspective-card', 120);
+        }, 400);
+      }, 200);
+
+      _learnq.push(['track', 'Calculated No-Show Cost', {
+        calculator: 'no_show_cost',
+        avg_price: avgPrice,
+        weekly_clients: weeklyClients,
+        noshow_rate: noshowRate,
+        has_deposits: hasDeposits,
+        yearly_loss: yearlyLoss,
+        services_lost: servicesLost,
+        potential_recovery: potentialRecovery
+      }]);
+    }
+
+    function nsReset() {
+      document.getElementById('nsStep2').classList.remove('active');
+      document.getElementById('nsStep1').classList.add('active');
+      document.getElementById('nsSuccess').style.display = 'none';
+      document.getElementById('nsEmailCapture').style.display = 'block';
+      document.getElementById('nsEmailInput').value = '';
+
+      // Reset animation states for next calculation
+      document.querySelectorAll('.ns-breakdown-row, .ns-perspective-card').forEach(function(el) {
+        el.classList.remove('visible');
+      });
+
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    function nsSubmitEmail() {
+      var email = document.getElementById('nsEmailInput').value;
+      if (!email || !email.includes('@')) {
+        alert('Please enter a valid email address');
+        return;
+      }
+
+      _learnq.push(['identify', {'$email': email}]);
+      _learnq.push(['track', 'Pro Tool Email Capture', {
+        calculator: 'no_show_cost',
+        avg_price: nsResults.avgPrice,
+        weekly_clients: nsResults.weeklyClients,
+        noshow_rate: nsResults.noshowRate,
+        has_deposits: nsResults.hasDeposits,
+        yearly_loss: nsResults.yearlyLoss,
+        weekly_loss: nsResults.weeklyLoss,
+        monthly_loss: nsResults.monthlyLoss,
+        services_lost: nsResults.servicesLost,
+        potential_recovery: nsResults.potentialRecovery
+      }]);
+
+      document.getElementById('nsEmailCapture').style.display = 'none';
+      document.getElementById('nsSuccess').style.display = 'block';
+    }
+
+    function nsDownloadPDF() {
+      var element = document.getElementById('nsPdfContent');
+      var pdfHeader = element.querySelector('.ns-pdf-header');
+      pdfHeader.style.display = 'block';
+
+      var opt = {
+        margin: 0.5,
+        filename: 'no-show-cost-analysis.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(element).save().then(function() {
+        pdfHeader.style.display = 'none';
+      });
+
+      _learnq.push(['track', 'Downloaded PDF', {calculator: 'no_show_cost', yearly_loss: nsResults.yearlyLoss}]);
+    }
+  </script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

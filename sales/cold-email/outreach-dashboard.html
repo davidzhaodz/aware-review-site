@@ -1,0 +1,3881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoCal Salon Outreach - Campaign Review</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #141414;
+            --bg-card-hover: #1a1a1a;
+            --bg-elevated: #1e1e1e;
+            --border: #252525;
+            --border-light: #333;
+            --text: #e8e8e8;
+            --text-secondary: #999;
+            --text-muted: #666;
+            --accent: #c9a96e;
+            --accent-dim: rgba(201, 169, 110, 0.12);
+            --green: #22c55e;
+            --green-dim: rgba(34, 197, 94, 0.1);
+            --blue: #3b82f6;
+            --blue-dim: rgba(59, 130, 246, 0.1);
+            --purple: #a855f7;
+            --purple-dim: rgba(168, 85, 247, 0.1);
+            --orange: #f97316;
+            --orange-dim: rgba(249, 115, 22, 0.1);
+            --red: #ef4444;
+            --red-dim: rgba(239, 68, 68, 0.1);
+            --yellow: #eab308;
+            --yellow-dim: rgba(234, 179, 8, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        /* Header */
+        .header {
+            padding: 32px 40px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+        .header h1 {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            color: var(--text);
+        }
+        .header h1 span { color: var(--accent); }
+        .header-meta {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .header-meta span {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .badge-draft { background: var(--yellow-dim); color: var(--yellow); }
+        .badge-ready { background: var(--green-dim); color: var(--green); }
+
+        /* Navigation tabs */
+        .tabs {
+            display: flex;
+            gap: 0;
+            padding: 0 40px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .tab {
+            padding: 12px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+        }
+        .tab:hover { color: var(--text-secondary); }
+        .tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        /* Main content */
+        .content {
+            padding: 24px 40px 60px;
+            max-width: 1400px;
+        }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 18px;
+        }
+        .stat-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+        .stat-sub {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px 22px;
+            margin-bottom: 16px;
+        }
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-title .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Bars */
+        .bar-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 12px;
+        }
+        .bar-label {
+            width: 120px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+        }
+        .bar-track {
+            flex: 1;
+            height: 24px;
+            background: var(--bg-elevated);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+        .bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+            transition: width 0.6s ease;
+        }
+        .bar-count {
+            width: 36px;
+            text-align: right;
+            font-size: 13px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        /* Two column layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .three-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* Email sequences */
+        .sequence-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .sequence-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .sequence-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .sequence-count {
+            font-size: 12px;
+            padding: 2px 10px;
+            border-radius: 100px;
+            font-weight: 600;
+        }
+        .sequence-body { padding: 16px 20px; }
+        .sequence-target {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+        .objection {
+            background: var(--bg-elevated);
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        .objection-q {
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 3px;
+        }
+        .objection-a { color: var(--text); }
+
+        /* Email preview */
+        .email-preview {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-top: 14px;
+            overflow: hidden;
+        }
+        .email-header-bar {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .email-day {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .email-wc {
+            font-size: 11px;
+            color: var(--green);
+            font-weight: 500;
+        }
+        .email-subject {
+            padding: 8px 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 500;
+        }
+        .email-body {
+            padding: 14px;
+            font-size: 12.5px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+        }
+        .email-body .var {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* Table */
+        .table-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table-toolbar {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 5px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+        .filter-btn:hover { border-color: var(--text-muted); color: var(--text); }
+        .filter-btn.active {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .search-input {
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg-elevated);
+            color: var(--text);
+            font-size: 12px;
+            width: 220px;
+            font-family: inherit;
+            margin-left: auto;
+        }
+        .search-input::placeholder { color: var(--text-muted); }
+        .search-input:focus { outline: none; border-color: var(--accent); }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            padding: 10px 14px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 42px;
+            background: var(--bg-card);
+            cursor: pointer;
+        }
+        th:hover { color: var(--text-secondary); }
+        td {
+            padding: 10px 14px;
+            font-size: 12.5px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        tr:hover td { background: var(--bg-card-hover); }
+
+        .fit-high { color: var(--green); }
+        .fit-medium { color: var(--yellow); }
+        .fit-low { color: var(--text-muted); }
+        .seq-1 { color: var(--blue); }
+        .seq-2 { color: var(--purple); }
+        .seq-3 { color: var(--orange); }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .tag-high { background: var(--green-dim); color: var(--green); }
+        .tag-medium { background: var(--yellow-dim); color: var(--yellow); }
+        .tag-low { background: var(--red-dim); color: var(--text-muted); }
+        .tag-seq1 { background: var(--blue-dim); color: var(--blue); }
+        .tag-seq2 { background: var(--purple-dim); color: var(--purple); }
+        .tag-seq3 { background: var(--orange-dim); color: var(--orange); }
+
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .table-scroll {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .table-scroll::-webkit-scrollbar { width: 6px; }
+        .table-scroll::-webkit-scrollbar-track { background: var(--bg-card); }
+        .table-scroll::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+
+        /* Decision matrix */
+        .matrix-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .matrix-card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .signal-list {
+            list-style: none;
+            padding: 0;
+        }
+        .signal-list li {
+            font-size: 12px;
+            color: var(--text-secondary);
+            padding: 5px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+        .signal-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 11px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        .signal-list.s1 li::before { background: var(--blue); }
+        .signal-list.s2 li::before { background: var(--purple); }
+        .signal-list.s3 li::before { background: var(--orange); }
+
+        .tiebreaker {
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-top: 16px;
+        }
+        .tiebreaker h4 {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        .tiebreaker ol {
+            padding-left: 18px;
+        }
+        .tiebreaker li {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        /* Cadence / KPI section */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+            text-align: center;
+        }
+        .kpi-card .kpi-target {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .kpi-card .kpi-name {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 4px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            background: var(--bg);
+        }
+        .timeline-day {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent);
+        }
+        .timeline-detail {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .enrichment-gaps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .gap-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+            text-align: center;
+        }
+        .gap-pct {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .gap-pct.good { color: var(--green); }
+        .gap-pct.warn { color: var(--yellow); }
+        .gap-pct.bad { color: var(--red); }
+        .gap-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
+            .three-col { grid-template-columns: 1fr; }
+            .two-col { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 700px) {
+            .content { padding: 16px; }
+            .header { padding: 20px 16px; }
+            .tabs { padding: 0 16px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-top">
+        <h1>SoCal Salon Outreach <span>2026</span></h1>
+        <span class="badge badge-draft">REVIEW DRAFT</span>
+    </div>
+    <div class="header-meta">
+        <span>129 salons across Southern California (48 already contacted removed)</span>
+        <span>2 active sequences, 6 emails (Seq 3 paused)</span>
+        <span>Sending via Instantly.ai (david@awarehair.care)</span>
+        <span>Created Feb 6, 2026</span>
+    </div>
+</div>
+
+<div class="tabs">
+    <div class="tab active" onclick="showSection('overview')">Overview</div>
+    <div class="tab" onclick="showSection('sequences')">Email Sequences</div>
+    <div class="tab" onclick="showSection('matrix')">Decision Matrix</div>
+    <div class="tab" onclick="showSection('targets')">Salon Targets</div>
+    <div class="tab" onclick="showSection('operations')">Operations</div>
+</div>
+
+<div class="content">
+
+<!-- ==================== OVERVIEW ==================== -->
+<div id="overview" class="section active">
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Total Salons</div>
+            <div class="stat-value">177</div>
+            <div class="stat-sub">Target: ~200</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">High Fit</div>
+            <div class="stat-value" style="color: var(--green)">60</div>
+            <div class="stat-sub">34% of list</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Medium Fit</div>
+            <div class="stat-value" style="color: var(--yellow)">116</div>
+            <div class="stat-sub">65% of list</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Regions</div>
+            <div class="stat-value">5</div>
+            <div class="stat-sub">LA, OC, SD, IE, SB</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Emails Ready</div>
+            <div class="stat-value">9</div>
+            <div class="stat-sub">All under 100 words</div>
+        </div>
+    </div>
+
+    <div class="two-col">
+        <div class="card">
+            <div class="card-title">Region Distribution</div>
+            <div class="bar-row">
+                <div class="bar-label">LA County</div>
+                <div class="bar-track"><div class="bar-fill" style="width:42%;background:var(--blue)">42%</div></div>
+                <div class="bar-count">74</div>
+            </div>
+            <div class="bar-row">
+                <div class="bar-label">San Diego</div>
+                <div class="bar-track"><div class="bar-fill" style="width:27%;background:var(--purple)">27%</div></div>
+                <div class="bar-count">48</div>
+            </div>
+            <div class="bar-row">
+                <div class="bar-label">Orange County</div>
+                <div class="bar-track"><div class="bar-fill" style="width:21%;background:var(--green)">21%</div></div>
+                <div class="bar-count">37</div>
+            </div>
+            <div class="bar-row">
+                <div class="bar-label">Inland Empire</div>
+                <div class="bar-track"><div class="bar-fill" style="width:6%;background:var(--orange)"></div></div>
+                <div class="bar-count">10</div>
+            </div>
+            <div class="bar-row">
+                <div class="bar-label">SB / Ventura</div>
+                <div class="bar-track"><div class="bar-fill" style="width:5%;background:var(--accent)"></div></div>
+                <div class="bar-count">8</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Sequence Assignment</div>
+            <div class="bar-row">
+                <div class="bar-label" style="color:var(--blue)">Seq 1: Scalp</div>
+                <div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--blue)">35%</div></div>
+                <div class="bar-count" style="color:var(--blue)">44</div>
+            </div>
+            <div class="bar-row">
+                <div class="bar-label" style="color:var(--purple)">Seq 2: Exclusivity</div>
+                <div class="bar-track"><div class="bar-fill" style="width:33%;background:var(--purple)">33%</div></div>
+                <div class="bar-count" style="color:var(--purple)">42</div>
+            </div>
+            <div class="bar-row" style="opacity:0.4">
+                <div class="bar-label" style="color:var(--orange)">Seq 3: Education <span style="font-size:10px;opacity:0.8">(PAUSED)</span></div>
+                <div class="bar-track"><div class="bar-fill" style="width:33%;background:var(--orange)">33%</div></div>
+                <div class="bar-count" style="color:var(--orange)">43</div>
+            </div>
+            <div style="margin-top:18px">
+                <div class="card-title" style="margin-bottom:10px">Data Enrichment Status</div>
+                <div class="enrichment-gaps">
+                    <div class="gap-card">
+                        <div class="gap-pct good">76%</div>
+                        <div class="gap-label">Website</div>
+                    </div>
+                    <div class="gap-card">
+                        <div class="gap-pct warn">35%</div>
+                        <div class="gap-label">Phone</div>
+                    </div>
+                    <div class="gap-card">
+                        <div class="gap-pct warn">30%</div>
+                        <div class="gap-label">Instagram</div>
+                    </div>
+                    <div class="gap-card">
+                        <div class="gap-pct bad">5%</div>
+                        <div class="gap-label">Email</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SEQUENCES ==================== -->
+<div id="sequences" class="section">
+
+    <div class="three-col">
+        <!-- Sequence 1 -->
+        <div class="sequence-card">
+            <div class="sequence-header">
+                <h3><span class="dot" style="background:var(--blue)"></span> Seq 1: Scalp Wellness</h3>
+                <span class="sequence-count tag-seq1">44 salons</span>
+            </div>
+            <div class="sequence-body">
+                <div class="sequence-target">Salons positioned around clean beauty, wellness, holistic care, head spas, or already offering scalp services.</div>
+                <div class="objection">
+                    <div class="objection-q">"We already carry scalp products"</div>
+                    <div class="objection-a">Framed as complement, specific to their existing service. Not brand replacement.</div>
+                </div>
+                <div class="objection">
+                    <div class="objection-q">"My clients aren't asking for this"</div>
+                    <div class="objection-a">Real story of how scalp services change client rebooking behavior.</div>
+                </div>
+
+                <div class="email-preview">
+                    <div class="email-header-bar">
+                        <span class="email-day" style="color:var(--blue)">Day 0 - The Specific Observation</span>
+                        <span class="email-wc">89 words</span>
+                    </div>
+                    <div class="email-subject">Subject: <span class="var">{wellness_service}</span> at <span class="var">{salon_name}</span></div>
+                    <div class="email-body">Hi <span class="var">{first_name}</span>,
+
+I spent some time on <span class="var">{salon_name}</span>'s site this morning. You're one of maybe 10 salons in <span class="var">{city}</span> that actually lists <span class="var">{wellness_service}</span> as a dedicated service, not an afterthought.
+
+That's the reason I'm writing. We make a scalp care line here in LA - our trichologist developed it specifically to give stylists a retail product that extends what happens in the chair. The salons using it say it turned their scalp services from a one-off into a repeating appointment.
+
+Would you be open to trying it?
+
+David
+AWARE Hair</div>
+                </div>
+
+                <div class="email-preview">
+                    <div class="email-header-bar">
+                        <span class="email-day" style="color:var(--blue)">Day 3 - The Useful Insight</span>
+                        <span class="email-wc">82 words</span>
+                    </div>
+                    <div class="email-subject">Subject: Re: <span class="var">{wellness_service}</span> at <span class="var">{salon_name}</span></div>
+                    <div class="email-body"><span class="var">{first_name}</span>,
+
+One thing we've learned from working with salons that offer scalp services: the biggest revenue isn't the treatment itself. It's that clients who get a scalp consultation start rebooking color and styling more frequently. Something about addressing the foundation changes how they think about their hair overall.
+
+If your team is seeing something similar, our products were built for exactly that moment, when a client asks "what should I be doing at home?"
+
+Either way, thought that might be useful.
+
+David</div>
+                </div>
+
+                <div class="email-preview">
+                    <div class="email-header-bar">
+                        <span class="email-day" style="color:var(--blue)">Day 7 - The Honest Close</span>
+                        <span class="email-wc">72 words</span>
+                    </div>
+                    <div class="email-subject">Subject: Re: <span class="var">{wellness_service}</span> at <span class="var">{salon_name}</span></div>
+                    <div class="email-body"><span class="var">{first_name}</span>,
+
+I'll keep this simple. <span class="var">{salon_name}</span> is the kind of salon we had in mind when we built this line, and I'd genuinely like to get product in your team's hands.
+
+If the timing is wrong, I get it. If you're curious, I'll send a sample kit this week, no order, no call, just product. Your team can try it and decide.
+
+Either way, I appreciate you reading this far.
+
+David
+awarehair.com</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sequence 2 -->
+        <div class="sequence-card">
+            <div class="sequence-header">
+                <h3><span class="dot" style="background:var(--purple)"></span> Seq 2: Exclusivity</h3>
+                <span class="sequence-count tag-seq2">42 salons</span>
+            </div>
+            <div class="sequence-body">
+                <div class="sequence-target">Salons frustrated by brands going DTC/Amazon, those that value professional-only positioning, trend-aware salon owners.</div>
+                <div class="objection">
+                    <div class="objection-q">"Never heard of this brand"</div>
+                    <div class="objection-a">Cosmoprof credibility + honest founder positioning, not stat-dumping.</div>
+                </div>
+                <div class="objection">
+                    <div class="objection-q">"What if you go DTC later?"</div>
+                    <div class="objection-a">Explains the WHY behind the decision, not just states it.</div>
+                </div>
+
+                <div class="email-preview">
+                    <div class="email-header-bar">
+                        <span class="email-day" style="color:var(--purple)">Day 0 - The Pain Point</span>
+                        <span class="email-wc">93 words</span>
+                    </div>
+                    <div class="email-subject">Subject: the Olaplex problem</div>
+                    <div class="email-body">Hi <span class="var">{first_name}</span>,
+
+Something I keep hearing from salon owners: the brands they helped build are now competing with them online. It's a tough spot, recommending a product you believe in when your client can find it cheaper on Amazon before they leave the chair.
+
+We started AWARE with a simple rule: if a client wants our scalp care line, they go through a salon. No Amazon, no Sephora, no DTC site. We've turned those channels down because we think the salon relationship is the whole point.
+
+Would <span class="var">{salon_name}</span> be open to trying a sample kit?
+
+David
+AWARE Hair</div>
+                </div>
+
+                <div class="email-preview">
+                    <div class="email-header-bar">
+                        <span class="email-day" style="color:var(--purple)">Day 3 - The Real Story</span>
+                        <span class="email-wc">93 words</span>
+                    </div>
+                    <div class="email-subject">Subject: Re: the Olaplex problem</div>
+                    <div class="email-body"><span class="var">{first_name}</span>,
+
+A salon owner in Long Beach told me something last year that stuck with me. She said she stopped recommending a product she loved because she watched a client Google it at the chair, find it on Amazon for $12 less, and order it in front of her.
+
+That conversation is why we don't sell direct-to-consumer. Every dollar of AWARE revenue goes through a salon. We showed at Cosmoprof Miami last month, and that's the thing salon owners kept wanting to talk about.
+
+Happy to send samples if you want to see the product itself.
+
+David</div>
+                </div>
+
+                <div class="email-preview">
+                    <div class="email-header-bar">
+                        <span class="email-day" style="color:var(--purple)">Day 7 - The Direct Close</span>
+                        <span class="email-wc">43 words</span>
+                    </div>
+                    <div class="email-subject">Subject: Re: the Olaplex problem</div>
+                    <div class="email-body"><span class="var">{first_name}</span>,
+
+Not going to overthink this one. If salon-exclusive scalp care with 50% margin sounds worth trying, reply and I'll ship a sample kit this week.
+
+If not, no worries. I hope we run into each other at a show sometime.
+
+David
+awarehair.com</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sequence 3 -->
+        <div class="sequence-card" style="opacity:0.45;position:relative">
+            <div style="position:absolute;top:16px;right:16px;background:var(--orange-dim);color:var(--orange);padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase">Paused</div>
+            <div class="sequence-header">
+                <h3><span class="dot" style="background:var(--orange)"></span> Seq 3: Education</h3>
+                <span class="sequence-count tag-seq3">43 salons</span>
+            </div>
+            <div class="sequence-body">
+                <div class="sequence-target">Education-focused salons, stylists active on social media, younger/entrepreneurial owners, salons that attend CE events.</div>
+                <div class="objection">
+                    <div class="objection-q">"I don't have time for another course"</div>
+                    <div class="objection-a">Described naturally (45 min, between clients), not defensively.</div>
+                </div>
+                <div class="objection">
+                    <div class="objection-q">"What's the catch?"</div>
+                    <div class="objection-a">Leads with Tina's story and genuine education value. Separates education from product.</div>
+                </div>
+
+                <div class="email-preview">
+                    <div class="email-header-bar">
+                        <span class="email-day" style="color:var(--orange)">Day 0 - Tina's Story</span>
+                        <span class="email-wc">99 words</span>
+                    </div>
+                    <div class="email-subject">Subject: a free scalp course your team can do between clients</div>
+                    <div class="email-body">Hi <span class="var">{first_name}</span>,
+
+Our co-founder Tina is a trichologist who spent 20 years in the chair before she started AWARE. The thing she kept running into was that stylists are the first people clients ask about flaking, thinning, and irritation, but there's no real scalp-focused training out there to back them up.
+
+So we built a free 45-minute certification. Your stylists finish as Certified Scalp Specialists. It covers the science, the consultation framework, and how to talk to clients about scalp health without sounding like a product pitch.
+
+No cost, no purchase required. Want the enrollment link?
+
+David
+AWARE Hair</div>
+                </div>
+
+                <div class="email-preview">
+                    <div class="email-header-bar">
+                        <span class="email-day" style="color:var(--orange)">Day 3 - The Free Knowledge Sample</span>
+                        <span class="email-wc">99 words</span>
+                    </div>
+                    <div class="email-subject">Subject: Re: a free scalp course your team can do between clients</div>
+                    <div class="email-body"><span class="var">{first_name}</span>,
+
+Here's something from the certification your team can use right now, even without signing up:
+
+When a client mentions scalp irritation, ask "has anything changed in the last 6 months? Water, stress, medications, new color?" Nine times out of ten, something shifted. That one question changes the conversation from "try this product" to "let's figure out what's happening."
+
+That's the AWARE framework in 30 seconds. The full certification builds on it with condition identification, when to refer out, and how to turn consultations into a service add-on.
+
+Link is here if you want to check it out: [enrollment_link]
+
+David</div>
+                </div>
+
+                <div class="email-preview">
+                    <div class="email-header-bar">
+                        <span class="email-day" style="color:var(--orange)">Day 7 - The No-Pressure Close</span>
+                        <span class="email-wc">74 words</span>
+                    </div>
+                    <div class="email-subject">Subject: Re: a free scalp course your team can do between clients</div>
+                    <div class="email-body"><span class="var">{first_name}</span>,
+
+Wanted to make one thing clear about the certification - it's genuinely free and it stands on its own. We make products too, but that's a separate conversation for a separate day.
+
+The education matters to us because scalp health is still a blind spot in most cosmetology programs. Stylists deserve better resources, and their clients benefit when that knowledge is in the room.
+
+If your team ever wants to take it, the link stays open. No deadline, no pressure.
+
+David
+awarehair.com</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== DECISION MATRIX ==================== -->
+<div id="matrix" class="section">
+
+    <div class="three-col" style="margin-bottom:16px">
+        <div class="matrix-card">
+            <h3><span class="dot" style="background:var(--blue)"></span> Seq 1: Scalp Wellness + Category</h3>
+            <p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px"><strong>Primary signal:</strong> They already care about scalp/wellness - AWARE is a natural category addition.</p>
+            <div style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Assign when ANY are true:</div>
+            <ul class="signal-list s1">
+                <li>Salon lists scalp treatments, scalp detox, or head spa services</li>
+                <li>Carries wellness brands (Davines, Oway, Innersense, Aveda, Act+Acre)</li>
+                <li>Mentions "wellness," "holistic," "scalp health," "clean beauty"</li>
+                <li>Offers specialized treatments beyond basic cut/color</li>
+                <li>Positions as organic/clean/green beauty</li>
+            </ul>
+        </div>
+
+        <div class="matrix-card">
+            <h3><span class="dot" style="background:var(--purple)"></span> Seq 2: Exclusivity + Credibility</h3>
+            <p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px"><strong>Primary signal:</strong> They value professional exclusivity - AWARE protects their margin.</p>
+            <div style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Assign when ANY are true:</div>
+            <ul class="signal-list s2">
+                <li>Carries brands gone DTC/Amazon (Olaplex, K18, Briogeo)</li>
+                <li>Mentions "professional-only" or "salon-exclusive" positioning</li>
+                <li>Reviews indicate frustration with online product availability</li>
+                <li>Strong local reputation (4.5+ rating, 100+ reviews)</li>
+                <li>Attends trade shows (Cosmoprof, IBS, Premiere)</li>
+            </ul>
+        </div>
+
+        <div class="matrix-card" style="opacity:0.45;position:relative">
+            <div style="position:absolute;top:16px;right:16px;background:var(--orange-dim);color:var(--orange);padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase">Paused</div>
+            <h3><span class="dot" style="background:var(--orange)"></span> Seq 3: Education + Certification</h3>
+            <p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px"><strong>Primary signal:</strong> They invest in education and personal brand - certification is the door opener.</p>
+            <div style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Assign when ANY are true:</div>
+            <ul class="signal-list s3">
+                <li>Stylists active on Instagram/TikTok (individual accounts)</li>
+                <li>Emphasizes education or continuing education in marketing</li>
+                <li>Younger/entrepreneurial owner (opened within last 5 years)</li>
+                <li>Team posts educational content (tutorials, tips, before/afters)</li>
+                <li>Smaller salon (1-3 chairs) where owner IS the primary stylist</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="two-col">
+        <div class="matrix-card">
+            <div class="tiebreaker">
+                <h4>Tiebreaker Rules</h4>
+                <ol>
+                    <li><strong>Scalp wellness wins over exclusivity</strong> - they're already in the category</li>
+                    <li><strong>Exclusivity wins over education</strong> - higher-intent signal</li>
+                    <li><strong>Education is the default</strong> when signals are weak - lowest commitment ask</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="matrix-card">
+            <h3>Fit Scoring</h3>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <span class="tag tag-high">HIGH</span>
+                    <span style="font-size:12px;color:var(--text-secondary)">4.5+ rating, 50+ reviews, premium pricing, scalp/wellness focus, active IG, professional lines</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px">
+                    <span class="tag tag-medium">MED</span>
+                    <span style="font-size:12px;color:var(--text-secondary)">4.0+ rating, 25+ reviews, mid-premium pricing, color/general services, some online presence</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px">
+                    <span class="tag tag-low">LOW</span>
+                    <span style="font-size:12px;color:var(--text-secondary)">3.5+ rating, basic online presence, general services, location-based inclusion</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SALON TARGETS ==================== -->
+<div id="targets" class="section">
+
+    <div class="table-container">
+        <div class="table-toolbar">
+            <button class="filter-btn active" onclick="filterTable('all', this)">All (129)</button>
+            <button class="filter-btn" onclick="filterTable('high', this)">High Fit (41)</button>
+            <button class="filter-btn" onclick="filterTable('medium', this)">Medium Fit (87)</button>
+            <button class="filter-btn" onclick="filterTable('1_scalp_wellness', this)">Seq 1: Scalp (44)</button>
+            <button class="filter-btn" onclick="filterTable('2_exclusivity', this)">Seq 2: Exclusivity (42)</button>
+            <button class="filter-btn" onclick="filterTable('3_education', this)" style="opacity:0.4">Seq 3: Education (43) - Paused</button>
+            <input type="text" class="search-input" placeholder="Search salons, cities, brands..." oninput="searchTable(this.value)">
+        </div>
+        <div class="table-scroll">
+            <table id="salon-table">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable(0)">#</th>
+                        <th onclick="sortTable(1)">Salon</th>
+                        <th onclick="sortTable(2)">Owner</th>
+                        <th onclick="sortTable(3)">City</th>
+                        <th onclick="sortTable(4)">Fit</th>
+                        <th onclick="sortTable(5)">Sequence</th>
+                        <th onclick="sortTable(6)">Services</th>
+                        <th onclick="sortTable(7)">Brands</th>
+                        <th>Links</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== OPERATIONS ==================== -->
+<div id="operations" class="section">
+
+    <div class="two-col" style="margin-bottom:16px">
+        <div class="card">
+            <div class="card-title">Send Cadence</div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-day">Day 0 - Tuesday 9:30 AM PT</div>
+                    <div class="timeline-detail">Email 1: Initial outreach (new thread)</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-day">Day 3 - Friday 10:00 AM PT</div>
+                    <div class="timeline-detail">Email 2: Follow-up (same thread, Re: subject)</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-day">Day 7 - Tuesday 9:30 AM PT</div>
+                    <div class="timeline-detail">Email 3: Final touch (same thread, Re: subject)</div>
+                </div>
+            </div>
+            <div style="margin-top:16px;padding:12px;background:var(--bg-elevated);border-radius:8px;font-size:12px;color:var(--text-secondary)">
+                <strong style="color:var(--text)">Rules:</strong> 3 touches max without response, then nurture list. Never send weekends, Monday mornings, or Friday afternoons. All emails under 100 words.
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Batch Sending Plan</div>
+            <table style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="position:static">Week</th>
+                        <th style="position:static">Salons</th>
+                        <th style="position:static">Focus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Week 1</td><td>50</td><td>LA County (High fit)</td></tr>
+                    <tr><td>Week 2</td><td>50</td><td>LA County (Med) + OC (High)</td></tr>
+                    <tr><td>Week 3</td><td>50</td><td>San Diego + OC (Med)</td></tr>
+                    <tr><td>Week 4</td><td>27</td><td>IE + SB/Ventura + remaining</td></tr>
+                </tbody>
+            </table>
+            <div style="margin-top:14px;padding:12px;background:var(--bg-elevated);border-radius:8px;font-size:12px;color:var(--text-secondary)">
+                <strong style="color:var(--text)">Warm-up:</strong> david@awarehair.care warming on Instantly.ai since Jan 20, 2026. Start 10-15/day, ramp to 40-50/day over 2 weeks.
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+        <div class="card-title">Target KPIs</div>
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-target">&gt;95%</div>
+                <div class="kpi-name">Deliverability</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-target">&gt;45%</div>
+                <div class="kpi-name">Open Rate</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-target">&gt;8%</div>
+                <div class="kpi-name">Reply Rate</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-target">&gt;4%</div>
+                <div class="kpi-name">Positive Reply</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-target">&gt;15</div>
+                <div class="kpi-name">Sample Requests</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-target">&gt;5</div>
+                <div class="kpi-name">First Orders</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="two-col">
+        <div class="card">
+            <div class="card-title">Follow-Up Rules</div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+                <div style="padding:10px 12px;background:var(--green-dim);border-radius:6px">
+                    <div style="font-size:12px;font-weight:600;color:var(--green);margin-bottom:2px">Positive Response</div>
+                    <div style="font-size:12px;color:var(--text-secondary)">Move to Notion pipeline. Ship sample kit within 48 hrs. Follow-up call 5 days after delivery. Tag: socal-outreach-2026-responded</div>
+                </div>
+                <div style="padding:10px 12px;background:var(--yellow-dim);border-radius:6px">
+                    <div style="font-size:12px;font-weight:600;color:var(--yellow);margin-bottom:2px">"Not Right Now"</div>
+                    <div style="font-size:12px;color:var(--text-secondary)">Tag: socal-outreach-2026-timing. Follow up in 60 days with new angle. Add to industry newsletter.</div>
+                </div>
+                <div style="padding:10px 12px;background:var(--bg-elevated);border-radius:6px">
+                    <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:2px">No Response (after 3 emails)</div>
+                    <div style="font-size:12px;color:var(--text-muted)">Move to Klaviyo nurture list. Tag: socal-outreach-2026-nurture. Monthly industry insights (not pitches). Re-evaluate after 90 days.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">N8N Automation Workflow</div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-day">Trigger</div>
+                    <div class="timeline-detail">New row in SOCAL-SALON-TARGETS.json</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-day">Step 1</div>
+                    <div class="timeline-detail">Create contact in Instantly.ai via API</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-day">Step 2</div>
+                    <div class="timeline-detail">Assign to campaign based on assigned_sequence</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-day">Step 3</div>
+                    <div class="timeline-detail">Tag in Klaviyo: socal-outreach-2026, sequence-{n}, fit-{level}</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-day">On Reply</div>
+                    <div class="timeline-detail">Webhook to Notion pipeline update</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-day">Positive Reply</div>
+                    <div class="timeline-detail">Trigger sample kit shipping workflow</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<script>
+// CSV data embedded for table rendering
+const csvData = `CSVDATA`;
+
+// Parse CSV from file - we'll use fetch or inline
+let salons = [];
+
+// Tab switching
+function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+}
+
+// Salon data embedded inline (no fetch needed for file:// protocol)
+const SALON_DATA = [
+  {
+    "salon_name": "Verina Organic Salon",
+    "owner_name": "Verina Schafer",
+    "owner_email": "verina@verinaorganicsalon.com",
+    "phone": "(424) 288-4316",
+    "website": "verinaorganicsalon.com",
+    "instagram": "@verinaorganicsalon",
+    "address": "359 S Robertson Blvd",
+    "city": "Beverly Hills",
+    "zip": "90211",
+    "google_maps_link": "https://maps.google.com/?q=Verina+Organic+Salon+Beverly+Hills+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Organic color, cuts, styling, treatments",
+    "brands_carried": "Organic product lines",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Voted Best Green Salon by Angeleno Luxury Magazine, est. 2010"
+  },
+  {
+    "salon_name": "MJ Hair Designs",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "mjhairdesigns.com",
+    "instagram": "@mjhairdesigns",
+    "address": "West Hollywood",
+    "city": "West Hollywood",
+    "zip": "90046",
+    "google_maps_link": "https://maps.google.com/?q=MJ+Hair+Designs+West+Hollywood+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Organic color, cuts, styling",
+    "brands_carried": "Oway",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Oway organic specialist, 20+ years"
+  },
+  {
+    "salon_name": "John Francis Beauty",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "9006 Rosewood Ave",
+    "city": "West Hollywood",
+    "zip": "90048",
+    "google_maps_link": "https://maps.google.com/?q=John+Francis+Beauty+West+Hollywood+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Expert blonding, balayage, color correction",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Minutes from Beverly Hills, Bel Air, Brentwood"
+  },
+  {
+    "salon_name": "Rock Paper Salon",
+    "owner_name": "Pablo S.",
+    "owner_email": "",
+    "phone": "(213) 250-0900",
+    "website": "rockpapersalon.com",
+    "instagram": "@rockpaperla",
+    "address": "2125 W Sunset Blvd",
+    "city": "Los Angeles",
+    "zip": "90026",
+    "google_maps_link": "https://maps.google.com/?q=Rock+Paper+Salon+Echo+Park+Los+Angeles+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Cuts, color, styling",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Echo Park, text/call for fastest response"
+  },
+  {
+    "salon_name": "Summer Hours Salon",
+    "owner_name": "Amanda Riley",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "@amandarileyhairstylist",
+    "address": "2215 Hyperion Ave",
+    "city": "Los Angeles",
+    "zip": "90027",
+    "google_maps_link": "https://maps.google.com/?q=Summer+Hours+Salon+Los+Feliz+Los+Angeles+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Modern cuts, luxury styling, low maintenance color, balayage",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Full service, est. 2008 stylist experience"
+  },
+  {
+    "salon_name": "You Pretty Things",
+    "owner_name": "Monique Northrop",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "@prettythings.la",
+    "address": "2728 Griffith Park Blvd",
+    "city": "Los Angeles",
+    "zip": "90027",
+    "google_maps_link": "https://maps.google.com/?q=You+Pretty+Things+Los+Feliz+Los+Angeles+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Cutting, coloring, highlights, balayage, extensions",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Est. 2022, upscale for down-to-earth people"
+  },
+  {
+    "salon_name": "Green Door Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "greendoorsalonla.com",
+    "instagram": "@greendoorsalon",
+    "address": "4532 Fountain Ave",
+    "city": "Los Angeles",
+    "zip": "90029",
+    "google_maps_link": "https://maps.google.com/?q=Green+Door+Salon+Los+Feliz+Los+Angeles+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Short cuts, curly hair, creative cuts, balayage, platinum",
+    "brands_carried": "Aveda",
+    "fit_score": "medium",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Aveda carrier, extension & balayage specialists"
+  },
+  {
+    "salon_name": "Crown Envy",
+    "owner_name": "Rachel & Ashleigh",
+    "owner_email": "",
+    "phone": "(310) 394-6600",
+    "website": "",
+    "instagram": "@crownenvyhairextensions",
+    "address": "2634 Wilshire Blvd",
+    "city": "Santa Monica",
+    "zip": "90403",
+    "google_maps_link": "https://maps.google.com/?q=Crown+Envy+2634+Wilshire+Blvd+Santa+Monica+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Premium extensions, color, cuts",
+    "brands_carried": "L'Oreal, Redken, Olaplex, K18, Pureology",
+    "fit_score": "high",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Hair extension specialists, luxury positioning, ethically sourced hair"
+  },
+  {
+    "salon_name": "Sixteen Thirty Six",
+    "owner_name": "Jevonne & Samantha",
+    "owner_email": "",
+    "phone": "(310) 392-1636",
+    "website": "",
+    "instagram": "",
+    "address": "1733 Abbot Kinney Blvd Suite C1",
+    "city": "Venice",
+    "zip": "90291",
+    "google_maps_link": "https://maps.google.com/?q=Sixteen+Thirty+Six+Abbot+Kinney+Venice+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Highlights, balayage, sunkissed natural blondes",
+    "brands_carried": "Aveda",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Aveda partnership, peaceful luxury, tea service"
+  },
+  {
+    "salon_name": "Salon Cabelo",
+    "owner_name": "Jennifer Picanco, Anna Sousa, Laura Stewart",
+    "owner_email": "",
+    "phone": "",
+    "website": "saloncabelowestwood.com",
+    "instagram": "",
+    "address": "Westwood",
+    "city": "Los Angeles",
+    "zip": "90024",
+    "google_maps_link": "https://maps.google.com/?q=Salon+Cabelo+Westwood+Los+Angeles+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Cuts, color, styling",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Modern independent salon, Westwood"
+  },
+  {
+    "salon_name": "Upstairs Salon",
+    "owner_name": "Marina Bluvband",
+    "owner_email": "",
+    "phone": "(626) 796-3646",
+    "website": "upstairs-salon.com",
+    "instagram": "",
+    "address": "99 S Oak Knoll Ave",
+    "city": "Pasadena",
+    "zip": "91101",
+    "google_maps_link": "https://maps.google.com/?q=Upstairs+Salon+Pasadena+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Cuts, color, styling",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Playhouse District, celebrity service"
+  },
+  {
+    "salon_name": "Parlour Confessions",
+    "owner_name": "Allison May Kalenda",
+    "owner_email": "",
+    "phone": "(818) 848-9772",
+    "website": "parlourconfessions.com",
+    "instagram": "",
+    "address": "1022 N Hollywood Way",
+    "city": "Burbank",
+    "zip": "91505",
+    "google_maps_link": "https://maps.google.com/?q=Parlour+Confessions+Burbank+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Extensions, blonding, cuts, customized facials, clean beauty",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Est. April 2021, low-tox plant-based products, eco-friendly"
+  },
+  {
+    "salon_name": "The Local Salon",
+    "owner_name": "Rosie Fiore",
+    "owner_email": "Thelocalsalon@gmail.com",
+    "phone": "(818) 763-2977",
+    "website": "",
+    "instagram": "@thelocalsalon",
+    "address": "201 E Magnolia Suite 306",
+    "city": "Burbank",
+    "zip": "91502",
+    "google_maps_link": "https://maps.google.com/?q=The+Local+Salon+Burbank+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Cuts, color, styling",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Independent stylist at Salon Republic"
+  },
+  {
+    "salon_name": "ResetSpot",
+    "owner_name": "Liana Botsinyan",
+    "owner_email": "",
+    "phone": "(818) 669-2662",
+    "website": "resetspot.com",
+    "instagram": "",
+    "address": "3816 W Magnolia Blvd",
+    "city": "Burbank",
+    "zip": "91505",
+    "google_maps_link": "https://maps.google.com/?q=ResetSpot+Burbank+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Wellness, full head spa experience",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "First of its kind in LA"
+  },
+  {
+    "salon_name": "Extension Bar LA",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "extensionbarla.com",
+    "instagram": "",
+    "address": "3949 Laurelgrove Ave",
+    "city": "Studio City",
+    "zip": "91604",
+    "google_maps_link": "https://maps.google.com/?q=Extension+Bar+LA+Studio+City+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair extension specialists, color-matching",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Multiple extension methods"
+  },
+  {
+    "salon_name": "Generation Blonde",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(818) 406-0891",
+    "website": "",
+    "instagram": "@generationblonde",
+    "address": "22749 Ventura Blvd",
+    "city": "Woodland Hills",
+    "zip": "91364",
+    "google_maps_link": "https://maps.google.com/?q=Generation+Blonde+Woodland+Hills+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Custom blondes, balayage, extensions, keratin",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Best Blonde Salon in Woodland Hills"
+  },
+  {
+    "salon_name": "Posh Organic Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(818) 922-5091",
+    "website": "poshorganicsalon.com",
+    "instagram": "@poshorganicsalon",
+    "address": "23637 Calabasas Rd",
+    "city": "Calabasas",
+    "zip": "91302",
+    "google_maps_link": "https://maps.google.com/?q=Posh+Organic+Salon+Calabasas+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Organic color, keratin, extensions, scalp treatments",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Makes own organic products, ammonia-free"
+  },
+  {
+    "salon_name": "Eddy James Salon",
+    "owner_name": "Eddy James",
+    "owner_email": "",
+    "phone": "",
+    "website": "eddyjamessalon.com",
+    "instagram": "",
+    "address": "Studio City",
+    "city": "Studio City",
+    "zip": "91604",
+    "google_maps_link": "https://maps.google.com/?q=Eddy+James+Salon+Studio+City+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Cut, color, styling",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Worth the drive from anywhere in LA"
+  },
+  {
+    "salon_name": "Hermosa Hair Extension Bar",
+    "owner_name": "Yvette",
+    "owner_email": "",
+    "phone": "(310) 372-6666",
+    "website": "",
+    "instagram": "@hermosahairextensions",
+    "address": "300 Pacific Coast Hwy",
+    "city": "Hermosa Beach",
+    "zip": "90254",
+    "google_maps_link": "https://maps.google.com/?q=Hermosa+Hair+Extension+Bar+Hermosa+Beach+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "7 extension methods, hair spa, advanced color, scalp scrubs",
+    "brands_carried": "Monat",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "South Bay's first & only hair extension bar, scalp scrubs"
+  },
+  {
+    "salon_name": "Bloom Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "bloomhighlandpark.com",
+    "instagram": "@bloomsalonhighlandpark",
+    "address": "5714 N Figuroa St",
+    "city": "Los Angeles",
+    "zip": "90012",
+    "google_maps_link": "https://maps.google.com/?q=Bloom+Salon+Highland+Park+Los+Angeles+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair color, cuts, sustainable practices",
+    "brands_carried": "Davines",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Davines carrier, inclusive space"
+  },
+  {
+    "salon_name": "Pear Organic Hair",
+    "owner_name": "Erin Will",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "@pearhairla",
+    "address": "515 N Ave 64 Ste A",
+    "city": "Los Angeles",
+    "zip": "90042",
+    "google_maps_link": "https://maps.google.com/?q=Pear+Organic+Hair+Highland+Park+Los+Angeles+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Precision cuts, low maintenance color, organic care",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Green Circle Salon, repurposes 95% waste, 15 years experience"
+  },
+  {
+    "salon_name": "Serenity Hair Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "14549 Ventura Blvd",
+    "city": "Sherman Oaks",
+    "zip": "91403",
+    "google_maps_link": "https://maps.google.com/?q=Serenity+Hair+Salon+Sherman+Oaks+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Color correction, highlights, balayage, ombre",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Sherman Oaks location, 250+ photos, 207 reviews"
+  },
+  {
+    "salon_name": "Nova Arts Salon",
+    "owner_name": "Sal Salcedo",
+    "owner_email": "info@novaartssalon.com",
+    "phone": "(323) 244-4277",
+    "website": "novaartssalon.com",
+    "instagram": "@novaartssalon",
+    "address": "787 S Alameda St Suite 160",
+    "city": "Los Angeles",
+    "zip": "90021",
+    "google_maps_link": "https://maps.google.com/?q=Nova+Arts+Salon+DTLA+Los+Angeles+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Haircuts, highlights, natural texture specialists",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Creative inclusive salon, 35K Instagram followers, Arts District"
+  },
+  {
+    "salon_name": "MIRAGE SALON",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "miragesalon.com",
+    "instagram": "",
+    "address": "Costa Mesa",
+    "city": "Costa Mesa",
+    "zip": "92627",
+    "google_maps_link": "https://maps.google.com/?q=MIRAGE+Salon+Costa+Mesa+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Organic hair services, scalp treatments",
+    "brands_carried": "Organic product lines",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Organic since 1968, owner-operated"
+  },
+  {
+    "salon_name": "the / salon studio",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "thesaloncostamesa.com",
+    "instagram": "",
+    "address": "Costa Mesa",
+    "city": "Costa Mesa",
+    "zip": "92627",
+    "google_maps_link": "https://maps.google.com/?q=The+Salon+Studio+Costa+Mesa+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair services, color, styling",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Independent Costa Mesa salon"
+  },
+  {
+    "salon_name": "The LivingRoom Salon & Art Gallery",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(949) 631-0808",
+    "website": "livingroomsalonsoha.com",
+    "instagram": "@livingroomsalon",
+    "address": "125 Rochester Street",
+    "city": "Costa Mesa",
+    "zip": "92627",
+    "google_maps_link": "https://maps.google.com/?q=LivingRoom+Salon+Costa+Mesa+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair color, ombre, balayage, cutting, extensions, Brazilian blowouts, facials",
+    "brands_carried": "Davines, Olaplex",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Woman-owned, Davines authorized, transformed auto warehouse into salon/gallery (2004)"
+  },
+  {
+    "salon_name": "Pure YL Organic Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "pureorganicsalon.com",
+    "instagram": "",
+    "address": "260 Forest Avenue Suite 5",
+    "city": "Laguna Beach",
+    "zip": "92651",
+    "google_maps_link": "https://maps.google.com/?q=Pure+YL+Organic+Salon+Laguna+Beach+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Holistic organic hair services, highlights without bleach/ammonia/aluminum",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Crown Chakra care, toxin-free services"
+  },
+  {
+    "salon_name": "Lulu Hair Studio",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "luluhairstudio.com",
+    "instagram": "",
+    "address": "Laguna Beach",
+    "city": "Laguna Beach",
+    "zip": "92651",
+    "google_maps_link": "https://maps.google.com/?q=Lulu+Hair+Studio+Laguna+Beach+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Organic Japanese hair treatments",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Health-conscious values, all organic products"
+  },
+  {
+    "salon_name": "The British Hair Company",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "britishhc.com",
+    "instagram": "",
+    "address": "Laguna Beach",
+    "city": "Laguna Beach",
+    "zip": "92651",
+    "google_maps_link": "https://maps.google.com/?q=British+Hair+Company+Laguna+Beach+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Precision cutting, dimensional color, healthy hair transformations",
+    "brands_carried": "Aveda",
+    "fit_score": "medium",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Aveda-trained stylists"
+  },
+  {
+    "salon_name": "Hair Theory Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "hairtheorysalon.com",
+    "instagram": "",
+    "address": "Huntington Beach",
+    "city": "Huntington Beach",
+    "zip": "92648",
+    "google_maps_link": "https://maps.google.com/?q=Hair+Theory+Salon+Huntington+Beach+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Cuts, colors, extensions, updos",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Premier luxury salon with beach vibes"
+  },
+  {
+    "salon_name": "Christian Michael Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "christianmichaelhair.com",
+    "instagram": "@christianmichaelsalon",
+    "address": "Huntington Beach",
+    "city": "Huntington Beach",
+    "zip": "92648",
+    "google_maps_link": "https://maps.google.com/?q=Christian+Michael+Salon+Huntington+Beach+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair extensions, bridal beauty, premium salon",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Premier destination for extensions"
+  },
+  {
+    "salon_name": "Lux Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(714) 525-3337",
+    "website": "luxsalon.com",
+    "instagram": "@luxofcourse",
+    "address": "219 E Commonwealth Ave",
+    "city": "Fullerton",
+    "zip": "92832",
+    "google_maps_link": "https://maps.google.com/?q=Lux+Salon+Fullerton+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Cuts, color, highlights, waxing, facials, massage, body wraps, extensions",
+    "brands_carried": "Aveda",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Aveda Concept Salon"
+  },
+  {
+    "salon_name": "Copa de Beauty",
+    "owner_name": "Erin M.",
+    "owner_email": "Ochairstylisterinm@gmail.com",
+    "phone": "(949) 503-1515",
+    "website": "copadebeauty.com",
+    "instagram": "@copa_de_beauty",
+    "address": "1151 Puerta Del Sol Suite B",
+    "city": "San Clemente",
+    "zip": "92673",
+    "google_maps_link": "https://maps.google.com/?q=Copa+de+Beauty+San+Clemente+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Balayage color, handtied extensions, technical haircuts, glossing",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Hidden gem in Talega, low maintenance specialist"
+  },
+  {
+    "salon_name": "Sol & Luna Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(949) 838-7509",
+    "website": "solandlunasalon.com",
+    "instagram": "",
+    "address": "110 West Escalones",
+    "city": "San Clemente",
+    "zip": "92672",
+    "google_maps_link": "https://maps.google.com/?q=Sol+Luna+Salon+San+Clemente+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Custom balayage, hair extensions",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Eco-conscious, beachside studio"
+  },
+  {
+    "salon_name": "ROOTS Beauty",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "rootsbeauty.com",
+    "instagram": "",
+    "address": "Orange County",
+    "city": "Orange County",
+    "zip": "92627",
+    "google_maps_link": "https://maps.google.com/?q=ROOTS+Beauty+Orange+County+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Clean beauty cosmetic shop & organic hair salon",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Orange County's clean beauty specialist"
+  },
+  {
+    "salon_name": "Rebel Femme Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(949) 446-8570",
+    "website": "",
+    "instagram": "",
+    "address": "Mission Viejo",
+    "city": "Mission Viejo",
+    "zip": "92691",
+    "google_maps_link": "https://maps.google.com/?q=Rebel+Femme+Salon+Mission+Viejo+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "K18, Olaplex, Moroccanoil treatments",
+    "brands_carried": "K18, Olaplex, Moroccanoil",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Carries premium professional brands"
+  },
+  {
+    "salon_name": "Zen Head Spa",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(714) 855-7577",
+    "website": "zenheadspa-oc.com",
+    "instagram": "",
+    "address": "15634 Brookhurst Street",
+    "city": "Westminster",
+    "zip": "92683",
+    "google_maps_link": "https://maps.google.com/?q=Zen+Head+Spa+Westminster+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Japanese head spa, deep cleanses, micro-steam mist, hot oil, massage",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Head spa specialist, starting at $69"
+  },
+  {
+    "salon_name": "OC Scalp Spa",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "ocscalpspa.com",
+    "instagram": "",
+    "address": "Orange County",
+    "city": "Orange County",
+    "zip": "92627",
+    "google_maps_link": "https://maps.google.com/?q=OC+Scalp+Spa+Orange+County+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Head spa care, massages, facials, steam treatments, blow dry",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Scalp-focused spa"
+  },
+  {
+    "salon_name": "Belle Sirene Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "bellesirenesalon.com",
+    "instagram": "",
+    "address": "La Jolla",
+    "city": "La Jolla",
+    "zip": "92037",
+    "google_maps_link": "https://maps.google.com/?q=Belle+Sirene+Salon+La+Jolla+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Personalized coloring, highlighting, balayage, haircuts, brows",
+    "brands_carried": "Davines",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Award-winning premier salon, carries Davines"
+  },
+  {
+    "salon_name": "ASHEN SALON",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(858) 459-3216",
+    "website": "ashensalon.com",
+    "instagram": "@ashensalon",
+    "address": "6903 La Jolla Blvd",
+    "city": "La Jolla",
+    "zip": "92037",
+    "google_maps_link": "https://maps.google.com/?q=ASHEN+Salon+La+Jolla+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Luxury hair services, independent stylists",
+    "brands_carried": "Davines",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Two locations, Davines carrier, Luxury Meets Expertise"
+  },
+  {
+    "salon_name": "Young Attitudes Aveda Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(858) 457-3334",
+    "website": "youngattitudes.com",
+    "instagram": "@youngattitudessalon",
+    "address": "8843 Villa La Jolla Dr Suite 206",
+    "city": "La Jolla",
+    "zip": "92037",
+    "google_maps_link": "https://maps.google.com/?q=Young+Attitudes+Aveda+Salon+La+Jolla+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Cuts, styling, blowouts, color, balayage, keratin, barbering, nails, facials",
+    "brands_carried": "Aveda, Eufora",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Family-owned since 1980, ethically sourced vegan products"
+  },
+  {
+    "salon_name": "Salon Envie",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(858) 551-5544",
+    "website": "salonenvielajolla.com",
+    "instagram": "@enviesalon",
+    "address": "1014 Pearl St",
+    "city": "La Jolla",
+    "zip": "92037",
+    "google_maps_link": "https://maps.google.com/?q=Salon+Envie+La+Jolla+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Haircuts, blowouts, balayage, highlights, color correction, keratin",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Premium La Jolla location"
+  },
+  {
+    "salon_name": "Station Salon & Boutique",
+    "owner_name": "Dana Osinga",
+    "owner_email": "",
+    "phone": "",
+    "website": "stationsalon.com",
+    "instagram": "@station_salon_",
+    "address": "594 S Coast Hwy 101",
+    "city": "Encinitas",
+    "zip": "92024",
+    "google_maps_link": "https://maps.google.com/?q=Station+Salon+Boutique+Encinitas+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Balayage, custom highlights, hand-tied/tape-in extensions, precision cuts, smoothing treatments",
+    "brands_carried": "Davines, Natural Tech, Heart of Glass",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Green Certified, 18-chair space, Davines Concept Salon, adjacent wellness boutique"
+  },
+  {
+    "salon_name": "Lemongrass Aveda Salon & Spa",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "lemongrasssalonandspa.com",
+    "instagram": "@lemongrasscenter",
+    "address": "Encinitas",
+    "city": "Encinitas",
+    "zip": "92024",
+    "google_maps_link": "https://maps.google.com/?q=Lemongrass+Aveda+Salon+Spa+Encinitas+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Holistic spa services, massage, facials, waxing, haircuts, color",
+    "brands_carried": "Aveda, Osmosis skincare, Aura Soma",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Open since 2003, holistic spa"
+  },
+  {
+    "salon_name": "Headlines The Salon",
+    "owner_name": "Gayle & David Linde",
+    "owner_email": "",
+    "phone": "",
+    "website": "headlinesthesalon.com",
+    "instagram": "",
+    "address": "121 N El Camino Real",
+    "city": "Encinitas",
+    "zip": "92024",
+    "google_maps_link": "https://maps.google.com/?q=Headlines+Salon+Encinitas+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Full service hair salon",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Established 1987, team-based ultimate service"
+  },
+  {
+    "salon_name": "Salon on 30th",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(619) 284-1687",
+    "website": "salonon30th.com",
+    "instagram": "@salonon30th",
+    "address": "2225 30th Street",
+    "city": "San Diego",
+    "zip": "92104",
+    "google_maps_link": "https://maps.google.com/?q=Salon+on+30th+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Expert haircuts, color, styling",
+    "brands_carried": "Davines, Comfort Zone",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Davines Concept Salon, socially & environmentally responsible, two locations"
+  },
+  {
+    "salon_name": "Sweet Jane Salon",
+    "owner_name": "Nicholas & Norman",
+    "owner_email": "",
+    "phone": "(619) 894-0388",
+    "website": "sweetjanesalon.com",
+    "instagram": "@sweetjanesalon",
+    "address": "1443 University Avenue Suite B",
+    "city": "San Diego",
+    "zip": "92103",
+    "google_maps_link": "https://maps.google.com/?q=Sweet+Jane+Salon+Hillcrest+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Haircuts (shags, bangs, bobs, custom), styling, blow-outs",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Eco-conscious California lifestyle, safe space, boutique"
+  },
+  {
+    "salon_name": "Stile Salon",
+    "owner_name": "Laura Cappelletti",
+    "owner_email": "",
+    "phone": "",
+    "website": "stilesalonsd.com",
+    "instagram": "",
+    "address": "2491 Kettner Blvd",
+    "city": "San Diego",
+    "zip": "92101",
+    "google_maps_link": "https://maps.google.com/?q=Stile+Salon+Little+Italy+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Color, cuts, extensions, special occasion, Brazilian blowouts",
+    "brands_carried": "INOA, Kerastase, Oribe",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "20+ years, Little Italy"
+  },
+  {
+    "salon_name": "Salvage Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "salvagesalonbooking@gmail.com",
+    "phone": "(619) 293-3292",
+    "website": "salvagesalon.com",
+    "instagram": "",
+    "address": "3800 Ray Street",
+    "city": "San Diego",
+    "zip": "92104",
+    "google_maps_link": "https://maps.google.com/?q=Salvage+Salon+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Cuts, color, styling",
+    "brands_carried": "Davines",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Davines carrier"
+  },
+  {
+    "salon_name": "BB Meme Salon Hillcrest",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(619) 544-6811",
+    "website": "bbmemehairsalon.com/hillcrest",
+    "instagram": "@bbmeme_hillcrest",
+    "address": "Hillcrest",
+    "city": "San Diego",
+    "zip": "92103",
+    "google_maps_link": "https://maps.google.com/?q=BB+Meme+Salon+Hillcrest+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Modern haircuts, professional coloring, wedding/special occasion",
+    "brands_carried": "Davines",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Davines carrier"
+  },
+  {
+    "salon_name": "Omnia Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "omniasalon.com",
+    "instagram": "",
+    "address": "Hillcrest",
+    "city": "San Diego",
+    "zip": "92103",
+    "google_maps_link": "https://maps.google.com/?q=Omnia+Salon+Hillcrest+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Enhancing natural beauty with precision",
+    "brands_carried": "Aveda",
+    "fit_score": "medium",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Aveda Salon, forefront of trends"
+  },
+  {
+    "salon_name": "The LAB A Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(619) 543-9952",
+    "website": "thelabasalon.com",
+    "instagram": "",
+    "address": "3034 University Ave",
+    "city": "San Diego",
+    "zip": "92104",
+    "google_maps_link": "https://maps.google.com/?q=The+LAB+A+Salon+North+Park+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Skilled, innovative, alternative styles",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Boutique salon, North Park"
+  },
+  {
+    "salon_name": "Belli Belli Salon & Boutique",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(858) 270-2288",
+    "website": "bellibelli.com",
+    "instagram": "@bellibellisalon",
+    "address": "3461 Ingraham St",
+    "city": "San Diego",
+    "zip": "92109",
+    "google_maps_link": "https://maps.google.com/?q=Belli+Belli+Salon+Pacific+Beach+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Cutting, coloring, balayage, extensions, keratin, blowouts",
+    "brands_carried": "Kerastase, Bumble and bumble, Moroccanoil",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Luxury salon, in business since 2004"
+  },
+  {
+    "salon_name": "Jayden Presleigh Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "jaydenpresleigh.com",
+    "instagram": "",
+    "address": "Carlsbad",
+    "city": "Carlsbad",
+    "zip": "92008",
+    "google_maps_link": "https://maps.google.com/?q=Jayden+Presleigh+Salon+Carlsbad+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Luxury lived-in color, all types of extensions",
+    "brands_carried": "Oribe",
+    "fit_score": "high",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Exclusive Oribe Salon, luxury experience"
+  },
+  {
+    "salon_name": "Beach Shack Hair Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "beachshackhair.com",
+    "instagram": "",
+    "address": "Carlsbad Village",
+    "city": "Carlsbad",
+    "zip": "92008",
+    "google_maps_link": "https://maps.google.com/?q=Beach+Shack+Hair+Salon+Carlsbad+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Blonding, hand tied extensions, haircutting",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Serving Carlsbad Village 30+ years"
+  },
+  {
+    "salon_name": "Entourage Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(760) 729-9000",
+    "website": "entouragesalon.com",
+    "instagram": "",
+    "address": "530 Carlsbad Village Drive",
+    "city": "Carlsbad",
+    "zip": "92008",
+    "google_maps_link": "https://maps.google.com/?q=Entourage+Salon+Carlsbad+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Personalized hair services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Serving North County SD 28+ years"
+  },
+  {
+    "salon_name": "Atelier Aucoin Salons",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "atelieraucoinsalons.com",
+    "instagram": "",
+    "address": "1555 Camino Del Mar",
+    "city": "Del Mar",
+    "zip": "92014",
+    "google_maps_link": "https://maps.google.com/?q=Atelier+Aucoin+Salons+Del+Mar+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair salon, color specialist",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "30th anniversary in La Jolla, 7th anniversary in Del Mar"
+  },
+  {
+    "salon_name": "Unplugged Head Spa",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "unpluggedheadspa.com",
+    "instagram": "",
+    "address": "5171 Mission Center Rd Suite 5",
+    "city": "San Diego",
+    "zip": "92108",
+    "google_maps_link": "https://maps.google.com/?q=Unplugged+Head+Spa+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Japanese head spa therapy, 30+ acupressure points",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Mission Valley, serves North Park, Hillcrest, Downtown"
+  },
+  {
+    "salon_name": "Rind Head Spa",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "rindheadspa.com",
+    "instagram": "",
+    "address": "San Diego",
+    "city": "San Diego",
+    "zip": "92101",
+    "google_maps_link": "https://maps.google.com/?q=Rind+Head+Spa+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Microscope consultation, pressure point massage, exfoliation, scalp mask",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Ayurvedic and Japanese traditions, award-winning"
+  },
+  {
+    "salon_name": "Haru Head Spa",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "haruheadspa.com",
+    "instagram": "",
+    "address": "San Diego",
+    "city": "San Diego",
+    "zip": "92101",
+    "google_maps_link": "https://maps.google.com/?q=Haru+Head+Spa+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Korean scalp traditions, addresses dryness, buildup, thinning",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Korean scalp traditions with advanced techniques"
+  },
+  {
+    "salon_name": "Gila Rut Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "gilarut.com",
+    "instagram": "",
+    "address": "San Diego",
+    "city": "San Diego",
+    "zip": "92101",
+    "google_maps_link": "https://maps.google.com/?q=Gila+Rut+Salon+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair cuts, color, Bellami extensions",
+    "brands_carried": "Aveda",
+    "fit_score": "medium",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Award-winning, Aveda carrier"
+  },
+  {
+    "salon_name": "Inland Empire Hair Co.",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(951) 742-5037",
+    "website": "",
+    "instagram": "@inlandempirehaircompany",
+    "address": "6700 Indiana Ave Suite 210",
+    "city": "Riverside",
+    "zip": "92506",
+    "google_maps_link": "https://maps.google.com/?q=Inland+Empire+Hair+Co+Riverside+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Color correction, balayage, vivid colors",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Full-service, 518 photos, 163 reviews"
+  },
+  {
+    "salon_name": "HAIRapy Hair Studio",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "hairapyhairstudio.com",
+    "instagram": "",
+    "address": "Riverside",
+    "city": "Riverside",
+    "zip": "92506",
+    "google_maps_link": "https://maps.google.com/?q=HAIRapy+Hair+Studio+Riverside+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Extensions, vivid color, balayage, facials, waxing",
+    "brands_carried": "Kevin Murphy",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Kevin Murphy Sessions salon"
+  },
+  {
+    "salon_name": "Karen Allen Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "karenallensalon.com",
+    "instagram": "",
+    "address": "Riverside",
+    "city": "Riverside",
+    "zip": "92506",
+    "google_maps_link": "https://maps.google.com/?q=Karen+Allen+Salon+Riverside+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Expert color, extensions, facials, massage",
+    "brands_carried": "Aveda",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Luxury salon, Aveda products"
+  },
+  {
+    "salon_name": "Bello Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "bellosalon.net",
+    "instagram": "",
+    "address": "Rancho Cucamonga",
+    "city": "Rancho Cucamonga",
+    "zip": "91730",
+    "google_maps_link": "https://maps.google.com/?q=Bello+Salon+Rancho+Cucamonga+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Cuts, color, styling",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Inland Empire salon"
+  },
+  {
+    "salon_name": "Haven Salon",
+    "owner_name": "Cynthia Brokaw",
+    "owner_email": "",
+    "phone": "(805) 969-0132",
+    "website": "havensalon.us",
+    "instagram": "",
+    "address": "1150 Coast Village Road",
+    "city": "Montecito",
+    "zip": "93108",
+    "google_maps_link": "https://maps.google.com/?q=Haven+Salon+Montecito+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Haircuts, color, balayage, ombre, highlights, keratin, extensions, Olaplex, scalp treatments",
+    "brands_carried": "Natulique (organic ammonia-free), Paul Mitchell",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Award-winning Master Colorist, 25+ years, scalp treatments, 7 stylists on team"
+  },
+  {
+    "salon_name": "Canyon Salon",
+    "owner_name": "Nikki Corzine",
+    "owner_email": "",
+    "phone": "",
+    "website": "thecanyonsalon.com",
+    "instagram": "",
+    "address": "Westlake Village",
+    "city": "Westlake Village",
+    "zip": "91362",
+    "google_maps_link": "https://maps.google.com/?q=Canyon+Salon+Westlake+Village+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Luxury hair services",
+    "brands_carried": "Amai (own non-toxic product line)",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Created own non-toxic product line Amai, luxury meets personal touch"
+  },
+  {
+    "salon_name": "Aurora Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "aurorasalonwlv.com",
+    "instagram": "@aurorasalonwlv",
+    "address": "Westlake Village",
+    "city": "Westlake Village",
+    "zip": "91362",
+    "google_maps_link": "https://maps.google.com/?q=Aurora+Salon+Westlake+Village+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Luxury modern salon services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Luxury + Modern Salon, 1,500+ Instagram followers"
+  },
+  {
+    "salon_name": "Swanky Salon",
+    "owner_name": "Melissa Pringle",
+    "owner_email": "",
+    "phone": "",
+    "website": "theswankysalon.com",
+    "instagram": "",
+    "address": "Agoura Hills/Westlake Village border",
+    "city": "Agoura Hills",
+    "zip": "91301",
+    "google_maps_link": "https://maps.google.com/?q=Swanky+Salon+Agoura+Hills+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Owner-operated since 2011"
+  },
+  {
+    "salon_name": "Cleo Hair Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "Agoura Hills",
+    "city": "Agoura Hills",
+    "zip": "91301",
+    "google_maps_link": "https://maps.google.com/?q=Cleo+Hair+Salon+Agoura+Hills+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Full service salon",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Voted Ventura County's Best Hair Salon"
+  },
+  {
+    "salon_name": "The Hudson Salon & Spa",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(949) 715-5111",
+    "website": "",
+    "instagram": "",
+    "address": "361 Forest Ave Suite 104",
+    "city": "Laguna Beach",
+    "zip": "92651",
+    "google_maps_link": "https://maps.google.com/?q=Hudson+Salon+Spa+Laguna+Beach+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair services, organic spray tan, spa services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Downtown Laguna Beach location"
+  },
+  {
+    "salon_name": "Moxie Huntington Beach",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "moxiehuntingtonbeach.com",
+    "instagram": "",
+    "address": "Huntington Beach",
+    "city": "Huntington Beach",
+    "zip": "92648",
+    "google_maps_link": "https://maps.google.com/?q=Moxie+Huntington+Beach+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Blondes specialist, various colorist specialties",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Stylists built thriving clientele"
+  },
+  {
+    "salon_name": "Porcelain Hair Studio",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "porcelainhairstudio.com",
+    "instagram": "",
+    "address": "611 6th Street",
+    "city": "Huntington Beach",
+    "zip": "92648",
+    "google_maps_link": "https://maps.google.com/?q=Porcelain+Hair+Studio+Huntington+Beach+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair services, cuts, color",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Small walk from beach, Downtown HB"
+  },
+  {
+    "salon_name": "The Colour Attic Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "thecolouratticsalon.com",
+    "instagram": "",
+    "address": "4972 Warner Avenue Suite 202",
+    "city": "Huntington Beach",
+    "zip": "92649",
+    "google_maps_link": "https://maps.google.com/?q=Colour+Attic+Salon+Huntington+Beach+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Color specialist salon",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Color-focused salon"
+  },
+  {
+    "salon_name": "HC Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "15861 Gothard St",
+    "city": "Huntington Beach",
+    "zip": "92647",
+    "google_maps_link": "https://maps.google.com/?q=HC+Salon+Huntington+Beach+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Color correction, Brazilian blowouts, balayage, extensions",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Full service"
+  },
+  {
+    "salon_name": "Studio Thirty Three Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(714) 594-3907",
+    "website": "",
+    "instagram": "",
+    "address": "16841 Algonquin St",
+    "city": "Huntington Beach",
+    "zip": "92649",
+    "google_maps_link": "https://maps.google.com/?q=Studio+Thirty+Three+Salon+Huntington+Beach+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Ombre, balayage, Brazilian blowout, color",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Tue-Fri 9am-8:30pm"
+  },
+  {
+    "salon_name": "Spadra Salon Studio",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "spadrasalonstudio.com",
+    "instagram": "",
+    "address": "Downtown Fullerton",
+    "city": "Fullerton",
+    "zip": "92832",
+    "google_maps_link": "https://maps.google.com/?q=Spadra+Salon+Studio+Fullerton+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Natural lived-in hair color, blonding, luxury hair extensions",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Beautiful serene boutique salon"
+  },
+  {
+    "salon_name": "Kate Lane Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "121 Avenida Granada",
+    "city": "San Clemente",
+    "zip": "92672",
+    "google_maps_link": "https://maps.google.com/?q=Kate+Lane+Salon+San+Clemente+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Lived-in color, blonding, premium hair extensions",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Coastal haven, modern meets laid-back luxury"
+  },
+  {
+    "salon_name": "Shine Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "danapointhairsalon.com",
+    "instagram": "",
+    "address": "Dana Point",
+    "city": "Dana Point",
+    "zip": "92629",
+    "google_maps_link": "https://maps.google.com/?q=Shine+Salon+Dana+Point+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Dana Point salon"
+  },
+  {
+    "salon_name": "Aroma Head Spa & Massage",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "aromaheadspamassage.com",
+    "instagram": "",
+    "address": "Costa Mesa/Laguna Beach",
+    "city": "Costa Mesa",
+    "zip": "92627",
+    "google_maps_link": "https://maps.google.com/?q=Aroma+Head+Spa+Massage+Costa+Mesa+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Scalp treatments, hair wash, dandruff control, hair loss treatment",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Head spa specialist, scalp treatment focus"
+  },
+  {
+    "salon_name": "Luvinage Skin & Head Spa",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "luvinage.com",
+    "instagram": "",
+    "address": "Garden Grove/Cerritos",
+    "city": "Garden Grove",
+    "zip": "92840",
+    "google_maps_link": "https://maps.google.com/?q=Luvinage+Skin+Head+Spa+Garden+Grove+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Facial skin and scalp treatments, dandruff control, hair loss, anti-aging",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Facial and scalp treatment specialist"
+  },
+  {
+    "salon_name": "Bridget Nottingham Hair Design",
+    "owner_name": "Bridget Nottingham",
+    "owner_email": "",
+    "phone": "",
+    "website": "bridgetnottinghamhairdesign.com",
+    "instagram": "",
+    "address": "Huntington Beach",
+    "city": "Huntington Beach",
+    "zip": "92648",
+    "google_maps_link": "https://maps.google.com/?q=Bridget+Nottingham+Hair+Design+Huntington+Beach+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Balayage, lived-in color, color correction, haircuts",
+    "brands_carried": "Redken",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Certified Redken Hair Colorist"
+  },
+  {
+    "salon_name": "Dleux Hair",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "dleuxhair.com",
+    "instagram": "",
+    "address": "La Jolla",
+    "city": "La Jolla",
+    "zip": "92037",
+    "google_maps_link": "https://maps.google.com/?q=Dleux+Hair+La+Jolla+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair and color services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Specialized stylists"
+  },
+  {
+    "salon_name": "The Hair Lounge La Jolla",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "thehairloungelajolla.com",
+    "instagram": "",
+    "address": "La Jolla",
+    "city": "La Jolla",
+    "zip": "92037",
+    "google_maps_link": "https://maps.google.com/?q=Hair+Lounge+La+Jolla+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Haircuts, styling, salon services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "La Jolla location"
+  },
+  {
+    "salon_name": "Monarch Salon SD",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "monarchsalonsd.com",
+    "instagram": "",
+    "address": "La Jolla",
+    "city": "La Jolla",
+    "zip": "92037",
+    "google_maps_link": "https://maps.google.com/?q=Monarch+Salon+La+Jolla+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair and color salon, premier services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Premier La Jolla salon"
+  },
+  {
+    "salon_name": "Opulence Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "opulencesalon.co",
+    "instagram": "",
+    "address": "La Jolla",
+    "city": "La Jolla",
+    "zip": "92037",
+    "google_maps_link": "https://maps.google.com/?q=Opulence+Salon+La+Jolla+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Luxury hair services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Premiere destination, luxury experience"
+  },
+  {
+    "salon_name": "Noni Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "nonisalon101.com",
+    "instagram": "",
+    "address": "Encinitas",
+    "city": "Encinitas",
+    "zip": "92024",
+    "google_maps_link": "https://maps.google.com/?q=Noni+Salon+Encinitas+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Full service hair and beauty",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Off Hwy 101 south of Leucadia Blvd"
+  },
+  {
+    "salon_name": "The Parlour Encinitas",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "theparlourencinitas.com",
+    "instagram": "",
+    "address": "Encinitas",
+    "city": "Encinitas",
+    "zip": "92024",
+    "google_maps_link": "https://maps.google.com/?q=The+Parlour+Encinitas+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Premier hair salon, color specialists",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Color specialist salon"
+  },
+  {
+    "salon_name": "Violet Salon & Boutique",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "violetsaloncarlsbad.com",
+    "instagram": "",
+    "address": "Carlsbad",
+    "city": "Carlsbad",
+    "zip": "92008",
+    "google_maps_link": "https://maps.google.com/?q=Violet+Salon+Carlsbad+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Easy Hair Pro tape-in extensions, various services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Extension specialist"
+  },
+  {
+    "salon_name": "The Collective Hair Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "thecollectivehair.com",
+    "instagram": "",
+    "address": "Carlsbad",
+    "city": "Carlsbad",
+    "zip": "92008",
+    "google_maps_link": "https://maps.google.com/?q=Collective+Hair+Salon+Carlsbad+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Balayage, highlights, hair extensions",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Carlsbad salon"
+  },
+  {
+    "salon_name": "The Hair Spa",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "thehairspashop.com",
+    "instagram": "",
+    "address": "Carlsbad Village",
+    "city": "Carlsbad",
+    "zip": "92008",
+    "google_maps_link": "https://maps.google.com/?q=Hair+Spa+Carlsbad+Village+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair color, precision cuts, extensions",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Rejuvenating experience, Carlsbad Village"
+  },
+  {
+    "salon_name": "Badri Beauty Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "badribeautysalon.com",
+    "instagram": "",
+    "address": "Solana Beach",
+    "city": "Solana Beach",
+    "zip": "92075",
+    "google_maps_link": "https://maps.google.com/?q=Badri+Beauty+Salon+Solana+Beach+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Exclusive appointments, Master Colorist certified from New York",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Private studio, exclusive appointments"
+  },
+  {
+    "salon_name": "Elli's Hair Studio",
+    "owner_name": "Elli",
+    "owner_email": "",
+    "phone": "",
+    "website": "ellishairstudio.com",
+    "instagram": "",
+    "address": "Little Italy",
+    "city": "San Diego",
+    "zip": "92101",
+    "google_maps_link": "https://maps.google.com/?q=Ellis+Hair+Studio+Little+Italy+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Cuts, color, styling",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Decade+ experience, Tony and Guy certified"
+  },
+  {
+    "salon_name": "Salon Savoir",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "salonsavoirsd.com",
+    "instagram": "",
+    "address": "Hillcrest",
+    "city": "San Diego",
+    "zip": "92103",
+    "google_maps_link": "https://maps.google.com/?q=Salon+Savoir+Hillcrest+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Custom haircuts, color, treatments, balayage, extensions",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Luxury hair salon, Hillcrest"
+  },
+  {
+    "salon_name": "The Color Collective Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "thecolorcollectivesd.com",
+    "instagram": "",
+    "address": "Hillcrest",
+    "city": "San Diego",
+    "zip": "92103",
+    "google_maps_link": "https://maps.google.com/?q=Color+Collective+Salon+Hillcrest+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair color specialists, smoothing treatments, extensions",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Specializes in all things color"
+  },
+  {
+    "salon_name": "Hairspray Salon Hillcrest",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "hairspraysalonhillcrest.com",
+    "instagram": "",
+    "address": "Hillcrest",
+    "city": "San Diego",
+    "zip": "92103",
+    "google_maps_link": "https://maps.google.com/?q=Hairspray+Salon+Hillcrest+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Haircuts, color, balayage, highlights, extensions",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Since 1997"
+  },
+  {
+    "salon_name": "Rinse Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "rinsesd.com",
+    "instagram": "",
+    "address": "North Park",
+    "city": "San Diego",
+    "zip": "92104",
+    "google_maps_link": "https://maps.google.com/?q=Rinse+Salon+North+Park+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Luxury hair salon",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Luxury salon, North Park"
+  },
+  {
+    "salon_name": "PaperDoll Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(858) 581-2393",
+    "website": "paperdollsalon.com",
+    "instagram": "",
+    "address": "Pacific Beach",
+    "city": "San Diego",
+    "zip": "92109",
+    "google_maps_link": "https://maps.google.com/?q=PaperDoll+Salon+Pacific+Beach+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Cuts, color, highlights, blowouts, full service",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Voted best hair salon in PB"
+  },
+  {
+    "salon_name": "EPOCH Head Spa",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "epochheadspa.theportalsalon.com",
+    "instagram": "",
+    "address": "San Diego",
+    "city": "San Diego",
+    "zip": "92101",
+    "google_maps_link": "https://maps.google.com/?q=EPOCH+Head+Spa+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Korean style scalp treatments, signature shampoo therapy, Shiatsu pressure points",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Korean-style scalp treatment specialist"
+  },
+  {
+    "salon_name": "Invita Head Spa",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "invitaheadspa.com",
+    "instagram": "",
+    "address": "San Diego",
+    "city": "San Diego",
+    "zip": "92101",
+    "google_maps_link": "https://maps.google.com/?q=Invita+Head+Spa+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Japanese head spa treatments",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Japanese head spa specialist"
+  },
+  {
+    "salon_name": "Full Spiral Salon",
+    "owner_name": "Christin Brown",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "Culver City",
+    "city": "Culver City",
+    "zip": "90230",
+    "google_maps_link": "https://maps.google.com/?q=Full+Spiral+Salon+Culver+City+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Curl specialist, natural textures",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Celebrity stylist, 20+ years experience"
+  },
+  {
+    "salon_name": "A La Mode Hair Studio",
+    "owner_name": "Alina Sarkissian",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "Glendale",
+    "city": "Glendale",
+    "zip": "91202",
+    "google_maps_link": "https://maps.google.com/?q=A+La+Mode+Hair+Studio+Glendale+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Couture haircuts, brilliant colors, extensions, Brazilian blowouts",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "25+ years experience in health & beauty"
+  },
+  {
+    "salon_name": "Pacific Hair & Beauty",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "pacifichairbeauty.com",
+    "instagram": "",
+    "address": "Glendale",
+    "city": "Glendale",
+    "zip": "91202",
+    "google_maps_link": "https://maps.google.com/?q=Pacific+Hair+Beauty+Glendale+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Est. 2023, serves Burbank, LA"
+  },
+  {
+    "salon_name": "Mane Fixation",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "manefixation.com",
+    "instagram": "",
+    "address": "Studio City",
+    "city": "Studio City",
+    "zip": "91604",
+    "google_maps_link": "https://maps.google.com/?q=Mane+Fixation+Studio+City+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Balayage, curly cuts, vibrant colors, men's grooming",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Trendy Studio City location"
+  },
+  {
+    "salon_name": "Extensionist LA",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "extensionla.com",
+    "instagram": "@extensionistla",
+    "address": "Woodland Hills",
+    "city": "Woodland Hills",
+    "zip": "91364",
+    "google_maps_link": "https://maps.google.com/?q=Extensionist+LA+Woodland+Hills+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Extensions (wefts, K-Tips, tapes, I-Tips, clips), color, brows, lashes",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Specialized extension salon, 5,342 followers"
+  },
+  {
+    "salon_name": "Deja-Vu Hair & Beauty Salon",
+    "owner_name": "Tamir Melamed",
+    "owner_email": "",
+    "phone": "(818) 591-8881",
+    "website": "dejavuhairla.com",
+    "instagram": "",
+    "address": "Woodland Hills",
+    "city": "Woodland Hills",
+    "zip": "91364",
+    "google_maps_link": "https://maps.google.com/?q=Deja+Vu+Hair+Beauty+Woodland+Hills+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Master Cosmetology Trainer"
+  },
+  {
+    "salon_name": "K.Cohen Hair Studio",
+    "owner_name": "Kim Cohen",
+    "owner_email": "",
+    "phone": "(818) 699-7382",
+    "website": "",
+    "instagram": "@kimikazie_",
+    "address": "Studio City/Woodland Hills",
+    "city": "Studio City",
+    "zip": "91604",
+    "google_maps_link": "https://maps.google.com/?q=K+Cohen+Hair+Studio+Studio+City+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Color correction, highlights, balayage, precision cuts",
+    "brands_carried": "Redken",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "20+ years, formerly owned Rock Paper Salon (2014-2019)"
+  },
+  {
+    "salon_name": "Salon Vida",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "hairsalonvida.com",
+    "instagram": "",
+    "address": "Studio City Ventura Blvd",
+    "city": "Studio City",
+    "zip": "91604",
+    "google_maps_link": "https://maps.google.com/?q=Salon+Vida+Studio+City+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Extensions, coloring, haircuts, styling",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Full service salon on Ventura Blvd"
+  },
+  {
+    "salon_name": "Organic Beauty Lounge",
+    "owner_name": "Liana",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "Glendale",
+    "city": "Glendale",
+    "zip": "91202",
+    "google_maps_link": "https://maps.google.com/?q=Organic+Beauty+Lounge+Glendale+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair, skin, nail care with organic products",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Passionate about natural & organic beauty"
+  },
+  {
+    "salon_name": "Revive Hair Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "revivehairsalonla.com",
+    "instagram": "",
+    "address": "Sherman Oaks",
+    "city": "Sherman Oaks",
+    "zip": "91403",
+    "google_maps_link": "https://maps.google.com/?q=Revive+Hair+Salon+Sherman+Oaks+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Cuts, coloring, balayage, keratin, extensions, makeup",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Professional full service"
+  },
+  {
+    "salon_name": "Balayage by Liel",
+    "owner_name": "Liel",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "Sherman Oaks",
+    "city": "Sherman Oaks",
+    "zip": "91403",
+    "google_maps_link": "https://maps.google.com/?q=Balayage+by+Liel+Sherman+Oaks+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Balayage, ombre, highlights, baby lights, color",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Worked under celebrity colorist in BH, independent practice"
+  },
+  {
+    "salon_name": "Heavenly Hair",
+    "owner_name": "Brian Moe",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "Inland Empire",
+    "city": "Riverside",
+    "zip": "92506",
+    "google_maps_link": "https://maps.google.com/?q=Heavenly+Hair+Riverside+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair services",
+    "brands_carried": "",
+    "fit_score": "low",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Family-owned business"
+  },
+  {
+    "salon_name": "Lance Lanza Salon",
+    "owner_name": "Lance Lanza",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "Palm Springs/Palm Desert",
+    "city": "Palm Springs",
+    "zip": "92262",
+    "google_maps_link": "https://maps.google.com/?q=Lance+Lanza+Salon+Palm+Springs+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair extensions, installation",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Extension specialist, Palm Springs & Palm Desert"
+  },
+  {
+    "salon_name": "Brien O'Brien Salon",
+    "owner_name": "Brien O'Brien",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "Palm Desert",
+    "city": "Palm Desert",
+    "zip": "92260",
+    "google_maps_link": "https://maps.google.com/?q=Brien+OBrien+Salon+Palm+Desert+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Modern haircutting, color techniques, balayage",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Urban-level skilled team"
+  },
+  {
+    "salon_name": "Hidden Gem Hair Studio",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "Palm Springs area",
+    "city": "Palm Springs",
+    "zip": "92262",
+    "google_maps_link": "https://maps.google.com/?q=Hidden+Gem+Hair+Studio+Palm+Springs+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Balayages, hair extensions, keratin treatments",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Multi-service salon"
+  },
+  {
+    "salon_name": "Yamaguchi Salons",
+    "owner_name": "Billy Yamaguchi",
+    "owner_email": "",
+    "phone": "",
+    "website": "yamaguchilifestyle.com",
+    "instagram": "",
+    "address": "Ventura County",
+    "city": "Thousand Oaks",
+    "zip": "91360",
+    "google_maps_link": "https://maps.google.com/?q=Yamaguchi+Salons+Thousand+Oaks+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair services using Feng Shui principles",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "Holistic approach, balances hair using ancient Feng Shui principles"
+  },
+  {
+    "salon_name": "Agoura Hairstyling",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "5689 Lake Lindero Dr",
+    "city": "Agoura Hills",
+    "zip": "91301",
+    "google_maps_link": "https://maps.google.com/?q=Agoura+Hairstyling+Agoura+Hills+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair styling, color",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Est. 1991, family-owned, 251 photos, 102 reviews"
+  },
+  {
+    "salon_name": "Salon 805",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "salon-805.square.site",
+    "instagram": "",
+    "address": "Westlake Village/Thousand Oaks",
+    "city": "Thousand Oaks",
+    "zip": "91360",
+    "google_maps_link": "https://maps.google.com/?q=Salon+805+Thousand+Oaks+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Local salon, Westlake Village area"
+  },
+  {
+    "salon_name": "Lakeside Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "lakesidehairsalon.com",
+    "instagram": "",
+    "address": "Westlake Village",
+    "city": "Westlake Village",
+    "zip": "91362",
+    "google_maps_link": "https://maps.google.com/?q=Lakeside+Salon+Westlake+Village+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Westlake Village location"
+  },
+  {
+    "salon_name": "Studio One Hair Salon",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "hairsalonsthousandoaks.com",
+    "instagram": "",
+    "address": "Thousand Oaks",
+    "city": "Thousand Oaks",
+    "zip": "91360",
+    "google_maps_link": "https://maps.google.com/?q=Studio+One+Hair+Salon+Thousand+Oaks+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair extensions, blow dry bar",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Extension center and blow dry bar"
+  },
+  {
+    "salon_name": "Veronica Hair Studio",
+    "owner_name": "Veronica Nettleton",
+    "owner_email": "",
+    "phone": "",
+    "website": "veronicahairstudio.com",
+    "instagram": "",
+    "address": "Thousand Oaks (Sola Salons)",
+    "city": "Thousand Oaks",
+    "zip": "91360",
+    "google_maps_link": "https://maps.google.com/?q=Veronica+Hair+Studio+Thousand+Oaks+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair design, cuts, color",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Independent stylist, 29 years experience"
+  },
+  {
+    "salon_name": "Forest House SPA",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "spafh.com",
+    "instagram": "",
+    "address": "San Diego",
+    "city": "San Diego",
+    "zip": "92101",
+    "google_maps_link": "https://maps.google.com/?q=Forest+House+Spa+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "TCM head spa, facial, massage",
+    "brands_carried": "",
+    "fit_score": "high",
+    "assigned_sequence": "1_scalp_wellness",
+    "hunter_confidence": "",
+    "notes": "TCM head spa specialist"
+  },
+  {
+    "salon_name": "Joel C Ma Hair Studio",
+    "owner_name": "Joel C Ma",
+    "owner_email": "",
+    "phone": "",
+    "website": "joelcma.com",
+    "instagram": "",
+    "address": "La Jolla",
+    "city": "La Jolla",
+    "zip": "92037",
+    "google_maps_link": "https://maps.google.com/?q=Joel+C+Ma+Hair+Studio+La+Jolla+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Expert hair services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "#1 hair salon in La Jolla, decades of experience"
+  },
+  {
+    "salon_name": "Pacific Coast Hair Studio",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(858) 481-0554",
+    "website": "",
+    "instagram": "",
+    "address": "233 N Hwy 101",
+    "city": "Solana Beach",
+    "zip": "92075",
+    "google_maps_link": "https://maps.google.com/?q=Pacific+Coast+Hair+Studio+Solana+Beach+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Solana Beach location on Highway 101"
+  },
+  {
+    "salon_name": "The Hair Cooperative",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "(858) 436-4526",
+    "website": "thehaircooperative.com",
+    "instagram": "",
+    "address": "4970 Cass St",
+    "city": "San Diego",
+    "zip": "92109",
+    "google_maps_link": "https://maps.google.com/?q=Hair+Cooperative+Pacific+Beach+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "North Pacific Beach"
+  },
+  {
+    "salon_name": "The Palms Hair Studio",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "thepalmssalon.com",
+    "instagram": "",
+    "address": "Pacific Beach",
+    "city": "San Diego",
+    "zip": "92109",
+    "google_maps_link": "https://maps.google.com/?q=Palms+Hair+Studio+Pacific+Beach+San+Diego+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Pacific Beach location"
+  },
+  {
+    "salon_name": "The Hair Cafe",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "Rancho Cucamonga",
+    "city": "Rancho Cucamonga",
+    "zip": "91730",
+    "google_maps_link": "https://maps.google.com/?q=Hair+Cafe+Rancho+Cucamonga+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair services, color, styling",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "3_education",
+    "hunter_confidence": "",
+    "notes": "Rancho Cucamonga salon"
+  },
+  {
+    "salon_name": "Salon Tribeca",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "Rancho Cucamonga",
+    "city": "Rancho Cucamonga",
+    "zip": "91730",
+    "google_maps_link": "https://maps.google.com/?q=Salon+Tribeca+Rancho+Cucamonga+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Rancho Cucamonga salon"
+  },
+  {
+    "salon_name": "Level 10 Salon & Spa",
+    "owner_name": "Owner TBD",
+    "owner_email": "",
+    "phone": "",
+    "website": "",
+    "instagram": "",
+    "address": "Redlands",
+    "city": "Redlands",
+    "zip": "92373",
+    "google_maps_link": "https://maps.google.com/?q=Level+10+Salon+Spa+Redlands+CA",
+    "google_rating": "",
+    "review_count": "",
+    "services_offered": "Hair, spa services",
+    "brands_carried": "",
+    "fit_score": "medium",
+    "assigned_sequence": "2_exclusivity",
+    "hunter_confidence": "",
+    "notes": "Redlands salon and spa"
+  }
+];
+
+
+function loadInlineData() {
+    salons = SALON_DATA;
+    renderTable(salons);
+}
+
+function renderTable(data) {
+    const tbody = document.getElementById('table-body');
+    tbody.innerHTML = '';
+
+    data.forEach((s, i) => {
+        const fitClass = s.fit_score === 'high' ? 'tag-high' : s.fit_score === 'medium' ? 'tag-medium' : 'tag-low';
+        const seqClass = s.assigned_sequence?.includes('1') ? 'tag-seq1' : s.assigned_sequence?.includes('2') ? 'tag-seq2' : 'tag-seq3';
+        const seqLabel = s.assigned_sequence?.includes('1') ? 'Scalp' : s.assigned_sequence?.includes('2') ? 'Exclusivity' : 'Education';
+
+        const links = [];
+        if (s.website) links.push(`<a href="https://${s.website.replace(/^https?:\/\//, '')}" target="_blank">Web</a>`);
+        if (s.instagram) links.push(`<a href="https://instagram.com/${s.instagram.replace('@','')}" target="_blank">IG</a>`);
+        if (s.google_maps_link) links.push(`<a href="${s.google_maps_link}" target="_blank">Map</a>`);
+
+        const tr = document.createElement('tr');
+        tr.dataset.fit = s.fit_score || '';
+        tr.dataset.seq = s.assigned_sequence || '';
+        tr.dataset.search = `${s.salon_name} ${s.owner_name} ${s.city} ${s.services_offered} ${s.brands_carried} ${s.notes}`.toLowerCase();
+
+        tr.innerHTML = `
+            <td style="color:var(--text-muted)">${i + 1}</td>
+            <td style="color:var(--text);font-weight:500;max-width:180px" title="${s.salon_name}">${s.salon_name}</td>
+            <td title="${s.owner_name}">${s.owner_name || '<span style="color:var(--text-muted)">TBD</span>'}</td>
+            <td>${s.city}</td>
+            <td><span class="tag ${fitClass}">${(s.fit_score || '').toUpperCase()}</span></td>
+            <td><span class="tag ${seqClass}">${seqLabel}</span></td>
+            <td style="max-width:220px" title="${s.services_offered}">${s.services_offered || '-'}</td>
+            <td style="max-width:160px" title="${s.brands_carried}">${s.brands_carried || '-'}</td>
+            <td style="white-space:nowrap">${links.join(' / ')}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function filterTable(filter, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const rows = document.querySelectorAll('#table-body tr');
+    rows.forEach(row => {
+        if (filter === 'all') {
+            row.style.display = '';
+        } else if (['high', 'medium', 'low'].includes(filter)) {
+            row.style.display = row.dataset.fit === filter ? '' : 'none';
+        } else {
+            row.style.display = row.dataset.seq === filter ? '' : 'none';
+        }
+    });
+}
+
+function searchTable(query) {
+    const q = query.toLowerCase();
+    const rows = document.querySelectorAll('#table-body tr');
+    rows.forEach(row => {
+        row.style.display = row.dataset.search.includes(q) ? '' : 'none';
+    });
+    // Reset filter buttons
+    if (q) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    }
+}
+
+let sortDir = {};
+function sortTable(col) {
+    sortDir[col] = !sortDir[col];
+    const tbody = document.getElementById('table-body');
+    const rows = Array.from(tbody.rows);
+
+    rows.sort((a, b) => {
+        const aVal = a.cells[col].textContent.trim();
+        const bVal = b.cells[col].textContent.trim();
+        const dir = sortDir[col] ? 1 : -1;
+
+        if (!isNaN(aVal) && !isNaN(bVal)) return (Number(aVal) - Number(bVal)) * dir;
+        return aVal.localeCompare(bVal) * dir;
+    });
+
+    rows.forEach(row => tbody.appendChild(row));
+}
+
+// Init
+loadInlineData();
+</script>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

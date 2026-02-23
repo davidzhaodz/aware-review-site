@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - LinkedIn Strategy Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0f0f0e;--bg2:#1a1917;--bg3:#222120;--bg4:#2c2a28;
+--sand:#c8b89a;--sand-dim:rgba(200,184,154,.08);--sand-mid:rgba(200,184,154,.2);--sand-strong:rgba(200,184,154,.35);
+--cream:#f0e8d8;--warm:#e8d5b8;
+--text:#e5e2dc;--text2:#a09a8e;--text3:#6b6560;
+--border:#2e2c28;--border2:#3a3732;
+--green:#6bcf7f;--green-bg:rgba(107,207,127,.12);
+--amber:#e8b84a;--amber-bg:rgba(232,184,74,.12);
+--red:#e06b6b;--red-bg:rgba(224,107,107,.12);
+--blue:#6ba8e0;--blue-bg:rgba(107,168,224,.12);
+--purple:#b08ae0;--purple-bg:rgba(176,138,224,.12);
+--cyan:#5cc8c8;--cyan-bg:rgba(92,200,200,.12);
+--pink:#d4839a;--pink-bg:rgba(212,131,154,.12);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5}
+h1,h2,h3,h4,.serif{font-family:'Playfair Display',Georgia,serif}
+a{color:var(--sand);text-decoration:none}a:hover{text-decoration:underline}
+
+/* Layout */
+.container{max-width:1440px;margin:0 auto;padding:24px 32px}
+
+/* Header */
+.header{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:28px}
+.header-brand{display:flex;align-items:center;gap:16px}
+.logo-mark{width:48px;height:48px;border:2px solid var(--sand);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sand)}
+.header h1{font-size:26px;font-weight:600;color:var(--cream);letter-spacing:-.5px}
+.header-sub{font-size:13px;color:var(--text2);margin-top:2px}
+.header-meta{text-align:right;font-size:12px;color:var(--text3)}
+.header-meta .highlight{color:var(--sand);font-size:15px;font-weight:600;font-family:'Playfair Display',serif}
+
+/* Nav */
+.nav{display:flex;gap:2px;margin-bottom:28px;background:var(--bg2);border-radius:10px;padding:4px;width:fit-content}
+.nav button{background:none;border:none;color:var(--text2);padding:8px 18px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;transition:all .2s}
+.nav button:hover{color:var(--text)}
+.nav button.active{background:var(--bg3);color:var(--cream);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.nav .tab-badge{font-size:10px;background:var(--bg4);padding:1px 6px;border-radius:8px;margin-left:5px;color:var(--text3)}
+.nav button.active .tab-badge{background:var(--sand-dim);color:var(--sand)}
+
+/* Sections */
+.section{display:none}.section.active{display:block}
+
+/* Cards */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:16px;transition:border-color .2s}
+.card:hover{border-color:var(--border2)}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.card-title{font-family:'Playfair Display',serif;font-size:17px;color:var(--cream);font-weight:600}
+.card-sub{font-size:12px;color:var(--text3);margin-top:2px}
+
+/* Badges */
+.badge{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;display:inline-block}
+.badge-green{background:var(--green-bg);color:var(--green)}
+.badge-amber{background:var(--amber-bg);color:var(--amber)}
+.badge-red{background:var(--red-bg);color:var(--red)}
+.badge-blue{background:var(--blue-bg);color:var(--blue)}
+.badge-purple{background:var(--purple-bg);color:var(--purple)}
+.badge-sand{background:var(--sand-dim);color:var(--sand)}
+.badge-cyan{background:var(--cyan-bg);color:var(--cyan)}
+.badge-pink{background:var(--pink-bg);color:var(--pink)}
+
+/* Grids */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+@media(max-width:1100px){.grid-3,.grid-4,.grid-5{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.grid-2,.grid-3,.grid-4,.grid-5{grid-template-columns:1fr}}
+
+/* Metrics */
+.metric{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;position:relative}
+.metric-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600}
+.metric-value{font-family:'Playfair Display',serif;font-size:28px;color:var(--cream);font-weight:700}
+.metric-value.sand{color:var(--sand)}
+.metric-value.green{color:var(--green)}
+.metric-sub{font-size:12px;color:var(--text2);margin-top:4px}
+.metric-edit{position:absolute;top:8px;right:10px;background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px;opacity:0;transition:opacity .15s;padding:2px 6px;border-radius:4px}
+.metric:hover .metric-edit{opacity:1}
+.metric-edit:hover{background:var(--bg3);color:var(--text2)}
+.metric-input{background:var(--bg3);border:1px solid var(--sand);border-radius:4px;color:var(--cream);font-family:'Playfair Display',serif;font-size:24px;font-weight:700;width:100%;padding:2px 4px;outline:none}
+
+/* Section headers */
+.sec-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;margin-top:8px}
+.sec-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-weight:600}
+.sec-action{font-size:12px;color:var(--sand);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif}
+.sec-action:hover{text-decoration:underline}
+
+/* Tables */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);font-weight:600}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--bg3)}
+.tbl input[type="number"]{background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;width:64px;padding:4px 6px;font-family:'DM Sans',sans-serif;text-align:right}
+.tbl input[type="number"]:focus{border-color:var(--sand);outline:none}
+
+/* Pillar cards */
+.pillar-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s}
+.pillar-card:hover{border-color:var(--border2)}
+.pillar-top{height:4px}
+.pillar-body{padding:18px 20px}
+.pillar-num{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.pillar-name{font-family:'Playfair Display',serif;font-size:16px;color:var(--cream);font-weight:600;margin-bottom:6px}
+.pillar-audience{font-size:11px;color:var(--text3);margin-bottom:10px}
+.pillar-goal{font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.5}
+.pillar-ideas{list-style:none;padding:0}
+.pillar-ideas li{font-size:12px;color:var(--text2);padding:6px 0;border-top:1px solid var(--border);line-height:1.4;cursor:default}
+.pillar-ideas li:hover{color:var(--text)}
+.pillar-ideas li::before{content:'"';color:var(--sand);font-weight:600}
+.pillar-ideas li::after{content:'"';color:var(--sand);font-weight:600}
+.pillar-count{display:flex;align-items:center;gap:6px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border)}
+.pillar-count-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+.pillar-count-val{font-size:14px;font-weight:700;color:var(--cream)}
+
+/* Draft cards */
+.draft-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s;display:flex;flex-direction:column}
+.draft-card:hover{border-color:var(--border2)}
+.draft-header{padding:16px 20px 12px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.draft-title{font-family:'Playfair Display',serif;font-size:15px;color:var(--cream);font-weight:600;flex:1}
+.draft-meta{display:flex;gap:6px;flex-shrink:0}
+.draft-body{padding:0 20px 16px;flex:1}
+.draft-text{font-size:12px;color:var(--text2);line-height:1.7;white-space:pre-wrap;background:var(--bg3);border-radius:8px;padding:14px 16px;max-height:260px;overflow-y:auto;border:1px solid var(--border);font-family:'DM Sans',sans-serif}
+.draft-text::-webkit-scrollbar{width:4px}
+.draft-text::-webkit-scrollbar-track{background:transparent}
+.draft-text::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.draft-footer{padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.draft-chars{font-size:11px;color:var(--text3)}
+.draft-actions{display:flex;gap:8px}
+.btn{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .15s}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text2)}
+.btn-ghost:hover{border-color:var(--sand-mid);color:var(--text)}
+.btn-sand{background:var(--sand-mid);color:var(--cream);border:1px solid var(--sand-strong)}
+.btn-sand:hover{background:var(--sand-strong)}
+.btn-green{background:var(--green-bg);color:var(--green);border:1px solid rgba(107,207,127,.25)}
+.btn-green:hover{background:rgba(107,207,127,.2)}
+.btn-sm{padding:4px 10px;font-size:11px}
+.posted-date{font-size:11px;color:var(--green);font-weight:500}
+
+/* Schedule */
+.schedule-row{display:grid;grid-template-columns:100px 1fr 140px 1fr;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)}
+.schedule-row:last-child{border-bottom:none}
+.schedule-day{font-weight:600;color:var(--cream);font-size:14px}
+.schedule-type{font-size:13px;color:var(--text2)}
+.schedule-format{font-size:12px}
+.schedule-pillar{font-size:12px;color:var(--text2)}
+
+/* Checklist */
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2);line-height:1.4}
+.checklist li:last-child{border-bottom:none}
+.checklist input[type="checkbox"]{margin-top:2px;accent-color:var(--sand);width:16px;height:16px;cursor:pointer;flex-shrink:0}
+.checklist li.done{color:var(--text3);text-decoration:line-through}
+.checklist .check-label{cursor:pointer;flex:1}
+.checklist .check-day{font-size:11px;color:var(--text3);min-width:48px;flex-shrink:0}
+
+/* Engagement ring */
+.ring-container{display:flex;align-items:center;justify-content:center;gap:40px;padding:16px 0}
+.ring-wrap{position:relative;width:160px;height:160px}
+.ring-wrap svg{transform:rotate(-90deg)}
+.ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.ring-center-val{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--cream)}
+.ring-center-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px}
+.ring-legend{display:flex;flex-direction:column;gap:10px}
+.ring-legend-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2)}
+.ring-legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* Format bars */
+.format-bar-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.format-bar-label{font-size:12px;color:var(--text2);min-width:100px}
+.format-bar-track{flex:1;height:24px;background:var(--bg4);border-radius:4px;overflow:hidden;position:relative}
+.format-bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:600;color:var(--bg);transition:width .6s ease}
+.format-bar-pct{font-size:12px;color:var(--text3);min-width:36px;text-align:right}
+
+/* Research cards */
+.research-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;transition:border-color .2s}
+.research-card:hover{border-color:var(--border2)}
+.research-card-title{font-size:14px;color:var(--cream);font-weight:600;margin-bottom:4px}
+.research-card-source{font-size:11px;color:var(--sand);margin-bottom:8px}
+.research-card-detail{font-size:12px;color:var(--text2);line-height:1.5}
+.research-card a{color:var(--sand)}
+
+/* Tactic cards */
+.tactic{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px 18px}
+.tactic-title{font-size:13px;color:var(--cream);font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.tactic-icon{font-size:16px}
+.tactic-desc{font-size:12px;color:var(--text2);line-height:1.5}
+.tactic-emphasis{color:var(--sand);font-weight:600}
+
+/* Engagement routine */
+.routine-step{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+.routine-step:last-child{border-bottom:none}
+.routine-time{font-size:12px;color:var(--sand);font-weight:600;min-width:80px;flex-shrink:0;padding-top:1px}
+.routine-content{font-size:13px;color:var(--text2);line-height:1.5}
+.routine-content strong{color:var(--text);font-weight:600}
+
+/* Post log */
+.log-empty{text-align:center;padding:40px 20px;color:var(--text3);font-size:13px}
+.log-empty-icon{font-size:32px;margin-bottom:8px;opacity:.4}
+
+/* Add post form */
+.add-form{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px;display:none}
+.add-form.open{display:block}
+.form-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:600}
+.form-input{background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:8px 12px;font-size:13px;font-family:'DM Sans',sans-serif}
+.form-input:focus{border-color:var(--sand);outline:none}
+select.form-input{cursor:pointer}
+.form-actions{display:flex;gap:8px;justify-content:flex-end}
+
+/* Animations */
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card,.metric,.pillar-card,.draft-card,.research-card{animation:fadeIn .3s ease both}
+
+/* Copy tooltip */
+.copy-toast{position:fixed;bottom:24px;right:24px;background:var(--bg3);border:1px solid var(--sand-mid);color:var(--cream);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;transform:translateY(60px);opacity:0;transition:all .25s ease;z-index:100;pointer-events:none}
+.copy-toast.show{transform:translateY(0);opacity:1}
+
+/* Responsive */
+@media(max-width:900px){
+  .container{padding:16px}
+  .header{flex-direction:column;align-items:flex-start;gap:12px}
+  .header-meta{text-align:left}
+  .nav{flex-wrap:wrap;width:100%}
+  .schedule-row{grid-template-columns:1fr 1fr;gap:8px}
+  .ring-container{flex-direction:column;gap:20px}
+  .form-row,.form-row-2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+  <div>
+    <div class="header-brand">
+      <div class="logo-mark">A</div>
+      <div>
+        <h1>LinkedIn Strategy</h1>
+        <div class="header-sub">David Zhao / AWARE Hair - Content Playbook & Tracker</div>
+      </div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <span>Recommended cadence</span>
+    <span class="highlight">3-4 posts / week</span>
+    <span style="margin-top:4px">Tu / We / Th - 9-11 AM</span>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button class="active" onclick="showTab('overview')">Overview</button>
+  <button onclick="showTab('pillars')">Content Pillars <span class="tab-badge">7</span></button>
+  <button onclick="showTab('drafts')">Post Drafts <span class="tab-badge">12</span></button>
+  <button onclick="showTab('execution')">Execution Log</button>
+  <button onclick="showTab('research')">Research</button>
+</div>
+
+<!-- ==================== OVERVIEW ==================== -->
+<div class="section active" id="tab-overview">
+
+  <!-- Key metrics -->
+  <div class="sec-header"><div class="sec-title">Performance Snapshot</div><button class="sec-action" onclick="resetMetrics()">Reset</button></div>
+  <div class="grid-5" id="overview-metrics">
+    <div class="metric" data-key="posts_this_week">
+      <button class="metric-edit" onclick="editMetric(this)">edit</button>
+      <div class="metric-label">Posts This Week</div>
+      <div class="metric-value" id="m-posts">0</div>
+      <div class="metric-sub">Target: 3-4</div>
+    </div>
+    <div class="metric" data-key="total_posts">
+      <button class="metric-edit" onclick="editMetric(this)">edit</button>
+      <div class="metric-label">Total Posts</div>
+      <div class="metric-value sand" id="m-total">0</div>
+      <div class="metric-sub">All time</div>
+    </div>
+    <div class="metric" data-key="avg_engagement">
+      <button class="metric-edit" onclick="editMetric(this)">edit</button>
+      <div class="metric-label">Avg Engagement</div>
+      <div class="metric-value" id="m-engagement">-</div>
+      <div class="metric-sub">Likes + comments + saves</div>
+    </div>
+    <div class="metric" data-key="total_saves">
+      <button class="metric-edit" onclick="editMetric(this)">edit</button>
+      <div class="metric-label">Total Saves</div>
+      <div class="metric-value green" id="m-saves">0</div>
+      <div class="metric-sub">5x more reach than likes</div>
+    </div>
+    <div class="metric" data-key="commenting_streak">
+      <button class="metric-edit" onclick="editMetric(this)">edit</button>
+      <div class="metric-label">Comment Streak</div>
+      <div class="metric-value" id="m-streak">0</div>
+      <div class="metric-sub">Days of 15-min routine</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:20px">
+
+    <!-- Weekly Schedule -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Weekly Schedule</div>
+        <span class="badge badge-sand">Template</span>
+      </div>
+      <div class="schedule-row">
+        <div class="schedule-day">Tuesday</div>
+        <div class="schedule-type">Thought leadership / Hot take</div>
+        <div><span class="badge badge-blue">Text post</span></div>
+        <div class="schedule-pillar">Scalp health, Indie vs. conglomerate, or Formulation</div>
+      </div>
+      <div class="schedule-row">
+        <div class="schedule-day">Wednesday</div>
+        <div class="schedule-type">Story / Behind the scenes</div>
+        <div><span class="badge badge-purple">Text or video</span></div>
+        <div class="schedule-pillar">Building in public or Salon intelligence</div>
+      </div>
+      <div class="schedule-row">
+        <div class="schedule-day">Thursday</div>
+        <div class="schedule-type">Educational / Proof</div>
+        <div><span class="badge badge-amber">Carousel or data</span></div>
+        <div class="schedule-pillar">Metrics, Scalp health, or Bootstrapping</div>
+      </div>
+      <div class="schedule-row">
+        <div class="schedule-day" style="color:var(--text2)">Friday <span style="font-size:11px;color:var(--text3);font-weight:400">(optional)</span></div>
+        <div class="schedule-type">Engagement post</div>
+        <div><span class="badge badge-green">Poll or question</span></div>
+        <div class="schedule-pillar">Salon intelligence or Industry trend</div>
+      </div>
+    </div>
+
+    <!-- Format mix + engagement routine -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-header">
+          <div class="card-title">Format Distribution Target</div>
+        </div>
+        <div class="format-bar-row">
+          <div class="format-bar-label">Text posts</div>
+          <div class="format-bar-track"><div class="format-bar-fill" style="width:40%;background:var(--blue)">40%</div></div>
+        </div>
+        <div class="format-bar-row">
+          <div class="format-bar-label">Carousels</div>
+          <div class="format-bar-track"><div class="format-bar-fill" style="width:30%;background:var(--amber)">30%</div></div>
+        </div>
+        <div class="format-bar-row">
+          <div class="format-bar-label">Video</div>
+          <div class="format-bar-track"><div class="format-bar-fill" style="width:20%;background:var(--purple)">20%</div></div>
+        </div>
+        <div class="format-bar-row" style="margin-bottom:0">
+          <div class="format-bar-label">Polls</div>
+          <div class="format-bar-track"><div class="format-bar-fill" style="width:10%;background:var(--green)">10%</div></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:0">
+        <div class="card-header">
+          <div class="card-title">Daily Engagement Routine</div>
+          <span class="badge badge-sand">15-20 min</span>
+        </div>
+        <div class="routine-step">
+          <div class="routine-time">Before post</div>
+          <div class="routine-content"><strong>Comment on 3-5 posts</strong> from salon owners, beauty industry people, or target distributors. Add perspective, don't just "Great post!"</div>
+        </div>
+        <div class="routine-step">
+          <div class="routine-time">After post</div>
+          <div class="routine-content"><strong>Respond to every comment</strong> in the first 60 minutes. This signals active conversation to the algorithm.</div>
+        </div>
+        <div class="routine-step">
+          <div class="routine-time">Evening</div>
+          <div class="routine-content"><strong>Quick scan</strong> for relevant industry conversations. Look for posts from potential partners, distributors, or investors.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key tactics -->
+  <div class="sec-header" style="margin-top:24px"><div class="sec-title">Algorithm Tactics - Quick Reference</div></div>
+  <div class="grid-3">
+    <div class="tactic">
+      <div class="tactic-title"><span class="tactic-icon">&#9733;</span> Saves = 5x Reach</div>
+      <div class="tactic-desc">Saves carry <span class="tactic-emphasis">5x more algorithmic weight</span> than likes. Design content to be saved: checklists, frameworks, reference material.</div>
+    </div>
+    <div class="tactic">
+      <div class="tactic-title"><span class="tactic-icon">&#8599;</span> Links Kill Reach</div>
+      <div class="tactic-desc">Links in the post body reduce distribution <span class="tactic-emphasis">~60%</span>. Always put URLs in the first comment instead.</div>
+    </div>
+    <div class="tactic">
+      <div class="tactic-title"><span class="tactic-icon">&#9202;</span> First 30 Min</div>
+      <div class="tactic-desc">The first 30 minutes are <span class="tactic-emphasis">critical for algorithmic distribution</span>. Time posts when your audience is active.</div>
+    </div>
+    <div class="tactic">
+      <div class="tactic-title"><span class="tactic-icon">#</span> 1-3 Hashtags Max</div>
+      <div class="tactic-desc">Mix one broad (#beauty) with one niche (#scalphealth). More than 3 <span class="tactic-emphasis">dilutes distribution</span>.</div>
+    </div>
+    <div class="tactic">
+      <div class="tactic-title"><span class="tactic-icon">&#128172;</span> Commenting > Posting</div>
+      <div class="tactic-desc"><span class="tactic-emphasis">15 min of substantive commenting daily</span> is the single highest-ROI LinkedIn activity. Comment before you post.</div>
+    </div>
+    <div class="tactic">
+      <div class="tactic-title"><span class="tactic-icon">&#9998;</span> Specifics Win</div>
+      <div class="tactic-desc">Posts with concrete specifics (names, metrics, timeframes) get <span class="tactic-emphasis">3-4x reach</span> vs. generic content.</div>
+    </div>
+  </div>
+
+  <!-- Quick-start checklist -->
+  <div class="sec-header" style="margin-top:24px"><div class="sec-title">Quick-Start Checklist (First 2 Weeks)</div></div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Week 1</div><span class="badge badge-amber">Launch</span></div>
+      <ul class="checklist" id="week1-checklist">
+        <li><input type="checkbox" onchange="saveChecklist()"><span class="check-day">Day 1</span><span class="check-label">Optimize LinkedIn headline</span></li>
+        <li><input type="checkbox" onchange="saveChecklist()"><span class="check-day">Day 1</span><span class="check-label">Post Draft 1 (Contrarian: B2B before DTC)</span></li>
+        <li><input type="checkbox" onchange="saveChecklist()"><span class="check-day">Day 3</span><span class="check-label">Post Draft 3 (Story: salon owner conversation)</span></li>
+        <li><input type="checkbox" onchange="saveChecklist()"><span class="check-day">Day 5</span><span class="check-label">Post Draft 4 (Data: 6-month numbers)</span></li>
+        <li><input type="checkbox" onchange="saveChecklist()"><span class="check-day">Daily</span><span class="check-label">15 min commenting on salon owner / beauty industry posts</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Week 2</div><span class="badge badge-blue">Momentum</span></div>
+      <ul class="checklist" id="week2-checklist">
+        <li><input type="checkbox" onchange="saveChecklist()"><span class="check-day">Day 1</span><span class="check-label">Post Draft 5 (Myth vs. Reality: indie advantage)</span></li>
+        <li><input type="checkbox" onchange="saveChecklist()"><span class="check-day">Day 3</span><span class="check-label">Create and post scalp health carousel (Draft 2)</span></li>
+        <li><input type="checkbox" onchange="saveChecklist()"><span class="check-day">Day 5</span><span class="check-label">Write new post from Pillar 4 (Salon Intelligence)</span></li>
+        <li><input type="checkbox" onchange="saveChecklist()"><span class="check-day">Daily</span><span class="check-label">Continue 15-min commenting routine</span></li>
+        <li><input type="checkbox" onchange="saveChecklist()"><span class="check-day">End</span><span class="check-label">Review analytics: which posts got most saves + comments?</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CONTENT PILLARS ==================== -->
+<div class="section" id="tab-pillars">
+
+  <div class="sec-header"><div class="sec-title">7 Content Pillars</div><div style="font-size:12px;color:var(--text3)">Rotate across pillars to maintain variety. Click post ideas to copy.</div></div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+    <!-- Pillar 1 -->
+    <div class="pillar-card" id="pillar-1">
+      <div class="pillar-top" style="background:var(--sand)"></div>
+      <div class="pillar-body">
+        <div class="pillar-num">Pillar 1</div>
+        <div class="pillar-name">Scalp Health Category Creator</div>
+        <div class="pillar-audience">Salon professionals, beauty industry, health-conscious consumers</div>
+        <div class="pillar-goal">Own the scalp health conversation on LinkedIn. 24M Google searches for "scalp treatment" - this is the whitespace.</div>
+        <ul class="pillar-ideas">
+          <li onclick="copyText(this)">The scalp is the new skin. Here's what that means for salon services in 2026.</li>
+          <li onclick="copyText(this)">Hair has been fundamentally repositioned as scalp care rather than fiber care. Most brands haven't caught up.</li>
+          <li onclick="copyText(this)">Why your stylist should be doing scalp assessments at every appointment, and what that means for the industry.</li>
+          <li onclick="copyText(this)">The 3 scalp health ingredients most 'clean' brands get wrong (and the science behind what actually works).</li>
+        </ul>
+        <div class="pillar-count"><span class="pillar-count-label">Posts from this pillar:</span><span class="pillar-count-val" data-pillar-count="Scalp Health">0</span></div>
+      </div>
+    </div>
+
+    <!-- Pillar 2 -->
+    <div class="pillar-card" id="pillar-2">
+      <div class="pillar-top" style="background:var(--amber)"></div>
+      <div class="pillar-body">
+        <div class="pillar-num">Pillar 2</div>
+        <div class="pillar-name">Bootstrapping (Anti-VC Founder)</div>
+        <div class="pillar-audience">Founders, investors, beauty industry operators</div>
+        <div class="pillar-goal">Contrarian positioning that attracts inbound from investors and press. Most LinkedIn founder content is VC-raise announcements.</div>
+        <ul class="pillar-ideas">
+          <li onclick="copyText(this)">I chose B2B before DTC. Everyone said I was doing it backwards. Here's what happened.</li>
+          <li onclick="copyText(this)">We hit $125K in revenue in 6 months without a single paid ad. Here's the unsexy playbook.</li>
+          <li onclick="copyText(this)">47 salon partners said yes. Zero investors required. The math that makes B2B-first work.</li>
+          <li onclick="copyText(this)">The beauty industry says you need VC to scale. Here's what I actually see in our numbers.</li>
+        </ul>
+        <div class="pillar-count"><span class="pillar-count-label">Posts from this pillar:</span><span class="pillar-count-val" data-pillar-count="Bootstrapping">0</span></div>
+      </div>
+    </div>
+
+    <!-- Pillar 3 -->
+    <div class="pillar-card" id="pillar-3">
+      <div class="pillar-top" style="background:var(--purple)"></div>
+      <div class="pillar-body">
+        <div class="pillar-num">Pillar 3</div>
+        <div class="pillar-name">Building in Public</div>
+        <div class="pillar-audience">Founders, aspiring entrepreneurs, salon partners</div>
+        <div class="pillar-goal">Authenticity-driven engagement that deepens trust. Showing the real work of indie beauty is rare on LinkedIn.</div>
+        <ul class="pillar-ideas">
+          <li onclick="copyText(this)">What launching a professional beauty brand actually looks like on a Tuesday.</li>
+          <li onclick="copyText(this)">I just drove 4 hours to drop off product at a salon. Here's why that's our best sales strategy.</li>
+          <li onclick="copyText(this)">The email I send every salon partner monthly (and why our reorder rate is 96%).</li>
+          <li onclick="copyText(this)">A salon owner told me something last week I can't stop thinking about.</li>
+        </ul>
+        <div class="pillar-count"><span class="pillar-count-label">Posts from this pillar:</span><span class="pillar-count-val" data-pillar-count="Building in Public">0</span></div>
+      </div>
+    </div>
+
+    <!-- Pillar 4 -->
+    <div class="pillar-card" id="pillar-4">
+      <div class="pillar-top" style="background:var(--blue)"></div>
+      <div class="pillar-body">
+        <div class="pillar-num">Pillar 4</div>
+        <div class="pillar-name">Salon Industry Intelligence</div>
+        <div class="pillar-audience">Salon owners, distributors, beauty industry professionals</div>
+        <div class="pillar-goal">Position as a peer and resource to salon owners, not a vendor. Build trust before any sales conversation.</div>
+        <ul class="pillar-ideas">
+          <li onclick="copyText(this)">After talking to 50+ salon owners, here's the one thing they all want from their product brands.</li>
+          <li onclick="copyText(this)">Scalp services are the fastest-growing revenue line in salons. Here's what the data shows.</li>
+          <li onclick="copyText(this)">3 questions every salon owner should ask before stocking a new professional line.</li>
+          <li onclick="copyText(this)">The shift from commission to suite rental is changing how professional brands sell. Here's how.</li>
+        </ul>
+        <div class="pillar-count"><span class="pillar-count-label">Posts from this pillar:</span><span class="pillar-count-val" data-pillar-count="Salon Intelligence">0</span></div>
+      </div>
+    </div>
+
+    <!-- Pillar 5 -->
+    <div class="pillar-card" id="pillar-5">
+      <div class="pillar-top" style="background:var(--green)"></div>
+      <div class="pillar-body">
+        <div class="pillar-num">Pillar 5</div>
+        <div class="pillar-name">Formulation Science</div>
+        <div class="pillar-audience">Salon professionals, ingredient-aware consumers, beauty industry</div>
+        <div class="pillar-goal">Science-backed positioning is the #1 differentiator for professional-channel brands. "Growing demand for verified claims" is a 2026 trend.</div>
+        <ul class="pillar-ideas">
+          <li onclick="copyText(this)">Why we use [ingredient] at [concentration], the formulation decision most brands skip.</li>
+          <li onclick="copyText(this)">'Clean' is not enough. Here's what salon professionals should actually be asking about ingredients.</li>
+          <li onclick="copyText(this)">The difference between a scalp product that works and one that just feels good. (It's not what you think.)</li>
+          <li onclick="copyText(this)">I spent 6 months on one formulation. Here's why that matters more than launching 10 SKUs.</li>
+        </ul>
+        <div class="pillar-count"><span class="pillar-count-label">Posts from this pillar:</span><span class="pillar-count-val" data-pillar-count="Formulation Science">0</span></div>
+      </div>
+    </div>
+
+    <!-- Pillar 6 -->
+    <div class="pillar-card" id="pillar-6">
+      <div class="pillar-top" style="background:var(--red)"></div>
+      <div class="pillar-body">
+        <div class="pillar-num">Pillar 6</div>
+        <div class="pillar-name">Indie Brand vs. Conglomerate</div>
+        <div class="pillar-audience">Investors, strategic partners, M&A watchers, salon owners</div>
+        <div class="pillar-goal">Signal to investors and strategic partners. Indie brands hold 20.4% share of influence (up from 19.1%). M&A firms monitor founder-led disruptors.</div>
+        <ul class="pillar-ideas">
+          <li onclick="copyText(this)">Why indie beauty brands win in the professional channel (and conglomerates can't replicate it).</li>
+          <li onclick="copyText(this)">A distributor asked me: 'Why should I stock you instead of Kerastase?' Here's what I said.</li>
+          <li onclick="copyText(this)">The structural advantage a 1-person brand has over a $1B beauty conglomerate.</li>
+          <li onclick="copyText(this)">Salon owners don't want another Redken rep. They want a founder who picks up the phone.</li>
+        </ul>
+        <div class="pillar-count"><span class="pillar-count-label">Posts from this pillar:</span><span class="pillar-count-val" data-pillar-count="Indie vs. Conglomerate">0</span></div>
+      </div>
+    </div>
+
+    <!-- Pillar 7 -->
+    <div class="pillar-card" id="pillar-7" style="grid-column:span 2">
+      <div class="pillar-top" style="background:var(--cyan)"></div>
+      <div class="pillar-body">
+        <div class="pillar-num">Pillar 7</div>
+        <div class="pillar-name">Metrics and Proof (Investor Signal Content)</div>
+        <div class="pillar-audience">Investors, potential partners, beauty industry analysts</div>
+        <div class="pillar-goal">Create ambient awareness of traction before any fundraising. Real metrics are rare on LinkedIn - a consistent trail of numbers creates the "I've been following your journey" effect.</div>
+        <ul class="pillar-ideas" style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px">
+          <li onclick="copyText(this)">50 salon partners. 96% reorder rate. 6 months. Here's what I've learned about product-market fit in B2B beauty.</li>
+          <li onclick="copyText(this)">Our CAC is $0. Here's how a salon-exclusive distribution model changes the unit economics.</li>
+          <li onclick="copyText(this)">The metric that matters more than revenue in professional beauty (and it's not what VCs usually ask about).</li>
+          <li onclick="copyText(this)">What 'product-market fit' actually looks like in salon-exclusive haircare, by the numbers.</li>
+        </ul>
+        <div class="pillar-count"><span class="pillar-count-label">Posts from this pillar:</span><span class="pillar-count-val" data-pillar-count="Metrics & Proof">0</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== POST DRAFTS ==================== -->
+<div class="section" id="tab-drafts">
+
+  <div class="sec-header"><div class="sec-title">Ready-to-Post Drafts</div><div style="font-size:12px;color:var(--text3)">Copy, customize with real details, and post. Mark as posted to track.</div></div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+    <!-- Draft 1 -->
+    <div class="draft-card" id="draft-1">
+      <div class="draft-header">
+        <div class="draft-title">The Contrarian Take</div>
+        <div class="draft-meta">
+          <span class="badge badge-amber">Bootstrapping</span>
+          <span class="badge badge-blue">Text</span>
+        </div>
+      </div>
+      <div class="draft-body">
+        <div class="draft-text">I chose B2B before DTC.
+
+Every advisor told me I was doing it backwards.
+"Build your Instagram first." "Run Meta ads." "Get influencers."
+
+Instead, I walked into salons with product samples.
+
+6 months later:
+- 50+ salon partners
+- 96% reorder rate
+- $125K revenue
+- $0 in ad spend
+
+The beauty industry has a playbook.
+Raise money. Spend on ads. Pray for LTV.
+
+We skipped all of that.
+
+Turns out, when a stylist recommends your product to 200 clients a month,
+you don't need an influencer.
+
+The unsexy path works.
+It's just slower to talk about on LinkedIn.
+
+What's one "backwards" decision that ended up being your best move?</div>
+      </div>
+      <div class="draft-footer">
+        <div class="draft-chars">~780 characters</div>
+        <div class="draft-actions">
+          <span class="posted-date" id="draft-1-posted" style="display:none"></span>
+          <button class="btn btn-ghost btn-sm" onclick="copyDraft(1)">Copy</button>
+          <button class="btn btn-green btn-sm" onclick="markDraftPosted(1)">Mark Posted</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Draft 2 -->
+    <div class="draft-card" id="draft-2">
+      <div class="draft-header">
+        <div class="draft-title">Scalp Health Carousel (8 slides)</div>
+        <div class="draft-meta">
+          <span class="badge badge-sand">Scalp Health</span>
+          <span class="badge badge-amber">Carousel</span>
+        </div>
+      </div>
+      <div class="draft-body">
+        <div class="draft-text">Slide 1 (Cover): "The Scalp Is the New Skin - What This Means for Salons in 2026"
+
+Slide 2: "24 million searches for 'scalp treatment' last month. The category is exploding."
+
+Slide 3: "But most salons still treat scalp health as an afterthought."
+
+Slide 4: "Here's what's changing: Hair is being repositioned as scalp care, not fiber care."
+
+Slide 5: "The 3 scalp services generating the most revenue for salons right now"
+
+Slide 6: "Why clients who get scalp services rebook more often"
+
+Slide 7: "How to introduce a scalp protocol without overhauling your menu"
+
+Slide 8: "Follow for more on the business of scalp health. Save this for your next team meeting."
+
+Caption: "Scalp care is being repositioned as its own category, separate from haircare. Here's what that shift means for salon revenue in 2026. (Carousel below - save for your next team meeting.)"</div>
+      </div>
+      <div class="draft-footer">
+        <div class="draft-chars">8 slides + caption</div>
+        <div class="draft-actions">
+          <span class="posted-date" id="draft-2-posted" style="display:none"></span>
+          <button class="btn btn-ghost btn-sm" onclick="copyDraft(2)">Copy</button>
+          <button class="btn btn-green btn-sm" onclick="markDraftPosted(2)">Mark Posted</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Draft 3 -->
+    <div class="draft-card" id="draft-3">
+      <div class="draft-header">
+        <div class="draft-title">Story + Lesson</div>
+        <div class="draft-meta">
+          <span class="badge badge-purple">Building in Public</span>
+          <span class="badge badge-blue">Text</span>
+        </div>
+      </div>
+      <div class="draft-body">
+        <div class="draft-text">A salon owner told me something last week I can't stop thinking about.
+
+She said: "I've had reps from 3 major brands visit me this year.
+None of them asked what my clients actually need."
+
+She was the 47th salon to stock our line.
+
+The conversation lasted 90 minutes.
+We talked about scalp concerns her clients bring up.
+We talked about her retail strategy.
+We talked about what products she's tired of pushing.
+
+I didn't pitch once.
+
+She ordered the full line at the end.
+
+The professional beauty industry treats salons like distribution points.
+They're not. They're partners.
+
+When you treat salon owners as experts in their own business,
+the product conversation takes care of itself.
+
+How do you approach partnerships differently than your industry's default?</div>
+      </div>
+      <div class="draft-footer">
+        <div class="draft-chars">~870 characters</div>
+        <div class="draft-actions">
+          <span class="posted-date" id="draft-3-posted" style="display:none"></span>
+          <button class="btn btn-ghost btn-sm" onclick="copyDraft(3)">Copy</button>
+          <button class="btn btn-green btn-sm" onclick="markDraftPosted(3)">Mark Posted</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Draft 4 -->
+    <div class="draft-card" id="draft-4">
+      <div class="draft-header">
+        <div class="draft-title">Data / Results Share</div>
+        <div class="draft-meta">
+          <span class="badge badge-cyan">Metrics & Proof</span>
+          <span class="badge badge-blue">Text + Image</span>
+        </div>
+      </div>
+      <div class="draft-body">
+        <div class="draft-text">6 months of building a salon-exclusive scalp care brand.
+
+Here are the real numbers:
+
+Revenue: $125K
+Salon partners: 50+
+B2B reorder rate: 96%
+Customer acquisition cost: $0
+Paid ad spend: $0
+Team size: 1
+
+The number that matters most isn't revenue.
+
+It's the 96% reorder rate.
+
+In professional beauty, reorders = product-market fit.
+A salon that reorders is a salon whose clients are asking for your product by name.
+
+We're not the fastest-growing beauty brand.
+We're building the one with the strongest foundation.
+
+What metric do you optimize for that most people overlook?</div>
+      </div>
+      <div class="draft-footer">
+        <div class="draft-chars">~620 characters</div>
+        <div class="draft-actions">
+          <span class="posted-date" id="draft-4-posted" style="display:none"></span>
+          <button class="btn btn-ghost btn-sm" onclick="copyDraft(4)">Copy</button>
+          <button class="btn btn-green btn-sm" onclick="markDraftPosted(4)">Mark Posted</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Draft 5 -->
+    <div class="draft-card" id="draft-5">
+      <div class="draft-header">
+        <div class="draft-title">Myth vs. Reality</div>
+        <div class="draft-meta">
+          <span class="badge badge-red" style="background:var(--red-bg);color:var(--red)">Indie vs. Conglomerate</span>
+          <span class="badge badge-blue">Text</span>
+        </div>
+      </div>
+      <div class="draft-body">
+        <div class="draft-text">Myth: You need a massive sales team to break into professional beauty.
+
+Reality: You need one founder who picks up the phone.
+
+The conglomerate playbook:
+- Hire territory reps
+- Set quotas
+- Run incentive programs
+- Hope salons reorder
+
+The indie brand playbook:
+- Call every salon partner monthly
+- Ask what's working and what's not
+- Ship reorders personally when needed
+- Build a relationship that doesn't depend on a rep
+
+We have 50+ salon partners and zero sales reps.
+
+The advantage isn't scale. It's proximity.
+
+When you're 1 phone call away from the person using your product,
+you learn things no market research can tell you.
+
+What's one thing a small team does better than a large one in your industry?</div>
+      </div>
+      <div class="draft-footer">
+        <div class="draft-chars">~700 characters</div>
+        <div class="draft-actions">
+          <span class="posted-date" id="draft-5-posted" style="display:none"></span>
+          <button class="btn btn-ghost btn-sm" onclick="copyDraft(5)">Copy</button>
+          <button class="btn btn-green btn-sm" onclick="markDraftPosted(5)">Mark Posted</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---- NEW DRAFTS: Real Work + AI System ---- -->
+
+    <div class="sec-header" style="grid-column:span 2;margin-top:12px;margin-bottom:-4px"><div class="sec-title" style="color:var(--sand)">From Real Work - AI System, Sales, Product</div></div>
+
+    <!-- Draft 6 -->
+    <div class="draft-card" id="draft-6">
+      <div class="draft-header">
+        <div class="draft-title">The AI Chief of Staff</div>
+        <div class="draft-meta">
+          <span class="badge badge-purple">Building in Public</span>
+          <span class="badge badge-blue">Text</span>
+        </div>
+      </div>
+      <div class="draft-body">
+        <div class="draft-text">Every morning, before I type a single word, my AI already knows:
+
+- What I worked on yesterday
+- Which distributor threads are overdue
+- What my weekly goals are and where I'm behind
+- What's on my calendar today
+
+I didn't build a chatbot. I built a Chief of Staff.
+
+It runs on Claude Code with a system I've designed over 175 sessions:
+- Session hooks that auto-load context on startup
+- YAML state files that persist across conversations
+- Slash commands for every business function
+- Memory that carries forward decisions, contacts, and lessons
+
+When I open a terminal, it greets me with a briefing.
+When I close it, it logs what happened and preps for next time.
+
+Most founders use AI to write emails.
+I use it to run the business.
+
+The difference isn't the AI. It's the system around it.
+
+What's one tool you've built a system around instead of just using casually?</div>
+      </div>
+      <div class="draft-footer">
+        <div class="draft-chars">~850 characters</div>
+        <div class="draft-actions">
+          <span class="posted-date" id="draft-6-posted" style="display:none"></span>
+          <button class="btn btn-ghost btn-sm" onclick="copyDraft(6)">Copy</button>
+          <button class="btn btn-green btn-sm" onclick="markDraftPosted(6)">Mark Posted</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Draft 7 -->
+    <div class="draft-card" id="draft-7">
+      <div class="draft-header">
+        <div class="draft-title">Meeting Prep That Would Take a Team</div>
+        <div class="draft-meta">
+          <span class="badge badge-red" style="background:var(--red-bg);color:var(--red)">Indie vs. Conglomerate</span>
+          <span class="badge badge-blue">Text</span>
+        </div>
+      </div>
+      <div class="draft-body">
+        <div class="draft-text">Tomorrow I'm meeting with a 110-year-old Canadian beauty distributor.
+
+My "research team" prepared:
+- Background on every attendee (career history, publications, business philosophy)
+- Competitive pricing matrix (per-ounce comparison vs. Nioxin, Zenagen, K18)
+- Canada regulatory checklist (Health Canada, bilingual labeling under Bill 96)
+- CUSMA tariff analysis (0% duty, current exchange rates)
+- 15 scripted objection responses based on likely pushback
+- A "reading the room" signal guide for the meeting
+
+My research team is one AI system I built on top of Claude Code.
+
+This distributor serves 10,000 salons. Their meeting prep is thorough.
+Mine needs to be thorough too.
+
+A funded startup would have a BD team for this.
+I have a terminal window and a well-designed workflow.
+
+The output is the same. The overhead is not.
+
+What's the most disproportionate output you've gotten from a lean setup?</div>
+      </div>
+      <div class="draft-footer">
+        <div class="draft-chars">~880 characters</div>
+        <div class="draft-actions">
+          <span class="posted-date" id="draft-7-posted" style="display:none"></span>
+          <button class="btn btn-ghost btn-sm" onclick="copyDraft(7)">Copy</button>
+          <button class="btn btn-green btn-sm" onclick="markDraftPosted(7)">Mark Posted</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Draft 8 -->
+    <div class="draft-card" id="draft-8">
+      <div class="draft-header">
+        <div class="draft-title">Solo Founder, Six Roles</div>
+        <div class="draft-meta">
+          <span class="badge badge-amber">Bootstrapping</span>
+          <span class="badge badge-cyan">Metrics & Proof</span>
+        </div>
+      </div>
+      <div class="draft-body">
+        <div class="draft-text">I mapped every role a funded beauty startup would hire:
+
+1. Business Development Rep - prospect research, outreach drafts
+2. Customer Success - retention monitoring, reorder tracking
+3. Research Analyst - market intel, competitor analysis
+4. Social Media Manager - content scheduling
+5. Content Creator - scripts, design, production
+6. Chief of Staff - daily briefings, task prioritization, meeting prep
+
+Then I built an AI agent for each one.
+
+Each has its own workflow, its own data sources, its own escalation rules.
+Level 1: auto-execute and log.
+Level 4: flag me for a decision.
+
+I'm not replacing a team. I'm designing the team I can't afford to hire yet.
+
+The 96% reorder rate didn't come from doing less.
+It came from doing more with radically less overhead.
+
+Revenue: $125K. Team size: 1. AI agents: 6.
+
+How do you think about the roles you need vs. the roles you can build systems for?</div>
+      </div>
+      <div class="draft-footer">
+        <div class="draft-chars">~750 characters</div>
+        <div class="draft-actions">
+          <span class="posted-date" id="draft-8-posted" style="display:none"></span>
+          <button class="btn btn-ghost btn-sm" onclick="copyDraft(8)">Copy</button>
+          <button class="btn btn-green btn-sm" onclick="markDraftPosted(8)">Mark Posted</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Draft 9 -->
+    <div class="draft-card" id="draft-9">
+      <div class="draft-header">
+        <div class="draft-title">Your ZIP Code Knows More About Your Hair</div>
+        <div class="draft-meta">
+          <span class="badge badge-sand">Scalp Health</span>
+          <span class="badge badge-green">Formulation</span>
+        </div>
+      </div>
+      <div class="draft-body">
+        <div class="draft-text">We built a tool that pulls real environmental data for your ZIP code:
+
+- UV index from weather stations
+- Air quality from EPA monitors
+- Water hardness in parts per million from EPA databases
+- Humidity, temperature, ozone levels
+
+Then it calculates a personalized scalp health risk score.
+
+Hard water above 180 PPM? Your scalp's moisture barrier is compromised.
+UV index above 7 with low humidity? Oxidative stress on the scalp.
+High ozone + high particulate matter? Inflammation trigger.
+
+This isn't a quiz. It's real government data applied to scalp science.
+
+Most beauty brands ask you 5 generic questions and recommend the same product.
+We look at what's actually hitting your scalp every day.
+
+The result: a personalized report that tells you something no product quiz can.
+
+The scalp care conversation is moving from "what's your hair type?" to "what's your environment?"
+
+What's one industry where personalization is still mostly fake?</div>
+      </div>
+      <div class="draft-footer">
+        <div class="draft-chars">~820 characters</div>
+        <div class="draft-actions">
+          <span class="posted-date" id="draft-9-posted" style="display:none"></span>
+          <button class="btn btn-ghost btn-sm" onclick="copyDraft(9)">Copy</button>
+          <button class="btn btn-green btn-sm" onclick="markDraftPosted(9)">Mark Posted</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Draft 10 -->
+    <div class="draft-card" id="draft-10">
+      <div class="draft-header">
+        <div class="draft-title">47 Distributors Researched in One Week</div>
+        <div class="draft-meta">
+          <span class="badge badge-amber">Bootstrapping</span>
+          <span class="badge badge-blue">Salon Intel</span>
+        </div>
+      </div>
+      <div class="draft-body">
+        <div class="draft-text">Last month I needed to build a distributor target list for 2026.
+
+I didn't hire a consultant. I built a research workflow.
+
+For each of the 47 distributors on the list, I now have:
+- Territory coverage (states, salon count)
+- Current brand portfolio with gap analysis
+- Key decision-maker names and backgrounds
+- Fit score (1-10) based on category alignment
+- Connection paths through shared events like Cosmoprof
+
+Our top target: a family-owned distributor in Anaheim covering 8 states.
+They carry Davines and Zenagen but have no dedicated scalp care line.
+That's the gap.
+
+The entire research process - from blank spreadsheet to 47 enriched profiles -
+took a fraction of what it would cost to outsource.
+
+In B2B beauty, distribution partnerships are the game.
+But most indie brands can't afford the research to play it strategically.
+
+AI doesn't replace the relationship. It replaces the research that gets you in the room.
+
+What's one part of your sales process that used to require a team but doesn't anymore?</div>
+      </div>
+      <div class="draft-footer">
+        <div class="draft-chars">~800 characters</div>
+        <div class="draft-actions">
+          <span class="posted-date" id="draft-10-posted" style="display:none"></span>
+          <button class="btn btn-ghost btn-sm" onclick="copyDraft(10)">Copy</button>
+          <button class="btn btn-green btn-sm" onclick="markDraftPosted(10)">Mark Posted</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Draft 11 -->
+    <div class="draft-card" id="draft-11">
+      <div class="draft-header">
+        <div class="draft-title">The Dashboard Is the Strategy</div>
+        <div class="draft-meta">
+          <span class="badge badge-purple">Building in Public</span>
+          <span class="badge badge-blue">Text</span>
+        </div>
+      </div>
+      <div class="draft-body">
+        <div class="draft-text">A confession: I've never opened Notion to check my distributor pipeline.
+
+I open an HTML file in my browser instead.
+
+Over the past year, I've had AI build single-file dashboards for:
+- Distributor pipeline tracking
+- Investor outreach
+- Email flow management
+- Social media content calendar
+- Salon research
+- SEO performance
+- Meeting prep
+
+No React. No backend. No deployment.
+Just one HTML file with inline CSS and JavaScript,
+stored in the same git repo as everything else.
+
+Each dashboard is a compressed version of a strategy doc.
+The strategy doc has the thinking. The dashboard has the action.
+
+I can open any dashboard, see the current state,
+and know exactly what to do next.
+
+The tool doesn't matter. The system of making strategy visible does.
+
+What's your preferred format for keeping strategy actionable and not just written?</div>
+      </div>
+      <div class="draft-footer">
+        <div class="draft-chars">~780 characters</div>
+        <div class="draft-actions">
+          <span class="posted-date" id="draft-11-posted" style="display:none"></span>
+          <button class="btn btn-ghost btn-sm" onclick="copyDraft(11)">Copy</button>
+          <button class="btn btn-green btn-sm" onclick="markDraftPosted(11)">Mark Posted</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Draft 12 -->
+    <div class="draft-card" id="draft-12">
+      <div class="draft-header">
+        <div class="draft-title">The Email Nobody Sees</div>
+        <div class="draft-meta">
+          <span class="badge badge-purple">Building in Public</span>
+          <span class="badge badge-green">Formulation</span>
+        </div>
+      </div>
+      <div class="draft-body">
+        <div class="draft-text">We have 7 automated email flows.
+
+The one I'm most proud of has 5 emails that nobody has received yet.
+
+It's triggered by a personalized scalp environment report.
+You enter your ZIP code. We pull real EPA and weather data.
+You get a risk score. Then the emails start.
+
+Email 1: Your personalized results with real data points.
+Email 2: What those environmental factors actually do to your scalp (the science).
+Email 3: What you can do about it (the protocol).
+Email 4: Why most products don't address environmental scalp stress.
+Email 5: An invitation to work with a salon partner near you.
+
+No discount codes. No "BUY NOW" urgency.
+Just: here's what's happening to your scalp, here's the science, here's help.
+
+We went through 5+ design iterations on email 2 alone.
+
+When your lead gen actually teaches people something,
+the sales conversation is already half done.
+
+What's the most valuable piece of content marketing you've received from a brand?</div>
+      </div>
+      <div class="draft-footer">
+        <div class="draft-chars">~820 characters</div>
+        <div class="draft-actions">
+          <span class="posted-date" id="draft-12-posted" style="display:none"></span>
+          <button class="btn btn-ghost btn-sm" onclick="copyDraft(12)">Copy</button>
+          <button class="btn btn-green btn-sm" onclick="markDraftPosted(12)">Mark Posted</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== EXECUTION LOG ==================== -->
+<div class="section" id="tab-execution">
+
+  <div class="sec-header">
+    <div class="sec-title">Post Execution Log</div>
+    <button class="btn btn-sand btn-sm" onclick="toggleAddForm()">+ Log Post</button>
+  </div>
+
+  <!-- Add post form -->
+  <div class="add-form" id="add-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input type="date" class="form-input" id="log-date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Post Title / Hook</label>
+        <input type="text" class="form-input" id="log-title" placeholder="First line or summary...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Pillar</label>
+        <select class="form-input" id="log-pillar">
+          <option value="Scalp Health">Scalp Health</option>
+          <option value="Bootstrapping">Bootstrapping</option>
+          <option value="Building in Public">Building in Public</option>
+          <option value="Salon Intelligence">Salon Intelligence</option>
+          <option value="Formulation Science">Formulation Science</option>
+          <option value="Indie vs. Conglomerate">Indie vs. Conglomerate</option>
+          <option value="Metrics & Proof">Metrics & Proof</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Format</label>
+        <select class="form-input" id="log-format">
+          <option value="Text">Text post</option>
+          <option value="Carousel">Carousel / PDF</option>
+          <option value="Video">Video</option>
+          <option value="Poll">Poll</option>
+          <option value="Document">Document</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Likes</label>
+        <input type="number" class="form-input" id="log-likes" placeholder="0" min="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Comments</label>
+        <input type="number" class="form-input" id="log-comments" placeholder="0" min="0">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Saves</label>
+        <input type="number" class="form-input" id="log-saves" placeholder="0" min="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Impressions</label>
+        <input type="number" class="form-input" id="log-impressions" placeholder="0" min="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">LinkedIn URL (optional)</label>
+        <input type="text" class="form-input" id="log-url" placeholder="https://linkedin.com/posts/...">
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" onclick="toggleAddForm()">Cancel</button>
+      <button class="btn btn-sand" onclick="addLogEntry()">Save Entry</button>
+    </div>
+  </div>
+
+  <!-- Post log table -->
+  <div class="card">
+    <table class="tbl" id="log-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Post</th>
+          <th>Pillar</th>
+          <th>Format</th>
+          <th style="text-align:right">Likes</th>
+          <th style="text-align:right">Comments</th>
+          <th style="text-align:right">Saves</th>
+          <th style="text-align:right">Impressions</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="log-body">
+      </tbody>
+    </table>
+    <div class="log-empty" id="log-empty">
+      <div class="log-empty-icon">&#9998;</div>
+      No posts logged yet. Click "+ Log Post" to track your first LinkedIn post.
+    </div>
+  </div>
+
+  <!-- Engagement summary -->
+  <div class="grid-2" style="margin-top:8px">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Pillar Distribution</div>
+        <div class="card-sub">Posts by content pillar</div>
+      </div>
+      <div class="ring-container">
+        <div class="ring-wrap">
+          <svg width="160" height="160" viewBox="0 0 160 160" id="pillar-ring">
+            <circle cx="80" cy="80" r="65" fill="none" stroke="var(--bg4)" stroke-width="14"/>
+          </svg>
+          <div class="ring-center">
+            <div class="ring-center-val" id="ring-total">0</div>
+            <div class="ring-center-label">Posts</div>
+          </div>
+        </div>
+        <div class="ring-legend" id="ring-legend">
+          <div class="ring-legend-item"><div class="ring-legend-dot" style="background:var(--sand)"></div>Scalp Health: <strong>0</strong></div>
+          <div class="ring-legend-item"><div class="ring-legend-dot" style="background:var(--amber)"></div>Bootstrapping: <strong>0</strong></div>
+          <div class="ring-legend-item"><div class="ring-legend-dot" style="background:var(--purple)"></div>Building in Public: <strong>0</strong></div>
+          <div class="ring-legend-item"><div class="ring-legend-dot" style="background:var(--blue)"></div>Salon Intelligence: <strong>0</strong></div>
+          <div class="ring-legend-item"><div class="ring-legend-dot" style="background:var(--green)"></div>Formulation Science: <strong>0</strong></div>
+          <div class="ring-legend-item"><div class="ring-legend-dot" style="background:var(--red)"></div>Indie vs. Conglomerate: <strong>0</strong></div>
+          <div class="ring-legend-item"><div class="ring-legend-dot" style="background:var(--cyan)"></div>Metrics & Proof: <strong>0</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Engagement Summary</div>
+        <div class="card-sub">Aggregated from post log</div>
+      </div>
+      <div class="grid-2" style="margin-top:8px">
+        <div class="metric">
+          <div class="metric-label">Total Impressions</div>
+          <div class="metric-value" id="sum-impressions">0</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Total Engagement</div>
+          <div class="metric-value sand" id="sum-engagement">0</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Avg Engagement Rate</div>
+          <div class="metric-value green" id="sum-rate">-</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Best Format</div>
+          <div class="metric-value" id="sum-best-format" style="font-size:18px">-</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== RESEARCH ==================== -->
+<div class="section" id="tab-research">
+
+  <div class="sec-header"><div class="sec-title">Platform Research</div><div style="font-size:12px;color:var(--text3)">Algorithm studies and benchmark data informing this strategy</div></div>
+
+  <div class="grid-2">
+    <div class="research-card">
+      <div class="research-card-title">Algorithm Insights Report 2025</div>
+      <div class="research-card-source">Richard van der Blom - 1.8M posts analyzed</div>
+      <div class="research-card-detail">
+        The most comprehensive LinkedIn algorithm study available. Key findings: personal profiles get ~65% feed allocation, "Depth Score" prioritizes dwell time and saves, specifics get 3-4x reach.
+        <br><br><a href="https://www.linkedin.com/posts/richardvanderblom_chapter-1-algorithm-insights-report-2025-activity-7322514599126130688-Q895" target="_blank">View on LinkedIn &rarr;</a>
+      </div>
+    </div>
+
+    <div class="research-card">
+      <div class="research-card-title">LinkedIn Benchmarks 2025</div>
+      <div class="research-card-source">Socialinsider - 1M posts, 9K pages</div>
+      <div class="research-card-detail">
+        Format engagement rates: Carousels 6.6%, Documents 6.1%, Video 5.6%. Text-only posts declining (27% to 16% share). Polls get 1.64x reach multiplier but only 1.4% of content uses them.
+        <br><br><a href="https://www.socialinsider.io/social-media-benchmarks/linkedin" target="_blank">View report &rarr;</a>
+      </div>
+    </div>
+
+    <div class="research-card">
+      <div class="research-card-title">Post Frequency Analysis</div>
+      <div class="research-card-source">Buffer - 2M+ posts, 94K accounts</div>
+      <div class="research-card-detail">
+        3-4 posts/week captures meaningful algorithmic lift. LinkedIn only promotes one post per account per 24-hour window. Best days: Tu/We/Th. Best times: 9-11 AM, 12-2 PM.
+        <br><br><a href="https://buffer.com/resources/how-often-to-post-on-linkedin/" target="_blank">View analysis &rarr;</a>
+      </div>
+    </div>
+
+    <div class="research-card">
+      <div class="research-card-title">Best Performing Content 2025</div>
+      <div class="research-card-source">AuthoredUp - 621K+ posts analyzed</div>
+      <div class="research-card-detail">
+        AI-generated content patterns get ~47% less reach [UNVERIFIED]. Posts can resurface 2-3 weeks later if still generating engagement. First 30 minutes are critical for distribution.
+        <br><br><a href="https://authoredup.com/blog/best-performing-content-on-linkedin" target="_blank">View data &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-header" style="margin-top:28px"><div class="sec-title">Beauty Industry Research</div><div style="font-size:12px;color:var(--text3)">Market trends and competitive intelligence</div></div>
+
+  <div class="grid-2">
+    <div class="research-card">
+      <div class="research-card-title">Vegamour LinkedIn Strategy</div>
+      <div class="research-card-source">The Drum - September 2025</div>
+      <div class="research-card-detail">
+        Case study on beauty brands using LinkedIn as a social channel. Demonstrates that LinkedIn is an underutilized platform for beauty industry positioning, particularly for professional and B2B-focused brands.
+        <br><br><a href="https://www.thedrum.com/news/2025/09/11/can-linkedin-be-turned-social-channel-beauty-brands-vegamour-thinks-so" target="_blank">Read article &rarr;</a>
+      </div>
+    </div>
+
+    <div class="research-card">
+      <div class="research-card-title">Haircare Trends 2026</div>
+      <div class="research-card-source">BeautyMatter</div>
+      <div class="research-card-detail">
+        Scalp care repositioned from haircare sub-category to standalone wellness industry. Growing demand for verified and validated claims. Hair = scalp care, not fiber care.
+        <br><br><a href="https://beautymatter.com/articles/the-haircare-trends-set-to-define-2026" target="_blank">Read article &rarr;</a>
+      </div>
+    </div>
+
+    <div class="research-card">
+      <div class="research-card-title">Bootstrapping Beauty - NEXT50</div>
+      <div class="research-card-source">BeautyMatter - Building & Scaling On Your Own Terms</div>
+      <div class="research-card-detail">
+        Bootstrapping arcs are the most shared beauty founder stories. Confirms the contrarian positioning of "Anti-VC Founder" content pillar as differentiated on LinkedIn.
+        <br><br><a href="https://beautymatter.com/articles/next50-2025-building-and-scaling-on-your-own-terms" target="_blank">Read article &rarr;</a>
+      </div>
+    </div>
+
+    <div class="research-card">
+      <div class="research-card-title">Early-Stage Beauty Investors</div>
+      <div class="research-card-source">Beauty Independent</div>
+      <div class="research-card-detail">
+        How early-stage investors pick winning brands. Relevant for Pillar 7 (Metrics & Proof) content - what numbers and signals investors actually look for in early-stage beauty brands.
+        <br><br><a href="https://www.beautyindependent.com/early-stage-beauty-investors-on-how-they-pick-winning-brands/" target="_blank">Read article &rarr;</a>
+      </div>
+    </div>
+
+    <div class="research-card">
+      <div class="research-card-title">Indie Beauty Brand Insights</div>
+      <div class="research-card-source">Traackr - 2025 Report</div>
+      <div class="research-card-detail">
+        Indie brands hold 20.4% share of influence (up from 19.1%). Supports the "David vs. Goliath" content pillar narrative. Independent brands gaining ground in professional channels.
+        <br><br><a href="https://www.traackr.com/influencer-marketing-reports/2025-indie-beauty-brand-insights-report" target="_blank">View report &rarr;</a>
+      </div>
+    </div>
+
+    <div class="research-card">
+      <div class="research-card-title">Beauty M&A Trends 2025-2026</div>
+      <div class="research-card-source">Kline Group</div>
+      <div class="research-card-detail">
+        M&A firms actively monitoring founder-led disruptors. Context for why consistent metrics sharing on LinkedIn (Pillar 7) creates ambient awareness with potential strategic acquirers.
+        <br><br><a href="https://klinegroup.com/beauty-and-wellbeing/beauty-industry-ma-trends-2025-2026/" target="_blank">View trends &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hashtag reference -->
+  <div class="sec-header" style="margin-top:28px"><div class="sec-title">Hashtag Reference</div></div>
+  <div class="card">
+    <div class="grid-3">
+      <div>
+        <div style="font-size:12px;color:var(--sand);font-weight:600;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Primary (use 1 per post)</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <span class="badge badge-sand">#scalpcare</span>
+          <span class="badge badge-sand">#salonbusiness</span>
+          <span class="badge badge-sand">#indiebeauty</span>
+          <span class="badge badge-sand">#professionalbeauty</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--text2);font-weight:600;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Secondary (use 0-1 per post)</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <span class="badge" style="background:var(--bg4);color:var(--text2)">#beautyindustry</span>
+          <span class="badge" style="background:var(--bg4);color:var(--text2)">#founderlife</span>
+          <span class="badge" style="background:var(--bg4);color:var(--text2)">#bootstrapped</span>
+          <span class="badge" style="background:var(--bg4);color:var(--text2)">#haircare</span>
+          <span class="badge" style="background:var(--bg4);color:var(--text2)">#b2bsales</span>
+          <span class="badge" style="background:var(--bg4);color:var(--text2)">#scalp</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--red);font-weight:600;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Avoid</div>
+        <div style="font-size:12px;color:var(--text3);line-height:1.6">
+          #blessed, #hustle, #grind, or any generic motivation hashtags. Never more than 3 per post. Put hashtags at end or in first comment.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- Copy toast -->
+<div class="copy-toast" id="copy-toast">Copied to clipboard</div>
+
+<script>
+// ---- State Management ----
+const STORAGE_KEY = 'aware-linkedin-dashboard';
+
+function loadState() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultState();
+  } catch { return defaultState(); }
+}
+
+function defaultState() {
+  return {
+    metrics: { posts_this_week: 0, total_posts: 0, avg_engagement: '-', total_saves: 0, commenting_streak: 0 },
+    checklist: { week1: [false,false,false,false,false], week2: [false,false,false,false,false] },
+    draftsPosted: {},
+    postLog: []
+  };
+}
+
+function saveState(state) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+let state = loadState();
+
+// ---- Tab Navigation ----
+function showTab(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  const btns = document.querySelectorAll('.nav button');
+  const tabMap = ['overview','pillars','drafts','execution','research'];
+  const idx = tabMap.indexOf(name);
+  if (idx >= 0) btns[idx].classList.add('active');
+}
+
+// ---- Metrics ----
+function renderMetrics() {
+  const m = state.metrics;
+  document.getElementById('m-posts').textContent = m.posts_this_week;
+  document.getElementById('m-total').textContent = m.total_posts;
+  document.getElementById('m-engagement').textContent = m.avg_engagement;
+  document.getElementById('m-saves').textContent = m.total_saves;
+  document.getElementById('m-streak').textContent = m.commenting_streak;
+}
+
+function editMetric(btn) {
+  const metric = btn.closest('.metric');
+  const key = metric.dataset.key;
+  const valEl = metric.querySelector('.metric-value');
+  const current = state.metrics[key];
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'metric-input';
+  input.value = current === '-' ? '' : current;
+  valEl.textContent = '';
+  valEl.appendChild(input);
+  input.focus();
+  input.select();
+
+  function save() {
+    const val = input.value.trim();
+    state.metrics[key] = isNaN(val) || val === '' ? (val || '-') : Number(val);
+    saveState(state);
+    renderMetrics();
+  }
+  input.addEventListener('blur', save);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); save(); } if (e.key === 'Escape') { renderMetrics(); } });
+}
+
+function resetMetrics() {
+  if (!confirm('Reset all overview metrics to zero?')) return;
+  state.metrics = defaultState().metrics;
+  saveState(state);
+  renderMetrics();
+}
+
+// ---- Checklist ----
+function renderChecklist() {
+  ['week1','week2'].forEach(week => {
+    const el = document.getElementById(week + '-checklist');
+    const items = el.querySelectorAll('li');
+    items.forEach((li, i) => {
+      const cb = li.querySelector('input[type="checkbox"]');
+      cb.checked = state.checklist[week][i] || false;
+      li.classList.toggle('done', cb.checked);
+    });
+  });
+}
+
+function saveChecklist() {
+  ['week1','week2'].forEach(week => {
+    const el = document.getElementById(week + '-checklist');
+    const items = el.querySelectorAll('li');
+    state.checklist[week] = Array.from(items).map(li => {
+      const checked = li.querySelector('input[type="checkbox"]').checked;
+      li.classList.toggle('done', checked);
+      return checked;
+    });
+  });
+  saveState(state);
+}
+
+// ---- Drafts ----
+function renderDrafts() {
+  for (let i = 1; i <= 12; i++) {
+    const posted = state.draftsPosted[i];
+    const el = document.getElementById('draft-' + i + '-posted');
+    if (posted) {
+      el.style.display = 'inline';
+      el.textContent = 'Posted ' + posted;
+    } else {
+      el.style.display = 'none';
+    }
+  }
+}
+
+function copyDraft(num) {
+  const card = document.getElementById('draft-' + num);
+  const text = card.querySelector('.draft-text').textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('Draft copied to clipboard'));
+}
+
+function markDraftPosted(num) {
+  const today = new Date().toISOString().slice(0,10);
+  if (state.draftsPosted[num]) {
+    if (!confirm('Already marked as posted on ' + state.draftsPosted[num] + '. Remove posted mark?')) return;
+    delete state.draftsPosted[num];
+  } else {
+    state.draftsPosted[num] = today;
+  }
+  saveState(state);
+  renderDrafts();
+}
+
+// ---- Copy text from pillar ideas ----
+function copyText(el) {
+  const text = el.textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('Hook copied to clipboard'));
+}
+
+// ---- Post Log ----
+function toggleAddForm() {
+  const form = document.getElementById('add-form');
+  form.classList.toggle('open');
+  if (form.classList.contains('open')) {
+    document.getElementById('log-date').value = new Date().toISOString().slice(0,10);
+    document.getElementById('log-title').value = '';
+    document.getElementById('log-likes').value = '';
+    document.getElementById('log-comments').value = '';
+    document.getElementById('log-saves').value = '';
+    document.getElementById('log-impressions').value = '';
+    document.getElementById('log-url').value = '';
+  }
+}
+
+function addLogEntry() {
+  const entry = {
+    date: document.getElementById('log-date').value,
+    title: document.getElementById('log-title').value,
+    pillar: document.getElementById('log-pillar').value,
+    format: document.getElementById('log-format').value,
+    likes: Number(document.getElementById('log-likes').value) || 0,
+    comments: Number(document.getElementById('log-comments').value) || 0,
+    saves: Number(document.getElementById('log-saves').value) || 0,
+    impressions: Number(document.getElementById('log-impressions').value) || 0,
+    url: document.getElementById('log-url').value,
+    id: Date.now()
+  };
+  if (!entry.title) { alert('Please enter a post title.'); return; }
+  state.postLog.push(entry);
+  state.postLog.sort((a,b) => b.date.localeCompare(a.date));
+  saveState(state);
+  toggleAddForm();
+  renderLog();
+  renderRing();
+  renderSummary();
+  updatePillarCounts();
+}
+
+function deleteLogEntry(id) {
+  if (!confirm('Delete this log entry?')) return;
+  state.postLog = state.postLog.filter(e => e.id !== id);
+  saveState(state);
+  renderLog();
+  renderRing();
+  renderSummary();
+  updatePillarCounts();
+}
+
+function updateLogMetric(id, field, value) {
+  const entry = state.postLog.find(e => e.id === id);
+  if (entry) {
+    entry[field] = Number(value) || 0;
+    saveState(state);
+    renderSummary();
+  }
+}
+
+function renderLog() {
+  const body = document.getElementById('log-body');
+  const empty = document.getElementById('log-empty');
+
+  if (state.postLog.length === 0) {
+    body.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  const pillarBadge = {
+    'Scalp Health': 'badge-sand',
+    'Bootstrapping': 'badge-amber',
+    'Building in Public': 'badge-purple',
+    'Salon Intelligence': 'badge-blue',
+    'Formulation Science': 'badge-green',
+    'Indie vs. Conglomerate': 'badge-red',
+    'Metrics & Proof': 'badge-cyan'
+  };
+
+  body.innerHTML = state.postLog.map(e => `
+    <tr>
+      <td style="white-space:nowrap;color:var(--text3)">${e.date}</td>
+      <td style="color:var(--cream);font-weight:500">${e.url ? '<a href="'+e.url+'" target="_blank">'+esc(e.title)+'</a>' : esc(e.title)}</td>
+      <td><span class="badge ${pillarBadge[e.pillar] || 'badge-sand'}" style="font-size:10px">${e.pillar}</span></td>
+      <td style="color:var(--text3)">${e.format}</td>
+      <td style="text-align:right"><input type="number" value="${e.likes}" min="0" onchange="updateLogMetric(${e.id},'likes',this.value)"></td>
+      <td style="text-align:right"><input type="number" value="${e.comments}" min="0" onchange="updateLogMetric(${e.id},'comments',this.value)"></td>
+      <td style="text-align:right"><input type="number" value="${e.saves}" min="0" onchange="updateLogMetric(${e.id},'saves',this.value)"></td>
+      <td style="text-align:right"><input type="number" value="${e.impressions}" min="0" onchange="updateLogMetric(${e.id},'impressions',this.value)"></td>
+      <td><button class="btn btn-ghost btn-sm" style="color:var(--red);border-color:transparent;padding:2px 6px" onclick="deleteLogEntry(${e.id})">&times;</button></td>
+    </tr>
+  `).join('');
+}
+
+function esc(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+// ---- Pillar ring chart ----
+function renderRing() {
+  const counts = {};
+  const pillars = ['Scalp Health','Bootstrapping','Building in Public','Salon Intelligence','Formulation Science','Indie vs. Conglomerate','Metrics & Proof'];
+  const colors = ['var(--sand)','var(--amber)','var(--purple)','var(--blue)','var(--green)','var(--red)','var(--cyan)'];
+
+  pillars.forEach(p => counts[p] = 0);
+  state.postLog.forEach(e => { if (counts[e.pillar] !== undefined) counts[e.pillar]++; });
+
+  const total = state.postLog.length;
+  document.getElementById('ring-total').textContent = total;
+
+  const svg = document.getElementById('pillar-ring');
+  // Remove old arcs
+  svg.querySelectorAll('.arc').forEach(a => a.remove());
+
+  if (total > 0) {
+    const r = 65;
+    const circ = 2 * Math.PI * r;
+    let offset = 0;
+
+    pillars.forEach((p, i) => {
+      if (counts[p] > 0) {
+        const pct = counts[p] / total;
+        const dash = circ * pct;
+        const gap = circ - dash;
+        const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        circle.setAttribute('cx','80');
+        circle.setAttribute('cy','80');
+        circle.setAttribute('r', r);
+        circle.setAttribute('fill','none');
+        circle.setAttribute('stroke', colors[i]);
+        circle.setAttribute('stroke-width','14');
+        circle.setAttribute('stroke-dasharray', dash + ' ' + gap);
+        circle.setAttribute('stroke-dashoffset', -offset);
+        circle.setAttribute('class','arc');
+        svg.appendChild(circle);
+        offset += dash;
+      }
+    });
+  }
+
+  // Update legend
+  const legend = document.getElementById('ring-legend');
+  legend.innerHTML = pillars.map((p, i) =>
+    `<div class="ring-legend-item"><div class="ring-legend-dot" style="background:${colors[i]}"></div>${p}: <strong>${counts[p]}</strong></div>`
+  ).join('');
+}
+
+// ---- Summary stats ----
+function renderSummary() {
+  const log = state.postLog;
+  if (log.length === 0) {
+    document.getElementById('sum-impressions').textContent = '0';
+    document.getElementById('sum-engagement').textContent = '0';
+    document.getElementById('sum-rate').textContent = '-';
+    document.getElementById('sum-best-format').textContent = '-';
+    return;
+  }
+
+  const totalImpressions = log.reduce((s,e) => s + e.impressions, 0);
+  const totalEngagement = log.reduce((s,e) => s + e.likes + e.comments + e.saves, 0);
+  const avgRate = totalImpressions > 0 ? ((totalEngagement / totalImpressions) * 100).toFixed(1) + '%' : '-';
+
+  document.getElementById('sum-impressions').textContent = totalImpressions.toLocaleString();
+  document.getElementById('sum-engagement').textContent = totalEngagement.toLocaleString();
+  document.getElementById('sum-rate').textContent = avgRate;
+
+  // Best format by avg engagement
+  const formatStats = {};
+  log.forEach(e => {
+    if (!formatStats[e.format]) formatStats[e.format] = { total: 0, count: 0 };
+    formatStats[e.format].total += e.likes + e.comments + e.saves;
+    formatStats[e.format].count++;
+  });
+  let bestFormat = '-';
+  let bestAvg = 0;
+  Object.entries(formatStats).forEach(([fmt, data]) => {
+    const avg = data.total / data.count;
+    if (avg > bestAvg) { bestAvg = avg; bestFormat = fmt; }
+  });
+  document.getElementById('sum-best-format').textContent = bestFormat;
+}
+
+// ---- Pillar counts on pillar tab ----
+function updatePillarCounts() {
+  const counts = {};
+  state.postLog.forEach(e => {
+    counts[e.pillar] = (counts[e.pillar] || 0) + 1;
+  });
+  document.querySelectorAll('[data-pillar-count]').forEach(el => {
+    const p = el.dataset.pillarCount;
+    el.textContent = counts[p] || 0;
+  });
+}
+
+// ---- Toast ----
+function showToast(msg) {
+  const toast = document.getElementById('copy-toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+// ---- Init ----
+function init() {
+  renderMetrics();
+  renderChecklist();
+  renderDrafts();
+  renderLog();
+  renderRing();
+  renderSummary();
+  updatePillarCounts();
+}
+
+init();
+</script>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

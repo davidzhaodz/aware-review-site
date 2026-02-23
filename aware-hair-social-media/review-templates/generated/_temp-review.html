@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #F5F1EC;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+    padding: 60px 40px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+
+  /* ── FEED POST: 1080 x 1440 (3:4) ── */
+  .feed-post {
+    width: 1080px;
+    height: 1440px;
+    background: #F5F1EC;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+  }
+
+  .feed-post .outer-frame {
+    border: 1.5px solid #C4B5A4;
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    position: relative;
+    background: radial-gradient(circle, #B5A590 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: 10px 10px;
+  }
+
+  .feed-post .inner-frame {
+    border: 1.5px solid #C4B5A4;
+    background: #F3EDE5;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 45px 75px 70px;
+  }
+
+  .feed-post .corner {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    border-color: #7A6345;
+    border-style: solid;
+    z-index: 3;
+  }
+  .feed-post .corner.tl { top: -1px; left: -1px; border-width: 3px 0 0 3px; }
+  .feed-post .corner.tr { top: -1px; right: -1px; border-width: 3px 3px 0 0; }
+  .feed-post .corner.bl { bottom: -1px; left: -1px; border-width: 0 0 3px 3px; }
+  .feed-post .corner.br { bottom: -1px; right: -1px; border-width: 0 3px 3px 0; }
+
+  .feed-post .deco-quote {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 220px;
+    color: #C4B5A4;
+    line-height: 0.5;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+    user-select: none;
+  }
+
+  .feed-post .headline {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 52px;
+    font-weight: 400;
+    color: #1C2420;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    line-height: 1.35;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .feed-post .stars {
+    font-size: 40px;
+    letter-spacing: 14px;
+    color: #8B7355;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .feed-post .product-name {
+    font-size: 26px;
+    font-weight: 600;
+    color: #8B7355;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 22px 0;
+    margin-bottom: 28px;
+    border-top: 1px solid #C4B5A4;
+    border-bottom: 1px solid #C4B5A4;
+    width: 100%;
+    max-width: 700px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .feed-post .product-name::before,
+  .feed-post .product-name::after {
+    content: '\25C6';
+    font-size: 8px;
+    vertical-align: middle;
+    margin: 0 20px;
+    color: #C4B5A4;
+  }
+
+  .feed-post .quote {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 44px;
+    font-weight: 400;
+    font-style: italic;
+    color: #3D3D3D;
+    line-height: 1.55;
+    text-align: center;
+    max-width: 720px;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .feed-post .divider {
+    width: 50px;
+    height: 1px;
+    background: #C4B5A4;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .feed-post .reviewer-name {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 34px;
+    font-style: italic;
+    color: #1C2420;
+    font-weight: 400;
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .feed-post .logo-bottom {
+    position: absolute;
+    bottom: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  .feed-post .logo-bottom img {
+    height: 48px;
+    opacity: 0.8;
+  }
+
+
+  /* ── STORY/REEL: 1080 x 1920 (9:16) ── */
+  .story-post {
+    width: 1080px;
+    height: 1920px;
+    background: #F5F1EC;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 55px;
+  }
+
+  .story-post .outer-frame {
+    border: 1.5px solid #C4B5A4;
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    position: relative;
+    background: radial-gradient(circle, #B5A590 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: 10px 10px;
+  }
+
+  .story-post .inner-frame {
+    border: 1.5px solid #C4B5A4;
+    background: #F3EDE5;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 75px 85px;
+  }
+
+  .story-post .corner {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    border-color: #7A6345;
+    border-style: solid;
+    z-index: 3;
+  }
+  .story-post .corner.tl { top: -1px; left: -1px; border-width: 3px 0 0 3px; }
+  .story-post .corner.tr { top: -1px; right: -1px; border-width: 3px 3px 0 0; }
+  .story-post .corner.bl { bottom: -1px; left: -1px; border-width: 0 0 3px 3px; }
+  .story-post .corner.br { bottom: -1px; right: -1px; border-width: 0 3px 3px 0; }
+
+  .story-post .deco-quote {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 240px;
+    color: #C4B5A4;
+    line-height: 0.5;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+    user-select: none;
+  }
+
+  .story-post .headline {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 56px;
+    font-weight: 400;
+    color: #1C2420;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    line-height: 1.35;
+    margin-bottom: 34px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .story-post .stars {
+    font-size: 44px;
+    letter-spacing: 16px;
+    color: #8B7355;
+    margin-bottom: 34px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .story-post .product-name {
+    font-size: 28px;
+    font-weight: 600;
+    color: #8B7355;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 24px 0;
+    margin-bottom: 34px;
+    border-top: 1px solid #C4B5A4;
+    border-bottom: 1px solid #C4B5A4;
+    width: 100%;
+    max-width: 720px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .story-post .product-name::before,
+  .story-post .product-name::after {
+    content: '\25C6';
+    font-size: 9px;
+    vertical-align: middle;
+    margin: 0 22px;
+    color: #C4B5A4;
+  }
+
+  .story-post .quote {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 48px;
+    font-weight: 400;
+    font-style: italic;
+    color: #3D3D3D;
+    line-height: 1.55;
+    text-align: center;
+    max-width: 740px;
+    margin-bottom: 38px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .story-post .divider {
+    width: 50px;
+    height: 1px;
+    background: #C4B5A4;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .story-post .reviewer-name {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 36px;
+    font-style: italic;
+    color: #1C2420;
+    font-weight: 400;
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .story-post .logo-bottom {
+    position: absolute;
+    bottom: 55px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  .story-post .logo-bottom img {
+    height: 50px;
+    opacity: 0.8;
+  }
+</style>
+</head>
+<body>
+
+<div class="feed-post" id="feed">
+  <div class="outer-frame">
+    <div class="inner-frame">
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
+      <div class="deco-quote">&#x201C;</div>
+      <div class="headline">Great Product</div>
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="product-name">9.1 Discovery Kit</div>
+      <div class="quote">I've been very happy with the product.  My hair feels healthier and easier to manage than before.</div>
+      <div class="divider"></div>
+      <div class="reviewer-name">Rena</div>
+      <div class="logo-bottom">
+        <img src="https://d3k81ch9hvuctc.cloudfront.net/company/UmRhdX/images/83b4c942-f697-41fe-b12e-b187691a4f91.png" alt="AWARE" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="story-post" id="story">
+  <div class="outer-frame">
+    <div class="inner-frame">
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
+      <div class="deco-quote">&#x201C;</div>
+      <div class="headline">Great Product</div>
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="product-name">9.1 Discovery Kit</div>
+      <div class="quote">I've been very happy with the product.  My hair feels healthier and easier to manage than before.</div>
+      <div class="divider"></div>
+      <div class="reviewer-name">Rena</div>
+      <div class="logo-bottom">
+        <img src="https://d3k81ch9hvuctc.cloudfront.net/company/UmRhdX/images/83b4c942-f697-41fe-b12e-b187691a4f91.png" alt="AWARE" />
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>
