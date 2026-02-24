@@ -205,6 +205,33 @@
             color: var(--text-primary);
         }
 
+        /* ── Mode Indicator ──────────────────────── */
+        .mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 20px;
+            padding-left: 20px;
+            border-left: 1px solid var(--border);
+        }
+        .mode-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 10px;
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+        }
+        .mode-badge.local {
+            background: var(--bg-tertiary);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+        .mode-badge.review {
+            background: var(--purple-dim);
+            color: var(--purple);
+        }
+
         /* ── Preview Frame ───────────────────── */
         .preview-frame {
             flex: 1;
@@ -513,6 +540,9 @@
             <div class="topbar-stat"><strong>6</strong> flows</div>
             <div class="topbar-stat"><strong>16</strong> emails</div>
             <div class="topbar-stat"><strong>0</strong> variants</div>
+            <div class="mode-toggle" id="modeIndicator">
+                <span class="mode-badge" id="modeBadge"></span>
+            </div>
         </div>
     </div>
 
@@ -538,6 +568,11 @@
     </div>
 
 <script>
+// ── Review Site Config ──────────────────────────
+const isOnReviewSite = window.location.hostname.includes('vercel.app')
+    || window.location.hostname.includes('aware-review');
+let previewMode = isOnReviewSite ? 'review' : 'local';
+
 // ── Flow Data ───────────────────────────────────
 const FLOW_BASE = '../../emails/flows/';
 const CAMPAIGN_BASE = '../../emails/campaigns/';
@@ -897,7 +932,7 @@ function selectEmail(flowId, emailId, file, subject, label, pos, total, flowName
             <div class="preview-path">${file.replace(/^\//, '')}</div>
         </div>
         <span class="preview-pos">Email ${pos} of ${total}</span>
-        <a class="preview-open" href="${file}" target="_blank" rel="noopener" title="Open in new tab to annotate">Open &#x2197;</a>
+        <a class="preview-open" href="${previewMode === 'review' ? '/' + file.replace(/^(\.\.\/)+/, '') : file}" target="_blank" rel="noopener" title="${previewMode === 'review' ? 'Open with annotations' : 'Open in new tab'}">Open &#x2197;</a>
     `;
 
     // Load in iframe
@@ -916,19 +951,29 @@ function selectEmail(flowId, emailId, file, subject, label, pos, total, flowName
     }
     loader.style.display = 'flex';
 
-    // Fetch HTML, replace Klaviyo variables with sample values, render via srcdoc
-    fetch(file)
-        .then(r => r.text())
-        .then(html => {
-            html = replaceKlaviyoVars(html);
-            iframe.srcdoc = html;
-            iframe.onload = () => { loader.style.display = 'none'; };
-        })
-        .catch(() => {
-            // Fallback to direct src if fetch fails
-            iframe.onload = () => { loader.style.display = 'none'; };
-            iframe.src = file;
-        });
+    if (previewMode === 'review') {
+        // Review site mode: already on Vercel, use root-relative paths
+        // Convert '../../emails/flows/X' to '/emails/flows/X'
+        const reviewPath = '/' + file.replace(/^(\.\.\/)+/, '');
+        iframe.removeAttribute('sandbox');
+        iframe.removeAttribute('srcdoc');
+        iframe.onload = () => { loader.style.display = 'none'; };
+        iframe.src = reviewPath;
+    } else {
+        // Local mode: fetch HTML, replace Klaviyo variables, render via srcdoc
+        iframe.setAttribute('sandbox', 'allow-same-origin');
+        fetch(file)
+            .then(r => r.text())
+            .then(html => {
+                html = replaceKlaviyoVars(html);
+                iframe.srcdoc = html;
+                iframe.onload = () => { loader.style.display = 'none'; };
+            })
+            .catch(() => {
+                iframe.onload = () => { loader.style.display = 'none'; };
+                iframe.src = file;
+            });
+    }
 
     // Scroll node into view
     const activeNode = document.querySelector(`.email-node[data-email-id="${emailId}"]`);
@@ -1022,8 +1067,21 @@ document.addEventListener('click', (e) => {
     }
 });
 
+// ── Mode Indicator ───────────────────────────────
+function initModeIndicator() {
+    const badge = document.getElementById('modeBadge');
+    if (previewMode === 'review') {
+        badge.textContent = 'Review Site - h. annotations';
+        badge.className = 'mode-badge review';
+    } else {
+        badge.textContent = 'Local Preview';
+        badge.className = 'mode-badge local';
+    }
+}
+
 // ── Init ────────────────────────────────────────
 renderFlows();
+initModeIndicator();
 </script>
 
 <!-- Hypothesis Annotation -->
