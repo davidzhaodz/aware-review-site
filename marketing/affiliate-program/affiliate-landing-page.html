@@ -41,6 +41,16 @@
 
       --container-max: 1200px;
       --container-narrow: 720px;
+
+      --section-padding: 80px;
+    }
+
+    @media (min-width: 720px) {
+      :root { --section-padding: 100px; }
+    }
+
+    @media (min-width: 1200px) {
+      :root { --section-padding: 120px; }
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -79,6 +89,79 @@
 
     .container--narrow {
       max-width: var(--container-narrow);
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════
+       SITE HEADER
+       ══════════════════════════════════════════════════════════════ */
+    .site-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      padding: 24px 0;
+    }
+
+    .site-header__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .site-header__logo {
+      font-family: var(--font-heading);
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text);
+      text-decoration: none;
+    }
+
+    .site-header__logo span {
+      font-weight: 600;
+    }
+
+    .site-header__nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .site-header__link {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      color: var(--color-text-secondary);
+      transition: color var(--duration-fast) var(--easing);
+    }
+
+    .site-header__link:hover {
+      color: var(--color-text);
+    }
+
+    .site-header__cta {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 10px 24px;
+      background: var(--color-bg-dark);
+      color: var(--color-text-light);
+      transition: background var(--duration-fast) var(--easing);
+    }
+
+    .site-header__cta:hover {
+      background: #1a4a3f;
+    }
+
+    @media (max-width: 719px) {
+      .site-header__nav { gap: 20px; }
+      .site-header__link { display: none; }
     }
 
 
@@ -240,7 +323,7 @@
 
 
     /* ══════════════════════════════════════════════════════════════
-       HERO
+       HERO - Light cream overlay matching Pro Portal
        ══════════════════════════════════════════════════════════════ */
     .hero {
       min-height: 90vh;
@@ -248,7 +331,7 @@
       align-items: center;
       position: relative;
       overflow: hidden;
-      background: var(--color-bg-dark);
+      background: var(--color-bg);
     }
 
     .hero__bg {
@@ -261,7 +344,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0.5;
     }
 
     .hero__overlay {
@@ -269,10 +351,9 @@
       inset: 0;
       z-index: 1;
       background: linear-gradient(
-        135deg,
-        rgba(16, 43, 38, 0.88) 0%,
-        rgba(16, 43, 38, 0.65) 60%,
-        rgba(16, 43, 38, 0.45) 100%
+        180deg,
+        rgba(244, 239, 233, 0.82) 0%,
+        rgba(244, 239, 233, 0.88) 100%
       );
     }
 
@@ -280,29 +361,30 @@
       position: relative;
       z-index: 2;
       width: 100%;
-      max-width: var(--container-max);
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 120px 24px 100px;
+      padding: 140px 24px 100px;
     }
 
     @media (min-width: 720px) {
       .hero__container {
-        padding: 140px 40px 120px;
+        padding: 160px 40px 120px;
       }
     }
 
     @media (min-width: 1200px) {
       .hero__container {
-        padding: 140px 60px 120px;
+        padding: 160px 60px 120px;
       }
     }
 
     .hero__content {
-      max-width: 560px;
-      background: rgba(244, 239, 233, 0.08);
-      backdrop-filter: blur(24px) saturate(1.2);
-      -webkit-backdrop-filter: blur(24px) saturate(1.2);
-      border: 1px solid rgba(244, 239, 233, 0.12);
+      max-width: 540px;
+      background: rgba(244, 239, 233, 0.65);
+      backdrop-filter: blur(20px) saturate(1.2);
+      -webkit-backdrop-filter: blur(20px) saturate(1.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
       padding: 48px 44px;
     }
 
@@ -315,18 +397,19 @@
 
     .hero__eyebrow {
       margin-bottom: 24px;
+      color: var(--color-text-secondary);
     }
 
     .hero__commission {
       display: inline-flex;
       align-items: baseline;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .hero__commission-number {
       font-family: var(--font-heading);
-      font-size: clamp(3rem, 2rem + 5vw, 4.5rem);
+      font-size: clamp(3.5rem, 2.5rem + 5vw, 5rem);
       font-weight: 400;
       color: var(--color-accent);
       line-height: 1;
@@ -339,12 +422,12 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: rgba(244, 239, 233, 0.6);
+      color: var(--color-text-secondary);
       line-height: 1.3;
     }
 
     .hero__title {
-      color: var(--color-text-light);
+      color: var(--color-text);
       margin-bottom: 20px;
       font-size: clamp(1.75rem, 1.25rem + 2.5vw, 2.5rem);
     }
@@ -352,7 +435,7 @@
     .hero__subtitle {
       font-size: 16px;
       line-height: 1.7;
-      color: rgba(244, 239, 233, 0.75);
+      color: var(--color-text-secondary);
       margin-bottom: 32px;
       max-width: 440px;
     }
@@ -368,7 +451,7 @@
        INTRO SECTION
        ══════════════════════════════════════════════════════════════ */
     .intro {
-      padding: 100px 0;
+      padding: var(--section-padding) 0;
       background: var(--color-bg-white);
     }
 
@@ -405,7 +488,7 @@
        BENEFITS GRID
        ══════════════════════════════════════════════════════════════ */
     .benefits {
-      padding: 100px 0;
+      padding: var(--section-padding) 0;
       background: var(--color-bg);
     }
 
@@ -482,7 +565,7 @@
        HOW IT WORKS - STEPS
        ══════════════════════════════════════════════════════════════ */
     .steps {
-      padding: 100px 0;
+      padding: var(--section-padding) 0;
       background: var(--color-bg-white);
     }
 
@@ -573,7 +656,7 @@
        WHO IT'S FOR
        ══════════════════════════════════════════════════════════════ */
     .audience {
-      padding: 100px 0;
+      padding: var(--section-padding) 0;
       background: var(--color-bg);
     }
 
@@ -641,7 +724,7 @@
        PROGRAM DETAILS - HIGHLIGHT SECTION
        ══════════════════════════════════════════════════════════════ */
     .details {
-      padding: 100px 0;
+      padding: var(--section-padding) 0;
       background: var(--color-bg-dark);
       color: var(--color-text-light);
     }
@@ -748,7 +831,7 @@
        TESTIMONIALS
        ══════════════════════════════════════════════════════════════ */
     .testimonials {
-      padding: 100px 0;
+      padding: var(--section-padding) 0;
       background: var(--color-bg);
     }
 
@@ -827,8 +910,14 @@
        FAQ - COLLAPSIBLE
        ══════════════════════════════════════════════════════════════ */
     .faq {
-      padding: 100px 0;
+      padding: var(--section-padding) 0;
       background: var(--color-bg-white);
+    }
+
+    @media (max-width: 719px) {
+      .faq__header-sticky {
+        position: static;
+      }
     }
 
     .faq__inner {
@@ -989,12 +1078,308 @@
     .cta-final__contact a:hover {
       opacity: 0.8;
     }
+
+
+    /* ══════════════════════════════════════════════════════════════
+       EARNINGS MATH SECTION
+       ══════════════════════════════════════════════════════════════ */
+    .earnings {
+      padding: var(--section-padding) 0;
+      background: var(--color-bg-cream);
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .earnings__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .earnings__header .eyebrow {
+      margin-bottom: 20px;
+    }
+
+    .earnings__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    @media (min-width: 720px) {
+      .earnings__grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 28px;
+      }
+    }
+
+    .earnings-example {
+      background: var(--color-bg-white);
+      border: 1px solid var(--color-border);
+      padding: 36px 32px;
+      text-align: center;
+      transition: transform var(--duration-fast) var(--easing), box-shadow var(--duration-fast) var(--easing);
+    }
+
+    .earnings-example:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.05);
+    }
+
+    .earnings-example__persona {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-accent);
+      margin-bottom: 16px;
+    }
+
+    .earnings-example__scenario {
+      font-family: var(--font-heading);
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--color-text);
+      line-height: 1.4;
+      margin-bottom: 24px;
+    }
+
+    .earnings-example__math {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 24px;
+      padding: 20px 16px;
+      background: var(--color-bg);
+      border-radius: 0;
+    }
+
+    .earnings-example__line {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+    .earnings-example__result {
+      padding-top: 16px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .earnings-example__amount {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 1.5rem + 2vw, 2.5rem);
+      font-weight: 400;
+      color: var(--color-accent);
+      line-height: 1;
+    }
+
+    .earnings-example__period {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      margin-top: 6px;
+    }
+
+    .earnings__footnote {
+      text-align: center;
+      margin-top: 32px;
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      font-style: italic;
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════
+       CONTENT STARTER KIT
+       ══════════════════════════════════════════════════════════════ */
+    .toolkit {
+      padding: var(--section-padding) 0;
+      background: var(--color-bg-white);
+    }
+
+    .toolkit__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    @media (min-width: 720px) {
+      .toolkit__inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+      }
+    }
+
+    .toolkit__content {
+      max-width: 480px;
+    }
+
+    .toolkit__title {
+      margin-bottom: 20px;
+    }
+
+    .toolkit__text {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--color-text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .toolkit__items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .toolkit__item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .toolkit__item-icon {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      border-radius: 50%;
+      background: var(--color-accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .toolkit__item-icon svg {
+      width: 18px;
+      height: 18px;
+      color: var(--color-accent);
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .toolkit__item-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-text);
+      line-height: 1.3;
+    }
+
+    .toolkit__item-desc {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    .toolkit__preview {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .toolkit__preview-card {
+      padding: 24px 20px;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      text-align: center;
+    }
+
+    .toolkit__preview-card:first-child {
+      grid-column: span 2;
+    }
+
+    .toolkit__preview-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+      line-height: 1;
+    }
+
+    .toolkit__preview-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 4px;
+    }
+
+    .toolkit__preview-desc {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════
+       SITE FOOTER
+       ══════════════════════════════════════════════════════════════ */
+    .site-footer {
+      padding: 40px 0;
+      background: var(--color-bg-dark);
+      border-top: 1px solid rgba(244, 239, 233, 0.08);
+    }
+
+    .site-footer__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .site-footer__brand {
+      font-family: var(--font-heading);
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: rgba(244, 239, 233, 0.5);
+    }
+
+    .site-footer__links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .site-footer__link {
+      font-size: 13px;
+      color: rgba(244, 239, 233, 0.4);
+      text-decoration: none;
+      transition: color var(--duration-fast) var(--easing);
+    }
+
+    .site-footer__link:hover {
+      color: rgba(244, 239, 233, 0.8);
+    }
+
+    @media (max-width: 719px) {
+      .site-footer__inner {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
   </style>
 </head>
 <body>
 
   <!-- ════════════════════════════════════════════════════════════
-       HERO
+       HEADER
+       ════════════════════════════════════════════════════════════ -->
+  <header class="site-header">
+    <div class="container">
+      <div class="site-header__inner">
+        <a href="https://www.awarehair.com" class="site-header__logo"><span>AWARE</span></a>
+        <nav class="site-header__nav">
+          <a href="https://www.awarehair.com/collections/all" class="site-header__link">Shop</a>
+          <a href="https://www.awarehair.com/pages/pro-portal" class="site-header__link">Pro Portal</a>
+          <a href="#apply" class="site-header__cta">Apply Now</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       HERO - Light cream overlay (matches Pro Portal)
        ════════════════════════════════════════════════════════════ -->
   <section class="hero">
     <div class="hero__bg">
@@ -1008,7 +1393,7 @@
 
     <div class="hero__container">
       <div class="hero__content" data-animate>
-        <span class="eyebrow eyebrow--accent hero__eyebrow">Affiliate Program</span>
+        <span class="eyebrow hero__eyebrow">Affiliate Program</span>
         <div class="hero__commission">
           <span class="hero__commission-number">20%</span>
           <span class="hero__commission-label">Lifetime<br>Commission</span>
@@ -1016,8 +1401,8 @@
         <h1 class="heading-2 hero__title">Earn on Every Sale,<br>Forever</h1>
         <p class="hero__subtitle">Join the AWARE affiliate program. Not just the first purchase - every reorder your referrals make, for life.</p>
         <div class="hero__ctas">
-          <a href="#apply" class="btn btn--light">Apply Now</a>
-          <a href="#how-it-works" class="btn btn--ghost-light">Learn More</a>
+          <a href="#apply" class="btn btn--primary">Apply Now</a>
+          <a href="#how-it-works" class="btn btn--secondary">Learn More</a>
         </div>
       </div>
     </div>
