@@ -35,40 +35,11 @@
 
 
           <!-- =============================================================
-               SECTION 1: HERO - Bordered Frame with Location + Stress Days
+               SECTION 1: FOUNDER LETTER
                ============================================================= -->
 
           <tr>
-            <td style="padding: 20px 45px 25px 45px;">
-              <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border: 1px solid #D4C4B7;">
-                <tr>
-                  <td style="padding: 50px 40px 45px 40px;">
-
-                    <p style="font-size: 10px; color: #1C2420; text-transform: uppercase; letter-spacing: 4px; margin: 0 0 25px 0;">
-                      Your Personalized Report
-                    </p>
-
-                    <h1 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 42px; font-weight: 400; color: #1C2420; margin: 0; line-height: 1.08; letter-spacing: -1.5px; text-align: left;">
-                      {{ person.location.city }},<br/>{{ person.location.region }}
-                    </h1>
-
-                    <p style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 20px; color: #8B7355; margin: 30px 0 0 0; font-style: italic; letter-spacing: -0.5px; text-align: right;">
-                      {{ person|lookup:'total_stress_days'|default:"305" }} environmental stress days per year.
-                    </p>
-
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-
-          <!-- =============================================================
-               SECTION 2: FOUNDER LETTER - Full 5-paragraph version
-               ============================================================= -->
-
-          <tr>
-            <td style="padding: 15px 45px 10px 45px;">
+            <td style="padding: 25px 45px 10px 45px;">
               <p style="font-size: 16px; color: #1C2420; line-height: 1.85; margin: 0 0 18px 0;">
                 Dear {{ person|lookup:'first_name'|default:"friend" }},
               </p>
@@ -118,19 +89,15 @@
             <td style="padding: 0;">
               <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background-color: #1C2420;" width="100%">
                 <tr>
-                  <td style="padding: 40px 45px 30px 45px;">
+                  <td style="padding: 40px 45px 30px 45px; text-align: center;">
 
-                    <p style="font-size: 10px; color: rgba(244, 239, 233, 0.6); text-transform: uppercase; letter-spacing: 4px; margin: 0 0 25px 0;">
-                      Environmental Threat Assessment
+                    <p style="font-size: 10px; color: rgba(244, 239, 233, 0.6); text-transform: uppercase; letter-spacing: 4px; margin: 0 0 25px 0; text-align: center;">
+                      Your Environmental Threat Assessment
                     </p>
 
-                    <h2 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 32px; font-weight: 400; color: #F4EFE9; margin: 0 0 15px 0; letter-spacing: -0.5px;">
-                      Worse Than {{ person|lookup:'overall_percentile'|default:"71" }}% of Americans
-                    </h2>
-
-                    <p style="font-size: 16px; color: rgba(244, 239, 233, 0.7); line-height: 1.85; margin: 0 0 30px 0;">
-                      Your scalp faces {{ person|lookup:'total_stress_days'|default:"305" }} environmental stress days per year. Here's the breakdown.
-                    </p>
+                    <h1 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 36px; font-weight: 700; color: #F4EFE9; margin: 0 0 30px 0; letter-spacing: -0.5px; text-align: center;">
+                      {% if person|lookup:'city' %}{{ person|lookup:'city' }}, {% endif %}{{ person.location.zip|default:"Your Area" }}
+                    </h1>
 
                   </td>
                 </tr>
@@ -186,6 +153,46 @@
                         <td style="text-align: center; padding: 0 3px;" width="20%">
                           <div style="height: 6px; background: {% if person|lookup:'threat_level'|default:'SEVERE' == 'SEVERE' %}#DC2626{% else %}rgba(244, 239, 233, 0.2){% endif %}; border-radius: 3px;"></div>
                           <p style="font-size: 10px; color: rgba(244, 239, 233, 0.5); margin: 8px 0 0 0; text-transform: uppercase; letter-spacing: 0.5px;">Severe</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Stress Days + National Ranking Cards -->
+                <tr>
+                  <td style="padding: 0 45px 25px 45px;">
+                    <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                      <tr>
+                        <!-- Stress Days Card -->
+                        <td style="width: 50%; padding: 0 5px 0 0; vertical-align: top;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="background-color: rgba(244, 239, 233, 0.08); border-radius: 6px;">
+                            <tr>
+                              <td style="padding: 22px 18px; text-align: center;">
+                                <p style="font-size: 9px; color: rgba(244, 239, 233, 0.5); text-transform: uppercase; letter-spacing: 2.5px; margin: 0 0 10px 0;">
+                                  Stress Days / Year
+                                </p>
+                                <p style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 32px; font-weight: 400; color: #F4EFE9; margin: 0; letter-spacing: -1px;">
+                                  {{ person|lookup:'total_stress_days'|default:"305" }}
+                                </p>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                        <!-- National Ranking Card -->
+                        <td style="width: 50%; padding: 0 0 0 5px; vertical-align: top;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="background-color: rgba(244, 239, 233, 0.08); border-radius: 6px;">
+                            <tr>
+                              <td style="padding: 22px 18px; text-align: center;">
+                                <p style="font-size: 9px; color: rgba(244, 239, 233, 0.5); text-transform: uppercase; letter-spacing: 2.5px; margin: 0 0 10px 0;">
+                                  National Ranking
+                                </p>
+                                <p style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 26px; font-weight: 400; color: #F4EFE9; margin: 0; letter-spacing: -0.5px;">
+                                  Worse than {{ person|lookup:'overall_percentile'|default:"71" }}%
+                                </p>
+                              </td>
+                            </tr>
+                          </table>
                         </td>
                       </tr>
                     </table>
@@ -389,8 +396,17 @@
                               <td style="vertical-align: top;">
                                 <p style="font-size: 10px; color: #1C2420; text-transform: uppercase; letter-spacing: 3px; margin: 0 0 10px 0; font-weight: 600;">03 - Water Hardness</p>
 
-                                {% if person.water_stress_days > 0 %}
-                                <!-- Multiplier (Primary) -->
+                                {% if person|lookup:'water_is_soft' == 'true' %}
+                                <!-- Good Water -->
+                                <p style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 22px; color: #1C2420; margin: 0 0 8px 0; font-weight: 400; line-height: 1.3;">
+                                  &#10003; Soft Water - Minimal Risk
+                                </p>
+                                <p style="font-size: 15px; color: #555555; line-height: 1.7; margin: 0;">
+                                  Your water has minimal mineral buildup. One less stressor for your scalp.
+                                </p>
+
+                                {% else %}
+                                <!-- Hard Water (default) -->
                                 <p style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 22px; color: #1C2420; margin: 0 0 12px 0; font-weight: 400; line-height: 1.3;">
                                   {{ person|lookup:'water_multiplier_text'|default:"4x harder than soft water" }}
                                 </p>
@@ -414,15 +430,6 @@
                                     {{ person|lookup:'water_impact_text'|default:"Calcium and magnesium minerals coat every strand with each wash, creating a barrier that blocks moisture and treatments. This leads to dryness, product buildup, and persistent tangles." }}
                                   </p>
                                 </div>
-
-                                {% else %}
-                                <!-- Good Water -->
-                                <p style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 22px; color: #1C2420; margin: 0 0 8px 0; font-weight: 400; line-height: 1.3;">
-                                  &#10003; Soft Water - Minimal Risk
-                                </p>
-                                <p style="font-size: 15px; color: #555555; line-height: 1.7; margin: 0;">
-                                  Your water has minimal mineral buildup. One less stressor for your scalp.
-                                </p>
                                 {% endif %}
                               </td>
                             </tr>
@@ -542,16 +549,16 @@
                   <td style="padding: 0 35px 10px 35px;">
                     <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border: 1px solid #E8E3DD; border-left: 4px solid #8B7355; background-color: #FFFFFF;">
                       <tr>
-                        <td style="width: 65%; vertical-align: middle; padding: 20px 5px 20px 20px; text-align: right;">
+                        <td style="width: 35%; vertical-align: middle; padding: 20px;">
+                          <img src="https://d3k81ch9hvuctc.cloudfront.net/company/UmRhdX/images/9fb3d0e6-f8df-4650-addf-9568688dd98e.png" alt="9-1 Professional Conditioner" style="max-width: 100%; height: auto; max-height: 140px; display: block; margin: 0 auto;" />
+                        </td>
+                        <td style="width: 65%; vertical-align: middle; padding: 20px 20px 20px 5px;">
                           <p style="font-size: 10px; color: #8B7355; text-transform: uppercase; letter-spacing: 3px; margin: 0 0 6px 0; font-weight: 600;">&#9728;&#65039; Step 2</p>
                           <p style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 20px; color: #1C2420; margin: 0 0 8px 0; font-weight: 400;">9-1 Professional Conditioner</p>
                           <p style="font-size: 14px; color: #555555; line-height: 1.6; margin: 0 0 10px 0;">Repairs keratin damage from {{ person|lookup:'high_uv_days'|default:"310" }}+ high UV days. Restores the moisture barrier and rebalances the scalp microbiome.</p>
                           <p style="font-size: 13px; color: #8B7355; margin: 0; line-height: 1.5;">
                             &rarr; Addresses UV damage ({{ person|lookup:'uv_percentile'|default:"85" }}th percentile)
                           </p>
-                        </td>
-                        <td style="width: 35%; vertical-align: middle; padding: 20px;">
-                          <img src="https://d3k81ch9hvuctc.cloudfront.net/company/UmRhdX/images/9fb3d0e6-f8df-4650-addf-9568688dd98e.png" alt="9-1 Professional Conditioner" style="max-width: 100%; height: auto; max-height: 140px; display: block; margin: 0 auto;" />
                         </td>
                       </tr>
                     </table>

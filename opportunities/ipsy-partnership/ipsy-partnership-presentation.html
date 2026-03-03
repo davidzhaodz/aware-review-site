@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPSY Partnership Analysis | AWARE Hair</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2D4739;
+      --forest-deep: #1E3228;
+      --sage: #7A8F7D;
+      --cream: #F8F6F1;
+      --sand: #E8E4DC;
+      --charcoal: #2C2C2C;
+      --warm-gray: #6B6B6B;
+      --gold: #B8956E;
+      --gold-light: #C9A882;
+      --white: #FFFFFF;
+      --divider: #D4CFC6;
+      --green: #4A8C6B;
+      --green-bg: #F2F8F5;
+      --red: #C45B4A;
+      --red-bg: #FDF5F4;
+      --amber: #B8860B;
+      --amber-bg: #FFFBF0;
+      --blue: #4A6E8C;
+      --blue-bg: #F0F5FA;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      background: var(--charcoal);
+      color: var(--charcoal);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+      height: 100vh;
+      margin: 0;
+    }
+
+    /* ---- SLIDE DECK ENGINE ---- */
+    .deck {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+    .slide {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      background: var(--white);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      overflow-y: auto;
+    }
+    .slide.active {
+      opacity: 1;
+      pointer-events: all;
+      z-index: 10;
+    }
+    .slide-inner {
+      max-width: 1600px;
+      width: 100%;
+      margin: auto;
+      padding: 48px 80px 72px;
+    }
+
+    /* ---- SLIDE NAV BAR ---- */
+    .slide-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 200;
+      background: var(--forest-deep);
+      border-top: 2px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: 52px;
+    }
+    .slide-nav .nav-left,
+    .slide-nav .nav-right { display: flex; align-items: center; gap: 12px; }
+    .slide-nav button {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: none;
+      border: 1px solid rgba(184,149,110,0.4);
+      color: var(--gold-light);
+      padding: 6px 18px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .slide-nav button:hover { background: rgba(184,149,110,0.15); color: var(--cream); }
+    .slide-nav button:disabled { opacity: 0.3; cursor: default; }
+    .slide-counter {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: var(--sage);
+    }
+    .slide-dots {
+      display: flex; gap: 6px; align-items: center;
+    }
+    .slide-dots .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--sage);
+      opacity: 0.3;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .slide-dots .dot.active { opacity: 1; background: var(--gold); transform: scale(1.3); }
+    .slide-dots .dot:hover { opacity: 0.7; }
+
+    /* ---- TITLE SLIDE ---- */
+    .slide.title-slide {
+      background: var(--forest-deep);
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .slide.title-slide .slide-inner { max-width: 840px; }
+    .title-badge {
+      display: inline-block;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--red);
+      border: 1px solid rgba(196,91,74,0.5);
+      padding: 5px 18px;
+      border-radius: 2px;
+      margin-bottom: 32px;
+    }
+    .title-slide h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      font-size: 48px;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      color: var(--cream);
+      margin-bottom: 12px;
+    }
+    .title-slide .subtitle {
+      font-size: 18px;
+      color: var(--sage);
+      margin-bottom: 8px;
+    }
+    .title-slide .subtitle strong { color: var(--gold-light); font-weight: 500; }
+    .title-slide .date { font-size: 14px; color: var(--sage); opacity: 0.7; margin-top: 20px; }
+    .title-slide .goal {
+      margin-top: 40px;
+      font-size: 16px;
+      color: var(--cream);
+      opacity: 0.85;
+      line-height: 1.65;
+      border-top: 1px solid rgba(184,149,110,0.2);
+      padding-top: 28px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ---- SECTION HEADER SLIDES ---- */
+    .slide.section-slide {
+      background: var(--forest-deep);
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .section-slide .section-num {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 64px;
+      font-weight: 300;
+      color: var(--gold);
+      opacity: 0.25;
+      margin-bottom: 8px;
+    }
+    .section-slide h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      font-size: 36px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--cream);
+      margin-bottom: 12px;
+    }
+    .section-slide .section-desc {
+      font-size: 16px;
+      color: var(--sage);
+      max-width: 500px;
+    }
+
+    /* ---- TYPOGRAPHY ---- */
+    .slabel {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 14px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .slabel::after { content: ''; flex: 1; height: 1px; background: var(--divider); }
+    h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 30px;
+      font-weight: 400;
+      color: var(--forest);
+      margin: 24px 0 16px;
+    }
+    h3:first-of-type { margin-top: 0; }
+    p, li { font-size: 22px; }
+    p { margin-bottom: 14px; }
+    ul { padding-left: 24px; margin-bottom: 16px; }
+    li { margin-bottom: 8px; }
+
+    /* ---- CARDS ---- */
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+    .grid4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 18px; }
+    .card {
+      border: 1px solid var(--divider);
+      border-radius: 4px;
+      padding: 28px 28px;
+    }
+    .card h4 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .card .big {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 44px;
+      font-weight: 300;
+      color: var(--forest);
+      line-height: 1.1;
+    }
+    .card .note { font-size: 16px; color: var(--warm-gray); margin-top: 4px; }
+    .card p, .card li { font-size: 19px; }
+
+    /* ---- TABLES ---- */
+    table { width: 100%; border-collapse: collapse; font-size: 18px; margin: 16px 0; }
+    thead th {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 13px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--warm-gray); font-weight: 500; text-align: left;
+      padding: 0 14px 12px 0; border-bottom: 1px solid var(--divider);
+    }
+    tbody td { padding: 12px 14px 12px 0; border-bottom: 1px solid #EDEBE6; vertical-align: top; font-size: 19px; }
+    .tname { font-weight: 600; }
+    .tdesc { font-size: 15px; color: var(--warm-gray); }
+    .tprice { font-size: 24px; font-weight: 600; color: var(--forest); }
+    tr.total-row td { border-top: 2px solid var(--forest); font-weight: 600; }
+    tr.rec { background: linear-gradient(90deg, rgba(45,71,57,0.04), rgba(184,149,110,0.04)); }
+
+    /* ---- RISK BADGES ---- */
+    .risk-badge {
+      display: inline-block;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 12px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 2px;
+      font-weight: 600;
+      vertical-align: middle;
+    }
+    .risk-badge.high { background: var(--red-bg); color: var(--red); border: 1px solid rgba(196,91,74,0.3); }
+    .risk-badge.medium { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(184,134,11,0.3); }
+    .risk-badge.low { background: var(--green-bg); color: var(--green); border: 1px solid rgba(74,140,107,0.3); }
+    .risk-badge.resolved { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(74,110,140,0.3); }
+
+    /* ---- CALLOUTS ---- */
+    .callout {
+      padding: 22px 28px;
+      border-radius: 4px;
+      margin: 20px 0;
+      font-size: 19px;
+      line-height: 1.6;
+    }
+    .callout.warn { background: var(--amber-bg); border-left: 3px solid var(--amber); }
+    .callout.info { background: var(--blue-bg); border-left: 3px solid var(--blue); }
+    .callout.tip { background: var(--green-bg); border-left: 3px solid var(--green); }
+    .callout.danger { background: var(--red-bg); border-left: 3px solid var(--red); }
+    .callout strong { color: var(--charcoal); }
+
+    /* ---- QUOTE BOX ---- */
+    .qbox {
+      background: var(--forest-deep);
+      color: var(--cream);
+      padding: 28px 36px;
+      border-radius: 4px;
+      font-size: 20px;
+      line-height: 1.6;
+      position: relative;
+      margin: 20px 0;
+    }
+    .qbox::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 64px;
+      color: var(--gold);
+      opacity: 0.25;
+      position: absolute;
+      top: 2px; left: 16px;
+      line-height: 1;
+    }
+    .qbox p { padding-left: 28px; position: relative; z-index: 1; margin-bottom: 0; color: var(--cream); font-size: 20px; }
+    .qbox strong { color: var(--gold-light); font-weight: 500; }
+
+    /* ---- FRAME ---- */
+    .frame {
+      border-left: 4px solid var(--gold);
+      padding: 20px 28px;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, rgba(184,149,110,0.04) 0%, transparent 40%);
+      border-radius: 0 4px 4px 0;
+    }
+    .frame-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 13px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); font-weight: 600; margin-bottom: 8px;
+    }
+    .frame-q { font-size: 21px; line-height: 1.6; }
+    .frame-q strong { color: var(--forest-deep); }
+
+    /* ---- SETBAR ---- */
+    .setbar {
+      background: var(--forest-deep);
+      border-radius: 4px;
+      padding: 28px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      margin: 20px 0;
+    }
+    .setbar-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 16px; letter-spacing: 3px; text-transform: uppercase; color: var(--sage);
+    }
+    .setfigs { display: flex; gap: 40px; }
+    .sfig { text-align: center; }
+    .sfig .amt {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 32px; font-weight: 300; color: var(--cream);
+    }
+    .sfig .lbl { font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--sage); margin-top: 2px; }
+
+    /* ---- TIMELINE ---- */
+    .timeline { position: relative; padding-left: 32px; margin: 20px 0; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px; top: 4px; bottom: 4px;
+      width: 2px;
+      background: var(--divider);
+    }
+    .tl-item { position: relative; padding: 10px 0; font-size: 19px; }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -28px; top: 16px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      background: var(--white);
+    }
+    .tl-item.critical::before { border-color: var(--red); background: var(--red-bg); }
+    .tl-item.active::before { border-color: var(--green); background: var(--green); }
+    .tl-item .week {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 13px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--gold); font-weight: 600;
+    }
+    .tl-item.critical .week { color: var(--red); }
+
+    /* ---- CONTRACT CLAUSE ---- */
+    .clause {
+      border: 1px solid var(--divider);
+      border-radius: 4px;
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+    .clause-header {
+      padding: 16px 24px;
+      background: var(--cream);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--divider);
+    }
+    .clause-title { font-weight: 600; font-size: 20px; color: var(--forest); }
+    .clause-body { padding: 18px 24px; font-size: 18px; line-height: 1.65; }
+    .clause-body strong { color: var(--forest-deep); }
+    .clause-quote {
+      background: var(--cream);
+      border-left: 3px solid var(--gold);
+      padding: 12px 18px;
+      margin: 10px 0;
+      font-size: 16px;
+      font-style: italic;
+      color: var(--warm-gray);
+      line-height: 1.55;
+    }
+    .clause-rec { margin-top: 10px; padding-top: 10px; border-top: 1px solid #F2F0EC; font-size: 17px; }
+    .clause-rec .rec-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--gold); font-weight: 600; margin-bottom: 4px;
+    }
+
+    /* ---- NEGOTIATION CARDS ---- */
+    .neg-card {
+      border: 1px solid var(--divider);
+      border-radius: 4px;
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+    .neg-card.p1 { border-left: 4px solid var(--red); }
+    .neg-card.p2 { border-left: 4px solid var(--amber); }
+    .neg-card.p3 { border-left: 4px solid var(--blue); }
+    .neg-card.p4 { border-left: 4px solid var(--sage); }
+    .neg-header {
+      padding: 14px 22px;
+      background: var(--cream);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--divider);
+    }
+    .neg-title { font-weight: 600; font-size: 19px; }
+    .neg-priority {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 600;
+    }
+    .neg-card.p1 .neg-priority { color: var(--red); }
+    .neg-card.p2 .neg-priority { color: var(--amber); }
+    .neg-card.p3 .neg-priority { color: var(--blue); }
+    .neg-card.p4 .neg-priority { color: var(--sage); }
+    .neg-body { padding: 16px 22px; font-size: 18px; line-height: 1.6; }
+    .neg-body strong { color: var(--forest-deep); }
+    .neg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+    .neg-sub {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--warm-gray); font-weight: 600; margin-bottom: 4px;
+    }
+
+    /* ---- OUTCOMES ---- */
+    .outcomes {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px; background: var(--divider); border: 1px solid var(--divider); border-radius: 4px; overflow: hidden;
+    }
+    .ocard { background: var(--white); padding: 28px; }
+    .ocard h4 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 13px; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; margin-bottom: 14px;
+    }
+    .ocard.rec-a h4 { color: var(--warm-gray); }
+    .ocard.rec-b h4 { color: var(--green); }
+    .ocard.rec-c h4 { color: var(--red); }
+    .ocard p { font-size: 18px; line-height: 1.6; }
+    .rec-tag {
+      display: inline-block;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--green); border: 1px solid var(--green);
+      padding: 4px 12px; border-radius: 2px; margin-top: 12px;
+    }
+
+    /* ---- CHECKLIST ---- */
+    .checks { list-style: none; padding: 0; }
+    .checks li {
+      padding: 10px 0; border-bottom: 1px solid #F2F0EC;
+      font-size: 18px; display: flex; align-items: flex-start; gap: 10px;
+    }
+    .bx { width: 18px; height: 18px; border: 1.5px solid var(--sage); border-radius: 2px; flex-shrink: 0; margin-top: 4px; }
+    .bx.urgent { border-color: var(--red); background: var(--red-bg); }
+
+    /* ---- RISK ROW ---- */
+    .risk-row { display: flex; align-items: flex-start; gap: 16px; padding: 14px 0; border-bottom: 1px solid #F2F0EC; }
+    .risk-row:last-child { border-bottom: none; }
+    .risk-label { flex-shrink: 0; width: 80px; }
+    .risk-content { flex: 1; }
+    .risk-item { font-size: 18px; margin-bottom: 6px; line-height: 1.5; }
+    .risk-item strong { color: var(--forest-deep); }
+    .risk-item .mitigation { font-size: 15px; color: var(--warm-gray); margin-top: 3px; }
+
+    /* ---- GANTT ---- */
+    .gantt { margin: 20px 0; border: 1px solid var(--divider); border-radius: 3px; overflow: hidden; }
+    .gantt-header {
+      display: grid; grid-template-columns: 140px repeat(16, 1fr);
+      background: var(--cream); border-bottom: 1px solid var(--divider);
+    }
+    .gantt-header span {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--warm-gray); padding: 8px 2px; text-align: center; border-right: 1px solid #EDEBE6;
+    }
+    .gantt-header span:first-child { text-align: left; padding-left: 14px; border-right: 1px solid var(--divider); font-size: 12px; }
+    .gantt-row {
+      display: grid; grid-template-columns: 140px repeat(16, 1fr);
+      border-bottom: 1px solid #EDEBE6; min-height: 38px; align-items: center;
+    }
+    .gantt-row:last-child { border-bottom: none; }
+    .gantt-task { font-size: 15px; padding: 8px 14px; border-right: 1px solid var(--divider); }
+    .gantt-bar-container { grid-column: span 16; display: grid; grid-template-columns: repeat(16, 1fr); height: 100%; align-items: center; }
+    .gantt-bar { height: 18px; border-radius: 2px; }
+    .gantt-bar.forest { background: var(--forest); }
+    .gantt-bar.gold { background: var(--gold); }
+    .gantt-bar.sage { background: var(--sage); }
+    .gantt-bar.red { background: var(--red); opacity: 0.7; }
+    .gantt-bar.green { background: var(--green); }
+    .gantt-bar.blue { background: var(--blue); opacity: 0.7; }
+
+    /* ---- CASHFLOW TIMELINE ---- */
+    .cashflow { margin: 24px 0 0; border: 1px solid var(--divider); border-radius: 3px; overflow: hidden; }
+    .cashflow-title {
+      padding: 14px 20px;
+      background: var(--cream);
+      border-bottom: 1px solid var(--divider);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 13px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--gold); font-weight: 600;
+    }
+    .cf-row {
+      display: grid; grid-template-columns: 140px 1fr;
+      border-bottom: 1px solid #EDEBE6; min-height: 44px; align-items: center;
+    }
+    .cf-row:last-child { border-bottom: none; }
+    .cf-label { font-size: 15px; padding: 8px 14px; border-right: 1px solid var(--divider); }
+    .cf-label .cf-amt { font-size: 13px; color: var(--warm-gray); display: block; margin-top: 2px; }
+    .cf-bar-area { display: flex; align-items: center; padding: 4px 12px; gap: 6px; }
+    .cf-bar {
+      height: 24px; border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--white); font-weight: 600;
+    }
+    .cf-bar.out { background: var(--red); opacity: 0.75; }
+    .cf-bar.in { background: var(--green); }
+    .cf-bar.gap { background: repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(196,91,74,0.15) 3px, rgba(196,91,74,0.15) 6px); border: 1px dashed var(--red); }
+    .cf-summary {
+      padding: 14px 20px;
+      background: var(--cream);
+      border-top: 1px solid var(--divider);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 15px;
+    }
+    .cf-summary .cf-out { color: var(--red); font-weight: 600; }
+    .cf-summary .cf-in { color: var(--green); font-weight: 600; }
+
+    /* ---- PRINT ---- */
+    @media print {
+      body { background: white; overflow: visible; height: auto; }
+      .deck { height: auto; }
+      .slide { position: relative; opacity: 1; pointer-events: all; page-break-after: always; min-height: 100vh; }
+      .slide-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- ===== SLIDE 1: TITLE ===== -->
+  <div class="slide title-slide active" data-slide="0">
+    <div class="slide-inner">
+      <div class="title-badge">Decision Required</div>
+      <h1>IPSY Partnership<br>Analysis</h1>
+      <div class="subtitle">AWARE Hair 10ml Leave-In Conditioner - <strong>Glam Bag Program</strong></div>
+      <div class="date">February 24, 2026</div>
+
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 2: DEAL AT A GLANCE ===== -->
+  <div class="slide" data-slide="1">
+    <div class="slide-inner">
+      <div class="slabel">Deal at a Glance</div>
+
+      <div class="grid4">
+        <div class="card">
+          <h4>Volume</h4>
+          <div class="big">360K</div>
+          <div class="note">10ml sample units</div>
+        </div>
+        <div class="card">
+          <h4>Revenue</h4>
+          <div class="big">$140,400</div>
+          <div class="note">Gross, before costs</div>
+        </div>
+        <div class="card">
+          <h4>Price per Unit</h4>
+          <div class="big">$0.39</div>
+          <div class="note">IPSY pays AWARE</div>
+        </div>
+        <div class="card">
+          <h4>Delivery</h4>
+          <div class="big">June 8-19</div>
+          <div class="note">~15 weeks from now</div>
+        </div>
+      </div>
+
+      <div class="frame" style="margin-top: 24px;">
+        <div class="frame-label">The Deal</div>
+        <div class="frame-q">
+          IPSY includes AWARE Hair's 10ml leave-in conditioner sample in their Glam Bag, shipped to <strong>360,000 subscribers</strong>. IPSY pays $0.39/unit ($140,400 gross). Payment is <strong>Net 60 after delivery</strong>, meaning cash arrives around <strong>August 18, 2026</strong>. AWARE handles all manufacturing, QC, and logistics.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 3: THE OPPORTUNITY ===== -->
+  <div class="slide" data-slide="2">
+    <div class="slide-inner">
+      <div class="slabel">The Opportunity</div>
+
+      <h3>What is IPSY Glam Bag?</h3>
+      <p>One of the largest beauty subscription services in North America. Curated sample-size products delivered to millions of subscribers monthly. Brands pay for manufacturing; IPSY provides the audience. A proven discovery channel for beauty brands at scale.</p>
+
+      <div class="grid2" style="margin-top: 16px;">
+        <div class="card">
+          <h4>Brand Exposure</h4>
+          <p><strong>360,000 potential new customers</strong> will physically hold and try an AWARE product. This trial-driving exposure would cost $50K-$100K+ in paid digital advertising, with far lower conversion rates than a physical product experience.</p>
+        </div>
+        <div class="card">
+          <h4>Strategic Fit</h4>
+          <p>Premium brands like <strong>Oribe and Bumble and bumble</strong> have used subscription box sampling without damaging their salon positioning. Key: drive IPSY recipients to <strong>DTC purchase</strong> - with salons concentrated in LA, DTC captures the national audience IPSY delivers.</p>
+        </div>
+      </div>
+
+      <div class="callout tip" style="margin-top: 16px;">
+        <strong>CTA Strategy:</strong> Every sample should include a card with a QR code directing recipients to AWARE's DTC site. Goal: convert IPSY trial into full-size DTC customers ($110 AOV, ~80% margin). Salon partners remain the premium tier, while DTC captures the national IPSY audience beyond LA.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 4: FINANCIAL - COSTS ===== -->
+  <div class="slide" data-slide="3">
+    <div class="slide-inner">
+      <div class="slabel">Financial Analysis</div>
+
+      <div class="setbar">
+        <div class="setbar-label">Revenue</div>
+        <div class="setfigs">
+          <div class="sfig"><div class="amt">360,000</div><div class="lbl">Units</div></div>
+          <div class="sfig"><div class="amt" style="color: var(--gold);">&times;</div><div class="lbl">&nbsp;</div></div>
+          <div class="sfig"><div class="amt">$0.39</div><div class="lbl">Per Unit</div></div>
+          <div class="sfig"><div class="amt" style="color: var(--gold);">=</div><div class="lbl">&nbsp;</div></div>
+          <div class="sfig"><div class="amt">$140,400</div><div class="lbl">Gross Revenue</div></div>
+        </div>
+      </div>
+
+      <table style="margin-top: 16px;">
+        <thead>
+          <tr><th>Line Item</th><th>Low</th><th>High</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="tname">Packaging + formulation (360K)</td><td>$54,000</td><td>$90,000</td><td class="tdesc">$0.15-$0.25/unit</td></tr>
+          <tr><td class="tname">Contract fill (360K)</td><td>$54,000</td><td>$108,000</td><td class="tdesc">$0.15-$0.30/unit</td></tr>
+          <tr><td class="tname">Ocean freight</td><td>$3,000</td><td>$6,000</td><td class="tdesc">Standard ocean from China</td></tr>
+          <tr><td class="tname">Tariffs/duties</td><td>$100</td><td>$200</td><td class="tdesc">Negligible on tube cost</td></tr>
+          <tr><td class="tname">IPSY packaging</td><td>$3,000</td><td>$8,000</td><td class="tdesc">Labels, pallets, shrink-wrap</td></tr>
+          <tr><td class="tname">QC/COA/MSDS</td><td>$1,500</td><td>$3,000</td><td class="tdesc">Testing + certification</td></tr>
+          <tr><td class="tname">Domestic freight</td><td>$3,000</td><td>$6,000</td><td class="tdesc">FTL to Saddle Creek DC</td></tr>
+          <tr><td class="tname">Insurance + PPS</td><td>$700</td><td>$2,000</td><td class="tdesc">Endorsement + samples</td></tr>
+          <tr><td class="tname">Contingency (10%)</td><td>$11,930</td><td>$22,320</td><td class="tdesc">Buffer for overruns</td></tr>
+          <tr class="total-row"><td class="tname">Total</td><td class="tprice">$131,230</td><td class="tprice">$245,520</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 5: FINANCIAL - SCENARIOS ===== -->
+  <div class="slide" data-slide="4">
+    <div class="slide-inner">
+      <div class="slabel">Profit/Loss Scenarios</div>
+
+      <table>
+        <thead>
+          <tr><th>Scenario</th><th>Revenue</th><th>Cost</th><th>Net</th><th>Margin</th></tr>
+        </thead>
+        <tbody>
+          <tr style="background: var(--green-bg);"><td class="tname">Best case (low COGS)</td><td>$140,400</td><td>$131,230</td><td style="color: var(--green); font-weight: 600;">+$9,170</td><td>+7%</td></tr>
+          <tr class="rec"><td class="tname">Expected (mid COGS)</td><td>$140,400</td><td>$188,375</td><td style="color: var(--red); font-weight: 600;">-$47,975</td><td>-34%</td></tr>
+          <tr><td class="tname">Worst case (high COGS + overruns)</td><td>$140,400</td><td>$245,520</td><td style="color: var(--red); font-weight: 600;">-$105,120</td><td>-75%</td></tr>
+          <tr><td class="tname">Expected + QC penalty</td><td>$126,360</td><td>$188,375</td><td style="color: var(--red); font-weight: 600;">-$62,015</td><td>-44%</td></tr>
+          <tr><td class="tname">Expected + late penalty (5 days)</td><td>$126,360</td><td>$188,375</td><td style="color: var(--red); font-weight: 600;">-$62,015</td><td>-44%</td></tr>
+          <tr style="background: var(--red-bg);"><td class="tname">Expected + both penalties</td><td>$112,320</td><td>$188,375</td><td style="color: var(--red); font-weight: 600;">-$76,055</td><td>-54%</td></tr>
+        </tbody>
+      </table>
+
+      <div class="grid2" style="margin-top: 20px;">
+        <div class="card" style="border-left: 3px solid var(--red);">
+          <h4>Cash Outflow (Mar-May)</h4>
+          <div class="big" style="color: var(--red);">$131K-$246K</div>
+          <div class="note">Spread over 3 months of production</div>
+        </div>
+        <div class="card" style="border-left: 3px solid var(--green);">
+          <h4>Cash Inflow (~Aug 18)</h4>
+          <div class="big" style="color: var(--green);">$140,400</div>
+          <div class="note">Net 60 after delivery window end</div>
+        </div>
+      </div>
+
+      <div class="callout danger" style="margin-top: 14px;">
+        <strong>Cash Gap:</strong> Current cash ~$50K. Production costs $131K-$246K. Shortfall of <strong>$81K-$196K</strong> must be financed (credit line, personal funds, investor bridge, or IPSY prepayment).
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 6: EXPECTED RETURNS / DTC OUTCOMES ===== -->
+  <div class="slide" data-slide="5">
+    <div class="slide-inner">
+      <div class="slabel">Expected Returns &amp; DTC Outcomes</div>
+
+      <div class="frame">
+        <div class="frame-label">Strategy</div>
+        <div class="frame-q">
+          Drive IPSY recipients to <strong>DTC checkout</strong> (not salon locator). AWARE's salon network is LA-focused, but IPSY ships nationally. DTC captures the full 360K footprint and delivers <strong>80% margins</strong> on converted customers.
+        </div>
+      </div>
+
+      <div class="grid3" style="margin-top: 16px;">
+        <div class="card" style="border-top: 3px solid var(--sage);">
+          <h4>Conservative (0.5%)</h4>
+          <div class="big">1,800</div>
+          <div class="note">DTC conversions</div>
+          <p style="margin-top: 10px;"><strong>Revenue:</strong> $198K</p>
+          <p><strong>Gross profit (80%):</strong> $158K</p>
+        </div>
+        <div class="card" style="border-top: 3px solid var(--green);">
+          <h4>Expected (1%)</h4>
+          <div class="big">3,600</div>
+          <div class="note">DTC conversions</div>
+          <p style="margin-top: 10px;"><strong>Revenue:</strong> $396K</p>
+          <p><strong>Gross profit (80%):</strong> $317K</p>
+        </div>
+        <div class="card" style="border-top: 3px solid var(--gold);">
+          <h4>Optimistic (2%)</h4>
+          <div class="big">7,200</div>
+          <div class="note">DTC conversions</div>
+          <p style="margin-top: 10px;"><strong>Revenue:</strong> $792K</p>
+          <p><strong>Gross profit (80%):</strong> $634K</p>
+        </div>
+      </div>
+
+      <div class="setbar" style="margin-top: 18px;">
+        <div class="setbar-label">Avg DTC Order</div>
+        <div class="setfigs">
+          <div class="sfig"><div class="amt">$110</div><div class="lbl">Per Order</div></div>
+          <div class="sfig"><div class="amt" style="color: var(--gold);">&times;</div><div class="lbl">&nbsp;</div></div>
+          <div class="sfig"><div class="amt">80%</div><div class="lbl">Margin</div></div>
+          <div class="sfig"><div class="amt" style="color: var(--gold);">&times;</div><div class="lbl">&nbsp;</div></div>
+          <div class="sfig"><div class="amt">2.4x</div><div class="lbl">LTV Multiple</div></div>
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top: 14px;">
+        <div class="callout tip">
+          <strong>DTC Conversion Funnel:</strong> Sample insert card with QR code to awarehair.com, email capture for scalp care education series, retarget via Klaviyo flows. No discounting - premium positioning maintained.
+        </div>
+        <div class="callout info">
+          <strong>ROI at 1% Conversion:</strong> Expected deal loss of ~$48K offset by $317K in DTC gross profit = <strong>net positive $269K.</strong> Even at 0.5% conversion, $158K gross profit far exceeds the expected loss.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 7: PRODUCTION TIMELINE ===== -->
+  <div class="slide" data-slide="6">
+    <div class="slide-inner">
+      <div class="slabel">Production Timeline</div>
+
+      <div class="gantt">
+        <div class="gantt-header">
+          <span>Task</span>
+          <span>Mar 3</span><span>Mar 10</span><span>Mar 17</span><span>Mar 24</span>
+          <span>Mar 31</span><span>Apr 7</span><span>Apr 14</span><span>Apr 21</span>
+          <span>Apr 28</span><span>May 5</span><span>May 12</span><span>May 19</span>
+          <span>May 26</span><span>Jun 2</span><span>Jun 9</span><span>Jun 16</span>
+        </div>
+        <div class="gantt-row"><div class="gantt-task">Decision + PPS</div><div class="gantt-bar-container"><div style="grid-column: 1 / 3;" class="gantt-bar red"></div></div></div>
+        <div class="gantt-row"><div class="gantt-task">Tube prod (China)</div><div class="gantt-bar-container"><div style="grid-column: 2 / 5;" class="gantt-bar forest"></div></div></div>
+        <div class="gantt-row"><div class="gantt-task">PPS approval</div><div class="gantt-bar-container"><div style="grid-column: 3 / 5;" class="gantt-bar gold"></div></div></div>
+        <div class="gantt-row"><div class="gantt-task">Ocean freight</div><div class="gantt-bar-container"><div style="grid-column: 5 / 9;" class="gantt-bar blue"></div></div></div>
+        <div class="gantt-row"><div class="gantt-task">Manufacturing</div><div class="gantt-bar-container"><div style="grid-column: 9 / 12;" class="gantt-bar forest"></div></div></div>
+        <div class="gantt-row"><div class="gantt-task">QC + COA</div><div class="gantt-bar-container"><div style="grid-column: 12 / 13;" class="gantt-bar sage"></div></div></div>
+        <div class="gantt-row"><div class="gantt-task">Palletize + Ship</div><div class="gantt-bar-container"><div style="grid-column: 13 / 15;" class="gantt-bar gold"></div></div></div>
+        <div class="gantt-row"><div class="gantt-task">Delivery window</div><div class="gantt-bar-container"><div style="grid-column: 15 / 17;" class="gantt-bar green"></div></div></div>
+      </div>
+
+      <div class="cashflow">
+        <div class="cashflow-title">Cashflow Timeline - When Costs Hit</div>
+        <div class="cf-row">
+          <div class="cf-label">Tubes + packaging<span class="cf-amt">$54K-$90K</span></div>
+          <div class="cf-bar-area">
+            <div class="cf-bar out" style="width: 18%; min-width: 60px;">Mar 3-10</div>
+            <span style="font-size: 10px; color: var(--warm-gray);">50% deposit at order, 50% before ship</span>
+          </div>
+        </div>
+        <div class="cf-row">
+          <div class="cf-label">Ocean freight<span class="cf-amt">$3K-$6K</span></div>
+          <div class="cf-bar-area">
+            <div style="width: 25%;"></div>
+            <div class="cf-bar out" style="width: 12%; min-width: 50px;">Mar 31</div>
+          </div>
+        </div>
+        <div class="cf-row">
+          <div class="cf-label">Contract fill<span class="cf-amt">$54K-$108K</span></div>
+          <div class="cf-bar-area">
+            <div style="width: 50%;"></div>
+            <div class="cf-bar out" style="width: 22%; min-width: 70px;">Apr 28-May 12</div>
+          </div>
+        </div>
+        <div class="cf-row">
+          <div class="cf-label">QC + logistics<span class="cf-amt">$8K-$19K</span></div>
+          <div class="cf-bar-area">
+            <div style="width: 68%;"></div>
+            <div class="cf-bar out" style="width: 18%; min-width: 60px;">May 19-Jun 2</div>
+          </div>
+        </div>
+        <div class="cf-row">
+          <div class="cf-label">IPSY payment<span class="cf-amt">$140,400</span></div>
+          <div class="cf-bar-area">
+            <span style="font-size: 10px; color: var(--warm-gray); flex: 1; text-align: right; padding-right: 8px;">Net 60 after delivery &rarr;</span>
+            <div class="cf-bar in" style="width: 12%; min-width: 80px;">~Aug 18</div>
+          </div>
+        </div>
+        <div class="cf-summary">
+          <div><span class="cf-out">Total out: $131K-$246K</span> (Mar-Jun)</div>
+          <div><span class="cf-in">Total in: $140,400</span> (~Aug 18)</div>
+          <div style="color: var(--red); font-weight: 600;">Cash gap: 3-5 months</div>
+        </div>
+      </div>
+
+      <div class="timeline" style="margin-top: 20px;">
+        <div class="tl-item critical"><div class="week">Now - Feb 28</div><div><strong>Decision deadline.</strong> Sign agreement. Confirm manufacturer. Check IPSY Out List.</div></div>
+        <div class="tl-item active"><div class="week">Mar 3</div><div><strong>Tube production starts</strong> (China). 360K units, 15-20 days.</div></div>
+        <div class="tl-item"><div class="week">Early Mar</div><div><strong>Send 10 PPS to IPSY.</strong> Hand-fill from existing stock. 15-day approval window.</div></div>
+        <div class="tl-item"><div class="week">Mid-Apr</div><div><strong>Tubes arrive.</strong> Ocean freight 25-35 days. Air freight not required.</div></div>
+        <div class="tl-item"><div class="week">Apr-May 10</div><div><strong>Manufacturing.</strong> Fill and seal 360K units. 2-3 weeks.</div></div>
+        <div class="tl-item"><div class="week">May 28-30</div><div><strong>Ship to Saddle Creek DC.</strong> Domestic FTL, 5-7 days transit.</div></div>
+        <div class="tl-item active"><div class="week">June 8-19</div><div><strong>Delivery window.</strong> ~1-2 weeks buffer.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 8: CONTRACT - HIGH RISK ===== -->
+  <div class="slide" data-slide="7">
+    <div class="slide-inner">
+      <div class="slabel">Contract Deep Dive - High Risk Clauses</div>
+
+      <div class="clause">
+        <div class="clause-header">
+          <span class="clause-title">1. Payment Terms (Net 60)</span>
+          <span class="risk-badge medium">Medium</span>
+        </div>
+        <div class="clause-body">
+          <p>IPSY pays 60 days after delivery window close or warehouse receipt, whichever is later. Payment ~<strong>August 18</strong>. Labeled "Co-Op Marketing Fees" not product purchase.</p>
+          <div class="clause-rec"><div class="rec-label">Negotiation</div><strong>Push for Net 30</strong> - moves payment to mid-July, reducing cash gap by $140K for 30 days.</div>
+        </div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-header">
+          <span class="clause-title">2. Late Delivery Penalty</span>
+          <span class="risk-badge high">High</span>
+        </div>
+        <div class="clause-body">
+          <p><strong>2% per business day late, capped at 20%.</strong> Five days late = $14,040 (exceeds expected profit). Ten days late = $28,080.</p>
+          <div class="clause-rec"><div class="rec-label">Negotiation</div><strong>Ask for 5-day grace period</strong> and reduction to 1%/day with 10% cap.</div>
+        </div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-header">
+          <span class="clause-title">3. QC Penalty</span>
+          <span class="risk-badge high">High</span>
+        </div>
+        <div class="clause-body">
+          <p><strong>Flat 10% penalty ($14,040) for ANY non-conforming units.</strong> Binary - no proportional scale. "Non-conforming" not defined. Whether 10 or 10,000 units fail, same penalty.</p>
+          <div class="clause-rec"><div class="rec-label">Negotiation</div><strong>Clarify definition</strong> + push for proportional penalty (only applies if >5% of units fail).</div>
+        </div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-header">
+          <span class="clause-title">6. Indemnification</span>
+          <span class="risk-badge high">High</span>
+        </div>
+        <div class="clause-body">
+          <p><strong>Uncapped liability</strong> for ALL product claims + cross-brand indemnification (other brands in same Glam Bag). One lawsuit could exceed total deal value.</p>
+          <div class="clause-rec"><div class="rec-label">Assessment</div>Standard for industry but significant. Confirm insurance coverage with broker.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 9: CONTRACT - MEDIUM & LOW RISK ===== -->
+  <div class="slide" data-slide="8">
+    <div class="slide-inner">
+      <div class="slabel">Contract Deep Dive - Medium &amp; Low Risk Clauses</div>
+
+      <div class="grid2">
+        <div>
+          <div class="clause">
+            <div class="clause-header"><span class="clause-title">4. Exclusivity</span><span class="risk-badge low">Low</span></div>
+            <div class="clause-body"><p>6 months before + after: no competing subscription boxes (US/CA/MX). Does NOT affect salon, DTC, or retail. <strong>Acceptable as-is.</strong></p></div>
+          </div>
+          <div class="clause">
+            <div class="clause-header"><span class="clause-title">5. Insurance</span><span class="risk-badge resolved">Resolved</span></div>
+            <div class="clause-body"><p>$1M/$2M CGL + $5M umbrella. A.M. Best A- rating. <strong>Already covered</strong> - just add IPSY as additional insured ($500-$1,500).</p></div>
+          </div>
+          <div class="clause">
+            <div class="clause-header"><span class="clause-title">7. IP License</span><span class="risk-badge medium">Medium</span></div>
+            <div class="clause-body"><p>Non-exclusive, worldwide. Survives termination for published content only. Cannot create new content post-termination. <strong>Standard.</strong></p></div>
+          </div>
+          <div class="clause">
+            <div class="clause-header"><span class="clause-title">8. Cancellation</span><span class="risk-badge medium">Medium</span></div>
+            <div class="clause-body"><p>90 days' notice for convenience. Anytime for cause. No reimbursement if costs already incurred. <strong>Request kill fee.</strong></p></div>
+          </div>
+        </div>
+        <div>
+          <div class="clause">
+            <div class="clause-header"><span class="clause-title">9. Right of Offset</span><span class="risk-badge medium">Medium</span></div>
+            <div class="clause-body"><p>IPSY can withhold payments against claimed liabilities. Broad "reasonable determination" language. <strong>Document everything meticulously.</strong></p></div>
+          </div>
+          <div class="clause">
+            <div class="clause-header"><span class="clause-title">10. Recall Costs</span><span class="risk-badge high">High</span></div>
+            <div class="clause-body"><p>100% AWARE - including consumer refunds, replacements, shipping, admin. Standard but significant at 360K scale. <strong>Confirm insurance covers recalls.</strong></p></div>
+          </div>
+          <div class="clause">
+            <div class="clause-header"><span class="clause-title">11. Returns</span><span class="risk-badge medium">Medium</span></div>
+            <div class="clause-body"><p>Undistributed product returned for refund. AWARE pays shipping. Low likelihood - IPSY uses what they order.</p></div>
+          </div>
+          <div class="clause">
+            <div class="clause-header"><span class="clause-title">12-14. Other</span><span class="risk-badge low">Low</span></div>
+            <div class="clause-body"><p><strong>Confidentiality:</strong> 3yr post-term, trade secrets perpetual. <strong>Law:</strong> CA, AAA arbitration SF (favorable). <strong>Termination:</strong> Material breach with cure period.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 10: LOGISTICS ===== -->
+  <div class="slide" data-slide="9">
+    <div class="slide-inner">
+      <div class="slabel">Logistics Requirements (IPSY Routing Guide)</div>
+
+      <div class="grid2">
+        <div class="card">
+          <h4>Pallet Specs</h4>
+          <ul>
+            <li>Wooden standard <strong>48" x 48"</strong></li>
+            <li>Max height: <strong>52 inches</strong></li>
+            <li>Max weight: <strong>1,500 lbs</strong></li>
+            <li>1 SKU per pallet, clear shrink-wrap</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Carton Specs</h4>
+          <ul>
+            <li>1 SKU per carton, max <strong>70 lbs</strong></li>
+            <li>Clear packing tape</li>
+            <li>Labels on <strong>2 sides</strong> (6" x 4")</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Required Documents</h4>
+          <ul>
+            <li>Bill of Lading (BOL)</li>
+            <li>Packing list</li>
+            <li>Certificate of Analysis (COA)</li>
+            <li>MSDS</li>
+            <li>Certificate of Insurance</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Delivery</h4>
+          <ul>
+            <li>Appointment only - Saddle Creek DC</li>
+            <li>North Carolina or Missouri</li>
+            <li>FTL domestic shipping</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid3" style="margin-top: 14px;">
+        <div class="card"><h4>Expiration</h4><p><strong>6+ months</strong> after last day of promotional period.</p></div>
+        <div class="card"><h4>Manufacture Date</h4><p>No more than <strong>12 months</strong> prior to promotional period end.</p></div>
+        <div class="card"><h4>Squeeze Test</h4><p>Tube seams must hold under pressure. Test before mass production.</p></div>
+      </div>
+
+      <div class="callout info" style="margin-top: 14px;">
+        <strong>PPS Process:</strong> Submit 10 sample units to IPSY. 15-day approval window. Mass production must NOT start before PPS approved. Can be hand-filled from existing stock in early March.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 11: RISK ASSESSMENT ===== -->
+  <div class="slide" data-slide="10">
+    <div class="slide-inner">
+      <div class="slabel">Risk Assessment</div>
+
+      <h3 style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;"><span class="risk-badge high" style="font-size: 10px;">High</span></h3>
+      <div class="risk-row"><div class="risk-label"><span class="risk-badge high">Cash</span></div><div class="risk-content"><div class="risk-item"><strong>$81K-$196K shortfall.</strong> Payment 5-6 months after costs begin.<div class="mitigation">Mitigation: Credit line, personal funds, investor bridge, or IPSY prepayment.</div></div></div></div>
+      <div class="risk-row"><div class="risk-label"><span class="risk-badge high">Penalties</span></div><div class="risk-content"><div class="risk-item"><strong>Late (2%/day) + QC (10%) = 30% max exposure ($42K).</strong> Wipes out all margin and then some.<div class="mitigation">Mitigation: Negotiate reduced penalties. Build timeline buffer. Rigorous QC.</div></div></div></div>
+      <div class="risk-row"><div class="risk-label"><span class="risk-badge high">Scale</span></div><div class="risk-content"><div class="risk-item"><strong>360K units = largest production run ever.</strong> Risks in consistency, capacity, supply.<div class="mitigation">Mitigation: Confirm manufacturer capacity. Staged QC during production.</div></div></div></div>
+      <div class="risk-row"><div class="risk-label"><span class="risk-badge high">Liability</span></div><div class="risk-content"><div class="risk-item"><strong>Uncapped indemnification</strong> + cross-brand liability on 360K consumers.<div class="mitigation">Mitigation: Confirm insurance scope with broker.</div></div></div></div>
+
+      <h3 style="display: flex; align-items: center; gap: 10px; margin-top: 16px; margin-bottom: 8px;"><span class="risk-badge medium" style="font-size: 10px;">Medium</span></h3>
+      <div class="risk-row"><div class="risk-label"><span class="risk-badge medium">PPS</span></div><div class="risk-content"><div class="risk-item">Rejection resets 15-day clock, compressing timeline.</div></div></div>
+      <div class="risk-row"><div class="risk-label"><span class="risk-badge medium">Freight</span></div><div class="risk-content"><div class="risk-item">Ocean delays +1-2 weeks possible from port congestion/weather.</div></div></div>
+      <div class="risk-row"><div class="risk-label"><span class="risk-badge medium">Offset</span></div><div class="risk-content"><div class="risk-item">IPSY can withhold payments with broad discretion.</div></div></div>
+      <div class="risk-row"><div class="risk-label"><span class="risk-badge medium">Cancel</span></div><div class="risk-content"><div class="risk-item">IPSY can cancel for convenience (90 days) with no cost reimbursement.</div></div></div>
+
+      <h3 style="display: flex; align-items: center; gap: 10px; margin-top: 16px; margin-bottom: 8px;"><span class="risk-badge low" style="font-size: 10px;">Low</span></h3>
+      <div class="risk-row"><div class="risk-label"><span class="risk-badge low">Other</span></div><div class="risk-content"><div class="risk-item">Exclusivity (subscription boxes only, not salon/DTC), IP license (standard), undistributed product returns (unlikely).</div></div></div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 12: NEGOTIATION STRATEGY ===== -->
+  <div class="slide" data-slide="11">
+    <div class="slide-inner">
+      <div class="slabel">Negotiation Strategy</div>
+      <p style="margin-bottom: 16px;">Ranked by impact. Even securing one or two of these significantly improves the deal.</p>
+
+      <div class="neg-card p1">
+        <div class="neg-header"><span class="neg-title">Net 30 Instead of Net 60</span><span class="neg-priority">Priority 1</span></div>
+        <div class="neg-body">
+          <p><strong>Biggest impact.</strong> Moves payment from ~Aug 18 to ~Jul 19. Reduces cash gap by $140K for 30 days.</p>
+          <div class="neg-grid">
+            <div><div class="neg-sub">Ask</div><p>"Given significant upfront capital, we'd like Net 30 to manage production cash flow."</p></div>
+            <div><div class="neg-sub">Fallback</div><p>Milestone payment (30% at PPS approval, 70% Net 30 after delivery). Or Net 45 compromise.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="neg-card p2">
+        <div class="neg-header"><span class="neg-title">Higher Unit Price ($0.55-$0.70)</span><span class="neg-priority">Priority 2</span></div>
+        <div class="neg-body">
+          <p>All-in cost is $0.36-$0.68/unit. At $0.55: revenue = $198,000 (reduces expected loss significantly). At $0.68: revenue = $244,800 (approximately breakeven at high COGS).</p>
+          <div class="neg-grid">
+            <div><div class="neg-sub">Ask</div><p>"All-in cost is $0.47-$0.68/unit. $0.68 is breakeven. We need $0.55 minimum to make this viable as a brand investment."</p></div>
+            <div><div class="neg-sub">Fallback</div><p>Accept $0.55 minimum. Below that, losses exceed what brand exposure can justify.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="neg-card p3">
+        <div class="neg-header"><span class="neg-title">QC Penalty Clarification</span><span class="neg-priority">Priority 3</span></div>
+        <div class="neg-body">
+          <p>Current: binary 10% for ANY non-conforming units. Request proportional penalty (>5% failure threshold) + clear definition of "non-conforming." Exclude minor cosmetic issues.</p>
+        </div>
+      </div>
+
+      <div class="neg-card p4">
+        <div class="neg-header"><span class="neg-title">Late Penalty Grace Period</span><span class="neg-priority">Priority 4</span></div>
+        <div class="neg-body">
+          <p>Ask: 5-day grace period + 1%/day with 10% cap. Fallback: accept 2%/day with 3-day grace and 10% cap (vs 20%).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 13: RECOMMENDATION ===== -->
+  <div class="slide" data-slide="12">
+    <div class="slide-inner">
+      <div class="slabel">Recommendation</div>
+
+      <div class="outcomes">
+        <div class="ocard rec-a">
+          <h4>Option A - Proceed As-Is</h4>
+          <p>Expected loss: ~$48K (-34% margin). Best case is slightly profitable at low COGS. Requires $81K-$196K bridge. However, DTC upside at $110 AOV could offset losses significantly.</p>
+        </div>
+        <div class="ocard rec-b">
+          <h4>Option B - Negotiate Then Proceed</h4>
+          <p>Push for Net 30, higher price, QC clarification, penalty reduction. Even <strong>one win</strong> significantly improves the deal. Net 30 alone solves the biggest cash flow concern.</p>
+          <div class="rec-tag">Recommended</div>
+        </div>
+        <div class="ocard rec-c">
+          <h4>Option C - Decline</h4>
+          <p>Valid if: cash flow can't be bridged, IPSY refuses all negotiation, ingredient Out List conflict, or manufacturer can't commit.</p>
+        </div>
+      </div>
+
+      <div class="qbox" style="margin-top: 24px;">
+        <p>The three questions that determine this deal: <strong>1)</strong> Can we bridge the $81K-$196K cash gap for 3-5 months? <strong>2)</strong> Can we absorb uncapped indemnification risk on 360K units? <strong>3)</strong> Does the DTC upside ($158K-$634K gross profit at $110 AOV) justify the deal risk?</p>
+      </div>
+
+      <div class="callout danger" style="margin-top: 16px;">
+        <strong>Walk-Away Conditions:</strong> Cash gap unbridgeable. IPSY refuses ALL negotiation. Formula conflicts with Out List. Manufacturer can't commit to April-May window.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 14: NEXT STEPS ===== -->
+  <div class="slide" data-slide="13">
+    <div class="slide-inner">
+      <div class="slabel">Immediate Next Steps</div>
+
+      <h3>This Week (by Feb 28) - Deal-Breakers</h3>
+      <ul class="checks">
+        <li><div class="bx urgent"></div> Cross-reference leave-in formula against IPSY Out List</li>
+        <li><div class="bx urgent"></div> Confirm manufacturer capacity for 360K units (April-May)</li>
+        <li><div class="bx urgent"></div> Identify cash flow source for $81K-$196K bridge</li>
+        <li><div class="bx urgent"></div> Confirm PPS can be hand-filled from existing stock</li>
+        <li><div class="bx"></div> Send negotiation points to IPSY (Net 30, price, QC, penalties)</li>
+      </ul>
+
+      <h3>First Week of March</h3>
+      <ul class="checks">
+        <li><div class="bx"></div> Place tube order (China production starts Mar 3)</li>
+        <li><div class="bx"></div> Send 10 PPS units to IPSY</li>
+        <li><div class="bx"></div> Prepare MSDS documentation</li>
+        <li><div class="bx"></div> Add IPSY as additional insured</li>
+        <li><div class="bx"></div> Secure ingredient supply for 360K batch</li>
+        <li><div class="bx"></div> Sign agreement (if terms acceptable)</li>
+      </ul>
+
+      <h3>Key Contacts</h3>
+      <div class="grid3">
+        <div class="card"><h4>Suppliers</h4><ul><li>China tube supplier</li><li>Contract manufacturer</li><li>Freight forwarder</li></ul></div>
+        <div class="card"><h4>Partners</h4><ul><li>IPSY contact</li><li>Insurance broker</li></ul></div>
+        <div class="card"><h4>Finance</h4><ul><li>Credit line / investor</li><li>Cash flow planning</li></ul></div>
+      </div>
+
+      <div class="callout warn" style="margin-top: 14px;">
+        <strong>Owner assignments TBD.</strong> Jade, Tina, and David to divide tasks during alignment meeting. Every day of delay compresses the timeline buffer.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 15: CLOSING ===== -->
+  <div class="slide title-slide" data-slide="14">
+    <div class="slide-inner">
+      <h1 style="font-size: 36px; letter-spacing: 6px;">Questions &amp;<br>Discussion</h1>
+      <div class="subtitle" style="margin-top: 16px;">IPSY Glam Bag Partnership - <strong>360K Units</strong></div>
+      <div class="goal" style="margin-top: 32px;">
+        Key decisions: cash flow financing, negotiation priorities, and go/no-go based on deal-breaker checks.
+      </div>
+      <div class="date" style="margin-top: 24px;">AWARE Hair &middot; Confidential &middot; February 2026</div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE NAVIGATION ===== -->
+  <nav class="slide-nav">
+    <div class="nav-left">
+      <button id="prevBtn" onclick="navigate(-1)">&#8592; Prev</button>
+      <button id="nextBtn" onclick="navigate(1)">Next &#8594;</button>
+    </div>
+    <div class="slide-dots" id="dots"></div>
+    <div class="nav-right">
+      <span class="slide-counter" id="counter">1 / 15</span>
+    </div>
+  </nav>
+
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.getElementById('dots');
+  const counter = document.getElementById('counter');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  let current = 0;
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goTo(i);
+    dots.appendChild(dot);
+  });
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dots.children[current].classList.remove('active');
+    current = Math.max(0, Math.min(n, slides.length - 1));
+    slides[current].classList.add('active');
+    dots.children[current].classList.add('active');
+    counter.textContent = (current + 1) + ' / ' + slides.length;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === slides.length - 1;
+    // Scroll to top of slide if it has overflow
+    slides[current].scrollTop = 0;
+  }
+
+  function navigate(dir) { goTo(current + dir); }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); navigate(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    if (e.key === 'End') { e.preventDefault(); goTo(slides.length - 1); }
+  });
+
+  // Initialize
+  goTo(0);
+</script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Session Journal</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface-hover: #1c2129;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --text-muted: #8b949e;
+    --text-bright: #f0f6fc;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --yellow: #d29922;
+    --red: #f85149;
+    --purple: #bc8cff;
+    --orange: #d18616;
+    --cyan: #39d2c0;
+    --pink: #f778ba;
+    /* Heatmap warm gradient */
+    --heat-0: #21262d;
+    --heat-1: #5c3d1a;
+    --heat-2: #8a5a1e;
+    --heat-3: #c87f24;
+    --heat-4: #f0a030;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    padding: 16px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow-x: hidden;
+  }
+
+  /* ---- Header bar (40px) ---- */
+  .header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .week-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .week-nav button {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 2px 10px;
+    font-size: 14px;
+    transition: all 0.15s;
+  }
+
+  .week-nav button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .week-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-bright);
+    min-width: 180px;
+    text-align: center;
+  }
+
+  .this-week-btn {
+    font-size: 12px;
+    padding: 3px 10px;
+    background: rgba(88, 166, 255, 0.1);
+    border: 1px solid rgba(88, 166, 255, 0.25);
+    color: var(--accent);
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 8px;
+  }
+
+  .this-week-btn:hover { background: rgba(88, 166, 255, 0.2); }
+  .this-week-btn.hidden { display: none; }
+
+  .header-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* ---- Workstream Heatmap ---- */
+  .heatmap-section {
+    margin-bottom: 12px;
+  }
+
+  .heatmap-grid {
+    display: grid;
+    grid-template-columns: 90px repeat(7, 1fr);
+    gap: 3px;
+  }
+
+  .heatmap-corner {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 4px;
+  }
+
+  .heatmap-day-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 2px 0 4px;
+    font-weight: 600;
+  }
+
+  .heatmap-day-label .day-date {
+    font-size: 9px;
+    font-weight: 400;
+    display: block;
+    opacity: 0.7;
+  }
+
+  .heatmap-row-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    padding-right: 8px;
+    height: 22px;
+  }
+
+  .heatmap-cell {
+    height: 22px;
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: transparent;
+  }
+
+  .heatmap-cell:hover {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+    color: var(--text-bright);
+  }
+
+  .heatmap-cell.active { cursor: pointer; }
+  .heatmap-cell.selected {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+    color: var(--text-bright);
+  }
+
+  .heatmap-cell.heat-0 { background: var(--heat-0); }
+  .heatmap-cell.heat-1 { background: var(--heat-1); }
+  .heatmap-cell.heat-2 { background: var(--heat-2); }
+  .heatmap-cell.heat-3 { background: var(--heat-3); }
+  .heatmap-cell.heat-4 { background: var(--heat-4); }
+
+  /* Row label colors match workstream tags */
+  .heatmap-row-label.ws-sales { color: var(--green); }
+  .heatmap-row-label.ws-email { color: var(--accent); }
+  .heatmap-row-label.ws-seo { color: var(--purple); }
+  .heatmap-row-label.ws-marketing { color: var(--pink); }
+  .heatmap-row-label.ws-finance { color: var(--yellow); }
+  .heatmap-row-label.ws-theme { color: var(--orange); }
+  .heatmap-row-label.ws-ops { color: var(--text-muted); }
+  .heatmap-row-label.ws-distributor { color: var(--cyan); }
+  .heatmap-row-label.ws-product { color: #e0a0ff; }
+
+  .heatmap-filter-notice {
+    display: none;
+    padding: 6px 12px;
+    margin-top: 8px;
+    background: rgba(88, 166, 255, 0.08);
+    border: 1px solid rgba(88, 166, 255, 0.2);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  .heatmap-filter-notice .clear-filter {
+    cursor: pointer;
+    margin-left: 8px;
+    text-decoration: underline;
+    opacity: 0.8;
+  }
+
+  .heatmap-filter-notice .clear-filter:hover { opacity: 1; }
+
+  /* ---- Dropped Threads (aging) ---- */
+  .threads-section {
+    margin-bottom: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .threads-header {
+    padding: 8px 14px;
+    background: rgba(248, 81, 73, 0.06);
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--red);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .threads-header:hover { background: rgba(248, 81, 73, 0.1); }
+
+  .threads-body {
+    max-height: 170px;
+    overflow-y: auto;
+  }
+
+  .threads-body.collapsed { display: none; }
+
+  .thread-row {
+    display: grid;
+    grid-template-columns: 1fr 60px 80px 70px 40px;
+    align-items: center;
+    padding: 5px 14px;
+    font-size: 12px;
+    border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+    transition: background 0.12s;
+  }
+
+  .thread-row:last-child { border-bottom: none; }
+  .thread-row:hover { background: var(--surface-hover); }
+
+  .thread-task {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 8px;
+  }
+
+  .thread-age {
+    font-size: 11px;
+    font-weight: 600;
+    text-align: right;
+    padding-right: 8px;
+  }
+
+  .thread-age.age-red { color: var(--red); }
+  .thread-age.age-yellow { color: var(--yellow); }
+  .thread-age.age-ok { color: var(--text-muted); }
+
+  .thread-date {
+    font-size: 10px;
+    font-family: 'SF Mono', Monaco, monospace;
+    color: var(--text-muted);
+    text-align: right;
+    padding-right: 8px;
+  }
+
+  .thread-ws {
+    display: flex;
+    justify-content: center;
+  }
+
+  .thread-resume {
+    text-align: center;
+  }
+
+  .thread-resume button {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: rgba(88, 166, 255, 0.1);
+    border: 1px solid rgba(88, 166, 255, 0.2);
+    color: var(--accent);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .thread-resume button:hover {
+    background: rgba(88, 166, 255, 0.2);
+  }
+
+  .threads-expand {
+    padding: 6px 14px;
+    font-size: 11px;
+    color: var(--text-muted);
+    cursor: pointer;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+
+  .threads-expand:hover { color: var(--accent); background: var(--surface-hover); }
+  .threads-expand.hidden { display: none; }
+
+  /* ---- Week Summary Stats ---- */
+  .week-stats {
+    display: flex;
+    gap: 24px;
+    padding: 10px 16px;
+    margin-bottom: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .week-stats .stat-value {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ---- Daily Detail Accordion ---- */
+  .daily-section { margin-bottom: 16px; }
+
+  .day-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+
+  .day-card.nav-focus { border-color: var(--accent); }
+
+  .day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 14px;
+    background: rgba(88, 166, 255, 0.04);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+    font-size: 13px;
+  }
+
+  .day-header:hover { background: rgba(88, 166, 255, 0.08); }
+
+  .day-date { font-weight: 600; color: var(--text-bright); }
+  .day-today { color: var(--accent); font-size: 11px; margin-left: 6px; }
+
+  .day-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    gap: 14px;
+  }
+
+  .day-body { padding: 0; }
+  .day-body.collapsed { display: none; }
+
+  .day-workstreams {
+    padding: 5px 14px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+    background: rgba(88, 166, 255, 0.02);
+  }
+
+  /* Workstream tags */
+  .ws-tag {
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .ws-sales { background: rgba(63, 185, 80, 0.12); color: var(--green); border: 1px solid rgba(63, 185, 80, 0.2); }
+  .ws-email { background: rgba(88, 166, 255, 0.12); color: var(--accent); border: 1px solid rgba(88, 166, 255, 0.2); }
+  .ws-seo { background: rgba(188, 140, 255, 0.12); color: var(--purple); border: 1px solid rgba(188, 140, 255, 0.2); }
+  .ws-marketing { background: rgba(247, 120, 186, 0.12); color: var(--pink); border: 1px solid rgba(247, 120, 186, 0.2); }
+  .ws-finance { background: rgba(210, 153, 34, 0.12); color: var(--yellow); border: 1px solid rgba(210, 153, 34, 0.2); }
+  .ws-theme { background: rgba(209, 134, 22, 0.12); color: var(--orange); border: 1px solid rgba(209, 134, 22, 0.2); }
+  .ws-ops { background: rgba(139, 148, 158, 0.12); color: var(--text-muted); border: 1px solid rgba(139, 148, 158, 0.2); }
+  .ws-distributor { background: rgba(57, 210, 192, 0.12); color: var(--cyan); border: 1px solid rgba(57, 210, 192, 0.2); }
+  .ws-product { background: rgba(224, 160, 255, 0.12); color: #e0a0ff; border: 1px solid rgba(224, 160, 255, 0.2); }
+
+  /* Session entries */
+  .session-entry {
+    padding: 8px 14px;
+    border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+    font-size: 12px;
+  }
+
+  .session-entry:last-child { border-bottom: none; }
+
+  .session-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .session-time {
+    font-family: 'SF Mono', Monaco, monospace;
+    font-size: 11px;
+    color: var(--accent);
+    min-width: 42px;
+  }
+
+  .session-duration {
+    font-size: 10px;
+    color: var(--text-muted);
+    background: rgba(139, 148, 158, 0.1);
+    padding: 0px 6px;
+    border-radius: 8px;
+  }
+
+  .session-task-count {
+    font-size: 10px;
+    color: var(--green);
+    background: rgba(63, 185, 80, 0.12);
+    padding: 0px 6px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+
+  .session-id {
+    font-family: 'SF Mono', Monaco, monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  .session-summary {
+    color: var(--text);
+    line-height: 1.5;
+    padding-left: 50px;
+  }
+
+  .session-details {
+    padding-left: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 4px;
+  }
+
+  .tag {
+    font-size: 10px;
+    padding: 1px 7px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    position: relative;
+  }
+
+  .tag-completed { background: rgba(63, 185, 80, 0.12); color: var(--green); border: 1px solid rgba(63, 185, 80, 0.2); }
+  .tag-progress { background: rgba(210, 153, 34, 0.12); color: var(--yellow); border: 1px solid rgba(210, 153, 34, 0.2); }
+  .tag-files { background: rgba(188, 140, 255, 0.12); color: var(--purple); border: 1px solid rgba(188, 140, 255, 0.2); }
+  .tag-decision { background: rgba(209, 134, 22, 0.12); color: var(--orange); border: 1px solid rgba(209, 134, 22, 0.2); }
+
+  /* Tooltip on hover */
+  .tag .tooltip-content {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 11px;
+    min-width: 180px;
+    max-width: 350px;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    white-space: normal;
+  }
+
+  .tag:hover .tooltip-content { display: block; }
+
+  .tooltip-content li {
+    padding: 1px 0;
+    font-family: 'SF Mono', Monaco, monospace;
+    font-size: 10px;
+    list-style: none;
+    color: var(--text-muted);
+  }
+
+  /* Quick sessions group */
+  .quick-sessions {
+    padding: 5px 14px;
+    border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-style: italic;
+    cursor: pointer;
+  }
+
+  .quick-sessions:hover { background: var(--surface-hover); }
+  .quick-sessions-detail { display: none; font-style: normal; }
+  .quick-sessions-detail.expanded { display: block; margin-top: 4px; }
+
+  /* Copied toast */
+  .copied-toast {
+    position: fixed;
+    bottom: 40px;
+    right: 20px;
+    background: var(--green);
+    color: var(--bg);
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .copied-toast.visible { opacity: 1; }
+
+  /* Keyboard hint */
+  .keyboard-hint {
+    position: fixed;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: var(--text-muted);
+    opacity: 0.5;
+  }
+
+  .keyboard-hint kbd {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0 4px;
+    font-family: inherit;
+    font-size: 10px;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+  }
+
+  .empty-state h2 { font-size: 15px; margin-bottom: 6px; color: var(--text); }
+
+  .loading { text-align: center; padding: 30px; color: var(--text-muted); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<!-- Header bar -->
+<div class="header-bar">
+  <div class="week-nav">
+    <button onclick="shiftWeek(-1)" title="Previous week">&larr;</button>
+    <span class="week-label" id="week-label">Week of ...</span>
+    <button onclick="shiftWeek(1)" title="Next week">&rarr;</button>
+    <button class="this-week-btn" id="this-week-btn" onclick="goThisWeek()">This Week</button>
+  </div>
+  <span class="header-meta" id="header-meta"></span>
+</div>
+
+<!-- Heatmap -->
+<div class="heatmap-section">
+  <div class="heatmap-grid" id="heatmap-grid"></div>
+  <div class="heatmap-filter-notice" id="heatmap-filter-notice">
+    Filtered: <span id="filter-label"></span>
+    <span class="clear-filter" onclick="clearFilter()">clear</span>
+  </div>
+</div>
+
+<!-- Dropped Threads -->
+<div class="threads-section">
+  <div class="threads-header" onclick="toggleThreads()">
+    <span id="threads-title">Dropped Threads</span>
+    <span style="font-size: 11px; font-weight: normal; color: var(--text-muted)">aging, oldest first</span>
+  </div>
+  <div class="threads-body" id="threads-body"></div>
+  <div class="threads-expand hidden" id="threads-expand" onclick="expandAllThreads()">Show all</div>
+</div>
+
+<!-- Week Stats -->
+<div class="week-stats" id="week-stats">
+  <span>Sessions: <span class="stat-value" id="stat-sessions">-</span></span>
+  <span>Active time: <span class="stat-value" id="stat-time">-</span></span>
+  <span>Tasks completed: <span class="stat-value" id="stat-tasks">-</span></span>
+  <span>Files changed: <span class="stat-value" id="stat-files">-</span></span>
+</div>
+
+<!-- Daily Detail -->
+<div class="daily-section" id="daily-section"></div>
+
+<!-- Keyboard hints -->
+<div class="keyboard-hint">
+  <kbd>j</kbd>/<kbd>k</kbd> nav days &nbsp;
+  <kbd>d</kbd> toggle &nbsp;
+  <kbd>r</kbd> refresh &nbsp;
+  <kbd>esc</kbd> collapse
+</div>
+
+<script>
+// ---- State ----
+let allDays = [];
+let allDroppedThreads = [];
+let weekOffset = 0; // 0 = this week, -1 = last week, etc.
+let filterDay = null; // date string, or null
+let filterWS = null; // workstream string, or null
+let navIndex = -1; // keyboard nav index for day cards
+let threadsExpanded = false;
+const WORKSTREAMS = ['sales', 'email', 'seo', 'marketing', 'finance', 'theme', 'ops', 'distributor', 'product'];
+
+// ---- Utilities ----
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+function getToday() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function getMonday(offset) {
+  const d = new Date();
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Monday
+  d.setDate(diff + (offset * 7));
+  return d;
+}
+
+function formatDate(d) {
+  return d.toISOString().slice(0, 10);
+}
+
+function daysBetween(dateStr1, dateStr2) {
+  const d1 = new Date(dateStr1 + 'T12:00:00');
+  const d2 = new Date(dateStr2 + 'T12:00:00');
+  return Math.round((d2 - d1) / 86400000);
+}
+
+function getWeekDays(offset) {
+  const monday = getMonday(offset);
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    days.push(formatDate(d));
+  }
+  return days;
+}
+
+const DAY_ABBR = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+function copyToClipboard(text, event) {
+  event?.stopPropagation();
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Copied to clipboard');
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('Copied to clipboard');
+  });
+}
+
+function showToast(msg) {
+  let toast = document.querySelector('.copied-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.className = 'copied-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.classList.add('visible');
+  setTimeout(() => toast.classList.remove('visible'), 1500);
+}
+
+// ---- Data Loading ----
+async function loadJournal() {
+  try {
+    let raw;
+    if (window.__JOURNAL_DATA__) {
+      raw = window.__JOURNAL_DATA__;
+    } else {
+      const resp = await fetch('journal-index.json');
+      if (!resp.ok) throw new Error('No journal data found.');
+      raw = await resp.json();
+    }
+
+    if (Array.isArray(raw)) {
+      allDays = raw;
+      allDroppedThreads = [];
+    } else {
+      allDays = raw.days || [];
+      allDroppedThreads = raw.dropped_threads || [];
+    }
+
+    render();
+  } catch (e) {
+    document.getElementById('daily-section').innerHTML = `
+      <div class="empty-state">
+        <h2>No journal data loaded</h2>
+        <p style="margin-bottom: 8px">${e.message}</p>
+        <p style="font-size: 12px">
+          Run <code style="background: var(--surface); padding: 2px 6px; border-radius: 3px;">node assistant/journal/build-index.mjs</code> to build, then open <code style="background: var(--surface); padding: 2px 6px; border-radius: 3px;">dashboard-built.html</code>.
+        </p>
+      </div>
+    `;
+  }
+}
+
+// ---- Top-level render ----
+function render() {
+  renderHeader();
+  renderHeatmap();
+  renderDroppedThreads();
+  renderWeekStats();
+  renderDailyDetail();
+}
+
+// ---- Header ----
+function renderHeader() {
+  const weekDays = getWeekDays(weekOffset);
+  const mon = new Date(weekDays[0] + 'T12:00:00');
+  const label = `Week of ${mon.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+  document.getElementById('week-label').textContent = label;
+
+  // Show/hide "This Week" button
+  const btn = document.getElementById('this-week-btn');
+  btn.classList.toggle('hidden', weekOffset === 0);
+
+  // Built timestamp
+  const meta = document.getElementById('header-meta');
+  const builtAt = window.__JOURNAL_DATA__?.built_at;
+  if (builtAt) {
+    meta.textContent = `Built: ${builtAt}`;
+  } else {
+    meta.textContent = `${allDays.length} days loaded`;
+  }
+}
+
+// ---- Heatmap ----
+function renderHeatmap() {
+  const grid = document.getElementById('heatmap-grid');
+  const weekDays = getWeekDays(weekOffset);
+  const today = getToday();
+
+  // Build lookup: date -> { workstream -> session count }
+  const lookup = {};
+  for (const day of allDays) {
+    if (!weekDays.includes(day.date)) continue;
+    const wsMap = {};
+    for (const s of day.sessions) {
+      const wsList = s.workstreams
+        ? s.workstreams.split(',').map(w => w.trim()).filter(Boolean)
+        : [];
+      for (const ws of wsList) {
+        wsMap[ws] = (wsMap[ws] || 0) + 1;
+      }
+      // Sessions with no workstream still count for the day but not for specific rows
+    }
+    lookup[day.date] = wsMap;
+  }
+
+  let html = '';
+
+  // Top row: corner + 7 day labels
+  html += '<div class="heatmap-corner"></div>';
+  for (let i = 0; i < 7; i++) {
+    const isToday = weekDays[i] === today;
+    const dateObj = new Date(weekDays[i] + 'T12:00:00');
+    const dayNum = dateObj.getDate();
+    html += `<div class="heatmap-day-label" style="${isToday ? 'color: var(--accent);' : ''}">
+      ${DAY_ABBR[i]}
+      <span class="day-date">${dayNum}</span>
+    </div>`;
+  }
+
+  // Rows: one per workstream
+  for (const ws of WORKSTREAMS) {
+    html += `<div class="heatmap-row-label ws-${ws}">${ws}</div>`;
+    for (let i = 0; i < 7; i++) {
+      const dateStr = weekDays[i];
+      const count = lookup[dateStr]?.[ws] || 0;
+      const heatClass = count === 0 ? 'heat-0'
+        : count === 1 ? 'heat-1'
+        : count === 2 ? 'heat-2'
+        : count === 3 ? 'heat-3'
+        : 'heat-4';
+      const isSelected = filterDay === dateStr && filterWS === ws;
+      const isFuture = dateStr > today;
+      html += `<div class="heatmap-cell ${heatClass}${count > 0 ? ' active' : ''}${isSelected ? ' selected' : ''}${isFuture ? '' : ''}"
+        onclick="toggleHeatmapFilter('${dateStr}', '${ws}')"
+        title="${ws}: ${count} session${count !== 1 ? 's' : ''} on ${dateStr}">${count > 0 ? count : ''}</div>`;
+    }
+  }
+
+  grid.innerHTML = html;
+
+  // Filter notice
+  const notice = document.getElementById('heatmap-filter-notice');
+  if (filterDay && filterWS) {
+    notice.style.display = 'block';
+    document.getElementById('filter-label').textContent = `${filterWS} on ${filterDay}`;
+  } else {
+    notice.style.display = 'none';
+  }
+}
+
+function toggleHeatmapFilter(dateStr, ws) {
+  if (filterDay === dateStr && filterWS === ws) {
+    clearFilter();
+  } else {
+    filterDay = dateStr;
+    filterWS = ws;
+    render();
+  }
+}
+
+function clearFilter() {
+  filterDay = null;
+  filterWS = null;
+  render();
+}
+
+// ---- Dropped Threads ----
+function renderDroppedThreads() {
+  const body = document.getElementById('threads-body');
+  const expandBtn = document.getElementById('threads-expand');
+  const today = getToday();
+
+  if (allDroppedThreads.length === 0) {
+    document.querySelector('.threads-section').style.display = 'none';
+    return;
+  }
+  document.querySelector('.threads-section').style.display = '';
+
+  // Compute age for each thread and sort oldest first
+  const threadsWithAge = allDroppedThreads.map(t => {
+    const lastSession = t.sessions?.[t.sessions.length - 1];
+    const lastDate = lastSession?.date || today;
+    const age = daysBetween(lastDate, today);
+    // Try to infer workstream from last session
+    const ws = lastSession?.workstreams
+      ? lastSession.workstreams.split(',')[0]?.trim()
+      : '';
+    return { ...t, age, lastDate, ws };
+  }).sort((a, b) => b.age - a.age);
+
+  document.getElementById('threads-title').textContent = `Dropped Threads (${threadsWithAge.length})`;
+
+  const maxShow = threadsExpanded ? threadsWithAge.length : Math.min(10, threadsWithAge.length);
+  let html = '';
+
+  for (let i = 0; i < maxShow; i++) {
+    const t = threadsWithAge[i];
+    const ageClass = t.age > 7 ? 'age-red' : t.age >= 3 ? 'age-yellow' : 'age-ok';
+    const ageLabel = t.age === 0 ? 'today' : t.age === 1 ? '1d' : `${t.age}d`;
+    const prompt = t.resume_prompt || buildFallbackPrompt(t);
+
+    html += `<div class="thread-row">
+      <span class="thread-task" title="${escapeHtml(t.task)}">${escapeHtml(t.task)}</span>
+      <span class="thread-age ${ageClass}">${ageLabel} ago</span>
+      <span class="thread-date">${t.lastDate}</span>
+      <span class="thread-ws">${t.ws ? `<span class="ws-tag ws-${t.ws}">${t.ws}</span>` : ''}</span>
+      <span class="thread-resume"><button onclick="copyToClipboard(${JSON.stringify(prompt).replace(/"/g, '&quot;')}, event)" title="Copy resume prompt">Copy</button></span>
+    </div>`;
+  }
+
+  body.innerHTML = html;
+
+  if (threadsWithAge.length > 10 && !threadsExpanded) {
+    expandBtn.textContent = `Show all ${threadsWithAge.length} threads`;
+    expandBtn.classList.remove('hidden');
+  } else {
+    expandBtn.classList.add('hidden');
+  }
+}
+
+function buildFallbackPrompt(thread) {
+  const parts = [`I need to continue work on: "${thread.task}"`];
+  const latest = thread.sessions?.[thread.sessions.length - 1];
+  if (latest?.summary) parts.push(`\nLast session context: ${latest.summary}`);
+  parts.push('\nPlease help me pick up where I left off. Start by reviewing the current state of the relevant files, then suggest what to do next.');
+  return parts.join('\n');
+}
+
+function toggleThreads() {
+  document.getElementById('threads-body').classList.toggle('collapsed');
+}
+
+function expandAllThreads() {
+  threadsExpanded = true;
+  renderDroppedThreads();
+}
+
+// ---- Week Stats ----
+function renderWeekStats() {
+  const weekDays = getWeekDays(weekOffset);
+  const weekData = allDays.filter(d => weekDays.includes(d.date));
+
+  let sessions = 0, minutes = 0, tasks = 0, files = 0;
+  for (const day of weekData) {
+    for (const s of day.sessions) {
+      sessions++;
+      const d = parseInt(s.duration_min);
+      if (!isNaN(d)) minutes += d;
+      tasks += (s.tasks_completed?.length || 0);
+      files += (s.files_changed?.length || 0);
+    }
+  }
+
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+
+  document.getElementById('stat-sessions').textContent = sessions;
+  document.getElementById('stat-time').textContent = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+  document.getElementById('stat-tasks').textContent = tasks;
+  document.getElementById('stat-files').textContent = files;
+}
+
+// ---- Daily Detail ----
+function renderDailyDetail() {
+  const container = document.getElementById('daily-section');
+  const weekDays = getWeekDays(weekOffset);
+  const today = getToday();
+
+  // Get days for this week, sorted most recent first
+  let weekData = allDays
+    .filter(d => weekDays.includes(d.date))
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  if (weekData.length === 0) {
+    container.innerHTML = '<div class="empty-state"><h2>No sessions this week</h2><p>Navigate to a week with activity.</p></div>';
+    return;
+  }
+
+  let html = '';
+  for (let dayIdx = 0; dayIdx < weekData.length; dayIdx++) {
+    const day = weekData[dayIdx];
+    const isToday = day.date === today;
+    const dayOfWeek = new Date(day.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short' });
+
+    // Apply heatmap filter
+    let sessionsToShow = day.sessions;
+    if (filterDay && filterWS) {
+      if (day.date !== filterDay) continue;
+      sessionsToShow = day.sessions.filter(s => {
+        const ws = s.workstreams ? s.workstreams.split(',').map(w => w.trim()) : [];
+        return ws.includes(filterWS);
+      });
+      if (sessionsToShow.length === 0) continue;
+    }
+
+    // Separate substantive from quick sessions
+    const substantive = [];
+    const quick = [];
+    for (const s of sessionsToShow) {
+      const dur = parseInt(s.duration_min);
+      const hasWork = (s.tasks_completed?.length || 0) > 0 || (s.files_changed?.length || 0) > 0;
+      if (!hasWork && !isNaN(dur) && dur <= 5) {
+        quick.push(s);
+      } else {
+        substantive.push(s);
+      }
+    }
+
+    const totalMin = sessionsToShow.reduce((sum, s) => {
+      const d = parseInt(s.duration_min);
+      return sum + (isNaN(d) ? 0 : d);
+    }, 0);
+    const totalCompleted = sessionsToShow.reduce((sum, s) => sum + (s.tasks_completed?.length || 0), 0);
+
+    // Gather day-level workstreams
+    const dayWorkstreams = new Map();
+    for (const s of sessionsToShow) {
+      if (s.workstreams) {
+        for (const ws of s.workstreams.split(',').map(w => w.trim()).filter(Boolean)) {
+          dayWorkstreams.set(ws, (dayWorkstreams.get(ws) || 0) + 1);
+        }
+      }
+    }
+
+    // Only today expanded by default (unless filter active)
+    const expanded = (filterDay && filterWS) || isToday;
+
+    html += `<div class="day-card" data-day-idx="${dayIdx}">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span>
+          <span class="day-date">${dayOfWeek} ${day.date}</span>
+          ${isToday ? '<span class="day-today">Today</span>' : ''}
+        </span>
+        <span class="day-meta">
+          <span>${sessionsToShow.length} session${sessionsToShow.length !== 1 ? 's' : ''}</span>
+          <span>${totalMin}m</span>
+          ${totalCompleted > 0 ? `<span>${totalCompleted} done</span>` : ''}
+        </span>
+      </div>
+      <div class="day-body${expanded ? '' : ' collapsed'}">`;
+
+    // Workstream summary bar
+    if (dayWorkstreams.size > 0) {
+      html += '<div class="day-workstreams">';
+      const sorted = [...dayWorkstreams.entries()].sort((a, b) => b[1] - a[1]);
+      for (const [ws, count] of sorted) {
+        html += `<span class="ws-tag ws-${ws}">${ws} (${count})</span>`;
+      }
+      html += '</div>';
+    }
+
+    // Substantive sessions
+    for (const s of substantive) {
+      html += renderSession(s);
+    }
+
+    // Quick sessions grouped
+    if (quick.length > 0) {
+      const quickId = `quick-${day.date}`;
+      html += `<div class="quick-sessions" onclick="toggleQuick('${quickId}')">
+        ${quick.length} quick session${quick.length > 1 ? 's' : ''} (under 5 min, no tasks)
+        <div class="quick-sessions-detail" id="${quickId}">`;
+      for (const s of quick) {
+        html += `<div style="padding: 2px 0; color: var(--text-muted); font-size: 11px;">
+          <span style="color: var(--accent); font-family: monospace;">${s.time || '??:??'}</span>
+          ${s.summary ? ' - ' + escapeHtml(s.summary) : ''}
+        </div>`;
+      }
+      html += '</div></div>';
+    }
+
+    html += '</div></div>';
+  }
+
+  if (!html) {
+    html = '<div class="empty-state"><h2>No matching sessions</h2><p>Clear the heatmap filter to see all sessions.</p></div>';
+  }
+
+  container.innerHTML = html;
+  navIndex = -1;
+}
+
+function renderSession(s) {
+  const completedCount = s.tasks_completed?.length || 0;
+  const progressCount = s.tasks_in_progress?.length || 0;
+  const filesCount = s.files_changed?.length || 0;
+  const decisionsCount = s.decisions?.length || 0;
+  const wsArray = s.workstreams ? s.workstreams.split(',').map(w => w.trim()).filter(Boolean) : [];
+
+  let html = `<div class="session-entry">
+    <div class="session-header">
+      <span class="session-time">${s.time || '??:??'}</span>
+      <span class="session-duration">${s.duration_min || '?'}m</span>
+      ${completedCount > 0 ? `<span class="session-task-count">${completedCount} done</span>` : ''}
+      ${wsArray.map(ws => `<span class="ws-tag ws-${ws}">${ws}</span>`).join('')}
+      <span class="session-id">${s.session_id || ''}</span>
+    </div>`;
+
+  if (s.summary) {
+    html += `<div class="session-summary">${escapeHtml(s.summary)}</div>`;
+  }
+
+  // Tags row with hover tooltips
+  const hasTags = completedCount || progressCount || filesCount || decisionsCount;
+  if (hasTags) {
+    html += '<div class="session-details">';
+    if (completedCount > 0) {
+      html += `<span class="tag tag-completed">
+        ${completedCount} completed
+        <div class="tooltip-content"><ul>${s.tasks_completed.map(t => `<li>${escapeHtml(t)}</li>`).join('')}</ul></div>
+      </span>`;
+    }
+    if (progressCount > 0) {
+      html += `<span class="tag tag-progress">
+        ${progressCount} in progress
+        <div class="tooltip-content"><ul>${s.tasks_in_progress.map(t => `<li>${escapeHtml(t)}</li>`).join('')}</ul></div>
+      </span>`;
+    }
+    if (filesCount > 0) {
+      const shortFiles = s.files_changed.map(f => f.split('/').slice(-2).join('/'));
+      html += `<span class="tag tag-files">
+        ${filesCount} files
+        <div class="tooltip-content"><ul>${shortFiles.map(f => `<li>${escapeHtml(f)}</li>`).join('')}</ul></div>
+      </span>`;
+    }
+    if (decisionsCount > 0) {
+      html += `<span class="tag tag-decision">
+        ${decisionsCount} decision${decisionsCount > 1 ? 's' : ''}
+        <div class="tooltip-content"><ul>${s.decisions.map(d => `<li>${escapeHtml(d)}</li>`).join('')}</ul></div>
+      </span>`;
+    }
+    html += '</div>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
+// ---- Navigation ----
+function shiftWeek(dir) {
+  weekOffset += dir;
+  clearFilter();
+}
+
+function goThisWeek() {
+  weekOffset = 0;
+  clearFilter();
+}
+
+function toggleDay(header) {
+  header.nextElementSibling.classList.toggle('collapsed');
+}
+
+function toggleQuick(id) {
+  document.getElementById(id)?.classList.toggle('expanded');
+}
+
+// ---- Keyboard shortcuts ----
+document.addEventListener('keydown', (e) => {
+  // Skip if user is in an input field
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+  const dayCards = [...document.querySelectorAll('.day-card')];
+
+  if (e.key === 'j') {
+    // Next day
+    e.preventDefault();
+    if (dayCards.length === 0) return;
+    if (navIndex >= 0) dayCards[navIndex]?.classList.remove('nav-focus');
+    navIndex = Math.min(navIndex + 1, dayCards.length - 1);
+    dayCards[navIndex]?.classList.add('nav-focus');
+    dayCards[navIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+  else if (e.key === 'k') {
+    // Previous day
+    e.preventDefault();
+    if (dayCards.length === 0) return;
+    if (navIndex >= 0) dayCards[navIndex]?.classList.remove('nav-focus');
+    navIndex = Math.max(navIndex - 1, 0);
+    dayCards[navIndex]?.classList.add('nav-focus');
+    dayCards[navIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+  else if (e.key === 'd') {
+    // Toggle current day detail
+    e.preventDefault();
+    if (navIndex >= 0 && dayCards[navIndex]) {
+      const body = dayCards[navIndex].querySelector('.day-body');
+      if (body) body.classList.toggle('collapsed');
+    }
+  }
+  else if (e.key === 'r') {
+    // Refresh
+    e.preventDefault();
+    loadJournal();
+    showToast('Refreshed');
+  }
+  else if (e.key === 'Escape') {
+    // Collapse all
+    e.preventDefault();
+    clearFilter();
+    dayCards.forEach(card => {
+      card.querySelector('.day-body')?.classList.add('collapsed');
+      card.classList.remove('nav-focus');
+    });
+    navIndex = -1;
+  }
+  else if (e.key === 'ArrowLeft') {
+    e.preventDefault();
+    shiftWeek(-1);
+  }
+  else if (e.key === 'ArrowRight') {
+    e.preventDefault();
+    shiftWeek(1);
+  }
+});
+
+// ---- Init ----
+loadJournal();
+</script>
+
+</body>
+</html>
