@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background-color: #F4EFE9;">
+
+  <!-- Wrapper Table -->
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #F4EFE9;">
+    <tr>
+      <td style="padding: 40px 20px;">
+
+        <!-- Main Card -->
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 600px; margin: 0 auto; background-color: #FFFFFF;">
+
+          <!-- Header Section -->
+          <tr>
+            <td style="padding: 50px 40px 40px; text-align: center; border-bottom: 1px solid #e5e5e5;">
+              <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px;">
+                AWARE HAIR
+              </div>
+              <h1 style="font-family: Georgia, serif; font-size: 36px; font-weight: 300; color: #1a1a1a; margin: 0 0 12px 0; line-height: 1.2;">
+                Your Personalized<br/>Scalp Environment Report
+              </h1>
+              <p style="font-size: 14px; color: #666; margin: 0; line-height: 1.6;">
+                Based on your local environmental conditions
+              </p>
+            </td>
+          </tr>
+
+          <!-- Score Section -->
+          <tr>
+            <td style="padding: 40px; background-color: #1a1a1a; text-align: center;">
+
+              <!-- Badge -->
+              <div style="margin-bottom: 25px;">
+                <span style="display: inline-block; padding: 8px 16px; background-color: rgba(244, 239, 233, 0.1); border-radius: 20px; font-size: 11px; color: #F4EFE9; text-transform: uppercase; letter-spacing: 1.5px;">
+                  Environmental Stress Score
+                </span>
+              </div>
+
+              <!-- Score -->
+              <div style="margin-bottom: 20px;">
+                <span style="font-family: Georgia, serif; font-size: 80px; font-weight: 300; color: #F4EFE9; line-height: 1;">
+                  {{ person|lookup:'Scalp Stress Score' }}
+                </span>
+                <span style="font-family: Georgia, serif; font-size: 32px; font-weight: 300; color: rgba(244, 239, 233, 0.5); line-height: 1;">
+                  /100
+                </span>
+              </div>
+
+              <!-- Level -->
+              <div style="margin-bottom: 18px;">
+                <span style="font-size: 18px; color: #F4EFE9;">
+                  {{ person|lookup:'Score Level'|cut:"Environmental Stress - " }}
+                </span>
+              </div>
+
+              <!-- Interpretation -->
+              <div style="padding-top: 20px; border-top: 1px solid rgba(244, 239, 233, 0.15);">
+                <p style="font-size: 14px; color: rgba(244, 239, 233, 0.85); line-height: 1.7; margin: 0; max-width: 450px; margin-left: auto; margin-right: auto;">
+                  {{ person|lookup:'Score Interpretation' }}
+                </p>
+              </div>
+
+            </td>
+          </tr>
+
+          <!-- Environmental Profile -->
+          <tr>
+            <td style="padding: 45px 40px;">
+
+              <!-- Section Title -->
+              <div style="text-align: center; margin-bottom: 35px;">
+                <h2 style="font-family: Georgia, serif; font-size: 28px; font-weight: 400; color: #1a1a1a; margin: 0 0 8px 0;">
+                  Your Environmental Profile
+                </h2>
+                <p style="font-size: 13px; color: #999; margin: 0;">
+                  Location: ZIP {{ person|lookup:'Zip' }}
+                </p>
+              </div>
+
+              <!-- UV Index -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 25px;">
+                <tr>
+                  <td width="40" style="vertical-align: top; padding-right: 15px;">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #FFD54F, #FFA726); border-radius: 50%; text-align: center; line-height: 40px; font-size: 20px;">
+                      ☀️
+                    </div>
+                  </td>
+                  <td style="vertical-align: top; padding-bottom: 20px; border-bottom: 1px solid #f0f0f0;">
+                    <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 4px;">
+                      UV EXPOSURE
+                    </div>
+                    <div style="font-size: 16px; color: #1a1a1a; font-weight: 500; margin-bottom: 3px;">
+                      {{ person|lookup:'UV Index' }} — {{ person|lookup:'UV Level' }}
+                    </div>
+                    <div style="font-size: 13px; color: #666; line-height: 1.5;">
+                      Current UV radiation levels affecting scalp protection needs
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Air Quality -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 25px;">
+                <tr>
+                  <td width="40" style="vertical-align: top; padding-right: 15px;">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #81C784, #66BB6A); border-radius: 50%; text-align: center; line-height: 40px; font-size: 20px;">
+                      💨
+                    </div>
+                  </td>
+                  <td style="vertical-align: top; padding-bottom: 20px; border-bottom: 1px solid #f0f0f0;">
+                    <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 4px;">
+                      AIR QUALITY
+                    </div>
+                    <div style="font-size: 16px; color: #1a1a1a; font-weight: 500; margin-bottom: 3px;">
+                      {{ person|lookup:'AQI' }} AQI — {{ person|lookup:'AQI Category' }}
+                    </div>
+                    <div style="font-size: 13px; color: #666; line-height: 1.5;">
+                      Pollution levels impacting scalp health and product absorption
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Water Hardness -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td width="40" style="vertical-align: top; padding-right: 15px;">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #64B5F6, #42A5F5); border-radius: 50%; text-align: center; line-height: 40px; font-size: 20px;">
+                      💧
+                    </div>
+                  </td>
+                  <td style="vertical-align: top;">
+                    <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 4px;">
+                      WATER COMPOSITION
+                    </div>
+                    <div style="font-size: 16px; color: #1a1a1a; font-weight: 500; margin-bottom: 3px;">
+                      {{ person|lookup:'Water Hardness'|truncatewords:6 }}
+                    </div>
+                    <div style="font-size: 13px; color: #666; line-height: 1.5;">
+                      Local water quality affecting scalp health and product effectiveness
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- Seasonal Insight -->
+          <tr>
+            <td style="padding: 0 40px 45px 40px;">
+              <div style="background-color: #f8f9fa; border-radius: 8px; padding: 30px; border-left: 4px solid #1a1a1a;">
+                <div style="margin-bottom: 12px;">
+                  <span style="font-size: 11px; color: #1a1a1a; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">
+                    🗓️ SEASONAL OUTLOOK
+                  </span>
+                </div>
+                <div style="font-size: 14px; color: #333; line-height: 1.7;">
+                  {{ person|lookup:'Seasonal Insight' }}
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- CTA Section -->
+          <tr>
+            <td style="padding: 0 40px 45px 40px;">
+              <div style="background-color: #F4EFE9; border-radius: 8px; padding: 35px 30px; text-align: center;">
+
+                <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px;">
+                  NEXT STEPS
+                </div>
+
+                <h3 style="font-family: Georgia, serif; font-size: 24px; font-weight: 400; color: #1a1a1a; margin: 0 0 15px 0;">
+                  Discover Personalized Solutions
+                </h3>
+
+                <p style="font-size: 14px; color: #666; line-height: 1.6; margin: 0 0 25px 0;">
+                  Explore products specifically formulated for your environmental conditions
+                </p>
+
+                <!-- Button -->
+                <a href="https://www.awarehair.com" style="display: inline-block; padding: 16px 40px; background-color: #1a1a1a; color: #F4EFE9; text-decoration: none; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; border-radius: 4px;">
+                  Shop AWARE Hair
+                </a>
+
+              </div>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 35px 40px; border-top: 1px solid #e5e5e5; text-align: center;">
+
+              <div style="margin-bottom: 20px;">
+                <span style="font-size: 14px; font-weight: 500; color: #1a1a1a; letter-spacing: 1px;">
+                  AWARE HAIR
+                </span>
+              </div>
+
+              <p style="font-size: 12px; color: #999; line-height: 1.7; margin: 0 0 15px 0;">
+                Environmental scalp care for modern living
+              </p>
+
+              <div style="margin-bottom: 20px;">
+                <a href="https://www.awarehair.com" style="color: #666; text-decoration: none; font-size: 12px; margin: 0 8px;">Visit Us</a>
+                <span style="color: #ddd;">|</span>
+                <a href="https://instagram.com/awarehair" style="color: #666; text-decoration: none; font-size: 12px; margin: 0 8px;">Instagram</a>
+                <span style="color: #ddd;">|</span>
+                <a href="mailto:support@awarehair.com" style="color: #666; text-decoration: none; font-size: 12px; margin: 0 8px;">Support</a>
+              </div>
+
+              <p style="font-size: 11px; color: #999; line-height: 1.6; margin: 0;">
+                You're receiving this email because you requested a scalp environment report from AWARE Hair.<br/>
+                <a href="{% unsubscribe_link %}" style="color: #999; text-decoration: underline;">Unsubscribe</a> | <a href="https://www.awarehair.com/pages/privacy-policy" style="color: #999; text-decoration: underline;">Privacy Policy</a>
+              </p>
+
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

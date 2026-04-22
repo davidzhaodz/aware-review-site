@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARE Hair - Retail Planogram</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2D4739;
+      --forest-deep: #1E3329;
+      --sage: #7A8F7D;
+      --sage-light: #A8B8AB;
+      --cream: #F8F5F0;
+      --cream-warm: #F3EDE5;
+      --sand: #E6DFD5;
+      --sand-dark: #C9BFB2;
+      --charcoal: #2A2A2A;
+      --warm-gray: #5C5C5C;
+      --warm-gray-light: #8A8A8A;
+      --gold: #B8956E;
+      --gold-muted: #C4A882;
+    }
+
+    @page { size: letter; margin: 0; }
+    @media print {
+      html, body { width: 8.5in; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page { box-shadow: none !important; page-break-after: always; }
+      .page:last-child { page-break-after: avoid; }
+      .grain::before { display: none; }
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: #b8b8b8;
+      color: var(--charcoal);
+      line-height: 1.5;
+      font-size: 14.5px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: 8.5in;
+      height: 11in;
+      margin: 24px auto;
+      background: var(--cream);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.15);
+    }
+
+    .grain { position: relative; }
+    .grain::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: 1;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 128px 128px;
+      mix-blend-mode: multiply;
+    }
+
+    .page-content { padding: 0.5in 0.65in 0.45in; height: 100%; display: flex; flex-direction: column; }
+
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-shrink: 0; }
+    .page-header .logo { height: 16px; width: auto; opacity: 0.85; }
+    .page-header .page-num { font-size: 11px; letter-spacing: 0.15em; color: var(--sage); }
+
+    .page-footer { padding-top: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: var(--warm-gray-light); flex-shrink: 0; }
+
+    .eyebrow { font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sage-light); margin-bottom: 6px; }
+    .heading-2 { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; line-height: 1.2; color: var(--forest-deep); margin-bottom: 3px; }
+    .subtitle { font-size: 12px; color: var(--warm-gray); margin-bottom: 14px; }
+
+    /* Planogram Layout */
+    .planogram-body { flex: 1; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+
+    .diagram-section {
+      background: white;
+      border: 1px solid var(--sand);
+      padding: 14px 20px 10px;
+    }
+
+    .diagram-label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 8px;
+    }
+
+    .diagram-wrapper { display: flex; justify-content: center; }
+
+    /* Stand Specs Bar */
+    .stand-specs {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      padding: 8px 14px;
+      background: var(--forest-deep);
+      color: var(--cream);
+      flex-shrink: 0;
+    }
+    .stand-specs .spec-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+    .stand-specs .spec-dims {
+      display: flex;
+      gap: 14px;
+      font-size: 10px;
+      color: rgba(248,245,240,0.7);
+    }
+    .stand-specs .spec-dims span { white-space: nowrap; }
+    .stand-specs .spec-note {
+      font-size: 9px;
+      color: rgba(248,245,240,0.5);
+      margin-left: auto;
+    }
+
+    /* Bottom Grid: Top-down + Legend */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 170px;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+
+    /* Legend */
+    .legend-title {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 6px;
+    }
+
+    .legend-items { display: flex; flex-direction: column; gap: 0; }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--sand);
+    }
+    .legend-item:last-child { border-bottom: none; }
+
+    .legend-swatch { width: 8px; height: 8px; flex-shrink: 0; }
+
+    .legend-info .legend-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--charcoal);
+      line-height: 1.2;
+    }
+    .legend-info .legend-dim {
+      font-size: 8.5px;
+      color: var(--warm-gray-light);
+      margin-top: 1px;
+    }
+
+    /* Configurations */
+    .config-section {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .config-header {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 8px;
+      flex-shrink: 0;
+    }
+
+    .config-card {
+      padding: 10px 10px;
+      border: 1px solid var(--sand);
+      background: white;
+      position: relative;
+    }
+    .config-card.recommended { border-color: var(--gold); border-width: 1.5px; }
+    .config-card.recommended::after {
+      content: 'RECOMMENDED';
+      position: absolute;
+      top: -6px;
+      right: 8px;
+      font-size: 6.5px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      background: white;
+      padding: 0 3px;
+    }
+
+    .config-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--forest);
+      margin-bottom: 2px;
+    }
+    .config-desc { font-size: 9px; color: var(--warm-gray); line-height: 1.3; margin-bottom: 6px; }
+
+    .config-products { list-style: none; font-size: 9px; color: var(--charcoal); line-height: 1.5; }
+    .config-products li { padding-left: 9px; position: relative; }
+    .config-products li::before { content: ''; position: absolute; left: 0; top: 6px; width: 4px; height: 1px; background: var(--gold); }
+
+    .config-revenue {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid var(--sand);
+      font-size: 8.5px;
+      color: var(--sage);
+    }
+    .config-revenue strong { color: var(--forest); font-weight: 500; }
+
+    /* SVG text styles */
+    .dim-text { font-family: 'DM Sans', sans-serif; font-size: 8px; fill: var(--warm-gray); }
+    .dim-label { font-family: 'DM Sans', sans-serif; font-size: 7px; fill: var(--warm-gray-light); }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1: PLANOGRAM -->
+  <div class="page grain">
+    <div class="page-content">
+      <header class="page-header">
+        <img class="logo" src="images/aware-logo.png" alt="AWARE">
+        <div class="page-num">10</div>
+      </header>
+
+      <div class="planogram-body">
+        <div style="flex-shrink: 0;">
+          <p class="eyebrow">Retail Planogram</p>
+          <h2 class="heading-2">Salon Display Configuration</h2>
+          <p class="subtitle">Complete display arrangement on AWARE Hair solid wood stand, shown to scale with merchandising accessories</p>
+        </div>
+
+        <!-- Main Front Elevation Diagram -->
+        <div class="diagram-section" style="flex: 1; min-height: 0; display: flex; flex-direction: column;">
+          <div class="diagram-label">Front Elevation - Standard Display (Recommended)</div>
+          <div class="diagram-wrapper" style="flex: 1; align-items: flex-end;">
+            <svg width="490" height="225" viewBox="0 0 490 225" xmlns="http://www.w3.org/2000/svg">
+              <!-- Scale: ~6.3px/cm for on-stand items. All annotations in inches. -->
+              <defs>
+                <marker id="arrowR" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+                  <path d="M0,0 L5,2.5 L0,5" fill="none" stroke="#5C5C5C" stroke-width="0.6" />
+                </marker>
+                <marker id="arrowL" markerWidth="5" markerHeight="5" refX="1" refY="2.5" orient="auto">
+                  <path d="M5,0 L0,2.5 L5,5" fill="none" stroke="#5C5C5C" stroke-width="0.6" />
+                </marker>
+                <marker id="arrowU" markerWidth="5" markerHeight="5" refX="2.5" refY="1" orient="auto">
+                  <path d="M0,5 L2.5,0 L5,5" fill="none" stroke="#5C5C5C" stroke-width="0.6" />
+                </marker>
+                <marker id="arrowD" markerWidth="5" markerHeight="5" refX="2.5" refY="4" orient="auto">
+                  <path d="M0,0 L2.5,5 L5,0" fill="none" stroke="#5C5C5C" stroke-width="0.6" />
+                </marker>
+              </defs>
+
+              <!-- ===== BROCHURE CARD ON EASEL (left) - 7"W x 5"H landscape ===== -->
+              <!-- 7" wide = 90px, 5" tall = 64px (same px/inch ratio) -->
+              <!-- Easel legs -->
+              <line x1="40" y1="190" x2="28" y2="199" stroke="#666" stroke-width="1" />
+              <line x1="80" y1="190" x2="92" y2="199" stroke="#666" stroke-width="1" />
+              <!-- Easel ledge -->
+              <rect x="32" y="188" width="56" height="3" rx="1" fill="#555" />
+              <!-- 7x5 Card (landscape) -->
+              <rect x="15" y="124" width="90" height="64" rx="1" fill="white" stroke="#ddd" stroke-width="0.75" />
+              <!-- Card content -->
+              <rect x="21" y="130" width="78" height="7" rx="1" fill="var(--forest)" opacity="0.12" />
+              <text x="60" y="152" font-family="'Cormorant Garamond'" font-size="7" fill="var(--warm-gray)" text-anchor="middle" font-style="italic">AWARE HAIR</text>
+              <rect x="28" y="157" width="64" height="20" rx="1" fill="var(--cream-warm)" />
+              <text x="60" y="170" font-family="'DM Sans'" font-size="5" fill="var(--warm-gray-light)" text-anchor="middle">9-1 Professional</text>
+              <!-- Label -->
+              <text x="60" y="208" font-family="'DM Sans'" font-size="6.5" fill="var(--warm-gray-light)" text-anchor="middle">7" x 5" Card</text>
+              <text x="60" y="217" font-family="'DM Sans'" font-size="6" fill="var(--warm-gray-light)" text-anchor="middle">on Easel</text>
+
+              <!-- ===== DISPLAY STAND ===== -->
+              <!-- Stand: 15" = 38.1cm = 240px -->
+              <rect x="130" y="196" width="240" height="6" rx="2" fill="#C4A47A" />
+              <rect x="130" y="199" width="240" height="3" rx="1" fill="#B8956E" opacity="0.4" />
+
+              <!-- ===== ACRYLIC SIGN (behind, centered over bottles) ===== -->
+              <!-- 8.5"x11" sign, centered over S/C/L bottles (x=133 to x=262) -->
+              <rect x="155" y="50" width="85" height="110" rx="1" fill="white" opacity="0.55" stroke="#ddd" stroke-width="0.75" />
+              <text x="197" y="72" font-family="'Cormorant Garamond'" font-size="7" fill="var(--warm-gray)" text-anchor="middle" font-style="italic">Transform Your Scalp.</text>
+              <text x="197" y="82" font-family="'Cormorant Garamond'" font-size="7" fill="var(--warm-gray)" text-anchor="middle" font-style="italic">Transform Your Hair.</text>
+              <rect x="172" y="90" width="50" height="30" rx="1" fill="var(--cream-warm)" />
+              <!-- Sign label ABOVE bottles where it's visible -->
+              <text x="197" y="44" font-family="'DM Sans'" font-size="6" fill="var(--warm-gray-light)" text-anchor="middle">8.5" x 11" Acrylic Sign</text>
+              <!-- Sign easel legs -->
+              <line x1="191" y1="160" x2="188" y2="196" stroke="#888" stroke-width="0.6" />
+              <line x1="203" y1="160" x2="206" y2="196" stroke="#888" stroke-width="0.6" />
+
+              <!-- ===== SHAMPOO 300ml ===== -->
+              <!-- 2.6"W x 5.7"H (6.7cm x 14.5cm). W=42px, H=91px -->
+              <g transform="translate(133, 105)">
+                <rect x="0" y="22" width="42" height="69" rx="3" fill="#3B5A47" />
+                <rect x="3" y="38" width="36" height="36" rx="2" fill="#F0EDE8" />
+                <rect x="15" y="13" width="11" height="11" rx="1" fill="#2A2A2A" />
+                <rect x="18" y="3" width="5" height="12" rx="1" fill="#2A2A2A" />
+                <rect x="14" y="0" width="13" height="4" rx="2" fill="#333" />
+                <text x="21" y="58" font-family="'DM Sans'" font-size="11" font-weight="600" fill="#3B5A47" text-anchor="middle">S</text>
+              </g>
+
+              <!-- ===== CONDITIONER 300ml ===== -->
+              <g transform="translate(177, 105)">
+                <rect x="0" y="22" width="42" height="69" rx="3" fill="#3B5A47" />
+                <rect x="3" y="38" width="36" height="36" rx="2" fill="#F0EDE8" />
+                <rect x="15" y="13" width="11" height="11" rx="1" fill="#2A2A2A" />
+                <rect x="18" y="3" width="5" height="12" rx="1" fill="#2A2A2A" />
+                <rect x="14" y="0" width="13" height="4" rx="2" fill="#333" />
+                <text x="21" y="58" font-family="'DM Sans'" font-size="11" font-weight="600" fill="#3B5A47" text-anchor="middle">C</text>
+              </g>
+
+              <!-- ===== LEAVE-IN 250ml ===== -->
+              <!-- 2.6"W x 4.1"H (6.5cm x 10.5cm). W=41px, H=66px -->
+              <g transform="translate(221, 130)">
+                <rect x="0" y="20" width="41" height="46" rx="3" fill="#2A3A30" />
+                <rect x="3" y="30" width="35" height="26" rx="2" fill="#1A1A1A" />
+                <rect x="15" y="11" width="10" height="11" rx="1" fill="#2A2A2A" />
+                <rect x="18" y="1" width="5" height="12" rx="1" fill="#2A2A2A" />
+                <rect x="14" y="0" width="12" height="3" rx="1.5" fill="#333" />
+                <text x="20" y="48" font-family="'DM Sans'" font-size="9" font-weight="600" fill="#AAA" text-anchor="middle">L</text>
+              </g>
+
+              <!-- ===== DISCOVERY KIT BAG ===== -->
+              <!-- 6" wide = 15.2cm = 78px at ~13px/inch (matching brochure scale) -->
+              <g transform="translate(268, 118)">
+                <!-- Bag base roundness -->
+                <ellipse cx="39" cy="70" rx="39" ry="7" fill="#E8E2DA" />
+                <!-- Bag body -->
+                <rect x="0" y="22" width="78" height="52" rx="8" fill="#E8E2DA" />
+                <!-- Drawstring gathered top -->
+                <path d="M18,24 Q39,10 60,24" fill="#E8E2DA" stroke="none" />
+                <path d="M22,22 Q39,13 56,22" fill="none" stroke="#C4B9AB" stroke-width="1" />
+                <!-- Drawstring cords -->
+                <line x1="30" y1="14" x2="27" y2="4" stroke="#C4B9AB" stroke-width="0.75" />
+                <line x1="48" y1="14" x2="51" y2="4" stroke="#C4B9AB" stroke-width="0.75" />
+                <circle cx="27" cy="3" r="2" fill="#C4B9AB" />
+                <circle cx="51" cy="3" r="2" fill="#C4B9AB" />
+                <!-- Text on bag -->
+                <text x="39" y="44" font-family="'DM Sans'" font-size="6.5" fill="var(--warm-gray)" text-anchor="middle" font-weight="500">AWARE HAIR</text>
+                <text x="39" y="53" font-family="'DM Sans'" font-size="5" fill="var(--warm-gray-light)" text-anchor="middle">9-1 Professional</text>
+                <text x="39" y="62" font-family="'DM Sans'" font-size="4.5" fill="var(--warm-gray-light)" text-anchor="middle">Discovery Kit</text>
+              </g>
+
+              <!-- ===== DIMENSION ANNOTATIONS (all in inches) ===== -->
+              <!-- Height: Shampoo 5.7" -->
+              <line x1="123" y1="105" x2="123" y2="196" stroke="#5C5C5C" stroke-width="0.6" marker-start="url(#arrowU)" marker-end="url(#arrowD)" />
+              <text x="118" y="153" class="dim-text" text-anchor="end" transform="rotate(-90, 118, 153)">5.7"</text>
+
+              <!-- Height: Leave-in 4.1" (positioned to the right of kit bag) -->
+              <line x1="380" y1="130" x2="380" y2="196" stroke="#5C5C5C" stroke-width="0.6" marker-start="url(#arrowU)" marker-end="url(#arrowD)" />
+              <text x="375" y="166" class="dim-text" text-anchor="end" transform="rotate(-90, 375, 166)">4.1"</text>
+              <!-- Leader from leave-in top to annotation -->
+              <line x1="262" y1="130" x2="380" y2="130" stroke="#5C5C5C" stroke-width="0.4" stroke-dasharray="2 2" />
+
+              <!-- Width: Stand 15" -->
+              <line x1="130" y1="213" x2="370" y2="213" stroke="#5C5C5C" stroke-width="0.6" marker-start="url(#arrowL)" marker-end="url(#arrowR)" />
+              <text x="250" y="222" class="dim-text" text-anchor="middle">15"</text>
+
+              <!-- Width: Shampoo bottle 2.6" -->
+              <line x1="133" y1="101" x2="175" y2="101" stroke="var(--warm-gray-light)" stroke-width="0.5" stroke-dasharray="2 1.5" />
+              <text x="154" y="98" class="dim-label" text-anchor="middle">2.6"</text>
+
+              <!-- Width: Discovery bag 6" -->
+              <line x1="268" y1="114" x2="346" y2="114" stroke="var(--warm-gray-light)" stroke-width="0.5" stroke-dasharray="2 1.5" />
+              <text x="307" y="111" class="dim-label" text-anchor="middle">6"</text>
+
+              <!-- Component labels -->
+              <text x="154" y="208" font-family="'DM Sans'" font-size="6.5" fill="var(--warm-gray-light)" text-anchor="middle">300ml</text>
+              <text x="198" y="208" font-family="'DM Sans'" font-size="6.5" fill="var(--warm-gray-light)" text-anchor="middle">300ml</text>
+              <text x="241" y="208" font-family="'DM Sans'" font-size="6.5" fill="var(--warm-gray-light)" text-anchor="middle">250ml</text>
+              <text x="307" y="208" font-family="'DM Sans'" font-size="6.5" fill="var(--warm-gray-light)" text-anchor="middle">Discovery Kit</text>
+
+              <!-- Total display footprint -->
+              <line x1="15" y1="8" x2="375" y2="8" stroke="var(--gold)" stroke-width="0.5" stroke-dasharray="3 2" />
+              <text x="195" y="18" font-family="'DM Sans'" font-size="7" fill="var(--gold)" text-anchor="middle">Total display footprint: ~24"</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Stand Specs -->
+        <div class="stand-specs">
+          <div class="spec-title">Solid Wood Display Stand</div>
+          <div class="spec-dims">
+            <span>L: 15" (38.1cm)</span>
+            <span>W: 7" (17.8cm)</span>
+            <span>H: 1" (2.5cm)</span>
+          </div>
+          <div class="spec-note">SKU: AH-DS-1</div>
+        </div>
+
+        <!-- Bottom: Top-Down + Legend -->
+        <div class="bottom-grid">
+          <div class="diagram-section" style="padding: 10px 16px 8px;">
+            <div class="diagram-label">Top-Down View - Product Footprints</div>
+            <div class="diagram-wrapper">
+              <svg width="330" height="90" viewBox="0 0 330 90" xmlns="http://www.w3.org/2000/svg">
+                <!-- Stand outline. Width scale ~5px/cm: 38.1cm=190px, Depth scale ~4px/cm: 17.8cm=71px -->
+                <rect x="10" y="7" width="190" height="71" rx="2" fill="none" stroke="#C4A47A" stroke-width="1.2" />
+                <rect x="10" y="7" width="190" height="71" rx="2" fill="#D4BA8A" opacity="0.1" />
+
+                <!-- S: 2.6"w x 1.8"d = 34px x 18px -->
+                <rect x="16" y="32" width="34" height="18" rx="2" fill="#3B5A47" opacity="0.8" />
+                <text x="33" y="44" font-family="'DM Sans'" font-size="7" fill="white" text-anchor="middle" font-weight="500">S</text>
+
+                <!-- C: same as S -->
+                <rect x="53" y="32" width="34" height="18" rx="2" fill="#3B5A47" opacity="0.7" />
+                <text x="70" y="44" font-family="'DM Sans'" font-size="7" fill="white" text-anchor="middle" font-weight="500">C</text>
+
+                <!-- L: 2.6"w x 2.6"d = 33px x 26px (square, deeper) -->
+                <rect x="90" y="28" width="33" height="26" rx="2" fill="#2A3A30" opacity="0.8" />
+                <text x="106" y="44" font-family="'DM Sans'" font-size="7" fill="#CCC" text-anchor="middle" font-weight="500">L</text>
+
+                <!-- Discovery Kit bag: 6"w = 15.2cm = 76px wide, ~4"d = 40px -->
+                <ellipse cx="150" cy="42" rx="34" ry="22" fill="#E8E2DA" stroke="#C9BFB2" stroke-width="0.5" />
+                <text x="150" y="45" font-family="'DM Sans'" font-size="6" fill="var(--warm-gray)" text-anchor="middle">Kit (6")</text>
+
+                <!-- Dimension labels -->
+                <text x="33" y="58" class="dim-label" text-anchor="middle">2.6"x1.8"</text>
+                <text x="106" y="62" class="dim-label" text-anchor="middle">2.6"x2.6"</text>
+
+                <!-- Acrylic sign (behind, at back of stand) -->
+                <rect x="22" y="9" width="75" height="4" rx="1" fill="#ddd" opacity="0.6" />
+                <text x="60" y="20" font-family="'DM Sans'" font-size="5" fill="var(--warm-gray-light)" text-anchor="middle">sign behind</text>
+
+                <!-- Depth label -->
+                <text x="206" y="38" font-family="'DM Sans'" font-size="7" fill="var(--warm-gray-light)" text-anchor="start">7"</text>
+                <text x="206" y="48" font-family="'DM Sans'" font-size="7" fill="var(--warm-gray-light)" text-anchor="start">depth</text>
+
+                <!-- Front indicator -->
+                <text x="100" y="86" font-family="'DM Sans'" font-size="6" fill="var(--warm-gray-light)" text-anchor="middle" letter-spacing="0.1em">FRONT</text>
+
+                <!-- Brochure card on easel (separate, 7"x5" landscape) -->
+                <rect x="240" y="20" width="56" height="40" rx="1" fill="white" stroke="#ddd" stroke-width="0.5" />
+                <text x="268" y="40" font-family="'DM Sans'" font-size="5" fill="var(--warm-gray-light)" text-anchor="middle">7"x5"</text>
+                <text x="268" y="48" font-family="'DM Sans'" font-size="5" fill="var(--warm-gray-light)" text-anchor="middle">Card</text>
+                <text x="268" y="70" class="dim-label" text-anchor="middle">on easel</text>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Product Legend -->
+          <div style="padding: 10px 0;">
+            <div class="legend-title">Product Dimensions</div>
+            <div class="legend-items">
+              <div class="legend-item">
+                <div class="legend-swatch" style="background: #3B5A47;"></div>
+                <div class="legend-info">
+                  <div class="legend-name">Shampoo 300ml</div>
+                  <div class="legend-dim">2.6"W x 1.8"D x 5.7"H</div>
+                </div>
+              </div>
+              <div class="legend-item">
+                <div class="legend-swatch" style="background: #3B5A47; opacity: 0.7;"></div>
+                <div class="legend-info">
+                  <div class="legend-name">Conditioner 300ml</div>
+                  <div class="legend-dim">2.6"W x 1.8"D x 5.7"H</div>
+                </div>
+              </div>
+              <div class="legend-item">
+                <div class="legend-swatch" style="background: #2A3A30;"></div>
+                <div class="legend-info">
+                  <div class="legend-name">Leave-In 250ml</div>
+                  <div class="legend-dim">2.6"W x 2.6"D x 4.1"H</div>
+                </div>
+              </div>
+              <div class="legend-item">
+                <div class="legend-swatch" style="background: #E8E2DA; border: 1px solid #C9BFB2;"></div>
+                <div class="legend-info">
+                  <div class="legend-name">Discovery Kit</div>
+                  <div class="legend-dim">~6"W x ~4"D x ~6"H</div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: 8px; font-size: 8px; color: var(--warm-gray-light); line-height: 1.5;">
+              All heights include pump.<br>
+              Dims: Width x Depth x Height
+            </div>
+          </div>
+        </div>
+
+        <!-- Configuration Options -->
+        <div style="flex-shrink: 0;">
+          <div class="config-header">Display Configurations</div>
+          <div class="config-section">
+            <div class="config-card">
+              <div class="config-name">Counter Starter</div>
+              <div class="config-desc">Entry display for trial partners</div>
+              <ul class="config-products">
+                <li>1x Shampoo 300ml</li>
+                <li>1x Conditioner 300ml</li>
+                <li>1x Leave-In 250ml</li>
+                <li>1x Discovery Kit</li>
+                <li>Acrylic shelf card (4"x6")</li>
+              </ul>
+              <div class="config-revenue">Retail value: <strong>$250+</strong></div>
+            </div>
+
+            <div class="config-card recommended">
+              <div class="config-name">Standard Display</div>
+              <div class="config-desc">Optimal salon counter, as shown above</div>
+              <ul class="config-products">
+                <li>1x Shampoo 300ml</li>
+                <li>1x Conditioner 300ml</li>
+                <li>1x Leave-In 250ml</li>
+                <li>1x Discovery Kit</li>
+                <li>Acrylic easel sign (8.5"x11")</li>
+                <li>Brochure easel stand</li>
+              </ul>
+              <div class="config-revenue">Retail value: <strong>$340+</strong></div>
+            </div>
+
+            <div class="config-card">
+              <div class="config-name">Full Shelf</div>
+              <div class="config-desc">Maximum presence, 24" retail shelf</div>
+              <ul class="config-products">
+                <li>2x Shampoo 300ml</li>
+                <li>2x Conditioner 300ml</li>
+                <li>2x Leave-In 250ml</li>
+                <li>2x Discovery Kit</li>
+                <li>All signage + brochures</li>
+              </ul>
+              <div class="config-revenue">Retail value: <strong>$720+</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="page-footer">
+        <span>AWARE Hair - Distribution Partner Deck</span>
+        <span>All display fixtures provided with qualifying orders</span>
+      </footer>
+    </div>
+  </div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

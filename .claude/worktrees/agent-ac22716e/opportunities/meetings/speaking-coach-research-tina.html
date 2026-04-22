@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Speaking Coach Research - Tina</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2D4739;
+      --forest-deep: #1E3228;
+      --sage: #7A8F7D;
+      --cream: #F8F6F1;
+      --sand: #E8E4DC;
+      --charcoal: #2C2C2C;
+      --warm-gray: #6B6B6B;
+      --gold: #B8956E;
+      --gold-light: #C9A882;
+      --white: #FFFFFF;
+      --divider: #D4CFC6;
+      --green-soft: #4A8C6B;
+      --green-bg: #F2F8F5;
+      --red-soft: #C45B4A;
+      --red-bg: #FDF5F4;
+      --amber-soft: #B8860B;
+      --amber-bg: #FFFBF0;
+      --blue-soft: #4A7CB8;
+      --blue-bg: #F0F5FC;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      background: var(--sand);
+      color: var(--charcoal);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 920px;
+      margin: 0 auto;
+      background: var(--white);
+    }
+
+    .header {
+      background: var(--forest-deep);
+      padding: 36px 48px 32px;
+      position: relative;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 40%, transparent 100%);
+    }
+
+    .header h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      font-size: 26px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--cream);
+    }
+
+    .header .subtitle {
+      font-size: 15px;
+      color: var(--gold-light);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    .header .goal-line {
+      margin-top: 14px;
+      font-size: 15px;
+      color: var(--cream);
+      opacity: 0.85;
+      max-width: 700px;
+      line-height: 1.5;
+    }
+
+    .nav-strip {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--divider);
+      background: var(--cream);
+      overflow-x: auto;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-strip a {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      text-decoration: none;
+      padding: 12px 16px;
+      white-space: nowrap;
+      border-right: 1px solid var(--divider);
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-strip a:hover {
+      color: var(--forest);
+      background: var(--white);
+    }
+
+    .content { padding: 0 48px 56px; }
+
+    .section { padding-top: 36px; }
+
+    .section-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--divider);
+    }
+
+    .section-label.green { color: var(--green-soft); }
+
+    .callout {
+      background: var(--cream);
+      border-left: 3px solid var(--gold);
+      padding: 16px 20px;
+      margin: 12px 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .callout .callout-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .callout.callout-green {
+      background: var(--green-bg);
+      border-left-color: var(--green-soft);
+    }
+
+    .callout.callout-green .callout-label {
+      color: var(--green-soft);
+    }
+
+    /* ============ COACH CARDS ============ */
+
+    .coach-card {
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .coach-card.recommended {
+      border-color: var(--green-soft);
+      border-width: 2px;
+    }
+
+    .coach-header {
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      background: var(--cream);
+    }
+
+    .coach-card.recommended .coach-header {
+      background: var(--green-bg);
+    }
+
+    .coach-name {
+      font-weight: 600;
+      font-size: 17px;
+      color: var(--forest);
+    }
+
+    .coach-biz {
+      font-size: 13px;
+      color: var(--warm-gray);
+      margin-top: 2px;
+    }
+
+    .coach-location {
+      font-size: 12px;
+      color: var(--sage);
+      margin-top: 3px;
+    }
+
+    .coach-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+    .coach-tag {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+      font-weight: 600;
+    }
+
+    .tag-la { background: var(--blue-bg); color: var(--blue-soft); }
+    .tag-online { background: var(--amber-bg); color: var(--amber-soft); }
+    .tag-rec { background: var(--green-bg); color: var(--green-soft); }
+    .tag-program { background: #f0eafc; color: #6b4fa0; }
+
+    .coach-body {
+      padding: 16px 20px;
+    }
+
+    .coach-body p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .coach-body p:last-child { margin-bottom: 0; }
+
+    .coach-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--divider);
+      border-top: 1px solid var(--divider);
+    }
+
+    .coach-detail {
+      background: var(--white);
+      padding: 12px 20px;
+    }
+
+    .coach-detail .detail-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      font-weight: 600;
+    }
+
+    .coach-detail .detail-value {
+      font-size: 14px;
+      margin-top: 4px;
+      line-height: 1.45;
+    }
+
+    .coach-detail .detail-value a {
+      color: var(--blue-soft);
+      text-decoration: none;
+    }
+
+    .coach-detail .detail-value a:hover {
+      text-decoration: underline;
+    }
+
+    .coach-fit {
+      background: var(--green-bg);
+      border-top: 1px solid #c5ddd0;
+      padding: 12px 20px;
+    }
+
+    .coach-fit .fit-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--green-soft);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .coach-fit p {
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    /* ============ COMPARISON TABLE ============ */
+
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    .comp-table th {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 2px solid var(--divider);
+      font-weight: 600;
+    }
+
+    .comp-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--divider);
+      vertical-align: top;
+    }
+
+    .comp-table tr.rec td {
+      background: var(--green-bg);
+    }
+
+    /* ============ OUTREACH TEMPLATE ============ */
+
+    .outreach-box {
+      background: var(--cream);
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      padding: 20px 24px;
+      font-size: 14px;
+      line-height: 1.65;
+      font-style: italic;
+    }
+
+    /* ============ PRINT ============ */
+
+    @media print {
+      body { background: white; }
+      .page { box-shadow: none; max-width: 100%; }
+      .nav-strip { display: none; }
+      .content { padding: 0 36px 36px; }
+      .coach-card { break-inside: avoid; }
+      .header, .coach-header, .coach-fit, .coach-tag,
+      .callout, .comp-table tr.rec td {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <div class="header">
+      <h1>Speaking Coach Research</h1>
+      <div class="subtitle">Executive Communication Coaching for Tina</div>
+      <div class="goal-line">
+        Verified coaches who work with practitioner-turned-founders. The goal: channel Tina's deep expertise into concise, authoritative executive communication for distributor, investor, and partner meetings.
+      </div>
+    </div>
+
+    <div class="nav-strip">
+      <a href="#context">The Need</a>
+      <a href="#method">How We Verified</a>
+      <a href="#recommended">Top Pick</a>
+      <a href="#strong">Strong Options</a>
+      <a href="#considered">Considered & Rejected</a>
+      <a href="#comparison">Comparison</a>
+      <a href="#outreach">Outreach Template</a>
+      <a href="#avoid">What to Avoid</a>
+    </div>
+
+    <div class="content">
+
+      <!-- CONTEXT -->
+      <div class="section" id="context">
+        <div class="section-label">What We're Solving For</div>
+
+        <div class="callout">
+          <div class="callout-label">The Profile</div>
+          This is not a confidence problem or a content problem. Tina knows her material deeply and is excellent one-on-one with clients. The patterns at issue - monologuing, repetition, hedging language, not reading the room - are extremely common in founders who built their expertise through <strong>doing</strong> rather than formal business training. The right coach must understand this specific profile: practitioner-turned-CEO who needs to translate salon-floor authority into boardroom credibility.
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--divider); border: 1px solid var(--divider); border-radius: 3px; overflow: hidden; margin-top: 12px;">
+          <div style="background: var(--white); padding: 16px 20px;">
+            <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--red-soft); font-weight: 600;">Specific Issues to Address</div>
+            <div style="font-size: 14px; margin-top: 8px; line-height: 1.6;">
+              Turns 30-second intros into 6-minute monologues<br>
+              Repeats same stories/points 3+ times without realizing<br>
+              Language that undercuts premium positioning<br>
+              Doesn't read time constraints in the room<br>
+              Answers questions nobody asked<br>
+              Hedging and filler ("I don't know," "kind of," "I feel like")
+            </div>
+          </div>
+          <div style="background: var(--white); padding: 16px 20px;">
+            <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--green-soft); font-weight: 600;">What She Already Does Well</div>
+            <div style="font-size: 14px; margin-top: 8px; line-height: 1.6;">
+              Deep, authentic passion (the reason deals happen)<br>
+              Trichologist credential carries real authority<br>
+              Excellent in 1:1 salon client conversations<br>
+              Genuine warmth that builds trust quickly<br>
+              40 years of industry expertise to draw from<br>
+              The founder story is genuinely compelling
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VERIFICATION METHOD -->
+      <div class="section" id="method">
+        <div class="section-label">How We Verified</div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--divider); border: 1px solid var(--divider); border-radius: 3px; overflow: hidden;">
+          <div style="background: var(--white); padding: 16px 20px;">
+            <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--green-soft); font-weight: 600;">Step 1: Discovery</div>
+            <div style="font-size: 13.5px; margin-top: 8px; line-height: 1.5;">Searched for executive speaking coaches in LA/Pasadena who work with founders and CEOs. Also searched for beauty/wellness-specific coaches (none found with verifiable executive communication credentials).</div>
+          </div>
+          <div style="background: var(--white); padding: 16px 20px;">
+            <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--green-soft); font-weight: 600;">Step 2: Site Verification</div>
+            <div style="font-size: 13.5px; margin-top: 8px; line-height: 1.5;">Fetched each coach's website directly. Confirmed sites are active (2026 copyright/dates), services match claims, and contact info is functional. Checked pricing pages, client pages, and program details.</div>
+          </div>
+          <div style="background: var(--white); padding: 16px 20px;">
+            <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--green-soft); font-weight: 600;">Step 3: Cross-Reference</div>
+            <div style="font-size: 13.5px; margin-top: 8px; line-height: 1.5;">Verified credentials via LinkedIn, Yelp, Voyage LA profiles, podcast appearances, and press mentions. Checked for real client testimonials. Rejected any coach whose claims couldn't be independently confirmed.</div>
+          </div>
+        </div>
+
+        <div class="callout" style="margin-top: 16px;">
+          <div class="callout-label">What We Searched For Specifically</div>
+          The ideal coach for Tina is NOT a generic public speaking coach. We filtered for coaches who specifically: (1) work with founders/CEOs who are domain experts but not business-trained communicators, (2) teach message discipline and time management in multi-stakeholder meetings (not just keynotes), (3) are based in LA or work remotely, (4) have verifiable track records with real named clients. No beauty-industry-specific executive communication coaches exist with verifiable credentials - all the "beauty business coaches" found teach salon business-building, not executive presence.
+        </div>
+      </div>
+
+      <!-- TOP PICK -->
+      <div class="section" id="recommended">
+        <div class="section-label green">Top Pick - Start Here</div>
+
+        <!-- LISA ELIA -->
+        <div class="coach-card recommended">
+          <div class="coach-header">
+            <div>
+              <div class="coach-name">Lisa Elia</div>
+              <div class="coach-biz">Expert Media Training</div>
+              <div class="coach-location">Brentwood, Los Angeles, CA</div>
+            </div>
+            <div class="coach-tags">
+              <span class="coach-tag tag-la">Los Angeles</span>
+              <span class="coach-tag tag-rec">Top Pick</span>
+            </div>
+          </div>
+          <div class="coach-body">
+            <p>25+ years experience. Former head of an LA PR firm. Methodology draws on acting, voice, movement, and communication strategy. Six-month private program for C-suite executives. A year of complimentary tune-up sessions included after engagement. All training delivered via Zoom.</p>
+            <p><strong>Verified clients include beauty/consumer founders:</strong> coached Sashee Chandran (Founder/CEO, Tea Drops - appeared on Shark Tank), Emily Williams (Co-founder, Slice of Sauce - Shark Tank deal), Ann Ryan (Founder/President, Beachy Cream organic products), plus GCX co-founder, Hutch.com CMO, and unnamed Fortune 500 executives. Many clients "choose to remain anonymous."</p>
+            <p><strong>Specifically relevant:</strong> Her investor pitch coaching has helped clients raise millions at all stages including IPOs. Her process: research your specific audience, develop message strategy, then train delivery through simulation. She trains clients to answer what executives actually need to hear, not what the founder wants to say. PR background means she thinks about how messaging lands with skeptical professional audiences.</p>
+          </div>
+          <div class="coach-detail-grid">
+            <div class="coach-detail">
+              <div class="detail-label">Website [VERIFIED ACTIVE - updated March 5, 2026]</div>
+              <div class="detail-value"><a href="https://expertmediatraining.com" target="_blank">expertmediatraining.com</a> / <a href="https://www.lisaelia.com" target="_blank">lisaelia.com</a></div>
+            </div>
+            <div class="coach-detail">
+              <div class="detail-label">Pricing & Contact</div>
+              <div class="detail-value">Not publicly listed - free consultation to design custom program.<br>Contact: team@expertmediatraining.com or 310-479-0217<br>Book via Calendly link on lisaelia.com</div>
+            </div>
+          </div>
+          <div class="coach-fit">
+            <div class="fit-label">Why She's the #1 Pick</div>
+            <p><strong>She checks every box.</strong> (1) LA-based - easy for in-person if needed. (2) Has coached beauty/consumer product founders specifically (Tea Drops, Beachy Cream, Slice of Sauce). (3) Her core methodology addresses exactly our gap - the difference between what Tina wants to say and what Kenny needs to hear. (4) Investor pitch simulation directly mirrors the CanRad dynamic. (5) The 6-month C-suite program with year of tune-ups is the right duration to rewire 40 years of communication habits. (6) Process includes research on the specific audience first - so she'd study CanRad/distributor context before coaching. This isn't generic advice.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- STRONG OPTIONS -->
+      <div class="section" id="strong">
+        <div class="section-label">Strong Alternatives & Complements</div>
+
+        <!-- HELENA BOWEN -->
+        <div class="coach-card">
+          <div class="coach-header">
+            <div>
+              <div class="coach-name">Helena Bowen</div>
+              <div class="coach-biz">Speaker Coach & Speechwriter</div>
+              <div class="coach-location">Los Angeles, CA</div>
+            </div>
+            <div class="coach-tags">
+              <span class="coach-tag tag-la">Los Angeles</span>
+            </div>
+          </div>
+          <div class="coach-body">
+            <p>Former HBO 2nd AD (Game of Thrones, Chernobyl, Euphoria). 300+ TED/TEDx speakers coached, 200M+ combined views, 20+ TEDx events produced. Verified via Voyage LA, CanvasRebel, LinkedIn, podcast appearances. Client: "She doesn't con you with empty praise or false encouragement, but offers clear-eyed advice you trust, even if it makes you nervous."</p>
+          </div>
+          <div class="coach-detail-grid">
+            <div class="coach-detail">
+              <div class="detail-label">Website [VERIFIED ACTIVE]</div>
+              <div class="detail-value"><a href="https://helenabowen.com" target="_blank">helenabowen.com</a> / <a href="https://www.instagram.com/helenaspeaking/" target="_blank">@helenaspeaking</a></div>
+            </div>
+            <div class="coach-detail">
+              <div class="detail-label">Pricing</div>
+              <div class="detail-value">Not listed. Book: helenabowen.as.me/consultation</div>
+            </div>
+          </div>
+          <div class="coach-fit">
+            <div class="fit-label">Honest Assessment</div>
+            <p><strong>Best for specific meeting prep, not ongoing habit change.</strong> Helena's TEDx methodology structures a single talk - one idea, tight time, no wandering. She'd be excellent to bring in before a specific CanRad call or trade show to build a structured 3-minute version of Tina's story. But she's primarily a speechwriter/talk-builder, not a long-term communication habits coach. <strong>Use as: focused prep for specific high-stakes moments. Not ideal as the sole coach.</strong></p>
+          </div>
+        </div>
+
+        <!-- SAUL KOTZUBEI -->
+        <div class="coach-card">
+          <div class="coach-header">
+            <div>
+              <div class="coach-name">Saul Kotzubei</div>
+              <div class="coach-biz">Voice, Public Speaking & Presence Coach</div>
+              <div class="coach-location">Los Angeles, CA</div>
+            </div>
+            <div class="coach-tags">
+              <span class="coach-tag tag-la">Los Angeles</span>
+            </div>
+          </div>
+          <div class="coach-body">
+            <p>LA-based since 1999. Master Teacher of Fitzmaurice Voicework (integrates yoga, somatic work, breath). MA Buddhist Studies, Columbia. Somatic Experiencing trained. Works with executives, founders, artists. 24 Yelp reviews (April 2025). David Schwimmer: "Saul's approach is invaluable."</p>
+          </div>
+          <div class="coach-detail-grid">
+            <div class="coach-detail">
+              <div class="detail-label">Website [VERIFIED ACTIVE - March 2026 updates, Fall 2026 workshops listed]</div>
+              <div class="detail-value"><a href="https://www.voicecoachla.com" target="_blank">voicecoachla.com</a></div>
+            </div>
+            <div class="coach-detail">
+              <div class="detail-label">Pricing [VERIFIED from website - corrected from initial research]</div>
+              <div class="detail-value"><strong>$625/hour</strong> standard. Sliding scale: $300-$625/hour (honor system). Free 15-min consult. First session 90 min billed as 1 hour. Most clients: weekly sessions.</div>
+            </div>
+          </div>
+          <div class="coach-fit">
+            <div class="fit-label">Honest Assessment</div>
+            <p><strong>Addresses a different layer entirely - complement only.</strong> Saul won't teach Tina how to structure a distributor pitch or read the room in a business meeting. What he will do is address the physical root of why she fills silence with words and hedges with "I don't know." That's a breath/nervous system pattern, not just a verbal habit. <strong>Use as: add-on to Lisa Elia or Helena Bowen. Not effective as sole solution.</strong></p>
+          </div>
+        </div>
+
+        <!-- JOHN BATES -->
+        <div class="coach-card">
+          <div class="coach-header">
+            <div>
+              <div class="coach-name">John Bates</div>
+              <div class="coach-biz">Executive Speaking Success</div>
+              <div class="coach-location">Salt Lake City (LA visits, 424 area code)</div>
+            </div>
+            <div class="coach-tags">
+              <span class="coach-tag tag-online">Remote + LA</span>
+            </div>
+          </div>
+          <div class="coach-body">
+            <p>15+ years. Former founder of BIGWORDS.com ($80M+ in VC raised - so he's lived the founder pitch). Speaker coach for 35+ TEDx events. Clients: NASA, Accenture, J&J. "Executive Whisperer." Neuroscience-based: "It's not about what you say, it's about what they hear." Verified via LinkedIn, SpeakerHub, multiple websites (updated Feb 2026).</p>
+          </div>
+          <div class="coach-detail-grid">
+            <div class="coach-detail">
+              <div class="detail-label">Website [VERIFIED ACTIVE - Feb 16, 2026]</div>
+              <div class="detail-value"><a href="https://www.johnbates.com" target="_blank">johnbates.com</a> / <a href="https://executivespeakingsuccess.com" target="_blank">executivespeakingsuccess.com</a> / (424) 425-3577</div>
+            </div>
+            <div class="coach-detail">
+              <div class="detail-label">Pricing [PARTIALLY VERIFIED]</div>
+              <div class="detail-value">$89 bootcamp prerequisite. 1:1: 12 sessions, 30-60 min each. Custom pricing - expect premium. Contact directly.</div>
+            </div>
+          </div>
+          <div class="coach-fit">
+            <div class="fit-label">Honest Assessment</div>
+            <p><strong>Strong methodology but may be too keynote-oriented for this problem.</strong> His framework is built for presentations and TED talks, not 30-minute distributor calls. However, his neuroscience reframe ("executives tune out because of biology, not because they don't believe you") could be uniquely helpful for Tina's ego when receiving this feedback. His own founder background ($80M+ raised for BIGWORDS.com) gives him credibility with a practitioner-CEO. The $89 bootcamp is a zero-risk test. <strong>Use as: alternative to Lisa Elia if her consultation doesn't click, or add the $89 bootcamp as a self-study supplement.</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONSIDERED & REJECTED -->
+      <div class="section" id="considered">
+        <div class="section-label" style="color: var(--warm-gray);">Considered & Rejected</div>
+
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th>Coach / Program</th>
+              <th>Why Rejected</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Patrick Munoz</strong> (West Hollywood)</td>
+              <td>25+ year voice coach, Disney, Penelope Cruz. Verified active. But his core expertise is voice/accent/dialect coaching for actors, not executive business communication. The video self-review feature is valuable but doesn't justify a full engagement. <strong>A single session for video playback awareness could be useful, but he's not the right primary coach.</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Jennifer Hennings</strong> (Bay Area, Zoom)</td>
+              <td>Stanford, Google, Apple clients. $7,500-12,500 verified pricing. Strong credentials. But her practice is rooted in speech <em>anxiety</em> - she built it from her own 20-year anxiety struggle. Tina's issue isn't anxiety. She's not afraid to speak - she speaks too much and doesn't structure it. Wrong root cause = wrong methodology.</td>
+            </tr>
+            <tr>
+              <td><strong>Heroic Public Speaking</strong> (NJ)</td>
+              <td>2,500+ alumni, NPS of 99, Michael Port is credible. But requires travel to New Jersey for the 2-day campus event, then 3-4 month online program. Too much overhead for the immediate need. Better suited for someone building a speaking career, not fixing specific business meeting habits.</td>
+            </tr>
+            <tr>
+              <td><strong>Tabby Biddle</strong> (Women's Thought Leadership)</td>
+              <td>Verified via web search. Focus is on feminine-centered leadership philosophy and helping women become "recognized voices" on global stages. Not executive business communication. Wrong domain entirely.</td>
+            </tr>
+            <tr>
+              <td><strong>Speak by Design / Stephanie Bickel</strong></td>
+              <td>Named top leadership development training company. "Perfecting the Pitch" program is relevant. But website is JS-rendered (couldn't verify details), approach seems more corporate/team-oriented than individual founder coaching, and no evidence of beauty/consumer brand experience. Worth a look but not a primary recommendation.</td>
+            </tr>
+            <tr>
+              <td><strong>Beauty business coaches</strong> (Elizabeth Faye, Tiffani Mitchell, etc.)</td>
+              <td>These coach salon owners on how to grow their salon business. Completely different skill from executive communication in B2B distributor/investor settings. Wrong audience, wrong problem.</td>
+            </tr>
+            <tr>
+              <td><strong>Toastmasters / generic programs</strong></td>
+              <td>Tina doesn't need practice speaking in front of people. She needs someone who will tell her "you just repeated that point 3 times and lost your audience at minute 4." Group programs don't provide that direct feedback.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- COMPARISON -->
+      <div class="section" id="comparison">
+        <div class="section-label">Verified Comparison</div>
+
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th>Coach</th>
+              <th>Location</th>
+              <th>Best For</th>
+              <th>Pricing</th>
+              <th>Verdict</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="rec">
+              <td><strong>Lisa Elia</strong></td>
+              <td>LA (Brentwood)</td>
+              <td>Message strategy, executive pitch, audience-reading</td>
+              <td>Consult (free)</td>
+              <td style="color: var(--green-soft); font-weight: 600;">Primary coach</td>
+            </tr>
+            <tr>
+              <td>Helena Bowen</td>
+              <td>LA</td>
+              <td>Structuring expertise for time-bound talks</td>
+              <td>Consult</td>
+              <td>Meeting prep</td>
+            </tr>
+            <tr>
+              <td>Saul Kotzubei</td>
+              <td>LA</td>
+              <td>Filler words, breath, physical presence</td>
+              <td>$300-625/hr</td>
+              <td>Add-on</td>
+            </tr>
+            <tr>
+              <td>John Bates</td>
+              <td>Remote + LA</td>
+              <td>Neuroscience of attention, founder empathy</td>
+              <td>$89 bootcamp + custom</td>
+              <td>Alternative / supplement</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- OUTREACH -->
+      <div class="section" id="outreach">
+        <div class="section-label">Outreach Template</div>
+
+        <p style="font-size: 14px; margin-bottom: 12px;">When reaching out, this framing helps coaches self-select and prepare:</p>
+
+        <div class="outreach-box">
+          "Our CEO is a 40-year industry veteran and trichologist who founded a premium B2B beauty brand. She has deep credibility and passion - it's genuinely the reason our biggest distribution deals happen. But she struggles specifically with: keeping to time in business meetings, repeating key points without realizing, reading room dynamics with time-constrained executives, and replacing hedging language with authority. She's excellent one-on-one with clients but needs to adapt her communication style for multi-stakeholder business and distributor settings. We're looking for someone who has experience with practitioners-turned-founders - people who built their expertise through doing, not through business school. Is this a profile you work with?"
+        </div>
+      </div>
+
+      <!-- WHAT TO AVOID -->
+      <div class="section" id="avoid">
+        <div class="section-label">What to Avoid</div>
+
+        <div class="callout" style="border-left-color: var(--red-soft);">
+          <div class="callout-label" style="color: var(--red-soft);">Not the Right Fit</div>
+          <strong>Toastmasters / generic public speaking groups:</strong> The issue isn't fear of speaking - it's the absence of executive communication training. Group practice won't provide the direct, uncomfortable feedback Tina needs.<br><br>
+          <strong>Beauty business coaches:</strong> They coach salon owners on business-building, not executive communication in B2B/investor settings. Completely different skill.<br><br>
+          <strong>Anxiety-focused coaches:</strong> Tina isn't anxious about speaking. She's too comfortable speaking. The issue is structure and discipline, not fear.<br><br>
+          <strong>One-off workshop formats:</strong> 40 years of communication habits won't change in a weekend. Minimum 6-session engagement, ideally 3-6 months with a primary coach.<br><br>
+          <strong>Women's empowerment / thought leadership coaches:</strong> The goal isn't to amplify Tina's voice - it's to focus it. She needs less volume, more precision.
+        </div>
+      </div>
+
+      <!-- RECOMMENDATION -->
+      <div class="section">
+        <div class="section-label green">Recommended Action Plan</div>
+
+        <div class="callout callout-green">
+          <div class="callout-label">Why Lisa Elia is the Clear #1</div>
+          After verifying all 7 coaches via their actual websites, client pages, press profiles, and pricing pages, Lisa Elia is the strongest fit for 5 specific reasons:<br><br>
+          <strong>1. She's coached beauty/consumer product founders.</strong> Tea Drops, Beachy Cream, Slice of Sauce - she understands the premium brand founder profile. No other coach on this list has verified beauty industry experience.<br><br>
+          <strong>2. Her core methodology matches our exact problem.</strong> "It's not about what you want to say, it's about what they need to hear." Her pitch coaching simulates real business meetings and trains clients to read the audience. This is precisely the gap between Tina's salon-floor communication and what Kenny needs in a 30-minute call.<br><br>
+          <strong>3. She's LA-based (Brentwood).</strong> In-person sessions available if needed, though she works primarily via Zoom.<br><br>
+          <strong>4. Her engagement structure fits.</strong> 6-month C-suite program with a year of tune-up sessions afterward. Long enough to rewire habits, with ongoing support for specific prep moments.<br><br>
+          <strong>5. Free consultation.</strong> Zero risk to explore. Book via Calendly on lisaelia.com or call 310-479-0217.
+        </div>
+
+        <div class="callout callout-green" style="margin-top: 12px;">
+          <div class="callout-label">Step-by-Step Plan</div>
+          <strong>This week:</strong> Book Lisa Elia's free consultation. Share the CanRad transcript (or a summary of the patterns) so she can assess fit and propose a program.<br><br>
+          <strong>If Lisa is a fit:</strong> Start her 6-month program. Ask her to specifically work on: (1) answering the question that was asked, not the one you wish was asked, (2) the "say it once" discipline, (3) reading time constraints and executive body language, (4) language that supports premium positioning.<br><br>
+          <strong>Before the next CanRad call:</strong> Whether or not Lisa is engaged yet, consider a single session with Helena Bowen to build a structured 90-second version of Tina's expert moment. This is tactical prep for one specific meeting.<br><br>
+          <strong>Optional add-on:</strong> John Bates' $89 "Speak Like a Leader Bootcamp" is a self-paced online course. Low-risk supplement that could introduce the neuroscience framing before formal coaching begins.<br><br>
+          <strong>Budget estimate:</strong> $5,000-$15,000 over 6 months for Lisa Elia's primary engagement. Add $500-$1,500 for Helena Bowen prep sessions as needed. Total investment: roughly what a single lost distribution deal would cost.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

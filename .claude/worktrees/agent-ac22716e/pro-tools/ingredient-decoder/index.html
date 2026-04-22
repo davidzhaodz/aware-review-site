@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingredient Decoder | AWARE Hair Pro</title>
+    <meta name="description" content="Decode any hair product's ingredient list. Identify sulfates, parabens, silicones, and other concerning ingredients. Compare to AWARE's EU-compliant formulations.">
+
+    <!-- AWARE Fonts -->
+    <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Klaviyo Client-Side SDK -->
+    <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=pk_1bcdfc5f9fa0dde4ab05653e3f64c5ebb5"></script>
+
+    <style>
+        /* ═══════════════════════════════════════════════════════════════
+           AWARE HAIR DESIGN SYSTEM - Ingredient Decoder
+           ═══════════════════════════════════════════════════════════════ */
+
+        :root {
+            /* Colors */
+            --color-background: #f4efe9;
+            --color-text: #102b26;
+            --color-text-secondary: #5a6b68;
+            --color-header-text: #031612;
+
+            --color-button-bg: #113035;
+            --color-button-text: #f4efe9;
+            --color-button-hover: #2a7682;
+
+            --color-border: #bdbfbf;
+            --color-border-light: #e4d9ca;
+            --color-accent: #102b26;
+            --color-success: #478947;
+            --color-warning: #c9842b;
+            --color-danger: #c94444;
+
+            --color-surface-light: #faf8f5;
+            --color-surface-dark: #102b26;
+
+            /* Score colors */
+            --color-clean: #2d8a4e;
+            --color-moderate: #c9842b;
+            --color-concerning: #c94444;
+
+            /* Typography */
+            --font-heading: "orpheuspro", Georgia, serif;
+            --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: "SF Mono", "Monaco", monospace;
+
+            --weight-normal: 400;
+            --weight-medium: 500;
+            --weight-semibold: 600;
+
+            /* Spacing */
+            --spacing-1: 4px;
+            --spacing-2: 8px;
+            --spacing-3: 12px;
+            --spacing-4: 16px;
+            --spacing-5: 20px;
+            --spacing-6: 24px;
+            --spacing-8: 32px;
+            --spacing-10: 40px;
+
+            /* Animation */
+            --easing: cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-fast: 0.2s;
+            --duration-normal: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 560px;
+            margin: 0 auto;
+            padding: var(--spacing-5);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: var(--spacing-8) 0;
+            border-bottom: 1px solid var(--color-border-light);
+            margin-bottom: var(--spacing-6);
+        }
+
+        .logo {
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .header h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(1.75rem, 5vw, 2.25rem);
+            font-weight: var(--weight-normal);
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .header p {
+            font-family: var(--font-heading);
+            font-style: italic;
+            color: var(--color-text-secondary);
+            font-size: 1.0625rem;
+        }
+
+        /* Card */
+        .card {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 1.125rem;
+            font-weight: var(--weight-normal);
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-4);
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: var(--spacing-5);
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: var(--weight-medium);
+            margin-bottom: var(--spacing-2);
+            color: var(--color-text);
+        }
+
+        .label-hint {
+            font-weight: var(--weight-normal);
+            color: var(--color-text-secondary);
+            font-size: 13px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-4);
+            border: 1px solid var(--color-border);
+            background: white;
+            font-size: 14px;
+            font-family: var(--font-body);
+            color: var(--color-text);
+            transition: border-color var(--duration-fast) var(--easing);
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        /* Sample Products */
+        .sample-products {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-2);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .sample-btn {
+            padding: var(--spacing-2) var(--spacing-3);
+            font-size: 12px;
+            font-weight: var(--weight-medium);
+            background: var(--color-background);
+            border: 1px solid var(--color-border);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--easing);
+        }
+
+        .sample-btn:hover {
+            border-color: var(--color-accent);
+            background: white;
+        }
+
+        .sample-btn.aware {
+            background: var(--color-surface-dark);
+            color: var(--color-button-text);
+            border-color: var(--color-surface-dark);
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: var(--spacing-4) var(--spacing-5);
+            font-size: 14px;
+            font-weight: var(--weight-medium);
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--easing);
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--color-button-bg);
+            color: var(--color-button-text);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-button-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-primary:disabled {
+            background: var(--color-border);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-text);
+            color: var(--color-button-text);
+        }
+
+        /* Screen visibility */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.4s var(--easing);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Staggered List Reveals */
+        .flag-item,
+        .stat-item {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.4s var(--easing), transform 0.4s var(--easing);
+        }
+
+        .flag-item.visible,
+        .stat-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Enhanced Button Hover */
+        .btn-primary {
+            transition: all var(--duration-normal) var(--easing), transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(17, 48, 53, 0.15);
+        }
+
+        .email-row .btn {
+            transition: background var(--duration-fast) var(--easing), transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .email-row .btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(71, 137, 71, 0.2);
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .screen.active {
+                animation: none;
+            }
+
+            .flag-item,
+            .stat-item {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .btn-primary:hover:not(:disabled),
+            .email-row .btn:hover {
+                transform: none;
+            }
+        }
+
+        /* Results */
+        .score-hero {
+            text-align: center;
+            padding: var(--spacing-8) var(--spacing-5);
+            margin-bottom: var(--spacing-4);
+            position: relative;
+        }
+
+        .score-hero.clean {
+            background: linear-gradient(135deg, #e8f5ed 0%, #d4e8db 100%);
+            border: 1px solid rgba(45, 138, 78, 0.2);
+        }
+
+        .score-hero.moderate {
+            background: linear-gradient(135deg, #fef3cd 0%, #fff8e6 100%);
+            border: 1px solid rgba(201, 132, 43, 0.2);
+        }
+
+        .score-hero.concerning {
+            background: linear-gradient(135deg, #fce8e8 0%, #f5d5d5 100%);
+            border: 1px solid rgba(201, 68, 68, 0.2);
+        }
+
+        .score-label {
+            font-size: 11px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .score-value {
+            font-family: var(--font-heading);
+            font-size: 4rem;
+            font-weight: var(--weight-normal);
+            line-height: 1;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .score-hero.clean .score-value { color: var(--color-clean); }
+        .score-hero.moderate .score-value { color: var(--color-moderate); }
+        .score-hero.concerning .score-value { color: var(--color-concerning); }
+
+        .score-rating {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-style: italic;
+        }
+
+        /* Stats Strip */
+        .stats-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--color-border-light);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .stat-item {
+            background: var(--color-surface-light);
+            padding: var(--spacing-4);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--color-header-text);
+        }
+
+        .stat-number.danger { color: var(--color-danger); }
+        .stat-number.warning { color: var(--color-warning); }
+        .stat-number.success { color: var(--color-success); }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-top: var(--spacing-1);
+        }
+
+        /* Flagged Ingredients */
+        .flags-section {
+            margin-bottom: var(--spacing-4);
+        }
+
+        .flags-header {
+            font-size: 12px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-3);
+            padding: var(--spacing-3) var(--spacing-4);
+            background: var(--color-background);
+            border: 1px solid var(--color-border-light);
+            border-bottom: none;
+        }
+
+        .flag-item {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            border-top: none;
+            padding: var(--spacing-4);
+        }
+
+        .flag-item:first-of-type {
+            border-top: 1px solid var(--color-border-light);
+        }
+
+        .flag-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .flag-badge {
+            padding: 3px 8px;
+            font-size: 10px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border-radius: 3px;
+        }
+
+        .flag-badge.high {
+            background: var(--color-danger);
+            color: white;
+        }
+
+        .flag-badge.medium {
+            background: var(--color-warning);
+            color: white;
+        }
+
+        .flag-badge.low {
+            background: var(--color-text-secondary);
+            color: white;
+        }
+
+        .flag-name {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: var(--weight-semibold);
+            color: var(--color-header-text);
+        }
+
+        .flag-category {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .flag-description {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+        }
+
+        /* No Flags Message */
+        .no-flags {
+            background: linear-gradient(135deg, #e8f5ed 0%, #d4e8db 100%);
+            border: 1px solid rgba(45, 138, 78, 0.2);
+            padding: var(--spacing-5);
+            text-align: center;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .no-flags-icon {
+            font-size: 32px;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .no-flags-text {
+            font-family: var(--font-heading);
+            font-size: 1.125rem;
+            color: var(--color-success);
+        }
+
+        /* AWARE Comparison */
+        .aware-comparison {
+            background: var(--color-surface-dark);
+            color: var(--color-background);
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .aware-comparison h3 {
+            font-family: var(--font-heading);
+            font-size: 1.125rem;
+            font-weight: var(--weight-normal);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .aware-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-3);
+            padding: var(--spacing-3) 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .aware-feature:last-child {
+            border-bottom: none;
+        }
+
+        .aware-check {
+            color: #7dd3e1;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .aware-feature-text {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .aware-feature-text strong {
+            color: #7dd3e1;
+        }
+
+        /* Ingredient List Display */
+        .ingredient-list-card {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            padding: var(--spacing-4);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .ingredient-list-header {
+            font-size: 12px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-3);
+        }
+
+        .ingredient-display {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .ingredient-display .flagged {
+            background: rgba(201, 68, 68, 0.15);
+            color: var(--color-danger);
+            padding: 1px 4px;
+            border-radius: 2px;
+        }
+
+        .ingredient-display .flagged.medium {
+            background: rgba(201, 132, 43, 0.15);
+            color: var(--color-warning);
+        }
+
+        /* Email Capture */
+        .email-capture {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            padding: var(--spacing-5);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .email-capture h3 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-weight: var(--weight-normal);
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .email-capture p {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .email-row {
+            display: flex;
+            gap: var(--spacing-2);
+        }
+
+        .email-row input {
+            flex: 1;
+        }
+
+        .email-row .btn {
+            width: auto;
+            padding: var(--spacing-3) var(--spacing-5);
+            background: var(--color-success);
+            color: white;
+        }
+
+        .email-success {
+            display: none;
+            text-align: center;
+            color: var(--color-success);
+            font-weight: var(--weight-medium);
+            padding: var(--spacing-3);
+        }
+
+        .email-success.visible {
+            display: block;
+        }
+
+        /* Share Buttons */
+        .share-section {
+            display: flex;
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .share-btn {
+            flex: 1;
+            padding: var(--spacing-3);
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            cursor: pointer;
+            text-align: center;
+            font-size: 12px;
+            font-weight: var(--weight-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all var(--duration-fast) var(--easing);
+        }
+
+        .share-btn:hover {
+            border-color: var(--color-accent);
+            background: white;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: var(--spacing-8) var(--spacing-6);
+            color: var(--color-text-secondary);
+            font-size: 13px;
+            border-top: 1px solid var(--color-border-light);
+            margin-top: var(--spacing-6);
+        }
+
+        .footer a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: var(--spacing-4);
+            }
+
+            .email-row {
+                flex-direction: column;
+            }
+
+            .email-row .btn {
+                width: 100%;
+            }
+
+            .stats-strip {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">AWARE Hair Pro Tools</div>
+            <h1>Ingredient Decoder</h1>
+            <p>Know what's really in your products</p>
+        </div>
+
+        <!-- Input Screen -->
+        <div class="screen active" id="inputScreen">
+            <div class="card">
+                <h2 class="card-title">Paste an ingredient list</h2>
+
+                <div class="form-group">
+                    <label>Try a sample product:</label>
+                    <div class="sample-products">
+                        <button class="sample-btn" onclick="loadSample('drugstore')">Drugstore Shampoo</button>
+                        <button class="sample-btn" onclick="loadSample('salon')">Salon Brand</button>
+                        <button class="sample-btn" onclick="loadSample('natural')">Natural Brand</button>
+                        <button class="sample-btn aware" onclick="loadSample('aware')">AWARE Shampoo</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="productName">Product Name <span class="label-hint">(optional)</span></label>
+                    <input type="text" id="productName" placeholder="e.g., Brand X Hydrating Shampoo">
+                </div>
+
+                <div class="form-group">
+                    <label for="ingredients">Ingredient List</label>
+                    <textarea id="ingredients" placeholder="Paste the full ingredient list here, separated by commas...
+
+Example:
+Water, Sodium Laureth Sulfate, Cocamidopropyl Betaine, Sodium Chloride, Fragrance..."></textarea>
+                    <span class="label-hint">Copy from the product label or website</span>
+                </div>
+
+                <button class="btn btn-primary" onclick="analyzeIngredients()" id="analyzeBtn" disabled>Decode Ingredients</button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="screen" id="results">
+            <!-- Score Hero -->
+            <div class="score-hero clean" id="scoreHero">
+                <div class="score-label">Clean Score</div>
+                <div class="score-value" id="cleanScore">85</div>
+                <div class="score-rating" id="scoreRating">Clean Formulation</div>
+            </div>
+
+            <!-- Stats Strip -->
+            <div class="stats-strip">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalIngredients">24</div>
+                    <div class="stat-label">Ingredients</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number danger" id="flaggedCount">3</div>
+                    <div class="stat-label">Flagged</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number success" id="cleanCount">21</div>
+                    <div class="stat-label">Clean</div>
+                </div>
+            </div>
+
+            <!-- Flagged Ingredients -->
+            <div class="flags-section" id="flagsSection">
+                <div class="flags-header">Flagged Ingredients</div>
+                <div id="flagsList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- No Flags Message (hidden by default) -->
+            <div class="no-flags" id="noFlags" style="display: none;">
+                <div class="no-flags-icon">&#127807;</div>
+                <div class="no-flags-text">No concerning ingredients found!</div>
+            </div>
+
+            <!-- AWARE Comparison -->
+            <div class="aware-comparison">
+                <h3>How AWARE Compares</h3>
+                <div class="aware-feature">
+                    <span class="aware-check">&#10003;</span>
+                    <div class="aware-feature-text"><strong>EU-Compliant</strong> - Formulated without 1,300+ ingredients banned in Europe but allowed in the US</div>
+                </div>
+                <div class="aware-feature">
+                    <span class="aware-check">&#10003;</span>
+                    <div class="aware-feature-text"><strong>No Sulfates</strong> - Gentle, scalp-friendly cleansing without stripping</div>
+                </div>
+                <div class="aware-feature">
+                    <span class="aware-check">&#10003;</span>
+                    <div class="aware-feature-text"><strong>100% Natural Fragrance</strong> - No synthetic parfum or hidden phthalates</div>
+                </div>
+                <div class="aware-feature">
+                    <span class="aware-check">&#10003;</span>
+                    <div class="aware-feature-text"><strong>Silicone-Free</strong> - No buildup, better long-term scalp health</div>
+                </div>
+            </div>
+
+            <!-- Ingredient List Display -->
+            <div class="ingredient-list-card">
+                <div class="ingredient-list-header">Full Ingredient List</div>
+                <div class="ingredient-display" id="ingredientDisplay"></div>
+            </div>
+
+            <!-- Email Capture -->
+            <div class="email-capture" id="emailCapture">
+                <h3>Get the full ingredient guide</h3>
+                <p>We'll send you a list of 50+ ingredients to avoid and why</p>
+                <div class="email-row" id="emailForm">
+                    <input type="email" id="emailInput" placeholder="your@email.com">
+                    <button class="btn" onclick="submitEmail()">Send</button>
+                </div>
+                <div class="email-success" id="emailSuccess">
+                    &#10003; Check your inbox!
+                </div>
+            </div>
+
+            <!-- Share -->
+            <div class="share-section">
+                <button class="share-btn" onclick="shareResults()">&#128279; Share Results</button>
+                <button class="share-btn" onclick="startOver()">&#8634; Analyze Another</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Built by <a href="https://awarehair.com" target="_blank">AWARE Hair</a> for informed beauty choices.</p>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════
+        // INGREDIENT DECODER - JavaScript
+        // ═══════════════════════════════════════════════════════════════
+
+        // Value Counter Animation
+        function animateValue(el, end, duration, prefix, suffix) {
+            duration = duration || 1000;
+            prefix = prefix || '';
+            suffix = suffix || '';
+
+            // Respect reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                el.textContent = prefix + Math.round(end) + suffix;
+                return;
+            }
+
+            var start = 0;
+            var startTime = performance.now();
+
+            function update(now) {
+                var progress = Math.min((now - startTime) / duration, 1);
+                var eased = 1 - Math.pow(1 - progress, 3); // cubic ease-out
+                var value = Math.floor(start + (end - start) * eased);
+                el.textContent = prefix + value + suffix;
+                if (progress < 1) requestAnimationFrame(update);
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        // Staggered reveal for list items
+        function revealListItems(selector, delay) {
+            delay = delay || 100;
+            var items = document.querySelectorAll(selector);
+
+            // Respect reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                items.forEach(function(item) {
+                    item.classList.add('visible');
+                });
+                return;
+            }
+
+            items.forEach(function(item, index) {
+                setTimeout(function() {
+                    item.classList.add('visible');
+                }, index * delay);
+            });
+        }
+
+        // Ingredient Database
+        const INGREDIENT_FLAGS = {
+            // SULFATES - High concern
+            'sodium lauryl sulfate': { category: 'Sulfate', severity: 'high', description: 'Harsh surfactant that can strip natural oils and irritate the scalp. Common cause of dryness and sensitivity.' },
+            'sodium laureth sulfate': { category: 'Sulfate', severity: 'high', description: 'Slightly milder than SLS but still a strong detergent. May be contaminated with 1,4-dioxane.' },
+            'ammonium lauryl sulfate': { category: 'Sulfate', severity: 'high', description: 'Strong surfactant similar to SLS, can cause scalp irritation and dryness.' },
+            'ammonium laureth sulfate': { category: 'Sulfate', severity: 'high', description: 'Related to sulfates, can be drying and irritating for sensitive scalps.' },
+
+            // PARABENS - High concern
+            'methylparaben': { category: 'Paraben', severity: 'high', description: 'Preservative linked to hormone disruption. Banned or restricted in many countries.' },
+            'propylparaben': { category: 'Paraben', severity: 'high', description: 'Endocrine disruptor that mimics estrogen. Restricted in the EU for certain products.' },
+            'butylparaben': { category: 'Paraben', severity: 'high', description: 'One of the most potent parabens for estrogenic activity. Banned in Denmark for children\'s products.' },
+            'ethylparaben': { category: 'Paraben', severity: 'high', description: 'Commonly used paraben preservative with endocrine disruption concerns.' },
+            'isobutylparaben': { category: 'Paraben', severity: 'high', description: 'Paraben variant with similar hormone-disrupting properties.' },
+
+            // SILICONES - Medium concern
+            'dimethicone': { category: 'Silicone', severity: 'medium', description: 'Creates a coating on hair that can cause buildup over time, potentially clogging follicles.' },
+            'cyclomethicone': { category: 'Silicone', severity: 'medium', description: 'Volatile silicone that can accumulate with repeated use, requiring clarifying treatments.' },
+            'amodimethicone': { category: 'Silicone', severity: 'medium', description: 'Modified silicone that adheres to damaged hair but can build up on the scalp.' },
+            'cyclopentasiloxane': { category: 'Silicone', severity: 'medium', description: 'Cyclical silicone with environmental persistence concerns. Restricted in EU cosmetics.' },
+            'dimethiconol': { category: 'Silicone', severity: 'medium', description: 'Film-forming silicone that can prevent moisture penetration over time.' },
+
+            // SYNTHETIC FRAGRANCE - High concern
+            'fragrance': { category: 'Synthetic Fragrance', severity: 'high', description: 'Catch-all term that can hide hundreds of undisclosed chemicals, including phthalates and allergens.' },
+            'parfum': { category: 'Synthetic Fragrance', severity: 'high', description: 'European term for fragrance. Same undisclosed chemical cocktail concerns apply.' },
+
+            // FORMALDEHYDE RELEASERS - High concern
+            'dmdm hydantoin': { category: 'Formaldehyde Releaser', severity: 'high', description: 'Releases formaldehyde over time, a known carcinogen. Linked to hair loss in some studies.' },
+            'imidazolidinyl urea': { category: 'Formaldehyde Releaser', severity: 'high', description: 'Preservative that releases formaldehyde. Can cause contact dermatitis.' },
+            'diazolidinyl urea': { category: 'Formaldehyde Releaser', severity: 'high', description: 'Formaldehyde-releasing preservative linked to skin sensitization.' },
+            'quaternium-15': { category: 'Formaldehyde Releaser', severity: 'high', description: 'Known formaldehyde releaser, one of the most common causes of cosmetic contact dermatitis.' },
+
+            // PHTHALATES - High concern
+            'diethyl phthalate': { category: 'Phthalate', severity: 'high', description: 'Endocrine disruptor often hidden in "fragrance." Linked to reproductive issues.' },
+
+            // ALCOHOLS - Medium concern (drying)
+            'alcohol denat': { category: 'Drying Alcohol', severity: 'medium', description: 'Denatured alcohol that can be very drying to hair and scalp with regular use.' },
+            'isopropyl alcohol': { category: 'Drying Alcohol', severity: 'medium', description: 'Strong drying agent that can strip moisture from hair and scalp.' },
+            'sd alcohol': { category: 'Drying Alcohol', severity: 'medium', description: 'Specially denatured alcohol, can be drying depending on concentration.' },
+
+            // MINERAL OIL - Low concern
+            'mineral oil': { category: 'Petroleum Derivative', severity: 'low', description: 'Petroleum-derived ingredient that coats hair but doesn\'t nourish. Can cause buildup.' },
+            'petrolatum': { category: 'Petroleum Derivative', severity: 'low', description: 'Petroleum jelly derivative that can clog pores and prevent moisture absorption.' },
+
+            // SYNTHETIC COLORS - Low concern
+            'fd&c': { category: 'Synthetic Color', severity: 'low', description: 'Artificial colors derived from petroleum or coal tar. May cause sensitivity.' },
+            'd&c': { category: 'Synthetic Color', severity: 'low', description: 'Synthetic dyes that serve no functional purpose and may cause reactions.' },
+            'ci 19140': { category: 'Synthetic Color', severity: 'low', description: 'Yellow 5 / Tartrazine - synthetic color linked to hyperactivity and allergies.' },
+            'ci 15985': { category: 'Synthetic Color', severity: 'low', description: 'Yellow 6 / Sunset Yellow - synthetic azo dye with allergy concerns.' },
+
+            // OTHER CONCERNS
+            'triclosan': { category: 'Antimicrobial', severity: 'high', description: 'Hormone disruptor and potential contributor to antibiotic resistance. Banned in hand soaps.' },
+            'polyethylene': { category: 'Microplastic', severity: 'medium', description: 'Microplastic beads that harm marine life and may accumulate in the body.' },
+            'peg-': { category: 'PEG Compound', severity: 'low', description: 'Polyethylene glycol compounds may be contaminated with carcinogens from manufacturing.' },
+            'cocamide dea': { category: 'DEA Compound', severity: 'medium', description: 'Can react with other ingredients to form carcinogenic nitrosamines.' },
+            'cocamide mea': { category: 'MEA Compound', severity: 'medium', description: 'Similar concerns to DEA compounds regarding nitrosamine formation.' },
+            'sodium hydroxide': { category: 'Strong Alkaline', severity: 'low', description: 'Used to adjust pH. Safe in finished products but can be irritating at high concentrations.' }
+        };
+
+        // Sample Products
+        const SAMPLE_PRODUCTS = {
+            drugstore: {
+                name: 'Generic Drugstore Shampoo',
+                ingredients: 'Water, Sodium Laureth Sulfate, Sodium Lauryl Sulfate, Cocamidopropyl Betaine, Sodium Chloride, Fragrance, Dimethicone, Guar Hydroxypropyltrimonium Chloride, Cocamide MEA, Sodium Benzoate, Citric Acid, Methylparaben, Propylparaben, DMDM Hydantoin, Tetrasodium EDTA, CI 19140, CI 15985'
+            },
+            salon: {
+                name: 'Professional Salon Shampoo',
+                ingredients: 'Water, Sodium Laureth Sulfate, Cocamidopropyl Betaine, Acrylates Copolymer, Sodium Chloride, PEG-150 Distearate, Parfum, Phenoxyethanol, Dimethicone, Panthenol, Glycerin, Polyquaternium-10, Citric Acid, Sodium Benzoate, Hexyl Cinnamal, Linalool, Limonene'
+            },
+            natural: {
+                name: 'Natural Brand Shampoo',
+                ingredients: 'Water, Aloe Barbadensis Leaf Juice, Decyl Glucoside, Sodium Cocoyl Isethionate, Glycerin, Coco-Glucoside, Xanthan Gum, Citric Acid, Panthenol, Rosmarinus Officinalis Leaf Extract, Lavandula Angustifolia Oil, Tocopherol, Sodium Benzoate, Potassium Sorbate'
+            },
+            aware: {
+                name: 'AWARE Scalp Prep Shampoo',
+                ingredients: 'Water, Aloe Barbadensis Leaf Juice, Sodium Cocoyl Isethionate, Cocamidopropyl Betaine, Glycerin, Panthenol, Niacinamide, Salicylic Acid, Tea Tree Oil, Rosemary Leaf Extract, Peppermint Oil, Vitamin E, Citric Acid, Sodium Benzoate, Potassium Sorbate'
+            }
+        };
+
+        let analysisData = {};
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('ingredients').addEventListener('input', function() {
+                document.getElementById('analyzeBtn').disabled = this.value.trim().length < 10;
+            });
+        });
+
+        function loadSample(type) {
+            const sample = SAMPLE_PRODUCTS[type];
+            document.getElementById('productName').value = sample.name;
+            document.getElementById('ingredients').value = sample.ingredients;
+            document.getElementById('analyzeBtn').disabled = false;
+        }
+
+        function analyzeIngredients() {
+            const rawIngredients = document.getElementById('ingredients').value;
+            const productName = document.getElementById('productName').value || 'Your Product';
+
+            // Parse ingredients
+            const ingredients = rawIngredients
+                .toLowerCase()
+                .split(/[,\n]/)
+                .map(i => i.trim())
+                .filter(i => i.length > 0);
+
+            // Find flags
+            const flagged = [];
+
+            ingredients.forEach(ingredient => {
+                Object.keys(INGREDIENT_FLAGS).forEach(key => {
+                    if (ingredient.includes(key)) {
+                        const flag = INGREDIENT_FLAGS[key];
+                        flagged.push({
+                            name: ingredient,
+                            matchedKey: key,
+                            ...flag
+                        });
+                    }
+                });
+            });
+
+            // Calculate score
+            let score = 100;
+            flagged.forEach(f => {
+                if (f.severity === 'high') score -= 15;
+                else if (f.severity === 'medium') score -= 8;
+                else score -= 3;
+            });
+            score = Math.max(0, score);
+
+            // Store data
+            analysisData = {
+                productName,
+                ingredients,
+                flagged,
+                score,
+                totalCount: ingredients.length,
+                flaggedCount: flagged.length,
+                cleanCount: ingredients.length - flagged.length
+            };
+
+            displayResults();
+        }
+
+        function displayResults() {
+            const d = analysisData;
+
+            // Score hero
+            const scoreHero = document.getElementById('scoreHero');
+            scoreHero.classList.remove('clean', 'moderate', 'concerning');
+
+            let rating;
+            if (d.score >= 80) {
+                scoreHero.classList.add('clean');
+                rating = 'Clean Formulation';
+            } else if (d.score >= 50) {
+                scoreHero.classList.add('moderate');
+                rating = 'Some Concerns';
+            } else {
+                scoreHero.classList.add('concerning');
+                rating = 'Needs Attention';
+            }
+
+            document.getElementById('scoreRating').textContent = rating;
+            document.getElementById('flaggedCount').className = 'stat-number ' + (d.flaggedCount > 0 ? 'danger' : 'success');
+
+            // Flags list
+            const flagsSection = document.getElementById('flagsSection');
+            const noFlags = document.getElementById('noFlags');
+            const flagsList = document.getElementById('flagsList');
+
+            if (d.flagged.length > 0) {
+                flagsSection.style.display = 'block';
+                noFlags.style.display = 'none';
+
+                // Sort by severity
+                const sortedFlags = d.flagged.sort((a, b) => {
+                    const order = { high: 0, medium: 1, low: 2 };
+                    return order[a.severity] - order[b.severity];
+                });
+
+                flagsList.innerHTML = sortedFlags.map(f => `
+                    <div class="flag-item">
+                        <div class="flag-header">
+                            <span class="flag-badge ${f.severity}">${f.severity}</span>
+                            <span class="flag-name">${f.name}</span>
+                        </div>
+                        <div class="flag-category">${f.category}</div>
+                        <div class="flag-description">${f.description}</div>
+                    </div>
+                `).join('');
+            } else {
+                flagsSection.style.display = 'none';
+                noFlags.style.display = 'block';
+            }
+
+            // Ingredient display with highlighting
+            const flaggedKeys = d.flagged.map(f => f.matchedKey);
+            const displayHtml = d.ingredients.map(ing => {
+                let html = ing;
+                flaggedKeys.forEach(key => {
+                    if (ing.includes(key)) {
+                        const flag = INGREDIENT_FLAGS[key];
+                        const severityClass = flag.severity === 'medium' ? ' medium' : '';
+                        html = `<span class="flagged${severityClass}">${ing}</span>`;
+                    }
+                });
+                return html;
+            }).join(', ');
+
+            document.getElementById('ingredientDisplay').innerHTML = displayHtml;
+
+            // Show results screen first
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('results').classList.add('active');
+            window.scrollTo(0, 0);
+
+            // Animate values after screen transition
+            setTimeout(function() {
+                // Animate score
+                animateValue(document.getElementById('cleanScore'), d.score, 1000, '', '');
+
+                // Animate stats
+                animateValue(document.getElementById('totalIngredients'), d.totalCount, 700, '', '');
+                animateValue(document.getElementById('flaggedCount'), d.flaggedCount, 800, '', '');
+                animateValue(document.getElementById('cleanCount'), d.cleanCount, 900, '', '');
+
+                // Reveal stat items and flag items with stagger
+                revealListItems('.stat-item', 100);
+                setTimeout(function() {
+                    revealListItems('.flag-item', 80);
+                }, 300);
+            }, 200);
+        }
+
+        function submitEmail() {
+            const email = document.getElementById('emailInput').value;
+
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email');
+                return;
+            }
+
+            // Klaviyo
+            const flagCategories = [...new Set(analysisData.flagged.map(f => f.category))];
+
+            if (typeof klaviyo !== 'undefined') {
+                klaviyo.identify({
+                    '$email': email,
+                    'calculator_used': 'ingredient_decoder',
+                    'product_analyzed': analysisData.productName,
+                    'clean_score': analysisData.score,
+                    'flags_found': flagCategories.join(', '),
+                    'flagged_count': analysisData.flaggedCount
+                });
+
+                klaviyo.track('Decoded Ingredients', {
+                    product_name: analysisData.productName,
+                    clean_score: analysisData.score,
+                    flags_found: flagCategories,
+                    flagged_count: analysisData.flaggedCount
+                });
+            }
+
+            fetch('https://a.klaviyo.com/client/subscriptions/?company_id=pk_1bcdfc5f9fa0dde4ab05653e3f64c5ebb5', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'revision': '2024-10-15' },
+                body: JSON.stringify({
+                    data: {
+                        type: 'subscription',
+                        attributes: {
+                            custom_source: 'Pro Tools - Ingredient Decoder',
+                            profile: {
+                                data: {
+                                    type: 'profile',
+                                    attributes: {
+                                        email: email,
+                                        properties: {
+                                            clean_score: analysisData.score,
+                                            flags_found: flagCategories.join(', ')
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+            }).catch(e => console.log('Klaviyo:', e));
+
+            document.getElementById('emailForm').style.display = 'none';
+            document.getElementById('emailSuccess').classList.add('visible');
+        }
+
+        function shareResults() {
+            const text = `I decoded "${analysisData.productName}" with AWARE's Ingredient Decoder and got a Clean Score of ${analysisData.score}/100. ${analysisData.flaggedCount} concerning ingredients found. Try it: `;
+            const url = window.location.href;
+
+            if (navigator.share) {
+                navigator.share({ title: 'Ingredient Decoder Results', text, url });
+            } else {
+                navigator.clipboard.writeText(text + url).then(() => alert('Link copied!'));
+            }
+        }
+
+        function startOver() {
+            document.getElementById('productName').value = '';
+            document.getElementById('ingredients').value = '';
+            document.getElementById('analyzeBtn').disabled = true;
+
+            document.getElementById('emailForm').style.display = 'flex';
+            document.getElementById('emailSuccess').classList.remove('visible');
+
+            // Reset animation states for next analysis
+            document.querySelectorAll('.flag-item, .stat-item').forEach(function(el) {
+                el.classList.remove('visible');
+            });
+
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('inputScreen').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>

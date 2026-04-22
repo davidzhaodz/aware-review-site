@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boom Lab Price Increase - Executive Summary</title>
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --muted: #5a5a7a;
+    --border: #e2e2ea;
+    --bg: #fafafa;
+    --white: #ffffff;
+    --green: #0a7c42;
+    --green-bg: #e8f5e9;
+    --red: #c62828;
+    --red-bg: #fce4ec;
+    --amber: #e65100;
+    --amber-bg: #fff3e0;
+    --blue: #1565c0;
+    --blue-bg: #e3f2fd;
+    --purple: #6a1b9a;
+    --purple-bg: #f3e5f5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.55;
+  }
+  .page {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--white);
+  }
+
+  /* Header - compact */
+  .header {
+    background: var(--ink);
+    color: white;
+    padding: 28px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .header h1 { font-size: 20px; font-weight: 700; }
+  .header-meta { font-size: 12px; opacity: 0.5; }
+  .header-right { text-align: right; }
+  .header-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.5;
+    margin-bottom: 2px;
+  }
+
+  .content { padding: 28px 40px 20px; }
+
+  /* Stats row */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .stat {
+    text-align: center;
+    padding: 14px 8px;
+    background: #f5f5f8;
+    border-radius: 6px;
+  }
+  .stat-value { font-size: 22px; font-weight: 700; }
+  .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-top: 2px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0 16px; }
+  th {
+    background: #f5f5f8;
+    font-weight: 600;
+    text-align: left;
+    padding: 7px 10px;
+    border-bottom: 2px solid var(--border);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+  }
+  td { padding: 7px 10px; border-bottom: 1px solid #f0f0f5; }
+  tr:last-child td { border-bottom: none; }
+  .row-total td { font-weight: 700; border-top: 2px solid var(--ink); background: #f9f9fc; }
+  .text-right { text-align: right; }
+  .text-red { color: var(--red); font-weight: 600; }
+  .text-green { color: var(--green); font-weight: 600; }
+  .text-amber { color: var(--amber); font-weight: 600; }
+  .text-muted { color: var(--muted); }
+
+  /* Section headers */
+  h2 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin: 20px 0 10px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid var(--ink);
+  }
+  h2:first-of-type { margin-top: 0; }
+
+  /* Alert */
+  .alert {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 12px 0;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .alert-red { background: var(--red-bg); border-left: 3px solid var(--red); }
+  .alert-blue { background: var(--blue-bg); border-left: 3px solid var(--blue); }
+  .alert-amber { background: var(--amber-bg); border-left: 3px solid var(--amber); }
+  .alert strong { display: block; margin-bottom: 2px; font-size: 12px; }
+
+  /* Comparison grid */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1.4fr repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 12px 0;
+    font-size: 12px;
+  }
+  .compare-cell {
+    background: white;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .compare-cell.hdr {
+    background: #f5f5f8;
+    font-weight: 700;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+  }
+  .compare-cell.label {
+    text-align: left;
+    font-weight: 500;
+    background: #f9f9fc;
+    font-size: 12px;
+  }
+  .compare-cell .big { font-size: 16px; font-weight: 700; display: block; }
+  .compare-cell .sub { font-size: 10px; color: var(--muted); }
+
+  /* Key points */
+  .leverage { font-size: 13px; margin: 8px 0; padding-left: 0; list-style: none; }
+  .leverage li {
+    padding: 5px 0 5px 20px;
+    position: relative;
+    border-bottom: 1px solid #f5f5f8;
+  }
+  .leverage li:last-child { border-bottom: none; }
+  .leverage li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--blue);
+  }
+  .leverage li.red::before { background: var(--red); }
+  .leverage li.green::before { background: var(--green); }
+
+  /* Rec steps */
+  .rec-steps { font-size: 13px; padding-left: 18px; margin: 8px 0; }
+  .rec-steps li { margin-bottom: 6px; }
+
+  /* Divider */
+  hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  /* Footer */
+  .footer {
+    padding: 14px 40px;
+    background: #f5f5f8;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* Print */
+  @media print {
+    body { background: white; }
+    .page { max-width: none; }
+    .header { padding: 16px 28px; }
+    .content { padding: 20px 28px; }
+    @page { margin: 0.5in; size: letter; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="header-label">Executive Summary</div>
+      <h1>Boom Lab - Price Increase Analysis</h1>
+    </div>
+    <div class="header-right">
+      <div class="header-meta">AWARE Hair LLC</div>
+      <div class="header-meta">March 8, 2026 - Confidential</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- Key Numbers -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value text-red">+$11,325</div>
+        <div class="stat-label">Cost if accepted</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">~16%</div>
+        <div class="stat-label">Avg increase asked</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value text-red">400</div>
+        <div class="stat-label">Shortage units owed</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$48,510</div>
+        <div class="stat-label">Remaining on contract</div>
+      </div>
+    </div>
+
+    <!-- Situation -->
+    <h2>Situation</h2>
+    <p style="font-size:13px; margin-bottom:8px;">
+      Boom Lab Inc (our contract manufacturer) is requesting a 13-18% price increase on all three retail SKUs, to apply to the remaining 22,500 units under our current 30,000-unit contract. We have paid 47.5% of the contract value ($43,890) but received only 24.7% of units (7,400), with 400 shampoo units still owed from batch 1.
+    </p>
+
+    <!-- Price Comparison -->
+    <h2>Price Increase Detail</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th class="text-right">Current</th>
+          <th class="text-right">Proposed</th>
+          <th class="text-right">Increase</th>
+          <th class="text-right">Impact (7,500 units)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Shampoo 300ML</td>
+          <td class="text-right">$3.26</td>
+          <td class="text-right">$3.85</td>
+          <td class="text-right text-red">+18.1%</td>
+          <td class="text-right text-red">+$4,425</td>
+        </tr>
+        <tr>
+          <td>Conditioner 300ML</td>
+          <td class="text-right">$2.76</td>
+          <td class="text-right">$3.25</td>
+          <td class="text-right text-red">+17.8%</td>
+          <td class="text-right text-red">+$3,675</td>
+        </tr>
+        <tr>
+          <td>Leave-In 250ML</td>
+          <td class="text-right">$3.22</td>
+          <td class="text-right">$3.65</td>
+          <td class="text-right text-red">+13.4%</td>
+          <td class="text-right text-red">+$3,225</td>
+        </tr>
+        <tr class="row-total">
+          <td colspan="4">Total additional cost on remaining 22,500 units</td>
+          <td class="text-right text-red">+$11,325</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Scenario Comparison -->
+    <h2>Negotiation Scenarios</h2>
+    <div class="compare-grid">
+      <div class="compare-cell hdr"></div>
+      <div class="compare-cell hdr" style="background:#e3f2fd;">C. Split<br>Difference</div>
+      <div class="compare-cell hdr">B. Full<br>Acceptance</div>
+      <div class="compare-cell hdr">A. Enforce<br>Contract</div>
+
+      <div class="compare-cell label">Additional cost</div>
+      <div class="compare-cell" style="background:#f0f7ff;"><span class="big text-amber">+$5.8K</span></div>
+      <div class="compare-cell"><span class="big text-red">+$11.3K</span></div>
+      <div class="compare-cell"><span class="big text-green">$0</span></div>
+
+      <div class="compare-cell label">Remaining payments</div>
+      <div class="compare-cell" style="background:#f0f7ff;"><span class="big">$54.3K</span></div>
+      <div class="compare-cell"><span class="big">$59.8K</span></div>
+      <div class="compare-cell"><span class="big">$48.5K</span></div>
+
+      <div class="compare-cell label">COGS/unit</div>
+      <div class="compare-cell" style="background:#f0f7ff;">$3.34</div>
+      <div class="compare-cell">$3.58</div>
+      <div class="compare-cell">$3.08</div>
+
+      <div class="compare-cell label">Relationship risk</div>
+      <div class="compare-cell" style="background:#f0f7ff;"><span class="text-green">Low</span></div>
+      <div class="compare-cell"><span class="text-green">Lowest</span></div>
+      <div class="compare-cell"><span class="text-amber">Higher</span></div>
+
+      <div class="compare-cell label">Future pricing</div>
+      <div class="compare-cell" style="background:#f0f7ff;"><span class="sub">Negotiated</span></div>
+      <div class="compare-cell"><span class="sub">At proposed</span></div>
+      <div class="compare-cell"><span class="sub">Unresolved</span></div>
+    </div>
+    <p style="font-size:11px; color:var(--muted);">Full analysis includes additional scenarios (volume counter, honor contract + new on reorders).</p>
+
+    <hr>
+
+    <!-- Leverage -->
+    <h2>Our Leverage</h2>
+    <ul class="leverage">
+      <li class="green"><strong>Section 5.4:</strong> Price adjustments require mutual agreement. Contract explicitly anticipates price <em>decreases</em> with volume. No price escalation clause exists.</li>
+      <li class="red"><strong>400-unit shampoo shortage:</strong> Already paid for, not delivered.</li>
+      <li><strong>Payment imbalance:</strong> We've paid 47.5% of contract but received 24.7% of units - we are significantly ahead on payments.</li>
+      <li><strong>Section 11.2:</strong> Manufacturer liability is uncapped. Section 12 (Force Majeure) permits delay/termination only, not price changes.</li>
+      <li><strong>Section 13.4:</strong> Any amendment requires a written agreement signed by both parties.</li>
+    </ul>
+
+    <hr>
+
+    <!-- Recommendation -->
+    <h2>Recommended Approach</h2>
+    <div class="alert alert-blue">
+      <strong>Lead with Split the Difference (Scenario C)</strong>
+      <ol class="rec-steps">
+        <li><strong>Open with the shortage</strong> - Require confirmation that 400 shampoo units will be included in the next delivery at no cost. Establish that both sides have obligations to meet.</li>
+        <li><strong>Acknowledge the cost pressure</strong> - Show willingness to work together. Raw material costs have risen, and you want them to stay viable as a partner.</li>
+        <li><strong>Propose Scenario C</strong> - Meet halfway on the increase (~8% vs. their 14-18%). Demonstrates good faith while saving $5,500+ vs. full acceptance. Additional cost of ~$5.8K is manageable.</li>
+        <li><strong>Hold firm if they push beyond the split</strong> - Contract requires mutual agreement on price changes (Section 5.4). The payment imbalance and 400-unit shortage give us standing to hold at the midpoint.</li>
+      </ol>
+    </div>
+
+    <div class="alert alert-amber">
+      <strong>Before the call - gather this</strong>
+      Request an itemized cost breakdown from Boom Lab (which specific inputs increased and by how much). Get 2-3 competitive quotes from alternative manufacturers for market context. Confirm formula ownership and current inventory runway. Document the 400-unit shampoo shortfall with delivery receipts.
+    </div>
+
+    <p style="font-size: 12px; color: var(--muted); margin-top: 12px; text-align: center;">
+      Full analysis with detailed scenario breakdowns: <em>boom-lab-price-increase-analysis.html</em>
+    </p>
+
+  </div>
+
+  <div class="footer">
+    AWARE Hair LLC - Internal Document - Not for Distribution
+  </div>
+
+</div>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

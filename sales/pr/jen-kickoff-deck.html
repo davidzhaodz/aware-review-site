@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWARE Hair - PR Kick-Off | Jennifer McNicholl</title>
+    <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --teal: #102B26;
+            --cream: #f4efe9;
+            --surface: #faf8f5;
+            --gold: #D4A574;
+            --sage: #7d8471;
+        }
+
+        html, body { height: 100%; overflow: hidden; background: var(--teal); }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--teal);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Slide Container */
+        .deck {
+            display: flex;
+            transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100vh;
+        }
+
+        .slide {
+            min-width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-padded {
+            padding: 60px 80px;
+        }
+
+        .slide-inner {
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        /* Slide themes */
+        .slide.cream { background: var(--cream); color: var(--teal); }
+        .slide.teal { background: var(--teal); color: var(--cream); }
+        .slide.surface { background: var(--surface); color: var(--teal); }
+
+        /* Typography - BIGGER */
+        .eyebrow {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-family: 'orpheus-pro', serif;
+            font-size: 3.75rem;
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        h2 {
+            font-family: 'orpheus-pro', serif;
+            font-size: 2.75rem;
+            font-weight: 400;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-family: 'orpheus-pro', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        p, li {
+            font-size: 1.125rem;
+            line-height: 1.65;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            line-height: 1.65;
+            opacity: 0.75;
+            max-width: 640px;
+        }
+
+        .slide.teal .subtitle { color: var(--cream); opacity: 0.6; }
+
+        /* Divider */
+        .gold-divider {
+            text-align: center;
+            color: var(--gold);
+            font-size: 0.75rem;
+            letter-spacing: 0.5em;
+            margin: 32px 0;
+        }
+
+        .slide.teal .gold-divider { opacity: 0.5; }
+
+        /* Two-column split */
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 100vh;
+            min-width: 100vw;
+        }
+
+        .split-img {
+            background-size: cover;
+            background-position: center;
+        }
+
+        .split-content {
+            display: flex;
+            align-items: center;
+            padding: 60px 72px;
+        }
+
+        /* Bullet list */
+        .big-bullets {
+            list-style: none;
+            padding: 0;
+            margin-top: 32px;
+        }
+
+        .big-bullets li {
+            font-size: 1.25rem;
+            line-height: 1.55;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(16, 43, 38, 0.08);
+        }
+
+        .big-bullets li:last-child { border-bottom: none; }
+
+        .slide.teal .big-bullets li { border-color: rgba(244, 239, 233, 0.1); }
+
+        .bullet-num {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            border-radius: 50%;
+            background: var(--gold);
+            color: #fff;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-right: 16px;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+
+        .slide.teal .bullet-num {
+            background: var(--gold);
+            color: var(--teal);
+        }
+
+        /* Product info */
+        .product-line {
+            font-size: 1.1875rem;
+            margin-bottom: 8px;
+        }
+
+        .product-line strong {
+            font-weight: 600;
+        }
+
+        /* Timeline */
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .timeline-card {
+            padding: 24px 20px;
+            background: var(--surface);
+            border-radius: 6px;
+            border-top: 3px solid var(--gold);
+        }
+
+        .timeline-month {
+            font-family: 'orpheus-pro', serif;
+            font-size: 1.375rem;
+            font-weight: 400;
+            margin-bottom: 12px;
+            color: var(--teal);
+        }
+
+        .timeline-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .timeline-card li {
+            font-size: 0.9375rem;
+            line-height: 1.5;
+            margin-bottom: 6px;
+            padding-left: 12px;
+            position: relative;
+        }
+
+        .timeline-card li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 9px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--gold);
+        }
+
+        /* Key fact blocks */
+        .fact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .fact-block {
+            padding: 32px;
+            background: rgba(244, 239, 233, 0.08);
+            border-radius: 6px;
+            font-size: 1.25rem;
+            line-height: 1.5;
+        }
+
+        .fact-block .label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        /* Angle cards */
+        .angle-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .angle-card {
+            padding: 32px 28px;
+            background: var(--surface);
+            border-radius: 6px;
+            border: 1px solid rgba(16, 43, 38, 0.06);
+        }
+
+        .angle-card h3 {
+            color: var(--teal);
+            margin-bottom: 12px;
+        }
+
+        .angle-card p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .angle-targets {
+            font-size: 0.875rem;
+            color: var(--sage);
+            font-style: italic;
+        }
+
+        .angle-hook {
+            font-size: 0.9375rem;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(16, 43, 38, 0.08);
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        /* Checklist columns */
+        .check-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            margin-top: 32px;
+        }
+
+        .check-col-title {
+            font-family: 'orpheus-pro', serif;
+            font-size: 1.375rem;
+            font-weight: 400;
+            margin-bottom: 16px;
+            color: var(--teal);
+        }
+
+        .check-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .check-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(16, 43, 38, 0.06);
+            font-size: 1.0625rem;
+            line-height: 1.5;
+        }
+
+        .check-list li:last-child { border-bottom: none; }
+
+        .check-icon {
+            color: #2d6a4f;
+            font-weight: 600;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .action-icon {
+            color: var(--gold);
+            font-weight: 600;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .urgent-tag {
+            display: inline-block;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 3px;
+            background: #fdf6f5;
+            color: #9b3b30;
+            margin-left: 6px;
+        }
+
+        /* Numbered steps */
+        .step-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 40px;
+        }
+
+        .step-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(244, 239, 233, 0.1);
+            font-size: 1.25rem;
+            line-height: 1.5;
+        }
+
+        .step-list li:last-child { border-bottom: none; }
+
+        .step-num {
+            font-family: 'orpheus-pro', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            flex-shrink: 0;
+            width: 28px;
+        }
+
+        /* Activation columns */
+        .activation-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            margin-top: 36px;
+        }
+
+        .activation-col h3 {
+            font-size: 1.375rem;
+            margin-bottom: 16px;
+        }
+
+        .activation-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .activation-col li {
+            font-size: 1.0625rem;
+            line-height: 1.55;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(16, 43, 38, 0.06);
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .activation-col li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 18px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gold);
+        }
+
+        .activation-col li:last-child { border-bottom: none; }
+
+        /* Callout box */
+        .callout-box {
+            margin-top: 36px;
+            padding: 24px 32px;
+            background: rgba(212, 165, 116, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 6px;
+        }
+
+        .callout-box p {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--teal);
+        }
+
+        /* Slide 5 background image */
+        .bg-image-slide {
+            position: relative;
+        }
+
+        .bg-image-slide::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.12;
+        }
+
+        .bg-image-slide .slide-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Nav */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 32px;
+            background: rgba(16, 43, 38, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            color: var(--cream);
+        }
+
+        .nav-bar button {
+            background: none;
+            border: 1px solid rgba(244, 239, 233, 0.2);
+            color: var(--cream);
+            padding: 8px 24px;
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 200ms ease;
+        }
+
+        .nav-bar button:hover {
+            background: rgba(244, 239, 233, 0.1);
+            border-color: rgba(244, 239, 233, 0.3);
+        }
+
+        .slide-counter {
+            font-size: 0.75rem;
+            opacity: 0.5;
+            letter-spacing: 0.06em;
+        }
+
+        /* Small note text */
+        .note {
+            font-size: 0.9375rem;
+            color: var(--sage);
+            margin-top: 24px;
+            line-height: 1.5;
+        }
+
+        .slide.teal .note { color: rgba(244, 239, 233, 0.4); }
+
+        /* Contact bar */
+        .contact-bar {
+            font-size: 0.9375rem;
+            opacity: 0.45;
+            letter-spacing: 0.02em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide-padded { padding: 40px 28px; }
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            .split { grid-template-columns: 1fr; }
+            .split-img { height: 40vh; }
+            .split-content { padding: 40px 28px; }
+            .timeline-grid { grid-template-columns: 1fr 1fr; }
+            .angle-cards { grid-template-columns: 1fr; }
+            .check-cols { grid-template-columns: 1fr; }
+            .fact-grid { grid-template-columns: 1fr; }
+            .activation-cols { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            .nav-bar { display: none; }
+            .deck { display: block; }
+            .slide {
+                min-width: auto;
+                height: auto;
+                page-break-after: always;
+                padding: 40px;
+            }
+            .split {
+                min-width: auto;
+                height: auto;
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+    <!-- SLIDE 1: Title (split layout) -->
+    <div class="slide cream" style="padding: 0;">
+        <div class="split">
+            <div class="split-img" style="background-image: url('../../assets/images/products/collection-full-range.png');"></div>
+            <div class="split-content" style="background: var(--cream);">
+                <div>
+                    <h1 style="font-size: 4rem; letter-spacing: -0.01em; margin-bottom: 16px;">AWARE HAIR</h1>
+                    <p style="font-size: 1.125rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 48px;">PR Kick-Off</p>
+                    <div class="gold-divider" style="text-align: left; margin: 0 0 48px;">&#9670; &#9670; &#9670;</div>
+                    <p style="font-size: 1rem; opacity: 0.45;">Jennifer McNicholl &nbsp;|&nbsp; April 2026</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 2: Agenda -->
+    <div class="slide cream slide-padded">
+        <div class="slide-inner" style="max-width: 800px;">
+            <p class="eyebrow">Reference Guide</p>
+            <h2>What's Inside</h2>
+
+            <ol class="big-bullets" style="counter-reset: none; margin-top: 40px;">
+                <li style="display: flex; align-items: flex-start;">
+                    <span class="bullet-num">1</span>
+                    <span>Calendar roadmap <span style="color: var(--sage); font-weight: 400;">(April - September)</span></span>
+                </li>
+                <li style="display: flex; align-items: flex-start;">
+                    <span class="bullet-num">2</span>
+                    <span>C.O. Bigelow activation <span style="color: var(--sage); font-weight: 400;">(May 20, NYC)</span></span>
+                </li>
+                <li style="display: flex; align-items: flex-start;">
+                    <span class="bullet-num">3</span>
+                    <span>Pitch angles we're exploring <span style="color: var(--sage); font-weight: 400;">(3 priorities)</span></span>
+                </li>
+                <li style="display: flex; align-items: flex-start;">
+                    <span class="bullet-num">4</span>
+                    <span>PR resources and checklist</span>
+                </li>
+            </ol>
+
+            <p class="note" style="margin-top: 48px;">Full brand story, products, ingredients, and traction are in the AWARE Brand Deck (20 pages) - shared separately.</p>
+        </div>
+    </div>
+
+    <!-- SLIDE 3: Calendar Roadmap (cream) -->
+    <div class="slide cream slide-padded">
+        <div class="slide-inner" style="max-width: 1200px;">
+            <p class="eyebrow">Roadmap</p>
+            <h2>2026 Calendar: April - September</h2>
+
+            <div class="timeline-grid">
+                <div class="timeline-card">
+                    <div class="timeline-month">April</div>
+                    <ul>
+                        <li>PR kick-off</li>
+                        <li>BeautyMatter NEXT (4/15)</li>
+                        <li>SHAPE Awards (4/30)</li>
+                        <li>Begin outreach planning</li>
+                    </ul>
+                </div>
+                <div class="timeline-card">
+                    <div class="timeline-month">May</div>
+                    <ul>
+                        <li>C.O. Bigelow launch (5/20)</li>
+                        <li>Supplier's Day NYC</li>
+                        <li>Mother's Day promo</li>
+                        <li>Press strategy TBD</li>
+                    </ul>
+                </div>
+                <div class="timeline-card">
+                    <div class="timeline-month">June</div>
+                    <ul>
+                        <li>Post-Bigelow press follow-up</li>
+                        <li>Consumer beauty pitches for fall issues</li>
+                    </ul>
+                </div>
+                <div class="timeline-card">
+                    <div class="timeline-month">July</div>
+                    <ul>
+                        <li>Cosmoprof Vegas</li>
+                        <li>Trade press momentum</li>
+                    </ul>
+                </div>
+                <div class="timeline-card">
+                    <div class="timeline-month">August</div>
+                    <ul>
+                        <li>Summer content</li>
+                        <li>Fall issue placements land</li>
+                    </ul>
+                </div>
+                <div class="timeline-card">
+                    <div class="timeline-month">September</div>
+                    <ul>
+                        <li>BITE Expo</li>
+                        <li>Award results begin</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 4: C.O. Bigelow - The Opportunity (teal, big impact) -->
+    <div class="slide teal slide-padded bg-image-slide" style="text-align: center;">
+        <style>.bg-image-slide::before { background-image: url('../../assets/images/products/collection-hero.jpg'); }</style>
+        <div class="slide-inner" style="max-width: 900px;">
+            <p class="eyebrow">The Opportunity</p>
+            <h1 style="font-size: 3.25rem;">C.O. Bigelow Scalp Wellness Event</h1>
+            <p style="font-family: 'orpheus-pro', serif; font-size: 1.75rem; color: var(--gold); margin-top: 8px; margin-bottom: 48px;">Wednesday, May 20, 2026 - Greenwich Village, NYC</p>
+
+            <div class="fact-grid" style="text-align: left;">
+                <div class="fact-block">
+                    <div class="label">Heritage</div>
+                    America's oldest apothecary (est. 1838)
+                </div>
+                <div class="fact-block">
+                    <div class="label">First of Its Kind</div>
+                    First scalp-focused activation in Bigelow's history
+                </div>
+                <div class="fact-block">
+                    <div class="label">Morning Session</div>
+                    9:00 AM - 12:00 PM (format TBD with Jen)
+                </div>
+                <div class="fact-block">
+                    <div class="label">Public Appointments</div>
+                    12:00 PM - 5:00 PM (30-minute slots)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 5: Bigelow - The Activation (cream) -->
+    <div class="slide cream slide-padded">
+        <div class="slide-inner">
+            <p class="eyebrow">The Activation</p>
+            <h2>C.O. Bigelow Event Details</h2>
+
+            <div class="activation-cols">
+                <div class="activation-col">
+                    <h3>What Happens</h3>
+                    <ul>
+                        <li>Professional scalp assessment with diagnostic microscope</li>
+                        <li>Meridian gua sha demo and mini scalp massage</li>
+                        <li>Custom gua sha engraving station at the front of the store</li>
+                        <li>GWP: Sandalwood gua sha ($32 value) with $100 purchase</li>
+                    </ul>
+                </div>
+                <div class="activation-col">
+                    <h3>Press Opportunities (Discussion)</h3>
+                    <ul>
+                        <li>How should we position this for press? (Discuss with Jen)</li>
+                        <li>Morning session format: editor preview, media event, or something else?</li>
+                        <li>Bigelow's team (Sarah Barnes, Annika) available for coordination</li>
+                        <li>Additional opps: Quarterly tote bag program, 2027 window display</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SLIDE 6: Pitch Angles for Discussion (cream) -->
+    <div class="slide cream slide-padded">
+        <div class="slide-inner" style="max-width: 1200px;">
+            <p class="eyebrow">For Discussion</p>
+            <h2>Three Priority Angles</h2>
+            <p class="subtitle">Full pitch docs available after this call</p>
+
+            <div class="angle-cards">
+                <div class="angle-card">
+                    <h3>"The Founder Story"</h3>
+                    <p>Mother-daughter team, 40 years behind the chair, built from the salon up</p>
+                    <div class="angle-targets">Business press, entrepreneurship, local press</div>
+                    <div class="angle-hook">Trichologist credentials, family business, professional-exclusive commitment</div>
+                </div>
+                <div class="angle-card">
+                    <h3>"Salon Scalp Services"</h3>
+                    <p>Strong upsell conversion, rebooking lift, higher avg transaction</p>
+                    <div class="angle-targets">Trade and salon press</div>
+                    <div class="angle-hook">Salon business case for adding scalp services to the menu</div>
+                </div>
+                <div class="angle-card">
+                    <h3>"The Scalp Wellness Movement"</h3>
+                    <p>Trichologist-driven science in beauty's fastest-growing category</p>
+                    <div class="angle-targets">Consumer beauty press</div>
+                    <div class="angle-hook">Trichologist-driven science in a fast-growing category</div>
+                </div>
+            </div>
+
+            <p class="note">Two secondary angles (Clean Scalp Care, Ingredient Science) held for Month 2-3</p>
+        </div>
+    </div>
+
+    <!-- SLIDE 7: Housekeeping (cream) -->
+    <div class="slide cream slide-padded">
+        <div class="slide-inner">
+            <p class="eyebrow">Logistics</p>
+            <h2>Housekeeping and Checklist</h2>
+
+            <div class="check-cols">
+                <div>
+                    <div class="check-col-title">What's Ready</div>
+                    <ul class="check-list">
+                        <li><span class="check-icon">&#10003;</span> Awin affiliate program, LIVE (Press 20%, Influencer 15%, Stylist 15-25%)</li>
+                        <li><span class="check-icon">&#10003;</span> Press kit, fact sheets (6 SKUs with INCI + UPCs), boilerplate</li>
+                        <li><span class="check-icon">&#10003;</span> Approved claims document (4-tier framework)</li>
+                        <li><span class="check-icon">&#10003;</span> 5 detailed pitch documents</li>
+                        <li><span class="check-icon">&#10003;</span> Competitive comparison (6 brands, 2-page PDF)</li>
+                        <li><span class="check-icon">&#10003;</span> Product imagery (print-quality), before/after photos</li>
+                        <li><span class="check-icon">&#10003;</span> Founder bios (Tina + Jade), brand deck PDF</li>
+                        <li><span class="check-icon">&#10003;</span> Google Drive folder being set up this week</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="check-col-title">Action Items</div>
+                    <ul class="check-list">
+                        <li><span class="action-icon">&#9679;</span> Slack setup (Jen to send invite)</li>
+                        <li><span class="action-icon">&#9679;</span> Shared tracker format (Jen's preference?)</li>
+                        <li><span class="action-icon">&#9679;</span> Sample request process (discuss logistics)</li>
+                        <li><span class="action-icon">&#9679;</span> Billing/invoicing contact (confirm)</li>
+                        <li><span class="action-icon">&#9679;</span> Schedule founder photo shoot (Tina headshot + Jade standalone needed) <span class="urgent-tag">Urgent</span></li>
+                        <li><span class="action-icon">&#9679;</span> BeautyMatter NEXT entry (deadline April 15 - 9 days!) <span class="urgent-tag">Urgent</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<!-- Navigation -->
+<div class="nav-bar">
+    <button onclick="prev()">&#8592; Prev</button>
+    <span class="slide-counter" id="counter">1 / 7</span>
+    <button onclick="next()">Next &#8594;</button>
+</div>
+
+<script>
+    let current = 0;
+    const deck = document.getElementById('deck');
+    const total = deck.children.length;
+    const counter = document.getElementById('counter');
+
+    function go(n) {
+        current = Math.max(0, Math.min(n, total - 1));
+        deck.style.transform = `translateX(-${current * 100}vw)`;
+        counter.textContent = `${current + 1} / ${total}`;
+    }
+
+    function next() { go(current + 1); }
+    function prev() { go(current - 1); }
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+        if (e.key === 'Home') { e.preventDefault(); go(0); }
+        if (e.key === 'End') { e.preventDefault(); go(total - 1); }
+    });
+</script>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

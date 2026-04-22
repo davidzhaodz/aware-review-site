@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Professional Spa Partnership</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #102B26;
+    --cream: #f4efe9;
+    --surface: #faf8f5;
+    --gold: #D4A574;
+    --gold-soft: rgba(212, 165, 116, 0.12);
+    --sage: #7d8471;
+    --sand: #E8E4DC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--forest);
+    color: var(--cream);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+  }
+
+  .page {
+    width: 100%;
+    max-width: 440px;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 24px 48px;
+    position: relative;
+  }
+
+  /* Subtle background texture */
+  .page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212, 165, 116, 0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 50% 100%, rgba(125, 132, 113, 0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page > * { position: relative; z-index: 1; }
+
+  /* ─── Header ─── */
+  .header {
+    text-align: center;
+    padding: 48px 0 8px;
+    width: 100%;
+  }
+
+  .logo {
+    width: 160px;
+    height: auto;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .headline {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 26px;
+    font-weight: 300;
+    line-height: 1.25;
+    color: var(--cream);
+    margin-bottom: 10px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.15s forwards;
+  }
+
+  .subline {
+    font-size: 13px;
+    color: rgba(244, 239, 233, 0.7);
+    line-height: 1.55;
+    max-width: 320px;
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.2s forwards;
+  }
+
+  /* ─── Diamond Divider ─── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 28px 0 24px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.25s forwards;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212, 165, 116, 0.2), transparent);
+  }
+
+  .divider span {
+    color: var(--gold);
+    font-size: 7px;
+    letter-spacing: 8px;
+  }
+
+  /* ─── Link Buttons ─── */
+  .links {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .link-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 18px 20px;
+    background: rgba(244, 239, 233, 0.04);
+    border: 1px solid rgba(244, 239, 233, 0.08);
+    text-decoration: none;
+    color: var(--cream);
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .link-card:nth-child(1) { animation-delay: 0.3s; }
+  .link-card:nth-child(2) { animation-delay: 0.4s; }
+  .link-card:nth-child(3) { animation-delay: 0.5s; }
+  .link-card:nth-child(4) { animation-delay: 0.6s; }
+  .link-card:nth-child(5) { animation-delay: 0.7s; }
+
+  .link-card:hover,
+  .link-card:active {
+    background: rgba(212, 165, 116, 0.08);
+    border-color: rgba(212, 165, 116, 0.25);
+    transform: translateY(-1px);
+  }
+
+  .link-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(212, 165, 116, 0.1);
+    flex-shrink: 0;
+  }
+
+  .link-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .link-content { flex: 1; min-width: 0; }
+
+  .link-title {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 2px;
+  }
+
+  .link-desc {
+    font-size: 11px;
+    color: rgba(244, 239, 233, 0.75);
+    line-height: 1.4;
+  }
+
+  .link-arrow {
+    width: 16px;
+    height: 16px;
+    stroke: rgba(244, 239, 233, 0.25);
+    fill: none;
+    stroke-width: 1.5;
+    flex-shrink: 0;
+    transition: stroke 0.3s ease, transform 0.3s ease;
+  }
+
+  .link-card:hover .link-arrow {
+    stroke: var(--gold);
+    transform: translateX(2px);
+  }
+
+  /* ─── ISPA Badge ─── */
+  .ispa-badge {
+    margin-top: 24px;
+    padding: 14px 20px;
+    background: rgba(212, 165, 116, 0.06);
+    border: 1px solid rgba(212, 165, 116, 0.15);
+    text-align: center;
+    width: 100%;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.7s forwards;
+  }
+
+  .ispa-badge .tag {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .ispa-badge .offer {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--cream);
+  }
+
+  .ispa-badge .note {
+    font-size: 10px;
+    color: rgba(244, 239, 233, 0.6);
+    margin-top: 4px;
+  }
+
+  /* ─── Contact ─── */
+  .contact {
+    margin-top: 32px;
+    text-align: center;
+    width: 100%;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.8s forwards;
+  }
+
+  .contact-primary {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .contact-primary a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 18px 28px;
+    min-height: 44px;
+    background: var(--gold);
+    color: var(--forest);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
+
+  .contact-primary a:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+  }
+
+  .contact-primary svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--forest);
+    fill: none;
+    stroke-width: 2;
+  }
+
+  .contact-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    min-height: 44px;
+    margin-top: 12px;
+    border: 1px solid rgba(212, 165, 116, 0.4);
+    background: transparent;
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
+
+  .contact-cta:hover {
+    border-color: var(--gold);
+    background: rgba(212, 165, 116, 0.08);
+    transform: translateY(-1px);
+  }
+
+  .contact-cta svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 2;
+  }
+
+  .contact-info {
+    margin-top: 16px;
+    font-size: 12px;
+    color: rgba(244, 239, 233, 0.6);
+    line-height: 1.8;
+  }
+
+  .contact-info a {
+    color: rgba(244, 239, 233, 0.7);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .contact-info a:hover { color: var(--gold); }
+
+  /* ─── Footer ─── */
+  .footer {
+    margin-top: 36px;
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.95s forwards;
+  }
+
+  .footer-line {
+    font-size: 10px;
+    color: rgba(244, 239, 233, 0.45);
+    line-height: 1.6;
+  }
+
+  .footer-line a {
+    color: rgba(244, 239, 233, 0.55);
+    text-decoration: none;
+  }
+
+  /* ─── Animations ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; animation-delay: 0ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Header -->
+  <header class="header">
+    <img class="logo"
+         src="https://res.cloudinary.com/dwgtfjod9/image/upload/e_colorize:100,co_rgb:F4EFE9,w_320,f_auto,q_auto/v1774851484/aware-hair/logos/full-stacked-logo-dark.png"
+         alt="AWARE Hair"
+         width="160" height="118"
+         fetchpriority="high" loading="eager">
+    <h1 class="headline">Proactive Scalp Wellness,<br>Elevated for Professionals</h1>
+    <p class="subline">Launched August 2025. Available exclusively through leading spas and salons nationwide.</p>
+  </header>
+
+  <!-- ISPA Badge -->
+  <div class="ispa-badge">
+    <div class="tag">ISPA Exclusive</div>
+    <div class="offer">Additional 10% off opening orders over $500</div>
+    <div class="note">Mention ISPA when you connect</div>
+  </div>
+
+  <!-- Divider -->
+  <div class="divider"><span>&#9670; &#9670; &#9670;</span></div>
+
+  <!-- Links -->
+  <nav class="links" aria-label="Resources">
+
+    <a href="ispa-2026-brand.html" class="link-card">
+      <div class="link-icon">
+        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      </div>
+      <div class="link-content">
+        <div class="link-title">Start Here</div>
+        <div class="link-desc">Our story, science, and what sets us apart</div>
+      </div>
+      <svg class="link-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+
+    <a href="ispa-2026-pricing.html" class="link-card">
+      <div class="link-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
+      <div class="link-content">
+        <div class="link-title">Wholesale Pricing</div>
+        <div class="link-desc">Product catalog, wholesale pricing, and treatment revenue</div>
+      </div>
+      <svg class="link-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+
+    <a href="ispa-2026-protocol.html" class="link-card">
+      <div class="link-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg>
+      </div>
+      <div class="link-content">
+        <div class="link-title">Treatment Protocols</div>
+        <div class="link-desc">Step-by-step service guide and menu examples</div>
+      </div>
+      <svg class="link-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+
+    <a href="ispa-2026-faq.html" class="link-card">
+      <div class="link-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div class="link-content">
+        <div class="link-title">FAQs</div>
+        <div class="link-desc">Common questions about AWARE, our products, and getting started</div>
+      </div>
+      <svg class="link-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+
+    <a href="jade-wong.vcf" class="link-card" download>
+      <div class="link-icon">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="link-content">
+        <div class="link-title">Get in Touch</div>
+        <div class="link-desc">Add Jade Wong to your phone contacts instantly</div>
+      </div>
+      <svg class="link-arrow" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+
+  </nav>
+
+  <!-- Social Proof -->
+  <div style="margin-top: 20px; padding: 16px 20px; width: 100%; text-align: center; opacity: 0; animation: fadeUp 0.5s ease 0.65s forwards;">
+    <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 15px; font-style: italic; font-weight: 300; color: rgba(244, 239, 233, 0.85); line-height: 1.5; margin-bottom: 8px;">"I can confidently say that Aware products are among the best hair care lines I've ever used."</div>
+    <div style="font-size: 10px; color: var(--gold); font-weight: 500; letter-spacing: 0.05em;">Mykala Brown, Professional Hairstylist (20+ Years)</div>
+  </div>
+
+  <!-- Contact -->
+  <div class="contact">
+    <div class="contact-primary">
+      <a href="https://www.canva.com/design/DAHE5DKdhn8/Ty01sMBxnIVeSjJfHmzcSA/view?utm_content=DAHE5DKdhn8&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h0c7f141a69" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Brand Deck
+      </a>
+      <a href="https://res.cloudinary.com/dwgtfjod9/raw/upload/v1774649514/aware-hair/ispa-2026/AWARE-Hair-ISPA-Order-Form.xlsx" download="AWARE-Hair-ISPA-Order-Form.xlsx">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Order Form
+      </a>
+    </div>
+    <a href="https://www.instagram.com/awarehaircare/" target="_blank" rel="noopener noreferrer" class="contact-cta">
+      <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
+      Follow Us on Social
+    </a>
+    <div class="contact-info">
+      <strong style="color: rgba(244,239,233,0.75);">Jade Wong</strong>, Co-Founder &middot; <a href="mailto:jade@awarehair.com">jade@awarehair.com</a> &middot; <a href="tel:+16266889844">(626) 688-9844</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-line">
+      AWARE Hair &middot; Los Angeles, CA<br>
+      Mother-daughter founded &middot; Trichologist-developed &middot; Exclusively professional<br>
+      <a href="https://www.instagram.com/awarehaircare/" target="_blank" rel="noopener noreferrer" aria-label="AWARE Hair on Instagram (opens in new tab)">@awarehaircare</a> &middot;
+      <a href="https://www.awarehair.com" target="_blank" rel="noopener noreferrer" aria-label="AWARE Hair website (opens in new tab)">awarehair.com</a>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

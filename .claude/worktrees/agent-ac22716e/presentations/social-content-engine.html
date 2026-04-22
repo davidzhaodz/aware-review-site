@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Social Content Engine</title>
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #102B26;
+    --cream: #f4efe9;
+    --gold: #D4A574;
+    --sage: #7d8471;
+    --surface: #faf8f5;
+    --teal-90: rgba(16,43,38,0.9);
+    --teal-70: rgba(16,43,38,0.7);
+    --teal-40: rgba(16,43,38,0.4);
+    --gold-30: rgba(212,165,116,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    scroll-behavior: smooth;
+    background: var(--teal);
+  }
+
+  /* ── SLIDE SYSTEM ──────────────────────────────── */
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide-inner {
+    width: 100%;
+    max-width: 1200px;
+    padding: 80px 60px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ── TYPOGRAPHY ────────────────────────────────── */
+  .eyebrow {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  .headline {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    margin-bottom: 32px;
+  }
+
+  .subhead {
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 640px;
+    opacity: 0.7;
+  }
+
+  .stat-number {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: clamp(72px, 10vw, 140px);
+    font-weight: 700;
+    letter-spacing: -3px;
+    line-height: 0.9;
+  }
+
+  .stat-label {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-top: 8px;
+  }
+
+  /* ── SLIDE 1: TITLE ───────────────────────────── */
+  .slide-title {
+    background: var(--teal);
+    color: var(--cream);
+  }
+
+  .slide-title::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 0%, rgba(212,165,116,0.04) 50%, transparent 100%);
+  }
+
+  .title-badge {
+    display: inline-block;
+    border: 1px solid var(--gold-30);
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    border-radius: 100px;
+    margin-bottom: 48px;
+  }
+
+  .title-headline {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: clamp(56px, 7vw, 96px);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: -2px;
+    color: var(--cream);
+    margin-bottom: 40px;
+  }
+
+  .title-headline strong {
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .title-meta {
+    display: flex;
+    gap: 48px;
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(244,239,233,0.1);
+  }
+
+  .title-meta-item {
+    font-size: 14px;
+    color: rgba(244,239,233,0.4);
+  }
+
+  .title-meta-item span {
+    display: block;
+    color: var(--cream);
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 4px;
+  }
+
+  /* ── SLIDE 2: THE NUMBERS ─────────────────────── */
+  .slide-numbers {
+    background: var(--cream);
+    color: var(--teal);
+  }
+
+  .numbers-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 48px;
+    margin-top: 64px;
+  }
+
+  .number-card {
+    padding: 40px 0;
+    border-top: 2px solid var(--teal);
+  }
+
+  .number-card .stat-number {
+    color: var(--teal);
+  }
+
+  .number-card .stat-label {
+    color: var(--sage);
+  }
+
+  /* ── SLIDE 3: THE SYSTEM ──────────────────────── */
+  .slide-system {
+    background: var(--teal);
+    color: var(--cream);
+  }
+
+  .system-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 56px;
+    background: rgba(244,239,233,0.08);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .system-card {
+    background: var(--teal);
+    padding: 40px 32px;
+  }
+
+  .system-card-icon {
+    font-size: 32px;
+    margin-bottom: 20px;
+    opacity: 0.4;
+  }
+
+  .system-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--cream);
+  }
+
+  .system-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(244,239,233,0.5);
+  }
+
+  .system-card .highlight {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ── SLIDE 4: THE OUTPUT ──────────────────────── */
+  .slide-output {
+    background: var(--surface);
+    color: var(--teal);
+    min-height: auto;
+    padding: 100px 0;
+  }
+
+  .carousel-strip {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 0 60px 20px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .carousel-strip::-webkit-scrollbar { display: none; }
+
+  .carousel-strip img {
+    height: 340px;
+    width: auto;
+    border-radius: 8px;
+    scroll-snap-align: start;
+    box-shadow: 0 8px 32px rgba(16,43,38,0.12);
+    flex-shrink: 0;
+  }
+
+  .output-label {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--sage);
+    font-weight: 600;
+  }
+
+  .output-section {
+    margin-bottom: 56px;
+  }
+
+  .output-section:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ── SLIDE 5: CONTENT CALENDAR ────────────────── */
+  .slide-calendar {
+    background: var(--teal);
+    color: var(--cream);
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    margin-top: 56px;
+    background: rgba(244,239,233,0.06);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .calendar-item {
+    background: var(--teal);
+    padding: 32px;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .calendar-date {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    min-width: 80px;
+    padding-top: 4px;
+  }
+
+  .calendar-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+
+  .calendar-detail {
+    font-size: 14px;
+    color: rgba(244,239,233,0.4);
+  }
+
+  .calendar-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    margin-top: 8px;
+  }
+
+  .tag-dtc { background: rgba(212,165,116,0.15); color: var(--gold); }
+  .tag-b2b { background: rgba(125,132,113,0.2); color: var(--sage); }
+  .tag-evergreen { background: rgba(244,239,233,0.08); color: rgba(244,239,233,0.5); }
+
+  /* ── SLIDE 6: WORKFLOW ────────────────────────── */
+  .slide-workflow {
+    background: var(--cream);
+    color: var(--teal);
+  }
+
+  .workflow-steps {
+    display: flex;
+    gap: 0;
+    margin-top: 56px;
+    align-items: stretch;
+  }
+
+  .workflow-step {
+    flex: 1;
+    padding: 40px 32px;
+    position: relative;
+    border-right: 1px solid rgba(16,43,38,0.08);
+  }
+
+  .workflow-step:last-child { border-right: none; }
+
+  .workflow-step-number {
+    font-size: 64px;
+    font-weight: 700;
+    color: rgba(16,43,38,0.06);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .workflow-step h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--teal);
+  }
+
+  .workflow-step p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--sage);
+  }
+
+  .workflow-step code {
+    display: block;
+    margin-top: 12px;
+    font-size: 12px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    color: var(--gold);
+    background: rgba(16,43,38,0.04);
+    padding: 8px 12px;
+    border-radius: 4px;
+    word-break: break-all;
+  }
+
+  /* ── SLIDE 7: QUALITY ─────────────────────────── */
+  .slide-quality {
+    background: var(--teal);
+    color: var(--cream);
+  }
+
+  .quality-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    margin-top: 56px;
+  }
+
+  .quality-item {
+    border-top: 1px solid rgba(244,239,233,0.1);
+    padding-top: 24px;
+  }
+
+  .quality-item h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .quality-item p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(244,239,233,0.5);
+  }
+
+  .quality-item .gold { color: var(--gold); }
+
+  /* ── SLIDE 8: CTA ─────────────────────────────── */
+  .slide-cta {
+    background: var(--cream);
+    color: var(--teal);
+    text-align: center;
+  }
+
+  .cta-headline {
+    font-size: clamp(48px, 6vw, 72px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 32px;
+  }
+
+  .cta-button {
+    display: inline-block;
+    background: var(--teal);
+    color: var(--cream);
+    font-size: 16px;
+    font-weight: 600;
+    padding: 20px 48px;
+    border-radius: 4px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    margin-top: 24px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(16,43,38,0.2);
+  }
+
+  /* ── NAV DOTS ─────────────────────────────────── */
+  .nav-dots {
+    position: fixed;
+    right: 32px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 100;
+  }
+
+  .nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(244,239,233,0.2);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+  }
+
+  .nav-dot.active {
+    background: var(--gold);
+    transform: scale(1.4);
+  }
+
+  .nav-dot.on-light {
+    background: rgba(16,43,38,0.15);
+  }
+
+  .nav-dot.on-light.active {
+    background: var(--teal);
+  }
+
+  /* ── ANIMATIONS ───────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .slide-inner > * {
+    animation: fadeUp 0.8s ease-out both;
+  }
+
+  .slide-inner > *:nth-child(2) { animation-delay: 0.1s; }
+  .slide-inner > *:nth-child(3) { animation-delay: 0.2s; }
+  .slide-inner > *:nth-child(4) { animation-delay: 0.3s; }
+  .slide-inner > *:nth-child(5) { animation-delay: 0.4s; }
+
+  /* ── RESPONSIVE ───────────────────────────────── */
+  @media (max-width: 900px) {
+    .slide-inner { padding: 60px 32px; }
+    .numbers-grid { grid-template-columns: repeat(2, 1fr); }
+    .system-grid { grid-template-columns: 1fr; }
+    .calendar-grid { grid-template-columns: 1fr; }
+    .quality-grid { grid-template-columns: 1fr; }
+    .workflow-steps { flex-direction: column; }
+    .workflow-step { border-right: none; border-bottom: 1px solid rgba(16,43,38,0.08); }
+    .title-meta { flex-direction: column; gap: 16px; }
+    .carousel-strip img { height: 240px; }
+    .nav-dots { display: none; }
+  }
+
+  /* ── PRINT ────────────────────────────────────── */
+  @media print {
+    .slide { min-height: auto; page-break-after: always; }
+    .nav-dots { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV DOTS -->
+<nav class="nav-dots" id="navDots"></nav>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 1: TITLE                                    -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="slide slide-title" data-theme="dark">
+  <div class="slide-inner">
+    <div class="title-badge">INTERNAL PRESENTATION</div>
+    <h1 class="title-headline">
+      Social Content<br><strong>Engine</strong>
+    </h1>
+    <p class="subhead">
+      An automated carousel production system that turns weekly content plans into
+      publication-ready Instagram, LinkedIn, and ad creative - at scale.
+    </p>
+    <div class="title-meta">
+      <div class="title-meta-item">
+        Built with
+        <span>Playwright + Node.js</span>
+      </div>
+      <div class="title-meta-item">
+        Content span
+        <span>March 24 - May 19</span>
+      </div>
+      <div class="title-meta-item">
+        Status
+        <span>Production Ready</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 2: THE NUMBERS                              -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="slide slide-numbers" data-theme="light">
+  <div class="slide-inner">
+    <div class="eyebrow">By the Numbers</div>
+    <h2 class="headline" style="max-width:700px;">One system.<br>Weeks of content.</h2>
+    <div class="numbers-grid">
+      <div class="number-card">
+        <div class="stat-number">11</div>
+        <div class="stat-label">Render Templates</div>
+      </div>
+      <div class="number-card">
+        <div class="stat-number">10</div>
+        <div class="stat-label">Carousel Concepts</div>
+      </div>
+      <div class="number-card">
+        <div class="stat-number">61</div>
+        <div class="stat-label">Unique Slides</div>
+      </div>
+      <div class="number-card">
+        <div class="stat-number">382</div>
+        <div class="stat-label">Rendered PNGs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 3: THE SYSTEM                               -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="slide slide-system" data-theme="dark">
+  <div class="slide-inner">
+    <div class="eyebrow">The System</div>
+    <h2 class="headline">Playwright rendering<br>pipeline</h2>
+    <div class="system-grid">
+      <div class="system-card">
+        <div class="system-card-icon">01</div>
+        <h3>Render Scripts</h3>
+        <p><span class="highlight">11 custom .mjs files</span>, each a self-contained slide deck. Full HTML/CSS per slide, rendered to PNG via headless Chromium at exact Instagram dimensions.</p>
+      </div>
+      <div class="system-card">
+        <div class="system-card-icon">02</div>
+        <h3>3 Output Formats</h3>
+        <p><span class="highlight">Feed</span> (1080x1350), <span class="highlight">Story</span> (1080x1920), <span class="highlight">Ad</span> (1080x1080). Each render script outputs all three from the same source HTML.</p>
+      </div>
+      <div class="system-card">
+        <div class="system-card-icon">03</div>
+        <h3>Design Families</h3>
+        <p><span class="highlight">Dark-modern</span> (deep teal overlays on photography), <span class="highlight">Light-editorial</span> (cream backgrounds), <span class="highlight">Light-clean</span> (product-focused). Consistent brand tokens across all.</p>
+      </div>
+      <div class="system-card">
+        <div class="system-card-icon">04</div>
+        <h3>Photo Library</h3>
+        <p><span class="highlight">37 curated stock photos</span> sourced via Unsplash search API - editorial portraits, environmental textures, water macro, city atmosphere, botanical close-ups. Each carousel uses unique imagery.</p>
+      </div>
+      <div class="system-card">
+        <div class="system-card-icon">05</div>
+        <h3>Batch Factory</h3>
+        <p>Weekly JSON config defines carousels, slides, and variants. <span class="highlight">batch-content-factory.mjs</span> renders everything to date-stamped output directories automatically.</p>
+      </div>
+      <div class="system-card">
+        <div class="system-card-icon">06</div>
+        <h3>Review Dashboard</h3>
+        <p>Single HTML file (<span class="highlight">carousel-dashboard.html</span>) displays all 10 carousels with scroll strips and click-to-zoom lightbox. One view, all content.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 4: THE OUTPUT (with embedded thumbnails)    -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="slide slide-output" data-theme="light">
+  <div class="slide-inner" style="max-width:100%;padding-left:0;padding-right:0;">
+    <div style="padding:0 60px;">
+      <div class="eyebrow" style="color:var(--sage);">The Output</div>
+      <h2 class="headline">10 carousel concepts,<br>ready to post</h2>
+    </div>
+
+    <div class="output-section">
+      <div class="carousel-strip">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-03-24/scalp-microbiome-monday-v7/feed/01-slide.png" alt="Microbiome Cover">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-03-24/scalp-microbiome-monday-v7/feed/02-slide.png" alt="Microbiome Slide 2">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-03-24/scalp-microbiome-monday-v7/feed/03-slide.png" alt="Microbiome Slide 3">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-03-24/scalp-microbiome-monday-v7/feed/04-slide.png" alt="Microbiome Slide 4">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-03-24/scalp-microbiome-monday-v7/feed/05-slide.png" alt="Microbiome Slide 5">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-03-24/scalp-microbiome-monday-v7/feed/06-slide.png" alt="Microbiome Slide 6">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-03-24/scalp-microbiome-monday-v7/feed/07-slide.png" alt="Microbiome Slide 7">
+      </div>
+      <div class="output-label">Your Scalp Has a Microbiome - 7 slides, v7</div>
+    </div>
+
+    <div class="output-section">
+      <div class="carousel-strip">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-03-31/environmental-factors-monday-v6/feed/01-slide.png" alt="Env Cover">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-03-31/environmental-factors-monday-v6/feed/02-slide.png" alt="Env UV">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-03-31/environmental-factors-monday-v6/feed/03-slide.png" alt="Env Water">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-03-31/environmental-factors-monday-v6/feed/04-slide.png" alt="Env Air">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-03-31/environmental-factors-monday-v6/feed/05-slide.png" alt="Env Humidity">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-03-31/environmental-factors-monday-v6/feed/06-slide.png" alt="Env Pollen">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-03-31/environmental-factors-monday-v6/feed/07-slide.png" alt="Env CTA">
+      </div>
+      <div class="output-label">5 Environmental Factors - Q2 Launch Hero, 7 slides, v6</div>
+    </div>
+
+    <div class="output-section">
+      <div class="carousel-strip">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-04-14/hard-water-monday-v4/feed/01-slide.png" alt="Hard Water Cover">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-04-14/hard-water-monday-v4/feed/02-slide.png" alt="Hard Water 2">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-04-14/hard-water-monday-v4/feed/03-slide.png" alt="Hard Water 3">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-04-14/hard-water-monday-v4/feed/04-slide.png" alt="Hard Water 4">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-04-14/hard-water-monday-v4/feed/05-slide.png" alt="Hard Water 5">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-04-14/hard-water-monday-v4/feed/06-slide.png" alt="Hard Water 6">
+        <img src="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/output/2026-04-14/hard-water-monday-v4/feed/07-slide.png" alt="Hard Water 7">
+      </div>
+      <div class="output-label">Hard Water vs. Soft Water - Scalp Report tie-in, 7 slides, v4</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 5: CONTENT CALENDAR                         -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="slide slide-calendar" data-theme="dark">
+  <div class="slide-inner">
+    <div class="eyebrow">Content Calendar</div>
+    <h2 class="headline">8 weeks of content,<br>pre-built</h2>
+    <div class="calendar-grid">
+      <div class="calendar-item">
+        <div class="calendar-date">Mar 24</div>
+        <div>
+          <div class="calendar-title">Your Scalp Has a Microbiome</div>
+          <div class="calendar-detail">7 slides - Scalp ecosystem education</div>
+          <span class="calendar-tag tag-dtc">DTC</span>
+        </div>
+      </div>
+      <div class="calendar-item">
+        <div class="calendar-date">Mar 27</div>
+        <div>
+          <div class="calendar-title">Why 50+ Salons Trust AWARE</div>
+          <div class="calendar-detail">3 slides - 96% reorder rate hero stat</div>
+          <span class="calendar-tag tag-b2b">B2B LinkedIn</span>
+        </div>
+      </div>
+      <div class="calendar-item">
+        <div class="calendar-date">Mar 29</div>
+        <div>
+          <div class="calendar-title">3 Signals You Are Ignoring</div>
+          <div class="calendar-detail">5 slides - Ad creative, boost candidate</div>
+          <span class="calendar-tag tag-dtc">DTC Ad</span>
+        </div>
+      </div>
+      <div class="calendar-item">
+        <div class="calendar-date">Mar 31</div>
+        <div>
+          <div class="calendar-title">5 Environmental Factors</div>
+          <div class="calendar-detail">7 slides - Q2 launch hero push</div>
+          <span class="calendar-tag tag-dtc">DTC Launch</span>
+        </div>
+      </div>
+      <div class="calendar-item">
+        <div class="calendar-date">Apr 7</div>
+        <div>
+          <div class="calendar-title">What Your Stylist Wishes You Knew</div>
+          <div class="calendar-detail">7 slides - Salon credibility angle</div>
+          <span class="calendar-tag tag-dtc">DTC</span>
+        </div>
+      </div>
+      <div class="calendar-item">
+        <div class="calendar-date">Apr 14</div>
+        <div>
+          <div class="calendar-title">Hard Water vs. Soft Water</div>
+          <div class="calendar-detail">7 slides - Scalp Report conversion</div>
+          <span class="calendar-tag tag-dtc">DTC</span>
+        </div>
+      </div>
+      <div class="calendar-item">
+        <div class="calendar-date">Apr 28</div>
+        <div>
+          <div class="calendar-title">The Full AWARE Protocol</div>
+          <div class="calendar-detail">6 slides - Product education walkthrough</div>
+          <span class="calendar-tag tag-dtc">DTC</span>
+        </div>
+      </div>
+      <div class="calendar-item">
+        <div class="calendar-date">May 19</div>
+        <div>
+          <div class="calendar-title">Summer Scalp Prep</div>
+          <div class="calendar-detail">7 slides - Seasonal UV/chlorine angle</div>
+          <span class="calendar-tag tag-dtc">DTC</span>
+        </div>
+      </div>
+      <div class="calendar-item">
+        <div class="calendar-date">Evergreen</div>
+        <div>
+          <div class="calendar-title">Why Salon-Exclusive</div>
+          <div class="calendar-detail">5 slides - Brand positioning story</div>
+          <span class="calendar-tag tag-evergreen">Evergreen</span>
+        </div>
+      </div>
+      <div class="calendar-item">
+        <div class="calendar-date">Evergreen</div>
+        <div>
+          <div class="calendar-title">Your Scalp Environment Report</div>
+          <div class="calendar-detail">5 slides - Free tool explainer + CTA</div>
+          <span class="calendar-tag tag-evergreen">Evergreen</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 6: WORKFLOW                                 -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="slide slide-workflow" data-theme="light">
+  <div class="slide-inner">
+    <div class="eyebrow" style="color:var(--sage);">Production Workflow</div>
+    <h2 class="headline">From idea to<br>publication-ready</h2>
+    <div class="workflow-steps">
+      <div class="workflow-step">
+        <div class="workflow-step-number">01</div>
+        <h3>Define</h3>
+        <p>Weekly batch JSON specifies carousel concepts, slide content, photo assignments, and output formats.</p>
+        <code>weekly-batches/2026-03-24.json</code>
+      </div>
+      <div class="workflow-step">
+        <div class="workflow-step-number">02</div>
+        <h3>Render</h3>
+        <p>Playwright launches headless Chromium, renders each slide as full HTML/CSS, screenshots at exact platform dimensions.</p>
+        <code>node batch-content-factory.mjs</code>
+      </div>
+      <div class="workflow-step">
+        <div class="workflow-step-number">03</div>
+        <h3>Review</h3>
+        <p>Interactive HTML dashboard shows all carousels with scroll strips and lightbox zoom. Click any slide to inspect at full resolution.</p>
+        <code>carousel-dashboard.html</code>
+      </div>
+      <div class="workflow-step">
+        <div class="workflow-step-number">04</div>
+        <h3>Export</h3>
+        <p>PNGs go directly to Instagram. LinkedIn gets multi-page PDF via export script. Ad variants ready for Meta upload.</p>
+        <code>node export-linkedin-pdf.mjs</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 7: QUALITY                                  -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="slide slide-quality" data-theme="dark">
+  <div class="slide-inner">
+    <div class="eyebrow">Quality Standard</div>
+    <h2 class="headline">Every detail<br>is intentional</h2>
+    <div class="quality-grid">
+      <div class="quality-item">
+        <h3>Iterative Refinement</h3>
+        <p>Each carousel went through <span class="gold">4-7 versions</span>. Photo-topic matching, overlay calibration, font sizing, CTA variation - all refined through systematic audit passes.</p>
+      </div>
+      <div class="quality-item">
+        <h3>Unique Imagery</h3>
+        <p><span class="gold">37 curated photos</span> with zero cross-carousel portrait reuse. Each carousel has its own closing image, cover, and topic-matched interior slides.</p>
+      </div>
+      <div class="quality-item">
+        <h3>Editorial Typography</h3>
+        <p>Georgia serif headlines for authority, DM Sans body for clarity. Font sizes optimized for <span class="gold">mobile-first readability</span> at Instagram feed scale.</p>
+      </div>
+      <div class="quality-item">
+        <h3>Brand Consistency</h3>
+        <p>Deep teal, cream, and gold tokens enforced across all 61 slides. No generic templates - every slide is <span class="gold">custom HTML/CSS</span>.</p>
+      </div>
+      <div class="quality-item">
+        <h3>Photo-Topic Match</h3>
+        <p>Showerheads for water content. Cityscapes for air quality. Pollen macro for allergens. Sunset silhouettes for UV. <span class="gold">Every background tells the story.</span></p>
+      </div>
+      <div class="quality-item">
+        <h3>Multi-Format Ready</h3>
+        <p>Feed (3:4), Story (9:16), and Ad (1:1) variants from the same source. <span class="gold">LinkedIn PDF export</span> for professional carousel documents.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 8: CTA                                      -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="slide slide-cta" data-theme="light">
+  <div class="slide-inner" style="text-align:center;">
+    <div class="eyebrow" style="color:var(--sage);">Next Steps</div>
+    <h2 class="cta-headline">Review all 10 carousels<br>in the dashboard</h2>
+    <p class="subhead" style="margin:0 auto 32px;opacity:0.5;">Click any slide to zoom. Scroll through each carousel. Flag anything that needs revision.</p>
+    <a href="file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/carousel-dashboard.html" class="cta-button">
+      Open Carousel Dashboard
+    </a>
+  </div>
+</section>
+
+<script>
+  // ── NAV DOTS ──
+  const slides = document.querySelectorAll('.slide');
+  const navDots = document.getElementById('navDots');
+
+  slides.forEach((slide, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot';
+    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+    dot.addEventListener('click', () => {
+      slide.scrollIntoView({ behavior: 'smooth' });
+    });
+    navDots.appendChild(dot);
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const index = Array.from(slides).indexOf(entry.target);
+        const theme = entry.target.dataset.theme;
+        document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+          dot.classList.toggle('active', i === index);
+          dot.classList.toggle('on-light', theme === 'light');
+        });
+      }
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(slide => observer.observe(slide));
+</script>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

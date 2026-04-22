@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARE Hair - Session Output Review</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+  <style>
+    :root {
+      --teal: #102B26;
+      --cream: #f4efe9;
+      --surface: #faf8f5;
+      --gold: #D4A574;
+      --gold-light: #E8C9A8;
+      --sage: #7d8471;
+      --white: #ffffff;
+      --text-sec: #4a5c56;
+      --divider: #d4cfc6;
+      --green: #4a8c6b;
+      --green-bg: #f2f8f5;
+      --amber: #b8860b;
+      --amber-bg: #fffbf0;
+      --red: #c45b4a;
+      --red-bg: #fdf5f4;
+      --blue: #4a7cb8;
+      --blue-bg: #f0f5fc;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--teal); -webkit-font-smoothing: antialiased; }
+
+    .page { max-width: 860px; margin: 0 auto; background: var(--white); min-height: 100vh; }
+
+    .header { background: var(--teal); color: var(--cream); padding: 52px 48px 40px; }
+    .header-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+    .header h1 { font-family: 'orpheus-pro', Georgia, serif; font-size: 32px; font-weight: 400; line-height: 1.3; margin-bottom: 10px; }
+    .header .sub { font-size: 14px; color: var(--sage); font-weight: 300; }
+
+    .content { padding: 40px 48px 60px; }
+    @media (max-width: 640px) {
+      .header { padding: 36px 20px 28px; }
+      .header h1 { font-size: 24px; }
+      .content { padding: 24px 16px 40px; }
+    }
+
+    h2 { font-family: 'orpheus-pro', Georgia, serif; font-size: 22px; font-weight: 400; color: var(--teal); margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--divider); }
+    h2:first-child { margin-top: 0; }
+    h3 { font-size: 15px; font-weight: 600; color: var(--teal); margin: 24px 0 8px; }
+    p { font-size: 14px; line-height: 1.65; color: var(--text-sec); margin-bottom: 10px; }
+    strong { color: var(--teal); }
+
+    /* Stats bar */
+    .stats { display: flex; gap: 12px; flex-wrap: wrap; margin: 20px 0 32px; }
+    .stat { background: var(--surface); border-radius: 6px; padding: 14px 18px; flex: 1; min-width: 120px; text-align: center; }
+    .stat-val { font-family: 'orpheus-pro', Georgia, serif; font-size: 28px; color: var(--teal); }
+    .stat-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--sage); margin-top: 4px; }
+
+    /* Cards */
+    .card { border: 1px solid var(--divider); border-radius: 6px; margin-bottom: 12px; overflow: hidden; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; cursor: pointer; background: var(--white); transition: background 0.15s; }
+    .card-header:hover { background: var(--surface); }
+    .card-title { font-size: 14px; font-weight: 600; color: var(--teal); }
+    .card-path { font-size: 11px; color: var(--sage); font-family: monospace; margin-top: 2px; }
+    .card-badges { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; }
+    .badge-ready { background: var(--green-bg); color: var(--green); }
+    .badge-review { background: var(--amber-bg); color: var(--amber); }
+    .badge-blocked { background: var(--red-bg); color: var(--red); }
+    .badge-fixed { background: var(--blue-bg); color: var(--blue); }
+    .score { font-size: 12px; font-weight: 600; color: var(--gold); }
+
+    .card-body { padding: 0 18px 14px; font-size: 13px; color: var(--text-sec); line-height: 1.6; display: none; }
+    .card.open .card-body { display: block; }
+    .card.open .card-header { background: var(--surface); border-bottom: 1px solid var(--divider); }
+    .card-body ul { margin: 6px 0 6px 16px; }
+    .card-body li { margin-bottom: 4px; }
+
+    .toggle { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; color: var(--sage); font-size: 14px; transition: transform 0.2s; }
+    .card.open .toggle { transform: rotate(90deg); }
+
+    /* Action items */
+    .action { background: var(--amber-bg); border-left: 3px solid var(--amber); padding: 16px 20px; border-radius: 0 6px 6px 0; margin: 20px 0; font-size: 13px; }
+    .action-title { font-weight: 600; color: var(--amber); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+    .action p { margin-bottom: 4px; }
+    .action ol { margin: 6px 0 0 16px; }
+    .action li { margin-bottom: 4px; color: var(--teal); }
+
+    /* Divider */
+    .diamond { text-align: center; margin: 36px 0; color: var(--gold); font-size: 12px; letter-spacing: 8px; }
+
+    /* Footer */
+    .footer { background: var(--teal); color: var(--sage); padding: 28px 48px; font-size: 11px; line-height: 1.7; }
+    .footer strong { color: var(--cream); }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <div class="header">
+      <div class="header-label">Session Review</div>
+      <h1>Strategic Deep Dive + Implementation Sprint</h1>
+      <div class="sub">March 21-22, 2026 - All deliverables from today's autonomous work session</div>
+    </div>
+
+    <div class="content">
+
+      <div class="stats">
+        <div class="stat"><div class="stat-val">21</div><div class="stat-label">Deliverables</div></div>
+        <div class="stat"><div class="stat-val">6</div><div class="stat-label">Fixes Applied</div></div>
+        <div class="stat"><div class="stat-val">3.9</div><div class="stat-label">Avg Quality /5</div></div>
+        <div class="stat"><div class="stat-val">12</div><div class="stat-label">Ready to Deploy</div></div>
+      </div>
+
+      <div class="action">
+        <div class="action-title">David's Top 3 Actions (15 min total)</div>
+        <ol>
+          <li><strong>Pull Scalp Report metrics from Klaviyo</strong> - load the Zapier MCP profile and run the data pull. This unlocks every other deliverable.</li>
+          <li><strong>Run SKU penetration audit from Shopify</strong> - pull B2B order data to validate revenue models and fill the traction snapshot cohort table.</li>
+          <li><strong>Make the CM capacity call</strong> - prep sheet at <code>sales/CM-CAPACITY-CONVERSATION-PREP.md</code>. 30-minute call that gates all growth.</li>
+        </ol>
+      </div>
+
+      <div class="diamond">&#9670; &nbsp; &#9670; &nbsp; &#9670;</div>
+
+      <!-- STRATEGIC -->
+      <h2>Strategic Foundation</h2>
+
+      <div class="card" id="c1">
+        <div class="card-header" onclick="toggle('c1')">
+          <div>
+            <div class="card-title">1. Strategic Deep Dive</div>
+            <div class="card-path">opportunities/strategic-deep-dive-march-2026.html</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-review">Needs Data</span>
+            <span class="score">4/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> 9-section strategic options document synthesizing 5 parallel research workstreams (distribution, revenue scaling, channels, capital, operations). Includes strategic options matrix, 90-day plan with priority tiers, revenue bridge, and decision triggers.</p>
+          <p><strong>Reviewer notes:</strong> Narrative is coherent. Innersense flywheel framing is the strongest intellectual contribution. Revenue projections need verified Shopify baseline before external use. Updated to reflect Scalp Report being live.</p>
+          <ul>
+            <li><strong>Ready for:</strong> Internal strategy discussions</li>
+            <li><strong>Not ready for:</strong> Investor conversations (needs verified data in revenue bridge)</li>
+            <li><strong>Action:</strong> Fill revenue bridge with actual Shopify quarterly spend per salon</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- OPS -->
+      <h2>Operational Infrastructure</h2>
+
+      <div class="card" id="c2">
+        <div class="card-header" onclick="toggle('c2')">
+          <div>
+            <div class="card-title">2. B2B Reorder Automation</div>
+            <div class="card-path">emails/flows/b2b-reorder/ (4 files)</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-ready">Deployable</span>
+            <span class="score">4/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> Complete flow design (REORDER-FLOW-DESIGN.md) + 3 production-ready HTML email templates (Day 35 restock reminder, Day 42 follow-up, Day 50 internal alert to Tina/David). Includes N8N workflow spec with Shopify GraphQL query and Klaviyo event schema.</p>
+          <p><strong>Reviewer notes:</strong> N8N spec is production-ready. Emails match existing AWARE email patterns. One code issue: <code>sheetsLog</code> variable in suppression logic needs a prior N8N node to fetch Google Sheets data. Reorder URL should be verified as live before deployment.</p>
+          <ul>
+            <li><strong>Action:</strong> Verify <code>awarehair.com/pages/professional-portal</code> URL is live, then implement in N8N</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" id="c3">
+        <div class="card-header" onclick="toggle('c3')">
+          <div>
+            <div class="card-title">3. Salon Onboarding SOP</div>
+            <div class="card-path">sales/salon-onboarding-sop.md</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-fixed">Fixes Applied</span>
+            <span class="score">4/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> 921-line playbook covering 5 phases from Day -14 to Day 90+. Includes qualification criteria, Tina's welcome call script, education materials delivery, reorder management, and account health scoring. References existing playbooks rather than duplicating.</p>
+          <p><strong>Fixed:</strong> Pricing corrected from "40% off retail" to "50% margin." Prepaid first order requirement added to align with Pricing Policy. Second order rate target clarified as initial conversion (85%) vs. ongoing reorder (96%).</p>
+          <ul>
+            <li><strong>Action:</strong> Verify which sales materials in <code>/sales/materials/</code> actually exist vs. need creation</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" id="c4">
+        <div class="card-header" onclick="toggle('c4')">
+          <div>
+            <div class="card-title">4. Pricing Policy</div>
+            <div class="card-path">sales/PRICING-POLICY.md</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-fixed">Fixes Applied</span>
+            <span class="score">4/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> Complete pricing ladder (DTC MSRP, salon wholesale, distributor standard, distributor floor). MAP policy with three-strike enforcement. Volume discount tiers. Seven no-go rules. David as sole pricing authority.</p>
+          <p><strong>Fixed:</strong> Margin math corrected - distributor floor margin changed from "&lt;25%" to correct ~43%. All math now consistent with Quick Reference table.</p>
+          <ul>
+            <li><strong>Action:</strong> Review distributor floor pricing before any Canrad/SBP term sheets</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" id="c5">
+        <div class="card-header" onclick="toggle('c5')">
+          <div>
+            <div class="card-title">5. Stockout Response Plan</div>
+            <div class="card-path">sales/STOCKOUT-RESPONSE-PLAN.md</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-fixed">Fixes Applied</span>
+            <span class="score">4.5/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> 4 alert levels (Green/Yellow/Red/Black) with specific action steps at each level. Partial fulfillment guidelines. 2 email templates (backorder notification + back in stock). Decision tree for quick reference.</p>
+          <p><strong>Fixed:</strong> Yellow alert boundary corrected from "15-30 days" to "14-30 days" to align with threshold table.</p>
+          <ul>
+            <li><strong>Action:</strong> Add CM contact info after capacity call. Set up Shopify inventory alerts.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" id="c6">
+        <div class="card-header" onclick="toggle('c6')">
+          <div>
+            <div class="card-title">6. Inventory Reorder Model</div>
+            <div class="card-path">finance/inventory-reorder-model.html</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-review">Needs Real Data</span>
+            <span class="score">4/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> Interactive HTML dashboard. Per-SKU inputs for stock, velocity, lead time. Calculates safety stock, reorder points, days remaining with color-coded alerts. Scaling projections slider (50-200 salons). AWARE-branded, mobile-responsive, print-friendly.</p>
+          <ul>
+            <li><strong>Action:</strong> Open in browser, replace default values with actual stock levels and weekly velocity from Shopify. Use weekly for inventory review.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" id="c7">
+        <div class="card-header" onclick="toggle('c7')">
+          <div>
+            <div class="card-title">7. Salon Database Schema</div>
+            <div class="card-path">sales/SALON-DATABASE-SCHEMA.md</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-ready">Ready to Build</span>
+            <span class="score">4/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> Complete Notion database spec with 30+ fields, health scoring formula (0-100), 5 tier definitions, 6 saved views, and Shopify migration plan. Includes Notion formula syntax for calculated fields.</p>
+          <ul>
+            <li><strong>Action:</strong> Create the Notion database using this schema. Run the migration plan to populate from Shopify B2B customers (~6-7 hours total).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" id="c8">
+        <div class="card-header" onclick="toggle('c8')">
+          <div>
+            <div class="card-title">8. N8N Automation Runbook</div>
+            <div class="card-path">assistant/N8N-AUTOMATION-RUNBOOK.md</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-ready">Ready</span>
+            <span class="score">3.5/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> Catalog of all 49 N8N workflows organized by category (Scalp Report, Chief of Staff, Agents, Social Listening, Sales, SEO, Opportunities). Includes critical path workflows, common troubleshooting, and API key reference.</p>
+          <ul>
+            <li><strong>Note:</strong> Built from file names and directory structure. Workflow descriptions are inferred - verify accuracy for the 5-6 most critical workflows.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" id="c9">
+        <div class="card-header" onclick="toggle('c9')">
+          <div>
+            <div class="card-title">9. CM Capacity Conversation Prep</div>
+            <div class="card-path">sales/CM-CAPACITY-CONVERSATION-PREP.md</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-ready">Ready</span>
+            <span class="score">4/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> Prep sheet for the 30-minute CM phone call. 8 question categories with specific ask language. "Ideal / Acceptable / Red Flag" answer framework. Contingency plan if the answer is "no." Follow-up action checklist.</p>
+          <ul>
+            <li><strong>Action:</strong> Schedule the call. This gates the entire growth plan.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="diamond">&#9670; &nbsp; &#9670; &nbsp; &#9670;</div>
+
+      <!-- GROWTH -->
+      <h2>Growth Programs</h2>
+
+      <div class="card" id="c10">
+        <div class="card-header" onclick="toggle('c10')">
+          <div>
+            <div class="card-title">10. Referral Program Launch Email</div>
+            <div class="card-path">emails/campaigns/b2b-referral-launch/referral-launch-email.html</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-review">Test Klaviyo Syntax</span>
+            <span class="score">5/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> Branded HTML email announcing the Bronze/Silver/Gold referral program to all 50 existing salon partners. AWARE design system fully applied. Jade's voice in the copy. Two CTAs: share referral link or simply reply with a name.</p>
+          <p><strong>Reviewer notes:</strong> Best-executed email in the entire set. One issue: the Klaviyo personalization token uses <code>person|lookup:'first_name'</code> which may be Liquid syntax, not Klaviyo. Test render before sending. Also clarify calendar-year accumulation period for tiers.</p>
+          <ul>
+            <li><strong>Action:</strong> Test in Klaviyo preview, fix token if needed, then send to all 50 accounts</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" id="c11">
+        <div class="card-header" onclick="toggle('c11')">
+          <div>
+            <div class="card-title">11. Education Event Playbook</div>
+            <div class="card-path">marketing/education-event-playbook.md</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-ready">Ready</span>
+            <span class="score">5/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> Complete event playbook: host salon selection criteria, guest list building, invitation email template, 90-minute time-blocked agenda, post-event follow-up sequence (Day 1/3/7/14), content capture plan, budget ($325-430/event), scaling roadmap, and scalp camera equipment recommendations.</p>
+          <p><strong>Reviewer notes:</strong> Best document in the set. Deployment-ready. Two minor additions worth making: consent form language for sign-in sheet, and contingency if Tina is unavailable.</p>
+          <ul>
+            <li><strong>Action:</strong> Pick a host salon and schedule the first event</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" id="c12">
+        <div class="card-header" onclick="toggle('c12')">
+          <div>
+            <div class="card-title">12. Stylist Ambassador Program</div>
+            <div class="card-path">marketing/STYLIST-AMBASSADOR-PROGRAM.md</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-fixed">FTC Fixed</span>
+            <span class="score">4/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> 3-tier program (Seed/Growth/Elite) modeled on K18 Collective. Commission structure (15-25%), application form template, content guidelines, FTC compliance, budget ($900 startup + $700-1,700/mo ongoing), and phased launch timeline.</p>
+          <p><strong>Fixed:</strong> FTC disclosure section completely rewritten. Now correctly requires #AWAREPartner or #ad on every post with commission codes or gifted product. Previous version incorrectly told ambassadors NOT to use #ad.</p>
+          <ul>
+            <li><strong>Note:</strong> Clarify delineation with Referral Program (referral = salon owners, ambassador = stylists, one program per referral)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" id="c13">
+        <div class="card-header" onclick="toggle('c13')">
+          <div>
+            <div class="card-title">13. Cold Email Deployment Plan</div>
+            <div class="card-path">sales/cold-email/DEPLOYMENT-PLAN-Q2-2026.md</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-ready">Ready</span>
+            <span class="score">4/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> 4-phase deployment of sequences H-L (replacing underperforming A-D). Lead segmentation routing logic, Phase 1 test of 100 leads, Phase 2 multi-sequence A/B test, Phase 3 scale winners. Anti-patterns from A-D learnings.</p>
+          <ul>
+            <li><strong>Action:</strong> Review, approve target list composition and sending schedule, then execute Phase 1</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="diamond">&#9670; &nbsp; &#9670; &nbsp; &#9670;</div>
+
+      <!-- CHANNELS -->
+      <h2>Channel Expansion</h2>
+
+      <div class="card" id="c14">
+        <div class="card-header" onclick="toggle('c14')">
+          <div>
+            <div class="card-title">14. Trichologist Outreach Suite (3 files)</div>
+            <div class="card-path">sales/outreach/trichologist-*.md</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-fixed">Subject Fixed</span>
+            <span class="score">4/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> 25 LA/OC practitioners in 5 tiers (verified via websites). 3-email outreach sequence with peer-to-peer professional tone. Protocol one-pager with condition-specific product recommendations and practitioner discount mechanics.</p>
+          <p><strong>Fixed:</strong> "Quick follow-up" banned subject line replaced with 3 new options. Top targets: Dr. Rana Mays (Corona Del Mar, dual-board-certified, functional derm) and Dr. Natasha Mesinkovska (UCI, Chief Scientific Officer of National Alopecia Areata Foundation).</p>
+          <ul>
+            <li><strong>Action:</strong> Resolve placeholder <code>[YOUR CODE]</code> in protocol one-pager before shipping kits. Personalize per practitioner.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" id="c15">
+        <div class="card-header" onclick="toggle('c15')">
+          <div>
+            <div class="card-title">15. GlossGenius Partnership Pitch</div>
+            <div class="card-path">sales/outreach/glossgenius-partnership-pitch.md</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-review">Verify Metrics</span>
+            <span class="score">3/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> Outreach email + follow-up to GlossGenius partnerships team proposing co-marketing. Also includes Boulevard (premium salon software) as secondary target. 30 minutes of work total.</p>
+          <ul>
+            <li><strong>Action:</strong> Verify 18M views and 96% reorder metrics from live sources before sending. Find named BD contact on LinkedIn.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="diamond">&#9670; &nbsp; &#9670; &nbsp; &#9670;</div>
+
+      <!-- INVESTOR -->
+      <h2>Investor Prep</h2>
+
+      <div class="card" id="c16">
+        <div class="card-header" onclick="toggle('c16')">
+          <div>
+            <div class="card-title">16. Traction Snapshot</div>
+            <div class="card-path">opportunities/traction-snapshot-march-2026.html</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-blocked">Needs Data</span>
+            <span class="score">3/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> Branded investor one-pager with metrics, business overview, comparable fundraises (Ceremonia, Act+Acre, Jupiter, Crown Affair), distribution pipeline, team, and the ask ($250-400K SAFE).</p>
+          <p><strong>Reviewer notes:</strong> Cohort retention table is empty (placeholder text visible). $135K media value claim needs methodology. "Industry avg: 30-50%" benchmark needs a source. Cannot be shared externally in current state.</p>
+          <ul>
+            <li><strong>Action:</strong> Fill cohort table from Shopify. Source the industry reorder benchmark. Add media value calculation methodology. THEN this becomes a strong investor opener.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" id="c17">
+        <div class="card-header" onclick="toggle('c17')">
+          <div>
+            <div class="card-title">17. BeautyMatter NEXT Grant Draft</div>
+            <div class="card-path">opportunities/beautymatter-next-grant-draft.md</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-review">Draft</span>
+            <span class="score">4/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> Full application draft: brand description, biggest challenge, traction, 12-month success vision, and closing pitch. Strong narrative - closing paragraph about filtering every decision through "does this protect or erode the reorder rate?" is the best line in the entire body of work.</p>
+          <ul>
+            <li><strong>Action:</strong> Verify all metrics. Confirm ISPA booth or remove claim. Add Tina/Jade last names. Check deadline at BeautyMatter.com.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="diamond">&#9670; &nbsp; &#9670; &nbsp; &#9670;</div>
+
+      <!-- CONTENT -->
+      <h2>Content &amp; DTC</h2>
+
+      <div class="card" id="c18">
+        <div class="card-header" onclick="toggle('c18')">
+          <div>
+            <div class="card-title">18. Q2 Content Calendar</div>
+            <div class="card-path">marketing/Q2-2026-CONTENT-CALENDAR.md</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-review">Needs Capacity Audit</span>
+            <span class="score">3/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> 12-week plan (Apr-Jun) with 4 content pillars, weekly posting cadence, week-by-week content ideas, and $500-1K/month boosting strategy. Anchors everything to Scalp Report as conversion mechanism.</p>
+          <p><strong>Reviewer notes:</strong> Individual weeks are well-planned but total commitment (4 posts/week + events + all other programs) exceeds 2-person capacity. Needs a production audit: who shoots Reels? Which weeks have confirmed assets?</p>
+          <ul>
+            <li><strong>Action:</strong> Mark which weeks have confirmed content vs. need-to-produce. Reduce to 3 posts/week if capacity is tight.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" id="c19">
+        <div class="card-header" onclick="toggle('c19')">
+          <div>
+            <div class="card-title">19. DTC Welcome Sequence</div>
+            <div class="card-path">emails/flows/dtc-scalp-report-welcome/FLOW-DESIGN.md</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-fixed">Overlap Resolved</span>
+            <span class="score">3.5/5</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> 5-email post-Scalp-Report nurture flow. Day 0 (report delivery, existing) -> Day 2 (environmental education) -> Day 5 (personalized recommendation) -> Day 9 (social proof) -> Day 14 (re-engagement + salon finder CTA). Includes dynamic content blocks per environmental factor.</p>
+          <p><strong>Fixed:</strong> Added explicit resolution - this sequence REPLACES existing Scalp Report emails 2-5 (not parallel). Clear instruction to disable existing flow before deploying this one.</p>
+          <ul>
+            <li><strong>Action:</strong> Gather 2-3 testimonials for Email 4 (social proof). Verify salon locator page exists for Email 5 CTA.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" id="c20">
+        <div class="card-header" onclick="toggle('c20')">
+          <div>
+            <div class="card-title">20. Blog Post ("Best Scalp Care Products")</div>
+            <div class="card-path">marketing/blog/drafts/best-scalp-care-products-guide.md</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-review">Existing Draft</span>
+            <span class="score">N/A</span>
+            <div class="toggle">&#9654;</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>What it is:</strong> Pre-existing 1,850-word AEO-optimized guide with Tina quote. Ready for David's content review before publishing via <code>/seo-publish</code>.</p>
+          <ul>
+            <li><strong>Action:</strong> Review content, then use <code>/seo-publish</code> to deploy to Shopify with schema markup</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="diamond">&#9670; &nbsp; &#9670; &nbsp; &#9670;</div>
+
+      <!-- BIGGEST GAP -->
+      <h2>The Biggest Gap</h2>
+
+      <div class="action">
+        <div class="action-title">Verified Unit Economics Baseline</div>
+        <p>Every document references the 96% reorder rate and ~$300/quarter per salon, but <strong>no document contains the actual Shopify data proving it</strong>. The traction snapshot has an empty cohort table. The revenue projections are built on unverified averages.</p>
+        <p style="margin-top: 8px;">The SKU audit and cohort retention pull from Shopify (2-3 hours) is not a nice-to-have. It's the prerequisite for every document in this session being credible. An investor who asks "walk me through how you calculated 96%" needs an answer that involves a spreadsheet, not an assertion.</p>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <strong>AWARE Hair - Session Output Review</strong><br>
+      March 21-22, 2026 - All deliverables are drafts for David's review. No emails sent, no external actions taken.<br><br>
+      <strong>Full quality review</strong> conducted by 3 parallel review agents examining all files for: internal consistency, cross-document contradictions, brand voice, FTC compliance, actionability, and strategic alignment. 6 critical/high issues found and fixed.
+    </div>
+
+  </div>
+
+  <script>
+    function toggle(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+  </script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARE Scalp Health Lab - Attendee Handout Card</title>
+
+  <!-- AWARE Fonts -->
+  <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+
+  <style>
+    :root {
+      --color-bg: #f4efe9;
+      --color-text: #102b26;
+      --color-text-secondary: #5a6b68;
+      --color-header: #031612;
+      --color-bronze: #D4A574;
+      --color-green: #2d6a4f;
+      --color-border: #e4d9ca;
+      --color-surface: #faf8f5;
+
+      --font-heading: "orpheuspro", Georgia, "Times New Roman", serif;
+      --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+
+      --card-w: 7in;
+      --card-h: 5in;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background: #e8e3dd;
+      color: var(--color-text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 24px;
+      gap: 48px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-label {
+      font-family: var(--font-body);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--color-text-secondary);
+      margin-bottom: -36px;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       CARD BASE
+       ═══════════════════════════════════════════════════════════════ */
+    .card {
+      width: var(--card-w);
+      height: var(--card-h);
+      background: var(--color-bg);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      padding: 0.38in 0.35in 0.22in;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       HEADER (matches guasha-usage-card.html)
+       ═══════════════════════════════════════════════════════════════ */
+    .header {
+      text-align: center;
+      margin-bottom: 0;
+    }
+
+    .header-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 3px 0;
+    }
+
+    .header-divider::before,
+    .header-divider::after {
+      content: "";
+      width: 40px;
+      height: 1px;
+      background: var(--color-border);
+    }
+
+    .header-divider span {
+      font-size: 6px;
+      color: var(--color-bronze);
+      opacity: 0.7;
+      line-height: 1;
+    }
+
+    .header-title {
+      font-family: var(--font-heading);
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--color-header);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin-bottom: 0;
+    }
+
+    .header-subtitle {
+      font-family: var(--font-body);
+      font-size: 9px;
+      font-weight: 400;
+      color: var(--color-text-secondary);
+      letter-spacing: 0.04em;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       4-COLUMN STEP GRID (layered illustration system from guasha card)
+       ═══════════════════════════════════════════════════════════════ */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .step-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* Layered illustration container - exactly matches guasha-usage-card.html */
+    .step-illustration {
+      width: 100%;
+      aspect-ratio: 1;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 5px;
+      margin-bottom: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .step-illustration .head-base {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .step-illustration .tool-overlay {
+      position: absolute;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+
+    .step-illustration .meridian-dot {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      background: var(--color-bronze);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 2;
+      box-shadow: 0 0 5px rgba(212, 165, 116, 0.5);
+    }
+
+    /* Directional arrows - solid stroke for print clarity */
+    .step-illustration .arrow-overlay {
+      position: absolute;
+      pointer-events: none;
+      z-index: 3;
+      overflow: visible;
+    }
+
+    .step-illustration .arrow-overlay path {
+      fill: none;
+      stroke: var(--color-bronze);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.75;
+    }
+
+    .step-illustration .arrow-overlay .arrowhead {
+      fill: var(--color-bronze);
+      stroke: none;
+      opacity: 0.75;
+    }
+
+    /* Tool positions - placed ON the scalp, not the face */
+    .step-01 .tool-overlay { width: 30%; top: 4%; left: 30%; transform: rotate(-10deg); }
+    .step-01 .meridian-dot { top: 18%; left: 32%; }
+
+    .step-02 .tool-overlay { width: 30%; top: -2%; left: 36%; transform: rotate(5deg); }
+    .step-02 .meridian-dot { top: 6%; left: 46%; }
+
+    .step-03 .tool-overlay { width: 28%; top: 22%; left: 42%; transform: rotate(15deg); }
+    .step-03 .meridian-dot { top: 30%; left: 54%; }
+
+    .step-04 .tool-overlay { width: 28%; bottom: 24%; right: 8%; transform: rotate(50deg); }
+    .step-04 .meridian-dot { bottom: 28%; right: 20%; }
+
+    /* Step text */
+    .step-num {
+      font-family: var(--font-heading);
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--color-bronze);
+      line-height: 1;
+      opacity: 0.85;
+      margin-bottom: 1px;
+    }
+
+    .step-location {
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-header);
+    }
+
+    .step-meridian {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-secondary);
+      opacity: 0.7;
+      margin-bottom: 2px;
+    }
+
+    .step-desc {
+      font-family: var(--font-body);
+      font-size: 10.5px;
+      font-weight: 400;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════════ */
+    .footer {
+      margin-top: auto;
+      padding-top: 7px;
+      border-top: 1px solid var(--color-border);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-social {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .footer-social svg {
+      width: 13px;
+      height: 13px;
+      fill: var(--color-text-secondary);
+      opacity: 0.65;
+      flex-shrink: 0;
+    }
+
+    .footer-social span {
+      font-family: var(--font-body);
+      font-size: 7.5px;
+      color: var(--color-text-secondary);
+      opacity: 0.65;
+    }
+
+    .footer-social a {
+      color: var(--color-text-secondary);
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .footer-url {
+      font-family: var(--font-body);
+      font-size: 7.5px;
+      color: var(--color-text-secondary);
+      text-align: right;
+    }
+
+    .footer-url a {
+      color: var(--color-text-secondary);
+      font-weight: 500;
+      text-decoration: none;
+      opacity: 0.65;
+    }
+
+    .care-strip {
+      margin-top: auto;
+      padding: 5px 14px;
+      background: transparent;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .care-strip .care-item {
+      font-family: var(--font-body);
+      font-size: 7.5px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .care-strip .care-sep {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--color-bronze);
+      opacity: 0.5;
+      margin: 0 10px;
+      flex-shrink: 0;
+    }
+
+    .footer-logo {
+      flex-shrink: 0;
+    }
+
+    .footer-logo img {
+      height: 18px;
+      width: auto;
+      display: block;
+      opacity: 0.65;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       BACK - LAYOUT
+       ═══════════════════════════════════════════════════════════════ */
+    .back-inner {
+      width: 100%;
+      height: 100%;
+      padding: 0.32in 0.35in 0.25in;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .meridian-section {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .back-section-title {
+      font-family: var(--font-heading);
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--color-header);
+      margin-bottom: 4px;
+    }
+
+    .back-section-sub {
+      font-size: 8px;
+      color: var(--color-text-secondary);
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+
+    .meridian-map {
+      flex: 1;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .meridian-map img {
+      width: 70%;
+      height: auto;
+      display: block;
+    }
+
+    /* Meridian point labels */
+    .mp {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .mp-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--color-bronze);
+      border-radius: 50%;
+      box-shadow: 0 0 4px rgba(212, 165, 116, 0.5);
+      flex-shrink: 0;
+    }
+
+    .mp-label {
+      font-size: 6.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text);
+      white-space: nowrap;
+      background: rgba(244,239,233,.85);
+      padding: 1px 4px;
+      border-radius: 2px;
+    }
+
+    .mp-sub {
+      font-size: 5.5px;
+      font-weight: 400;
+      color: var(--color-text-secondary);
+    }
+
+    .mp-hairline { top: 16%; left: 34%; }
+    .mp-crown { top: 6%; left: 46%; }
+    .mp-temple { top: 34%; left: 56%; }
+    .mp-nape { bottom: 26%; right: 17%; }
+
+    /* Direction arrows on meridian map */
+    .meridian-map .map-arrow {
+      position: absolute;
+      pointer-events: none;
+      z-index: 3;
+      overflow: visible;
+    }
+
+    .meridian-map .map-arrow path {
+      fill: none;
+      stroke: var(--color-bronze);
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.6;
+    }
+
+    .meridian-map .map-arrow .arrowhead {
+      fill: var(--color-bronze);
+      stroke: none;
+      opacity: 0.6;
+    }
+
+    /* Action section */
+    .action-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .qr-block {
+      text-align: center;
+      padding: 12px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+    }
+
+    .qr-block img {
+      width: 100px;
+      height: 100px;
+      display: block;
+      margin: 0 auto 8px;
+    }
+
+    .qr-block .qr-title {
+      font-family: var(--font-heading);
+      font-size: 11px;
+      color: var(--color-header);
+      margin-bottom: 2px;
+    }
+
+    .qr-block .qr-desc {
+      font-size: 8px;
+      color: var(--color-text-secondary);
+      line-height: 1.4;
+    }
+
+    .offer-box {
+      background: var(--color-header);
+      border-radius: 6px;
+      padding: 12px 14px;
+      text-align: center;
+    }
+
+    .offer-label {
+      font-size: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-bronze);
+      margin-bottom: 3px;
+    }
+
+    .offer-title {
+      font-family: var(--font-heading);
+      font-size: 14px;
+      font-weight: 400;
+      color: #f4efe9;
+      margin-bottom: 2px;
+    }
+
+    .offer-code {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--color-bronze);
+      margin: 4px 0 2px;
+    }
+
+    .offer-terms {
+      font-size: 7px;
+      color: rgba(244,239,233,.5);
+    }
+
+    .steps-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 7.5px;
+      color: var(--color-text-secondary);
+    }
+
+    .legend-num {
+      font-family: var(--font-heading);
+      font-size: 10px;
+      color: var(--color-bronze);
+      width: 14px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .legend-text strong {
+      color: var(--color-text);
+      font-weight: 600;
+    }
+
+    .back-footer {
+      grid-column: 1 / -1;
+      border-top: 1px solid var(--color-border);
+      padding-top: 5px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 10px;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       BACK - MERIDIAN EDUCATION (replaces QR + Offer)
+       ═══════════════════════════════════════════════════════════════ */
+    .meridian-education {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .edu-intro {
+      font-size: 8px;
+      color: var(--color-text-secondary);
+      line-height: 1.55;
+      margin-bottom: 8px;
+    }
+
+    .edu-points {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      flex: 1;
+    }
+
+    .edu-point {
+      padding: 5px 8px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+    }
+
+    .edu-point-header {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 1px;
+    }
+
+    .edu-point-dot {
+      width: 5px;
+      height: 5px;
+      background: var(--color-bronze);
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 3px rgba(212, 165, 116, 0.5);
+    }
+
+    .edu-point-name {
+      font-family: var(--font-body);
+      font-size: 8px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-header);
+    }
+
+    .edu-point-meaning {
+      font-family: var(--font-heading);
+      font-size: 8.5px;
+      font-style: italic;
+      color: var(--color-bronze);
+      margin-bottom: 1px;
+      padding-left: 10px;
+    }
+
+    .edu-point-desc {
+      font-size: 7px;
+      color: var(--color-text-secondary);
+      line-height: 1.45;
+      padding-left: 10px;
+    }
+
+    .edu-tip {
+      margin-top: 6px;
+      padding: 5px 8px;
+      background: var(--color-header);
+      border-radius: 4px;
+      font-size: 7px;
+      color: rgba(244,239,233,.8);
+      line-height: 1.45;
+    }
+
+    .edu-tip strong {
+      color: var(--color-bronze);
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       PRINT
+       ═══════════════════════════════════════════════════════════════ */
+    @media print {
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      :root {
+        --color-bg: #ffffff;
+        --color-text: #111111;
+        --color-text-secondary: #3a3a3a;
+        --color-header: #000000;
+        --color-border: #cccccc;
+        --color-surface: #f5f5f5;
+      }
+
+      body { background: white; padding: 0; gap: 0; }
+      .page-label { display: none; }
+      .card { box-shadow: none; background: #fff; }
+      .card-front { page-break-after: always; }
+      @page { size: 7in 5in; margin: 0; }
+
+      /* High-contrast text */
+      .header-title { color: #000; }
+      .header-subtitle { color: #333; }
+      .step-location { color: #000; }
+      .step-meridian { color: #444; opacity: 1; }
+      .step-desc { color: #222; }
+      .step-num { color: #8B6914; opacity: 1; }
+
+      /* Care strip - dark border, dark text for print */
+      .care-strip { border-color: #999; }
+      .care-strip .care-item { color: #333; opacity: 1; }
+
+      /* Footer */
+      .footer-social span, .footer-social svg { opacity: 1; }
+      .footer-url a { opacity: 1; }
+      .footer-logo img { opacity: 0.85; }
+
+      /* Back side */
+      .back-section-title { color: #000; }
+      .back-section-sub { color: #333; }
+      .edu-intro { color: #333; }
+      .edu-point-name { color: #000; }
+      .edu-point-meaning { color: #8B6914; }
+      .edu-point-desc { color: #333; }
+      .edu-tip { background: #111; }
+      .edu-tip strong { color: #D4A574; }
+
+      /* Meridian map labels */
+      .mp-label { color: #000; background: rgba(255,255,255,.85); }
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       RESPONSIVE
+       ═══════════════════════════════════════════════════════════════ */
+    @media screen and (max-width: 750px) {
+      body { padding: 24px 8px; gap: 32px; }
+      .card { width: 100%; height: auto; aspect-ratio: 7 / 5; }
+      .card-inner, .back-inner { padding: 3.5% 5% 3%; }
+      .header-title { font-size: 3.8vw; }
+      .header-subtitle { font-size: 1.3vw; }
+      .header-divider { margin: 1.2vw 0; }
+      .header-divider::before,
+      .header-divider::after { width: 6vw; }
+      .header-divider span { font-size: 1vw; }
+      .step-num { font-size: 2.8vw; }
+      .step-location { font-size: 1.7vw; }
+      .step-meridian { font-size: 1.1vw; }
+      .step-desc { font-size: 1.6vw; }
+      .steps-grid { gap: 2vw; }
+      .step-illustration { border-radius: 1vw; }
+      .footer-social span { font-size: 1.2vw; }
+      .footer-social svg { width: 2vw; height: 2vw; }
+      .footer-url { font-size: 1.2vw; }
+      .footer-logo img { height: 2.8vw; }
+      .back-section-title { font-size: 2.3vw; }
+      .qr-block img { width: 14vw; height: 14vw; }
+      .offer-title { font-size: 2vw; }
+      .offer-code { font-size: 1.9vw; }
+    }
+
+    @media screen {
+      .card {
+        box-shadow:
+          0 1px 3px rgba(16, 43, 38, 0.06),
+          0 8px 32px rgba(16, 43, 38, 0.10);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════ FRONT SIDE ═══════════ -->
+  <div class="page-label">Front</div>
+  <div class="card card-front">
+    <div class="card-inner">
+
+      <!-- Header -->
+      <div class="header">
+        <h1 class="header-title">Your 5-Minute Scalp Gua Sha Ritual</h1>
+        <p class="header-subtitle">Gua sha along your scalp's key meridian points, 3-5 minutes, 3-5x per week</p>
+      </div>
+
+      <!-- Divider -->
+      <div class="header-divider"><span>&#9670;</span></div>
+
+      <!-- 4 Step Panels - layered illustration system from guasha-usage-card.html -->
+      <div class="steps-grid">
+
+        <!-- Step 1: Hairline / Reset -->
+        <div class="step-panel">
+          <div class="step-illustration step-01">
+            <img class="head-base" src="../guasha-usage-card/head-profile.png" alt="Gua sha at hairline">
+            <img class="tool-overlay" src="../guasha-usage-card/gua-sha-product.png" alt="">
+            <div class="meridian-dot"></div>
+            <svg class="arrow-overlay" style="width:40%;top:6%;left:28%;" viewBox="0 0 60 40">
+              <path d="M12 34 Q18 18 46 10" />
+              <polygon class="arrowhead" points="43,6 50,8 44,13" />
+            </svg>
+          </div>
+          <p class="step-num">01</p>
+          <p class="step-location">Hairline</p>
+          <p class="step-meridian">Shenting GV24</p>
+          <p class="step-desc">Glide from hairline, arcing back toward the crown with gentle pressure.</p>
+        </div>
+
+        <!-- Step 2: Crown / Repair -->
+        <div class="step-panel">
+          <div class="step-illustration step-02">
+            <img class="head-base" src="../guasha-usage-card/head-profile.png" alt="Gua sha at crown">
+            <img class="tool-overlay" src="../guasha-usage-card/gua-sha-product.png" alt="">
+            <div class="meridian-dot"></div>
+            <svg class="arrow-overlay" style="width:16%;top:4%;left:60%;" viewBox="0 0 28 28">
+              <path d="M20 8 A8 8 0 1 1 16 6.5" />
+              <polygon class="arrowhead" points="15,4 19,6.5 15,9" />
+            </svg>
+          </div>
+          <p class="step-num">02</p>
+          <p class="step-location">Crown</p>
+          <p class="step-meridian">Baihui GV20</p>
+          <p class="step-desc">Pause at the crown. Apply light circular pressure for 10-15 seconds.</p>
+        </div>
+
+        <!-- Step 3: Temples / Reinforce -->
+        <div class="step-panel">
+          <div class="step-illustration step-03">
+            <img class="head-base" src="../guasha-usage-card/head-profile.png" alt="Gua sha at temple">
+            <img class="tool-overlay" src="../guasha-usage-card/gua-sha-product.png" alt="">
+            <div class="meridian-dot"></div>
+            <svg class="arrow-overlay" style="width:36%;top:22%;left:40%;" viewBox="0 0 56 36">
+              <path d="M8 10 Q28 18 48 28" />
+              <polygon class="arrowhead" points="45,24 52,30 44,31" />
+            </svg>
+          </div>
+          <p class="step-num">03</p>
+          <p class="step-location">Temples</p>
+          <p class="step-meridian">Shuaigu GB8</p>
+          <p class="step-desc">Sweep backward along both temples with the curved edge, following the GB meridian.</p>
+        </div>
+
+        <!-- Step 4: Nape / Reactivate -->
+        <div class="step-panel">
+          <div class="step-illustration step-04">
+            <img class="head-base" src="../guasha-usage-card/head-profile.png" alt="Gua sha at nape">
+            <img class="tool-overlay" src="../guasha-usage-card/gua-sha-product.png" alt="">
+            <div class="meridian-dot"></div>
+            <svg class="arrow-overlay" style="width:18%;bottom:24%;right:16%;" viewBox="0 0 32 32">
+              <!-- Radiating pressure indicator for press-and-hold -->
+              <circle cx="16" cy="16" r="5" fill="none" stroke="var(--color-bronze)" stroke-width="1.5" opacity="0.75" />
+              <circle cx="16" cy="16" r="10" fill="none" stroke="var(--color-bronze)" stroke-width="1" opacity="0.4" />
+              <circle cx="16" cy="16" r="15" fill="none" stroke="var(--color-bronze)" stroke-width="0.8" opacity="0.2" />
+            </svg>
+          </div>
+          <p class="step-num">04</p>
+          <p class="step-location">Nape</p>
+          <p class="step-meridian">Fengchi GB20</p>
+          <p class="step-desc">Press and hold at the base of the skull for 10-15 seconds to release tension.</p>
+        </div>
+
+      </div>
+
+      <!-- Care strip -->
+      <div class="care-strip">
+        <span class="care-item">Best as an evening ritual</span>
+        <span class="care-sep"></span>
+        <span class="care-item">Wipe clean after use</span>
+        <span class="care-sep"></span>
+        <span class="care-item">Store in pouch, away from moisture</span>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <div class="footer-social">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          <span><a href="https://instagram.com/awarehaircare">@awarehaircare</a></span>
+        </div>
+
+        <div class="footer-logo">
+          <img src="https://d3k81ch9hvuctc.cloudfront.net/company/UmRhdX/images/83b4c942-f697-41fe-b12e-b187691a4f91.png" alt="AWARE">
+        </div>
+
+        <div class="footer-url">
+          <a href="https://www.awarehair.com">awarehair.com</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════ BACK SIDE ═══════════ -->
+  <div class="page-label">Back</div>
+  <div class="card card-back">
+    <div class="back-inner">
+
+      <!-- Left: Meridian Map -->
+      <div class="meridian-section">
+        <h2 class="back-section-title">Scalp Meridian Map</h2>
+        <p class="back-section-sub">4 key points for your gua sha ritual</p>
+
+        <div class="meridian-map">
+          <img src="../guasha-usage-card/head-profile.png" alt="Head profile with meridian points">
+
+          <!-- Meridian point overlays -->
+          <div class="mp mp-hairline">
+            <div class="mp-dot"></div>
+            <div class="mp-label">Shenting GV24 <span class="mp-sub">Hairline</span></div>
+          </div>
+          <div class="mp mp-crown">
+            <div class="mp-dot"></div>
+            <div class="mp-label">Baihui GV20 <span class="mp-sub">Crown</span></div>
+          </div>
+          <div class="mp mp-temple">
+            <div class="mp-dot"></div>
+            <div class="mp-label">Shuaigu GB8 <span class="mp-sub">Temple</span></div>
+          </div>
+          <div class="mp mp-nape">
+            <div class="mp-dot"></div>
+            <div class="mp-label">Fengchi GB20 <span class="mp-sub">Nape</span></div>
+          </div>
+
+          <!-- Direction arrows between points -->
+          <!-- Arrow 1: Hairline → Crown (arcing backward along GV meridian) -->
+          <svg class="map-arrow" style="width:18%;top:8%;left:34%;" viewBox="0 0 36 24">
+            <path d="M4 20 Q18 4 32 10" />
+            <polygon class="arrowhead" points="29,6 35,9 29,13" />
+          </svg>
+          <!-- Arrow 2: Crown → Temple (curving down-right along GB meridian) -->
+          <svg class="map-arrow" style="width:14%;top:14%;left:50%;" viewBox="0 0 28 28">
+            <path d="M6 4 Q18 10 22 24" />
+            <polygon class="arrowhead" points="18,21 22,28 25,21" />
+          </svg>
+          <!-- Arrow 3: Temple → Nape (sweeping backward-down along GB meridian) -->
+          <svg class="map-arrow" style="width:12%;top:42%;left:58%;" viewBox="0 0 24 32">
+            <path d="M4 4 Q16 14 18 28" />
+            <polygon class="arrowhead" points="14,25 18,32 21,25" />
+          </svg>
+        </div>
+
+        <div class="steps-legend">
+          <div class="legend-item">
+            <span class="legend-num">01</span>
+            <span class="legend-text"><strong>Hairline:</strong> Glide backward to crown, 5-8 strokes</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-num">02</span>
+            <span class="legend-text"><strong>Crown:</strong> Circular pressure, 10-15 sec</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-num">03</span>
+            <span class="legend-text"><strong>Temples:</strong> Sweep both sides with curved edge</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-num">04</span>
+            <span class="legend-text"><strong>Nape:</strong> Press and hold base of skull, 10-15 sec</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Meridian Point Education -->
+      <div class="meridian-education">
+        <h2 class="back-section-title">Why Meridian Points Matter</h2>
+        <p class="back-section-sub">Traditional Chinese Medicine meets modern scalp science</p>
+
+        <div class="edu-intro">
+          These four points sit along the Governing Vessel and Gallbladder meridians, two of the body's primary energy channels. Stimulating them with gua sha promotes blood flow to hair follicles, clears tension, and supports your scalp's natural renewal cycle.
+        </div>
+
+        <div class="edu-points">
+          <div class="edu-point">
+            <div class="edu-point-header">
+              <span class="edu-point-dot"></span>
+              <span class="edu-point-name">GV24 - Shenting</span>
+            </div>
+            <p class="edu-point-meaning">"Spirit Courtyard"</p>
+            <p class="edu-point-desc">Where the Governing Vessel crosses the hairline. Calms the mind and opens circulation along the scalp's central channel.</p>
+          </div>
+
+          <div class="edu-point">
+            <div class="edu-point-header">
+              <span class="edu-point-dot"></span>
+              <span class="edu-point-name">GV20 - Baihui</span>
+            </div>
+            <p class="edu-point-meaning">"Hundred Convergences"</p>
+            <p class="edu-point-desc">The crown vertex where six meridians meet. The most important point in TCM for nourishing hair - increases local blood flow by up to 45%.</p>
+          </div>
+
+          <div class="edu-point">
+            <div class="edu-point-header">
+              <span class="edu-point-dot"></span>
+              <span class="edu-point-name">GB8 - Shuaigu</span>
+            </div>
+            <p class="edu-point-meaning">"Leading Valley"</p>
+            <p class="edu-point-desc">On the Gallbladder meridian above the ear. Relieves temporal tension and promotes lateral scalp circulation.</p>
+          </div>
+
+          <div class="edu-point">
+            <div class="edu-point-header">
+              <span class="edu-point-dot"></span>
+              <span class="edu-point-name">GB20 - Fengchi</span>
+            </div>
+            <p class="edu-point-meaning">"Wind Pool"</p>
+            <p class="edu-point-desc">At the base of the skull between the neck muscles. Releases stored tension and improves blood return from the scalp.</p>
+          </div>
+        </div>
+
+        <div class="edu-tip">
+          <strong>Tip:</strong> Always stroke in the direction of meridian flow - from hairline backward over the crown, then down along the sides and nape.
+        </div>
+      </div>
+
+      <!-- Back footer (matches front) -->
+      <div class="back-footer">
+        <div class="footer-social">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          <span><a href="https://instagram.com/awarehaircare">@awarehaircare</a></span>
+        </div>
+        <div class="footer-logo">
+          <img src="https://d3k81ch9hvuctc.cloudfront.net/company/UmRhdX/images/83b4c942-f697-41fe-b12e-b187691a4f91.png" alt="AWARE">
+        </div>
+        <div class="footer-url">
+          <a href="https://www.awarehair.com">awarehair.com</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARE Hair - Order Form</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2D4739;
+      --sage: #7A8F7D;
+      --cream: #F8F6F1;
+      --sand: #E8E4DC;
+      --charcoal: #2C2C2C;
+      --warm-gray: #6B6B6B;
+      --gold: #B8956E;
+    }
+
+    @page { size: letter; margin: 0.4in; }
+
+    @media print {
+      html, body { width: 8.5in; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .no-print { display: none !important; }
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      color: var(--charcoal);
+      line-height: 1.4;
+      background: #e0e0e0;
+      padding: 20px;
+    }
+
+    .page {
+      width: 8.5in;
+      min-height: 11in;
+      margin: 0 auto;
+      background: white;
+      padding: 0.4in;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--forest);
+      margin-bottom: 14px;
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--forest);
+      letter-spacing: 0.08em;
+    }
+
+    .header-right {
+      text-align: right;
+    }
+
+    .header-right .title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+
+    .header-right .subtitle {
+      font-size: 9px;
+      color: var(--warm-gray);
+    }
+
+    .form-section {
+      margin-bottom: 14px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--forest);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--sand);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-field label {
+      font-size: 9px;
+      color: var(--warm-gray);
+      margin-bottom: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .form-field .input-line {
+      border-bottom: 1px solid var(--sand);
+      height: 22px;
+      min-width: 100%;
+    }
+
+    .order-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 12px;
+    }
+
+    .order-table th {
+      text-align: left;
+      font-size: 9px;
+      font-weight: 600;
+      color: white;
+      background: var(--forest);
+      padding: 6px 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .order-table th:nth-child(n+3) { text-align: center; }
+
+    .order-table td {
+      padding: 7px 8px;
+      border-bottom: 1px solid var(--sand);
+      font-size: 10px;
+    }
+
+    .order-table td:nth-child(n+3) { text-align: center; }
+
+    .order-table .qty-cell {
+      width: 50px;
+      border: 1px solid var(--sand);
+      text-align: center;
+      background: var(--cream);
+    }
+
+    .order-table .subtotal-cell {
+      width: 70px;
+      border-bottom: 1px solid var(--sand);
+    }
+
+    .order-table tr:nth-child(even) td { background: #fafaf9; }
+    .order-table tr:nth-child(even) td.qty-cell { background: var(--cream); }
+
+    .order-table .product-name { font-weight: 500; }
+
+    .totals-section {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 14px;
+    }
+
+    .totals-box {
+      width: 240px;
+      border: 1px solid var(--sand);
+      padding: 10px 14px;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      font-size: 10px;
+      border-bottom: 1px dotted var(--sand);
+    }
+
+    .total-row:last-child {
+      border-bottom: none;
+      font-weight: 600;
+      font-size: 12px;
+      padding-top: 6px;
+      color: var(--forest);
+    }
+
+    .total-row .total-line {
+      border-bottom: 1px solid var(--sand);
+      width: 70px;
+    }
+
+    .terms-box {
+      background: var(--cream);
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      font-size: 9px;
+      color: var(--warm-gray);
+      line-height: 1.5;
+    }
+
+    .terms-box strong { color: var(--charcoal); }
+
+    .signature-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--sand);
+    }
+
+    .sig-block label {
+      font-size: 9px;
+      color: var(--warm-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .sig-line {
+      border-bottom: 1px solid var(--charcoal);
+      height: 30px;
+      margin-bottom: 4px;
+    }
+
+    .show-badge {
+      background: var(--forest);
+      color: white;
+      display: inline-block;
+      padding: 3px 10px;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .print-btn {
+      position: fixed; bottom: 20px; right: 20px;
+      background: var(--forest); color: white; border: none;
+      padding: 12px 24px; font-family: 'DM Sans', sans-serif;
+      font-size: 12px; font-weight: 500; cursor: pointer; z-index: 100;
+    }
+    .print-btn:hover { background: #3D5A4A; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div>
+        <div class="logo">AWARE</div>
+        <div style="font-size: 9px; color: var(--warm-gray);">Professional Scalp Care</div>
+      </div>
+      <div class="header-right">
+        <div class="title">Wholesale Order Form</div>
+        <div class="subtitle">Cosmoprof Miami 2026 - Booth #BV 2630</div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-label">Account Information</div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Salon / Business Name</label>
+          <div class="input-line"></div>
+        </div>
+        <div class="form-field">
+          <label>Contact Name</label>
+          <div class="input-line"></div>
+        </div>
+      </div>
+      <div class="form-row three">
+        <div class="form-field">
+          <label>Email</label>
+          <div class="input-line"></div>
+        </div>
+        <div class="form-field">
+          <label>Phone</label>
+          <div class="input-line"></div>
+        </div>
+        <div class="form-field">
+          <label>Account # (if existing)</label>
+          <div class="input-line"></div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Shipping Address</label>
+          <div class="input-line"></div>
+        </div>
+        <div class="form-field">
+          <label>City, State, ZIP</label>
+          <div class="input-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-label">Order Details</div>
+      <table class="order-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Size</th>
+            <th>Wholesale</th>
+            <th>MSRP</th>
+            <th>Case Pk</th>
+            <th>Qty (units)</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="product-name">9.1 Professional Shampoo</td>
+            <td>300ml</td>
+            <td>$27.50</td>
+            <td>$55.00</td>
+            <td>6</td>
+            <td class="qty-cell"></td>
+            <td class="subtotal-cell"></td>
+          </tr>
+          <tr>
+            <td class="product-name">9.1 Professional Conditioner</td>
+            <td>300ml</td>
+            <td>$27.50</td>
+            <td>$55.00</td>
+            <td>6</td>
+            <td class="qty-cell"></td>
+            <td class="subtotal-cell"></td>
+          </tr>
+          <tr>
+            <td class="product-name">9.1 Leave-In Styling Conditioner</td>
+            <td>250ml</td>
+            <td>$30.00</td>
+            <td>$60.00</td>
+            <td>6</td>
+            <td class="qty-cell"></td>
+            <td class="subtotal-cell"></td>
+          </tr>
+          <tr>
+            <td class="product-name">9.1 Shampoo (Travel)</td>
+            <td>100ml</td>
+            <td>$13.75</td>
+            <td>$27.50</td>
+            <td>12</td>
+            <td class="qty-cell"></td>
+            <td class="subtotal-cell"></td>
+          </tr>
+          <tr>
+            <td class="product-name">9.1 Conditioner (Travel)</td>
+            <td>100ml</td>
+            <td>$13.75</td>
+            <td>$27.50</td>
+            <td>12</td>
+            <td class="qty-cell"></td>
+            <td class="subtotal-cell"></td>
+          </tr>
+          <tr>
+            <td class="product-name">9.1 Leave-In (Travel)</td>
+            <td>50ml</td>
+            <td>$15.00</td>
+            <td>$30.00</td>
+            <td>12</td>
+            <td class="qty-cell"></td>
+            <td class="subtotal-cell"></td>
+          </tr>
+          <tr>
+            <td class="product-name">9.1 Shampoo (Backbar)</td>
+            <td>1L</td>
+            <td>$75.00</td>
+            <td>$150.00</td>
+            <td>4</td>
+            <td class="qty-cell"></td>
+            <td class="subtotal-cell"></td>
+          </tr>
+          <tr>
+            <td class="product-name">9.1 Conditioner (Backbar)</td>
+            <td>1L</td>
+            <td>$75.00</td>
+            <td>$150.00</td>
+            <td>4</td>
+            <td class="qty-cell"></td>
+            <td class="subtotal-cell"></td>
+          </tr>
+          <tr>
+            <td class="product-name">Discovery Kit (3-piece)</td>
+            <td>Kit</td>
+            <td>$37.50</td>
+            <td>$75.00</td>
+            <td>6</td>
+            <td class="qty-cell"></td>
+            <td class="subtotal-cell"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="totals-section">
+      <div class="totals-box">
+        <div class="total-row"><span>Subtotal</span><span class="total-line"></span></div>
+        <div class="total-row"><span>Show Discount (if applicable)</span><span class="total-line"></span></div>
+        <div class="total-row"><span>Shipping</span><span class="total-line"></span></div>
+        <div class="total-row"><span>Order Total</span><span class="total-line"></span></div>
+      </div>
+    </div>
+
+    <div class="terms-box">
+      <strong>Terms:</strong> Net 30 on approved credit. New accounts may require prepayment on first order.
+      <strong>Shipping:</strong> Free freight on orders $500+. Orders under $500 ship at actual cost.
+      <strong>MAP Policy:</strong> Minimum Advertised Price strictly enforced. Online violators removed.
+      <strong>Returns:</strong> Unopened product may be returned within 30 days for full credit.
+      <strong>Guarantee:</strong> 30-day satisfaction guarantee on first order for new accounts.
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label>Payment Method</label>
+        <div style="font-size: 10px; margin-top: 4px;">
+          [ ] Net 30 &nbsp;&nbsp; [ ] Credit Card &nbsp;&nbsp; [ ] Prepay (check/wire)
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Requested Ship Date</label>
+        <div class="input-line"></div>
+      </div>
+    </div>
+
+    <div class="form-row" style="margin-top: 8px;">
+      <div class="form-field">
+        <label>Special Instructions / Notes</label>
+        <div class="input-line" style="height: 36px;"></div>
+      </div>
+      <div class="form-field">
+        <label>Display Preference</label>
+        <div style="font-size: 10px; margin-top: 4px;">
+          [ ] Counter Unit &nbsp;&nbsp; [ ] Wall Bay &nbsp;&nbsp; [ ] Discovery Only
+        </div>
+      </div>
+    </div>
+
+    <div class="signature-section">
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <label>Buyer Signature / Date</label>
+      </div>
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <label>AWARE Representative / Date</label>
+      </div>
+    </div>
+  </div>
+
+  <button class="print-btn no-print" onclick="window.print()">Print / Save PDF</button>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

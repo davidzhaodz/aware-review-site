@@ -1,0 +1,152 @@
+<div style="max-width: 600px; margin: 40px auto; padding: 30px; background: #f9f9f9; border-radius: 8px;">
+
+  <h1 style="text-align: center; color: #1a1a1a; margin-bottom: 10px;">
+    Discover How Your Environment Affects Your Scalp
+  </h1>
+
+  <p style="text-align: center; color: #666; margin-bottom: 30px; line-height: 1.6;">
+    Your local water quality, air pollution, UV exposure, and pollen levels all impact scalp health.
+    Get a free personalized report and learn how to protect your scalp.
+  </p>
+
+  <form id="scalp-report-form" style="display: flex; flex-direction: column; gap: 15px;">
+
+    <div>
+      <label for="first_name" style="display: block; margin-bottom: 5px; color: #333; font-weight: 500;">
+        First Name *
+      </label>
+      <input
+        type="text"
+        id="first_name"
+        name="first_name"
+        required
+        placeholder="Enter your first name"
+        style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box;"
+      >
+    </div>
+
+    <div>
+      <label for="email" style="display: block; margin-bottom: 5px; color: #333; font-weight: 500;">
+        Email Address *
+      </label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        placeholder="your@email.com"
+        style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box;"
+      >
+    </div>
+
+    <div>
+      <label for="zip_code" style="display: block; margin-bottom: 5px; color: #333; font-weight: 500;">
+        ZIP Code *
+      </label>
+      <input
+        type="text"
+        id="zip_code"
+        name="zip_code"
+        required
+        pattern="\d{5}"
+        maxlength="5"
+        placeholder="90210"
+        style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box;"
+      >
+      <small style="color: #666; font-size: 13px;">Enter your 5-digit ZIP code</small>
+    </div>
+
+    <button
+      type="submit"
+      id="submit-btn"
+      style="width: 100%; padding: 15px; background-color: #1a1a1a; color: white; border: none; border-radius: 4px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px;"
+    >
+      Get My Free Report
+    </button>
+
+    <p id="form-message" style="text-align: center; margin-top: 10px; display: none;"></p>
+
+  </form>
+
+  <p style="text-align: center; color: #999; font-size: 12px; margin-top: 20px; line-height: 1.5;">
+    By submitting this form, you consent to receive your scalp environment report and marketing emails from AWARE Hair.
+    You can unsubscribe at any time.
+  </p>
+
+</div>
+
+<script>
+document.getElementById('scalp-report-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const submitBtn = document.getElementById('submit-btn');
+  const messageEl = document.getElementById('form-message');
+
+  // Disable button and show loading state
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending...';
+  messageEl.style.display = 'none';
+
+  // Get form data
+  const formData = {
+    first_name: document.getElementById('first_name').value,
+    email: document.getElementById('email').value,
+    zip_code: document.getElementById('zip_code').value
+  };
+
+  // Validate ZIP code (5 digits only)
+  if (!/^\d{5}$/.test(formData.zip_code)) {
+    messageEl.textContent = 'Please enter a valid 5-digit ZIP code';
+    messageEl.style.color = 'red';
+    messageEl.style.display = 'block';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Get My Free Report';
+    return;
+  }
+
+  try {
+    // IMPORTANT: Replace YOUR_ZAPIER_WEBHOOK_URL_HERE with actual webhook URL
+    const response = await fetch('YOUR_ZAPIER_WEBHOOK_URL_HERE', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData)
+    });
+
+    if (response.ok) {
+      // Success
+      messageEl.textContent = '✓ Success! Check your email for your personalized scalp environment report.';
+      messageEl.style.color = '#00E400';
+      messageEl.style.display = 'block';
+
+      // Reset form
+      document.getElementById('scalp-report-form').reset();
+
+      // Optional: Track conversion with Google Analytics
+      if (typeof window.dataLayer !== 'undefined') {
+        window.dataLayer.push({
+          'event': 'scalp_report_submitted',
+          'zip_code': formData.zip_code
+        });
+      }
+
+    } else {
+      throw new Error('Server error');
+    }
+
+  } catch (error) {
+    // Error
+    messageEl.textContent = 'Oops! Something went wrong. Please try again.';
+    messageEl.style.color = '#FF0000';
+    messageEl.style.display = 'block';
+  } finally {
+    // Re-enable button
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Get My Free Report';
+  }
+});
+</script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>

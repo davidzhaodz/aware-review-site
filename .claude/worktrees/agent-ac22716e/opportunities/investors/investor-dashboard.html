@@ -1,0 +1,2051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWARE Hair - Investor Pipeline</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #0d0d0d;
+            --bg-secondary: #161616;
+            --bg-tertiary: #1e1e1e;
+            --bg-card: #1a1a1a;
+            --bg-hover: #242424;
+            --text-primary: #e5e5e5;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666;
+            --border: #2a2a2a;
+            --border-light: #333;
+            --green: #22c55e;
+            --green-dim: rgba(34, 197, 94, 0.15);
+            --yellow: #eab308;
+            --yellow-dim: rgba(234, 179, 8, 0.15);
+            --red: #ef4444;
+            --red-dim: rgba(239, 68, 68, 0.15);
+            --blue: #3b82f6;
+            --blue-dim: rgba(59, 130, 246, 0.15);
+            --purple: #a855f7;
+            --purple-dim: rgba(168, 85, 247, 0.15);
+            --cyan: #06b6d4;
+            --cyan-dim: rgba(6, 182, 212, 0.15);
+            --orange: #f97316;
+            --orange-dim: rgba(249, 115, 22, 0.15);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* Layout */
+        .app {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 16px 24px 40px;
+        }
+
+        /* Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+
+        .page-header .subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .metrics-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 16px;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .metric-card .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .metric-card .value {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .metric-card .value.green { color: var(--green); }
+        .metric-card .value.blue { color: var(--blue); }
+        .metric-card .value.purple { color: var(--purple); }
+        .metric-card .value.yellow { color: var(--yellow); }
+        .metric-card .value.cyan { color: var(--cyan); }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 20px;
+            background: var(--bg-secondary);
+            padding: 3px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .nav-tab:hover {
+            color: var(--text-secondary);
+            background: var(--bg-hover);
+        }
+
+        .nav-tab.active {
+            color: var(--text-primary);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+
+        /* Sections */
+        .section { display: none; }
+        .section.active { display: block; animation: fadeIn 0.2s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Pipeline - Kanban */
+        .kanban {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 1100px) {
+            .kanban {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .kanban {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .kanban-column {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            min-width: 220px;
+        }
+
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .column-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .column-count {
+            font-size: 10px;
+            color: var(--text-muted);
+            background: var(--bg-tertiary);
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        .investor-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .investor-card:hover {
+            background: var(--bg-hover);
+            border-color: var(--border-light);
+        }
+
+        .investor-card.expanded {
+            border-color: var(--blue);
+        }
+
+        .investor-name {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .new-tag {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--cyan);
+            background: var(--cyan-dim);
+            padding: 1px 5px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .investor-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .meta-tag {
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 4px;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+
+        .fit-score {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .fit-10 { background: var(--green-dim); color: var(--green); }
+        .fit-9 { background: var(--green-dim); color: var(--green); }
+        .fit-8 { background: var(--blue-dim); color: var(--blue); }
+        .fit-7 { background: var(--yellow-dim); color: var(--yellow); }
+        .fit-6 { background: var(--yellow-dim); color: var(--yellow); }
+        .fit-5 { background: var(--orange-dim); color: var(--orange); }
+
+        .status-badge {
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .status-not-started { background: var(--bg-tertiary); color: var(--text-muted); }
+        .status-in-progress { background: var(--blue-dim); color: var(--blue); }
+        .status-meeting { background: var(--green-dim); color: var(--green); }
+        .status-pass { background: var(--red-dim); color: var(--red); }
+        .status-apply { background: var(--purple-dim); color: var(--purple); }
+
+        .investor-details {
+            display: none;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border);
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .investor-card.expanded .investor-details { display: block; }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3px;
+        }
+
+        .detail-label {
+            color: var(--text-muted);
+            min-width: 60px;
+        }
+
+        .detail-value {
+            text-align: right;
+            color: var(--text-secondary);
+        }
+
+        .contacts-list {
+            margin-top: 6px;
+        }
+
+        .contact-item {
+            font-size: 11px;
+            color: var(--text-secondary);
+            padding: 3px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .contact-item:last-child { border-bottom: none; }
+
+        .contact-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .contact-role {
+            color: var(--text-muted);
+            font-size: 10px;
+        }
+
+        .investor-note {
+            margin-top: 6px;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        /* Objections */
+        .objections-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .objection-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.15s ease;
+        }
+
+        .objection-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .objection-header:hover {
+            background: var(--bg-hover);
+        }
+
+        .objection-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .objection-num {
+            font-size: 10px;
+            font-weight: 600;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .diff-hard { background: var(--red-dim); color: var(--red); }
+        .diff-medium { background: var(--yellow-dim); color: var(--yellow); }
+        .diff-easy { background: var(--green-dim); color: var(--green); }
+
+        .objection-title {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .objection-chevron {
+            color: var(--text-muted);
+            transition: transform 0.2s ease;
+            font-size: 12px;
+        }
+
+        .objection-card.expanded .objection-chevron {
+            transform: rotate(180deg);
+        }
+
+        .objection-body {
+            display: none;
+            padding: 0 16px 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        .objection-card.expanded .objection-body {
+            display: block;
+        }
+
+        .objection-section {
+            margin-top: 12px;
+        }
+
+        .objection-section-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .objection-section p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .counter-point {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .counter-bullet {
+            color: var(--green);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .source-link {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 10px;
+            color: var(--blue);
+            text-decoration: none;
+            opacity: 0.8;
+        }
+
+        .source-link:hover { opacity: 1; text-decoration: underline; }
+
+        /* Outreach Templates */
+        .template-tabs {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 16px;
+        }
+
+        .template-tab {
+            padding: 6px 14px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .template-tab:hover {
+            color: var(--text-secondary);
+        }
+
+        .template-tab.active {
+            color: var(--text-primary);
+            background: var(--bg-hover);
+            border-color: var(--border-light);
+        }
+
+        .template-content {
+            display: none;
+        }
+
+        .template-content.active { display: block; }
+
+        .email-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .email-subject {
+            padding: 10px 16px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+        }
+
+        .email-subject span {
+            color: var(--text-muted);
+            margin-right: 6px;
+        }
+
+        .email-body {
+            padding: 16px;
+            font-size: 12px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .email-body .placeholder {
+            color: var(--blue);
+            font-weight: 500;
+        }
+
+        .copy-btn-row {
+            display: flex;
+            justify-content: flex-end;
+            padding: 8px 16px;
+            border-top: 1px solid var(--border);
+            background: var(--bg-secondary);
+        }
+
+        .copy-btn {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            padding: 5px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .copy-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--border-light);
+        }
+
+        .copy-btn.copied {
+            color: var(--green);
+            border-color: var(--green);
+            background: var(--green-dim);
+        }
+
+        /* Meeting Prep */
+        .prep-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 800px) {
+            .prep-grid { grid-template-columns: 1fr; }
+        }
+
+        .prep-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px 16px;
+        }
+
+        .prep-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .prep-card h3 {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 4px 0;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-top: 2px;
+            accent-color: var(--green);
+        }
+
+        .timeline-block {
+            margin-bottom: 12px;
+            padding-left: 16px;
+            border-left: 2px solid var(--border);
+            position: relative;
+        }
+
+        .timeline-block::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 4px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--blue);
+        }
+
+        .timeline-time {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--blue);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 2px;
+        }
+
+        .timeline-title {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .timeline-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .pushback-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .pushback-table th {
+            text-align: left;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            padding: 6px 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pushback-table td {
+            font-size: 11px;
+            color: var(--text-secondary);
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            line-height: 1.5;
+        }
+
+        .pushback-table tr:last-child td { border-bottom: none; }
+
+        .pushback-table td:first-child {
+            font-weight: 500;
+            color: var(--text-primary);
+            white-space: nowrap;
+            min-width: 180px;
+        }
+
+        .dont-list li {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+
+        .success-item {
+            display: flex;
+            gap: 8px;
+            padding: 4px 0;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .success-icon {
+            flex-shrink: 0;
+        }
+
+        /* Outreach Sequence */
+        .sequence-phases {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        @media (max-width: 900px) {
+            .sequence-phases { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 550px) {
+            .sequence-phases { grid-template-columns: 1fr; }
+        }
+
+        .phase-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+            position: relative;
+        }
+
+        .phase-num {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .phase-1 .phase-num { color: var(--purple); }
+        .phase-2 .phase-num { color: var(--blue); }
+        .phase-3 .phase-num { color: var(--green); }
+        .phase-4 .phase-num { color: var(--yellow); }
+
+        .phase-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .phase-timing {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .phase-investors {
+            list-style: none;
+        }
+
+        .phase-investors li {
+            font-size: 11px;
+            color: var(--text-secondary);
+            padding: 3px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .phase-investors li:last-child { border-bottom: none; }
+
+        .phase-method {
+            font-size: 9px;
+            color: var(--text-muted);
+            background: var(--bg-tertiary);
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+
+        /* Tracking table */
+        .tracking-section {
+            margin-top: 24px;
+        }
+
+        .tracking-section h3 {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .tracking-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .tracking-table th {
+            text-align: left;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            padding: 8px 12px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tracking-table td {
+            font-size: 11px;
+            color: var(--text-secondary);
+            padding: 7px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tracking-table tr:last-child td { border-bottom: none; }
+
+        .tracking-table tr:hover td {
+            background: var(--bg-hover);
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1>AWARE Hair - Investor Pipeline</h1>
+                <div class="subtitle">Pre-Seed / Seed Fundraise - ~$1M Target - February 2026</div>
+            </div>
+            <div class="metrics-row">
+                <div class="metric-card">
+                    <div class="label">Total Targets</div>
+                    <div class="value">31</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Tier A</div>
+                    <div class="value green">8</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Tier B</div>
+                    <div class="value blue">9</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Angels</div>
+                    <div class="value orange">5</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Tier C</div>
+                    <div class="value yellow">4</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Grants</div>
+                    <div class="value purple">5</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-section="pipeline">Pipeline</button>
+            <button class="nav-tab" data-section="objections">Objection Prep</button>
+            <button class="nav-tab" data-section="outreach">Outreach Templates</button>
+            <button class="nav-tab" data-section="meeting">Meeting Prep</button>
+            <button class="nav-tab" data-section="sequence">Outreach Sequence</button>
+        </nav>
+
+        <!-- Section: Pipeline -->
+        <div id="pipeline" class="section active">
+            <div class="kanban">
+                <!-- Tier A -->
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <span class="column-title" style="color: var(--green);">Tier A - Best Fit</span>
+                        <span class="column-count">8</span>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">True Beauty Ventures<span class="fit-score fit-10">10</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$1-5M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Stage</span><span class="detail-value">Seed to Series A</span></div>
+                            <div class="detail-row"><span class="detail-label">Fund</span><span class="detail-value">$75M Fund II (2024)</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">K18, Jupiter, Crown Affair, AQUIS</span></div>
+                            <div class="detail-row"><span class="detail-label">Why #1</span><span class="detail-value">"Zeroing in on scalp care & hair health"</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Cristina Nunez</span> <span class="contact-role">Co-Founder/GP - Led K18, Crown Affair</span></div>
+                                <div class="contact-item"><span class="contact-name">Rich Gersten</span> <span class="contact-role">Co-Founder/GP - Beauty veteran</span></div>
+                                <div class="contact-item"><span class="contact-name">Caroline</span> <span class="contact-role">caroline@truebeautyventures.com</span></div>
+                            </div>
+                            <div class="investor-note">Jupiter Risk: They invested in Jupiter (scalp care). Counter: Jupiter went mass retail (Target). AWARE is salon-exclusive = different channel, different positioning.</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Selva Ventures<span class="fit-score fit-9">9</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">Up to $2M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Stage</span><span class="detail-value">Seed to Series A (pre-$10M rev)</span></div>
+                            <div class="detail-row"><span class="detail-label">Fund</span><span class="detail-value">$34M Fund II (2023)</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">Crown Affair, OneSkin, Kinship, Arrae</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Kiva Dickinson</span> <span class="contact-role">Founder/GP - LinkedIn DM</span></div>
+                                <div class="contact-item"><span class="contact-name">Madeline Kaplan</span> <span class="contact-role">Partner - "beauty/wellness convergence"</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">New Theory Ventures<span class="fit-score fit-9">9</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$500K-2M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Stage</span><span class="detail-value">Seed</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">Ceremonia, GXVE Beauty, Thirteen Lune</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Nikki Eslami</span> <span class="contact-role">Founder/GP - Bellami Hair founder, sold to L Catterton</span></div>
+                            </div>
+                            <div class="investor-note">Talking point: "You built Bellami in hair extensions. We're building the scalp care equivalent in the professional channel."</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Melitas Ventures <span class="new-tag">New</span><span class="fit-score fit-9">9</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$2-5M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Stage</span><span class="detail-value">Seed to Series A</span></div>
+                            <div class="detail-row"><span class="detail-label">Fund</span><span class="detail-value">3 funds, 40+ portfolio companies</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">Jupiter (scalp care), Hanni, Veracity</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Alex Malamatinas</span> <span class="contact-role">Founder/MP - Core decision maker</span></div>
+                                <div class="contact-item"><span class="contact-name">Jacques Antebi</span> <span class="contact-role">Partner</span></div>
+                                <div class="contact-item"><span class="contact-name">Michael Steib</span> <span class="contact-role">Partner</span></div>
+                            </div>
+                            <div class="investor-note">Third fund (2025) includes a "beauty- and wellness-focused tranche." Backed Jupiter at seed - understands scalp care unit economics.</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Female Founders Fund <span class="new-tag">New</span><span class="fit-score fit-8">8</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$250K-2M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Stage</span><span class="detail-value">Seed</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">Fur, Heyday (spa chain), 128 companies</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Anu Duggal</span> <span class="contact-role">Founding Partner - anu@femalefoundersfund.com</span></div>
+                                <div class="contact-item"><span class="contact-name">Zabreen Khan</span> <span class="contact-role">Principal</span></div>
+                            </div>
+                            <div class="investor-note">Submit via femalefoundersfund.typeform.com/pitches. Tina as female co-founder = perfect thesis fit.</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Willow Growth Partners <span class="new-tag">New</span><span class="fit-score fit-9">9</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$5-15M (growth eq.)</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Stage</span><span class="detail-value">Series A/B (may stretch to late seed)</span></div>
+                            <div class="detail-row"><span class="detail-label">Fund</span><span class="detail-value">Growth equity (size undisclosed)</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">Dae Hair, Jupiter, Kosas, KilgourMD, YSE Beauty, Osea, Kinship</span></div>
+                            <div class="detail-row"><span class="detail-label">Approach</span><span class="detail-value">hello@willowgrowthpartners.com (warm intros preferred)</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Deborah Benton</span> <span class="contact-role">Managing Partner - Former President Nest Fragrances</span></div>
+                                <div class="contact-item"><span class="contact-name">Amanda Schutzbank</span> <span class="contact-role">Managing Partner - Former SVP Strand Equity, Financo</span></div>
+                                <div class="contact-item"><span class="contact-name">Michelle Roth</span> <span class="contact-role">Principal</span></div>
+                            </div>
+                            <div class="investor-note">Closest portfolio match in market. Typically invests later ($5-15M), but portfolio fit is too good to ignore. Position as relationship-building - get on radar for future rounds. Warm intro via Jupiter founder ideal. Draft email ready.</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Sugar Capital <span class="new-tag">New</span><span class="fit-score fit-8">8</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$500K-2M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Stage</span><span class="detail-value">Seed to Series A</span></div>
+                            <div class="detail-row"><span class="detail-label">Fund</span><span class="detail-value">Size undisclosed (~15-20 portfolio cos)</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">Jupiter (scalp care), Hint Water, Vital Proteins, Ghia, Aura Bora</span></div>
+                            <div class="detail-row"><span class="detail-label">Approach</span><span class="detail-value">hello@sugarcapital.com (warm intro preferred)</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Brian Sugar</span> <span class="contact-role">Founder/GP - Founded PopSugar (sold to Group Nine Media). Primary decision-maker.</span></div>
+                            </div>
+                            <div class="investor-note">Jupiter investor = already underwrote scalp care thesis. Values founders who "live the brand." Best warm intro via Jupiter founder. Draft email ready.</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Cultivate (Sally Beauty)<span class="fit-score fit-8">8</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$30K + distribution</span>
+                            <span class="status-badge status-apply">Apply</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Type</span><span class="detail-value">Accelerator / Strategic</span></div>
+                            <div class="detail-row"><span class="detail-label">Value</span><span class="detail-value">$30K + mentorship + CosmoProf path</span></div>
+                            <div class="detail-row"><span class="detail-label">Apply</span><span class="detail-value">sallybeauty.com/cultivate, Spring 2026</span></div>
+                            <div class="investor-note">Distribution value exceeds the capital value. Direct path to CosmoProf.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tier B -->
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <span class="column-title" style="color: var(--blue);">Tier B - Good Fit</span>
+                        <span class="column-count">9</span>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">G9 Ventures <span class="new-tag">New</span><span class="fit-score fit-8">8</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$500K-3M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Stage</span><span class="detail-value">Seed to Series A</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">Kosas, Westman Atelier, Saie, RŌZ, Kitsch</span></div>
+                            <div class="detail-row"><span class="detail-label">Exits</span><span class="detail-value">74 portfolio companies, 2 IPOs, 11 exits</span></div>
+                            <div class="investor-note">RŌZ is hairstylist-founded - shows they value professional credibility in haircare.</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">BBG Ventures<span class="fit-score fit-7">7</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$500K-1M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Stage</span><span class="detail-value">Pre-Seed to Seed</span></div>
+                            <div class="detail-row"><span class="detail-label">Fund</span><span class="detail-value">$60M Fund II (Oct 2024), $130M AUM</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">Spring Health, Starface, Zola</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Nisha Dua</span> <span class="contact-role">Co-Founder/GP</span></div>
+                                <div class="contact-item"><span class="contact-name">Susan Lyne</span> <span class="contact-role">Co-Founder - Ex-CEO AOL Brand Group</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Halogen Ventures<span class="fit-score fit-7">7</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$250K-1M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Stage</span><span class="detail-value">Pre-Seed to Series A</span></div>
+                            <div class="detail-row"><span class="detail-label">Fund</span><span class="detail-value">$30M Fund III (2025)</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">Live Tinted, Babylist, 75+ cos, 5 unicorns</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Jesse Draper</span> <span class="contact-role">Founding Partner - 4th gen VC, LA</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Toni Ko (Angel)<span class="fit-score fit-7">7</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$50K-500K</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Vehicle</span><span class="detail-value">Butter Ventures</span></div>
+                            <div class="detail-row"><span class="detail-label">Background</span><span class="detail-value">NYX Cosmetics founder ($500M exit to L'Oreal)</span></div>
+                            <div class="investor-note">LA-based operator angel. Understands beauty scaling from zero to exit.</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Precursor Ventures<span class="fit-score fit-7">7</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$250K-500K</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Stage</span><span class="detail-value">Pre-Seed (first institutional check)</span></div>
+                            <div class="detail-row"><span class="detail-label">Fund</span><span class="detail-value">$66M Fund V, $230M AUM</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">The Athletic ($525M exit), Bobbie, Modern Health</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Charles Hudson</span> <span class="contact-role">Founder/MP - "More consumer investing than anyone"</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Shane Neman (Angel) <span class="new-tag">New</span><span class="fit-score fit-6">6</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$100K-500K</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Vehicle</span><span class="detail-value">Neman Ventures Family Office</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">Prose (haircare), Apostrophe, Athletic Greens</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Shane Neman</span> <span class="contact-role">shaneneman.com/contact - Miami-based</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Able Partners <span class="new-tag">New</span><span class="fit-score fit-7">7</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$2-10M (Ser. A/B)</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Fund</span><span class="detail-value">$150M Fund III (2023)</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">Kosas, Necessaire, Prose (custom haircare)</span></div>
+                            <div class="detail-row"><span class="detail-label">Approach</span><span class="detail-value">founders@able.partners (formal pitch portal)</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Adam Shapiro</span> <span class="contact-role">Managing Partner - Former Silas Capital, Morgan Stanley</span></div>
+                                <div class="contact-item"><span class="contact-name">Kate Rooney</span> <span class="contact-role">Partner - Brand operating experience</span></div>
+                            </div>
+                            <div class="investor-note">Prose (haircare) + Kosas show beauty interest. Emphasis on proprietary formulation IP = strong hook for our patent. Typically invests later but accepts cold pitches. Draft email ready.</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Joyance Partners <span class="new-tag">New</span><span class="fit-score fit-6">6</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$500K-5M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Fund</span><span class="detail-value">$100M Fund IV (2023)</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">186 cos - mostly health-tech (Kindbody, Tia, Care/of)</span></div>
+                            <div class="detail-row"><span class="detail-label">Approach</span><span class="detail-value">joyance.com/apply (formal, 2-week response)</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Mike Edelhart</span> <span class="contact-role">Managing Partner - Serial entrepreneur, "science of wellbeing" thesis</span></div>
+                                <div class="contact-item"><span class="contact-name">Isabelle Charan</span> <span class="contact-role">Partner - Operating background, women's health focus</span></div>
+                            </div>
+                            <div class="investor-note">Revised down: portfolio skews health-tech, not CPG beauty. Frame scalp health as wellness/health issue if approaching. Draft email ready.</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">BAM Ventures <span class="new-tag">New</span><span class="fit-score fit-6">6</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$1-10M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Stage</span><span class="detail-value">Seed to Series B</span></div>
+                            <div class="detail-row"><span class="detail-label">Fund</span><span class="detail-value">~$50M Fund III (2022), 140+ companies</span></div>
+                            <div class="detail-row"><span class="detail-label">Approach</span><span class="detail-value">hello@bam.vc (warm intro preferred)</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Brian Lee</span> <span class="contact-role">Founding Partner - LegalZoom, Honest Company, ShoeDazzle co-founder</span></div>
+                                <div class="contact-item"><span class="contact-name">Robert Schwartz</span> <span class="contact-role">Founding Partner - Former Goldman Sachs, consumer investing</span></div>
+                            </div>
+                            <div class="investor-note">Repeat-purchase thesis matches our 96% repurchase rate. Portfolio: Caraway, Blueland, Public Goods. No beauty-specific but consumer CPG alignment. Draft email ready.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tier C -->
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <span class="column-title" style="color: var(--yellow);">Tier C - Practice</span>
+                        <span class="column-count">4</span>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Fab Co-Creation<span class="fit-score fit-7">7</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$100K-500K</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Lead</span><span class="detail-value">Odile Roujol (ex-Lancome CEO)</span></div>
+                            <div class="detail-row"><span class="detail-label">Notable</span><span class="detail-value">K18 early investor</span></div>
+                            <div class="investor-note">Expert-level feedback. Approach via LinkedIn.</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">TCA Venture Group<span class="fit-score fit-6">6</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$100K-500K</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Type</span><span class="detail-value">LA angel network, 400 members</span></div>
+                            <div class="detail-row"><span class="detail-label">Value</span><span class="detail-value">Room pitch experience</span></div>
+                            <div class="investor-note">Apply at tcaventuregroup.com. Good for practicing live pitch.</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Backstage Capital<span class="fit-score fit-6">6</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$100K-250K</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Focus</span><span class="detail-value">Diverse founders</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">CurlMix (now in Ulta)</span></div>
+                            <div class="investor-note">Partnering with 360 Venture Collective. Apply at backstagecapital.com.</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Electric Feel Ventures<span class="fit-score fit-5">5</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$500K-2M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Focus</span><span class="detail-value">Early-stage CPG, cultural brands</span></div>
+                            <div class="investor-note">Accessible entry point. Good for practice.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Operator Angels -->
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <span class="column-title" style="color: var(--orange);">Operator Angels</span>
+                        <span class="column-count">5</span>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Alli Webb <span class="new-tag">New</span><span class="fit-score fit-9">9</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$25K-100K (angel)</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Background</span><span class="detail-value">Drybar founder ($255M exit, 150 locations)</span></div>
+                            <div class="detail-row"><span class="detail-label">Current</span><span class="detail-value">CEO Messy (Sephora), President Canopy</span></div>
+                            <div class="detail-row"><span class="detail-label">Approach</span><span class="detail-value">intro.co/AlliWebb (advisory session) or alice@alliwebb.com</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Alli Webb</span> <span class="contact-role">Active investor (Shark Tank guest, Crunchbase listed). IG: @alliwebb (227K)</span></div>
+                            </div>
+                            <div class="investor-note">CONFIRMED active investor. Book intro.co session first, ask advice on salon scaling, then pitch. Cosmoprof (Jul 13-15 Vegas, Jan 27-29 Miami). Draft outreach ready.</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Jen Atkin <span class="new-tag">New</span><span class="fit-score fit-6">6</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">No confirmed angel activity</span>
+                            <span class="status-badge status-not-started">Low Priority</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Current</span><span class="detail-value">CCO of OUAI (P&G), co-founder Highlight Artists</span></div>
+                            <div class="detail-row"><span class="detail-label">Status</span><span class="detail-value">Still operationally active, NOT typical exited angel</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Jen Atkin</span> <span class="contact-role">mackenzie@highlightartists.com (brand partnerships). IG: @jenatkinhair (3M+)</span></div>
+                            </div>
+                            <div class="investor-note">REVISED DOWN: No documented angel investments. Still running OUAI for P&G + building Highlight Artists agency. Approach only if warm intro via salon/stylist network.</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Monique Rodriguez <span class="new-tag">New</span><span class="fit-score fit-9">9</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$50K-250K (angel)</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Background</span><span class="detail-value">Mielle Organics ($640M P&G exit, Jan 2023). Largest exit for Black female beauty founder.</span></div>
+                            <div class="detail-row"><span class="detail-label">Status</span><span class="detail-value">CONFIRMED active angel. Planning venture fund (announced Mar 2024, not yet launched).</span></div>
+                            <div class="detail-row"><span class="detail-label">Location</span><span class="detail-value">Chicago area</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Monique Rodriguez</span> <span class="contact-role">LinkedIn + IG: @exquisitemo (297K). Still CEO of Mielle (P&G subsidiary).</span></div>
+                            </div>
+                            <div class="investor-note">REVISED UP to 9/10. Confirmed active angel, mission-aligned ("be that person I didn't have in this space"). Nurse turned formulator parallels Tina. Built Mielle through salon partnerships. Draft outreach ready.</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Marla Beck <span class="new-tag">New</span><span class="fit-score fit-3">3</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">ADVISOR ONLY (not investor)</span>
+                            <span class="status-badge status-not-started">Advisory Target</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Background</span><span class="detail-value">Bluemercury co-founder ($210M Macy's exit, 2015)</span></div>
+                            <div class="detail-row"><span class="detail-label">Fund</span><span class="detail-value">TAW Ventures - invests in PET WELLNESS, NOT beauty</span></div>
+                            <div class="detail-row"><span class="detail-label">Network</span><span class="detail-value">HBS/HKS Board, EY Entrepreneur network, Goldman Sachs 100</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Marla Beck</span> <span class="contact-role">tawventures.com/contact, LinkedIn. Former BeautyHealth CEO.</span></div>
+                            </div>
+                            <div class="investor-note">REVISED: TAW Ventures invests in pet wellness. NOT a fit for investment. HIGH VALUE as advisor - Harvard network, retail expertise, M&A experience. Request advisory conversation instead.</div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Mitch Rales <span class="new-tag">New</span><span class="fit-score fit-8">8</span></div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$100K-500K+ (seeks 50-100x)</span>
+                            <span class="status-badge status-not-started">Long-Term Target</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Background</span><span class="detail-value">Danaher co-founder ($200B+), net worth ~$4-5B</span></div>
+                            <div class="detail-row"><span class="detail-label">SEEN</span><span class="detail-value">$9M Series A (Sept 2024) with George Mrkonic (Ulta Board)</span></div>
+                            <div class="detail-row"><span class="detail-label">Warm Path</span><span class="detail-value">Via Dr. Iris Rubin (SEEN founder) or George Mrkonic</span></div>
+                            <div class="contacts-list">
+                                <div class="contact-item"><span class="contact-name">Mitch Rales</span> <span class="contact-role">No public contact. Private billionaire. 3 total investments on Crunchbase.</span></div>
+                            </div>
+                            <div class="investor-note">CONFIRMED SEEN investor (Sept 2024). Seeks 50-100x returns, 20-30 year founder commitment. Build SEEN connection first (Dr. Iris Rubin). 3-6 month relationship target. Draft warm intro request ready.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aspirational -->
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <span class="column-title" style="color: var(--purple);">Aspirational</span>
+                        <span class="column-count">6</span>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Imaginary Ventures</div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$2-10M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Lead</span><span class="detail-value">Natalie Massenet (Net-a-Porter)</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">Bread (textured hair), $1B+ AUM</span></div>
+                            <div class="detail-row"><span class="detail-label">When</span><span class="detail-value">After $500K+ revenue</span></div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Forerunner Ventures</div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$2-15M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Lead</span><span class="detail-value">Kirsten Green</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">Glossier, Prose, Curology</span></div>
+                            <div class="detail-row"><span class="detail-label">When</span><span class="detail-value">After lead investor committed</span></div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Silas Capital</div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$2-15M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">RŌZ (hairstylist-founded), Ceremonia</span></div>
+                            <div class="detail-row"><span class="detail-label">Fund</span><span class="detail-value">$150M Fund II</span></div>
+                            <div class="detail-row"><span class="detail-label">When</span><span class="detail-value">After $200K+ revenue, 50+ salons</span></div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Norwest Venture Partners</div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$1-5M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">AUM</span><span class="detail-value">$15.5B</span></div>
+                            <div class="detail-row"><span class="detail-label">Notable</span><span class="detail-value">Invested in Divi (scalp care)</span></div>
+                            <div class="detail-row"><span class="detail-label">Contact</span><span class="detail-value">Sonya Brown via warm intro</span></div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">IRIS Ventures</div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$2-15M</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Portfolio</span><span class="detail-value">Goddess Maintenance (salon-first haircare)</span></div>
+                            <div class="detail-row"><span class="detail-label">When</span><span class="detail-value">Euro-based, approach after US traction</span></div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Unilever Ventures</div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$2M+</span>
+                            <span class="status-badge status-not-started">Not Started</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Notable</span><span class="detail-value">K18 acquirer, prestige hair portfolio</span></div>
+                            <div class="detail-row"><span class="detail-label">When</span><span class="detail-value">After $500K revenue</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grants -->
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <span class="column-title" style="color: var(--cyan);">Grants</span>
+                        <span class="column-count">5</span>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">MUSE Accelerator (Ulta)</div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$50K grant</span>
+                            <span class="status-badge status-apply">Apply</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Deadline</span><span class="detail-value">June 2026 (apps release)</span></div>
+                            <div class="detail-row"><span class="detail-label">Eligibility</span><span class="detail-value">BIPOC beauty entrepreneurs</span></div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Amber Grant</div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$10K</span>
+                            <span class="status-badge status-apply">Apply Now</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Deadline</span><span class="detail-value">Monthly</span></div>
+                            <div class="detail-row"><span class="detail-label">Eligibility</span><span class="detail-value">Women-owned business</span></div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">FedEx Small Business Grant</div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">Up to $50K</span>
+                            <span class="status-badge status-not-started">Check Deadline</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Deadline</span><span class="detail-value">Annual</span></div>
+                            <div class="detail-row"><span class="detail-label">Eligibility</span><span class="detail-value">US-based small business</span></div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">Sephora Beauty Grant</div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">$100K</span>
+                            <span class="status-badge status-not-started">Nov 2026</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Deadline</span><span class="detail-value">Nov 2026 (next cycle)</span></div>
+                            <div class="detail-row"><span class="detail-label">Eligibility</span><span class="detail-value">Underrepresented founders</span></div>
+                        </div>
+                    </div>
+
+                    <div class="investor-card" onclick="toggleCard(this)">
+                        <div class="investor-name">IRIS Glow Up Accelerator</div>
+                        <div class="investor-meta">
+                            <span class="meta-tag">Investment + mentorship</span>
+                            <span class="status-badge status-not-started">Check If Open</span>
+                        </div>
+                        <div class="investor-details">
+                            <div class="detail-row"><span class="detail-label">Deadline</span><span class="detail-value">Feb 28 (check 2026 cycle)</span></div>
+                            <div class="detail-row"><span class="detail-label">Eligibility</span><span class="detail-value">Female founders, beauty/wellness</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Objections -->
+        <div id="objections" class="section">
+            <div class="objections-grid">
+
+                <div class="objection-card" onclick="toggleObjection(this)">
+                    <div class="objection-header">
+                        <div class="objection-left">
+                            <span class="objection-num diff-hard">1</span>
+                            <span class="objection-title">"Your revenue is too low for a seed round."</span>
+                        </div>
+                        <span class="objection-chevron">&#9660;</span>
+                    </div>
+                    <div class="objection-body">
+                        <div class="objection-section">
+                            <div class="objection-section-title">Why they'd raise it</div>
+                            <p>Most beauty VCs expect $1M+ ARR at seed. True Beauty Ventures targets ~$2M for Series A. AWARE is at $125K in 6 months = ~$250K annualized, 75% below typical thresholds.</p>
+                        </div>
+                        <div class="objection-section">
+                            <div class="objection-section-title">Counter</div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>$250K ARR achieved with <strong>zero paid acquisition</strong> = 5-10x cheaper CAC than typical beauty brand ($85 DTC average). Revenue is capital-efficient, not anemic.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>96% B2B repurchase rate vs 25-30% beauty industry average = revenue quality over quantity. Every salon that buys stays.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>Selva Ventures invests in brands "under $10M demonstrating traction" - organic growth trajectory qualifies.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>We're not asking you to bet on revenue. We're asking you to bet on a 96% repurchase rate and a professional channel with no incumbent.</span></div>
+                            <a class="source-link" href="https://www.beautyindependent.com/unilever-backing-selva-ventures-closes-34m-fund-early-stage-cpg-brands/" target="_blank">Source: Beauty Independent - Selva Ventures thesis</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="objection-card" onclick="toggleObjection(this)">
+                    <div class="objection-header">
+                        <div class="objection-left">
+                            <span class="objection-num diff-medium">2</span>
+                            <span class="objection-title">"Scalp care is too niche. The TAM is limited."</span>
+                        </div>
+                        <span class="objection-chevron">&#9660;</span>
+                    </div>
+                    <div class="objection-body">
+                        <div class="objection-section">
+                            <div class="objection-section-title">Why they'd raise it</div>
+                            <p>Professional-exclusive scalp care products market is ~$3.5B globally vs $151B total hair care. Salon-exclusive limits addressable market to &lt;5% of haircare consumers.</p>
+                        </div>
+                        <div class="objection-section">
+                            <div class="objection-section-title">Counter</div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>Scalp care growing at 7.1% CAGR (2025-2032), reaching $23.8B. Faster than general haircare (6.4%). Category is expanding, not contracting.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>Business of Fashion called haircare "the most underpenetrated category in beauty right now." Scalp care is the fastest-growing subcategory within it.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>Salon-exclusive is the starting point, not the ceiling. Crown Affair started professional, then launched at Sephora. Same playbook.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>37% of consumers now prioritize hair loss solutions, 34.5% focus on scalp care = demand expanding faster than supply.</span></div>
+                            <a class="source-link" href="https://www.coherentmarketinsights.com/market-insight/scalp-care-market-5132" target="_blank">Source: Coherent Market Insights - Scalp care forecast</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="objection-card" onclick="toggleObjection(this)">
+                    <div class="objection-header">
+                        <div class="objection-left">
+                            <span class="objection-num diff-hard">3</span>
+                            <span class="objection-title">"You haven't validated paid acquisition. Organic doesn't scale."</span>
+                        </div>
+                        <span class="objection-chevron">&#9660;</span>
+                    </div>
+                    <div class="objection-body">
+                        <div class="objection-section">
+                            <div class="objection-section-title">Why they'd raise it</div>
+                            <p>18M organic views is impressive but doesn't prove unit economics through paid channels. VCs remember Glossier's organic success followed by the DTC crash when paid couldn't replicate organic CAC.</p>
+                        </div>
+                        <div class="objection-section">
+                            <div class="objection-section-title">Counter</div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>Our B2B model IS the paid acquisition alternative. Each salon = micro-influencer with a captive audience. $200 CAC per salon, $4K-12K LTV per salon per year. Payback in 1-2 orders.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>50+ salons = 50 distribution points acquiring customers at zero marginal cost. This doesn't need paid ads to work.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>Organic audience has higher intent and retention. 96% repurchase rate proves the organic-to-conversion pipeline works.</span></div>
+                            <a class="source-link" href="https://digitalmarketinggroup.com/whats-the-difference-between-organic-vs-paid-social-media/" target="_blank">Source: Digital Marketing Group on Glossier organic strategy</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="objection-card" onclick="toggleObjection(this)">
+                    <div class="objection-header">
+                        <div class="objection-left">
+                            <span class="objection-num diff-medium">4</span>
+                            <span class="objection-title">"Salon-only distribution limits your scale."</span>
+                        </div>
+                        <span class="objection-chevron">&#9660;</span>
+                    </div>
+                    <div class="objection-body">
+                        <div class="objection-section">
+                            <div class="objection-section-title">Why they'd raise it</div>
+                            <p>McKinsey research shows 56% of VC-backed beauty brands (2010-2015) still generate &lt;$100M. "Material growth requires expanding channel mixes." Single-channel risk.</p>
+                        </div>
+                        <div class="objection-section">
+                            <div class="objection-section-title">Counter</div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>B2B-first is sequencing, not permanence. Roadmap: salons first, distributors, then DTC warm traffic, then selective retail.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>K18 started professional-channel, got acquired by Unilever, returned 80% of True Beauty Ventures' fund. Crown Affair: salon validation before Sephora launch.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>Each salon is a zero-cost customer acquisition channel. DTC-first brands pay $85 per customer. We pay $200 per salon that generates dozens of customers.</span></div>
+                            <a class="source-link" href="https://www.businessoffashion.com/articles/beauty/the-state-of-fashion-beauty-report-independent-brand-scaling-global-product-expansion/" target="_blank">Source: BoF beauty brand scaling</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="objection-card" onclick="toggleObjection(this)">
+                    <div class="objection-header">
+                        <div class="objection-left">
+                            <span class="objection-num diff-easy">5</span>
+                            <span class="objection-title">"$55-75 is too expensive for salon take-home."</span>
+                        </div>
+                        <span class="objection-chevron">&#9660;</span>
+                    </div>
+                    <div class="objection-body">
+                        <div class="objection-section">
+                            <div class="objection-section-title">Why they'd raise it</div>
+                            <p>Premium professional haircare ceiling: Olaplex $30-40, K18 $75. Salon clients may balk at $55-75 for an unknown brand vs established names.</p>
+                        </div>
+                        <div class="objection-section">
+                            <div class="objection-section-title">Counter</div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>K18 at $75 for 50ml established the precedent. AWARE at $55-75 is competitive parity, not outlier.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>96% repurchase rate IS the price acceptance data. Stylists successfully communicate value - clients buy again.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>Stylist trust transfer: "Customers are skeptical of influencers, but trust when a stylist uses products during service."</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>65-80% gross margins align with beauty investor expectations. The price point supports venture economics.</span></div>
+                            <a class="source-link" href="https://www.cosmopolitan.com/style-beauty/beauty/g62841714/olaplex-vs-k18/" target="_blank">Source: K18 pricing comparisons</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="objection-card" onclick="toggleObjection(this)">
+                    <div class="objection-header">
+                        <div class="objection-left">
+                            <span class="objection-num diff-medium">6</span>
+                            <span class="objection-title">"Three-person team. What happens if someone leaves?"</span>
+                        </div>
+                        <span class="objection-chevron">&#9660;</span>
+                    </div>
+                    <div class="objection-body">
+                        <div class="objection-section">
+                            <div class="objection-section-title">Why they'd raise it</div>
+                            <p>3 people (CEO/Formulator, COO, Strategy/Finance) = operational risk. No redundancy. Pre-seed teams break under fundraising + operations stress.</p>
+                        </div>
+                        <div class="objection-section">
+                            <div class="objection-section-title">Counter</div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>At pre-seed, "it's about the founder and the vision." 40% of this raise goes to hiring a Sales/BD lead and marketing support.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>Tina as working hairstylist founder = unique, irreplaceable asset. Her salon work = continuous market feedback loop.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>Patent-pending formulation = technical defensibility beyond any single person.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>$125K revenue on a 3-person team = strong capital efficiency signal. We're not asking you to fund a bloated org chart.</span></div>
+                            <a class="source-link" href="https://carrara-advisory.com/articles/the-new-wave-of-haircare-brands/" target="_blank">Source: Carrara Advisory on stylist-founded brands</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="objection-card" onclick="toggleObjection(this)">
+                    <div class="objection-header">
+                        <div class="objection-left">
+                            <span class="objection-num diff-medium">7</span>
+                            <span class="objection-title">"The exit path for professional scalp care isn't clear."</span>
+                        </div>
+                        <span class="objection-chevron">&#9660;</span>
+                    </div>
+                    <div class="objection-body">
+                        <div class="objection-section">
+                            <div class="objection-section-title">Why they'd raise it</div>
+                            <p>Recent beauty M&A favors fragrance, derm-backed skincare, general haircare. No clear acquisition precedent for professional-exclusive scalp care specifically.</p>
+                        </div>
+                        <div class="objection-section">
+                            <div class="objection-section-title">Counter</div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>L'Oreal acquired Color Wow (professional haircare) in 2025. Henkel acquired Pravana, Joico, Zotos - all professional hair brands.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>Unilever acquired K18 (True Beauty Ventures portfolio) - returned 80% of fund capital from one deal. Direct comparable to AWARE.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>Estee Lauder acquired Bumble and bumble (salon brand). Wella acquired Briogeo. Salon-origin brands exit to strategics.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>Beauty M&A multiples: 14.9x EV/EBITDA in 2025 vs 9.8x consumer average. Premium valuations persist for beauty.</span></div>
+                            <div class="counter-point"><span class="counter-bullet">&bull;</span><span>Path: $50M revenue in 5-7 years = $150-250M acquisition value at 3-5x revenue multiple.</span></div>
+                            <a class="source-link" href="https://beautymatter.com/articles/global-beauty-ma-resilience-regional-shifts-and-pursuit-of-innovation" target="_blank">Source: Beauty M&A 2025</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Section: Outreach Templates -->
+        <div id="outreach" class="section">
+            <div class="template-tabs">
+                <button class="template-tab active" data-template="warm">Warm Intro Request</button>
+                <button class="template-tab" data-template="cold">Cold Email</button>
+                <button class="template-tab" data-template="followup">Post-Meeting Follow-Up</button>
+            </div>
+
+            <div id="warm" class="template-content active">
+                <div class="email-card">
+                    <div class="email-subject"><span>Subject:</span> Quick intro ask - [Fund Name]</div>
+                    <div class="email-body">Hi [Connector],
+
+Hope you're doing well. I saw you're connected with [Investor Name] at [Fund] - would you be comfortable making an intro?
+
+Quick context on why I think it's a fit: [Fund] backed [portfolio company] in [haircare/scalp/beauty] and we're building the professional-channel version of that thesis. The scalp care category is growing faster than general haircare right now, and salon-exclusive distribution is creating a moat that DTC brands can't replicate.
+
+Here's a forwardable blurb if it's easier:
+
+---
+
+Hi [Investor First Name],
+
+Wanted to connect you with David Zhao from AWARE Hair. They're doing something interesting in the professional scalp care space:
+
+- $125K revenue in 6 months, zero paid acquisition
+- 35+ salon partners, 96% B2B repurchase rate
+- Patent-pending formulation by a working hairstylist
+- Salon-exclusive distribution (not available at retail)
+
+Given [Fund]'s focus on [beauty/haircare/wellness], thought it might be worth 30 minutes.
+
+---
+
+No pressure at all if the timing isn't right. Appreciate you either way.
+
+David</div>
+                    <div class="copy-btn-row"><button class="copy-btn" onclick="copyTemplate(this, 'warm')">Copy to Clipboard</button></div>
+                </div>
+            </div>
+
+            <div id="cold" class="template-content">
+                <div class="email-card">
+                    <div class="email-subject"><span>Subject:</span> The salon channel gap in scalp care</div>
+                    <div class="email-body">Hi [First Name],
+
+I've been tracking [Fund]'s thesis on [beauty/haircare/scalp health] - your investment in [portfolio company] caught my attention because we're seeing the same trend from the professional side.
+
+Here's what's interesting: scalp care is the fastest-growing subcategory in haircare, but there's no clean, professional-exclusive brand owning the salon channel. Stylists see scalp issues daily and have nothing credible to recommend between mass-market Head & Shoulders and clinical Nioxin.
+
+That's the gap AWARE Hair fills. Our founder Tina is a working hairstylist who formulated the products for her own occupational scalp health issues:
+
+- $125K revenue, 6 months, zero paid spend
+- 35+ salon partners with 96% repurchase
+- Patent-pending formulation
+- Professional-exclusive (not at Sephora or Amazon)
+
+The repurchase rate is the number I'd focus on. 96% in an industry that averages 25-30% is a product-market fit signal, not a sales trick.
+
+Would you be open to a 30-minute conversation about the professional channel opportunity? Happy to share what we're learning about stylist-led distribution - it's a different model than DTC and the economics are counterintuitive.
+
+Best,
+David Zhao
+AWARE Hair | Strategy & Finance
+david@awarehair.com</div>
+                    <div class="copy-btn-row"><button class="copy-btn" onclick="copyTemplate(this, 'cold')">Copy to Clipboard</button></div>
+                </div>
+            </div>
+
+            <div id="followup" class="template-content">
+                <div class="email-card">
+                    <div class="email-subject"><span>Subject:</span> Scalp care data point + AWARE update</div>
+                    <div class="email-body">Hi [First Name],
+
+Thanks again for the conversation [last week / on date]. Your point about [specific thing they said] stuck with me - I've been thinking about it in the context of our distributor conversations.
+
+Two things since we spoke:
+
+1. Category data you might find useful:
+[Choose one depending on their interest:]
+- Business of Fashion just called haircare "the most underpenetrated category in beauty" - with scalp care as the fastest-growing subcategory. Interesting framing given your portfolio's exposure to [related brand].
+- Henkel has been on "the most aggressive M&A run in professional haircare in 15-20 years" - 4 professional brand acquisitions recently. The acquirer appetite for this channel is real.
+- K18 returned 80% of True Beauty Ventures' fund capital from a single exit to Unilever. Professional-first, science-backed hair treatment - similar positioning to what we're building.
+
+2. AWARE update:
+- [Concrete milestone - new salon signed, revenue update, distributor meeting]
+- [Second concrete milestone if available]
+
+If [Fund] is still evaluating, I'm happy to [send updated financials / connect you with Tina for product deep-dive / arrange a salon visit]. Let me know what would be most useful.
+
+Best,
+David</div>
+                    <div class="copy-btn-row"><button class="copy-btn" onclick="copyTemplate(this, 'followup')">Copy to Clipboard</button></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Meeting Prep -->
+        <div id="meeting" class="section">
+            <div class="prep-grid">
+                <!-- What to Bring -->
+                <div class="prep-card">
+                    <h3>What to Bring</h3>
+                    <div class="checklist-item"><input type="checkbox"><span>Product samples - Full 3-SKU set. Let them smell/touch.</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>One-pager - Printed + PDF. Updated with $125K / 50+ salons.</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Pitch deck - iPad + PDF link. Do NOT present slide by slide.</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Phone with social - 18M views, key viral videos ready.</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Before/after photos - Client scalp results (with permission).</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Salon testimonials - 3-4 strongest stylist quotes, printed.</span></div>
+                </div>
+
+                <!-- What NOT to Bring -->
+                <div class="prep-card">
+                    <h3>What NOT to Bring</h3>
+                    <ol class="dont-list" style="padding-left: 18px;">
+                        <li>Full financial model (don't share until term sheet discussion)</li>
+                        <li>Printed handouts of every page (feels desperate)</li>
+                        <li>Tina on first meeting (save for second meeting, "product deep-dive")</li>
+                    </ol>
+                    <h3 style="margin-top: 16px;">What NOT to Do</h3>
+                    <ol class="dont-list" style="padding-left: 18px;">
+                        <li>Don't present slide by slide. Have a conversation with a deck nearby for reference.</li>
+                        <li>Don't trash competitors. "We admire what Jupiter is doing in DTC. We're solving for the professional channel."</li>
+                        <li>Don't oversell DTC potential. Your strength is B2B.</li>
+                        <li>Don't share full cap table or financial model in meeting #1.</li>
+                        <li>Don't ask "what do you think?" Ask "what questions do you have?"</li>
+                        <li>Don't follow up same-day. Send a substantive follow-up within 24 hours.</li>
+                        <li>Don't name-drop other investors unless they're committed.</li>
+                    </ol>
+                </div>
+
+                <!-- Conversation Framework -->
+                <div class="prep-card full-width">
+                    <h3>Conversation Framework (30 Minutes)</h3>
+
+                    <div class="timeline-block">
+                        <div class="timeline-time">Minutes 0-3</div>
+                        <div class="timeline-title">Rapport + Category</div>
+                        <div class="timeline-desc">Don't start with "thanks for meeting." Start with a category insight. "Have you noticed the gap between consumer scalp care brands and what's actually available in salons? We've been living in that gap." Let them share what they know. Listen.</div>
+                    </div>
+
+                    <div class="timeline-block">
+                        <div class="timeline-time">Minutes 3-8</div>
+                        <div class="timeline-title">The Problem (Stylist Perspective)</div>
+                        <div class="timeline-desc">"Tina is a working hairstylist. She sees scalp issues every day and had nothing credible to use on clients. So she formulated her own." This is the founder-market fit moment. Make it visceral, not theoretical. Pass them the product.</div>
+                    </div>
+
+                    <div class="timeline-block">
+                        <div class="timeline-time">Minutes 8-15</div>
+                        <div class="timeline-title">The Traction</div>
+                        <div class="timeline-desc">Lead with 96% repurchase rate. "In an industry that averages 25-30%, our salons reorder at 96%." Then: $125K / 6 months, 50+ salons, zero paid, 18M organic views. Show the math: $200 CAC per salon, $4K-12K LTV per salon per year.</div>
+                    </div>
+
+                    <div class="timeline-block">
+                        <div class="timeline-time">Minutes 15-22</div>
+                        <div class="timeline-title">The Opportunity</div>
+                        <div class="timeline-desc">"No one owns clean, professional-exclusive scalp care. 7% CAGR. The acquirers are actively buying in this channel." Reference their portfolio: "You backed [X], which proved [Y]. We're building the professional-channel version." This is where you earn the right to discuss the raise.</div>
+                    </div>
+
+                    <div class="timeline-block">
+                        <div class="timeline-time">Minutes 22-27</div>
+                        <div class="timeline-title">The Ask</div>
+                        <div class="timeline-desc">"We're raising ~$1M to go from 50 salons to 100+ and sign our first distribution deal." Use of funds: Sales/BD hire (40%), inventory (25%), marketing (20%), ops (15%). Milestones: $500K-1M revenue and Series A readiness.</div>
+                    </div>
+
+                    <div class="timeline-block">
+                        <div class="timeline-time">Minutes 27-30</div>
+                        <div class="timeline-title">Their Turn</div>
+                        <div class="timeline-desc">"What questions do you have?" (Not "what do you think?") "Is this the kind of thing [Fund] would want to look at more closely?" Clear next step: "Would it be helpful to schedule a follow-up with Tina for a product deep-dive?"</div>
+                    </div>
+                </div>
+
+                <!-- Pushback Quick-Reference -->
+                <div class="prep-card full-width">
+                    <h3>Pushback Quick-Reference</h3>
+                    <table class="pushback-table">
+                        <thead><tr><th>They Say</th><th>You Say</th></tr></thead>
+                        <tbody>
+                            <tr><td>"Revenue is early."</td><td>"The 96% repurchase rate de-risks the demand question. We're not asking you to bet on revenue growth - we're asking you to bet on a retention metric that's 4x industry average."</td></tr>
+                            <tr><td>"How do you scale beyond salons?"</td><td>"Same way K18 did and Crown Affair is doing: prove in professional, build credibility, expand to DTC with warm traffic, then selective retail."</td></tr>
+                            <tr><td>"Jupiter is in our portfolio."</td><td>"Jupiter went mass retail at Target. We're salon-exclusive. Different channel, different customer. If anything, Jupiter validates the category for you. We're your professional-channel play."</td></tr>
+                            <tr><td>"Team is small."</td><td>"Intentionally. 40% of this raise goes to hiring. We've proven we can build on a 3-person team - $125K revenue, 50 salons, zero paid. Now we need to scale."</td></tr>
+                            <tr><td>"Why hasn't this been done before?"</td><td>"It has, in adjacent categories. K18 owns bond repair. Olaplex built a $15B IPO from salon-first. Nobody has done it for scalp care specifically - that's the white space."</td></tr>
+                            <tr><td>"What if Kerastase/Nioxin launches clean scalp?"</td><td>"They'd have to reformulate entire lines, retrain sales forces, and overcome stylist skepticism of corporate pivots. We're 2 years ahead. Authenticity is hard to manufacture."</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Success Criteria -->
+                <div class="prep-card">
+                    <h3>Success Criteria (Meeting #1)</h3>
+                    <div style="margin-bottom: 10px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--green); font-weight: 600;">Success if any of these happened:</div>
+                    <div class="success-item"><span class="success-icon" style="color: var(--green);">&#10003;</span><span>They asked for the deck (want to share internally)</span></div>
+                    <div class="success-item"><span class="success-icon" style="color: var(--green);">&#10003;</span><span>They suggested a follow-up ("Let me discuss with my partner")</span></div>
+                    <div class="success-item"><span class="success-icon" style="color: var(--green);">&#10003;</span><span>They asked about terms (valuation, structure, timeline)</span></div>
+                    <div class="success-item"><span class="success-icon" style="color: var(--green);">&#10003;</span><span>They offered an intro ("You should talk to [person]")</span></div>
+                    <div class="success-item"><span class="success-icon" style="color: var(--green);">&#10003;</span><span>They asked to meet Tina (product deep-dive request)</span></div>
+
+                    <div style="margin: 12px 0 10px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--yellow); font-weight: 600;">Neutral:</div>
+                    <div class="success-item"><span class="success-icon" style="color: var(--yellow);">-</span><span>"Interesting, keep us updated" = polite pass, add to quarterly update list</span></div>
+                    <div class="success-item"><span class="success-icon" style="color: var(--yellow);">-</span><span>"We don't invest at this stage" = stage mismatch, not quality issue</span></div>
+
+                    <div style="margin: 12px 0 10px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--red); font-weight: 600;">Fail if:</div>
+                    <div class="success-item"><span class="success-icon" style="color: var(--red);">&#10007;</span><span>They spent the whole time talking about their portfolio</span></div>
+                    <div class="success-item"><span class="success-icon" style="color: var(--red);">&#10007;</span><span>You talked more than 60% of the time</span></div>
+                    <div class="success-item"><span class="success-icon" style="color: var(--red);">&#10007;</span><span>No clear next step was established</span></div>
+                </div>
+
+                <!-- Use of Funds -->
+                <div class="prep-card">
+                    <h3>Use of Funds (~$1M)</h3>
+                    <div style="margin-bottom: 12px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;"><span>Sales/BD Hire</span><span style="font-weight: 600;">40%</span></div>
+                        <div style="height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;"><div style="width: 40%; height: 100%; background: var(--green); border-radius: 3px;"></div></div>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;"><span>Inventory</span><span style="font-weight: 600;">25%</span></div>
+                        <div style="height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;"><div style="width: 25%; height: 100%; background: var(--blue); border-radius: 3px;"></div></div>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;"><span>Marketing</span><span style="font-weight: 600;">20%</span></div>
+                        <div style="height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;"><div style="width: 20%; height: 100%; background: var(--purple); border-radius: 3px;"></div></div>
+                    </div>
+                    <div style="margin-bottom: 0;">
+                        <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;"><span>Operations</span><span style="font-weight: 600;">15%</span></div>
+                        <div style="height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;"><div style="width: 15%; height: 100%; background: var(--yellow); border-radius: 3px;"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Outreach Sequence -->
+        <div id="sequence" class="section">
+            <div class="sequence-phases">
+                <div class="phase-card phase-1">
+                    <div class="phase-num">Phase 1</div>
+                    <div class="phase-title">Practice + Non-Dilutive</div>
+                    <div class="phase-timing">Now</div>
+                    <ul class="phase-investors">
+                        <li>Amber Grant <span class="phase-method">Application</span></li>
+                        <li>Female Founders Fund <span class="phase-method">Typeform</span></li>
+                        <li>TCA Venture Group <span class="phase-method">Application</span></li>
+                        <li>Fab Co-Creation <span class="phase-method">LinkedIn</span></li>
+                        <li>Backstage Capital <span class="phase-method">Website</span></li>
+                    </ul>
+                </div>
+
+                <div class="phase-card phase-2">
+                    <div class="phase-num">Phase 2</div>
+                    <div class="phase-title">Pipeline Building</div>
+                    <div class="phase-timing">2-4 Weeks</div>
+                    <ul class="phase-investors">
+                        <li>Melitas Ventures <span class="phase-method">LinkedIn</span></li>
+                        <li>Willow Growth Partners <span class="phase-method">Email</span> <span class="new-tag">New</span></li>
+                        <li>Sugar Capital <span class="phase-method">Email</span> <span class="new-tag">New</span></li>
+                        <li>BBG Ventures <span class="phase-method">Form</span></li>
+                        <li>Halogen Ventures <span class="phase-method">LinkedIn</span></li>
+                        <li>G9 Ventures <span class="phase-method">Website</span></li>
+                        <li>Able Partners <span class="phase-method">Pitch Portal</span> <span class="new-tag">New</span></li>
+                        <li>Joyance Partners <span class="phase-method">Application</span> <span class="new-tag">New</span></li>
+                        <li>Toni Ko <span class="phase-method">LinkedIn</span></li>
+                    </ul>
+                </div>
+
+                <div class="phase-card" style="border-left-color: var(--orange);">
+                    <div class="phase-num">Phase 2B</div>
+                    <div class="phase-title">Angel Outreach</div>
+                    <div class="phase-timing">2-4 Weeks</div>
+                    <ul class="phase-investors">
+                        <li>Alli Webb <span class="phase-method">intro.co</span> <span class="new-tag">New</span></li>
+                        <li>Monique Rodriguez <span class="phase-method">LinkedIn DM</span> <span class="new-tag">New</span></li>
+                        <li>Marla Beck <span class="phase-method">Advisory Ask</span> <span class="new-tag">New</span></li>
+                        <li>Jen Atkin <span class="phase-method">Low Priority</span> <span class="new-tag">New</span></li>
+                        <li>Mitch Rales <span class="phase-method">Warm Intro</span> <span class="new-tag">New</span></li>
+                    </ul>
+                </div>
+
+                <div class="phase-card phase-3">
+                    <div class="phase-num">Phase 3</div>
+                    <div class="phase-title">Best Fits</div>
+                    <div class="phase-timing">4-6 Weeks</div>
+                    <ul class="phase-investors">
+                        <li>True Beauty Ventures <span class="phase-method">Email</span></li>
+                        <li>Selva Ventures <span class="phase-method">LinkedIn</span></li>
+                        <li>New Theory Ventures <span class="phase-method">LinkedIn</span></li>
+                        <li>Cultivate (Sally Beauty) <span class="phase-method">Application</span></li>
+                        <li>BAM Ventures <span class="phase-method">Email</span> <span class="new-tag">New</span></li>
+                    </ul>
+                </div>
+
+                <div class="phase-card phase-4">
+                    <div class="phase-num">Phase 4</div>
+                    <div class="phase-title">Aspirational</div>
+                    <div class="phase-timing">After Lead Committed</div>
+                    <ul class="phase-investors">
+                        <li>Imaginary Ventures <span class="phase-method">Warm Intro</span></li>
+                        <li>Forerunner Ventures <span class="phase-method">Warm Intro</span></li>
+                        <li>Norwest (Sonya Brown) <span class="phase-method">Warm Intro</span></li>
+                        <li>Unilever Ventures <span class="phase-method">At $500K+ rev</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Tracking Table -->
+            <div class="tracking-section">
+                <h3>Pipeline Tracking</h3>
+                <table class="tracking-table">
+                    <thead>
+                        <tr>
+                            <th>Investor</th>
+                            <th>Tier</th>
+                            <th>Phase</th>
+                            <th>Contact Method</th>
+                            <th>Status</th>
+                            <th>Next Step</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Amber Grant</td><td>Grant</td><td>1</td><td>Application</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Apply</td></tr>
+                        <tr><td>Female Founders Fund</td><td>A</td><td>1</td><td>Typeform</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Submit</td></tr>
+                        <tr><td>TCA Venture Group</td><td>C</td><td>1</td><td>Application</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Apply</td></tr>
+                        <tr><td>Fab Co-Creation</td><td>C</td><td>1</td><td>LinkedIn</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Message Odile</td></tr>
+                        <tr><td>Melitas Ventures</td><td>A</td><td>2</td><td>LinkedIn</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Message Alex</td></tr>
+                        <tr style="background: rgba(249,115,22,0.05);"><td>Willow Growth Partners</td><td>A</td><td>2</td><td>Email</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Email hello@willowgrowthpartners.com (draft ready)</td></tr>
+                        <tr style="background: rgba(249,115,22,0.05);"><td>Sugar Capital</td><td>A</td><td>2</td><td>Email/Form</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Email hello@sugarcapital.com (draft ready)</td></tr>
+                        <tr><td>G9 Ventures</td><td>B</td><td>2</td><td>Website</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Submit</td></tr>
+                        <tr style="background: rgba(249,115,22,0.05);"><td>Able Partners</td><td>B</td><td>2</td><td>Pitch Portal</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Submit at founders@able.partners (draft ready)</td></tr>
+                        <tr style="background: rgba(249,115,22,0.05);"><td>Joyance Partners</td><td>B</td><td>2</td><td>Application</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Apply at joyance.com/apply (draft ready)</td></tr>
+                        <tr style="background: rgba(249,115,22,0.05);"><td>Alli Webb (Angel)</td><td>Angel</td><td>2B</td><td>intro.co</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Book intro.co/AlliWebb session (draft ready)</td></tr>
+                        <tr style="background: rgba(249,115,22,0.05);"><td>Monique Rodriguez (Angel)</td><td>Angel</td><td>2B</td><td>LinkedIn DM</td><td><span class="status-badge status-not-started">Not Started</span></td><td>LinkedIn DM founder-to-founder (draft ready)</td></tr>
+                        <tr style="background: rgba(249,115,22,0.05);"><td>Marla Beck (Advisor)</td><td>Advisor</td><td>2B</td><td>LinkedIn</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Advisory request via LinkedIn (draft ready)</td></tr>
+                        <tr style="background: rgba(249,115,22,0.05);"><td>Jen Atkin (Angel)</td><td>Angel</td><td>2B</td><td>Email</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Low priority - email mackenzie@highlightartists.com</td></tr>
+                        <tr style="background: rgba(249,115,22,0.05);"><td>Mitch Rales (Angel)</td><td>Angel</td><td>2B</td><td>Warm Intro</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Long-term - warm intro via SEEN/Dr. Iris Rubin</td></tr>
+                        <tr><td>True Beauty Ventures</td><td>A</td><td>3</td><td>Email</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Email Caroline</td></tr>
+                        <tr><td>Selva Ventures</td><td>A</td><td>3</td><td>LinkedIn</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Message Kiva</td></tr>
+                        <tr><td>New Theory Ventures</td><td>A</td><td>3</td><td>LinkedIn</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Message Nikki</td></tr>
+                        <tr style="background: rgba(249,115,22,0.05);"><td>BAM Ventures</td><td>B</td><td>3</td><td>Email</td><td><span class="status-badge status-not-started">Not Started</span></td><td>Email hello@bam.vc (draft ready)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Navigation
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.section).classList.add('active');
+            });
+        });
+
+        // Template Tabs
+        document.querySelectorAll('.template-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.template-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.template-content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.template).classList.add('active');
+            });
+        });
+
+        // Investor Card Toggle
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+
+        // Objection Accordion
+        function toggleObjection(card) {
+            card.classList.toggle('expanded');
+        }
+
+        // Copy to Clipboard
+        function copyTemplate(btn, templateId) {
+            const body = document.querySelector('#' + templateId + ' .email-body');
+            const subject = document.querySelector('#' + templateId + ' .email-subject').textContent.replace('Subject: ', '');
+            const text = 'Subject: ' + subject.trim() + '\n\n' + body.textContent;
+
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy to Clipboard';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

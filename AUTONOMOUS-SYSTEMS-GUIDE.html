@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Autonomous Systems Architecture</title>
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #102B26;
+  --cream: #f4efe9;
+  --surface: #faf8f5;
+  --gold: #D4A574;
+  --sage: #7d8471;
+  --red: #9B2D2D;
+  --amber: #B8860B;
+  --green: #2D6B4A;
+  --info: #4A6B8A;
+  --border: #e0dbd5;
+  --text-secondary: #6b6560;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--teal);
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+/* ── Header ──────────────────────────────────── */
+.header {
+  background: var(--teal);
+  color: var(--cream);
+  padding: 60px 40px 50px;
+  position: relative;
+  overflow: hidden;
+}
+.header::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,165,116,0.08) 0%, transparent 70%);
+}
+.header h1 {
+  font-family: 'orpheus-pro', serif;
+  font-size: 42px;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+.header .subtitle {
+  font-size: 16px;
+  opacity: 0.7;
+  font-weight: 300;
+}
+.header .stats-bar {
+  display: flex;
+  gap: 40px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(244,239,233,0.15);
+}
+.stat { text-align: center; }
+.stat-value {
+  font-family: 'DM Mono', monospace;
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--gold);
+}
+.stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.6; }
+
+/* ── Layout ──────────────────────────────────── */
+.container { max-width: 1100px; margin: 0 auto; padding: 40px 40px 80px; }
+
+/* ── Section ─────────────────────────────────── */
+.section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.section-header {
+  padding: 20px 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  transition: background 0.2s;
+}
+.section-header:hover { background: rgba(16,43,38,0.03); }
+.section-header h2 {
+  font-family: 'orpheus-pro', serif;
+  font-size: 22px;
+  font-weight: 400;
+}
+.section-header .badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  background: var(--teal);
+  color: var(--cream);
+  padding: 3px 10px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+}
+.section-header .chevron {
+  font-size: 18px;
+  transition: transform 0.3s;
+  opacity: 0.4;
+}
+.section.open .chevron { transform: rotate(180deg); }
+.section-body { padding: 0 28px 28px; display: none; }
+.section.open .section-body { display: block; }
+
+/* ── Typography ──────────────────────────────── */
+h3 {
+  font-family: 'orpheus-pro', serif;
+  font-size: 17px;
+  font-weight: 400;
+  margin: 24px 0 12px;
+  color: var(--teal);
+}
+h3:first-child { margin-top: 8px; }
+p { margin-bottom: 12px; color: var(--text-secondary); }
+strong { color: var(--teal); font-weight: 600; }
+
+/* ── Org Chart ───────────────────────────────── */
+.org-chart { text-align: center; padding: 20px 0; }
+.org-level {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.org-node {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 18px;
+  min-width: 140px;
+  text-align: center;
+  position: relative;
+  transition: all 0.2s;
+}
+.org-node:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+.org-node.david { background: var(--teal); color: var(--cream); border-color: var(--teal); }
+.org-node.david .role { color: var(--gold); }
+.org-node.engine { background: #f0ede8; border-left: 3px solid var(--sage); }
+.org-node.agent { background: #f5f0ea; border-left: 3px solid var(--gold); }
+.org-node.command { background: #eef2f0; border-left: 3px solid var(--info); }
+.org-node .name { font-weight: 600; font-size: 13px; }
+.org-node .role { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+.org-connector {
+  width: 2px;
+  height: 20px;
+  background: var(--border);
+  margin: 0 auto;
+}
+.org-branch {
+  height: 2px;
+  background: var(--border);
+  margin: 0 60px;
+}
+
+/* ── Timeline ────────────────────────────────── */
+.timeline { position: relative; padding-left: 80px; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 60px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 12px;
+  padding: 10px 16px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 13px;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -26px;
+  top: 14px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--sage);
+  border: 2px solid var(--surface);
+}
+.timeline-item.engine::before { background: var(--sage); }
+.timeline-item.agent::before { background: var(--gold); }
+.timeline-item.script::before { background: var(--info); }
+.timeline-item.auto::before { background: var(--green); }
+.timeline-time {
+  position: absolute;
+  left: -75px;
+  top: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--text-secondary);
+  width: 42px;
+  text-align: right;
+}
+.timeline-item .label {
+  font-weight: 600;
+  color: var(--teal);
+}
+.timeline-item .desc { color: var(--text-secondary); }
+
+/* ── Flow Diagram ────────────────────────────── */
+.flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 20px 0;
+}
+.flow-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.flow-box {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px 16px;
+  font-size: 12px;
+  text-align: center;
+  min-width: 120px;
+}
+.flow-box.primary { background: var(--teal); color: var(--cream); border-color: var(--teal); }
+.flow-box.gold { border-color: var(--gold); border-width: 2px; }
+.flow-box.new { position: relative; }
+.flow-box.new::after {
+  content: 'NEW';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--gold);
+  color: white;
+  font-size: 8px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+}
+.flow-arrow {
+  font-size: 18px;
+  color: var(--sage);
+  font-weight: 300;
+}
+
+/* ── Tables ──────────────────────────────────── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 12px 0;
+}
+th {
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--teal);
+  color: var(--cream);
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+tr:hover td { background: rgba(16,43,38,0.02); }
+.mono { font-family: 'DM Mono', monospace; font-size: 12px; }
+.severity-red { color: var(--red); font-weight: 600; }
+.severity-amber { color: var(--amber); font-weight: 600; }
+.severity-info { color: var(--info); font-weight: 600; }
+.severity-green { color: var(--green); font-weight: 600; }
+
+/* ── Callouts ────────────────────────────────── */
+.callout {
+  background: white;
+  border-left: 3px solid var(--gold);
+  padding: 14px 18px;
+  margin: 16px 0;
+  font-size: 13px;
+  border-radius: 0 4px 4px 0;
+}
+.callout.principle { border-left-color: var(--teal); }
+.callout-title { font-weight: 600; color: var(--teal); margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ── Legend ───────────────────────────────────── */
+.legend {
+  display: flex;
+  gap: 20px;
+  margin: 16px 0;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.legend-dot.engine { background: var(--sage); }
+.legend-dot.agent { background: var(--gold); }
+.legend-dot.script { background: var(--info); }
+.legend-dot.auto { background: var(--green); }
+
+/* ── Print ───────────────────────────────────── */
+@media print {
+  .section-body { display: block !important; }
+  .section-header .chevron { display: none; }
+  .header { padding: 30px; }
+  body { font-size: 11px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Autonomous Systems Architecture</h1>
+  <div class="subtitle">AWARE Hair AI Employee Team - Complete Reference</div>
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-value">11</div><div class="stat-label">Engines</div></div>
+    <div class="stat"><div class="stat-value">9</div><div class="stat-label">Agents</div></div>
+    <div class="stat"><div class="stat-value">46</div><div class="stat-label">Signals</div></div>
+    <div class="stat"><div class="stat-value">41</div><div class="stat-label">Scheduled Jobs</div></div>
+    <div class="stat"><div class="stat-value">63%</div><div class="stat-label">Utility Rate</div></div>
+    <div class="stat"><div class="stat-value">874</div><div class="stat-label">Total Sessions</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- CORE PHILOSOPHY -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section open" id="philosophy">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>Core Philosophy</h2>
+    <span class="chevron">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="callout principle">
+      <div class="callout-title">The Fundamental Rule</div>
+      <strong>Engines for math, Claude for prose.</strong> Deterministic Node.js engines handle data processing (API calls, scoring, diffing) at zero token cost. Claude agents read engine output and handle judgment calls (drafting, synthesis, strategy).
+    </div>
+
+    <h3>Two-Layer Architecture</h3>
+    <div class="flow">
+      <div class="flow-row">
+        <div class="flow-box" style="background:#f0ede8">Engine Layer<br><span style="font-size:11px;color:var(--text-secondary)">Node.js, zero tokens, deterministic</span></div>
+        <div class="flow-arrow">+</div>
+        <div class="flow-box" style="background:#f5f0ea">Agent Layer<br><span style="font-size:11px;color:var(--text-secondary)">Claude, judgment calls, prose</span></div>
+        <div class="flow-arrow">=</div>
+        <div class="flow-box primary">AI Employee Team</div>
+      </div>
+    </div>
+
+    <h3>Design Principles</h3>
+    <table>
+      <tr><td><strong>Autonomous discovery, human-approved action</strong></td><td>System finds opportunities and proposes improvements. David approves or rejects.</td></tr>
+      <tr><td><strong>Evidence-based, not vibes-based</strong></td><td>Every opportunity traces to a data signal. Every proposal cites feedback data.</td></tr>
+      <tr><td><strong>Reversible by default</strong></td><td>Proposals go to staging directories. Prompt changes are versioned. Nothing permanent without approval.</td></tr>
+      <tr><td><strong>Tier-based autonomy</strong></td><td>Tier 0: observe. Tier 1: draft. Tier 2: needs approval. Tier 3: always blocked. System earns trust through demonstrated competence.</td></tr>
+      <tr><td><strong>Self-improvement through Reflexion</strong></td><td>Every agent self-reflects in handoffs. OPTIMIZER tracks quality trends. The system gets smarter over time.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- ORG CHART -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section open" id="org-chart">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>Organization Chart</h2>
+    <span class="chevron">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="org-chart">
+      <!-- David -->
+      <div class="org-level">
+        <div class="org-node david">
+          <div class="name">David Zhao</div>
+          <div class="role">Founder - Approves, Decides, Steers</div>
+        </div>
+      </div>
+      <div class="org-connector"></div>
+
+      <!-- CHIEF -->
+      <div class="org-level">
+        <div class="org-node agent">
+          <div class="name">CHIEF</div>
+          <div class="role">Chief of Staff - Orchestrator</div>
+        </div>
+      </div>
+      <div class="org-connector"></div>
+      <div class="org-branch"></div>
+
+      <!-- Domain Agents -->
+      <div class="org-level">
+        <div class="org-node agent">
+          <div class="name">CLOSER</div>
+          <div class="role">B2B Sales Lead</div>
+        </div>
+        <div class="org-node agent">
+          <div class="name">STEWARD</div>
+          <div class="role">Account Manager</div>
+        </div>
+        <div class="org-node agent">
+          <div class="name">SUPPLIER</div>
+          <div class="role">Supply Chain</div>
+        </div>
+        <div class="org-node agent">
+          <div class="name">MARKETER</div>
+          <div class="role">Marketing Director</div>
+        </div>
+        <div class="org-node agent">
+          <div class="name">HERALD</div>
+          <div class="role">PR &amp; Awards</div>
+        </div>
+        <div class="org-node agent">
+          <div class="name">STRATEGIST</div>
+          <div class="role">Growth Analyst</div>
+        </div>
+        <div class="org-node agent">
+          <div class="name">FUNNEL</div>
+          <div class="role">DTC Lifecycle</div>
+        </div>
+      </div>
+      <div class="org-connector"></div>
+
+      <!-- Meta Agent -->
+      <div class="org-level">
+        <div class="org-node agent" style="border-left-color: var(--green);">
+          <div class="name">OPTIMIZER</div>
+          <div class="role">System Self-Improvement</div>
+        </div>
+      </div>
+      <div class="org-connector"></div>
+      <div class="org-branch"></div>
+
+      <!-- Engines -->
+      <div class="org-level">
+        <div class="org-node engine"><div class="name">SENTINEL</div><div class="role">B2B Health</div></div>
+        <div class="org-node engine"><div class="name">SCOUT</div><div class="role">Competitors</div></div>
+        <div class="org-node engine"><div class="name">PUBLISHER</div><div class="role">SEO/AI Queries</div></div>
+        <div class="org-node engine"><div class="name">SHEPHERD</div><div class="role">Sample Pipeline</div></div>
+        <div class="org-node engine"><div class="name">COURIER</div><div class="role">Follow-ups</div></div>
+      </div>
+      <div style="height:8px"></div>
+      <div class="org-level">
+        <div class="org-node engine"><div class="name">BEACON</div><div class="role">Weekly Digest</div></div>
+        <div class="org-node engine"><div class="name">AUDITOR</div><div class="role">Revenue/Tax</div></div>
+        <div class="org-node engine"><div class="name">WATCHDOG</div><div class="role">System Health</div></div>
+        <div class="org-node engine"><div class="name">OPTIMIZER ENG</div><div class="role">Metrics</div></div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot agent"></div> Claude Agent (uses tokens, makes judgments)</div>
+      <div class="legend-item"><div class="legend-dot engine"></div> Node.js Engine (zero tokens, deterministic)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- DATA FLOW -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="data-flow">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>Data Flow</h2>
+    <span class="badge">HOW IT ALL CONNECTS</span>
+    <span class="chevron">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <h3>The Signal Bus</h3>
+    <p>All engines write to a shared file: <code>~/.config/aware-hair/data/signal-results.json</code>. This is the nervous system - every alert, opportunity, and status update flows through it.</p>
+
+    <div class="flow">
+      <div class="flow-row">
+        <div class="flow-box" style="background:#f0ede8">SENTINEL</div>
+        <div class="flow-box" style="background:#f0ede8">SCOUT</div>
+        <div class="flow-box" style="background:#f0ede8">PUBLISHER</div>
+        <div class="flow-box" style="background:#f0ede8">SHEPHERD</div>
+        <div class="flow-box" style="background:#f0ede8">+ 7 more</div>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-row">
+        <div class="flow-box primary" style="min-width:300px">Signal Bus<br><span style="font-size:11px;opacity:0.8">signal-results.json - 46 signal types</span></div>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-row">
+        <div class="flow-box gold">Task Generator<br><span style="font-size:11px;color:var(--text-secondary)">20:00 daily</span></div>
+        <div class="flow-box gold">CHIEF<br><span style="font-size:11px;color:var(--text-secondary)">07:30 daily</span></div>
+        <div class="flow-box gold">Domain Agents<br><span style="font-size:11px;color:var(--text-secondary)">Various schedules</span></div>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-row">
+        <div class="flow-box" style="background:#f5f0ea">Overnight Tasks</div>
+        <div class="flow-box" style="background:#f5f0ea">Daily Priority Brief</div>
+        <div class="flow-box" style="background:#f5f0ea">Drafts &amp; Analysis</div>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-row">
+        <div class="flow-box primary" style="min-width:300px">David Reviews<br><span style="font-size:11px;opacity:0.8">/morning-brief, /standup, /goodnight</span></div>
+      </div>
+    </div>
+
+    <h3>Session Data Flow (New)</h3>
+    <p>Interactive sessions now flow into the agent team through the daily journal.</p>
+    <div class="flow">
+      <div class="flow-row">
+        <div class="flow-box primary">David's Interactive Sessions</div>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-row">
+        <div class="flow-box">session-end-summary.sh<br><span style="font-size:11px;color:var(--text-secondary)">Stop hook, auto-fires</span></div>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-row">
+        <div class="flow-box gold">Daily Journal<br><span style="font-size:11px;color:var(--text-secondary)">assistant/journal/YYYY-MM-DD.yaml</span></div>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-row">
+        <div class="flow-box new">CHIEF reads it</div>
+        <div class="flow-box new">/standup shows it</div>
+        <div class="flow-box new">/morning-brief includes it</div>
+      </div>
+    </div>
+
+    <h3>Self-Improvement Loop</h3>
+    <div class="flow">
+      <div class="flow-row">
+        <div class="flow-box" style="background:#f5f0ea">Agents produce work</div>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-row">
+        <div class="flow-box new">Self-Reflection in handoff<br><span style="font-size:11px;color:var(--text-secondary)">Quality score 1-5 with evidence</span></div>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-row">
+        <div class="flow-box new">OPTIMIZER reads reflections<br><span style="font-size:11px;color:var(--text-secondary)">Tracks trends per agent</span></div>
+        <div class="flow-box">David rates output<br><span style="font-size:11px;color:var(--text-secondary)">/rate-overnight, /standup</span></div>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-row">
+        <div class="flow-box new" style="border:2px solid var(--gold)">Proposals<br><span style="font-size:11px;color:var(--text-secondary)">assistant/state/proposals/</span></div>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-row">
+        <div class="flow-box primary">David approves/rejects<br><span style="font-size:11px;opacity:0.8">/morning-brief, /calibrate</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- DAILY SCHEDULE -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="schedule">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>Daily Schedule</h2>
+    <span class="badge">24-HOUR CYCLE</span>
+    <span class="chevron">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot engine"></div> Engine (zero tokens)</div>
+      <div class="legend-item"><div class="legend-dot agent"></div> Agent (Claude)</div>
+      <div class="legend-item"><div class="legend-dot script"></div> Script (data pull)</div>
+      <div class="legend-item"><div class="legend-dot auto"></div> Automation</div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item engine"><div class="timeline-time">02:00</div><span class="label">SCOUT</span> <span class="desc">- Competitor page scraping, snapshot diffing</span></div>
+      <div class="timeline-item auto"><div class="timeline-time">05:00</div><span class="label">Overnight Compile</span> <span class="desc">- Aggregates overnight results into summary</span></div>
+      <div class="timeline-item auto"><div class="timeline-time">05:30</div><span class="label">State Sync</span> <span class="desc">- Refresh state files from Notion</span></div>
+      <div class="timeline-item script"><div class="timeline-time">06:00</div><span class="label">Shopify Snapshot</span> <span class="desc">- Orders, inventory, customer data pull</span></div>
+      <div class="timeline-item script"><div class="timeline-time">06:15</div><span class="label">Klaviyo Metrics</span> <span class="desc">- Email performance, list growth</span></div>
+      <div class="timeline-item script"><div class="timeline-time">06:30</div><span class="label">GSC Performance</span> <span class="desc">- Search rankings, indexing status</span></div>
+      <div class="timeline-item engine"><div class="timeline-time">06:45</div><span class="label">PUBLISHER</span> <span class="desc">- SEO AI query analysis, opportunity scoring</span></div>
+      <div class="timeline-item engine"><div class="timeline-time">06:50</div><span class="label">SENTINEL</span> <span class="desc">- Salon reorder health, stockout projection</span></div>
+      <div class="timeline-item script"><div class="timeline-time">07:00</div><span class="label">Morning Brief</span> <span class="desc">- Compile data for David's briefing</span></div>
+      <div class="timeline-item engine"><div class="timeline-time">07:15</div><span class="label">SHEPHERD</span> <span class="desc">- Sample kit follow-up pipeline</span></div>
+      <div class="timeline-item agent"><div class="timeline-time">07:30</div><span class="label">CHIEF</span> <span class="desc">- Reads everything, produces Daily Priority Brief</span></div>
+      <div class="timeline-item agent"><div class="timeline-time">08:00</div><span class="label">MARKETER</span> <span class="desc">- Content calendar, ad briefs, social (Mon-Fri)</span></div>
+      <div class="timeline-item engine"><div class="timeline-time">08:30</div><span class="label">COURIER</span> <span class="desc">- Follow-up draft scanner, overdue thread matcher (weekdays)</span></div>
+      <div class="timeline-item script"><div class="timeline-time">09:00</div><span class="label">Pipeline Check</span> <span class="desc">- Sales pipeline status (weekdays)</span></div>
+      <div class="timeline-item agent"><div class="timeline-time">09:30</div><span class="label">CLOSER</span> <span class="desc">- Salon acquisition, warm leads (weekdays)</span></div>
+      <div class="timeline-item agent"><div class="timeline-time">10:00</div><span class="label">HERALD</span> <span class="desc">- PR, awards, media outreach (Tue+Fri)</span></div>
+      <div class="timeline-item agent"><div class="timeline-time">10:00</div><span class="label">STRATEGIST</span> <span class="desc">- Growth analysis, opportunity synthesis (Wed)</span></div>
+      <div class="timeline-item agent"><div class="timeline-time">10:30</div><span class="label">STEWARD</span> <span class="desc">- Account management, reorder reminders (Tue+Thu)</span></div>
+      <div class="timeline-item agent"><div class="timeline-time">11:00</div><span class="label">SUPPLIER</span> <span class="desc">- Supply chain, IPSY, capacity (Mon+Wed+Fri)</span></div>
+      <div class="timeline-item script"><div class="timeline-time">12:00</div><span class="label">Midday Pulse</span> <span class="desc">- Quick status check (weekdays)</span></div>
+      <div class="timeline-item script"><div class="timeline-time">14:00</div><span class="label">Content Status</span> <span class="desc">- Content pipeline check (weekdays)</span></div>
+      <div class="timeline-item script"><div class="timeline-time">17:00</div><span class="label">End of Day</span> <span class="desc">- Day summary, prep tomorrow (weekdays)</span></div>
+      <div class="timeline-item agent"><div class="timeline-time">18:00</div><span class="label">OPTIMIZER</span> <span class="desc">- System self-improvement review (Sunday only)</span></div>
+      <div class="timeline-item auto"><div class="timeline-time">20:00</div><span class="label">Task Generator</span> <span class="desc">- Creates overnight tasks from signal thresholds</span></div>
+      <div class="timeline-item auto"><div class="timeline-time">21:00</div><span class="label">Overnight Dispatch</span> <span class="desc">- Executes queue, SEO content, competitor intel, deep-think</span></div>
+      <div class="timeline-item engine"><div class="timeline-time">22:00</div><span class="label">OPTIMIZER Engine</span> <span class="desc">- System health metrics collection</span></div>
+      <div class="timeline-item auto"><div class="timeline-time">23:00</div><span class="label">Repo Cleanup</span> <span class="desc">- Git hygiene, stale file detection</span></div>
+      <div class="timeline-item script"><div class="timeline-time">*:00</div><span class="label">Health Check</span> <span class="desc">- Hourly system health monitoring</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- ENGINES -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="engines">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>Engine Layer</h2>
+    <span class="badge">11 ENGINES</span>
+    <span class="chevron">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="callout">
+      <div class="callout-title">Engine Contract (7 Steps)</div>
+      Every engine follows the same pipeline defined in <code>engine-base.mjs</code>: Data Pull, Filter, Cluster, Score, Context Check (vs previous run), Brief Gen, Signal Emit.
+    </div>
+
+    <table>
+      <tr><th>Engine</th><th>Agent Name</th><th>Schedule</th><th>What It Does</th><th>Signals Emitted</th></tr>
+      <tr><td class="mono">b2b-health-engine.mjs</td><td>SENTINEL</td><td>Daily 06:50</td><td>Salon reorder health scoring, stockout projection</td><td>reorder_overdue_high_ltv, stockout_within_lead_time, reorder_rate_decline, salon_expansion_ready, cohort_growth_trend</td></tr>
+      <tr><td class="mono">seo-engine.mjs</td><td>PUBLISHER</td><td>Daily 06:45</td><td>AI query clustering from GSC, opportunity scoring</td><td>seo_strike_distance, zero_competition_opportunity, trending_topic</td></tr>
+      <tr><td class="mono">competitor-engine.mjs</td><td>SCOUT</td><td>Nightly 02:00</td><td>Competitor page scraping, snapshot diffing</td><td>competitor_material_change, competitor_new_product, competitor_product_gap, competitor_strategy_shift</td></tr>
+      <tr><td class="mono">shepherd-engine.mjs</td><td>SHEPHERD</td><td>Daily 07:15</td><td>Sample kit follow-up pipeline (Day 5/14/21/35)</td><td>sample_decision_call_due, sample_arrival_check_due, sample_first_checkin_due</td></tr>
+      <tr><td class="mono">courier-dispatch.mjs</td><td>COURIER</td><td>Weekdays 08:30</td><td>Scans ready follow-up drafts, matches overdue threads</td><td>cold_campaign_reply_rate</td></tr>
+      <tr><td class="mono">beacon-engine.mjs</td><td>BEACON</td><td>Saturday 08:00</td><td>Weekly performance digest (Shopify + Klaviyo + engines)</td><td>(aggregates other signals)</td></tr>
+      <tr><td class="mono">auditor-engine.mjs</td><td>AUDITOR</td><td>Friday 16:30</td><td>Revenue projection, concentration risk, tax deadlines</td><td>revenue_below_projection, tax_deadline_urgent</td></tr>
+      <tr><td class="mono">account-health-engine.mjs</td><td>-</td><td>Daily</td><td>SKU penetration, AOV trends, cohort retention</td><td>expansion_opportunity, aov_decline, cohort_retention_drop</td></tr>
+      <tr><td class="mono">capacity-engine.mjs</td><td>-</td><td>Daily</td><td>Demand/supply gaps, allocation conflicts</td><td>capacity_gap_critical, allocation_conflict, cash_shortfall</td></tr>
+      <tr><td class="mono">watchdog-engine.mjs</td><td>-</td><td>Daily</td><td>N8N health, email deliverability, DNS auth</td><td>n8n_instance_down, email_bounce_rate_high, dns_auth_degraded</td></tr>
+      <tr><td class="mono">optimizer-engine.mjs</td><td>-</td><td>Daily 22:00</td><td>Engine reliability, signal quality, lock contention</td><td>system_degradation, engine_reliability_drop, schedule_contention</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- AGENTS -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="agents">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>Agent Layer</h2>
+    <span class="badge">9 AGENTS</span>
+    <span class="chevron">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="callout">
+      <div class="callout-title">Agent Protocol</div>
+      Each agent has: persona file (.md), goals file, heartbeat config, and optional soul file. All run via <code>run-agent.sh</code> with Sonnet model, 25 max turns, and restricted tool access. Every handoff includes a self-reflection score (1-5).
+    </div>
+
+    <table>
+      <tr><th>Agent</th><th>Role</th><th>Schedule</th><th>Reads</th><th>Writes</th></tr>
+      <tr><td><strong>CHIEF</strong></td><td>Orchestrator</td><td>Daily 07:30</td><td>ALL engine signals, ALL agent handoffs, David's journal, state files, Command Center</td><td>Daily Priority Brief, task proposals, alerts</td></tr>
+      <tr><td><strong>CLOSER</strong></td><td>B2B Sales</td><td>Weekdays 09:30</td><td>SENTINEL, SHEPHERD, pipeline data</td><td>Outreach drafts, prospect analysis, pipeline updates</td></tr>
+      <tr><td><strong>STEWARD</strong></td><td>Account Mgr</td><td>Tue+Thu 10:30</td><td>Account health, reorder data</td><td>Check-in drafts, SKU expansion recs</td></tr>
+      <tr><td><strong>SUPPLIER</strong></td><td>Supply Chain</td><td>Mon+Wed+Fri 11:00</td><td>Capacity, IPSY tracker, SENTINEL</td><td>PO drafts, capacity forecasts</td></tr>
+      <tr><td><strong>MARKETER</strong></td><td>Marketing</td><td>Mon-Fri 08:00</td><td>Content calendar, PUBLISHER, social metrics</td><td>Content briefs, ad copy drafts</td></tr>
+      <tr><td><strong>HERALD</strong></td><td>PR &amp; Awards</td><td>Tue+Fri 10:00</td><td>Award calendar, press contacts</td><td>Application drafts, press pitches</td></tr>
+      <tr><td><strong>STRATEGIST</strong></td><td>Growth</td><td>Wed 10:00</td><td>ALL signals, AUDITOR, opportunity signals</td><td>Strategy memos, Opportunity Brief, experiment proposals</td></tr>
+      <tr><td><strong>FUNNEL</strong></td><td>DTC Lifecycle</td><td>Wed+Sat 09:00</td><td>Klaviyo data, Scalp Report metrics</td><td>Email sequence drafts, funnel analysis</td></tr>
+      <tr><td><strong>OPTIMIZER</strong></td><td>Self-Improvement</td><td>Sunday 18:00</td><td>ALL metrics, ALL reflections, 12 GitHub repos, MEMORY.md</td><td>Proposals, weekly report, chief-log</td></tr>
+    </table>
+
+    <h3>The Handoff Protocol</h3>
+    <p>Every agent session produces a structured handoff file at <code>assistant/state/handoffs/{date}-{agent}.md</code> containing:</p>
+    <table>
+      <tr><td><strong>1. WORK COMPLETED</strong></td><td>What was done this session</td></tr>
+      <tr><td><strong>2. TASKS FLIPPED</strong></td><td>Which goals were advanced</td></tr>
+      <tr><td><strong>3. BLOCKERS</strong></td><td>What prevented more progress</td></tr>
+      <tr><td><strong>4. NEXT SESSION</strong></td><td>Recommended work for next heartbeat</td></tr>
+      <tr><td><strong>5. FOR DAVID</strong></td><td>Items requiring human action (max 3)</td></tr>
+      <tr><td><strong>6. SELF-REFLECTION</strong></td><td>Quality score 1-5 with evidence (Reflexion pattern)</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SIGNALS -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="signals">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>Signal System</h2>
+    <span class="badge">46 SIGNALS</span>
+    <span class="chevron">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <h3>Signal Types</h3>
+    <table>
+      <tr><th>Type</th><th>Count</th><th>Purpose</th><th>Example</th></tr>
+      <tr><td><span class="severity-red">Metric Signals</span></td><td>33</td><td>Fire when a value crosses a threshold</td><td>reorder_overdue_high_ltv, stockout_within_lead_time</td></tr>
+      <tr><td><span class="severity-amber">Staleness Signals</span></td><td>3</td><td>Fire when data hasn't been refreshed</td><td>competitor_intel_stale (7+ days)</td></tr>
+      <tr><td><span class="severity-amber">Pipeline Signals</span></td><td>4</td><td>Fire when work gaps are detected</td><td>no_active_outreach (5+ days)</td></tr>
+      <tr><td><span class="severity-info">Opportunity Signals</span></td><td>6</td><td>Fire when positive opportunities are detected</td><td>salon_expansion_ready, zero_competition_opportunity</td></tr>
+    </table>
+
+    <h3>Severity Levels</h3>
+    <table>
+      <tr><td><span class="severity-red">RED</span></td><td>Immediate attention - revenue at risk, system failure</td></tr>
+      <tr><td><span class="severity-amber">AMBER</span></td><td>Action needed soon - approaching thresholds, overdue items</td></tr>
+      <tr><td style="color:#B8860B">YELLOW</td><td>Worth monitoring - early warning, non-urgent</td></tr>
+      <tr><td><span class="severity-green">GREEN</span></td><td>Healthy / positive status</td></tr>
+      <tr><td><span class="severity-info">INFO</span></td><td>Opportunity signal - something positive to investigate</td></tr>
+    </table>
+
+    <h3>Signal-to-Task Pipeline</h3>
+    <p>Each signal definition in <code>signal-thresholds.yaml</code> includes a <code>task_template</code> that the 20:00 task generator uses to create overnight tasks automatically.</p>
+    <div class="flow">
+      <div class="flow-row">
+        <div class="flow-box" style="background:#f0ede8">Engine emits signal</div>
+        <div class="flow-arrow">&#8594;</div>
+        <div class="flow-box">signal-results.json</div>
+        <div class="flow-arrow">&#8594;</div>
+        <div class="flow-box">Task generator matches threshold</div>
+        <div class="flow-arrow">&#8594;</div>
+        <div class="flow-box" style="background:#f5f0ea">task-queue.yaml</div>
+        <div class="flow-arrow">&#8594;</div>
+        <div class="flow-box primary">Overnight dispatch executes</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- OVERNIGHT -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="overnight">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>Overnight Automation</h2>
+    <span class="badge">21:00 - 04:30</span>
+    <span class="chevron">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <h3>The Nightly Pipeline</h3>
+    <table>
+      <tr><th>Phase</th><th>Time</th><th>What Happens</th></tr>
+      <tr><td><strong>1. Queue Processing</strong></td><td>21:00</td><td>Execute up to 5 pending tasks from task-queue.yaml by priority</td></tr>
+      <tr><td><strong>2. SEO Content</strong></td><td>~21:15</td><td>Read PUBLISHER output, draft blog content targeting keyword clusters</td></tr>
+      <tr><td><strong>3. Competitor Intel</strong></td><td>~21:30</td><td>If SCOUT detected material changes (score >= 3), synthesize strategic implications</td></tr>
+      <tr><td><strong>4. Lead Enrichment</strong></td><td>~21:45</td><td>Enrich salon prospects or find new targets</td></tr>
+      <tr><td><strong>5. Deep-Think</strong></td><td>~22:00</td><td>If STRATEGIST flagged a high-priority opportunity, run extended analysis (1200s)</td></tr>
+      <tr><td><strong>6. Repo Maintenance</strong></td><td>~22:30</td><td>Stale file scan, TODO audit (read-only)</td></tr>
+    </table>
+
+    <div class="callout">
+      <div class="callout-title">Safety Mechanisms</div>
+      Hard deadline at 04:30 AM (frees lock for morning tasks at 05:00). Single-process lock prevents concurrent runs. Auth pre-check fast-fails on expired tokens. All tasks limited to Tier 0-1 (observe/draft only).
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SELF-IMPROVEMENT -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="self-improvement">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>Self-Improvement System</h2>
+    <span class="badge">AUTONOMOUS LEARNING</span>
+    <span class="chevron">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <h3>Three Feedback Loops</h3>
+    <table>
+      <tr><th>Loop</th><th>Frequency</th><th>How It Works</th></tr>
+      <tr><td><strong>Reflexion (agent self-review)</strong></td><td>Every session</td><td>Each agent rates its own output 1-5 with evidence. OPTIMIZER tracks trends. Declining quality triggers prompt review.</td></tr>
+      <tr><td><strong>Task Feedback (David's ratings)</strong></td><td>Via /standup, /rate-overnight</td><td>David marks tasks as used/skipped/reworked. Utility rate tracked per engine, agent, and signal type. Target: >60%.</td></tr>
+      <tr><td><strong>Monthly Calibration</strong></td><td>Via /calibrate</td><td>OPTIMIZER proposes threshold changes based on 30-day feedback data. David approves/rejects each change.</td></tr>
+    </table>
+
+    <h3>OPTIMIZER's Weekly Review (Sunday 18:00)</h3>
+    <table>
+      <tr><td><strong>Step 1-4</strong></td><td>Read system metrics, agent handoffs, standup log, task feedback, agent self-reflections</td></tr>
+      <tr><td><strong>Step 5</strong></td><td>Scan 12 GitHub repos for external innovation (autoresearch, overstory, ralph-orchestrator, reflexion, dspy, etc.)</td></tr>
+      <tr><td><strong>Step 6</strong></td><td>Cross-reference: signal calibration, agent quality, engine reliability, external tools</td></tr>
+      <tr><td><strong>Step 7</strong></td><td>Write weekly improvement report</td></tr>
+      <tr><td><strong>Step 7b</strong></td><td>Write proposals to <code>assistant/state/proposals/</code> for David's review</td></tr>
+      <tr><td><strong>Step 7c</strong></td><td>Review MEMORY.md for patterns to promote to CLAUDE.md rules</td></tr>
+    </table>
+
+    <h3>Current Metrics</h3>
+    <table>
+      <tr><td><strong>Utility Rate</strong></td><td class="severity-green">63%</td><td>Tasks whose output was actually used</td></tr>
+      <tr><td><strong>Override Rate</strong></td><td>13%</td><td>Tasks David deleted or skipped</td></tr>
+      <tr><td><strong>Accuracy Rate</strong></td><td>60%</td><td>Drafts used without major rework</td></tr>
+      <tr><td><strong>Target</strong></td><td class="severity-amber">>60% utility before expanding to Tier 2</td><td></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- HUMAN TOUCHPOINTS -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="touchpoints">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>Human Touchpoints</h2>
+    <span class="badge">DAVID'S CONTROLS</span>
+    <span class="chevron">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <h3>Daily Workflow</h3>
+    <table>
+      <tr><th>Command</th><th>When</th><th>What It Does</th></tr>
+      <tr><td class="mono">/morning-brief</td><td>Start of day</td><td>Calendar, tasks, overnight results, proposals, opportunities, session recap</td></tr>
+      <tr><td class="mono">/standup</td><td>After morning brief</td><td>Report updates to CHIEF, mark items done, auto-captures feedback</td></tr>
+      <tr><td class="mono">/plan-day</td><td>After standup</td><td>Schedule tasks around calendar commitments</td></tr>
+      <tr><td class="mono">/next</td><td>During day</td><td>AI-prioritized task recommendation</td></tr>
+      <tr><td class="mono">/queue-task</td><td>Anytime</td><td>Add task to overnight queue</td></tr>
+      <tr><td class="mono">/rush-task</td><td>When urgent</td><td>Execute a queued task immediately</td></tr>
+      <tr><td class="mono">/goodnight</td><td>End of day</td><td>Review, modify, approve overnight queue</td></tr>
+      <tr><td class="mono">/end-day</td><td>End of day</td><td>Session summary, prep tomorrow</td></tr>
+    </table>
+
+    <h3>Periodic Reviews</h3>
+    <table>
+      <tr><td class="mono">/rate-overnight</td><td>Morning</td><td>Quick 60-second quality rating of overnight output</td></tr>
+      <tr><td class="mono">/calibrate</td><td>Monthly</td><td>Review signal thresholds, retire noisy signals, adjust</td></tr>
+      <tr><td class="mono">/optimize-workflow</td><td>Monthly</td><td>Audit Claude Code setup, hooks, MCP servers</td></tr>
+      <tr><td class="mono">/automation-status</td><td>Anytime</td><td>Check what's running, queued, and health</td></tr>
+      <tr><td class="mono">/pause-automation</td><td>Emergency</td><td>Halt all autonomous operations</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- KEY FILES -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="files">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>Key Files Reference</h2>
+    <span class="chevron">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <h3>Infrastructure</h3>
+    <table>
+      <tr><th>File</th><th>Purpose</th></tr>
+      <tr><td class="mono">engines/engine-base.mjs</td><td>Shared engine utilities (emitSignal, saveRunData, loadPreviousRun)</td></tr>
+      <tr><td class="mono">~/.config/aware-hair/cron/run-agent.sh</td><td>Generic agent runner (lock, env, prompt extraction, handoff protocol)</td></tr>
+      <tr><td class="mono">~/.config/aware-hair/cron/wrapper.sh</td><td>Shared wrapper (claude.lock, auth pre-check, run_claude helper)</td></tr>
+      <tr><td class="mono">~/.config/aware-hair/cron/overnight-dispatch.sh</td><td>6-phase overnight execution pipeline</td></tr>
+      <tr><td class="mono">~/.config/aware-hair/cron/generate-tasks.sh</td><td>Signal-to-task converter (20:00 daily)</td></tr>
+    </table>
+
+    <h3>Data</h3>
+    <table>
+      <tr><td class="mono">~/.config/aware-hair/data/signal-results.json</td><td>Signal bus - all engines write, consumers read</td></tr>
+      <tr><td class="mono">~/.config/aware-hair/data/{engine}.json</td><td>Per-engine data output</td></tr>
+      <tr><td class="mono">~/.config/aware-hair/briefs/YYYY-MM-DD/</td><td>Daily engine briefs (human-readable markdown)</td></tr>
+      <tr><td class="mono">assistant/state/signal-thresholds.yaml</td><td>46 signal definitions with task templates</td></tr>
+      <tr><td class="mono">assistant/state/task-queue.yaml</td><td>Overnight task queue (pending/completed/failed)</td></tr>
+      <tr><td class="mono">assistant/state/task-feedback.yaml</td><td>Quality tracking (utility rate, per-engine, per-agent)</td></tr>
+      <tr><td class="mono">assistant/state/proposals/</td><td>OPTIMIZER improvement proposals (pending review)</td></tr>
+      <tr><td class="mono">assistant/state/handoffs/</td><td>Agent handoff files with self-reflections</td></tr>
+      <tr><td class="mono">assistant/journal/YYYY-MM-DD.yaml</td><td>Daily session journal (interactive session data)</td></tr>
+    </table>
+
+    <h3>Agent Definitions</h3>
+    <table>
+      <tr><td class="mono">.claude/agents/{name}.md</td><td>Agent persona, heartbeat protocol, output format, boundaries</td></tr>
+      <tr><td class="mono">.claude/agents/goals/{name}-goals.md</td><td>Current goals (this week, this month, standing orders)</td></tr>
+      <tr><td class="mono">.claude/agents/heartbeats/{name}-heartbeat.md</td><td>Schedule, input sources, decision loop, escalation triggers</td></tr>
+      <tr><td class="mono">.claude/agents/souls/{name}-soul.md</td><td>Voice, personality, decision principles</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- TIER SYSTEM -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="tiers">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>Tier System &amp; Safety</h2>
+    <span class="chevron">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <table>
+      <tr><th>Tier</th><th>Autonomy Level</th><th>Examples</th></tr>
+      <tr><td><strong>Tier 0</strong></td><td>Observe/report only - writes to assistant/state/ only</td><td>Health alerts, staleness reports, metric anomaly analysis</td></tr>
+      <tr><td><strong>Tier 1</strong></td><td>Draft to file - creates content but nothing external</td><td>Email drafts, outreach copy, blog articles, analysis reports</td></tr>
+      <tr><td><strong>Tier 2</strong></td><td>Requires explicit approval - David must approve</td><td>Email sends, campaign changes, Shopify updates, financial writes</td></tr>
+      <tr><td><strong>Tier 3</strong></td><td>Always blocked - never autonomous</td><td>Theme push to live, customer-facing changes, spending money</td></tr>
+    </table>
+
+    <div class="callout principle">
+      <div class="callout-title">Trust Building</div>
+      The system earns autonomy through demonstrated competence. When task utility rate consistently exceeds 75% for a signal type, OPTIMIZER proposes promoting related tasks from Tier 1 to Tier 2 (with David's approval). Current utility rate: 63% - not yet at the promotion threshold.
+    </div>
+
+    <h3>Safety Mechanisms</h3>
+    <table>
+      <tr><td><strong>Single-process lock</strong></td><td><code>~/.config/aware-hair/locks/claude.lock</code> prevents concurrent Claude sessions</td></tr>
+      <tr><td><strong>Per-agent locks</strong></td><td>Each agent has its own lock file, stale after 900 seconds</td></tr>
+      <tr><td><strong>Hard deadline</strong></td><td>Overnight dispatch stops at 04:30 AM to free lock for morning tasks</td></tr>
+      <tr><td><strong>Auth pre-check</strong></td><td>5-second token validation before any Claude call (fast-fail)</td></tr>
+      <tr><td><strong>Pause mechanism</strong></td><td><code>/pause-automation</code> creates a flag file that all cron tasks check</td></tr>
+      <tr><td><strong>Max budget</strong></td><td>Pipe-mode sessions use <code>--max-budget-usd</code> to cap costs</td></tr>
+      <tr><td><strong>Max turns</strong></td><td>Agents limited to 25 turns, overnight tasks to 50 max</td></tr>
+      <tr><td><strong>Tool restrictions</strong></td><td>Agents only get <code>Read,Write,Edit,Grep,Glob,WebSearch,WebFetch</code></td></tr>
+    </table>
+  </div>
+</div>
+
+<div style="text-align:center; padding:40px 0 0; opacity:0.4; font-size:12px;">
+  Generated March 26, 2026 - Open in browser for best experience
+</div>
+
+</div><!-- /container -->
+
+<script>
+function toggle(header) {
+  header.closest('.section').classList.toggle('open');
+}
+// Open first two sections by default
+document.querySelectorAll('.section')[0]?.classList.add('open');
+document.querySelectorAll('.section')[1]?.classList.add('open');
+</script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

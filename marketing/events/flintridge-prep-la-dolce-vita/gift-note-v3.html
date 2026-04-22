@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - La Dolce Vita Gift Note v3</title>
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #102B26;
+    --cream: #f4efe9;
+    --cream-warm: #f6f1eb;
+    --gold: #D4A574;
+    --gold-dark: #b8885a;
+    --gold-light: #e8cba5;
+    --sage: #7d8471;
+    --lemon: #ddb94e;
+    --leaf: #6b7360;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #ddd8d1;
+    font-family: 'DM Sans', sans-serif;
+    color: #333;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .page-title {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--teal);
+    margin-bottom: 6px;
+    text-align: center;
+  }
+
+  .page-sub {
+    font-size: 12px;
+    color: var(--sage);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .critique-note {
+    max-width: 680px;
+    background: white;
+    border-left: 3px solid var(--gold);
+    padding: 14px 20px;
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 40px;
+    font-size: 11.5px;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  .critique-note strong { color: var(--teal); }
+
+  .card-display {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 50px;
+  }
+
+  .card-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #999;
+    font-weight: 500;
+  }
+
+  /* ========================
+     THE CARD - 3.5" x 3.5"
+     ======================== */
+  .card {
+    width: 3.5in;
+    height: 3.5in;
+    position: relative;
+    overflow: hidden;
+    background: var(--cream-warm);
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.04),
+      0 4px 16px rgba(0,0,0,0.08),
+      0 12px 40px rgba(0,0,0,0.06);
+  }
+
+  /* Gold edge painting simulation */
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2.5px solid var(--gold);
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* ========================
+     FRONT - Botanical Hero
+     ======================== */
+  .front {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.3in 0.32in 0.24in;
+    position: relative;
+  }
+
+  /* Single clean border inset */
+  .front .frame {
+    position: absolute;
+    inset: 0.16in;
+    border: 0.75px solid var(--gold);
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  /* Large botanical illustration - THE HERO */
+  .front .botanical-hero {
+    position: absolute;
+    top: -0.15in;
+    right: -0.3in;
+    opacity: 0.2;
+    z-index: 0;
+  }
+
+  .front .botanical-secondary {
+    position: absolute;
+    bottom: -0.1in;
+    left: -0.15in;
+    opacity: 0.12;
+    z-index: 0;
+    transform: rotate(140deg);
+  }
+
+  /* Content layers above botanical */
+  .front-top {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    width: 100%;
+  }
+
+  .event-ref {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 7px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 0.06in;
+    opacity: 0.7;
+  }
+
+  /* Real AWARE wordmark */
+  .logo-img {
+    height: 12px;
+    display: block;
+    margin: 0 auto 0.04in;
+    opacity: 0.9;
+  }
+
+  .gold-rule {
+    width: 24px;
+    height: 0.5px;
+    background: var(--gold);
+    margin: 0 auto;
+    opacity: 0.5;
+  }
+
+  /* Message */
+  .front-message {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 2.55in;
+  }
+
+  .front-message .para {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--teal);
+    margin-bottom: 0.06in;
+    font-weight: 400;
+  }
+
+  .front-message .para + .para {
+    margin-top: 0.04in;
+  }
+
+  /* Sign-off */
+  .front-signoff {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .signoff-line {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: 10px;
+    color: var(--sage);
+    margin-bottom: 0.01in;
+    font-weight: 400;
+  }
+
+  .signoff-names {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--teal);
+    letter-spacing: 0.01em;
+    font-weight: 400;
+  }
+
+
+  /* ========================
+     BACK - Clean QR
+     ======================== */
+  .back {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4in;
+    position: relative;
+  }
+
+  .back .frame {
+    position: absolute;
+    inset: 0.16in;
+    border: 0.75px solid var(--gold);
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  /* Logo at top of back */
+  .back-logo {
+    height: 11px;
+    margin-bottom: 0.12in;
+    opacity: 0.85;
+  }
+
+  .back-gift-line {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-style: italic;
+    font-size: 10px;
+    color: var(--sage);
+    margin-bottom: 0.18in;
+    letter-spacing: 0.03em;
+  }
+
+  /* QR code */
+  .qr-area {
+    width: 1.25in;
+    height: 1.25in;
+    border: 1.5px solid var(--teal);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    margin-bottom: 0.12in;
+    position: relative;
+  }
+
+  /* QR finder patterns */
+  .qr-finder {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+  }
+  .qr-finder .outer {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--teal);
+  }
+  .qr-finder .inner {
+    position: absolute;
+    inset: 5px;
+    background: var(--teal);
+  }
+  .qr-finder.f-tl { top: 7px; left: 7px; }
+  .qr-finder.f-tr { top: 7px; right: 7px; }
+  .qr-finder.f-bl { bottom: 7px; left: 7px; }
+
+  .qr-center {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 3px white;
+  }
+
+  .qr-center img {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+  }
+
+  .qr-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: var(--sage);
+    letter-spacing: 0.03em;
+    margin-bottom: 0.08in;
+  }
+
+  .back-url {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: var(--teal);
+    letter-spacing: 0.03em;
+    font-weight: 500;
+    margin-bottom: 0.03in;
+  }
+
+  .back-code {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    color: var(--sage);
+    letter-spacing: 0.06em;
+  }
+
+  /* Subtle botanical on back */
+  .back .botanical-ghost {
+    position: absolute;
+    bottom: 0.1in;
+    right: 0.15in;
+    opacity: 0.06;
+  }
+
+  /* ========================
+     NOTES
+     ======================== */
+  .notes {
+    max-width: 680px;
+    width: 100%;
+  }
+
+  .notes h3 {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--teal);
+    margin-bottom: 12px;
+  }
+
+  .changes-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .change {
+    background: white;
+    padding: 14px 16px;
+    border-radius: 4px;
+    border-left: 2px solid var(--gold);
+  }
+
+  .change h4 {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--teal);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .change p {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  .change .was { color: #c44; text-decoration: line-through; font-size: 10px; }
+  .change .now { color: #2a7; font-size: 10px; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<h1 class="page-title">The Gift Note v3</h1>
+<p class="page-sub">Rebuilt from 3 independent design critiques</p>
+
+<div class="critique-note">
+  <strong>v3 final:</strong> Condensed to ~40 words - keeps the heart (La Dolce Vita occasion, wellness/living well, citrus scent, LA origin, Flintridge Prep pride). Body text 12px (~9pt, readable at print). Single gold frame + edge painting. Botanical hero 20%. Real AWARE wordmark (Shopify CDN). "Tina & Jade" italic sign-off. Complimentary scalp analysis + light FLINTRIDGE code on back.
+</div>
+
+<div class="card-display">
+
+  <!-- ============ FRONT ============ -->
+  <div class="card-col">
+    <span class="card-label">Front</span>
+    <div class="card front">
+
+      <!-- Single clean frame -->
+      <div class="frame"></div>
+
+      <!-- Botanical hero - large, intentional -->
+      <div class="botanical-hero">
+        <svg width="180" height="220" viewBox="0 0 180 220" fill="none">
+          <!-- Main lemon -->
+          <ellipse cx="90" cy="110" rx="42" ry="58" stroke="var(--lemon)" stroke-width="1.8"/>
+          <!-- Internal structure -->
+          <ellipse cx="90" cy="110" rx="22" ry="36" stroke="var(--lemon)" stroke-width="0.7" opacity="0.5"/>
+          <line x1="90" y1="72" x2="90" y2="148" stroke="var(--lemon)" stroke-width="0.4" opacity="0.35"/>
+          <line x1="65" y1="88" x2="115" y2="132" stroke="var(--lemon)" stroke-width="0.4" opacity="0.35"/>
+          <line x1="65" y1="132" x2="115" y2="88" stroke="var(--lemon)" stroke-width="0.4" opacity="0.35"/>
+          <!-- Stem -->
+          <path d="M90 52 Q82 32, 66 22" stroke="var(--leaf)" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M90 52 Q98 36, 114 28" stroke="var(--leaf)" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Large right leaf -->
+          <path d="M114 28 Q132 16, 144 22 Q152 36, 142 48 Q130 40, 114 28" stroke="var(--leaf)" stroke-width="1" fill="var(--leaf)" fill-opacity="0.05"/>
+          <path d="M114 28 Q136 34, 142 48" stroke="var(--leaf)" stroke-width="0.6" opacity="0.4"/>
+          <!-- Left leaf -->
+          <path d="M66 22 Q50 12, 40 18 Q34 28, 42 38 Q52 30, 66 22" stroke="var(--leaf)" stroke-width="1" fill="var(--leaf)" fill-opacity="0.05"/>
+          <path d="M66 22 Q48 28, 42 38" stroke="var(--leaf)" stroke-width="0.6" opacity="0.4"/>
+          <!-- Small companion lemon -->
+          <ellipse cx="45" cy="150" rx="24" ry="34" stroke="var(--lemon)" stroke-width="1.2" opacity="0.6"/>
+          <ellipse cx="45" cy="150" rx="12" ry="20" stroke="var(--lemon)" stroke-width="0.5" opacity="0.3"/>
+          <!-- Branch connecting -->
+          <path d="M66 22 Q52 40, 48 60 Q42 90, 42 118" stroke="var(--leaf)" stroke-width="0.8" opacity="0.4"/>
+          <!-- Small leaves on branch -->
+          <path d="M50 75 Q40 68, 36 72 Q34 80, 40 84 Q46 78, 50 75" stroke="var(--leaf)" stroke-width="0.6" fill="var(--leaf)" fill-opacity="0.04" opacity="0.5"/>
+          <path d="M44 100 Q54 94, 58 98 Q58 106, 52 108 Q48 104, 44 100" stroke="var(--leaf)" stroke-width="0.6" fill="var(--leaf)" fill-opacity="0.04" opacity="0.5"/>
+          <!-- Tiny blossom -->
+          <circle cx="60" cy="48" r="3" stroke="var(--lemon)" stroke-width="0.5" opacity="0.3"/>
+          <circle cx="60" cy="48" r="1" fill="var(--gold)" opacity="0.2"/>
+        </svg>
+      </div>
+
+      <!-- Secondary botanical - bottom left -->
+      <div class="botanical-secondary">
+        <svg width="110" height="140" viewBox="0 0 110 140" fill="none">
+          <ellipse cx="55" cy="70" rx="28" ry="40" stroke="var(--lemon)" stroke-width="1.3"/>
+          <path d="M55 30 Q48 16, 36 10" stroke="var(--leaf)" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M36 10 Q24 4, 18 10 Q14 18, 20 26 Q28 18, 36 10" stroke="var(--leaf)" stroke-width="0.8" fill="var(--leaf)" fill-opacity="0.04"/>
+          <path d="M55 30 Q62 18, 74 14" stroke="var(--leaf)" stroke-width="1" stroke-linecap="round"/>
+          <path d="M74 14 Q84 20, 86 30" stroke="var(--leaf)" stroke-width="0.6" opacity="0.4"/>
+        </svg>
+      </div>
+
+      <!-- Top area -->
+      <div class="front-top">
+        <div class="event-ref">La Dolce Vita &middot; 2026</div>
+        <img
+          class="logo-img"
+          src="https://awarehair.com/cdn/shop/files/Untitled-1-01_copy.png?v=1731527827&width=300"
+          alt="AWARE HAIR"
+          crossorigin="anonymous"
+        >
+        <div class="gold-rule"></div>
+      </div>
+
+      <!-- Condensed message - heart of the original -->
+      <div class="front-message">
+        <p class="para">In honor of tonight's La Dolce Vita, a gift devoted to wellness, care, and the art of living well.</p>
+        <p class="para">AWARE is natural-first scalp care with a citrus scent and clean ingredients, crafted in Los Angeles.</p>
+        <p class="para">Proud to support Flintridge Prep and the students at the heart of this evening.</p>
+      </div>
+
+      <!-- Sign-off -->
+      <div class="front-signoff">
+        <div class="signoff-line">With love,</div>
+        <div class="signoff-names">Tina & Jade</div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ============ BACK ============ -->
+  <div class="card-col">
+    <span class="card-label">Back</span>
+    <div class="card back">
+
+      <!-- Single clean frame -->
+      <div class="frame"></div>
+
+      <!-- AWARE wordmark -->
+      <img
+        class="back-logo"
+        src="https://awarehair.com/cdn/shop/files/Untitled-1-01_copy.png?v=1731527827&width=300"
+        alt="AWARE HAIR"
+        crossorigin="anonymous"
+      >
+
+      <div class="back-gift-line">Your gift includes a complimentary scalp analysis</div>
+
+      <!-- QR Code -->
+      <div class="qr-area">
+        <div class="qr-finder f-tl"><div class="outer"></div><div class="inner"></div></div>
+        <div class="qr-finder f-tr"><div class="outer"></div><div class="inner"></div></div>
+        <div class="qr-finder f-bl"><div class="outer"></div><div class="inner"></div></div>
+        <div class="qr-center">
+          <svg viewBox="0 0 40 40" fill="none" width="16" height="16">
+            <path d="M14 30 L20 10 L26 30" stroke="#102B26" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="16" y1="24" x2="24" y2="24" stroke="#102B26" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="qr-label">Scan to explore</div>
+      <div class="back-url">awarehair.com/flintridge</div>
+      <div class="back-code">Enjoy a complimentary gift with code FLINTRIDGE</div>
+
+      <!-- Ghost botanical -->
+      <div class="botanical-ghost">
+        <svg width="50" height="65" viewBox="0 0 50 65" fill="none">
+          <ellipse cx="25" cy="35" rx="14" ry="20" stroke="var(--lemon)" stroke-width="1"/>
+          <path d="M25 15 Q20 6, 13 3" stroke="var(--leaf)" stroke-width="0.8"/>
+        </svg>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Changes from critique -->
+<div class="notes">
+  <h3>Changes from Critique</h3>
+  <div class="changes-list">
+    <div class="change">
+      <h4>Copy</h4>
+      <p><span class="was">75 words, 3 paragraphs</span><br><span class="now">34 words, 2 lines + sign-off</span></p>
+      <p>"The art of living well" echoes La Dolce Vita without literal translation. Product described in one line.</p>
+    </div>
+    <div class="change">
+      <h4>Typography</h4>
+      <p><span class="was">8px body (6pt print)</span><br><span class="now">11.5-13px body (8.6-9.7pt print)</span></p>
+      <p>Orpheus Pro only (DM Sans for utility). Minimum 10px across entire card.</p>
+    </div>
+    <div class="change">
+      <h4>Borders</h4>
+      <p><span class="was">Double border + 4 corner ornaments</span><br><span class="now">Single 0.75px gold frame + edge painting</span></p>
+      <p>Edge painting (simulated as outer border) does the luxury work.</p>
+    </div>
+    <div class="change">
+      <h4>Promo Code</h4>
+      <p><span class="was">"Use code FLINTRIDGE at checkout"</span><br><span class="now">Removed. Ad handles commerce.</span></p>
+      <p>QR reframed as "complimentary scalp analysis" - extends the gift rather than asking for money.</p>
+    </div>
+    <div class="change">
+      <h4>Sign-off</h4>
+      <p><span class="was">"With compliments, AWARE Hair"</span><br><span class="now">"With love for Flintridge Prep, Tina & Jade" in Orpheus italic</span></p>
+      <p>Personal names humanize the note. Brand logo is at the top.</p>
+    </div>
+    <div class="change">
+      <h4>Botanical</h4>
+      <p><span class="was">10-14% opacity ghostly vectors</span><br><span class="now">20% opacity, larger, promoted to hero</span></p>
+      <p>Still recommend replacing SVGs with commissioned botanical art for final print.</p>
+    </div>
+    <div class="change">
+      <h4>Logos</h4>
+      <p><span class="was">SVG placeholder monogram + text wordmark</span><br><span class="now">Real AWARE wordmark (front) + real monogram (back)</span></p>
+      <p>Each logo appears once. No redundancy.</p>
+    </div>
+    <div class="change">
+      <h4>Back Strategy</h4>
+      <p><span class="was">QR + promo + tagline + event label</span><br><span class="now">Monogram + gift extension + QR + URL only</span></p>
+      <p>"Your gift includes a complimentary scalp analysis" adds value instead of asking for a purchase.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

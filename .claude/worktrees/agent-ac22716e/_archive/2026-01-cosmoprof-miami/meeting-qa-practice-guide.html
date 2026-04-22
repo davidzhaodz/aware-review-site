@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWARE Hair - Q&A Practice Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a1a2e;
+            --accent: #0f3460;
+            --gold: #c9a227;
+            --green: #2e7d32;
+            --light: #f8f9fa;
+            --text: #333;
+            --muted: #666;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .header .subtitle {
+            color: var(--muted);
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .header .instructions {
+            background: #fff3cd;
+            border-radius: 8px;
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 14px;
+            color: #856404;
+        }
+
+        .header .instructions strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        /* Category Section */
+        .category {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .category-header {
+            background: var(--primary);
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .category-icon {
+            font-size: 24px;
+        }
+
+        .category-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .category-count {
+            margin-left: auto;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+        }
+
+        .category-body {
+            padding: 0;
+        }
+
+        /* Q&A Item */
+        .qa-item {
+            border-bottom: 1px solid #eee;
+            padding: 0;
+        }
+
+        .qa-item:last-child {
+            border-bottom: none;
+        }
+
+        .question {
+            background: #f8f9fa;
+            padding: 16px 24px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .question::before {
+            content: "Q";
+            background: var(--accent);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .answer {
+            padding: 16px 24px 20px;
+            font-size: 15px;
+            line-height: 1.7;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .answer::before {
+            content: "A";
+            background: var(--green);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .answer-content {
+            flex: 1;
+        }
+
+        .answer-content p {
+            margin-bottom: 12px;
+        }
+
+        .answer-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .answer-content ul {
+            margin: 8px 0 12px 20px;
+        }
+
+        .answer-content li {
+            margin-bottom: 6px;
+        }
+
+        .key-stat {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: var(--green);
+            white-space: nowrap;
+        }
+
+        .highlight {
+            background: #fff9e6;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        /* Variation styles for different categories */
+        .category.product .category-header { background: #1565c0; }
+        .category.market .category-header { background: #7b1fa2; }
+        .category.distribution .category-header { background: #e65100; }
+        .category.operations .category-header { background: #00695c; }
+        .category.team .category-header { background: #5d4037; }
+        .category.objections .category-header { background: #c62828; }
+        .category.channel .category-header { background: #00838f; }
+        .category.close .category-header { background: #2e7d32; }
+
+        /* Difficulty badges */
+        .difficulty {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-left: 8px;
+        }
+
+        .difficulty.common { background: #e8f5e9; color: #2e7d32; }
+        .difficulty.moderate { background: #fff3e0; color: #e65100; }
+        .difficulty.tough { background: #ffebee; color: #c62828; }
+
+        /* Tips section */
+        .tip-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left: 4px solid #1565c0;
+            padding: 14px 18px;
+            margin: 12px 0 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 13px;
+        }
+
+        .tip-box strong {
+            color: #1565c0;
+        }
+
+        /* Print styles */
+        @media print {
+            body { background: white; }
+            .category { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
+            .category-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .toc h2 {
+            font-size: 16px;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .toc-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--light);
+            border-radius: 6px;
+            font-size: 14px;
+            text-decoration: none;
+            color: var(--text);
+            transition: background 0.2s;
+        }
+
+        .toc-item:hover {
+            background: #e8e8e8;
+        }
+
+        .toc-item .count {
+            margin-left: auto;
+            background: var(--primary);
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>AWARE Hair Q&A Practice Guide</h1>
+            <p class="subtitle">Cosmoprof Miami 2026 - Meeting Preparation</p>
+            <div class="instructions">
+                <strong>How to Use This Guide:</strong>
+                Practice answering each question out loud. The answers provided are guidelines - adapt them to sound natural in your voice. Focus on memorizing the key statistics and proof points, then practice weaving them into conversational responses.
+            </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h2>Categories</h2>
+            <div class="toc-grid">
+                <a href="#brand" class="toc-item">
+                    <span>Brand Story & Vision</span>
+                    <span class="count">6</span>
+                </a>
+                <a href="#product" class="toc-item">
+                    <span>Product & Formulation</span>
+                    <span class="count">8</span>
+                </a>
+                <a href="#market" class="toc-item">
+                    <span>Market & Traction</span>
+                    <span class="count">7</span>
+                </a>
+                <a href="#distribution" class="toc-item">
+                    <span>Distribution & Pricing</span>
+                    <span class="count">8</span>
+                </a>
+                <a href="#operations" class="toc-item">
+                    <span>Operations & Logistics</span>
+                    <span class="count">6</span>
+                </a>
+                <a href="#channel" class="toc-item">
+                    <span>Channel-Specific</span>
+                    <span class="count">8</span>
+                </a>
+                <a href="#objections" class="toc-item">
+                    <span>Objection Handling</span>
+                    <span class="count">10</span>
+                </a>
+                <a href="#close" class="toc-item">
+                    <span>Closing & Next Steps</span>
+                    <span class="count">5</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Category 1: Brand Story -->
+        <div class="category" id="brand">
+            <div class="category-header">
+                <span class="category-icon">&#128218;</span>
+                <span class="category-title">Brand Story & Vision</span>
+                <span class="category-count">6 questions</span>
+            </div>
+            <div class="category-body">
+                <div class="qa-item">
+                    <div class="question">Tell me about AWARE Hair. What's the story?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>AWARE Hair was founded by Tina Mui, a master trichologist with <span class="key-stat">40 years</span> of experience. She founded 12 salons in her career and kept seeing the same unsolved problems: clients with scalp damage from hard water, pollution, and UV exposure.</p>
+                            <p>Existing scalp care products were either medical-focused on thinning hair or just marketed shampoos with no real technology. So she developed AWARE - a <span class="highlight">patent-pending formulation</span> using dual-weight hyaluronic acid and Tahitian microalgae specifically for environmental scalp health.</p>
+                            <p>It's clinical without being clinical-looking. Premium, clean, and it actually works.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What does "environmental scalp health" mean?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Environmental scalp health addresses the everyday damage most people don't realize they're experiencing:</p>
+                            <ul>
+                                <li><strong>Hard water damage</strong> - mineral buildup that dries and irritates the scalp</li>
+                                <li><strong>UV stress</strong> - sun damage that affects scalp health just like skin</li>
+                                <li><strong>Pollution</strong> - particulates that clog follicles and cause inflammation</li>
+                                <li><strong>Climate changes</strong> - humidity shifts, air conditioning, heating</li>
+                            </ul>
+                            <p>We're not targeting thinning hair or dandruff - those are medical conditions. We're addressing the scalp stress that affects everyone, especially people who travel, live in cities, or have hard water at home.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">Who is your target customer?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Our B2B customer is the <span class="highlight">health-conscious, quality-focused salon</span> - typically upscale full-service salons with clients aged 28-55 who care about ingredients and wellness.</p>
+                            <p>The end consumer is someone who:</p>
+                            <ul>
+                                <li>Invests in quality skincare and wants the same for their scalp</li>
+                                <li>Experiences scalp dryness, sensitivity, or irritation</li>
+                                <li>Lives in a city, travels frequently, or has hard water</li>
+                                <li>Prefers clean, professional-grade products</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What makes AWARE different from other scalp care brands?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Three key differentiators:</p>
+                            <ul>
+                                <li><strong>Salon-exclusive distribution</strong> - We never undercut our professional partners with aggressive DTC. This builds trust and loyalty.</li>
+                                <li><strong>Patent-pending formulation</strong> - Our dual-weight hyaluronic acid technology isn't just marketing. It's clinically shown to deliver <span class="key-stat">189x more hydration</span> than placebo.</li>
+                                <li><strong>Environmental positioning</strong> - We own the "environmental scalp health" space. Competitors focus on thinning hair (medical) or general scalp care (generic). We have a specific, underserved niche.</li>
+                            </ul>
+                            <p>Plus, our <span class="key-stat">96% B2B repurchase rate</span> proves the product works. You don't get that with marketing - you get that with results.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">Who is on your team?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Three co-founders with complementary expertise:</p>
+                            <ul>
+                                <li><strong>Tina Mui, CEO</strong> - Master trichologist, 40 years experience, founded 12 salons. She's the product visionary and brings deep professional credibility.</li>
+                                <li><strong>Jade Wong, COO</strong> - Fortune 500 strategy experience at Tesla and Chevron. She handles operations, partnerships, and go-to-market execution.</li>
+                                <li><strong>David Zhao, CTO/CFO</strong> - Strategy consulting (Oliver Wyman) and tech/finance background. He manages technology, finance, and data.</li>
+                            </ul>
+                            <p>We've got the product expertise, operational discipline, and strategic thinking to scale responsibly.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What's your vision for AWARE in 5 years?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>We want to be the <span class="highlight">definitive professional scalp care brand</span> - what Olaplex did for bond repair, we want to do for scalp health.</p>
+                            <p>That means:</p>
+                            <ul>
+                                <li>National distribution through major professional channels</li>
+                                <li>Expanding from 3 products to a comprehensive scalp wellness line</li>
+                                <li>Professional education programs in cosmetology schools</li>
+                                <li>International expansion, starting with Canada and UK</li>
+                            </ul>
+                            <p>But we're building deliberately - professional credibility first, then selective expansion. We're not trying to be everywhere. We're trying to be essential.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category 2: Product & Formulation -->
+        <div class="category product" id="product">
+            <div class="category-header">
+                <span class="category-icon">&#129514;</span>
+                <span class="category-title">Product & Formulation</span>
+                <span class="category-count">8 questions</span>
+            </div>
+            <div class="category-body">
+                <div class="qa-item">
+                    <div class="question">Walk me through your product line.<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>We have <span class="highlight">three core products</span> that work as a complete scalp care system:</p>
+                            <ul>
+                                <li><strong>9.1 Professional Shampoo</strong> - Preps and cleanses the scalp with our patent-pending hyaluronic acid complex. $55 retail (300ml).</li>
+                                <li><strong>9.1 Professional Conditioner</strong> - Strengthens with SymHair Force technology, reducing breakage by 82%. $55 retail (300ml).</li>
+                                <li><strong>9.1 Leave-In Styling Conditioner</strong> - Provides ongoing environmental protection throughout the day. $60 retail (250ml).</li>
+                            </ul>
+                            <p>Each product comes in three sizes: retail, travel (100ml/50ml), and backbar (1L). We're launching Scalp Oil and Scalp Serum in Q2-Q3 2026.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What's special about your formulation?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Two key technologies:</p>
+                            <ul>
+                                <li><strong>ResistHyal (Givaudan)</strong> - Our dual-weight hyaluronic acid complex. Clinically shown to deliver <span class="key-stat">189x more hydration</span> than placebo. The dual-weight means it works at both surface level and deeper scalp layers.</li>
+                                <li><strong>SymHair Force (Symrise)</strong> - Strengthening technology that reduces breakage by <span class="key-stat">82%</span>. Protects against mechanical stress from styling and environmental damage.</li>
+                            </ul>
+                            <p>Plus 100% natural fine fragrance, made in USA. Patent-pending on the formulation combination.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What are your clean formulation claims?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>We're committed to clean professional-grade formulation:</p>
+                            <ul>
+                                <li>Sulfate-free</li>
+                                <li>Paraben-free</li>
+                                <li>Silicone-free</li>
+                                <li>Vegan</li>
+                                <li>Cruelty-free</li>
+                                <li>100% natural fine fragrance</li>
+                            </ul>
+                            <p>Clean is table stakes now - but we pair it with clinical efficacy. That's the combination that's hard to find.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">Do you have any clinical studies or proof points?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Yes - our key ingredients have independent clinical validation:</p>
+                            <ul>
+                                <li><strong>ResistHyal</strong>: <span class="key-stat">189x more hydration</span> than placebo in controlled studies</li>
+                                <li><strong>SymHair Force</strong>: <span class="key-stat">82% reduction in breakage</span> vs. untreated hair</li>
+                            </ul>
+                            <p>And our real-world proof is even stronger: <span class="key-stat">96% B2B repurchase rate</span> across 35+ salons with <span class="key-stat">zero returns</span>. Professional stylists stake their reputation on our products - that's the ultimate clinical trial.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What's the shelf life?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p><span class="key-stat">24 months</span> from date of manufacture. All products are date-coded for easy inventory management.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">Do you have any IP protection?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Yes - our formulation is <span class="highlight">patent-pending</span>. The specific combination of dual-weight hyaluronic acid with our Tahitian microalgae complex is proprietary. We're not just another clean shampoo that anyone can replicate.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What's your pricing structure?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Premium positioning across all sizes:</p>
+                            <ul>
+                                <li><strong>Retail (300ml)</strong>: $55 shampoo/conditioner, $60 leave-in</li>
+                                <li><strong>Travel (100ml/50ml)</strong>: $27.50 shampoo/conditioner, $30 leave-in</li>
+                                <li><strong>Backbar (1L)</strong>: $150</li>
+                            </ul>
+                            <p>Wholesale is 50% off retail for direct salon accounts. We maintain price integrity - no undercutting, no race to the bottom.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What new products are coming?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>We're launching two new products in Q2-Q3 2026:</p>
+                            <ul>
+                                <li><strong>Scalp Oil</strong> - Treatment oil for intensive scalp nourishment</li>
+                                <li><strong>Scalp Serum</strong> - Targeted daily treatment for scalp health maintenance</li>
+                            </ul>
+                            <p>These expand our treatment capability and give salons more options for head spa services and retail upsells.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category 3: Market & Traction -->
+        <div class="category market" id="market">
+            <div class="category-header">
+                <span class="category-icon">&#128200;</span>
+                <span class="category-title">Market & Traction</span>
+                <span class="category-count">7 questions</span>
+            </div>
+            <div class="category-body">
+                <div class="qa-item">
+                    <div class="question">What does your current traction look like?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Strong proof of product-market fit:</p>
+                            <ul>
+                                <li><span class="key-stat">35+</span> active salon partners across LA, Chicago, NYC</li>
+                                <li><span class="key-stat">96%</span> B2B repurchase rate (38 of 40 salons reordered)</li>
+                                <li><span class="key-stat">$125K</span> revenue in 6 months with no distribution, no sales team</li>
+                                <li><span class="key-stat">$12K</span> top salon annual value, $6K average</li>
+                                <li><span class="key-stat">28-35 day</span> average reorder cycle</li>
+                                <li><span class="key-stat">Zero</span> returns across entire network</li>
+                            </ul>
+                            <p>This is all founder-driven relationships. Imagine what happens with proper distribution infrastructure.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">How big is the scalp care market?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Scalp care is one of the fastest-growing beauty categories:</p>
+                            <ul>
+                                <li><strong>Global</strong>: <span class="key-stat">$14.7B</span> (2025), projected $23.8B by 2032</li>
+                                <li><strong>CAGR</strong>: <span class="key-stat">7.1%</span> growth rate</li>
+                                <li><strong>US Market</strong>: ~$2.9B (20% of global)</li>
+                                <li><strong>Prestige scalp care</strong>: Grew <span class="key-stat">9%</span> in 2024 vs. 6.4% overall hair care</li>
+                            </ul>
+                            <p>The category is validated. The opportunity is owning a specific position within it.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What's driving the scalp care trend?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Multiple converging trends:</p>
+                            <ul>
+                                <li><strong>Head spa movement</strong>: Searches up <span class="key-stat">233% YoY</span> - #1 spa trend for 2025</li>
+                                <li><strong>Skinification of hair</strong>: Consumers treating scalp like skin (serums, treatments)</li>
+                                <li><strong>Social awareness</strong>: TikTok scalp content up <span class="key-stat">107% YoY</span></li>
+                                <li><strong>Wellness expansion</strong>: Scalp health as part of overall wellbeing</li>
+                                <li><strong>Service opportunity</strong>: Head spa treatments $85-250 per session</li>
+                            </ul>
+                            <p>This isn't a fad - it's a fundamental shift in how people think about hair care.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">Why is your repurchase rate so high?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p><span class="key-stat">96%</span> repurchase comes down to two things:</p>
+                            <p><strong>1. The product works.</strong> Stylists see visible results on clients' scalps. Clients feel the difference. When something actually performs, people keep buying it.</p>
+                            <p><strong>2. We don't oversell.</strong> We'd rather a salon start with a smaller order and reorder quickly than sit on inventory they can't move. This builds trust and proves velocity.</p>
+                            <div class="tip-box">
+                                <strong>Tip:</strong> Zero returns across our entire network is the strongest proof point. You don't achieve that with marketing - only with genuine product quality.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What's your brand awareness like?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Building organically with strong momentum:</p>
+                            <ul>
+                                <li><span class="key-stat">18M+</span> organic social views with zero ad spend</li>
+                                <li>Used by Emmy-winning stylists in Hollywood productions</li>
+                                <li>Featured in upcoming Seth Rogen/Anna Kendrick film</li>
+                                <li>50+ luxury salons, head spas, and clinics</li>
+                            </ul>
+                            <p>We're building professional credibility first - that creates authentic pull demand. When someone gets a great scalp treatment at their salon, they go looking for the product.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">Who are your main competitors?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Different competitors in different angles:</p>
+                            <ul>
+                                <li><strong>Nioxin</strong>: Focused on thinning hair (medical angle) - different positioning</li>
+                                <li><strong>Kerastase</strong>: Has scalp products but broad portfolio - not specialist</li>
+                                <li><strong>Philip Kingsley</strong>: Trichologist-founded like us - closest competitor - but sells DTC/retail, not salon-exclusive</li>
+                                <li><strong>DIVI</strong>: DTC-first, now Ulta - $40M first year - validates category but different channel</li>
+                            </ul>
+                            <p>Our white space: <span class="highlight">salon-exclusive + clean formulation + environmental positioning</span>. No one else owns all three.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">Can you share a case study or success story?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p><strong>Adrine Avetyan Hair Studio, Los Angeles</strong></p>
+                            <p>Premium full-service salon, health-conscious clientele aged 28-55.</p>
+                            <ul>
+                                <li>Started with <span class="key-stat">$1,800</span> trial order</li>
+                                <li>6 orders over 6 months, <span class="key-stat">$11,592</span> total revenue</li>
+                                <li><span class="key-stat">Zero returns</span></li>
+                                <li>Added scalp assessment to every new client consultation within 90 days</li>
+                                <li>Now requesting territory exclusivity</li>
+                            </ul>
+                            <p>Trial converted to core revenue stream. That's the pattern we see again and again.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category 4: Distribution & Pricing -->
+        <div class="category distribution" id="distribution">
+            <div class="category-header">
+                <span class="category-icon">&#128230;</span>
+                <span class="category-title">Distribution & Pricing</span>
+                <span class="category-count">8 questions</span>
+            </div>
+            <div class="category-body">
+                <div class="qa-item">
+                    <div class="question">What's your current distribution strategy?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p><span class="highlight">Professional-exclusive</span> - we only sell through salons, never mass retail.</p>
+                            <p>Currently direct-to-salon in the US. We're at Cosmoprof specifically to find the right distribution partners to scale while maintaining our salon-exclusive positioning.</p>
+                            <p>Our DTC exists at full retail price with minimal marketing - we're not competing with our salon partners.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What are your distributor margins?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Tiered structure based on volume:</p>
+                            <ul>
+                                <li><strong>National (500+ doors)</strong>: 50% off retail</li>
+                                <li><strong>Regional (100-499 doors)</strong>: 45% off retail</li>
+                                <li><strong>Local (50-99 doors)</strong>: 40% off retail</li>
+                            </ul>
+                            <p>Salons retail at $55-60, so even at 40% discount they're making <span class="key-stat">$22-24 per unit</span>. Premium pricing means everyone makes money.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What's your opening order requirement?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Depends on distributor size:</p>
+                            <ul>
+                                <li><strong>National</strong>: $25,000 opening, $5,000 reorder</li>
+                                <li><strong>Regional</strong>: $10,000 opening, $2,500 reorder</li>
+                                <li><strong>Local</strong>: $5,000 opening, $1,500 reorder</li>
+                            </ul>
+                            <p>We're flexible for the right partners. The goal is ensuring you have proper inventory to actually sell against - not just taking orders to hit numbers.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What are your payment terms?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Standard professional terms:</p>
+                            <ul>
+                                <li><strong>Net 30</strong> on approved credit</li>
+                                <li><strong>2/10 Net 30</strong> early pay discount available</li>
+                                <li>Credit application required for Net 30 terms</li>
+                                <li>Line of credit in place for PO fulfillment</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">Do you offer exclusivity?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Open to discussing <span class="highlight">territory exclusivity</span> for the right partner with active support commitment.</p>
+                            <p>What "right partner" means:</p>
+                            <ul>
+                                <li>Meaningful opening order</li>
+                                <li>Active sales force calling on salons</li>
+                                <li>Commitment to education and training</li>
+                                <li>Regular business reviews and collaboration</li>
+                            </ul>
+                            <p>Exclusivity is earned, not given. But we reward partners who invest in building the brand.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">How do you handle channel conflict with your DTC?<span class="difficulty tough">Tough</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>We've designed the model to eliminate conflict:</p>
+                            <ul>
+                                <li>DTC exists at <span class="highlight">full retail price</span> - never discounted</li>
+                                <li>Minimal DTC marketing spend - not competing with partners</li>
+                                <li>Salons always have the price advantage (50% margin)</li>
+                                <li>Direct pricing is launch incentive only</li>
+                            </ul>
+                            <p><strong>Once a distributor signs a territory:</strong> Existing direct accounts convert to distributor fulfillment within 90 days. We're not building competing channels - we're building professional credibility that drives demand to our partners.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What marketing support do you provide?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Comprehensive support package:</p>
+                            <ul>
+                                <li><strong>Education</strong>: Virtual and in-person training from our founder (40-year trichologist)</li>
+                                <li><strong>Materials</strong>: POS displays, shelf talkers, treatment protocol guides</li>
+                                <li><strong>Digital assets</strong>: Social content for salon partners to use</li>
+                                <li><strong>Sampling</strong>: Programs to drive trial</li>
+                                <li><strong>Co-op/MDF</strong>: 3% of net purchases for distributor marketing</li>
+                            </ul>
+                            <p>2026 marketing budget is $200K - $30K specifically allocated for distributor co-op.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What's your return policy?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Standard return policy for defective or damaged products. But worth noting: we have <span class="key-stat">zero returns</span> across our entire network to date.</p>
+                            <p>The product works. Salons sell through. That's why our repurchase rate is 96%.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category 5: Operations & Logistics -->
+        <div class="category operations" id="operations">
+            <div class="category-header">
+                <span class="category-icon">&#128666;</span>
+                <span class="category-title">Operations & Logistics</span>
+                <span class="category-count">6 questions</span>
+            </div>
+            <div class="category-body">
+                <div class="qa-item">
+                    <div class="question">Where do you manufacture?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Los Angeles, California</p>
+                            <ul>
+                                <li>FDA-registered facility</li>
+                                <li>GMP-certified (Good Manufacturing Practice)</li>
+                                <li>Made in USA</li>
+                            </ul>
+                            <p>Local manufacturing gives us quality control, flexibility, and faster turnaround than overseas production.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What's your production capacity?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p><span class="key-stat">50,000+ units per month</span> capacity with our current manufacturing partner.</p>
+                            <p>We maintain safety stock on all core SKUs and have never missed a shipment. <span class="key-stat">100% fill rate</span> to date.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What's your lead time?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <ul>
+                                <li><strong>Standard</strong>: 4 weeks</li>
+                                <li><strong>Rush</strong>: 2 weeks (subject to availability)</li>
+                            </ul>
+                            <p>With proper forecasting and standing orders, most partners operate on standard lead time without issues.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What compliance certifications do you have?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Fully compliant with US regulations:</p>
+                            <ul>
+                                <li><strong>MoCRA compliant</strong> (Modernization of Cosmetics Regulation Act)</li>
+                                <li><strong>FDA-registered</strong> manufacturing facility</li>
+                                <li><strong>GMP-certified</strong></li>
+                                <li><strong>Product liability</strong>: $1M per occurrence / $3M aggregate</li>
+                                <li><strong>COI</strong> available within 24 hours</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">Can you handle EDI/electronic ordering?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Yes - we're on Shopify Plus infrastructure, which is <span class="highlight">EDI-ready</span>.</p>
+                            <p>We can also support:</p>
+                            <ul>
+                                <li>Drop-ship fulfillment</li>
+                                <li>USPS/UPS/FedEx domestic shipping</li>
+                                <li>Free freight on $500+ orders</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What about international shipping/compliance?<span class="difficulty tough">Tough</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>We're prepared for international expansion:</p>
+                            <ul>
+                                <li>Products formulated for global compliance</li>
+                                <li>Currently shipping to Canadian salons direct</li>
+                                <li>Health Canada registration process underway</li>
+                                <li>EU compliance evaluation in progress for 2027</li>
+                            </ul>
+                            <p>For Canadian distribution specifically, we'd work with partners like Canrad to ensure full regulatory compliance before launch.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category 6: Channel-Specific Questions -->
+        <div class="category channel" id="channel">
+            <div class="category-header">
+                <span class="category-icon">&#127970;</span>
+                <span class="category-title">Channel-Specific Questions</span>
+                <span class="category-count">8 questions</span>
+            </div>
+            <div class="category-body">
+                <div class="qa-item">
+                    <div class="question">[CRUISE SPA] How do your products work in a spa treatment setting?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Our products work as a complete scalp treatment system:</p>
+                            <ul>
+                                <li>30-45 minute head spa treatment protocol</li>
+                                <li>Can retail for <span class="key-stat">$150-250</span> per session</li>
+                                <li>Includes: scalp analysis, deep cleanse, massage, conditioning, leave-in protection</li>
+                            </ul>
+                            <p>We provide full training for spa teams - our founder can do virtual education sessions. Backbar sizes (1L) are perfect for treatment rooms, and travel sizes create retail upsell opportunities.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">[CRUISE SPA] How does your product address the cruise environment specifically?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>The cruise environment actually creates the problems our products solve:</p>
+                            <ul>
+                                <li><strong>Different water at each port</strong> - mineral content varies, hard water damages scalp</li>
+                                <li><strong>Intense sun exposure on deck</strong> - UV stress affects scalp just like skin</li>
+                                <li><strong>Air conditioning</strong> - constant dry air stresses the scalp</li>
+                                <li><strong>Travel stress</strong> - changes in climate, humidity, and routine</li>
+                            </ul>
+                            <p>Our "environmental scalp health" positioning is literally designed for travelers.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">[CRUISE RETAIL] What makes you different from scalp care we might already carry?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Three differentiators:</p>
+                            <ul>
+                                <li><strong>Professional credibility</strong> - 35+ professional stylists stake their reputation on us. That's a story guests find compelling.</li>
+                                <li><strong>Patent-pending technology</strong> - Not just marketing claims. Real formulation innovation.</li>
+                                <li><strong>Travel-specific positioning</strong> - "Environmental scalp health" speaks directly to cruise guests experiencing changing water, sun, and climate.</li>
+                            </ul>
+                            <p>Plus our travel sizes are perfectly packaged for cruise retail.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">[DISTRIBUTOR] Why should we take on a small brand?<span class="difficulty tough">Tough</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Because small now with proven PMF is better than big later with DTC conflict.</p>
+                            <ul>
+                                <li><strong>96% repurchase</strong> means your reps will have an easy sell</li>
+                                <li><strong>Zero returns</strong> means no reverse logistics cost</li>
+                                <li><strong>No DTC competition</strong> - we're salon-exclusive, unlike most brands that scale DTC first</li>
+                                <li><strong>Growing category</strong> - scalp care is up 9% vs. 6.4% overall hair care</li>
+                            </ul>
+                            <p>You're getting in early on something proven. Most brands come to distributors after building competing DTC channels. We're different.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">[DISTRIBUTOR - CANADA] Why Canada instead of saturating the US first?<span class="difficulty tough">Tough</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>A few reasons:</p>
+                            <ul>
+                                <li><strong>Market sophistication</strong> - Canadian salons appreciate quality and are willing to pay for it</li>
+                                <li><strong>Right partner infrastructure</strong> - Companies like Canrad have consultants, education, trade stores - the full package</li>
+                                <li><strong>Family-owned fit</strong> - Founder-led businesses like ours work well with family-owned distributors. We can move faster together.</li>
+                                <li><strong>Strategic diversification</strong> - Don't want to be 100% dependent on US market</li>
+                            </ul>
+                            <p>We're not abandoning US - we're running parallel tracks with the right partners in each market.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">[RETAIL] What would we need to demonstrate for retail-readiness?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Great question - and the honest answer is we're not there yet. We're building deliberately:</p>
+                            <ul>
+                                <li><strong>More salon base</strong> - Professional endorsement creates pull demand</li>
+                                <li><strong>Brand awareness</strong> - 18M organic views is a start, more to build</li>
+                                <li><strong>Sell-through data</strong> - Retail buyers want velocity proof</li>
+                            </ul>
+                            <p>The salon-exclusive positioning actually makes us more attractive to retail later, not less. When we come to that conversation, we'll have professional credibility that mass-market brands can't claim.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">[HOSPITALITY] What would a pilot program look like?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>For cruise spa or hospitality:</p>
+                            <ul>
+                                <li><strong>Scope</strong>: 2-3 ships/locations to start</li>
+                                <li><strong>Investment</strong>: $2,500-3,500 per location for backbar + retail inventory</li>
+                                <li><strong>Training</strong>: Included at no cost (virtual or in-person)</li>
+                                <li><strong>Duration</strong>: 90-day pilot</li>
+                                <li><strong>Metrics</strong>: Treatment bookings, retail sales, guest feedback</li>
+                            </ul>
+                            <p>Goal is proving the concept works for your guests, not loading up inventory. If it works, we scale. If it doesn't, minimal risk.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">[EDUCATION] How does your training program work?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>Our founder Tina Mui leads education:</p>
+                            <ul>
+                                <li><strong>Virtual sessions</strong> - Scalable for distributed teams</li>
+                                <li><strong>In-person certification</strong> - For key accounts and distributors</li>
+                                <li><strong>Content</strong>: Scalp health science, product knowledge, treatment protocols, selling techniques</li>
+                            </ul>
+                            <p>40 years of trichology expertise packaged for professional education. Stylists don't just learn about our products - they learn about scalp health. That makes them better at their job.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category 7: Objection Handling -->
+        <div class="category objections" id="objections">
+            <div class="category-header">
+                <span class="category-icon">&#128587;</span>
+                <span class="category-title">Objection Handling</span>
+                <span class="category-count">10 questions</span>
+            </div>
+            <div class="category-body">
+                <div class="qa-item">
+                    <div class="question">"You're too small / too new."<span class="difficulty tough">Tough</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>"That's exactly the opportunity. We've proven product-market fit - 96% repurchase, zero returns - before building a competing DTC channel. Most brands come to distributors after they've already built DTC and started undercutting partners.</p>
+                            <p>You're getting in early on something proven. The question isn't whether we're small - it's whether the fundamentals are there. 96% repurchase says they are."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">"We already have scalp care brands."<span class="difficulty tough">Tough</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>"Great - then you know the category is growing. We're complementary, not competitive.</p>
+                            <p>Most scalp care is either medical-focused (thinning hair) or generic marketing claims. We own 'environmental scalp health' - hard water, UV, pollution damage. Different positioning, different customer.</p>
+                            <p>Plus, our 96% repurchase means less SKU churn than brands with lower loyalty. We complement your portfolio, not compete with it."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">"What about Amazon / mass retail competition?"<span class="difficulty tough">Tough</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>"We're salon-exclusive. Period. No Amazon, no mass retail. That's not our positioning and never will be.</p>
+                            <p>Our DTC exists at full retail with minimal marketing. Salons always have the price advantage. We're building professional credibility, not racing to the bottom on price.</p>
+                            <p>That's what makes us different from most hair care brands - and why stylists trust us."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">"Your prices are too high."<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>"Our price point is premium - $55-60 retail - but that's intentional. Premium positioning means:</p>
+                            <ul>
+                                <li>Better margins for you ($22-24 per unit at salon level)</li>
+                                <li>Quality perception that matches our clinical efficacy</li>
+                                <li>Customers who value quality over price - they're more loyal</li>
+                            </ul>
+                            <p>And our 28-35 day reorder cycle means velocity. High price x high velocity = good business."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">"We need to see more data / proof."<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>"Happy to share everything. Here's what we have:</p>
+                            <ul>
+                                <li>96% B2B repurchase rate across 35+ salons</li>
+                                <li>Zero returns - entire network</li>
+                                <li>28-35 day reorder cycle</li>
+                                <li>$12K top account, $6K average annually</li>
+                                <li>Clinical data on key ingredients (189x hydration, 82% breakage reduction)</li>
+                            </ul>
+                            <p>But honestly - the best proof is the product. Can I send you samples? Experience it yourself."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">"We don't have bandwidth for another brand."<span class="difficulty tough">Tough</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>"I understand - you're juggling a lot. Here's why AWARE is actually lower bandwidth:</p>
+                            <ul>
+                                <li><strong>96% repurchase</strong> - easy reorders, not constant selling</li>
+                                <li><strong>Zero returns</strong> - no reverse logistics headache</li>
+                                <li><strong>Clear positioning</strong> - scalp care specialist, not competing for general haircare shelf space</li>
+                                <li><strong>Training provided</strong> - we educate your team, not the other way around</li>
+                            </ul>
+                            <p>The product sells itself once stylists try it. That's less work for your team."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">"Just send me information."<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>"Absolutely - here's my one-pager. But can I also send samples? The product is really the best selling tool. Once you experience it, you'll understand why our repurchase rate is so high.</p>
+                            <p>I'll follow up in a week to get your reaction."</p>
+                            <div class="tip-box">
+                                <strong>Tip:</strong> Always try to convert "send info" into "send samples + info." Product trial is worth 10x a PDF.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">"How do I know you'll still be around in 2 years?"<span class="difficulty tough">Tough</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>"Fair question. Here's why we're built to last:</p>
+                            <ul>
+                                <li><strong>Unit economics work</strong> - 70%+ gross margin, no money-losing customer acquisition</li>
+                                <li><strong>Revenue is recurring</strong> - 28-35 day reorder cycle, not one-time purchases</li>
+                                <li><strong>Team is committed</strong> - Founder with 40 years in industry, not here for a quick flip</li>
+                                <li><strong>Growing without burning cash</strong> - $125K revenue with zero ad spend, no venture treadmill</li>
+                            </ul>
+                            <p>We're building a real business, not chasing growth at all costs."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">"The timing isn't right for us."<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>"I understand. Can I ask - what would make the timing better? Is it:</p>
+                            <ul>
+                                <li>Budget cycle (when does your fiscal year start?)</li>
+                                <li>Need to see more traction first?</li>
+                                <li>Have other priorities to clear?</li>
+                            </ul>
+                            <p>I'd love to stay in touch and reconnect when timing is right. What's the best way to do that?"</p>
+                            <div class="tip-box">
+                                <strong>Tip:</strong> "Timing isn't right" is often a polite no. Dig for the real objection.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">"We need to think about it / discuss internally."<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>"Of course - it's a decision worth thinking through. A couple things that might help:</p>
+                            <ul>
+                                <li>I'll send you our full deck and case studies so you have everything for internal discussions</li>
+                                <li>Can I send samples for your team to experience?</li>
+                                <li>What questions should I be prepared to answer when we reconnect?</li>
+                            </ul>
+                            <p>When would be a good time to follow up - next week, or after you've had the internal conversation?"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category 8: Closing & Next Steps -->
+        <div class="category close" id="close">
+            <div class="category-header">
+                <span class="category-icon">&#127919;</span>
+                <span class="category-title">Closing & Next Steps</span>
+                <span class="category-count">5 questions</span>
+            </div>
+            <div class="category-body">
+                <div class="qa-item">
+                    <div class="question">What's the next step from here?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p><strong>For warm/interested contacts:</strong></p>
+                            <p>"I'd love to send you our full product kit and deck. Once you've experienced the product, let's schedule a follow-up call to discuss specifics - whether that's a pilot program, pricing structure, or territory arrangement. What's your availability week of [date]?"</p>
+                            <p><strong>For hot/ready contacts:</strong></p>
+                            <p>"Let's get you set up. I can have samples and a formal proposal to you by [date]. If everything looks good, we could have an opening order shipped by [timeline]. What information do you need from us to move forward?"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What's your timeline for making partnership decisions?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>"We're talking to distributors this week and want to make decisions in February. I'm not trying to create artificial urgency, but we will be selecting partners soon.</p>
+                            <p>The good news is we're looking for the right partners, not the most partners. Quality over quantity. So if we need more time to ensure fit, that's fine - but I'd love for [Company] to be part of the conversation."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">Can you send me a proposal?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>"Absolutely. I'll have a formal proposal to you within 48 hours including:</p>
+                            <ul>
+                                <li>Product catalog with full pricing</li>
+                                <li>Suggested opening order structure</li>
+                                <li>Marketing support overview</li>
+                                <li>Training and education options</li>
+                                <li>[For pilots: Pilot program structure and success metrics]</li>
+                            </ul>
+                            <p>I'll also include samples so you can experience the product firsthand. What's the best shipping address?"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">Do you have references we can contact?<span class="difficulty common">Common</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>"Absolutely. I can connect you with:</p>
+                            <ul>
+                                <li>Adrine Avetyan Hair Studio (LA) - $12K annual account, been with us 6 months</li>
+                                <li>Several other salon partners who can speak to product performance and our support</li>
+                            </ul>
+                            <p>I'll send you contact details with the proposal. They're happy to share their experience."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-item">
+                    <div class="question">What if this meeting isn't a fit right now?<span class="difficulty moderate">Moderate</span></div>
+                    <div class="answer">
+                        <div class="answer-content">
+                            <p>"That's totally okay - not every conversation leads to a partnership, and that's fine. A couple requests:</p>
+                            <ul>
+                                <li><strong>Stay connected</strong> - Can I add you to our quarterly updates? As we grow, fit might change.</li>
+                                <li><strong>Referrals</strong> - Is there anyone in your network who might be a better fit for what we're building?</li>
+                                <li><strong>Feedback</strong> - What would we need to change for this to be interesting to you in the future?</li>
+                            </ul>
+                            <p>Thank you for your time either way - I really appreciate the candid conversation."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #e0e0e0; color: #999; font-size: 13px;">
+            Q&A Practice Guide | Cosmoprof Miami 2026 | Good luck, Jade!
+        </div>
+    </div>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE AI Employee Team - Autonomous Engine Architecture</title>
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #102B26;
+    --cream: #f4efe9;
+    --surface: #faf8f5;
+    --white: #ffffff;
+    --gold: #D4A574;
+    --gold-light: rgba(212,165,116,0.1);
+    --sage: #7d8471;
+    --sage-light: #a8b09e;
+    --border: #e2ddd6;
+    --text-secondary: #5a6b5e;
+    --red-soft: #c45d4a;
+    --green-soft: #4a8c6a;
+    --amber-soft: #c49a4a;
+    --black-soft: #3a3a3a;
+    --font-heading: 'orpheus-pro', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-mono: 'DM Mono', 'SF Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-body); background: var(--cream); color: var(--teal); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  /* Header */
+  .header { background: var(--teal); color: var(--cream); padding: 48px 0 40px; position: relative; overflow: hidden; }
+  .header::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 20%, rgba(212,165,116,0.08) 0%, transparent 60%); pointer-events: none; }
+  .header-inner { max-width: 1120px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+  .header-eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .header h1 { font-family: var(--font-heading); font-size: 36px; font-weight: 400; letter-spacing: -0.3px; line-height: 1.2; }
+  .header-sub { font-size: 15px; color: var(--sage-light); margin-top: 6px; max-width: 720px; line-height: 1.5; }
+  .header-meta { display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; }
+  .header-meta-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--sage-light); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .dot-green { background: #6abf8a; animation: pulse-dot 2s ease infinite; }
+  .dot-gold { background: var(--gold); }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 32px; }
+
+  /* Metrics Strip */
+  .metrics-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); margin: -20px 32px 0; max-width: 1056px; margin-left: auto; margin-right: auto; border-radius: 8px; overflow: hidden; position: relative; z-index: 2; box-shadow: 0 1px 3px rgba(16,43,38,0.06), 0 8px 24px rgba(16,43,38,0.04); }
+  .metric-card { background: white; padding: 24px 20px; text-align: center; }
+  .metric-value { font-family: var(--font-heading); font-size: 32px; font-weight: 400; color: var(--teal); line-height: 1.1; }
+  .metric-value.gold { color: var(--gold); }
+  .metric-value.red { color: var(--red-soft); }
+  .metric-value.green { color: var(--green-soft); }
+  .metric-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--sage); margin-top: 6px; font-weight: 500; }
+
+  /* Sections */
+  section { padding: 48px 0; }
+  section + section { border-top: 1px solid var(--border); }
+  .section-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+  .section-number { font-family: var(--font-mono); font-size: 12px; color: var(--gold); min-width: 20px; }
+  h2 { font-family: var(--font-heading); font-size: 24px; font-weight: 400; letter-spacing: -0.2px; }
+  .section-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; max-width: 720px; line-height: 1.6; }
+
+  /* Cards */
+  .card { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 24px; }
+  .card-accent { border-left: 3px solid var(--gold); border-radius: 0 6px 6px 0; }
+  .card h3 { font-family: var(--font-heading); font-size: 18px; font-weight: 400; margin-bottom: 8px; }
+  .card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+  .hl { color: var(--teal); font-weight: 600; }
+
+  /* Table */
+  .table-wrap { background: white; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .table-bar { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .table-bar h3 { font-family: var(--font-heading); font-size: 15px; font-weight: 400; }
+  .table-bar .count { font-family: var(--font-mono); font-size: 12px; color: var(--sage); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--sage); font-weight: 500; text-align: left; padding: 10px 16px; border-bottom: 1px solid var(--border); background: var(--surface); }
+  thead th.r { text-align: right; }
+  tbody td { padding: 12px 16px; border-bottom: 1px solid #f0ebe5; vertical-align: top; }
+  tbody td.r { text-align: right; font-family: var(--font-mono); font-size: 12px; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(212,165,116,0.03); }
+  .cn { font-weight: 500; }
+  .cq { font-size: 12px; color: var(--sage); margin-top: 2px; }
+
+  /* Badges */
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+  .b-red { background: rgba(196,93,74,0.1); color: var(--red-soft); }
+  .b-amber { background: rgba(196,154,74,0.1); color: var(--amber-soft); }
+  .b-green { background: rgba(74,140,106,0.1); color: var(--green-soft); }
+  .b-black { background: rgba(58,58,58,0.1); color: var(--black-soft); }
+  .b-sage { background: rgba(125,132,113,0.1); color: var(--sage); }
+  .b-gold { background: var(--gold-light); color: #8b6b3d; }
+
+  /* Callout */
+  .callout { background: var(--teal); color: var(--cream); border-radius: 6px; padding: 32px; margin: 24px 0; }
+  .callout h3 { font-family: var(--font-heading); font-size: 20px; font-weight: 400; margin-bottom: 12px; }
+  .callout p { font-size: 14px; color: var(--sage-light); line-height: 1.7; }
+  .callout .hl { color: var(--gold); font-weight: 500; }
+
+  /* Grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+  /* Org chart */
+  .org-chart { display: flex; flex-direction: column; align-items: center; gap: 0; padding: 32px 0; }
+  .org-row { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .org-node { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 16px 20px; text-align: center; min-width: 150px; position: relative; }
+  .org-node.active { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+  .org-node.future { opacity: 0.5; border-style: dashed; }
+  .org-name { font-family: var(--font-heading); font-size: 16px; font-weight: 400; }
+  .org-role { font-size: 11px; color: var(--sage); margin-top: 2px; }
+  .org-type { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; text-transform: uppercase; margin-top: 6px; padding: 2px 8px; border-radius: 100px; display: inline-block; }
+  .org-type.engine { background: var(--gold-light); color: #8b6b3d; }
+  .org-type.claude { background: rgba(125,132,113,0.1); color: var(--sage); }
+  .org-connector { width: 2px; height: 24px; background: var(--border); }
+  .org-branch { display: flex; align-items: flex-start; justify-content: center; gap: 0; }
+  .org-branch-line { width: 1px; height: 24px; background: var(--border); }
+
+  /* Flow */
+  .flow { display: grid; grid-template-columns: 72px 1fr; position: relative; }
+  .flow::before { content: ''; position: absolute; left: 35px; top: 28px; bottom: 28px; width: 2px; background: linear-gradient(to bottom, var(--gold), var(--sage-light), var(--gold)); opacity: 0.3; }
+  .flow-step { display: contents; }
+  .flow-time { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--sage); padding: 16px 0; text-align: center; position: relative; }
+  .flow-time::after { content: ''; position: absolute; right: -4px; top: 22px; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); border: 2px solid var(--cream); }
+  .flow-content { padding: 12px 0 12px 24px; border-bottom: 1px solid var(--border); }
+  .flow-step:last-child .flow-content { border-bottom: none; }
+  .flow-title { font-weight: 500; font-size: 14px; margin-bottom: 2px; }
+  .flow-desc { font-size: 13px; color: var(--text-secondary); }
+  .flow-tag { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 2px 8px; border-radius: 100px; display: inline-block; margin-top: 4px; }
+  .flow-tag.zero { background: var(--gold-light); color: #8b6b3d; }
+  .flow-tag.claude-tag { background: rgba(125,132,113,0.1); color: var(--sage); }
+
+  /* How it works */
+  .hw-step { display: flex; gap: 16px; align-items: flex-start; padding: 16px 0; }
+  .hw-step + .hw-step { border-top: 1px solid var(--border); }
+  .hw-num { font-family: var(--font-mono); font-size: 11px; color: var(--gold); background: var(--gold-light); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .hw-text h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .hw-text p { font-size: 13px; color: var(--text-secondary); }
+  .hw-text code { font-family: var(--font-mono); font-size: 12px; background: var(--surface); padding: 1px 6px; border-radius: 3px; border: 1px solid var(--border); }
+
+  /* Signal card */
+  .signal-card { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 20px; }
+  .signal-card.red { border-left: 3px solid var(--red-soft); }
+  .signal-card.amber { border-left: 3px solid var(--amber-soft); }
+  .signal-card.green { border-left: 3px solid var(--green-soft); }
+  .signal-name { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--sage); margin-bottom: 4px; }
+  .signal-value { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+  .signal-detail { font-size: 12px; color: var(--text-secondary); }
+
+  /* Bar chart */
+  .status-bar { display: flex; border-radius: 4px; overflow: hidden; height: 12px; margin: 8px 0; }
+  .status-bar .seg { height: 100%; }
+  .seg-red { background: var(--red-soft); }
+  .seg-amber { background: var(--amber-soft); }
+  .seg-yellow { background: #d4c44a; }
+  .seg-green { background: var(--green-soft); }
+
+  /* Footer */
+  .footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; }
+  .footer p { font-size: 12px; color: var(--sage); }
+
+  /* Infra card */
+  .infra-card { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 20px; }
+  .infra-card h4 { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--sage); margin-bottom: 8px; }
+  .infra-card .path { font-family: var(--font-mono); font-size: 11px; color: var(--teal); word-break: break-all; line-height: 1.6; }
+  .status-ok { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12px; color: var(--green-soft); font-weight: 500; }
+  .status-fail { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12px; color: var(--red-soft); font-weight: 500; }
+
+  @media (max-width: 768px) {
+    .metrics-strip { grid-template-columns: repeat(3, 1fr); }
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    .header h1 { font-size: 28px; }
+    .org-row { flex-direction: column; align-items: center; }
+  }
+  @media print {
+    .header { padding: 24px 0; }
+    .metrics-strip { margin-top: 0; box-shadow: none; border: 1px solid var(--border); }
+    section { padding: 24px 0; break-inside: avoid; }
+    .callout { background: var(--surface); color: var(--teal); border: 2px solid var(--teal); }
+    .callout p, .callout .hl { color: var(--teal); }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="header-eyebrow">AWARE Hair / Autonomous Operations</div>
+    <h1>AI Employee Team Report</h1>
+    <div class="header-sub">
+      Seven autonomous agents running deterministic business engines across B2B sales, SEO, competitor intelligence, and email marketing. Zero Anthropic API cost. All Claude Code Max subscription.
+    </div>
+    <div class="header-meta">
+      <div class="header-meta-item"><span class="dot dot-green"></span> 3 Engines Active</div>
+      <div class="header-meta-item"><span class="dot dot-gold"></span> March 23, 2026</div>
+      <div class="header-meta-item">28 Cron Jobs / 22 Signals</div>
+    </div>
+  </div>
+</header>
+
+<div class="metrics-strip">
+  <div class="metric-card">
+    <div class="metric-value">3</div>
+    <div class="metric-label">Live Engines</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value gold">41s</div>
+    <div class="metric-label">Total Run Time</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value green">$0</div>
+    <div class="metric-label">API Token Cost</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value">22</div>
+    <div class="metric-label">Signal Thresholds</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value red">4</div>
+    <div class="metric-label">Signals Triggered</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 01: Core Insight -->
+  <section>
+    <div class="section-header"><span class="section-number">01</span><h2>The Architecture</h2></div>
+    <div class="section-desc">The system splits work between deterministic Node.js engines (math, API calls, scoring) and Claude Code sessions (judgment, drafting, synthesis). Engines run in seconds for $0. Claude is reserved for what it's good at: prose and decisions.</div>
+
+    <div class="callout">
+      <h3>Engines for math. Claude for prose.</h3>
+      <p>
+        The reorder-prophet script previously used <span class="hl">Claude to run curl commands and calculate division</span> - costing ~$0.15 per run for deterministic arithmetic. SENTINEL now does the same work in <span class="hl">3 seconds for $0</span>. Across all three engines, we eliminated 4 Claude invocations per day, saving ~$0.50/day and 20+ minutes of execution time. Claude is now only invoked for judgment calls: drafting reactivation emails, synthesizing competitor intelligence, and generating content briefs.
+      </p>
+    </div>
+
+    <div class="grid-2" style="margin-top: 24px;">
+      <div class="card">
+        <h3 style="font-size: 15px;">Engine Tier (Deterministic)</h3>
+        <p>Pure Node.js scripts. Direct API calls via fetch(). Zero Claude tokens. Consistent output every run. Produces JSON + markdown briefs.</p>
+        <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; justify-content: space-between; font-size: 13px; padding: 6px 10px; background: var(--gold-light); border-radius: 4px;">
+            <span class="hl">SENTINEL</span><span style="font-family: var(--font-mono); font-size: 12px; color: var(--sage);">3.0s</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 13px; padding: 6px 10px; background: var(--gold-light); border-radius: 4px;">
+            <span class="hl">PUBLISHER</span><span style="font-family: var(--font-mono); font-size: 12px; color: var(--sage);">~2.0s</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 13px; padding: 6px 10px; background: var(--gold-light); border-radius: 4px;">
+            <span class="hl">SCOUT</span><span style="font-family: var(--font-mono); font-size: 12px; color: var(--sage);">38.2s</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="font-size: 15px;">Claude Tier (Judgment)</h3>
+        <p>Claude Code sessions via Max subscription. Used only for synthesis, drafting, and decisions that require interpretation. Reads engine JSON output.</p>
+        <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; justify-content: space-between; font-size: 13px; padding: 6px 10px; background: var(--surface); border-radius: 4px;">
+            <span>Morning Brief</span><span style="font-family: var(--font-mono); font-size: 12px; color: var(--sage);">reads signal-results.json</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 13px; padding: 6px 10px; background: var(--surface); border-radius: 4px;">
+            <span>Task Generator</span><span style="font-family: var(--font-mono); font-size: 12px; color: var(--sage);">reads signals, creates tasks</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 13px; padding: 6px 10px; background: var(--surface); border-radius: 4px;">
+            <span>Overnight Dispatch</span><span style="font-family: var(--font-mono); font-size: 12px; color: var(--sage);">drafts content, research</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02: The Team -->
+  <section>
+    <div class="section-header"><span class="section-number">02</span><h2>The Team</h2></div>
+    <div class="section-desc">Seven named roles with clear missions, schedules, and tier boundaries. Four are backed by deterministic Node.js engines. Three use Claude Code for judgment-heavy tasks. One is planned for Month 2.</div>
+
+    <div class="org-chart">
+      <div class="org-row">
+        <div class="org-node" style="border-color: var(--teal); background: var(--surface);">
+          <div class="org-name">David</div>
+          <div class="org-role">CEO - Reviews & Approves</div>
+        </div>
+      </div>
+      <div class="org-connector"></div>
+      <div class="org-row">
+        <div class="org-node active">
+          <div class="org-name">SENTINEL</div>
+          <div class="org-role">Revenue Protection</div>
+          <div class="org-type engine">Node.js Engine</div>
+        </div>
+        <div class="org-node active">
+          <div class="org-name">PUBLISHER</div>
+          <div class="org-role">Content Pipeline</div>
+          <div class="org-type engine">Node.js Engine</div>
+        </div>
+        <div class="org-node active">
+          <div class="org-name">SCOUT</div>
+          <div class="org-role">Competitor Intel</div>
+          <div class="org-type engine">Node.js Engine</div>
+        </div>
+        <div class="org-node">
+          <div class="org-name">ORACLE</div>
+          <div class="org-role">Strategic Synthesis</div>
+          <div class="org-type claude">Claude Code</div>
+        </div>
+      </div>
+      <div class="org-connector"></div>
+      <div class="org-row">
+        <div class="org-node">
+          <div class="org-name">PATRON</div>
+          <div class="org-role">B2B Relationships</div>
+          <div class="org-type claude">Claude Code</div>
+        </div>
+        <div class="org-node">
+          <div class="org-name">SCRIBE</div>
+          <div class="org-role">Email Marketing</div>
+          <div class="org-type claude">Claude Code</div>
+        </div>
+        <div class="org-node future">
+          <div class="org-name">AUDITOR</div>
+          <div class="org-role">Financial Watchdog</div>
+          <div class="org-type claude">Month 2</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrap" style="margin-top: 24px;">
+      <div class="table-bar">
+        <h3>Employee Roster</h3>
+        <span class="count">7 roles, 3 engines live</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Mission</th>
+            <th>Type</th>
+            <th>Schedule</th>
+            <th>Signals</th>
+            <th>Tier</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="cn">SENTINEL</span></td>
+            <td>Protect 96% reorder rate, prevent stockouts</td>
+            <td><span class="badge b-gold">Engine</span></td>
+            <td class="r">Daily 06:50</td>
+            <td class="r">3</td>
+            <td><span class="badge b-amber">0-1</span></td>
+          </tr>
+          <tr>
+            <td><span class="cn">PUBLISHER</span></td>
+            <td>Content pipeline, SEO opportunities, calendar gaps</td>
+            <td><span class="badge b-gold">Engine</span></td>
+            <td class="r">Daily 06:45</td>
+            <td class="r">4</td>
+            <td><span class="badge b-amber">0-1</span></td>
+          </tr>
+          <tr>
+            <td><span class="cn">SCOUT</span></td>
+            <td>Continuous competitor monitoring, material change detection</td>
+            <td><span class="badge b-gold">Engine</span></td>
+            <td class="r">Nightly 02:00</td>
+            <td class="r">2</td>
+            <td><span class="badge b-sage">0</span></td>
+          </tr>
+          <tr>
+            <td><span class="cn">ORACLE</span></td>
+            <td>Synthesize engine output into morning/weekly briefs</td>
+            <td><span class="badge b-sage">Claude</span></td>
+            <td class="r">Daily 07:00</td>
+            <td class="r">-</td>
+            <td><span class="badge b-sage">0</span></td>
+          </tr>
+          <tr>
+            <td><span class="cn">PATRON</span></td>
+            <td>Salon relationships, distributor pipeline, follow-ups</td>
+            <td><span class="badge b-sage">Claude</span></td>
+            <td class="r">Weekdays 09:00</td>
+            <td class="r">3</td>
+            <td><span class="badge b-amber">0-1</span></td>
+          </tr>
+          <tr>
+            <td><span class="cn">SCRIBE</span></td>
+            <td>Email deliverability, flow performance, engagement</td>
+            <td><span class="badge b-sage">Claude</span></td>
+            <td class="r">Mon/Thu 07:30</td>
+            <td class="r">2</td>
+            <td><span class="badge b-sage">0</span></td>
+          </tr>
+          <tr style="opacity: 0.5;">
+            <td><span class="cn">AUDITOR</span></td>
+            <td>Cash position, invoice aging, budget variance</td>
+            <td><span class="badge b-sage">Future</span></td>
+            <td class="r">Friday 16:00</td>
+            <td class="r">2</td>
+            <td><span class="badge b-sage">0</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 03: SENTINEL Results -->
+  <section>
+    <div class="section-header"><span class="section-number">03</span><h2>SENTINEL - B2B Health Engine</h2></div>
+    <div class="section-desc">Pulls live Shopify data, calculates reorder intervals for every B2B salon, projects inventory stockouts, and emits signals for at-risk accounts. Replaces reorder-prophet.sh + inventory-countdown.sh.</div>
+
+    <div style="display: flex; gap: 8px; margin-bottom: 24px; font-family: var(--font-mono); font-size: 12px; color: var(--sage);">
+      <span>[LIVE: Shopify 2026-03-23]</span>
+      <span>|</span>
+      <span>3.0s execution</span>
+      <span>|</span>
+      <span>4 API calls (paginated)</span>
+      <span>|</span>
+      <span>0 Claude tokens</span>
+    </div>
+
+    <!-- Salon Health Bar -->
+    <div class="card" style="margin-bottom: 16px;">
+      <h3 style="font-size: 15px; margin-bottom: 12px;">Salon Health Distribution</h3>
+      <div class="status-bar">
+        <div class="seg seg-red" style="width: 61.9%;" title="26 RED"></div>
+        <div class="seg seg-amber" style="width: 7.1%;" title="3 AMBER"></div>
+        <div class="seg seg-yellow" style="width: 2.4%;" title="1 YELLOW"></div>
+        <div class="seg seg-green" style="width: 28.6%;" title="12 GREEN"></div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+        <span><strong style="color: var(--red-soft);">26</strong> RED (churn risk)</span>
+        <span><strong style="color: var(--amber-soft);">3</strong> AMBER (overdue)</span>
+        <span><strong style="color: #d4c44a;">1</strong> YELLOW</span>
+        <span><strong style="color: var(--green-soft);">12</strong> GREEN (on schedule)</span>
+      </div>
+      <p style="font-size: 12px; color: var(--sage); margin-top: 12px;">
+        Note: Many RED salons are single-order sample accounts with $0 LTV. The 5 high-LTV salons below are the actionable alerts. A minimum LTV filter ($100+) is planned for v2.
+      </p>
+    </div>
+
+    <!-- High-LTV At-Risk -->
+    <div class="table-wrap" style="margin-bottom: 16px;">
+      <div class="table-bar">
+        <h3>Revenue at Risk - Top Accounts</h3>
+        <span class="count">Salon LTV > $100, ratio > 2.0</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Salon</th>
+            <th class="r">LTV</th>
+            <th class="r">Last Order</th>
+            <th class="r">Days Since</th>
+            <th class="r">Avg Interval</th>
+            <th class="r">Ratio</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: rgba(196,93,74,0.04);">
+            <td>
+              <div class="cn">Customer #7241827713076</div>
+              <div class="cq">Last: Shampoo + Conditioner + Leave-In</div>
+            </td>
+            <td class="r"><strong>$12,842</strong></td>
+            <td class="r">Jan 8, 2026</td>
+            <td class="r">74</td>
+            <td class="r">18 days</td>
+            <td class="r"><strong>4.11x</strong></td>
+            <td><span class="badge b-red">RED</span></td>
+          </tr>
+          <tr style="background: rgba(196,93,74,0.04);">
+            <td>
+              <div class="cn">Customer #7425913454644</div>
+              <div class="cq">Last: Premium Salon Opening Order</div>
+            </td>
+            <td class="r"><strong>$1,906</strong></td>
+            <td class="r">Jun 20, 2025</td>
+            <td class="r">276</td>
+            <td class="r">12 days</td>
+            <td class="r"><strong>23.0x</strong></td>
+            <td><span class="badge b-red">RED</span></td>
+          </tr>
+          <tr style="background: rgba(196,93,74,0.04);">
+            <td>
+              <div class="cn">Customer #7617028128820</div>
+              <div class="cq">Last: Basic Package</div>
+            </td>
+            <td class="r"><strong>$1,246</strong></td>
+            <td class="r">Jul 2, 2025</td>
+            <td class="r">264</td>
+            <td class="r">49 days</td>
+            <td class="r"><strong>5.39x</strong></td>
+            <td><span class="badge b-red">RED</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="cn">Customer #8014734819380</div>
+              <div class="cq">Approaching reorder window</div>
+            </td>
+            <td class="r">$1,553</td>
+            <td class="r">Jan 7, 2026</td>
+            <td class="r">75</td>
+            <td class="r">41 days</td>
+            <td class="r">1.83x</td>
+            <td><span class="badge b-amber">AMBER</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="cn">Customer #7659917115444</div>
+              <div class="cq">Approaching reorder window</div>
+            </td>
+            <td class="r">$1,529</td>
+            <td class="r">Dec 8, 2025</td>
+            <td class="r">105</td>
+            <td class="r">69 days</td>
+            <td class="r">1.52x</td>
+            <td><span class="badge b-amber">AMBER</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Healthy Accounts -->
+    <div class="card" style="margin-bottom: 16px;">
+      <h3 style="font-size: 15px;">Healthy Accounts - Top 5 by LTV</h3>
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 8px 12px; background: rgba(74,140,106,0.05); border-radius: 4px; border-left: 3px solid var(--green-soft);">
+          <span><strong>Customer #7466891051060</strong> - $15,392 LTV</span>
+          <span style="font-family: var(--font-mono); font-size: 12px; color: var(--green-soft);">21 days ago (avg 29d) - ratio 0.72</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 8px 12px; background: rgba(74,140,106,0.05); border-radius: 4px; border-left: 3px solid var(--green-soft);">
+          <span><strong>Customer #7595406622772</strong> - $8,821 LTV</span>
+          <span style="font-family: var(--font-mono); font-size: 12px; color: var(--green-soft);">13 days ago (avg 19d) - ratio 0.68</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 8px 12px; background: rgba(74,140,106,0.05); border-radius: 4px; border-left: 3px solid var(--green-soft);">
+          <span><strong>Customer #7437896351796</strong> - $3,260 LTV</span>
+          <span style="font-family: var(--font-mono); font-size: 12px; color: var(--green-soft);">3 days ago (avg 159d) - ratio 0.02</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 8px 12px; background: rgba(74,140,106,0.05); border-radius: 4px; border-left: 3px solid var(--green-soft);">
+          <span><strong>Customer #8022481043508</strong> - $3,210 LTV</span>
+          <span style="font-family: var(--font-mono); font-size: 12px; color: var(--green-soft);">20 days ago (avg 21d) - ratio 0.95</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 8px 12px; background: rgba(74,140,106,0.05); border-radius: 4px; border-left: 3px solid var(--green-soft);">
+          <span><strong>Customer #7414100295732</strong> - $2,709 LTV</span>
+          <span style="font-family: var(--font-mono); font-size: 12px; color: var(--green-soft);">36 days ago (avg 152d) - ratio 0.24</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inventory Stockout -->
+    <div class="table-wrap">
+      <div class="table-bar">
+        <h3>Inventory Stockout Projection</h3>
+        <span class="count">Products with active velocity and stock risk</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>SKU</th>
+            <th class="r">Stock</th>
+            <th class="r">30d Sold</th>
+            <th class="r">Daily Rate</th>
+            <th class="r">Days Left</th>
+            <th class="r">Reorder (90d)</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: rgba(196,93,74,0.04);">
+            <td>
+              <div class="cn">9.1 Leave-In Conditioner</div>
+              <div class="cq">Standard (8.5oz) - Hero product</div>
+            </td>
+            <td class="r">91-L-8</td>
+            <td class="r">10</td>
+            <td class="r">80</td>
+            <td class="r">2.67</td>
+            <td class="r"><strong>4 days</strong></td>
+            <td class="r">230</td>
+            <td><span class="badge b-black">BLACK</span></td>
+          </tr>
+          <tr style="background: rgba(196,93,74,0.04);">
+            <td>
+              <div class="cn">The Discovery Ritual</div>
+              <div class="cq">Frosted Rose</div>
+            </td>
+            <td class="r">91-DK-3</td>
+            <td class="r">0</td>
+            <td class="r">32</td>
+            <td class="r">1.07</td>
+            <td class="r"><strong>OUT</strong></td>
+            <td class="r">96</td>
+            <td><span class="badge b-black">BLACK</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="cn">9.1 Scalp Care Conditioner</div>
+              <div class="cq">Standard (10.1oz)</div>
+            </td>
+            <td class="r">91-C-10</td>
+            <td class="r">85</td>
+            <td class="r">117</td>
+            <td class="r">3.90</td>
+            <td class="r"><strong>22 days</strong></td>
+            <td class="r">266</td>
+            <td><span class="badge b-red">RED</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 04: SCOUT Results -->
+  <section>
+    <div class="section-header"><span class="section-number">04</span><h2>SCOUT - Competitor Intelligence</h2></div>
+    <div class="section-desc">Scrapes 7 competitor websites nightly, stores page snapshots, computes word-level diffs against previous runs, and scores the materiality of changes. First run established baselines - diffs begin tomorrow.</div>
+
+    <div style="display: flex; gap: 8px; margin-bottom: 24px; font-family: var(--font-mono); font-size: 12px; color: var(--sage);">
+      <span>[LIVE: Web scrape 2026-03-23]</span>
+      <span>|</span>
+      <span>38.2s execution</span>
+      <span>|</span>
+      <span>21 pages fetched</span>
+      <span>|</span>
+      <span>0 Claude tokens</span>
+    </div>
+
+    <div class="table-wrap" style="margin-bottom: 16px;">
+      <div class="table-bar">
+        <h3>Baseline Scan Results</h3>
+        <span class="count">7 competitors, 24 pages</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Competitor</th>
+            <th>Pages Scanned</th>
+            <th class="r">Homepage</th>
+            <th class="r">Shop/Collection</th>
+            <th class="r">Pro/About</th>
+            <th>Materiality</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="cn">Innersense Organic Beauty</span></td>
+            <td>4 of 4</td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td><span class="badge b-sage">Baseline</span></td>
+          </tr>
+          <tr>
+            <td><span class="cn">Grown Alchemist</span></td>
+            <td>3 of 3</td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td><span class="badge b-sage">Baseline</span></td>
+          </tr>
+          <tr>
+            <td><span class="cn">Act+Acre</span></td>
+            <td>3 of 3</td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td><span class="badge b-sage">Baseline</span></td>
+          </tr>
+          <tr>
+            <td><span class="cn">Briogeo</span></td>
+            <td>3 of 3</td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td><span class="badge b-sage">Baseline</span></td>
+          </tr>
+          <tr>
+            <td><span class="cn">Olaplex</span></td>
+            <td>3 of 3</td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td><span class="badge b-sage">Baseline</span></td>
+          </tr>
+          <tr>
+            <td><span class="cn">Prose</span></td>
+            <td>3 of 3</td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td><span class="badge b-sage">Baseline</span></td>
+          </tr>
+          <tr>
+            <td><span class="cn">Virtue Labs</span></td>
+            <td>3 of 3</td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td class="r"><span class="badge b-green">OK</span></td>
+            <td><span class="badge b-sage">Baseline</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size: 15px;">Materiality Scoring</h3>
+      <p style="margin-bottom: 12px;">When SCOUT detects changes, it assigns materiality weights. Score >= 4 triggers a signal to the overnight task generator.</p>
+      <div class="grid-3">
+        <div style="text-align: center; padding: 12px; background: var(--surface); border-radius: 4px;">
+          <div style="font-family: var(--font-heading); font-size: 24px; color: var(--red-soft);">5</div>
+          <div style="font-size: 11px; color: var(--sage); margin-top: 2px;">Price Change / New Product</div>
+        </div>
+        <div style="text-align: center; padding: 12px; background: var(--surface); border-radius: 4px;">
+          <div style="font-family: var(--font-heading); font-size: 24px; color: var(--amber-soft);">3</div>
+          <div style="font-size: 11px; color: var(--sage); margin-top: 2px;">Hero Copy / Pro Page Change</div>
+        </div>
+        <div style="text-align: center; padding: 12px; background: var(--surface); border-radius: 4px;">
+          <div style="font-family: var(--font-heading); font-size: 24px; color: var(--sage);">1</div>
+          <div style="font-size: 11px; color: var(--sage); margin-top: 2px;">Footer / Minor Copy</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05: Daily Schedule -->
+  <section>
+    <div class="section-header"><span class="section-number">05</span><h2>Daily Operations Flow</h2></div>
+    <div class="section-desc">The full daily automation cycle. Engines run first (producing structured data), then Claude-based tasks read engine output for synthesis and judgment calls.</div>
+
+    <div class="card" style="padding: 0;">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-time">02:00</div>
+          <div class="flow-content">
+            <div class="flow-title">SCOUT scans 7 competitors</div>
+            <div class="flow-desc">Fetches 24 pages, stores snapshots, computes diffs, scores materiality</div>
+            <div class="flow-tag zero">0 tokens - 38s</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-time">05:00</div>
+          <div class="flow-content">
+            <div class="flow-title">Overnight Compile</div>
+            <div class="flow-desc">Digests all overnight work into [REVIEW], [APPROVE], [FYI] categories</div>
+            <div class="flow-tag claude-tag">Claude</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-time">06:00</div>
+          <div class="flow-content">
+            <div class="flow-title">Data Snapshot Cascade</div>
+            <div class="flow-desc">06:00 Shopify, 06:15 Klaviyo, 06:30 GSC - raw business data pulled</div>
+            <div class="flow-tag claude-tag">Claude</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-time">06:45</div>
+          <div class="flow-content">
+            <div class="flow-title">PUBLISHER analyzes AI queries</div>
+            <div class="flow-desc">Filters 7+ word GSC queries, clusters by topic, scores opportunities, emits signals</div>
+            <div class="flow-tag zero">0 tokens - ~2s</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-time">06:50</div>
+          <div class="flow-content">
+            <div class="flow-title">SENTINEL scores B2B health</div>
+            <div class="flow-desc">Calculates reorder ratios for 42 salons, projects stockouts for 28 SKUs, emits signals</div>
+            <div class="flow-tag zero">0 tokens - 3s</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-time">07:00</div>
+          <div class="flow-content">
+            <div class="flow-title">ORACLE generates morning brief</div>
+            <div class="flow-desc">Reads signal-results.json from all engines. Includes AI Team Status section with per-engine summaries and triggered signals.</div>
+            <div class="flow-tag claude-tag">Claude - reads engine JSON</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-time">20:00</div>
+          <div class="flow-content">
+            <div class="flow-title">Task Generator reads signals</div>
+            <div class="flow-desc">Reads signal-results.json + all briefs. Matches against 22 signal thresholds. Creates 0-5 overnight tasks.</div>
+            <div class="flow-tag claude-tag">Claude - structured signal input</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-time">21:00</div>
+          <div class="flow-content">
+            <div class="flow-title">Overnight Dispatch</div>
+            <div class="flow-desc">Processes task queue + standing tasks. Now reads engine briefs instead of re-analyzing data. Saves ~20min of Claude time.</div>
+            <div class="flow-tag claude-tag">Claude - engine-informed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06: Signal System -->
+  <section>
+    <div class="section-header"><span class="section-number">06</span><h2>Signal System</h2></div>
+    <div class="section-desc">Engines write structured signals to a shared JSON bus. The task generator reads this bus at 20:00 and creates overnight tasks when thresholds are crossed. Today's test run triggered 4 signals.</div>
+
+    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+      <div class="signal-card red">
+        <div class="signal-name">reorder_overdue_high_ltv</div>
+        <div class="signal-value">Customer #7241827713076 - LTV $12,842, 74 days, ratio 4.11</div>
+        <div class="signal-detail">Engine: SENTINEL | Action: Draft reactivation email (Tier 1) | Last order: Shampoo + Conditioner + Leave-In</div>
+      </div>
+      <div class="signal-card red">
+        <div class="signal-name">stockout_within_lead_time</div>
+        <div class="signal-value">Leave-In Conditioner (8.5oz) - 4 days left, need 45-day lead time</div>
+        <div class="signal-detail">Engine: SENTINEL | Action: Stockout analysis (Tier 0) | Stock: 10 units, daily rate: 2.67</div>
+      </div>
+      <div class="signal-card red">
+        <div class="signal-name">stockout_within_lead_time</div>
+        <div class="signal-value">Discovery Ritual (Frosted Rose) - OUT OF STOCK</div>
+        <div class="signal-detail">Engine: SENTINEL | Action: Stockout analysis (Tier 0) | 32 units sold in 30 days, 0 remaining</div>
+      </div>
+      <div class="signal-card amber">
+        <div class="signal-name">stockout_within_lead_time</div>
+        <div class="signal-value">Scalp Care Conditioner (10.1oz) - 22 days left, need 45-day lead time</div>
+        <div class="signal-detail">Engine: SENTINEL | Action: Stockout analysis (Tier 0) | Stock: 85 units, daily rate: 3.90</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size: 15px; margin-bottom: 12px;">Signal Bus Architecture</h3>
+      <p style="margin-bottom: 16px;">All engines write to <code style="font-family: var(--font-mono); font-size: 12px; background: var(--surface); padding: 1px 6px; border-radius: 3px; border: 1px solid var(--border);">~/.config/aware-hair/data/signal-results.json</code>. The task generator reads this single file instead of parsing multiple markdown briefs.</p>
+      <div class="grid-3">
+        <div class="infra-card">
+          <h4>Signal Categories</h4>
+          <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 4px;">
+            <div style="font-size: 12px;"><strong>8</strong> Metric Anomalies</div>
+            <div style="font-size: 12px;"><strong>3</strong> Data Staleness</div>
+            <div style="font-size: 12px;"><strong>4</strong> Pipeline Gaps</div>
+            <div style="font-size: 12px;"><strong>7</strong> Engine Signals (new)</div>
+          </div>
+        </div>
+        <div class="infra-card">
+          <h4>Tier System</h4>
+          <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 4px;">
+            <div style="font-size: 12px;"><strong>Tier 0:</strong> Observe/report only</div>
+            <div style="font-size: 12px;"><strong>Tier 1:</strong> Draft to file</div>
+            <div style="font-size: 12px;"><strong>Tier 2:</strong> Needs approval</div>
+            <div style="font-size: 12px;"><strong>Tier 3:</strong> Always blocked</div>
+          </div>
+        </div>
+        <div class="infra-card">
+          <h4>Calibration Rules</h4>
+          <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 4px;">
+            <div style="font-size: 12px;"><strong>&lt;40%</strong> utility: Tighten</div>
+            <div style="font-size: 12px;"><strong>40-60%</strong>: Tune individual</div>
+            <div style="font-size: 12px;"><strong>&gt;60%</strong>: Consider Tier+1</div>
+            <div style="font-size: 12px;"><strong>&gt;80% 60d</strong>: Tier+2</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07: Engine Pattern -->
+  <section>
+    <div class="section-header"><span class="section-number">07</span><h2>The Replicable Engine Pattern</h2></div>
+    <div class="section-desc">Every engine follows a 7-step contract. To add a new business function (email health, finance, etc.), implement these 7 steps with domain-specific data sources and scoring formulas.</div>
+
+    <div class="card" style="padding: 0;">
+      <div class="hw-step" style="padding: 20px 24px;">
+        <div class="hw-num">1</div>
+        <div class="hw-text">
+          <h4>Data Pull</h4>
+          <p>API calls to source systems using <code>fetchJSON()</code> or <code>fetchAllPages()</code> from engine-base.mjs. Handles pagination, rate limiting, and retries automatically.</p>
+        </div>
+      </div>
+      <div class="hw-step" style="padding: 20px 24px;">
+        <div class="hw-num">2</div>
+        <div class="hw-text">
+          <h4>Filter</h4>
+          <p>Domain-specific criteria. SENTINEL: B2B customer tags. PUBLISHER: 7+ word queries. SCOUT: page-level content extraction. Reduces raw data to actionable records.</p>
+        </div>
+      </div>
+      <div class="hw-step" style="padding: 20px 24px;">
+        <div class="hw-num">3</div>
+        <div class="hw-text">
+          <h4>Cluster</h4>
+          <p>Group by shared attributes. SENTINEL: orders by salon. PUBLISHER: queries by shared keywords. SCOUT: changes by competitor. Transforms individual data points into business entities.</p>
+        </div>
+      </div>
+      <div class="hw-step" style="padding: 20px 24px;">
+        <div class="hw-num">4</div>
+        <div class="hw-text">
+          <h4>Score</h4>
+          <p>Quantify opportunity or risk on a single axis. Formula pattern: <code>volume x performance x room-for-improvement</code>. SENTINEL uses <code>days_since / avg_interval</code>. PUBLISHER uses <code>impressions / position</code>.</p>
+        </div>
+      </div>
+      <div class="hw-step" style="padding: 20px 24px;">
+        <div class="hw-num">5</div>
+        <div class="hw-text">
+          <h4>Context Check</h4>
+          <p>Compare against previous run via <code>loadPreviousRun()</code>. Detects what's new (new RED salon), what resolved (salon ordered), and what worsened. Prevents alert fatigue by highlighting changes.</p>
+        </div>
+      </div>
+      <div class="hw-step" style="padding: 20px 24px;">
+        <div class="hw-num">6</div>
+        <div class="hw-text">
+          <h4>Brief Generation</h4>
+          <p>Standardized markdown via <code>writeBrief()</code>. Three sections: ALERT (immediate), WATCH (trending), HEALTHY (on track). Written to <code>~/.config/aware-hair/briefs/YYYY-MM-DD/</code>.</p>
+        </div>
+      </div>
+      <div class="hw-step" style="padding: 20px 24px;">
+        <div class="hw-num">7</div>
+        <div class="hw-text">
+          <h4>Signal Emission</h4>
+          <p>Write to shared <code>signal-results.json</code> via <code>emitSignal()</code>. Each signal has: engine, name, severity, human-readable value, and machine-readable details object. Task generator reads this at 20:00.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08: Infrastructure -->
+  <section>
+    <div class="section-header"><span class="section-number">08</span><h2>Infrastructure Map</h2></div>
+    <div class="section-desc">Every file, script, and data artifact. All engines share a common base module, write to the same signal bus, and follow the same cron wrapper pattern.</div>
+
+    <div class="grid-3" style="margin-bottom: 16px;">
+      <div class="infra-card">
+        <h4>Engine Scripts</h4>
+        <div class="path">
+          engines/engine-base.mjs<br>
+          engines/b2b-health-engine.mjs<br>
+          engines/competitor-engine.mjs<br>
+          engines/package.json<br>
+          sales/seo-pipeline/scripts/seo-engine.mjs
+        </div>
+        <div class="status-ok">&#10003; All tested, live</div>
+      </div>
+      <div class="infra-card">
+        <h4>Cron Wrappers</h4>
+        <div class="path">
+          ~/.config/aware-hair/cron/b2b-health.sh<br>
+          ~/.config/aware-hair/cron/competitor-engine.sh<br>
+          ~/.config/aware-hair/cron/seo-ai-analysis.sh<br>
+          ~/.config/aware-hair/cron/crontab.txt
+        </div>
+        <div class="status-ok">&#10003; Crontab installed</div>
+      </div>
+      <div class="infra-card">
+        <h4>Data Outputs</h4>
+        <div class="path">
+          ~/.config/aware-hair/data/signal-results.json<br>
+          ~/.config/aware-hair/data/b2b-health.json<br>
+          ~/.config/aware-hair/data/competitor.json<br>
+          ~/.config/aware-hair/data/competitors/*/
+        </div>
+        <div class="status-ok">&#10003; Generating data</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="infra-card">
+        <h4>Modified Integration Points</h4>
+        <div class="path">
+          generate-tasks.sh - reads signal-results.json<br>
+          overnight-dispatch.sh - consumes engine briefs<br>
+          morning-brief.sh - AI Team Status section<br>
+          signal-thresholds.yaml - +7 engine signals
+        </div>
+      </div>
+      <div class="infra-card">
+        <h4>Daily Briefs Generated</h4>
+        <div class="path">
+          briefs/YYYY-MM-DD/b2b-health.md<br>
+          briefs/YYYY-MM-DD/competitor.md<br>
+          briefs/YYYY-MM-DD/seo-ai-opportunities.md<br>
+          + 13 existing daily briefs
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09: What's Next -->
+  <section>
+    <div class="section-header"><span class="section-number">09</span><h2>Roadmap</h2></div>
+    <div class="section-desc">The engine framework is built and proven. Expansion follows the same 7-step pattern with domain-specific data sources.</div>
+
+    <div class="grid-2">
+      <div class="card card-accent">
+        <h3>Week 2: Integration Polish</h3>
+        <p>Add LTV filter to SENTINEL (skip $0 sample accounts). Enhance morning brief AI Team Status. Run SENTINEL parallel with old reorder-prophet for 1 week, then retire.</p>
+      </div>
+      <div class="card card-accent">
+        <h3>Week 3: SCRIBE Engine</h3>
+        <p>Port email-deliverability.sh DNS checks to Node.js. Add Klaviyo metric pulls. Composite deliverability score with signal emission. Replaces Mon/Thu Claude runs.</p>
+      </div>
+      <div class="card">
+        <h3>Month 2: AUDITOR Engine</h3>
+        <p>QuickBooks cash position, invoice aging, budget variance. Read-only financial watchdog. Tier 0 only - never writes financial data.</p>
+      </div>
+      <div class="card">
+        <h3>Month 2: Feedback Loop</h3>
+        <p>Per-engine utility tracking in task-feedback.yaml. 30-day calibration reviews. /rate-overnight enhanced to collect per-engine ratings.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="footer">
+  <p>AWARE Hair AI Employee Team - Generated March 23, 2026 - Engines: SENTINEL v1.0, PUBLISHER v1.0, SCOUT v1.0</p>
+</footer>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

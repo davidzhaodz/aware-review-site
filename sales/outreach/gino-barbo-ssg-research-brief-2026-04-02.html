@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intelligence Brief - Gino Barbo / Salon Service Group</title>
+  <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal: #102B26;
+      --cream: #f4efe9;
+      --surface: #faf8f5;
+      --gold: #D4A574;
+      --sage: #7d8471;
+      --text: #102B26;
+      --text-secondary: #555;
+      --border: #e0dbd4;
+      --red-soft: #9e3a30;
+      --green-soft: #2d6b3f;
+    }
+
+    @page { size: letter; margin: 0.5in; }
+    @media print {
+      html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .no-print { display: none !important; }
+      .page-break { page-break-before: always; }
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    /* Header */
+    .brief-header {
+      text-align: center;
+      padding: 48px 32px 40px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 48px;
+    }
+
+    .brief-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .brief-title {
+      font-family: 'orpheus-pro', Georgia, serif;
+      font-size: 2.25rem;
+      font-weight: 400;
+      color: var(--teal);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .brief-subtitle {
+      font-size: 1.0625rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    .brief-meta {
+      margin-top: 20px;
+      font-size: 0.75rem;
+      color: var(--sage);
+      letter-spacing: 0.05em;
+    }
+
+    .brief-meta span { margin: 0 8px; }
+
+    /* Sections */
+    section {
+      margin-bottom: 48px;
+    }
+
+    .section-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-family: 'orpheus-pro', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--teal);
+      margin-bottom: 20px;
+      line-height: 1.3;
+    }
+
+    h3 {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--teal);
+      margin-bottom: 8px;
+      margin-top: 24px;
+    }
+
+    p {
+      font-size: 0.9375rem;
+      line-height: 1.65;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    /* Profile Card */
+    .profile-card {
+      background: var(--surface);
+      border-radius: 6px;
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .profile-name {
+      font-family: 'orpheus-pro', Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 400;
+      color: var(--teal);
+      margin-bottom: 4px;
+    }
+
+    .profile-title {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .profile-item {
+      font-size: 0.875rem;
+    }
+
+    .profile-item .label {
+      font-weight: 600;
+      color: var(--sage);
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .profile-item .value {
+      color: var(--text);
+    }
+
+    /* Stats Row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 24px 0;
+    }
+
+    .stat-item {
+      background: var(--surface);
+      padding: 20px 16px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'orpheus-pro', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--teal);
+      line-height: 1.1;
+    }
+
+    .stat-label {
+      font-size: 0.6875rem;
+      color: var(--sage);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+    }
+
+    /* Tag */
+    .tag {
+      display: inline-block;
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 3px;
+      vertical-align: middle;
+    }
+
+    .tag-verified {
+      background: #e8f0eb;
+      color: var(--green-soft);
+    }
+
+    .tag-unverified {
+      background: #f5ebe8;
+      color: var(--red-soft);
+    }
+
+    /* Key Facts */
+    .fact-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .fact-list li {
+      font-size: 0.9375rem;
+      line-height: 1.55;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .fact-list li:last-child { border-bottom: none; }
+
+    .fact-list li strong {
+      color: var(--teal);
+    }
+
+    /* Strategy Cards */
+    .strategy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .strategy-card {
+      background: var(--surface);
+      border-radius: 6px;
+      padding: 24px;
+    }
+
+    .strategy-card h4 {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+
+    .strategy-card p {
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: var(--text-secondary);
+      margin-bottom: 0;
+    }
+
+    /* Do / Don't */
+    .do-dont {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .do-column, .dont-column {
+      padding: 24px;
+      border-radius: 6px;
+    }
+
+    .do-column {
+      background: #e8f0eb;
+    }
+
+    .dont-column {
+      background: #f5ebe8;
+    }
+
+    .do-column h4, .dont-column h4 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .do-column h4 { color: var(--green-soft); }
+    .dont-column h4 { color: var(--red-soft); }
+
+    .do-column ul, .dont-column ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .do-column li, .dont-column li {
+      font-size: 0.875rem;
+      line-height: 1.5;
+      padding: 4px 0;
+      color: var(--text);
+    }
+
+    .do-column li::before { content: "+ "; font-weight: 600; color: var(--green-soft); }
+    .dont-column li::before { content: "- "; font-weight: 600; color: var(--red-soft); }
+
+    /* Scenarios */
+    .scenario {
+      background: var(--surface);
+      border-radius: 6px;
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+
+    .scenario-trigger {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--teal);
+      margin-bottom: 6px;
+    }
+
+    .scenario-response {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      font-style: italic;
+    }
+
+    /* Divider */
+    .divider {
+      text-align: center;
+      padding: 24px 0;
+      color: var(--gold);
+      font-size: 0.75rem;
+      letter-spacing: 0.5em;
+    }
+
+    /* Questions */
+    .question-list {
+      list-style: none;
+      padding: 0;
+      counter-reset: questions;
+    }
+
+    .question-list li {
+      counter-increment: questions;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .question-list li:last-child { border-bottom: none; }
+
+    .question-list li::before {
+      content: counter(questions);
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      background: var(--teal);
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 24px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-right: 12px;
+      vertical-align: middle;
+    }
+
+    /* Brand list */
+    .brand-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 12px 0;
+    }
+
+    .brand-tag {
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    /* Value Prop Section */
+    .value-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .value-card {
+      background: var(--teal);
+      color: white;
+      border-radius: 6px;
+      padding: 24px;
+    }
+
+    .value-card h4 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .value-card p {
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 0;
+    }
+
+    /* Sources */
+    .sources {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .sources h3 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--sage);
+      margin-bottom: 12px;
+      margin-top: 0;
+    }
+
+    .sources ol {
+      padding-left: 20px;
+    }
+
+    .sources li {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 4px;
+    }
+
+    .sources a {
+      color: var(--teal);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sources a:hover {
+      border-color: var(--teal);
+    }
+
+    /* Print button */
+    .print-btn {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      background: var(--teal);
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 4px;
+      z-index: 100;
+    }
+
+    .print-btn:hover { opacity: 0.9; }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .profile-grid, .strategy-grid, .do-dont, .value-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">Print / Save PDF</button>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="brief-header">
+    <div class="brief-label">Intelligence Brief - For David's Eyes Only</div>
+    <h1 class="brief-title">Gino Barbo / Salon Service Group</h1>
+    <div class="brief-subtitle">Preparing for a warm introduction via Olivia Fishburn</div>
+    <div class="brief-meta">
+      April 2, 2026 <span>|</span> All claims source-labeled <span>|</span> Do not forward
+    </div>
+  </div>
+
+  <!-- EXECUTIVE SUMMARY - SCAN THIS BEFORE THE CALL -->
+  <section style="background: var(--teal); color: white; padding: 28px 32px; border-radius: 6px; margin-bottom: 48px;">
+    <div style="font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px;">5 Things to Know Before the Call</div>
+    <ol style="list-style: none; padding: 0; counter-reset: exec;">
+      <li style="counter-increment: exec; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.9375rem; line-height: 1.55; color: rgba(255,255,255,0.9);"><strong style="color: var(--gold);">1.</strong> <strong>Gino Barbo</strong> - Australian-born founder, built SSG from $12K to the nation's largest independent distributor over 37 years. Values relationships and resourcefulness ("Go find the egg"). Casual, direct style.</li>
+      <li style="counter-increment: exec; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.9375rem; line-height: 1.55; color: rgba(255,255,255,0.9);"><strong style="color: var(--gold);">2.</strong> <strong>Q1 is tough industry-wide</strong> - Salon revenue contracted 1% in 2025 (first since COVID). Guest visits down 9%. Tariffs compressing margins. Olivia's experience reflects a real structural headwind, not a one-time blip.</li>
+      <li style="counter-increment: exec; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.9375rem; line-height: 1.55; color: rgba(255,255,255,0.9);"><strong style="color: var(--gold);">3.</strong> <strong>SSG has a new competitor</strong> - Win Beauty Solutions (PE-backed) acquired distributors in Kansas City and Bolivar, MO - SSG's home market. Same rollup playbook. SSG needs to differentiate on curation and service quality. Don't bring this up, but know it.</li>
+      <li style="counter-increment: exec; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.9375rem; line-height: 1.55; color: rgba(255,255,255,0.9);"><strong style="color: var(--gold);">4.</strong> <strong>Scalp wellness is the category gap</strong> - Up 6% in pro channels while everything else is flat or down. Head spa services generate $2-8K/month per salon. SSG has Zenagen (hair loss) and Milbon (head spa) but nothing for daily scalp wellness. That's AWARE.</li>
+      <li style="counter-increment: exec; padding: 8px 0; font-size: 0.9375rem; line-height: 1.55; color: rgba(255,255,255,0.9);"><strong style="color: var(--gold);">5.</strong> <strong>Be a consultant, not a pitch</strong> - Lead with empathy for Q1, curiosity about SSG's process, and what you can help build. Offer the head spa launch kit as a concrete value-add. Ask about onboarding. Suggest Nashville pilot. Don't lead with revenue ($125K is too small) or stats.</li>
+    </ol>
+  </section>
+
+  <!-- SECTION 1: THE PERSON -->
+  <section>
+    <div class="section-label">The Person</div>
+
+    <div class="profile-card">
+      <div class="profile-name">Gino Barbo</div>
+      <div class="profile-title">Founder, CEO, and President - Salon Service Group</div>
+      <div class="profile-grid">
+        <div class="profile-item">
+          <div class="label">Background</div>
+          <div class="value">Australian native. Came to the US for the 1984 Olympics, stayed after meeting his wife Dana. <span class="tag tag-verified">Verified</span></div>
+        </div>
+        <div class="profile-item">
+          <div class="label">Founded SSG</div>
+          <div class="value">1987, with $12,000 borrowed from his father-in-law. First-year revenue: $87,000. <span class="tag tag-verified">Verified</span></div>
+        </div>
+        <div class="profile-item">
+          <div class="label">Philosophy</div>
+          <div class="value">"Go find the egg" - solve problems creatively rather than accept limitations. Values culture over pure growth. <span class="tag tag-verified">Verified</span></div>
+        </div>
+        <div class="profile-item">
+          <div class="label">PE Posture</div>
+          <div class="value">Took 3 years to agree to Great Range Capital. Retained full operational control. No regrets 18mo in. <span class="tag tag-verified">Verified</span></div>
+        </div>
+        <div class="profile-item">
+          <div class="label">Email</div>
+          <div class="value">gbarbo@salonservicegroup.com <span class="tag tag-verified">Verified</span></div>
+        </div>
+        <div class="profile-item">
+          <div class="label">Social</div>
+          <div class="value">LinkedIn exists but not active. Facebook (ginobarbossg) appears more active. <span class="tag tag-unverified">Unverified</span></div>
+        </div>
+      </div>
+    </div>
+
+    <h3>What This Tells You</h3>
+    <p>Gino is a relationship builder, not a spreadsheet operator. He started from nothing, built for 37 years, and only took PE money after 3 years of courtship. He respects people who earn it. Lead with substance and authenticity, not flash.</p>
+  </section>
+
+  <div class="divider">&#9670; &#9670; &#9670;</div>
+
+  <!-- SECTION 2: THE COMPANY -->
+  <section>
+    <div class="section-label">The Company</div>
+    <h2>Salon Service Group at a Glance</h2>
+
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-number">71</div>
+        <div class="stat-label">Wholesale Stores</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">160+</div>
+        <div class="stat-label">Sales Consultants</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">20+</div>
+        <div class="stat-label">States Covered</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">1987</div>
+        <div class="stat-label">Founded</div>
+      </div>
+    </div>
+
+    <p><strong>HQ:</strong> Springfield, Missouri. <strong>Model:</strong> Full-service distribution with field DSCs who actively sell into salons, provide education, and manage relationships. Also operates professional-only wholesale stores and online ordering. This is the opposite of a passive marketplace. <span class="tag tag-verified">Verified</span></p>
+
+    <h3>Recent Strategic Moves - Growth Mode</h3>
+    <ul class="fact-list">
+      <li><strong>Jan 2022</strong> - Partnered with Great Range Capital (Kansas City PE). Gino retains operational control. <span class="tag tag-verified">Verified</span></li>
+      <li><strong>2022-2023</strong> - Acquired Princess Professional, expanding into Texas and Oklahoma. <span class="tag tag-verified">Verified</span></li>
+      <li><strong>Sept 2023</strong> - Acquired National Salon Resources (NSR), Minneapolis. Jumped to 71 stores, 160+ reps, 20 states. <span class="tag tag-verified">Verified</span></li>
+      <li><strong>Ongoing</strong> - Gino publicly invited other independent distributors to contact him. Continued M&A appetite. <span class="tag tag-verified">Verified</span></li>
+    </ul>
+
+    <h3>Brand Portfolio</h3>
+    <p>SSG carries 40+ brands, heavily weighted toward color, styling, extensions, and chemical services:</p>
+    <div class="brand-tags">
+      <span class="brand-tag">Paul Mitchell</span>
+      <span class="brand-tag">Moroccanoil</span>
+      <span class="brand-tag">Keune</span>
+      <span class="brand-tag">Kevin Murphy</span>
+      <span class="brand-tag">K18</span>
+      <span class="brand-tag">Alfaparf Milano</span>
+      <span class="brand-tag">Color Wow</span>
+      <span class="brand-tag">Brazilian Blowout</span>
+      <span class="brand-tag">ELEVEN Australia</span>
+      <span class="brand-tag">Colorproof</span>
+      <span class="brand-tag">Alterna</span>
+      <span class="brand-tag">Milbon</span>
+      <span class="brand-tag">Zenagen</span>
+      <span class="brand-tag">Calecim</span>
+      <span class="brand-tag">18.21 Man Made</span>
+      <span class="brand-tag">Hotheads</span>
+      <span class="brand-tag">Babe Extensions</span>
+      <span class="brand-tag">Framar</span>
+    </div>
+    <p><strong>The gap:</strong> No dedicated daily scalp wellness brand. Zenagen covers hair loss (DHT-blocking), Calecim is clinical stem-cell therapy, Milbon has a head spa line. None occupy the preventative daily scalp care position. <span class="tag tag-unverified">Absence of evidence</span></p>
+  </section>
+
+  <div class="divider">&#9670; &#9670; &#9670;</div>
+
+  <!-- SECTION 3: INDUSTRY LANDSCAPE -->
+  <section class="page-break">
+    <div class="section-label">Industry Intelligence</div>
+    <h2>What's Happening in the Market Right Now</h2>
+
+    <p>Olivia said Q1 was tough. She's right, and it's not just Nashville. Understanding these headwinds positions you as someone who gets the operator's reality, not a brand rep pitching in a vacuum.</p>
+
+    <h3>The Salon Slowdown Is Real</h3>
+    <ul class="fact-list">
+      <li><strong>Salon revenue contracted 1.0% in 2025</strong> - the first annual decline after 5.5% post-COVID CAGR. First contraction since the pandemic recovery. <span class="tag tag-verified">Verified</span> IBISWorld</li>
+      <li><strong>New guest visits fell 9% YoY</strong> in 2024 per Zenoti data (30,000+ businesses). Existing guest visits grew only 1%, netting a 1% total decline. <span class="tag tag-verified">Verified</span></li>
+      <li><strong>Clients stretching appointments</strong> from 6-8 weeks to 10-12 weeks, mirroring early 2007 recession patterns. NBC News, Bloomberg both reported this in April 2025. <span class="tag tag-verified">Verified</span></li>
+      <li><strong>Consumer sentiment at 12-year low</strong> - University of Michigan index fell 11% in April 2025. Beauty foot traffic growth decelerated from 18% (2023) to 1.5% (2024). <span class="tag tag-verified">Verified</span></li>
+    </ul>
+
+    <h3>Tariffs Are Compressing Margins</h3>
+    <ul class="fact-list">
+      <li><strong>20% tariff on imported salon products</strong> from Italy, Germany, France. 10-34% on products from China. Color systems, tools, and accessories all affected. <span class="tag tag-verified">Verified</span> Cosmetics Design</li>
+      <li><strong>51% of beauty businesses reporting late supplier payments</strong> due to cash flow pressure. <span class="tag tag-verified">Verified</span> BCG</li>
+      <li><strong>Hair extension salons facing $12-15K in annual cost increases.</strong> Distributors are raising prices, creating friction at the DSC-salon level. <span class="tag tag-verified">Verified</span></li>
+    </ul>
+    <p style="margin-top: 12px;"><strong>What this means for SSG:</strong> DSCs are walking into salons under budget pressure. They need products that create new revenue, not just add to the reorder list. A brand that comes with a business case ("add head spa services, generate $2-8K/month") is fundamentally different from a brand that says "add these 3 SKUs to your shelf."</p>
+
+    <div class="divider">&#9670; &#9670; &#9670;</div>
+
+    <h3>SSG Has a New Direct Competitor</h3>
+    <div class="strategy-grid">
+      <div class="strategy-card" style="border-left: 3px solid var(--red-soft);">
+        <h4>Win Beauty Solutions</h4>
+        <p>PE-backed distributor rollup launched in 2024. CEO Scott Missad (40 years industry experience). Already acquired distributors in <strong>Kansas City and Bolivar, Missouri</strong> - SSG's home market. Running the exact same playbook: buy independents, preserve culture, build national scale. <span class="tag tag-verified">Verified</span> Salon Today, Modern Salon</p>
+      </div>
+      <div class="strategy-card">
+        <h4>What This Means</h4>
+        <p>SSG needs to differentiate on service quality and brand curation, not just geographic coverage. A wellness brand that helps SSG look more curated and education-forward than a "national rollup" competitor has strategic value beyond product margin. This is leverage you should understand but NOT bring up first - let Gino surface it.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">&#9670; &#9670; &#9670;</div>
+
+  <!-- SECTION 4: CATEGORY OPPORTUNITY -->
+  <section>
+    <div class="section-label">The Opportunity</div>
+    <h2>Scalp Wellness Is the Category Gap SSG Should Own</h2>
+
+    <p>While the broader salon market contracted, scalp care grew. This isn't a trend - it's a structural shift in how consumers think about hair health.</p>
+
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-number">+6%</div>
+        <div class="stat-label">Scalp Retail Growth (Pro Channel)</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">+233%</div>
+        <div class="stat-label">Head Spa Search Volume YoY</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">$2-8K</div>
+        <div class="stat-label">Monthly Salon Revenue (Head Spa)</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">~$40</div>
+        <div class="stat-label">Avg Scalp Treatment Price</div>
+      </div>
+    </div>
+
+    <ul class="fact-list">
+      <li><strong>Scalp care retail up 6% in Q1-Q3 2025</strong> in professional channels while broader salon revenue declined. <span class="tag tag-verified">Verified</span> Kline Group</li>
+      <li><strong>Head spa services generate $2,000-$8,000/month</strong> per location - "one of the most profitable treatments for hair salons." <span class="tag tag-verified">Verified</span> My Headspa</li>
+      <li><strong>NYT ran "Is Your Scalp the New 'It' Body Part?"</strong> in November 2025 - mainstream validation of the category. <span class="tag tag-verified">Verified</span></li>
+      <li><strong>Beauty Independent 2026 In/Out:</strong> IN: scalp care, science-backed formulas, prevention-focused products, clean efficacy. OUT: complicated routines, celebrity brands, aesthetic-only brands. <span class="tag tag-verified">Verified</span></li>
+    </ul>
+
+    <h3>SSG's Current Scalp Portfolio</h3>
+    <div class="strategy-grid">
+      <div class="strategy-card">
+        <h4>What SSG Has</h4>
+        <p><strong>Zenagen</strong> - hair loss treatment (DHT-blocking). <strong>Calecim</strong> - clinical stem-cell scalp therapy. <strong>Milbon</strong> - head spa in-salon services. These are treatment and clinical brands. None occupy daily scalp wellness.</p>
+      </div>
+      <div class="strategy-card">
+        <h4>What's Missing</h4>
+        <p>The everyday scalp ritual - prevention, maintenance, daily hydration. The product a client uses between treatments. The brand a DSC recommends to EVERY salon, not just the ones doing clinical work. That's AWARE's position. <span class="tag tag-unverified">Absence of evidence</span></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">&#9670; &#9670; &#9670;</div>
+
+  <!-- SECTION 5: WHAT YOU BRING -->
+  <section>
+    <div class="section-label">Beyond the Product</div>
+    <h2>What You Bring to the Table as a Partner</h2>
+
+    <p>You're not asking Gino to carry another SKU. You're offering to help SSG own an emerging category with expertise, tools, and salon activation that most brands can't provide.</p>
+
+    <div class="value-grid">
+      <div class="value-card">
+        <h4>Head Spa Launch Kit</h4>
+        <p>A packaged "add head spa services to your salon" program: treatment protocols, product placement, pricing templates, client education. Gives DSCs a revenue-building conversation in a tough market - not just a sample bag.</p>
+      </div>
+      <div class="value-card">
+        <h4>Scalp Report Lead Gen</h4>
+        <p>The Scalp Environment Report is a proven digital tool. Personalized scalp assessments that drive foot traffic to SSG salons and create the conversation AWARE products answer.</p>
+      </div>
+      <div class="value-card">
+        <h4>Trichology Education</h4>
+        <p>Tina's 40+ years behind the chair translates into salon revenue-building programs: scalp analysis workshops, gua sha certification, staff training. DSCs get education that competitors can't match.</p>
+      </div>
+    </div>
+
+    <div class="value-grid">
+      <div class="value-card">
+        <h4>Category Intelligence</h4>
+        <p>Deep market research on scalp wellness - consumer trends, competitive dynamics, pricing. Help SSG understand and position ahead of an emerging category before SalonCentric or Win Beauty claims it.</p>
+      </div>
+      <div class="value-card">
+        <h4>Consumer Data</h4>
+        <p>18M+ organic social impressions and thousands of Scalp Report submissions. Real-time signal on what consumers want from scalp care. Intel SSG can use across portfolio decisions.</p>
+      </div>
+      <div class="value-card">
+        <h4>Experiential Activation</h4>
+        <p>In-salon pop-ups with scalp imaging, personalized gua sha engravings, live workshops. Events that build salon loyalty to SSG and differentiate the independent experience from mega-distributor volume plays.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">&#9670; &#9670; &#9670;</div>
+
+  <!-- SECTION 4: CONVERSATION PLAYBOOK -->
+  <section>
+    <div class="section-label">Conversation Playbook</div>
+    <h2>How to Navigate the Gino Conversation</h2>
+
+    <div class="do-dont">
+      <div class="do-column">
+        <h4>Lead With</h4>
+        <ul>
+          <li>Olivia's endorsement (she did the selling already)</li>
+          <li>Empathy for Q1 headwinds ("we're seeing it too")</li>
+          <li>Scalp wellness as a revenue opportunity, not just a SKU</li>
+          <li>Head spa economics ($2-8K/month for salons)</li>
+          <li>Nashville pilot framing (start small, prove it)</li>
+          <li>Questions about SSG's process (show curiosity)</li>
+          <li>What you can help SSG build, not just what you sell</li>
+        </ul>
+      </div>
+      <div class="dont-column">
+        <h4>Avoid</h4>
+        <ul>
+          <li>Revenue numbers upfront ($125K is too small to lead)</li>
+          <li>Naming Win Beauty Solutions (let Gino surface it)</li>
+          <li>Comparing to SSG anchor brands (Paul Mitchell, etc.)</li>
+          <li>Asking for national distribution (earn Nashville first)</li>
+          <li>Mentioning PE, Great Range Capital, or M&A</li>
+          <li>Stats in the opening pitch (save for follow-up)</li>
+          <li>Urgency or "limited opportunity" framing</li>
+          <li>Age references ("you've been doing this since...")</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Questions to Ask</h3>
+    <ol class="question-list">
+      <li>What does the onboarding process look like for an emerging brand at SSG?</li>
+      <li>How do your DSCs typically learn about and evaluate new products?</li>
+      <li>Would it make sense to start in a single territory to prove sell-through?</li>
+      <li>What marketing or education support makes the biggest difference for your salon partners?</li>
+      <li>Is there a category you feel is underrepresented in your current portfolio?</li>
+    </ol>
+
+    <h3>Prepared Responses</h3>
+
+    <div class="scenario">
+      <div class="scenario-trigger">If he mentions Q1 being tough or market challenges:</div>
+      <div class="scenario-response">"We're seeing the same thing in our salon network. Clients stretching appointments, tighter budgets. That's actually part of why I think scalp wellness has legs right now - it's a service add-on that generates incremental revenue for salons. We've seen salons add $2,000 to $8,000 a month with head spa services, and that's the kind of business case your DSCs can walk in with when salons are feeling the squeeze."</div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-trigger">If he asks about volume or revenue:</div>
+      <div class="scenario-response">"We're early-stage with about 50 salon partners, but the retention speaks for itself - 96% reorder. We don't have distribution reach yet, which is exactly why this conversation matters. What we do bring is deep category expertise, a trichologist co-founder who's still behind the chair, and tools that help DSCs open doors - not just fill shelves."</div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-trigger">If he asks about other distributors:</div>
+      <div class="scenario-response">"We've had conversations with several regional distributors, but SSG stood out because of the DSC model and Olivia's genuine enthusiasm. We'd rather go deep with the right partner than wide with the wrong one. And frankly, the independent distributor model is where we think the best brand-building happens."</div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-trigger">If he mentions Nashville or Olivia's territory:</div>
+      <div class="scenario-response">"Nashville with Olivia would be a natural starting point. She already knows the product, she knows her salons, and we can give her everything she needs to build it - education materials, pop-up programs, a head spa launch kit. If it works in her territory, we have a real proof-of-concept for a wider conversation."</div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-trigger">If he asks about exclusivity:</div>
+      <div class="scenario-response">"We're open to discussing what makes sense for SSG. We're not locked into any exclusive arrangements. The priority is finding the right partner and proving this category works."</div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-trigger">If he asks what makes AWARE different:</div>
+      <div class="scenario-response">"My co-founder Tina is a Master Stylist and Trichologist with 40 years behind the chair. She still uses these products on real clients every day. This isn't a lab-designed brand looking for a channel - it's a salon-born solution to a problem stylists see daily. And we don't just bring product - we bring a head spa service protocol, scalp analysis tools, and education programs that help salons build a new revenue stream."</div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-trigger">If he asks what you can do for SSG beyond product:</div>
+      <div class="scenario-response">"Honestly, I think about this as a category-building partnership. Scalp wellness is growing while the rest of professional beauty is flat or down. We can help SSG own that category - through education, digital tools like our Scalp Environment Report, and activation programs that give DSCs something to talk about that's not just another reorder. I want to be helpful to you and your team, not just ask for shelf space."</div>
+    </div>
+
+    <h3>Founder-to-Founder Connection Points</h3>
+    <ul class="fact-list">
+      <li><strong>Both built from nothing</strong> - Gino: $12K loan, $87K first year. You: bootstrapped. He'll respect the grind.</li>
+      <li><strong>Both prioritize relationships</strong> - Gino values culture and trust over pure growth. Your salon-by-salon approach reflects the same values.</li>
+      <li><strong>Australian directness</strong> - Gino communicates directly and values people who do the same. Be straightforward, not scripted.</li>
+      <li><strong>"Go find the egg"</strong> - He values resourcefulness and creative problem-solving. Your approach to building a brand with strategic intelligence (not just capital) is exactly this philosophy.</li>
+    </ul>
+  </section>
+
+  <div class="divider">&#9670; &#9670; &#9670;</div>
+
+  <!-- SECTION 5: VP SHELBY -->
+  <section>
+    <div class="section-label">Unknown Variable</div>
+    <h2>VP "Shelby"</h2>
+    <p>Olivia mentioned Gino and VP Shelby as the two key SSG contacts. Last name is unknown - no public SSG VP by first name "Shelby" found in search results. Previous intel mentioned McKenzie Barbo (possibly Gino's daughter or a former VP) - this appears outdated. <span class="tag tag-unverified">Unverified</span></p>
+    <p><strong>Action:</strong> Do not guess. Wait for Olivia to provide context in the intro email or follow-up.</p>
+  </section>
+
+  <!-- SOURCES -->
+  <div class="sources">
+    <h3>Sources - SSG and Gino Barbo</h3>
+    <ol>
+      <li><a href="https://www.linkedin.com/in/gino-barbo-47139b33/">Gino Barbo - LinkedIn</a></li>
+      <li><a href="https://greatrangecapital.com/the-patient-road-to-partnership/">The Patient Road to Partnership - Great Range Capital</a></li>
+      <li><a href="https://www.prnewswire.com/news-releases/salon-service-group-partners-with-great-range-capital-301464445.html">SSG Partners with GRC - PRNewswire</a></li>
+      <li><a href="https://www.salonservicegroup.com/landing/press-release/">SSG Acquires NSR - Press Release</a></li>
+      <li><a href="https://www.salonservicegroup.com/about-salon-service-group/">About Salon Service Group</a></li>
+      <li><a href="https://www.biz417.com/issues/march-april-2017/salon-service-group/">Gino Barbo - Biz417 Profile</a></li>
+      <li>Olivia Fishburn - April 1 and April 2 calls/emails</li>
+    </ol>
+
+    <h3>Sources - Industry and Market</h3>
+    <ol>
+      <li><a href="https://www.ibisworld.com/united-states/industry/hair-salons/4410/">IBISWorld - Hair Salons US 2025</a> (revenue contraction data)</li>
+      <li><a href="https://www.zenoti.com/thecheckin/beauty-wellness-industry-statistics-2025">Zenoti 2025 Beauty & Wellness Benchmark Report</a> (guest visit decline)</li>
+      <li><a href="https://www.nbcnews.com/politics/economics/longer-hair-nails-home-fewer-facials-economic-warning-signs-are-flashi-rcna201807">NBC News - Economic Warning Signs in Salons</a></li>
+      <li><a href="https://www.bcg.com/publications/2025/navigating-tariffs-in-us-beauty-industry">BCG - Navigating Tariffs in US Beauty</a></li>
+      <li><a href="https://www.cosmeticsdesign.com/Article/2025/04/02/beauty-brands-face-tough-choices-as-tariffs-drive-up-costs/">Cosmetics Design - Tariff Impact on Beauty</a></li>
+      <li><a href="https://www.salontoday.com/1087690/new-distribution-company-win-beauty-solutions-taps-scott-missad-as-ceo-acquires-life-of-riley-salon-supply">Salon Today - Win Beauty Solutions Launch</a></li>
+      <li><a href="https://www.modernsalon.com/1088515/win-beauty-solutions-acquires-modern-salon-services">Modern Salon - Win Beauty Acquires in Missouri</a></li>
+      <li><a href="https://www.beautyindependent.com/what-will-be-in-out-haircare-2026/">Beauty Independent - In/Out Haircare 2026</a></li>
+      <li><a href="https://www.accio.com/business/trending-2025-head-spa">Accio - Head Spa Search Trend 2025</a></li>
+      <li><a href="https://my-headspa.com/en/blogs/actualites/head-spa-profitability-salon">My Headspa - Head Spa Profitability</a></li>
+      <li><a href="https://www.placer.ai/anchor/articles/ei-beauty-retail-changes-and-challenges-ahead">Placer.ai - Beauty Retail Traffic</a></li>
+      <li><a href="https://www.salontoday.com/1095922/a-tale-of-three-head-spas">Salon Today - Tale of Three Head Spas</a></li>
+      <li><a href="https://www.capstonepartners.com/insights/article-beauty-ma-update/">Capstone Partners - Beauty M&A</a></li>
+    </ol>
+  </div>
+
+</div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

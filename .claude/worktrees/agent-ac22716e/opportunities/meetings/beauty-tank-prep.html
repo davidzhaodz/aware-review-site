@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beauty Tank Prep - AWARE Hair</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-2: #232733;
+    --border: #2e3345;
+    --text: #e4e6ef;
+    --text-muted: #8b8fa3;
+    --accent: #6c8cff;
+    --accent-dim: rgba(108,140,255,0.12);
+    --green: #34d399;
+    --green-dim: rgba(52,211,153,0.12);
+    --amber: #fbbf24;
+    --amber-dim: rgba(251,191,36,0.12);
+    --red: #f87171;
+    --red-dim: rgba(248,113,113,0.12);
+    --purple: #a78bfa;
+    --purple-dim: rgba(167,139,250,0.12);
+    --pink: #f472b6;
+    --pink-dim: rgba(244,114,182,0.12);
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 24px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding: 40px 24px;
+    background: linear-gradient(135deg, rgba(108,140,255,0.08), rgba(167,139,250,0.08));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+  .header-badge {
+    display: inline-block;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+  }
+  .header h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+  .header p { color: var(--text-muted); font-size: 15px; }
+  .header-meta {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .header-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+  .header-meta-item strong { color: var(--text); }
+
+  /* Navigation */
+  .nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+    padding-top: 8px;
+  }
+  .nav-btn {
+    padding: 10px 20px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover, .nav-btn.active {
+    background: var(--accent-dim);
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* Sections */
+  .section { display: none; }
+  .section.active { display: block; }
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: var(--accent); }
+
+  /* Grid */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+
+  /* Format Overview */
+  .format-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .format-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+  }
+  .format-card .number {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .format-card .label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 8px;
+  }
+
+  /* Judging Criteria */
+  .criteria-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .criteria-label {
+    width: 220px;
+    font-size: 14px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .criteria-track {
+    flex: 1;
+    height: 8px;
+    background: var(--surface-2);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .criteria-fill {
+    height: 100%;
+    border-radius: 100px;
+    transition: width 0.6s ease;
+  }
+  .criteria-tip {
+    font-size: 12px;
+    color: var(--text-muted);
+    width: 80px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* Competitor Cards */
+  .competitor-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    position: relative;
+  }
+  .competitor-card.is-you {
+    border-color: var(--green);
+    background: linear-gradient(135deg, rgba(52,211,153,0.05), transparent);
+  }
+  .competitor-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+  }
+  .competitor-card h3 { font-size: 18px; margin-bottom: 4px; }
+  .competitor-card .founder { color: var(--text-muted); font-size: 13px; margin-bottom: 10px; }
+  .competitor-card .desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px; }
+  .competitor-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .competitor-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: var(--surface-2);
+    color: var(--text-muted);
+  }
+  .threat-level {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+
+  /* Q&A Section */
+  .qa-category {
+    margin-bottom: 28px;
+  }
+  .qa-category-header {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    padding-left: 12px;
+    border-left: 3px solid var(--accent);
+  }
+  .qa-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .qa-item:hover { border-color: var(--accent); }
+  .qa-question {
+    padding: 16px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .qa-question .icon {
+    color: var(--text-muted);
+    font-size: 18px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+  .qa-item.open .qa-question .icon { transform: rotate(45deg); }
+  .qa-answer {
+    display: none;
+    padding: 0 20px 20px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+  .qa-item.open .qa-answer { display: block; }
+  .qa-answer .sample-answer {
+    background: var(--surface-2);
+    border-left: 3px solid var(--green);
+    padding: 14px 16px;
+    border-radius: 0 8px 8px 0;
+    margin-top: 10px;
+    color: var(--text);
+    font-style: italic;
+  }
+  .qa-answer .tip {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--amber);
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .qa-difficulty {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 100px;
+    flex-shrink: 0;
+  }
+  .diff-easy { background: var(--green-dim); color: var(--green); }
+  .diff-medium { background: var(--amber-dim); color: var(--amber); }
+  .diff-hard { background: var(--red-dim); color: var(--red); }
+
+  /* Pitch Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .timeline-dot {
+    position: absolute;
+    left: -33px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: var(--bg);
+  }
+  .timeline-time {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .timeline-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .timeline-content {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .timeline-script {
+    background: var(--surface-2);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.7;
+    border-left: 3px solid var(--purple);
+  }
+
+  /* Cheat Sheet */
+  .cheat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .cheat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .cheat-card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cheat-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .cheat-card li {
+    font-size: 13px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .cheat-card li:last-child { border-bottom: none; }
+  .cheat-label { color: var(--text-muted); }
+  .cheat-value { font-weight: 600; text-align: right; }
+
+  /* Dos and Don'ts */
+  .do-dont-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .do-card, .dont-card {
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .do-card {
+    background: var(--green-dim);
+    border: 1px solid rgba(52,211,153,0.2);
+  }
+  .dont-card {
+    background: var(--red-dim);
+    border: 1px solid rgba(248,113,113,0.2);
+  }
+  .do-card h3 { color: var(--green); margin-bottom: 12px; font-size: 14px; }
+  .dont-card h3 { color: var(--red); margin-bottom: 12px; font-size: 14px; }
+  .do-card li, .dont-card li {
+    font-size: 13px;
+    padding: 4px 0;
+    list-style: none;
+    color: var(--text);
+  }
+
+  /* Print */
+  @media print {
+    body { background: #fff; color: #111; padding: 16px; }
+    .nav { display: none; }
+    .section { display: block !important; page-break-inside: avoid; margin-bottom: 32px; }
+    .card, .competitor-card, .format-card, .cheat-card, .qa-item {
+      background: #f8f8f8; border-color: #ddd; box-shadow: none;
+    }
+    .qa-answer { display: block !important; }
+    .header { background: #f0f0ff; }
+  }
+
+  @media (max-width: 768px) {
+    body { padding: 12px; }
+    .format-grid { grid-template-columns: repeat(2, 1fr); }
+    .do-dont-grid { grid-template-columns: 1fr; }
+    .header h1 { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-badge">Pitch Competition Prep</div>
+  <h1>Beauty Tank - AWARE Hair</h1>
+  <p>MakeUp in Los Angeles 2026 &middot; LA Convention Center</p>
+  <div class="header-meta">
+    <div class="header-meta-item"><strong>March 4-5, 2026</strong></div>
+    <div class="header-meta-item">Category: <strong>Makeup / Haircare</strong></div>
+    <div class="header-meta-item">Format: <strong>5 min pitch + 3 min Q&A</strong></div>
+    <div class="header-meta-item">Partner: <strong>IBA (Independent Beauty Association)</strong></div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button class="nav-btn active" onclick="showSection('overview')">Overview</button>
+  <button class="nav-btn" onclick="showSection('competitors')">Competitors</button>
+  <button class="nav-btn" onclick="showSection('qa')">Q&A Prep</button>
+  <button class="nav-btn" onclick="showSection('pitch')">Pitch Script</button>
+  <button class="nav-btn" onclick="showSection('cheatsheet')">Cheat Sheet</button>
+</div>
+
+<!-- Section: Overview -->
+<div id="overview" class="section active">
+  <h2 class="section-title">Competition Overview</h2>
+
+  <div class="format-grid">
+    <div class="format-card">
+      <div class="number">5</div>
+      <div class="label">Minutes to Pitch</div>
+    </div>
+    <div class="format-card">
+      <div class="number">3</div>
+      <div class="label">Minutes Q&A</div>
+    </div>
+    <div class="format-card">
+      <div class="number">5</div>
+      <div class="label">Finalists in Category</div>
+    </div>
+    <div class="format-card">
+      <div class="number">4</div>
+      <div class="label">Judging Criteria</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:16px; margin-bottom:16px;">Judging Criteria</h3>
+    <div class="criteria-bar">
+      <span class="criteria-label">Brand Story / Creativity</span>
+      <div class="criteria-track"><div class="criteria-fill" style="width:90%; background:var(--accent);"></div></div>
+      <span class="criteria-tip">Lead with Tina</span>
+    </div>
+    <div class="criteria-bar">
+      <span class="criteria-label">Target Consumers</span>
+      <div class="criteria-track"><div class="criteria-fill" style="width:85%; background:var(--green);"></div></div>
+      <span class="criteria-tip">B2B + DTC</span>
+    </div>
+    <div class="criteria-bar">
+      <span class="criteria-label">Product / Ingredients / Certs</span>
+      <div class="criteria-track"><div class="criteria-fill" style="width:95%; background:var(--purple);"></div></div>
+      <span class="criteria-tip">AwareBio Complex</span>
+    </div>
+    <div class="criteria-bar">
+      <span class="criteria-label">Strategy / Packaging / Sustainability</span>
+      <div class="criteria-track"><div class="criteria-fill" style="width:80%; background:var(--amber);"></div></div>
+      <span class="criteria-tip">Recycled + refill</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:16px; margin-bottom:12px;">What Winners Get</h3>
+    <p style="font-size:14px; color:var(--text-muted); line-height:1.7;">
+      Previous winner BiotechBeauty reported: financial grants, meetings with beauty retailers, increased investor interest, hundreds of product waitlist signups. Past finalists have gained features in major publications and connections to retailers like ULTA's MUSE Accelerator and Credo Beauty.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:16px; margin-bottom:12px;">Audience Profile</h3>
+    <p style="font-size:14px; color:var(--text-muted); line-height:1.7;">
+      Brand owners, beauty investors, strategic partners, manufacturers, beauty influencers, and press. This is a room of decision-makers, not consumers. Tailor language to business viability and scalability, not just product benefits.
+    </p>
+  </div>
+</div>
+
+<!-- Section: Competitors -->
+<div id="competitors" class="section">
+  <h2 class="section-title">Competitor Analysis - Makeup/Haircare Category</h2>
+
+  <div class="grid-2">
+
+    <div class="competitor-card is-you">
+      <div class="competitor-badge" style="background:var(--green-dim); color:var(--green);">You</div>
+      <h3>AWARE Hair</h3>
+      <div class="founder">Founded by Tina (stylist + trichologist) &amp; David</div>
+      <div class="desc">Salon-grade scalp wellness with patent-pending AwareBio Complex. Shampoo, conditioner, leave-in, and sandalwood scalp gua sha. Launched Sept 2025. B2B-first with 50+ salon partners.</div>
+      <div class="competitor-tags">
+        <span class="competitor-tag">Scalp care</span>
+        <span class="competitor-tag">Patent pending</span>
+        <span class="competitor-tag">Salon exclusive</span>
+        <span class="competitor-tag">Trichologist-founded</span>
+      </div>
+    </div>
+
+    <div class="competitor-card">
+      <span class="threat-level" style="background:var(--amber-dim); color:var(--amber);">Medium</span>
+      <div class="competitor-badge" style="background:var(--purple-dim); color:var(--purple);">Haircare</div>
+      <h3>Missing In Action (MIA)</h3>
+      <div class="founder">Jordan Polk - former investment banker</div>
+      <div class="desc">Outdoor haircare for textured hair. Flagship "HairBlock" is an oil-based barrier serum for UV, chlorine, salt water. Clean, vegan, reef-compliant. Launched Oct 2025.</div>
+      <div class="competitor-tags">
+        <span class="competitor-tag">Textured hair</span>
+        <span class="competitor-tag">Outdoor/active</span>
+        <span class="competitor-tag">DTC</span>
+        <span class="competitor-tag">Category creator</span>
+      </div>
+    </div>
+
+    <div class="competitor-card">
+      <span class="threat-level" style="background:var(--green-dim); color:var(--green);">Low</span>
+      <div class="competitor-badge" style="background:var(--pink-dim); color:var(--pink);">Lip care</div>
+      <h3>Koako</h3>
+      <div class="founder">Magenta Pinruethai - former architect</div>
+      <div class="desc">Collectible lip care with blind-box charms. Nourishing lip treatment in tinted shades. Sustainable PCR/aluminum packaging. Not launched yet - targeting Oct 2026.</div>
+      <div class="competitor-tags">
+        <span class="competitor-tag">Lip care</span>
+        <span class="competitor-tag">Collectible/viral</span>
+        <span class="competitor-tag">Pre-launch</span>
+        <span class="competitor-tag">Gen Z target</span>
+      </div>
+    </div>
+
+    <div class="competitor-card">
+      <span class="threat-level" style="background:var(--green-dim); color:var(--green);">Low</span>
+      <div class="competitor-badge" style="background:var(--pink-dim); color:var(--pink);">Makeup</div>
+      <h3>Omora Beauty Lab</h3>
+      <div class="founder">Jenna Ledbetter</div>
+      <div class="desc">Clean, skin-first makeup for acne-prone, dry, sensitive skin. Concealers, lip/cheek tints, bronzers, SPF serum. DTC launch mid-May 2026. Not yet launched.</div>
+      <div class="competitor-tags">
+        <span class="competitor-tag">Sensitive skin</span>
+        <span class="competitor-tag">Clean beauty</span>
+        <span class="competitor-tag">Pre-launch</span>
+        <span class="competitor-tag">DTC</span>
+      </div>
+    </div>
+
+    <div class="competitor-card">
+      <span class="threat-level" style="background:var(--green-dim); color:var(--green);">Low</span>
+      <div class="competitor-badge" style="background:var(--pink-dim); color:var(--pink);">Makeup</div>
+      <h3>Mizool</h3>
+      <div class="founder">Mokshita Bhan - chemical engineer</div>
+      <div class="desc">Science-led makeup bridging skincare and cosmetics. Gel-to-cream illuminator with HA and squalene. For sensitive, inflammation-prone skin. Launch Jan 2027.</div>
+      <div class="competitor-tags">
+        <span class="competitor-tag">Skincare-makeup hybrid</span>
+        <span class="competitor-tag">Science-led</span>
+        <span class="competitor-tag">Pre-launch</span>
+        <span class="competitor-tag">Single SKU</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:20px;">
+    <h3 style="font-size:16px; margin-bottom:12px;">Your Competitive Advantages</h3>
+    <ul style="list-style:none; padding:0;">
+      <li style="padding:8px 0; border-bottom:1px solid var(--border); font-size:14px;">
+        <strong style="color:var(--green);">Already launched + revenue</strong> - Most competitors are pre-launch. You have real traction data.
+      </li>
+      <li style="padding:8px 0; border-bottom:1px solid var(--border); font-size:14px;">
+        <strong style="color:var(--green);">B2B distribution</strong> - 50+ salon partners is a proof of product-market fit others can't claim.
+      </li>
+      <li style="padding:8px 0; border-bottom:1px solid var(--border); font-size:14px;">
+        <strong style="color:var(--green);">Patent-pending formulation</strong> - Real IP moat, not just branding.
+      </li>
+      <li style="padding:8px 0; border-bottom:1px solid var(--border); font-size:14px;">
+        <strong style="color:var(--green);">Founder credibility</strong> - Trichologist + stylist = clinical + practical expertise.
+      </li>
+      <li style="padding:8px 0; font-size:14px;">
+        <strong style="color:var(--green);">96% B2B repurchase</strong> - If verified, this is the single most compelling metric you can share.
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- Section: Q&A Prep -->
+<div id="qa" class="section">
+  <h2 class="section-title">Q&A Prep - Likely Questions</h2>
+  <p style="color:var(--text-muted); font-size:14px; margin-bottom:24px;">Click any question to reveal the sample answer. Customize these with your own voice and current numbers.</p>
+
+  <!-- Market & Differentiation -->
+  <div class="qa-category">
+    <div class="qa-category-header">Market & Differentiation</div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        What makes AWARE different from Oribe, Briogeo, or Act+Acre?
+        <span><span class="qa-difficulty diff-easy">Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "Those are great brands, but they're lifestyle brands that added scalp care to their line. AWARE was built from the scalp up by a trichologist who's treated thousands of clients. Our patent-pending AwareBio Complex isn't a marketing angle - it's a clinically informed formulation targeting the scalp barrier specifically. And our salon-exclusive model means stylists, the people clients trust most with their hair, are our primary channel. We're not competing on shelf space at Sephora. We're embedded in the professional ecosystem."
+        </div>
+        <div class="tip">TIP: Name-drop the patent-pending status early. It signals real IP, not just branding.</div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        Why salon-exclusive? Isn't DTC where the growth is?
+        <span><span class="qa-difficulty diff-medium">Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "We see salons as our wedge, not our ceiling. Think about how Olaplex started - professional channel first, built credibility, then expanded to retail. Salons give us something DTC can't: trusted recommendations. When a stylist tells a client their scalp needs help and hands them AWARE, the conversion rate is dramatically higher than any Instagram ad. We do have DTC as a replenishment channel, but the first touch happens through a professional. Our B2B repurchase rate validates this. Salons keep reordering because their clients keep asking for it."
+        </div>
+        <div class="tip">TIP: The Olaplex comparison is powerful but don't overuse it. Mention once, then pivot to your own data.</div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        How big is the scalp care market?
+        <span><span class="qa-difficulty diff-easy">Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "The global scalp care market was valued at roughly $4 billion in 2024 and is projected to grow at 8-9% CAGR through 2030. But what's more interesting is the white space: professional-grade scalp care is virtually nonexistent. The existing market is dominated by anti-dandruff shampoos and basic treatments. We're carving out the premium, results-driven segment - similar to what happened in skincare 10 years ago when brands like Drunk Elephant elevated the category from drugstore basics to clinical efficacy."
+        </div>
+        <div class="tip">TIP: Verify the market size number before the pitch. Use it as context, then quickly pivot to the white space narrative.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Traction & Numbers -->
+  <div class="qa-category">
+    <div class="qa-category-header">Traction & Proof Points</div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        What's your revenue to date?
+        <span><span class="qa-difficulty diff-easy">Very Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "We've done [PULL EXACT NUMBER FROM SHOPIFY] in revenue since launching in September 2025, with the majority coming through our B2B salon channel. What I'm most proud of isn't the top line - it's the quality of that revenue. Our B2B repurchase rate is 96%, meaning salons that carry us almost always reorder. That tells me the product works, the price point works, and the professional channel works."
+        </div>
+        <div class="tip">TIP: Pull the exact number from Shopify before the pitch. Don't round too aggressively - specificity signals you know your business.</div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        How many salons carry your products?
+        <span><span class="qa-difficulty diff-easy">Very Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "We're in [EXACT NUMBER] salons across [REGIONS]. We've been deliberate about growth here - we're not trying to blanket the country. We focus on salons where the stylist genuinely understands scalp health and can educate their clients. That's why our retention is so high. We'd rather have 50 deeply engaged salon partners than 500 that just throw us on a shelf."
+        </div>
+        <div class="tip">TIP: Quality over quantity narrative works well here. Frame selectivity as strategy, not limitation.</div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        What does customer acquisition look like? What's your CAC?
+        <span><span class="qa-difficulty diff-medium">Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "Our B2B acquisition is primarily through industry relationships, trade shows, and targeted outreach - so our CAC on the salon side is very low. On DTC, we're intentionally not spending on paid acquisition yet. Our strategy is to let the salon channel build brand awareness and credibility first, then layer in DTC marketing once we have a critical mass of professional advocates. We've seen this play out - clients who discover AWARE through their stylist have much higher lifetime value than cold DTC traffic."
+        </div>
+        <div class="tip">TIP: Be honest about DTC being early. Frame it as strategic patience, not a gap.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product & Science -->
+  <div class="qa-category">
+    <div class="qa-category-header">Product & Science</div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        Tell us about the AwareBio Complex - what's in it?
+        <span><span class="qa-difficulty diff-easy">Very Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "The AwareBio Complex is our patent-pending formulation that targets the scalp barrier specifically. It combines [KEY INGREDIENTS - have Tina detail these] that work together to strengthen the scalp's natural defense system. What makes it different from other 'scalp care' products is that we're not just treating symptoms like flaking or oiliness - we're addressing the root cause, which is barrier dysfunction. Tina developed this based on years of treating clients in the chair, seeing what actually works versus what just sounds good on a label."
+        </div>
+        <div class="tip">TIP: Have Tina lead this answer if possible. Her clinical credibility makes the science tangible.</div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        Do you have clinical validation or studies?
+        <span><span class="qa-difficulty diff-medium">Possible</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "We have extensive real-world validation through our salon channel - hundreds of clients seeing measurable improvements in scalp health. We're currently in discussions about formal clinical studies to build that next layer of credibility. But I'd argue our 96% salon repurchase rate IS validation - professionals who stake their reputation on product recommendations don't keep reordering something that doesn't work."
+        </div>
+        <div class="tip">TIP: If clinical studies are in progress, mention the timeline. If not, the repurchase rate IS your clinical proof - own it.</div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        How does the gua sha fit into your product ecosystem?
+        <span><span class="qa-difficulty diff-easy">Possible</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "The sandalwood scalp gua sha is both a treatment tool and an entry point. It's our way of making scalp care a ritual, not just a product. When stylists use it during a service, it creates an experience that's memorable and shareable. It also differentiates us from every other brand selling bottles. The gua sha is paired with our leave-in treatment for a complete scalp ritual that clients can replicate at home, driving product repurchase."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Business Model -->
+  <div class="qa-category">
+    <div class="qa-category-header">Business Model & Growth</div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        What are your margins?
+        <span><span class="qa-difficulty diff-medium">Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "Our gross margins are healthy for the category - [INSERT ACTUAL MARGINS]. The salon-exclusive model actually helps margins because we're not competing on Amazon or paying for shelf space at retailers. Our cost of acquisition is lower, our price integrity is higher, and our returns are minimal because stylists match products to their clients' needs."
+        </div>
+        <div class="tip">TIP: Know your exact margins. Investors and partners in the room will judge you on financial literacy.</div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        What's your growth plan for the next 12 months?
+        <span><span class="qa-difficulty diff-easy">Very Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "Three vectors. First, deepen salon penetration - we're targeting [NUMBER] salon partners by year-end through trade shows and distributor relationships. Second, launch our stylist certification program, which turns our best salon partners into brand educators. And third, begin warming our DTC channel with content marketing and email automation so when we're ready to scale consumer marketing, we have an audience that already trusts the brand through professional endorsement."
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        Are you looking for investment?
+        <span><span class="qa-difficulty diff-medium">Possible</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "We're open to the right strategic partner. We've been bootstrapped to this point and profitable, which means we're not raising out of desperation. The right investment would accelerate our salon expansion, fund clinical studies, and build out the DTC infrastructure. But we're equally interested in strategic partnerships - distribution, manufacturing, retail - as we are in capital."
+        </div>
+        <div class="tip">TIP: "Open to the right partner" is stronger than "looking for investment." It signals strength.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Founder Story & Vision -->
+  <div class="qa-category">
+    <div class="qa-category-header" style="border-left-color:var(--purple);">Founder Story & Vision (Beauty Tank Format)</div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        For those just discovering you, what's your brand, what category are you in, and who is it for?
+        <span><span class="qa-difficulty diff-easy">Very Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "AWARE Hair is professional-grade scalp wellness - shampoo, conditioner, leave-in treatment, and a signature sandalwood scalp gua sha. We sit at the intersection of haircare and skincare, in the scalp care category. Our products are made for anyone who wants healthier hair by starting at the source, but our primary customer is the salon professional. We're a salon-exclusive brand - stylists and trichologists are our distribution channel because they're the ones who see scalp issues every day and know what actually works."
+        </div>
+        <div class="tip">TIP: This is your opener. Keep it crisp - under 30 seconds. Hit brand, category, and customer in that order.</div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        What personal problem, experience, or gap in the market inspired you to start this brand?
+        <span><span class="qa-difficulty diff-easy">Very Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "Tina has spent years as both a licensed stylist and trichologist. Every day in the chair, clients would come in with thinning, flaking, irritation - and she'd look at the product wall and see nothing designed for the scalp. Everything was formulated for the hair strand. The professional channel had zero dedicated scalp care. So she started formulating her own treatments for clients, and when she saw the results, we knew this needed to be a brand. The gap wasn't just in the market - it was right there in her treatment room."
+        </div>
+        <div class="tip">TIP: Let Tina tell this one if she's on stage. First-person founder origin stories are the most compelling.</div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        What makes your product truly different from what's already out there?
+        <span><span class="qa-difficulty diff-easy">Very Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "Three things. First, our patent-pending AwareBio Complex - it's not a marketing story, it's a formulation that specifically targets scalp barrier function. Second, the founder. AWARE was created by a practicing trichologist who treats scalp conditions daily, not a celebrity or a marketing team. And third, the channel. We're salon-exclusive because scalp care needs education. A stylist explaining why your scalp matters and how to use the products properly is worth more than any ad campaign. Nobody else combines all three of those."
+        </div>
+        <div class="tip">TIP: The "three things" structure is strong for live delivery. Hold up fingers as you count them off.</div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        What stage is your brand in right now, and what's been the biggest challenge so far?
+        <span><span class="qa-difficulty diff-medium">Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "We launched in September 2025, so we're about six months in. We have [REVENUE] in revenue, [NUMBER] salon partners, and a 96% B2B repurchase rate. The biggest challenge has been scaling the salon channel at the speed we want. Every new salon partnership requires education and relationship-building, and that doesn't scale like a Facebook ad. But the flip side is that once a salon is onboarded, they stay. We're learning to balance the urgency to grow with the patience required to build real distribution."
+        </div>
+        <div class="tip">TIP: Honesty about challenges builds credibility. Frame it as a tension you're actively managing, not a weakness.</div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        What ingredient, formulation choice, or product detail are you most proud of?
+        <span><span class="qa-difficulty diff-easy">Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "The AwareBio Complex itself. It took extensive iteration to get the balance right - we needed something that addressed scalp barrier health without stripping, without heavy silicones, and that played well with professional color and chemical services. The fact that stylists can use our products on freshly colored hair without worrying about interference - that's a technical achievement most people won't notice, but it's exactly why professionals trust us. The sandalwood gua sha is the one people remember, though. It turns scalp care into a ritual and gives stylists something tangible to demonstrate."
+        </div>
+        <div class="tip">TIP: If you have the gua sha on hand, hold it up when you mention it. Physical products on stage are memorable.</div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        How does your brand reflect your values or your perspective on beauty?
+        <span><span class="qa-difficulty diff-easy">Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "We believe beauty starts with health, not aesthetics. Most beauty brands sell a look. We sell a foundation - literally, the foundation your hair grows from. Our perspective is that if you take care of the scalp, the hair takes care of itself. That philosophy runs through everything: our formulations target root causes instead of masking symptoms, our distribution goes through educated professionals instead of influencer marketing, and our packaging is designed to be refillable because wellness shouldn't come at the planet's expense."
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        If a supplier or partner is watching this, why should they want to work with you?
+        <span><span class="qa-difficulty diff-medium">Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "Because we're building the professional scalp care category, and there's room for partners who want to own it with us. Our 96% repurchase rate means we're not a flash-in-the-pan trend brand - salons that carry us stay with us. For distributors, that means reliable recurring orders. For suppliers, we're scaling with a premium product that protects margins. And for anyone in the professional beauty ecosystem, aligning with a trichologist-founded scalp brand positions you at the front of the biggest emerging category in hair care."
+        </div>
+        <div class="tip">TIP: This room includes suppliers and distributors. Speak directly to them. This is as much a business development opportunity as a pitch competition.</div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        What has surprised you most about building an indie beauty brand?
+        <span><span class="qa-difficulty diff-easy">Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "How much the professional community rallies around products that actually work. We expected to have to hard-sell stylists, but once they tried the product on their own clients and saw the results, they became advocates. The word-of-mouth in the salon world is incredibly powerful - stylists talk to each other, and a recommendation from a trusted peer moves faster than any marketing campaign. The surprise was that the product sold itself. The challenge was keeping up with the demand that created."
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        What would winning this pitch competition mean for your brand at this stage?
+        <span><span class="qa-difficulty diff-easy">Very Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "Validation and visibility. We've proven the product works in the chair. We've proven stylists want it. Winning Beauty Tank would put AWARE in front of an entirely different audience - investors, distributors, retail partners - who can help us compress the timeline from regional salon brand to national category leader. At this stage, the right introduction matters more than the prize money. One partnership with the right distributor could double our salon footprint in 90 days."
+        </div>
+        <div class="tip">TIP: End by tying it back to business impact. "Validation" alone is weak. Pair it with a specific outcome.</div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        Finish this sentence: "I started this brand because..."
+        <span><span class="qa-difficulty diff-easy">Very Likely</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "I started this brand because every client who sat in my chair with a scalp problem deserved better than what the professional industry had to offer. I couldn't keep recommending products that weren't designed for the scalp and hoping they'd work. AWARE exists because I believe the professionals who see these issues every day should have real tools to address them - not repurposed shampoo with 'scalp care' on the label."
+        </div>
+        <div class="tip">TIP: This is Tina's answer. Deliver it with conviction, not as a rehearsed line. Pause before "AWARE exists because..." for emphasis.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tough Questions -->
+  <div class="qa-category">
+    <div class="qa-category-header" style="border-left-color:var(--red);">Tough Questions (Rehearse These)</div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        Why wouldn't a big player like L'Oreal or P&G just launch a scalp line and crush you?
+        <span><span class="qa-difficulty diff-hard">Hard</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "They probably will - and that's actually good for us. When big players enter a category, they validate it and expand the market. They'll do mass-market scalp care with big ad budgets. We don't need to compete there. Our moat is the professional channel and formulation credibility. L'Oreal can't replicate a trichologist founder, a patent-pending complex, or the trust that comes from a stylist recommendation. We're the craft brand in a market that's about to go mainstream."
+        </div>
+        <div class="tip">TIP: Reframe competition as market validation. The craft beer analogy works: Budweiser making IPA didn't kill craft breweries, it grew the market.</div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        Your revenue is modest. How do you plan to scale?
+        <span><span class="qa-difficulty diff-hard">Hard</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "We're 6 months in. At this stage, the quality of revenue matters more than the quantity. Every dollar we've earned came from a professional who chose to put our product on their shelf and recommend it to clients. That's not modest - that's a foundation. We're building the brand the way Olaplex did - one salon at a time until the professional community creates consumer demand. Our growth rate month-over-month is [X%], and we're just getting started with distributor partnerships that will accelerate coverage significantly."
+        </div>
+        <div class="tip">TIP: Never apologize for your revenue. Reframe to growth rate and quality of revenue. Have the MoM growth percentage ready.</div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        The salon channel is slow. How long until you're profitable at scale?
+        <span><span class="qa-difficulty diff-hard">Hard</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "We're already profitable on a per-unit and per-salon basis. The question is really about overhead and scale economics. Salon growth is steady but compounding - each new salon is a recurring revenue source with 96% retention. We're also adding distributor partnerships that accelerate coverage without proportional cost increases. The path to profitability at scale is more about reaching a salon count threshold than about changing the model."
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-item" onclick="this.classList.toggle('open')">
+      <div class="qa-question">
+        What's your biggest risk right now?
+        <span><span class="qa-difficulty diff-hard">Hard</span> <span class="icon">+</span></span>
+      </div>
+      <div class="qa-answer">
+        <div class="sample-answer">
+          "Execution speed. We have strong product-market fit and a clear strategy, but we're a small team. The risk is that the scalp care wave crests before we've built enough distribution to ride it. That's exactly why we're here - events like this, distributor conversations, and strategic partnerships are how we compress that timeline."
+        </div>
+        <div class="tip">TIP: Showing self-awareness about risk builds credibility. Pick a real risk, then immediately explain how you're addressing it.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section: Pitch Script -->
+<div id="pitch" class="section">
+  <h2 class="section-title">Pitch Script Outline (5 Minutes)</h2>
+  <p style="color:var(--text-muted); font-size:14px; margin-bottom:24px;">Suggested structure and talking points. Customize with your voice and current data.</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-time">0:00 - 0:45 | THE HOOK</div>
+      <div class="timeline-title">The Problem Nobody Talks About</div>
+      <div class="timeline-content">Open with the gap: everyone focuses on hair, nobody focuses on the scalp. Yet scalp health determines hair health.</div>
+      <div class="timeline-script">
+        "Raise your hand if you've invested in a premium shampoo in the last year. Now - did you choose it for your hair, or for your scalp? That's the problem. We've been treating the symptom and ignoring the source. As a trichologist who's treated thousands of clients, I can tell you - most hair problems start at the scalp. And almost nobody in the beauty industry is addressing that with real science."
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot" style="border-color:var(--purple);"></div>
+      <div class="timeline-time">0:45 - 1:45 | THE SOLUTION</div>
+      <div class="timeline-title">AWARE Hair + AwareBio Complex</div>
+      <div class="timeline-content">Introduce the brand, the patent-pending complex, and the product line. Show (don't just tell) - bring products.</div>
+      <div class="timeline-script">
+        "AWARE Hair is salon-grade scalp wellness, built by a trichologist and stylist. Our patent-pending AwareBio Complex targets the scalp barrier - strengthening it, not just treating symptoms. The line includes a shampoo, conditioner, leave-in treatment, and our signature sandalwood scalp gua sha that turns scalp care into a ritual. Every product is formulated to work together as a system, not sold as individual SKUs."
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot" style="border-color:var(--green);"></div>
+      <div class="timeline-time">1:45 - 2:45 | THE TRACTION</div>
+      <div class="timeline-title">Proof It Works</div>
+      <div class="timeline-content">Revenue, salon count, repurchase rate, testimonials. Numbers speak louder here.</div>
+      <div class="timeline-script">
+        "In 6 months since launch, we've generated [REVENUE] in revenue, built partnerships with [NUMBER] salons, and achieved a 96% B2B repurchase rate. Let me put that in context - salons are reordering because their clients are asking for it by name. We didn't spend a dollar on paid advertising to get here. Every sale came through professional recommendation."
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot" style="border-color:var(--amber);"></div>
+      <div class="timeline-time">2:45 - 3:45 | THE MARKET & MODEL</div>
+      <div class="timeline-title">Why Now, Why This Way</div>
+      <div class="timeline-content">Market size, B2B-first strategy, unit economics, scalability.</div>
+      <div class="timeline-script">
+        "Scalp care is a $4 billion market growing at 8-9% annually. But the professional-grade segment is wide open. Our strategy is B2B-first - like Olaplex's playbook. Salons build credibility, stylists create demand, and DTC becomes the replenishment channel. Margins are strong because we're not burning cash on paid acquisition or fighting for retail shelf space. We're building a brand the same way the best professional brands were built - from the chair up."
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot" style="border-color:var(--pink);"></div>
+      <div class="timeline-time">3:45 - 4:30 | THE TEAM</div>
+      <div class="timeline-title">Why Us</div>
+      <div class="timeline-content">Tina's trichology credentials, combined expertise, advisory.</div>
+      <div class="timeline-script">
+        "What makes AWARE different starts with who built it. Tina is a licensed trichologist and stylist who's spent [X] years treating scalp conditions. She didn't read about scalp health in a textbook - she sees it every day in the chair. I bring the business and technology side. Together, we've built a brand that has both clinical credibility and commercial traction."
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot" style="border-color:var(--accent);"></div>
+      <div class="timeline-time">4:30 - 5:00 | THE VISION</div>
+      <div class="timeline-title">Where We're Going</div>
+      <div class="timeline-content">Vision for the brand. End with something memorable.</div>
+      <div class="timeline-script">
+        "Our vision is simple: make scalp health as normal as skincare. In 3 years, we want AWARE to be the brand stylists reach for when a client asks about their scalp - in the same way they reach for Olaplex when someone asks about damage repair. We're building the category leader in professional scalp wellness, one salon at a time. And we're just getting started."
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section: Cheat Sheet -->
+<div id="cheatsheet" class="section">
+  <h2 class="section-title">Quick Reference Cheat Sheet</h2>
+
+  <div class="cheat-grid">
+    <div class="cheat-card">
+      <h3>Key Metrics (Update Before Pitch)</h3>
+      <ul>
+        <li><span class="cheat-label">Total Revenue</span><span class="cheat-value" style="color:var(--green);">[PULL FROM SHOPIFY]</span></li>
+        <li><span class="cheat-label">Salon Partners</span><span class="cheat-value" style="color:var(--green);">[PULL FROM SHOPIFY]</span></li>
+        <li><span class="cheat-label">B2B Repurchase Rate</span><span class="cheat-value">96%</span></li>
+        <li><span class="cheat-label">Products in Line</span><span class="cheat-value">4 (shampoo, conditioner, leave-in, gua sha)</span></li>
+        <li><span class="cheat-label">Launch Date</span><span class="cheat-value">September 2025</span></li>
+        <li><span class="cheat-label">MoM Growth</span><span class="cheat-value" style="color:var(--green);">[CALCULATE]</span></li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h3>Brand Differentiators</h3>
+      <ul>
+        <li><span class="cheat-label">Patent-pending</span><span class="cheat-value">AwareBio Complex</span></li>
+        <li><span class="cheat-label">Founder credentials</span><span class="cheat-value">Trichologist + Stylist</span></li>
+        <li><span class="cheat-label">Channel strategy</span><span class="cheat-value">Salon-exclusive B2B first</span></li>
+        <li><span class="cheat-label">Unique product</span><span class="cheat-value">Sandalwood scalp gua sha</span></li>
+        <li><span class="cheat-label">Sustainability</span><span class="cheat-value">Recycled packaging + refill roadmap</span></li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h3>Power Phrases</h3>
+      <ul>
+        <li><span class="cheat-value">"Built from the scalp up"</span></li>
+        <li><span class="cheat-value">"Professional-grade, not just premium-priced"</span></li>
+        <li><span class="cheat-value">"From the chair up" (salon-first origin)</span></li>
+        <li><span class="cheat-value">"The Olaplex playbook for scalp care"</span></li>
+        <li><span class="cheat-value">"Treating the source, not the symptom"</span></li>
+        <li><span class="cheat-value">"Stylists recommend us by name"</span></li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h3>Market Context</h3>
+      <ul>
+        <li><span class="cheat-label">Global scalp care market</span><span class="cheat-value">~$4B (2024)</span></li>
+        <li><span class="cheat-label">CAGR</span><span class="cheat-value">8-9% through 2030</span></li>
+        <li><span class="cheat-label">White space</span><span class="cheat-value">Professional-grade segment</span></li>
+        <li><span class="cheat-label">Trend</span><span class="cheat-value">Skinification of hair care</span></li>
+        <li><span class="cheat-label">Comp brands</span><span class="cheat-value">Olaplex (playbook), Act+Acre (category)</span></li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h3>Jury Contacts / Event Info</h3>
+      <ul>
+        <li><span class="cheat-label">Event contact</span><span class="cheat-value">Logan Tharpe</span></li>
+        <li><span class="cheat-label">Email</span><span class="cheat-value">logan.tharpe@infopro-digital.com</span></li>
+        <li><span class="cheat-label">Partner org</span><span class="cheat-value">IBA (est. 1974, 600+ members)</span></li>
+        <li><span class="cheat-label">Venue</span><span class="cheat-value">LA Convention Center</span></li>
+        <li><span class="cheat-label">Area</span><span class="cheat-value">Beauty Talk Corner</span></li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h3>Skincare Category Finalists (FYI)</h3>
+      <ul>
+        <li><span class="cheat-label">Lina</span><span class="cheat-value">Universal balm, natural</span></li>
+        <li><span class="cheat-label">Sainte Labs</span><span class="cheat-value">Small-batch clinical skincare</span></li>
+        <li><span class="cheat-label">Percent Science</span><span class="cheat-value">Longevity science (Bloomingdale's)</span></li>
+        <li><span class="cheat-label">Splendor 925</span><span class="cheat-value">Silver facial spatula tool</span></li>
+        <li><span class="cheat-label">Ayn Skin House</span><span class="cheat-value">Middle Eastern beauty rituals</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="do-dont-grid">
+    <div class="do-card">
+      <h3>DO</h3>
+      <ul>
+        <li>Lead with Tina's trichologist credentials</li>
+        <li>Cite specific numbers (revenue, salon count, repurchase rate)</li>
+        <li>Mention the patent-pending status early</li>
+        <li>Bring physical products to show</li>
+        <li>Make eye contact with jury during Q&A</li>
+        <li>Frame salon-exclusive as strategic advantage</li>
+        <li>Show the gua sha - it's visually distinctive</li>
+        <li>Network with skincare finalists too (collaboration opps)</li>
+        <li>Connect with IBA reps at the event</li>
+      </ul>
+    </div>
+    <div class="dont-card">
+      <h3>DON'T</h3>
+      <ul>
+        <li>Apologize for revenue size ("we're early stage")</li>
+        <li>Use jargon without explaining it</li>
+        <li>Compare directly to competitors on stage</li>
+        <li>Say "just" or minimizing language</li>
+        <li>Rush through the science - it's your moat</li>
+        <li>Mention medical claims (scalp "treatment" vs "wellness")</li>
+        <li>Read from notes - know your numbers cold</li>
+        <li>Go over time (hard cutoff at 5 min)</li>
+        <li>Forget to smile - this should feel passionate, not desperate</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

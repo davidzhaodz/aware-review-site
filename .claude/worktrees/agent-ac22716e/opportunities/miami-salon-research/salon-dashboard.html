@@ -1,0 +1,3993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miami Salon Research - AWARE Hair</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-cream: #FAF7F2;
+      --color-cream-dark: #EDE9E0;
+      --color-aware-green: #102B26;
+      --color-aware-green-light: #1A3D35;
+      --color-sage: #4A6B5D;
+      --color-sage-light: #6B8E7D;
+      --color-accent: #102B26;
+      --color-accent-light: #1A3D35;
+      --color-gold: #C9A962;
+      --color-charcoal: #2D2A26;
+      --color-charcoal-light: #4A4640;
+      --color-white: #FFFFFF;
+      --color-error: #C45B5B;
+      --color-success: #102B26;
+
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'DM Sans', -apple-system, sans-serif;
+
+      --shadow-sm: 0 1px 3px rgba(45, 42, 38, 0.08);
+      --shadow-md: 0 4px 12px rgba(45, 42, 38, 0.1);
+      --shadow-lg: 0 8px 30px rgba(45, 42, 38, 0.12);
+      --shadow-hover: 0 12px 40px rgba(45, 42, 38, 0.15);
+
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+
+      --transition-fast: 0.15s ease;
+      --transition-med: 0.25s ease;
+      --transition-slow: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-cream);
+      color: var(--color-charcoal);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Subtle texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+      z-index: 9999;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--color-aware-green) 0%, var(--color-aware-green-light) 100%);
+      padding: 2rem 3rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .header-content {
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+    }
+
+    .brand h1 {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 500;
+      color: var(--color-cream);
+      letter-spacing: 0.02em;
+    }
+
+    .brand span {
+      font-size: 0.85rem;
+      color: var(--color-gold);
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 0 1.5rem;
+      border-left: 1px solid rgba(250, 247, 242, 0.15);
+    }
+
+    .stat:first-child {
+      border-left: none;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 500;
+      color: var(--color-cream);
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--color-sage-light);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-top: 0.25rem;
+    }
+
+    /* Controls */
+    .controls {
+      background: var(--color-white);
+      padding: 1.5rem 3rem;
+      border-bottom: 1px solid var(--color-cream-dark);
+      position: sticky;
+      top: 88px;
+      z-index: 99;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .controls-inner {
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 250px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.875rem 1rem 0.875rem 2.75rem;
+      border: 1px solid var(--color-cream-dark);
+      border-radius: var(--radius-md);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      background: var(--color-cream);
+      color: var(--color-charcoal);
+      transition: var(--transition-fast);
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      background: var(--color-white);
+      box-shadow: 0 0 0 3px rgba(16, 43, 38, 0.1);
+    }
+
+    .search-box input::placeholder {
+      color: var(--color-charcoal-light);
+    }
+
+    .search-box svg {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--color-charcoal-light);
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .filter-group label {
+      font-size: 0.75rem;
+      color: var(--color-charcoal-light);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
+
+    select {
+      padding: 0.75rem 2rem 0.75rem 1rem;
+      border: 1px solid var(--color-cream-dark);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      background: var(--color-cream);
+      color: var(--color-charcoal);
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234A4640' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      transition: var(--transition-fast);
+    }
+
+    select:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px rgba(16, 43, 38, 0.1);
+    }
+
+    .rating-slider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .rating-slider input[type="range"] {
+      width: 100px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--color-cream-dark);
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .rating-slider input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-fast);
+    }
+
+    .rating-slider input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+    }
+
+    .rating-value {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--color-accent);
+      min-width: 2.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .btn-primary {
+      background: var(--color-accent);
+      color: var(--color-white);
+    }
+
+    .btn-primary:hover {
+      background: var(--color-accent-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--color-cream);
+      color: var(--color-charcoal);
+      border: 1px solid var(--color-cream-dark);
+    }
+
+    .btn-secondary:hover {
+      background: var(--color-cream-dark);
+    }
+
+    .btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Status Filter Tabs */
+    .status-tabs {
+      display: flex;
+      gap: 0.25rem;
+      background: var(--color-cream);
+      padding: 0.25rem;
+      border-radius: var(--radius-sm);
+    }
+
+    .status-tab {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      background: transparent;
+      color: var(--color-charcoal-light);
+    }
+
+    .status-tab.active {
+      background: var(--color-white);
+      color: var(--color-charcoal);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .status-tab:hover:not(.active) {
+      color: var(--color-charcoal);
+    }
+
+    .status-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1.25rem;
+      height: 1.25rem;
+      padding: 0 0.35rem;
+      margin-left: 0.35rem;
+      border-radius: 10px;
+      font-size: 0.7rem;
+      background: var(--color-cream-dark);
+    }
+
+    .status-tab.active .status-count {
+      background: var(--color-accent);
+      color: var(--color-white);
+    }
+
+    /* Main Content */
+    .main {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 2rem 3rem 4rem;
+    }
+
+    /* Grid */
+    .salon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* Salon Card */
+    .salon-card {
+      background: var(--color-white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: var(--transition-med);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: cardReveal 0.5s ease forwards;
+    }
+
+    @keyframes cardReveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .salon-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-4px);
+    }
+
+    .card-header {
+      padding: 1.25rem 1.5rem;
+      background: linear-gradient(135deg, var(--color-cream) 0%, var(--color-cream-dark) 100%);
+      border-bottom: 1px solid var(--color-cream-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .salon-name {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--color-aware-green);
+      line-height: 1.3;
+    }
+
+    .score-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.5rem;
+      height: 2.5rem;
+      background: var(--color-sage);
+      color: var(--color-white);
+      border-radius: 50%;
+      font-size: 0.85rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .score-badge.high {
+      background: var(--color-aware-green);
+    }
+
+    .card-body {
+      padding: 1.25rem 1.5rem;
+    }
+
+    .salon-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.85rem;
+      color: var(--color-charcoal-light);
+    }
+
+    .meta-item svg {
+      width: 14px;
+      height: 14px;
+      color: var(--color-sage);
+    }
+
+    .rating-stars {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .star {
+      color: var(--color-gold);
+    }
+
+    .star.empty {
+      color: var(--color-cream-dark);
+    }
+
+    .rating-text {
+      font-weight: 500;
+      color: var(--color-charcoal);
+      margin-left: 0.25rem;
+    }
+
+    .review-count {
+      color: var(--color-charcoal-light);
+      font-size: 0.8rem;
+    }
+
+    .salon-address {
+      font-size: 0.85rem;
+      color: var(--color-charcoal-light);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .salon-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .salon-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.5rem 0.875rem;
+      background: var(--color-cream);
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      color: var(--color-charcoal);
+      text-decoration: none;
+      transition: var(--transition-fast);
+    }
+
+    .salon-link:hover {
+      background: var(--color-cream-dark);
+      color: var(--color-accent);
+    }
+
+    .salon-link svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Status Selector */
+    .status-selector {
+      display: flex;
+      gap: 0.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--color-cream-dark);
+    }
+
+    .status-btn {
+      flex: 1;
+      padding: 0.625rem 0.5rem;
+      border: 1px solid var(--color-cream-dark);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      background: var(--color-white);
+      color: var(--color-charcoal-light);
+    }
+
+    .status-btn:hover {
+      border-color: var(--color-charcoal-light);
+      color: var(--color-charcoal);
+    }
+
+    .status-btn.interested {
+      border-color: var(--color-aware-green);
+      background: rgba(16, 43, 38, 0.08);
+      color: var(--color-aware-green);
+    }
+
+    .status-btn.interested.active {
+      background: var(--color-aware-green);
+      color: var(--color-white);
+    }
+
+    .status-btn.contacted {
+      border-color: var(--color-gold);
+      background: rgba(201, 169, 98, 0.1);
+      color: var(--color-gold);
+    }
+
+    .status-btn.contacted.active {
+      background: var(--color-gold);
+      color: var(--color-white);
+    }
+
+    .status-btn.not-fit {
+      border-color: var(--color-error);
+      background: rgba(196, 91, 91, 0.1);
+      color: var(--color-error);
+    }
+
+    .status-btn.not-fit.active {
+      background: var(--color-error);
+      color: var(--color-white);
+    }
+
+    /* Review Highlights */
+    .review-highlight {
+      margin-top: 1rem;
+      padding: 0.875rem;
+      background: var(--color-cream);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--color-aware-green);
+    }
+
+    .review-highlight p {
+      font-size: 0.8rem;
+      font-style: italic;
+      color: var(--color-charcoal-light);
+      line-height: 1.5;
+    }
+
+    .review-highlight-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-aware-green);
+      margin-bottom: 0.35rem;
+      font-style: normal;
+    }
+
+    /* Empty State */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .empty-state svg {
+      width: 64px;
+      height: 64px;
+      color: var(--color-cream-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    .empty-state h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--color-charcoal-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+      color: var(--color-charcoal-light);
+      font-size: 0.9rem;
+    }
+
+    /* Loading State */
+    .loading {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--color-cream-dark);
+      border-top-color: var(--color-aware-green);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1.5rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .header {
+        padding: 1.5rem 2rem;
+      }
+
+      .controls {
+        padding: 1.25rem 2rem;
+      }
+
+      .main {
+        padding: 1.5rem 2rem 3rem;
+      }
+
+      .salon-grid {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .header-stats {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .controls-inner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .search-box {
+        width: 100%;
+      }
+
+      .filter-group {
+        justify-content: space-between;
+      }
+
+      .status-tabs {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  
+    /* AWARE Score Badge */
+    .score-badges {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .aware-badge {
+      background: linear-gradient(135deg, var(--color-gold) 0%, #B89840 100%);
+      color: var(--color-charcoal);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .aware-badge.top {
+      background: linear-gradient(135deg, #102B26 0%, #1A3D35 100%);
+      color: var(--color-gold);
+      box-shadow: 0 0 10px rgba(201, 169, 98, 0.3);
+    }
+
+    .premium-badge {
+      font-size: 0.65rem;
+      color: var(--color-sage);
+      background: var(--color-cream-dark);
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-sm);
+      margin-top: 0.5rem;
+      display: inline-block;
+    }
+
+    /* Research Info */
+    .research-notes,
+    .pricing-info,
+    .products-info {
+      font-size: 0.8rem;
+      padding: 0.5rem 0.75rem;
+      background: rgba(16, 43, 38, 0.05);
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.5rem;
+      border-left: 3px solid var(--color-aware-green);
+    }
+
+    .research-label,
+    .pricing-label,
+    .products-label {
+      font-weight: 600;
+      color: var(--color-aware-green);
+    }
+
+    /* Top Prospect Highlight */
+    .salon-card.top-prospect {
+      border: 2px solid var(--color-gold);
+      box-shadow: 0 0 20px rgba(201, 169, 98, 0.15);
+    }
+
+    .salon-card.top-prospect::before {
+      content: 'TOP PROSPECT';
+      position: absolute;
+      top: -10px;
+      right: 20px;
+      background: var(--color-gold);
+      color: var(--color-charcoal);
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.1em;
+    }
+
+    .salon-card {
+      position: relative;
+    }
+
+  
+    /* Prospect Score Badge */
+    .prospect-score {
+      background: linear-gradient(135deg, #102B26 0%, #1A3D35 100%);
+      color: #C9A962;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.3rem 0.6rem;
+      border-radius: var(--radius-sm);
+      margin-left: auto;
+    }
+
+    .prospect-score.high {
+      background: linear-gradient(135deg, #C9A962 0%, #B89840 100%);
+      color: #102B26;
+      box-shadow: 0 2px 8px rgba(201, 169, 98, 0.4);
+    }
+
+    /* Flag Badges */
+    .flag-badge {
+      font-size: 0.6rem;
+      font-weight: 600;
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .flag-badge.head-spa {
+      background: #E8F5E9;
+      color: #2E7D32;
+    }
+
+    .flag-badge.wellness {
+      background: #E3F2FD;
+      color: #1565C0;
+    }
+
+    .flag-badge.warning {
+      background: #FFF3E0;
+      color: #E65100;
+    }
+
+    .flag-badge.danger {
+      background: #FFEBEE;
+      color: #C62828;
+    }
+
+    /* Top Prospect Card */
+    .salon-card.top-prospect {
+      border: 2px solid #C9A962;
+      box-shadow: 0 4px 20px rgba(201, 169, 98, 0.2);
+    }
+
+    .salon-card.top-prospect .salon-header {
+      background: linear-gradient(135deg, rgba(201, 169, 98, 0.1) 0%, transparent 100%);
+    }
+
+    /* Flag Container */
+    .flags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-top: 0.5rem;
+    }
+
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <div class="brand">
+        <h1>Miami Salon Research</h1>
+        <span>AWARE Hair</span>
+      </div>
+      <div class="header-stats">
+        <div class="stat">
+          <div class="stat-value" id="stat-total">-</div>
+          <div class="stat-label">Total Salons</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-displayed">-</div>
+          <div class="stat-label">Displayed</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-avg-rating">-</div>
+          <div class="stat-label">Avg Rating</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-head-spas">-</div>
+          <div class="stat-label">Head Spas</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="controls">
+    <div class="controls-inner">
+      <div class="search-box">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.3-4.3"></path>
+        </svg>
+        <input type="text" id="search" placeholder="Search salons by name...">
+      </div>
+
+      <div class="filter-group">
+        <label>Neighborhood</label>
+        <select id="neighborhood">
+          <option value="">All Areas</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Type</label>
+        <select id="salon-type">
+          <option value="">All Types</option>
+          <option value="head-spa">Head Spas</option>
+          <option value="salon">Salons</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Sort By</label>
+        <select id="sort">
+          <option value="aware" selected>AWARE Score (Top Prospects)</option>
+          <option value="score">Prospect Score</option>
+          <option value="rating">Rating</option>
+          <option value="reviews">Reviews</option>
+          <option value="name">Name</option>
+        </select>
+      </div>
+
+      <div class="filter-group rating-slider">
+        <label>Min Rating</label>
+        <input type="range" id="min-rating" min="0" max="5" step="0.1" value="0">
+        <span class="rating-value" id="rating-display">0+</span>
+      </div>
+
+      <div class="status-tabs">
+        <button class="status-tab active" data-status="all">All <span class="status-count" id="count-all">0</span></button>
+        <button class="status-tab" data-status="interested">Interested <span class="status-count" id="count-interested">0</span></button>
+        <button class="status-tab" data-status="contacted">Contacted <span class="status-count" id="count-contacted">0</span></button>
+        <button class="status-tab" data-status="not-fit">Not a Fit <span class="status-count" id="count-not-fit">0</span></button>
+      </div>
+
+      <button class="btn btn-primary" id="export-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Export CSV
+      </button>
+    </div>
+  </div>
+
+  <main class="main">
+    <div class="salon-grid" id="salon-grid">
+      <div class="loading">
+        <div class="loading-spinner"></div>
+        <p>Loading salon data...</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // State
+    let salons = [];
+    let statuses = {};
+    let currentFilters = {
+      search: '',
+      neighborhood: '',
+      type: '',
+      minRating: 0,
+      sort: 'aware',
+      status: 'all'
+    };
+
+    // Load localStorage
+    function loadStatuses() {
+      const saved = localStorage.getItem('aware-miami-salon-statuses');
+      if (saved) {
+        statuses = JSON.parse(saved);
+      }
+    }
+
+    function saveStatuses() {
+      localStorage.setItem('aware-miami-salon-statuses', JSON.stringify(statuses));
+    }
+
+    // Render stars
+    function renderStars(rating) {
+      const fullStars = Math.floor(rating);
+      const hasHalf = rating % 1 >= 0.5;
+      let html = '';
+
+      for (let i = 0; i < 5; i++) {
+        if (i < fullStars) {
+          html += '<span class="star">&#9733;</span>';
+        } else if (i === fullStars && hasHalf) {
+          html += '<span class="star">&#9733;</span>';
+        } else {
+          html += '<span class="star empty">&#9733;</span>';
+        }
+      }
+      return html;
+    }
+
+    // Render single card
+    function renderCard(salon, index) {
+      const status = statuses[salon.googleMapsUrl] || '';
+      const isHeadSpa = salon.name.toLowerCase().includes('head spa') ||
+                        salon.name.toLowerCase().includes('scalp');
+      const hasAwareScore = salon.awareScore !== null && salon.awareScore !== undefined;
+      const isTopProspect = salon.awareScore >= 85;
+
+      const reviewSnippet = salon.reviewHighlights && salon.reviewHighlights.length > 0
+        ? salon.reviewHighlights[0]
+        : null;
+
+      const awareBadge = hasAwareScore
+        ? `<span class="aware-badge ${isTopProspect ? 'top' : ''}" title="AWARE Score">${salon.awareScore}</span>`
+        : '';
+
+      return `
+        <div class="salon-card ${isTopProspect ? 'top-prospect' : ''}" style="animation-delay: ${index * 0.03}s" data-id="${salon.googleMapsUrl}">
+          <div class="card-header">
+            <h3 class="salon-name">${salon.name}</h3>
+            <div class="score-badges">
+              ${awareBadge}
+              <div class="score-badge ${salon.prospectScore >= 45 ? 'high' : ''}">${salon.prospectScore}</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="salon-meta">
+              <div class="meta-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                ${salon.neighborhood}
+              </div>
+              <div class="meta-item">
+                <div class="rating-stars">
+                  ${renderStars(salon.rating)}
+                  <span class="rating-text">${salon.rating.toFixed(1)}</span>
+                </div>
+                <span class="review-count">(${salon.reviewCount.toLocaleString()})</span>
+              </div>
+            </div>
+
+            <p class="salon-address">${salon.address}</p>
+
+            ${salon.pricing ? `<div class="pricing-info"><span class="pricing-label">Pricing:</span> ${salon.pricing}</div>` : ''}
+            ${salon.products ? `<div class="products-info"><span class="products-label">Products:</span> ${salon.products}</div>` : ''}
+            ${salon.researchNotes ? `<div class="research-notes"><span class="research-label">Notes:</span> ${salon.researchNotes}</div>` : ''}
+
+            <div class="salon-links">
+              ${salon.phone ? `
+                <a href="tel:${salon.phone}" class="salon-link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                  </svg>
+                  ${salon.phone}
+                </a>
+              ` : ''}
+              ${salon.website ? `
+                <a href="${salon.website}" target="_blank" class="salon-link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                  </svg>
+                  Website
+                </a>
+              ` : ''}
+              <a href="${salon.googleMapsUrl}" target="_blank" class="salon-link">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+                </svg>
+                Maps
+              </a>
+            </div>
+
+            ${reviewSnippet ? `
+              <div class="review-highlight">
+                <div class="review-highlight-label">Review Highlight</div>
+                <p>"${reviewSnippet.substring(0, 150)}${reviewSnippet.length > 150 ? '...' : ''}"</p>
+              </div>
+            ` : ''}
+
+            <div class="status-selector">
+              <button class="status-btn interested ${status === 'interested' ? 'active' : ''}" data-status="interested">
+                Interested
+              </button>
+              <button class="status-btn contacted ${status === 'contacted' ? 'active' : ''}" data-status="contacted">
+                Contacted
+              </button>
+              <button class="status-btn not-fit ${status === 'not-fit' ? 'active' : ''}" data-status="not-fit">
+                Not a Fit
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Filter and sort salons
+    function getFilteredSalons() {
+      let filtered = salons.filter(salon => {
+        // Search
+        if (currentFilters.search &&
+            !salon.name.toLowerCase().includes(currentFilters.search.toLowerCase())) {
+          return false;
+        }
+
+        // Neighborhood
+        if (currentFilters.neighborhood &&
+            salon.neighborhood !== currentFilters.neighborhood) {
+          return false;
+        }
+
+        // Type filter
+        if (currentFilters.type) {
+          const isHeadSpa = salon.name.toLowerCase().includes('head spa') ||
+                           salon.name.toLowerCase().includes('scalp') ||
+                           (salon.flags && salon.flags.includes('HEAD_SPA_FOCUS'));
+          if (currentFilters.type === 'head-spa' && !isHeadSpa) return false;
+          if (currentFilters.type === 'salon' && isHeadSpa) return false;
+        }
+
+        // Min rating
+        if (salon.rating < currentFilters.minRating) {
+          return false;
+        }
+
+        // Status filter
+        if (currentFilters.status !== 'all') {
+          const salonStatus = statuses[salon.googleMapsUrl] || '';
+          if (currentFilters.status === 'interested' && salonStatus !== 'interested') return false;
+          if (currentFilters.status === 'contacted' && salonStatus !== 'contacted') return false;
+          if (currentFilters.status === 'not-fit' && salonStatus !== 'not-fit') return false;
+        }
+
+        return true;
+      });
+
+      // Sort
+      filtered.sort((a, b) => {
+        switch (currentFilters.sort) {
+          case 'aware': return (b.awareScore || 0) - (a.awareScore || 0);
+          case 'score': return b.prospectScore - a.prospectScore;
+          case 'rating': return b.rating - a.rating;
+          case 'reviews': return b.reviewCount - a.reviewCount;
+          case 'name': return a.name.localeCompare(b.name);
+          default: return 0;
+        }
+      });
+
+      return filtered;
+    }
+
+    // Update stats
+    function updateStats(filtered) {
+      document.getElementById('stat-total').textContent = salons.length;
+      document.getElementById('stat-displayed').textContent = filtered.length;
+
+      if (filtered.length > 0) {
+        const avgRating = filtered.reduce((sum, s) => sum + s.rating, 0) / filtered.length;
+        document.getElementById('stat-avg-rating').textContent = avgRating.toFixed(1);
+      } else {
+        document.getElementById('stat-avg-rating').textContent = '-';
+      }
+
+      const headSpas = salons.filter(s =>
+        s.name.toLowerCase().includes('head spa') ||
+        s.name.toLowerCase().includes('scalp')
+      ).length;
+      document.getElementById('stat-head-spas').textContent = headSpas;
+
+      // Update status counts
+      const counts = { interested: 0, contacted: 0, 'not-fit': 0 };
+      salons.forEach(s => {
+        const status = statuses[s.googleMapsUrl];
+        if (status && counts.hasOwnProperty(status)) {
+          counts[status]++;
+        }
+      });
+
+      document.getElementById('count-all').textContent = salons.length;
+      document.getElementById('count-interested').textContent = counts.interested;
+      document.getElementById('count-contacted').textContent = counts.contacted;
+      document.getElementById('count-not-fit').textContent = counts['not-fit'];
+    }
+
+    // Render grid
+    function renderGrid() {
+      const filtered = getFilteredSalons();
+      const grid = document.getElementById('salon-grid');
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            <h3>No salons found</h3>
+            <p>Try adjusting your filters or search term</p>
+          </div>
+        `;
+      } else {
+        grid.innerHTML = filtered.map((salon, i) => renderCard(salon, i)).join('');
+
+        // Attach status button handlers
+        grid.querySelectorAll('.status-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const card = e.target.closest('.salon-card');
+            const id = card.dataset.id;
+            const newStatus = e.target.dataset.status;
+
+            // Toggle status
+            if (statuses[id] === newStatus) {
+              delete statuses[id];
+            } else {
+              statuses[id] = newStatus;
+            }
+
+            saveStatuses();
+            renderGrid();
+          });
+        });
+      }
+
+      updateStats(filtered);
+    }
+
+    // Determine salon type for segmentation
+    function getSalonType(salon) {
+      const isHeadSpa = salon.name.toLowerCase().includes('head spa') ||
+                        salon.name.toLowerCase().includes('scalp') ||
+                        (salon.flags && salon.flags.includes('HEAD_SPA_FOCUS'));
+      return isHeadSpa ? 'Head Spa' : 'Salon';
+    }
+
+    // Export to CSV
+    function exportCSV() {
+      const filtered = getFilteredSalons();
+      const headers = ['Name', 'Type', 'Address', 'Phone', 'Website', 'Rating', 'Reviews', 'Neighborhood', 'AWARE Score', 'Prospect Score', 'Status', 'Google Maps'];
+
+      const rows = filtered.map(s => [
+        `"${s.name.replace(/"/g, '""')}"`,
+        getSalonType(s),
+        `"${s.address.replace(/"/g, '""')}"`,
+        s.phone || '',
+        s.website || '',
+        s.rating,
+        s.reviewCount,
+        s.neighborhood,
+        s.awareScore || '',
+        s.prospectScore,
+        statuses[s.googleMapsUrl] || '',
+        s.googleMapsUrl
+      ]);
+
+      const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `miami-salons-export-${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+
+      URL.revokeObjectURL(url);
+    }
+
+    // Populate neighborhood dropdown
+    function populateNeighborhoods() {
+      const neighborhoods = [...new Set(salons.map(s => s.neighborhood))].sort();
+      const select = document.getElementById('neighborhood');
+
+      neighborhoods.forEach(n => {
+        const option = document.createElement('option');
+        option.value = n;
+        option.textContent = n;
+        select.appendChild(option);
+      });
+    }
+
+    // Event listeners
+    function setupEventListeners() {
+      document.getElementById('search').addEventListener('input', (e) => {
+        currentFilters.search = e.target.value;
+        renderGrid();
+      });
+
+      document.getElementById('neighborhood').addEventListener('change', (e) => {
+        currentFilters.neighborhood = e.target.value;
+        renderGrid();
+      });
+
+      document.getElementById('salon-type').addEventListener('change', (e) => {
+        currentFilters.type = e.target.value;
+        renderGrid();
+      });
+
+      document.getElementById('sort').addEventListener('change', (e) => {
+        currentFilters.sort = e.target.value;
+        renderGrid();
+      });
+
+      document.getElementById('min-rating').addEventListener('input', (e) => {
+        currentFilters.minRating = parseFloat(e.target.value);
+        document.getElementById('rating-display').textContent =
+          currentFilters.minRating === 0 ? '0+' : `${currentFilters.minRating.toFixed(1)}+`;
+        renderGrid();
+      });
+
+      document.querySelectorAll('.status-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          document.querySelectorAll('.status-tab').forEach(t => t.classList.remove('active'));
+          e.target.classList.add('active');
+          currentFilters.status = e.target.dataset.status;
+          renderGrid();
+        });
+      });
+
+      document.getElementById('export-btn').addEventListener('click', exportCSV);
+    }
+
+    // Load data
+    // Embedded salon data
+    const SALON_DATA = [
+  {
+    "name": "LAVA Head Spa",
+    "address": "10531 S Dixie Hwy, Pinecrest, FL 33156, USA",
+    "phone": "(786) 758-4346",
+    "website": "http://www.lavaheadspa.com/",
+    "rating": 4.9,
+    "reviewCount": 441,
+    "neighborhood": "South Beach",
+    "prospectScore": 60,
+    "flags": [
+      "HEAD_SPA_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=8973597861323442318",
+    "awareScore": 95,
+    "pricing": "Premium",
+    "products": "K18 peptide technology, earth-friendly plant-based products",
+    "researchNotes": "TOP PROSPECT - Florida's leading head spa, 3 Miami locations, clean products, perfect AWARE fit"
+  },
+  {
+    "name": "HEAD SPA ANNI",
+    "address": "Phenix Salon Suites, 2263 SW 37th Ave Suite 117B, Coral Gables, FL 33145, USA",
+    "phone": "",
+    "website": "https://www.headspaanni.com/",
+    "rating": 4.9,
+    "reviewCount": 185,
+    "neighborhood": "South Beach",
+    "prospectScore": 5,
+    "flags": [
+      "HEAD_SPA_FOCUS",
+      "SUITE_RENTAL_CO"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=16064349117108980689",
+    "awareScore": 95,
+    "pricing": "$80 head spa, $125 combo packages",
+    "products": "Natural/organic ingredients focus",
+    "researchNotes": "Pure head spa play - ideal AWARE partner"
+  },
+  {
+    "name": "Harmony Holistic Beauty, Organic Hair Salon and Skin Care",
+    "address": "1313 Boynton Beach Blvd Suite 2, Boynton Beach, FL 33426, USA",
+    "phone": "(561) 270-3803",
+    "website": "http://harmonyholisticbeauty.com/",
+    "rating": 4.9,
+    "reviewCount": 70,
+    "neighborhood": "South Beach",
+    "prospectScore": -15,
+    "flags": [
+      "WELLNESS_FOCUS",
+      "SUITE",
+      "NOT_MIAMI"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=4562383312201050145",
+    "awareScore": 95,
+    "pricing": "Not listed (appointment-based)",
+    "products": "O&M COR.color (ammonia-free, vegan, cruelty-free)",
+    "researchNotes": "PERFECT AWARE FIT - organic focus, reads ingredient labels, vegan/cruelty-free emphasis"
+  },
+  {
+    "name": "Bamboo Beauty & Wellness",
+    "address": "1717 N Bayshore Dr Suite 112, Miami, FL 33132, USA",
+    "phone": "(786) 575-3475",
+    "website": "https://www.bamboospamiami.com/",
+    "rating": 4.7,
+    "reviewCount": 1052,
+    "neighborhood": "South Beach",
+    "prospectScore": 50,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=14023710174640699881",
+    "awareScore": 92,
+    "pricing": "Premium",
+    "products": "PHYTO Paris (95% natural, plant-based haircare)",
+    "researchNotes": "Miami's first Korean head spa, 'healthy hair starts with healthy scalp' philosophy"
+  },
+  {
+    "name": "Eskap Head Spa | Scalp Spa | Naples, FL",
+    "address": "1575 Pine Ridge Rd Unit 14, Suite 7, Naples, FL 34109, USA",
+    "phone": "(239) 427-2556",
+    "website": "http://eskapspa.com/",
+    "rating": 5,
+    "reviewCount": 145,
+    "neighborhood": "Midtown",
+    "prospectScore": 0,
+    "flags": [
+      "HEAD_SPA_FOCUS",
+      "SUITE",
+      "NOT_MIAMI"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=1902006269534556237",
+    "awareScore": 90,
+    "pricing": "Premium head spa",
+    "products": "OWAY, Arete products",
+    "researchNotes": "Already uses premium organic products - great AWARE fit"
+  },
+  {
+    "name": "La Bella Salon",
+    "address": "1 Andalusia Ave, Coral Gables, FL 33134, USA",
+    "phone": "(305) 444-1412",
+    "website": "https://www.labellasalons.com/",
+    "rating": 4.8,
+    "reviewCount": 235,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=15830172172070145917",
+    "awareScore": 88,
+    "pricing": "Mid-to-premium",
+    "products": "Aveda (organic, plant-based)",
+    "researchNotes": "Aveda family salon, aromatherapy focus, scalp massage included, Coral Gables"
+  },
+  {
+    "name": "DO MY HAIR Salon / Head Spa",
+    "address": "1401 SW 27th Ave 2nd floor, Miami, FL 33145, USA",
+    "phone": "(786) 360-1018",
+    "website": "http://dmhmiami.com/",
+    "rating": 4.8,
+    "reviewCount": 64,
+    "neighborhood": "South Beach",
+    "prospectScore": 50,
+    "flags": [
+      "HEAD_SPA_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=15453835600102210340",
+    "awareScore": 85,
+    "pricing": "Not available",
+    "products": "Japanese head spa focus",
+    "researchNotes": "Japanese head spa expertise - premium technique focus"
+  },
+  {
+    "name": "Sana Skin Studio Coconut Grove",
+    "address": "2810 Oak Ave Suite 106, Miami, FL 33133, USA",
+    "phone": "(305) 942-9444",
+    "website": "http://www.sanaskinstudio.com/",
+    "rating": 5,
+    "reviewCount": 1300,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=16917787965238359047",
+    "awareScore": 85,
+    "pricing": "Premium",
+    "products": "Augustinus Bader, Pai Skincare, Epi.logic",
+    "researchNotes": "Wellness-focused, clean skincare philosophy, membership community - no hair but aligned brand"
+  },
+  {
+    "name": "Reya Holistic Aesthetics",
+    "address": "152 Sunny Isles Blvd #11, Sunny Isles Beach, FL 33160, USA",
+    "phone": "(561) 565-7634",
+    "website": "https://reya.beauty/",
+    "rating": 4.9,
+    "reviewCount": 58,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 25,
+    "flags": [
+      "WELLNESS_FOCUS",
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=7496772617333563595",
+    "awareScore": 85,
+    "pricing": "Spa packages $125.99 (Silver/Diamond/Gold tiers)",
+    "products": "Own spa product line (moisturizers, serums)",
+    "researchNotes": "Holistic positioning aligns well with AWARE philosophy"
+  },
+  {
+    "name": "The Palms AVEDA Spa",
+    "address": "3025 Collins Ave, Miami Beach, FL 33140, USA",
+    "phone": "(305) 908-5460",
+    "website": "https://www.thepalmsavedaspa.com/",
+    "rating": 4.5,
+    "reviewCount": 54,
+    "neighborhood": "South Beach",
+    "prospectScore": 5,
+    "flags": [
+      "BRAND_LOCKED"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=4113498767594361739",
+    "awareScore": 85,
+    "pricing": "Premium spa pricing (80min massage + beach access)",
+    "products": "AVEDA exclusive",
+    "researchNotes": "Established premium brand, AVEDA-locked but high-end clientele"
+  },
+  {
+    "name": "Highlight Salon and spa",
+    "address": "2100 Ponce de Leon Blvd STE 111, Coral Gables, FL 33134, USA",
+    "phone": "(305) 448-0707",
+    "website": "http://highlightcoralgables.com/",
+    "rating": 5,
+    "reviewCount": 572,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=1126071139994862643",
+    "awareScore": 82,
+    "pricing": "Premium ($85+ cuts, $375-500+ balayage)",
+    "products": "Kerastase (luxury French)",
+    "researchNotes": "Premium Coral Gables, uses luxury Kerastase, already includes scalp care in service"
+  },
+  {
+    "name": "Nika Scalp & Skin Ritual Head Spa",
+    "address": "165 NW 25th St, Miami, FL 33127, USA",
+    "phone": "(305) 954-1072",
+    "website": "https://nikaritual.com/",
+    "rating": 5,
+    "reviewCount": 17,
+    "neighborhood": "Brickell",
+    "prospectScore": 40,
+    "flags": [
+      "HEAD_SPA_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=4200948910613934348",
+    "awareScore": 80,
+    "pricing": "Not available (booking system)",
+    "products": "Not specified",
+    "researchNotes": "Scalp focus in name - strong AWARE alignment"
+  },
+  {
+    "name": "Rik Rak Salon",
+    "address": "1061 Brickell Plaza, Miami, FL 33131, USA",
+    "phone": "(305) 371-7324",
+    "website": "http://www.rikrak.com/",
+    "rating": 4.5,
+    "reviewCount": 284,
+    "neighborhood": "Coconut Grove",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=7874104401812518104",
+    "awareScore": 80,
+    "pricing": "Premium (boutique pricing)",
+    "products": "Not specified",
+    "researchNotes": "Four Seasons location = premium clientele access"
+  },
+  {
+    "name": "detlev - A davines Salon",
+    "address": "3015 Grand Ave Suite 208, Coconut Grove, FL 33133, USA",
+    "phone": "(305) 448-5750",
+    "website": "http://www.detlev.com/",
+    "rating": 4.9,
+    "reviewCount": 438,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 20,
+    "flags": [
+      "BRAND_LOCKED"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=354336615750568483",
+    "awareScore": 80,
+    "pricing": "Premium salon pricing",
+    "products": "Davines exclusive (concept salon)",
+    "researchNotes": "Davines-locked but demonstrates premium salon success in Miami"
+  },
+  {
+    "name": "Oren Salon",
+    "address": "2341 Collins Ave, Miami Beach, FL 33139, USA",
+    "phone": "(305) 535-7050",
+    "website": "http://www.orensalon.com/",
+    "rating": 4.9,
+    "reviewCount": 733,
+    "neighborhood": "South Beach",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=10600409563698745669",
+    "awareScore": 78,
+    "pricing": "Premium",
+    "products": "FUYA ESSENTIALS ($34-48 range)",
+    "researchNotes": "1 Hotel South Beach location, already carries haircare line at similar price point"
+  },
+  {
+    "name": "Danny Jelaca Salon & Spa",
+    "address": "300 Alton Rd #100a, Miami Beach, FL 33139, USA",
+    "phone": "(305) 604-9696",
+    "website": "https://dannyjelaca.com/",
+    "rating": 4.8,
+    "reviewCount": 303,
+    "neighborhood": "South Beach",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=931887538072640131",
+    "awareScore": 78,
+    "pricing": "Premium ($$$ tier)",
+    "products": "High-end (unspecified)",
+    "researchNotes": "South Beach celebrity salon, 20+ years, clients: Pamela Anderson, Miranda Kerr"
+  },
+  {
+    "name": "LUX MedSpa Brickell",
+    "address": "805 S Miami Ave 9th Floor, Miami, FL 33130, USA",
+    "phone": "(305) 988-9388",
+    "website": "https://www.luxmedspabrickell.com/",
+    "rating": 5,
+    "reviewCount": 2105,
+    "neighborhood": "South Beach",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=12593821693512984242",
+    "awareScore": 75,
+    "pricing": "Premium",
+    "products": "Cosmedix, Cetaphil, First Aid Beauty",
+    "researchNotes": "SLS LUX Hotel, 'barrier-safe' skincare philosophy - no hair but premium wellness clientele"
+  },
+  {
+    "name": "Ipanema Wellness Center",
+    "address": "Coral Gables, 161 Aragon Ave 2nd floor, Miami, FL 33134, USA",
+    "phone": "(786) 384-0923",
+    "website": "https://www.ipanemawellness.com/",
+    "rating": 4.8,
+    "reviewCount": 50,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 40,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=13767096459768687088",
+    "awareScore": 75,
+    "pricing": "Premium (contact for pricing)",
+    "products": "Not specified",
+    "researchNotes": "Luxury positioning, Coral Gables - good neighborhood"
+  },
+  {
+    "name": "Allure Day Spa & Hair Design - Best Head Spa, Facial, Massage, and Beauty Salon near Me NYC",
+    "address": "139 E 55th St, New York, NY 10022, USA",
+    "phone": "(212) 644-5500",
+    "website": "https://alluredayspa.com/",
+    "rating": 4.9,
+    "reviewCount": 1138,
+    "neighborhood": "Design District",
+    "prospectScore": 25,
+    "flags": [
+      "HEAD_SPA_FOCUS",
+      "NOT_MIAMI"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=3012586439648593670",
+    "awareScore": 75,
+    "pricing": "Contact for pricing",
+    "products": "Not specified",
+    "researchNotes": "Comprehensive service offering, head spa available"
+  },
+  {
+    "name": "RH Beauty + Salon Aventura",
+    "address": "19017 Biscayne Blvd, Aventura, FL 33180, USA",
+    "phone": "(305) 912-5555",
+    "website": "http://www.rhaventura.com/",
+    "rating": 4.8,
+    "reviewCount": 2033,
+    "neighborhood": "South Beach",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=395851813368640953",
+    "awareScore": 72,
+    "pricing": "Mid-Premium ($65-100 cuts)",
+    "products": "Redken, Olaplex",
+    "researchNotes": "Modern salon (est. 2020), complimentary scalp treatment included with services"
+  },
+  {
+    "name": "Natural Beauty and Beyond & Spa",
+    "address": "18031 Biscayne Blvd, Aventura, FL 33160, USA",
+    "phone": "(305) 931-3415",
+    "website": "https://nbbspa.com/",
+    "rating": 4.9,
+    "reviewCount": 57,
+    "neighborhood": "Aventura",
+    "prospectScore": 40,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=2237489782924348341",
+    "awareScore": 72,
+    "pricing": "Mid-range",
+    "products": "All-natural lotions and oils",
+    "researchNotes": "All-natural focus, zen relaxation, Aventura upscale location"
+  },
+  {
+    "name": "Estetica Le Fate skincare&body",
+    "address": "3872 Grand Ave, Miami, FL 33133, USA",
+    "phone": "(786) 626-2860",
+    "website": "http://lefatespa.com/",
+    "rating": 5,
+    "reviewCount": 54,
+    "neighborhood": "Coconut Grove",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=1999425699141194885",
+    "awareScore": 70,
+    "pricing": "Contact for pricing",
+    "products": "Dibi Milano skincare",
+    "researchNotes": "European skincare brand, premium positioning"
+  },
+  {
+    "name": "UBe beauty Salon / Barber / Boutique",
+    "address": "1900 Coral Wy Suite 101, Miami, FL 33145, USA",
+    "phone": "(917) 459-3901",
+    "website": "http://www.ubebeauty.com/",
+    "rating": 4.9,
+    "reviewCount": 90,
+    "neighborhood": "South Beach",
+    "prospectScore": 15,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=3601171503473376276",
+    "awareScore": 70,
+    "pricing": "Shampoo $38, Conditioner $42 (own line)",
+    "products": "Proprietary Hair Re-Viver line",
+    "researchNotes": "Has own product line at similar price point - potential competitor or collaborator"
+  },
+  {
+    "name": "Think Ink Micro-Esthetics: TriLift, Facelift, Skin Tightening, Acne Treatment, Laser Hair Removal, Scalp Micropigmentation",
+    "address": "2103 Coral Wy Ste 302, Miami, FL 33145, USA",
+    "phone": "",
+    "website": "http://www.thinkinkmicro.com/",
+    "rating": 4.9,
+    "reviewCount": 86,
+    "neighborhood": "Coconut Grove",
+    "prospectScore": 35,
+    "flags": [
+      "HEAD_SPA_FOCUS",
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=9290866242200231323",
+    "awareScore": 65,
+    "pricing": "Not available",
+    "products": "Not specified",
+    "researchNotes": "More medical aesthetics focus, but scalp services available"
+  },
+  {
+    "name": "Liquivida Wellness Center | Aventura",
+    "address": "18999 Biscayne Blvd #105, Aventura, FL 33180, USA",
+    "phone": "(786) 539-2552",
+    "website": "https://www.liquivida.com/aventura",
+    "rating": 5,
+    "reviewCount": 525,
+    "neighborhood": "Aventura",
+    "prospectScore": 55,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=11060919715118374584"
+  },
+  {
+    "name": "Aesthetemed Beauty & Wellness Clinic",
+    "address": "2100 E Hallandale Beach Blvd # 100, Hallandale Beach, FL 33009, USA",
+    "phone": "(786) 966-7878",
+    "website": "https://aesthetemed.com/?utm_source=google&utm_medium=organic&utm_campaign=gmb",
+    "rating": 4.8,
+    "reviewCount": 936,
+    "neighborhood": "Bal Harbour",
+    "prospectScore": 55,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=8124160067992731975"
+  },
+  {
+    "name": "ISHA Beauty & Wellness Coral Gables - Facials & Body Treatments",
+    "address": "31 Almeria Ave, Coral Gables, FL 33134, USA",
+    "phone": "(305) 363-5320",
+    "website": "https://www.ishabeautymiami.com/",
+    "rating": 4.8,
+    "reviewCount": 714,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 55,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=12453684288953466792"
+  },
+  {
+    "name": "VIIV WELLNESS HAUS",
+    "address": "1874 West Ave Suite 1, Miami Beach, FL 33139, USA",
+    "phone": "(786) 550-6249",
+    "website": "http://viivwellnesshaus.com/?utm_source=google&utm_medium=organic&utm_campaign=gbp",
+    "rating": 5,
+    "reviewCount": 228,
+    "neighborhood": "South Beach",
+    "prospectScore": 50,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=5758539259632452142"
+  },
+  {
+    "name": "ISHA Beauty & Wellness Miami - Facials & Body Treatments",
+    "address": "8202 NE 2nd Ave, Miami, FL 33138, USA",
+    "phone": "(786) 982-0178",
+    "website": "https://www.ishabeautymiami.com/isha-beauty-miami-shores",
+    "rating": 4.9,
+    "reviewCount": 238,
+    "neighborhood": "South Beach",
+    "prospectScore": 50,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=16505538681312508074"
+  },
+  {
+    "name": "âme Spa and Wellness Collective",
+    "address": "19999 W Country Club Dr, Aventura, FL 33180, USA",
+    "phone": "(305) 933-6930",
+    "website": "https://www.marriott.com/en-us/hotels/miajt-jw-marriott-miami-turnberry-resort-and-spa/dining/?scid=feed67b0-9a2f-4de1-8df6-114544116108",
+    "rating": 4.7,
+    "reviewCount": 504,
+    "neighborhood": "Aventura",
+    "prospectScore": 50,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=3611191561233288757"
+  },
+  {
+    "name": "Nails & Japanese Head Spa",
+    "address": "8659 SW 124th Ave. Suite # 11, Miami, FL 33183, USA",
+    "phone": "(815) 391-3960",
+    "website": "",
+    "rating": 4.7,
+    "reviewCount": 53,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 45,
+    "flags": [
+      "HEAD_SPA_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=14067185501922476612"
+  },
+  {
+    "name": "Ostenta Beauty Concept Edgewater - Nails, Lashes & Facials",
+    "address": "2700 Biscayne Blvd, Miami, FL 33137, USA",
+    "phone": "(786) 856-6342",
+    "website": "https://www.ostentabeautyconcept.com/",
+    "rating": 4.8,
+    "reviewCount": 548,
+    "neighborhood": "Edgewater",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=305911460924194546"
+  },
+  {
+    "name": "Enlightened Artistry Holistic Spa",
+    "address": "2028 SW 1st St, Miami, FL 33135, USA",
+    "phone": "(786) 317-0831",
+    "website": "https://enlightenedartistry.as.me/schedule.php",
+    "rating": 4.9,
+    "reviewCount": 117,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 45,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=14104405800114010468"
+  },
+  {
+    "name": "Miami Skin Spa Aesthetics & Wellness",
+    "address": "1501 S Miami Ave UNIT 201, Miami, FL 33129, USA",
+    "phone": "(305) 557-1615",
+    "website": "https://www.miamiskinspa.com/?utm_source=gmb&utm_medium=organic&utm_campaign=directory",
+    "rating": 4.8,
+    "reviewCount": 145,
+    "neighborhood": "Brickell",
+    "prospectScore": 45,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=10463862649382988209"
+  },
+  {
+    "name": "Trini Salon & Spa",
+    "address": "941 Brickell Ave, Miami, FL 33131, USA",
+    "phone": "(786) 220-7796",
+    "website": "http://www.trinisalons.com/",
+    "rating": 4.8,
+    "reviewCount": 1387,
+    "neighborhood": "Brickell",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=5682727029937850681"
+  },
+  {
+    "name": "Charette Cosmetics Medical Spa - Miami Beach",
+    "address": "400 W 41st St Suite 201, Miami Beach, FL 33140, USA",
+    "phone": "(786) 434-8317",
+    "website": "https://charettecosmetics.com/miami/?utm_source=google&utm_medium=organic&utm_campaign=GBPMiami",
+    "rating": 5,
+    "reviewCount": 532,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=16012373219529840862"
+  },
+  {
+    "name": "Peter Alexander Salon",
+    "address": "1614 Alton Rd Suite 201, Miami Beach, FL 33139, USA",
+    "phone": "(305) 234-2900",
+    "website": "https://www.peteralexandersalon.com/?y_source=1_MjM3MjM1MjQtNzE1LWxvY2F0aW9uLndlYnNpdGU%3D",
+    "rating": 5,
+    "reviewCount": 940,
+    "neighborhood": "South Beach",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=1543648499415297438"
+  },
+  {
+    "name": "Studio-D Brickell",
+    "address": "900 S Miami Ave #266, Miami, FL 33130, USA",
+    "phone": "(305) 349-4969",
+    "website": "https://studio-dbrickell.com/",
+    "rating": 4.9,
+    "reviewCount": 1119,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=3112134931372339897"
+  },
+  {
+    "name": "STATUS Hair Salon - Brickell",
+    "address": "777 Brickell Ave #170, Miami, FL 33131, USA",
+    "phone": "(305) 306-8238",
+    "website": "https://www.nycchichair.com/?utm_campaign=GoogleMyBusiness",
+    "rating": 4.8,
+    "reviewCount": 705,
+    "neighborhood": "Brickell",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=5934188150898879880"
+  },
+  {
+    "name": "Sana Skin Studio Wynwood",
+    "address": "49 NW 24th St, Miami, FL 33127, USA",
+    "phone": "(305) 707-5176",
+    "website": "https://sanaskinstudio.com/",
+    "rating": 5,
+    "reviewCount": 1373,
+    "neighborhood": "Wynwood",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=1596163339957190927"
+  },
+  {
+    "name": "Salon L'Estetica",
+    "address": "19495 Biscayne Blvd #101, Aventura, FL 33180, USA",
+    "phone": "(305) 933-0400",
+    "website": "https://lesteticasalon.com/",
+    "rating": 4.9,
+    "reviewCount": 803,
+    "neighborhood": "Aventura",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=18428220540739864591"
+  },
+  {
+    "name": "Solea Medical Spa & Beauty Lounge",
+    "address": "18140 Collins Ave, Sunny Isles Beach, FL 33160, USA",
+    "phone": "(305) 787-3448",
+    "website": "https://www.soleabeautylounge.com/?utm_campaign=gmb",
+    "rating": 4.8,
+    "reviewCount": 1105,
+    "neighborhood": "Aventura",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=8123780674227684292"
+  },
+  {
+    "name": "Avant-Garde Salon & Spa",
+    "address": "155 Miracle Mile, Miami, FL 33134, USA",
+    "phone": "(305) 442-8136",
+    "website": "https://avantgardesalonandspa.com/",
+    "rating": 4.9,
+    "reviewCount": 1386,
+    "neighborhood": "South Beach",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=9361575397493159448"
+  },
+  {
+    "name": "Red Salon",
+    "address": "7326 Biscayne Blvd, Miami, FL 33138, USA",
+    "phone": "(305) 757-7662",
+    "website": "https://www.redsalon.com/",
+    "rating": 5,
+    "reviewCount": 700,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=14712221329003436330"
+  },
+  {
+    "name": "Open Hair Miami Salon",
+    "address": "199 Westward Dr, Miami Springs, FL 33166, USA",
+    "phone": "(786) 442-9863",
+    "website": "https://openhairmiami.com/",
+    "rating": 4.9,
+    "reviewCount": 1001,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 45,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=4389484626599279961"
+  },
+  {
+    "name": "Viva Head Spa",
+    "address": "18641 NE 24th Pl Unit 2, Miami, FL 33180, USA",
+    "phone": "",
+    "website": "",
+    "rating": 5,
+    "reviewCount": 21,
+    "neighborhood": "South Beach",
+    "prospectScore": 40,
+    "flags": [
+      "HEAD_SPA_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=5714437391750638019"
+  },
+  {
+    "name": "D'EAU Wellness Spa",
+    "address": "1778 Sans Souci Blvd, North Miami, FL 33181, USA",
+    "phone": "(786) 312-6646",
+    "website": "https://deauwellness.com/",
+    "rating": 4.9,
+    "reviewCount": 95,
+    "neighborhood": "South Beach",
+    "prospectScore": 40,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=4766675747508146116"
+  },
+  {
+    "name": "Florida Sculptured Nails & Hair Salon",
+    "address": "3202 NE 2nd Ave, Miami, FL 33137, USA",
+    "phone": "(305) 576-4441",
+    "website": "http://floridasculpturednails.com/?utm_source=GMB",
+    "rating": 4.8,
+    "reviewCount": 221,
+    "neighborhood": "Wynwood",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=14074788426839345082"
+  },
+  {
+    "name": "VIP Beauty And Beyond",
+    "address": "102 NE 2nd Ave, Hallandale Beach, FL 33009, USA",
+    "phone": "(786) 908-4062",
+    "website": "https://www.vipbeautyandbeyond.com/",
+    "rating": 5,
+    "reviewCount": 246,
+    "neighborhood": "Aventura",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=5139013414987274657"
+  },
+  {
+    "name": "Little Princess Spa® Aventura - Birthday Party Place & Spa for Kids",
+    "address": "18797 Biscayne Blvd #600, Aventura, FL 33180, USA",
+    "phone": "(954) 330-4654",
+    "website": "https://aventura.littleprincessspa.com/",
+    "rating": 4.8,
+    "reviewCount": 391,
+    "neighborhood": "Aventura",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=16952166533484751923"
+  },
+  {
+    "name": "Privai Spa + Fitness at Kimpton EPIC Hotel",
+    "address": "270 Biscayne Blvd Way Floor 16, Miami, FL 33131, USA",
+    "phone": "(305) 404-7275",
+    "website": "https://kimptonepic.privaispas.com/",
+    "rating": 4.9,
+    "reviewCount": 249,
+    "neighborhood": "Midtown",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=8161036695846441609"
+  },
+  {
+    "name": "ALEXSPOT24 MASSAGE BODY GROOMING MANSCAPING WAXING MEN SPA",
+    "address": "175 SW 7th St STE 1916, Miami, FL 33130, USA",
+    "phone": "(954) 745-0751",
+    "website": "https://www.alexspot24.com/miami-men-spa",
+    "rating": 4.9,
+    "reviewCount": 391,
+    "neighborhood": "Brickell",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=16803129132314712460"
+  },
+  {
+    "name": "VIO Med Spa",
+    "address": "2980 NE 207th St, Aventura, FL 33180, USA",
+    "phone": "(954) 272-8330",
+    "website": "https://www.viomedspa.com/locations/aventura",
+    "rating": 5,
+    "reviewCount": 242,
+    "neighborhood": "Aventura",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=11783853399415714033"
+  },
+  {
+    "name": "Pink Beauty Lounge & Medical Spa",
+    "address": "17395 N Bay Rd Unit 100, Sunny Isles Beach, FL 33160, USA",
+    "phone": "(305) 974-1244",
+    "website": "http://beautyroommiami.com/",
+    "rating": 4.9,
+    "reviewCount": 262,
+    "neighborhood": "Bal Harbour",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=17547173411772736656"
+  },
+  {
+    "name": "GG Salon & Spa",
+    "address": "9063 Biscayne Blvd, Miami, FL 33138, USA",
+    "phone": "(305) 759-9710",
+    "website": "http://ggsalonspa.com/",
+    "rating": 4.8,
+    "reviewCount": 217,
+    "neighborhood": "Bal Harbour",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=7252234729701733824"
+  },
+  {
+    "name": "Atma Beauty",
+    "address": "1874 West Ave, Miami Beach, FL 33139, USA",
+    "phone": "(786) 216-7510",
+    "website": "http://www.atmabeauty.com/",
+    "rating": 4.8,
+    "reviewCount": 386,
+    "neighborhood": "South Beach",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=18100095038272324447"
+  },
+  {
+    "name": "Stubborn Hair",
+    "address": "2700 N Miami Ave #701, Miami, FL 33127, USA",
+    "phone": "(305) 457-8272",
+    "website": "http://stubbornhair.com/",
+    "rating": 4.9,
+    "reviewCount": 399,
+    "neighborhood": "South Beach",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=8731911267057162019"
+  },
+  {
+    "name": "BLOW UP HAIR AND BEAUTY LAB",
+    "address": "2775 Collins Ave, Miami Beach, FL 33140, USA",
+    "phone": "(561) 430-8104",
+    "website": "https://blowupsalons.com/",
+    "rating": 4.8,
+    "reviewCount": 293,
+    "neighborhood": "South Beach",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=13558376542196581025"
+  },
+  {
+    "name": "Lily Beauty salon",
+    "address": "965 SW 7th St, Miami, FL 33130, USA",
+    "phone": "(305) 924-5021",
+    "website": "https://link.booksy.com/LilyBeautyBar",
+    "rating": 4.9,
+    "reviewCount": 364,
+    "neighborhood": "South Beach",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=8844336719990621999"
+  },
+  {
+    "name": "Elite Styles Salon & Med Spa",
+    "address": "222 NE 25th St #101, Miami, FL 33137, USA",
+    "phone": "(305) 571-7279",
+    "website": "https://elitestyles.com/",
+    "rating": 4.8,
+    "reviewCount": 309,
+    "neighborhood": "South Beach",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=14489821572781074180"
+  },
+  {
+    "name": "ALEXIS LAUREN | Coral Gables",
+    "address": "4203 Ponce de Leon Blvd Unit 110, Coral Gables, FL 33146, USA",
+    "phone": "(305) 686-3393",
+    "website": "https://alexislauren.com/",
+    "rating": 5,
+    "reviewCount": 307,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=1459794214440307184"
+  },
+  {
+    "name": "FreeTime Beauty Salon & spa",
+    "address": "2123 Coral Wy, Miami, FL 33145, USA",
+    "phone": "(305) 444-6141",
+    "website": "http://freetimebeauty.com/",
+    "rating": 4.8,
+    "reviewCount": 254,
+    "neighborhood": "Coconut Grove",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=16968741516132924324"
+  },
+  {
+    "name": "Skin Club Miami•Facials Endospheres RF Microneedling Permanent make up Hydrafacial Tattoo Removal",
+    "address": "3333 Rice St STE 102, Miami, FL 33133, USA",
+    "phone": "(561) 873-5641",
+    "website": "",
+    "rating": 5,
+    "reviewCount": 346,
+    "neighborhood": "Coconut Grove",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=4310309380315210879"
+  },
+  {
+    "name": "Asha Esthetic & Medspa",
+    "address": "1800 SW 1st Ave Unit 501, Miami, FL 33129, USA",
+    "phone": "(305) 505-7853",
+    "website": "http://www.ashaesthetics.com/",
+    "rating": 5,
+    "reviewCount": 283,
+    "neighborhood": "Brickell",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=7369474793931976160"
+  },
+  {
+    "name": "Embassy of Beauty",
+    "address": "17086 Collins Ave, Sunny Isles Beach, FL 33160, USA",
+    "phone": "(305) 974-0030",
+    "website": "https://eobsalons.com/",
+    "rating": 4.8,
+    "reviewCount": 357,
+    "neighborhood": "Aventura",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=10499073120045401024"
+  },
+  {
+    "name": "New Image Works Aventura",
+    "address": "2920 NE 207th St Ste 1005, Aventura, FL 33180, USA",
+    "phone": "(786) 438-0778",
+    "website": "https://newimageworks.com/",
+    "rating": 5,
+    "reviewCount": 322,
+    "neighborhood": "Aventura",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=5383693774916694765"
+  },
+  {
+    "name": "XO Salon & Spa",
+    "address": "18206 Collins Ave, Sunny Isles Beach, FL 33160, USA",
+    "phone": "(305) 871-9770",
+    "website": "https://www.xosalonspa.com/",
+    "rating": 4.9,
+    "reviewCount": 242,
+    "neighborhood": "Bal Harbour",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=8433829238573969238"
+  },
+  {
+    "name": "White Space Salon",
+    "address": "Free parking, 1205 9th St, Miami Beach, FL 33139, USA",
+    "phone": "(305) 741-2292",
+    "website": "http://www.whitespacesalon.com/",
+    "rating": 4.9,
+    "reviewCount": 242,
+    "neighborhood": "South Beach",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=16746794231903237141"
+  },
+  {
+    "name": "Tao Spa Miami",
+    "address": "726 6th St, Miami Beach, FL 33139, USA",
+    "phone": "(786) 216-7200",
+    "website": "https://taospamiami.com/",
+    "rating": 4.7,
+    "reviewCount": 503,
+    "neighborhood": "South Beach",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=15811858300588054983"
+  },
+  {
+    "name": "Elevate Salon Institute - Miami Beach",
+    "address": "1500 Bay Rd C1, Miami Beach, FL 33139, USA",
+    "phone": "(786) 635-1414",
+    "website": "https://www.esimiamibeach.com/",
+    "rating": 4.8,
+    "reviewCount": 336,
+    "neighborhood": "South Beach",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=15937679733819197267"
+  },
+  {
+    "name": "Ugo di Roma Salon & Day Spa",
+    "address": "2801 Florida Ave, Miami, FL 33133, USA",
+    "phone": "(305) 444-4661",
+    "website": "http://www.ugodiroma.com/",
+    "rating": 4.9,
+    "reviewCount": 403,
+    "neighborhood": "South Beach",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=9608686379639007041"
+  },
+  {
+    "name": "Red Market Miami Salon",
+    "address": "9700 Collins Ave #380, Bal Harbour, FL 33154, USA",
+    "phone": "(305) 864-3978",
+    "website": "https://miami.redmarketusa.com/",
+    "rating": 4.9,
+    "reviewCount": 325,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=10252180734375225948"
+  },
+  {
+    "name": "Bliss Beautique",
+    "address": "2255 Ponce de Leon Blvd, Coral Gables, FL 33134, USA",
+    "phone": "(786) 254-7844",
+    "website": "https://blissbeautique.com/?y_source=1_MTA2NTQxMDY1NC03MTUtbG9jYXRpb24ud2Vic2l0ZQ%3D%3D",
+    "rating": 4.9,
+    "reviewCount": 213,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=14431603580497060070"
+  },
+  {
+    "name": "MG Hair Studios in Coral Gables. Best Hair Color Salon",
+    "address": "506 Biltmore Way, Coral Gables, FL 33134, USA",
+    "phone": "(305) 774-7151",
+    "website": "https://mghair.miami/",
+    "rating": 5,
+    "reviewCount": 299,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=10726246922968967574"
+  },
+  {
+    "name": "Avalon Salon",
+    "address": "2431 Galiano St, Coral Gables, FL 33134, USA",
+    "phone": "(305) 445-2631",
+    "website": "http://avalonmiami.com/",
+    "rating": 4.9,
+    "reviewCount": 314,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 40,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=2576649082022464165"
+  },
+  {
+    "name": "The Shape SPA",
+    "address": "941 4th St 2nd floor, Miami Beach, FL 33139, USA",
+    "phone": "(786) 670-0563",
+    "website": "http://theshapespa.com/",
+    "rating": 4.8,
+    "reviewCount": 198,
+    "neighborhood": "South Beach",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=6648102071699461920"
+  },
+  {
+    "name": "Skin Healthy Miami",
+    "address": "630 S Miami Ave, Miami, FL 33130, USA",
+    "phone": "(786) 494-2201",
+    "website": "https://skinhealthymiami.com/",
+    "rating": 5,
+    "reviewCount": 159,
+    "neighborhood": "Brickell",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=11159673425525715304"
+  },
+  {
+    "name": "City Glow Florida - Your Beauty Salon in Miami",
+    "address": "1779 SW 3rd Ave, Miami, FL 33129, USA",
+    "phone": "(786) 360-2265",
+    "website": "https://cityglowflorida.com/",
+    "rating": 4.9,
+    "reviewCount": 146,
+    "neighborhood": "Coconut Grove",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=834290919328732211"
+  },
+  {
+    "name": "The Root & Bark",
+    "address": "5981 NE 6th Ave, Miami, FL 33137, USA",
+    "phone": "(305) 849-6434",
+    "website": "http://rootandbark.com/",
+    "rating": 5,
+    "reviewCount": 122,
+    "neighborhood": "South Beach",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=13444371864541390903"
+  },
+  {
+    "name": "Spa LaLa aesthetics",
+    "address": "2700 Biscayne Blvd, Miami, FL 33137, USA",
+    "phone": "(954) 393-8343",
+    "website": "http://www.spalalaaesthetics.com/",
+    "rating": 4.9,
+    "reviewCount": 118,
+    "neighborhood": "Wynwood",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=14118580376605866586"
+  },
+  {
+    "name": "SORRY, I AM QUEEN | Hair Extensions & Сoloring & SPA",
+    "address": "323 Sunny Isles Blvd unit 101, Sunny Isles Beach, FL 33160, USA",
+    "phone": "(754) 799-0550",
+    "website": "https://sorryiamqueen.com/?utm_campaign=GoogleMyBusiness",
+    "rating": 5,
+    "reviewCount": 109,
+    "neighborhood": "Aventura",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=11084873766796677695"
+  },
+  {
+    "name": "BODYWELLE",
+    "address": "1060 Alton Rd, Miami Beach, FL 33139, USA",
+    "phone": "(305) 877-5084",
+    "website": "https://alonsomartinmd.com/?utm_source=GMB&utm_medium=organic&utm_campaign=GMB",
+    "rating": 4.9,
+    "reviewCount": 192,
+    "neighborhood": "South Beach",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=3395074115847321980"
+  },
+  {
+    "name": "NATURA Hair Removal & Skin Care | Coral Gables",
+    "address": "44 Miracle Mile, Miami, FL 33134, USA",
+    "phone": "(786) 360-3825",
+    "website": "https://naturaspa.com/coral-gables-natura-spa-hair-removal-skin-care/",
+    "rating": 4.9,
+    "reviewCount": 126,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=2701416002533942475"
+  },
+  {
+    "name": "MG Hair Salon",
+    "address": "3727 Grand Ave, Miami, FL 33133, USA",
+    "phone": "",
+    "website": "",
+    "rating": 4.9,
+    "reviewCount": 193,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=8597348940363940021"
+  },
+  {
+    "name": "Lavish Laser Med Spa",
+    "address": "3160 Florida Ave, Miami, FL 33133, USA",
+    "phone": "(786) 550-2480",
+    "website": "https://lavishlasermedspa.com/",
+    "rating": 5,
+    "reviewCount": 119,
+    "neighborhood": "Coconut Grove",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=7425468221100309887"
+  },
+  {
+    "name": "Paloma Arenal Salon & Spa",
+    "address": "975 SW 8th St, Miami, FL 33130, USA",
+    "phone": "(305) 525-7114",
+    "website": "https://palomaarenal.com/",
+    "rating": 4.9,
+    "reviewCount": 162,
+    "neighborhood": "Brickell",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=4314934392752525393"
+  },
+  {
+    "name": "Med Aesthetics Miami in Aventura",
+    "address": "Beacon Tower, 20200 W Dixie Hwy Suite G-11, Aventura, FL 33180, USA",
+    "phone": "(305) 356-7402",
+    "website": "https://www.medaestheticsmiami.com/?utm_source=google&utm_medium=organic&utm_content=aventura&utm_campaign=gmb",
+    "rating": 4.8,
+    "reviewCount": 184,
+    "neighborhood": "Aventura",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=7742379069944419103"
+  },
+  {
+    "name": "Aviva Medical Spa",
+    "address": "4100 NE 2nd Ave #301, Miami, FL 33137, USA",
+    "phone": "(786) 812-8622",
+    "website": "https://avivamedicalspa.com/",
+    "rating": 4.7,
+    "reviewCount": 322,
+    "neighborhood": "Wynwood",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=8934541929947759210"
+  },
+  {
+    "name": "MMA SALON",
+    "address": "1500 Alton Rd Fl 2, Miami Beach, FL 33139, USA",
+    "phone": "(786) 449-7058",
+    "website": "http://mmasalon.com/",
+    "rating": 4.8,
+    "reviewCount": 165,
+    "neighborhood": "South Beach",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=4245197881168775582"
+  },
+  {
+    "name": "HAIRBOX 5",
+    "address": "925 W 39th St, Miami Beach, FL 33140, USA",
+    "phone": "(305) 532-7333",
+    "website": "https://hairbox5.com/",
+    "rating": 4.9,
+    "reviewCount": 145,
+    "neighborhood": "South Beach",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=12584358233555776876"
+  },
+  {
+    "name": "Golden Hands by Alberto Chechi",
+    "address": "214 71st St, Miami Beach, FL 33141, USA",
+    "phone": "(305) 865-8863",
+    "website": "http://hairsalon71st.com/",
+    "rating": 4.9,
+    "reviewCount": 105,
+    "neighborhood": "South Beach",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=17316839352936744476"
+  },
+  {
+    "name": "Beauty Expressions Salons",
+    "address": "7601 E Treasure Dr #19, North Bay Village, FL 33141, USA",
+    "phone": "(305) 866-9809",
+    "website": "https://www.beautyexpressionssalons.com/",
+    "rating": 4.6,
+    "reviewCount": 233,
+    "neighborhood": "South Beach",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=17343456525424318090"
+  },
+  {
+    "name": "Bodies Kneaded Massage Spa",
+    "address": "1451 Drexel Avenue &, Española Wy, Miami Beach, FL 33139, USA",
+    "phone": "(305) 535-2424",
+    "website": "http://www.bodieskneaded.com/",
+    "rating": 4.9,
+    "reviewCount": 134,
+    "neighborhood": "South Beach",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=15149484837916565201"
+  },
+  {
+    "name": "HANIC",
+    "address": "7388 SW 56th Ave, Miami, FL 33143, USA",
+    "phone": "(305) 667-3400",
+    "website": "https://hanic.com/",
+    "rating": 4.9,
+    "reviewCount": 170,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=11405066461735914249"
+  },
+  {
+    "name": "E&LI Beauty Salon",
+    "address": "6714 W Flagler St, Miami, FL 33144, USA",
+    "phone": "(786) 805-8312",
+    "website": "http://www.elibeautymedspa.com/",
+    "rating": 5,
+    "reviewCount": 169,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=7033852587135081252"
+  },
+  {
+    "name": "The Art Hair Salon and Nails SPA",
+    "address": "825 Brickell Bay Dr, Miami, FL 33131, USA",
+    "phone": "(305) 358-7909",
+    "website": "http://theartsalonspa.com/",
+    "rating": 4.8,
+    "reviewCount": 190,
+    "neighborhood": "Brickell",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=16480718649263351967"
+  },
+  {
+    "name": "Lov MedSpa Aventura",
+    "address": "21010 W Dixie Hwy, Miami, FL 33180, USA",
+    "phone": "(347) 514-9311",
+    "website": "https://www.lovmedspa.com/",
+    "rating": 5,
+    "reviewCount": 128,
+    "neighborhood": "Aventura",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=14774102113744640188"
+  },
+  {
+    "name": "McAllister Spa Miami Beach Hair-Salon Nail-Salon South Beach",
+    "address": "1301 Alton Rd, Miami Beach, FL 33139, USA",
+    "phone": "(305) 604-0550",
+    "website": "https://www.spamiamibeach.com/",
+    "rating": 4.5,
+    "reviewCount": 218,
+    "neighborhood": "South Beach",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=11598894669392971051"
+  },
+  {
+    "name": "Spa e",
+    "address": "630 Lincoln Rd, Miami Beach, FL 33139, USA",
+    "phone": "(305) 534-3223",
+    "website": "https://spaesouthbeach.com/",
+    "rating": 4.6,
+    "reviewCount": 361,
+    "neighborhood": "South Beach",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=11183408217523997691"
+  },
+  {
+    "name": "Juliet Hairstylist Miami",
+    "address": "1222 Normandy Dr, Miami Beach, FL 33141, USA",
+    "phone": "(954) 548-0805",
+    "website": "",
+    "rating": 4.9,
+    "reviewCount": 164,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 35,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=10160223511755314965"
+  },
+  {
+    "name": "Natalia Escabias Luxury Spa",
+    "address": "3620 Coral Wy, Miami, FL 33145, USA",
+    "phone": "(786) 897-2143",
+    "website": "http://ailatanholdings.com/",
+    "rating": 4.9,
+    "reviewCount": 73,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=16322568535940081625"
+  },
+  {
+    "name": "Rejuvaline Medspa at Flamingo",
+    "address": "1508 Bay Rd, Miami Beach, FL 33139, USA",
+    "phone": "(786) 884-0110",
+    "website": "https://rejuvalinemedspa.com/miami-beach/",
+    "rating": 4.9,
+    "reviewCount": 64,
+    "neighborhood": "South Beach",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=5121971633106355936"
+  },
+  {
+    "name": "OXIONE BEAUTY & EXTENSIONS",
+    "address": "1913 Ponce de Leon Blvd, Coral Gables, FL 33134, USA",
+    "phone": "(305) 967-8452",
+    "website": "https://oxionebeautyspa.glossgenius.com/",
+    "rating": 5,
+    "reviewCount": 87,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=14337525586789019658"
+  },
+  {
+    "name": "Skin By Choice",
+    "address": "19501 Biscayne Blvd, Aventura, FL 33180, USA",
+    "phone": "(786) 683-0743",
+    "website": "https://www.skinbychoice.com/",
+    "rating": 5,
+    "reviewCount": 70,
+    "neighborhood": "Aventura",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=7808901732023973824"
+  },
+  {
+    "name": "Sándu Beauty & Wellness",
+    "address": "3201 N Miami Ave Suite 21 & 23, Miami, FL 33127, USA",
+    "phone": "(786) 999-3583",
+    "website": "http://sandubeauty.com/",
+    "rating": 4.8,
+    "reviewCount": 108,
+    "neighborhood": "South Beach",
+    "prospectScore": 30,
+    "flags": [
+      "WELLNESS_FOCUS",
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=5574138043844616329"
+  },
+  {
+    "name": "Nava Wellness & Med Spa",
+    "address": "15805 Biscayne Blvd suite 101, North Miami Beach, FL 33160, USA",
+    "phone": "(305) 705-2300",
+    "website": "https://www.navawellnessmedspa.com/",
+    "rating": 5,
+    "reviewCount": 104,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 30,
+    "flags": [
+      "WELLNESS_FOCUS",
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=6712982836365846636"
+  },
+  {
+    "name": "Dermal Era Holistic Med Spa",
+    "address": "717 Ponce de Leon Blvd STE 206, Miami, FL 33134, USA",
+    "phone": "(305) 707-2134",
+    "website": "https://dermalera.zoca.com/?utm_source=googlemaps&utm_medium=googlemaps&utm_campaign=googlemaps",
+    "rating": 5,
+    "reviewCount": 138,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 30,
+    "flags": [
+      "WELLNESS_FOCUS",
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=3081747611590630117"
+  },
+  {
+    "name": "BēAtala Wellness Spa",
+    "address": "2988 McFarlane Rd, Miami, FL 33133, USA",
+    "phone": "(305) 487-0744",
+    "website": "https://www.mrccoconutgrove.com/spa/",
+    "rating": 5,
+    "reviewCount": 15,
+    "neighborhood": "Coconut Grove",
+    "prospectScore": 30,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=6531691760730709754"
+  },
+  {
+    "name": "Maria Silva Health & Wellness",
+    "address": "3721 NW 7th St Suite # 28, Miami, FL 33126, USA",
+    "phone": "(305) 607-3652",
+    "website": "https://www.mariasilvahw.com/",
+    "rating": 5,
+    "reviewCount": 15,
+    "neighborhood": "Design District",
+    "prospectScore": 30,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=6488926866849488802"
+  },
+  {
+    "name": "Skin Sports Society",
+    "address": "1125 5th St Loft 8, Miami Beach, FL 33139, USA",
+    "phone": "(786) 239-0939",
+    "website": "https://skinsportssociety.com/",
+    "rating": 4.9,
+    "reviewCount": 91,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=2702491330892127640"
+  },
+  {
+    "name": "Bliss Hair Boutique",
+    "address": "6724 SW 40th St, Miami, FL 33155, USA",
+    "phone": "(305) 480-9800",
+    "website": "",
+    "rating": 4.7,
+    "reviewCount": 160,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=17938299151465271646"
+  },
+  {
+    "name": "Natural Beauty by Carla Lisboa",
+    "address": "17850 W Dixie Hwy Suite B, North Miami Beach, FL 33160, USA",
+    "phone": "(786) 797-7523",
+    "website": "http://www.carlalisboa.com/",
+    "rating": 5,
+    "reviewCount": 35,
+    "neighborhood": "Aventura",
+    "prospectScore": 30,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=3365431238828547296"
+  },
+  {
+    "name": "Pecan's Day Spa",
+    "address": "520 Biltmore Way, Coral Gables, FL 33134, USA",
+    "phone": "(305) 284-8636",
+    "website": "http://pecansdayspacoralgables.com/",
+    "rating": 4.9,
+    "reviewCount": 67,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=7744981574992376739"
+  },
+  {
+    "name": "Lyra Skin Studio",
+    "address": "2828 NW 1st Ave, Miami, FL 33127, USA",
+    "phone": "(312) 637-0115",
+    "website": "https://lyraskinstudio.as.me/",
+    "rating": 5,
+    "reviewCount": 93,
+    "neighborhood": "Wynwood",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=14554842830126684857"
+  },
+  {
+    "name": "Michaela Beauty - Lashes Brows Studio",
+    "address": "3011 NE 199th St, Aventura, FL 33180, USA",
+    "phone": "(786) 600-5685",
+    "website": "https://mirabeautysalon.com/",
+    "rating": 5,
+    "reviewCount": 50,
+    "neighborhood": "Aventura",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=10870126706489294215"
+  },
+  {
+    "name": "DJ Styles Natural Hair Care Studio",
+    "address": "11900 Biscayne Blvd SUITE #110 SALON #5, Miami, FL 33181, USA",
+    "phone": "",
+    "website": "http://linktr.ee/djstylesmiami",
+    "rating": 4.8,
+    "reviewCount": 129,
+    "neighborhood": "South Beach",
+    "prospectScore": 30,
+    "flags": [
+      "WELLNESS_FOCUS",
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=13138009874546167195"
+  },
+  {
+    "name": "Antonello Pasci Organic Salon &Goodies",
+    "address": "323 Navarre Ave # 105, Coral Gables, FL 33134, USA",
+    "phone": "(305) 443-7959",
+    "website": "http://www.pascisalon.com/",
+    "rating": 4.8,
+    "reviewCount": 16,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 30,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=7620916777811666734"
+  },
+  {
+    "name": "SALON NATURAL HAIR",
+    "address": "8208 Mills Dr, Miami, FL 33183, USA",
+    "phone": "(786) 585-0141",
+    "website": "https://www.salonnaturalhair.com/",
+    "rating": 4.8,
+    "reviewCount": 25,
+    "neighborhood": "Coconut Grove",
+    "prospectScore": 30,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=1425091363572532833"
+  },
+  {
+    "name": "Esencia Wellness Spa",
+    "address": "4525 Collins Ave, Miami Beach, FL 33140, USA",
+    "phone": "(305) 674-5540",
+    "website": "https://www.esenciawellnessspa.com/?_ga-ft=1b2RlN.0.0.0.0.TkRcr-3DJ-4Yy-BgT-fKzaejSz.0.1",
+    "rating": 4.4,
+    "reviewCount": 186,
+    "neighborhood": "South Beach",
+    "prospectScore": 30,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=14119797144329724085"
+  },
+  {
+    "name": "ROCA BEAUTY LOUNGE: DOMINICAN BEAUTY SALON",
+    "address": "1183 71st St, Miami Beach, FL 33141, USA",
+    "phone": "(305) 409-5772",
+    "website": "",
+    "rating": 4.8,
+    "reviewCount": 61,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=7548189653461169058"
+  },
+  {
+    "name": "Eco Beauty Med Spa - Miami",
+    "address": "465 Brickell Ave, Miami, FL 33131, USA",
+    "phone": "(786) 570-1616",
+    "website": "https://ecobeautymedspa.com/",
+    "rating": 4.9,
+    "reviewCount": 74,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=7425038236323041691"
+  },
+  {
+    "name": "B BEAUTY WYNWOOD",
+    "address": "127 NW 26th St, Miami, FL 33127, USA",
+    "phone": "(786) 945-8860",
+    "website": "",
+    "rating": 5,
+    "reviewCount": 81,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=17599166194150622763"
+  },
+  {
+    "name": "D Glamour Beauty Spa",
+    "address": "50 Biscayne Blvd, Miami, FL 33132, USA",
+    "phone": "(561) 332-0003",
+    "website": "http://dglamourspa.com/",
+    "rating": 4.9,
+    "reviewCount": 57,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=2814093242665037992"
+  },
+  {
+    "name": "Cachet Beauty Salon by Ana Vigil",
+    "address": "4237 W Flagler st Coral Gables, Miami, FL 33134, USA",
+    "phone": "(786) 237-9149",
+    "website": "http://cachetbeautysalon.com/",
+    "rating": 5,
+    "reviewCount": 92,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=8398218146486120695"
+  },
+  {
+    "name": "Life Spa Coral Gables",
+    "address": "237 S Dixie Hwy, Coral Gables, FL 33133, USA",
+    "phone": "(786) 437-4424",
+    "website": "http://www.lifespaonline.com/",
+    "rating": 4.8,
+    "reviewCount": 78,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=17651289275576218918"
+  },
+  {
+    "name": "Shine hair salon and spa",
+    "address": "1682 Coral Wy, Miami, FL 33145, USA",
+    "phone": "(786) 439-7121",
+    "website": "https://www.shinehairsalonandspa.com/",
+    "rating": 4.9,
+    "reviewCount": 84,
+    "neighborhood": "Coconut Grove",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=3954820916955686145"
+  },
+  {
+    "name": "Aventura Aesthetics Spa",
+    "address": "19201 Collins Ave CU-204-A, Sunny Isles Beach, FL 33160, USA",
+    "phone": "(305) 454-0449",
+    "website": "http://aventuraesthetics.square.site/",
+    "rating": 4.9,
+    "reviewCount": 79,
+    "neighborhood": "Aventura",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=10254515998267376773"
+  },
+  {
+    "name": "SKINNEY Medspa",
+    "address": "9700 Collins Avenue Saks Fifth Ave Bal Harbour Shops, 9700 Collins Ave, Bal Harbour, FL 33154, USA",
+    "phone": "(305) 876-6251",
+    "website": "https://skinneymedspa.com/?utm_source=google&utm_medium=organic&utm_campaign=gmb-bal-harbour",
+    "rating": 4.8,
+    "reviewCount": 89,
+    "neighborhood": "Bal Harbour",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=17178469651478942909"
+  },
+  {
+    "name": "Sea and Salt Spa",
+    "address": "Spa D Studio Elements, 11900 Biscayne Blvd, Miami, FL 33181, USA",
+    "phone": "(786) 790-6284",
+    "website": "https://www.seaandsaltspa.com/?utm_source=google&utm_medium=organic&utm_campaign=google_business_profile",
+    "rating": 5,
+    "reviewCount": 74,
+    "neighborhood": "Bal Harbour",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=6419153048938805570"
+  },
+  {
+    "name": "Andres Beauty Miami yes is inside in white space salon",
+    "address": "1205 9th St, Miami Beach, FL 33139, USA",
+    "phone": "(305) 903-9033",
+    "website": "",
+    "rating": 4.7,
+    "reviewCount": 143,
+    "neighborhood": "South Beach",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=7074863432364703138"
+  },
+  {
+    "name": "Italian Concept Hair Salon di Johnny Almagno",
+    "address": "227 9th St downstairs C, Miami Beach, FL 33139, USA",
+    "phone": "(305) 717-8468",
+    "website": "https://sites.google.com/view/italian-concept-hair-salon/home?authuser=0",
+    "rating": 5,
+    "reviewCount": 50,
+    "neighborhood": "South Beach",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=7323848681043708716"
+  },
+  {
+    "name": "STATUS Hair Salon - Midtown",
+    "address": "2804 NE 2nd Ave, Miami, FL 33137, USA",
+    "phone": "(305) 564-8640",
+    "website": "https://www.vagaro.com/statusmidtown",
+    "rating": 5,
+    "reviewCount": 66,
+    "neighborhood": "South Beach",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=10106772211414699724"
+  },
+  {
+    "name": "K'Alma Spa",
+    "address": "1144 Ocean Dr Lower Level, Miami Beach, FL 33139, USA",
+    "phone": "(305) 534-5555",
+    "website": "http://kalmaspas.com/",
+    "rating": 4.6,
+    "reviewCount": 158,
+    "neighborhood": "South Beach",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=17939083526894381402"
+  },
+  {
+    "name": "Bellezza Spa",
+    "address": "5734 Sunset Dr, Miami, FL 33143, USA",
+    "phone": "(305) 284-0669",
+    "website": "https://bellezzaspa.com/",
+    "rating": 4.7,
+    "reviewCount": 184,
+    "neighborhood": "South Beach",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=12068730226651497018"
+  },
+  {
+    "name": "Gianfranco Salon & Day Spa",
+    "address": "934 71st St, Miami Beach, FL 33141, USA",
+    "phone": "(305) 397-8666",
+    "website": "",
+    "rating": 4.8,
+    "reviewCount": 81,
+    "neighborhood": "South Beach",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=9600287930041139083"
+  },
+  {
+    "name": "Mia Salon and Spa",
+    "address": "5701 Collins Ave, Miami Beach, FL 33140, USA",
+    "phone": "(786) 216-7017",
+    "website": "https://www.facebook.com/profile.php?id=100095279545559&mibextid=LQQJ4d",
+    "rating": 4.8,
+    "reviewCount": 93,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 30,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=15666735365637611597"
+  },
+  {
+    "name": "The Chic Beauty & Wellness - Miami",
+    "address": "5010 NE 2nd Ave STE 205, Miami, FL 33137, USA",
+    "phone": "(305) 481-8304",
+    "website": "https://www.thechicbeautywellness.com/",
+    "rating": 4.6,
+    "reviewCount": 107,
+    "neighborhood": "South Beach",
+    "prospectScore": 25,
+    "flags": [
+      "WELLNESS_FOCUS",
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=12525085201882946798"
+  },
+  {
+    "name": "Beauty Beyond Beauty Head Spa",
+    "address": "10350 Pines Blvd D106A Suite 111 Inside SUITE HOUSE, Pembroke Pines, FL 33025, USA",
+    "phone": "(754) 303-3818",
+    "website": "https://beautybeyondbeauty.square.site/",
+    "rating": 5,
+    "reviewCount": 19,
+    "neighborhood": "Midtown",
+    "prospectScore": 25,
+    "flags": [
+      "HEAD_SPA_FOCUS",
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=2633878176679151602"
+  },
+  {
+    "name": "Liks Beauty and Wellness Spa- Facial and Body Contouring",
+    "address": "357 Almeria Ave Suite 102, Coral Gables, FL 33134, USA",
+    "phone": "(954) 505-0734",
+    "website": "https://www.liksbeautymiami.com/",
+    "rating": 4.9,
+    "reviewCount": 92,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 25,
+    "flags": [
+      "WELLNESS_FOCUS",
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=3881331012905623715"
+  },
+  {
+    "name": "Manna Wellness Spa",
+    "address": "1160 Kane Concourse #100A, Bay Harbor Islands, FL 33154, USA",
+    "phone": "(786) 216-7374",
+    "website": "https://www.mannamedspa.com/",
+    "rating": 4.8,
+    "reviewCount": 82,
+    "neighborhood": "Bal Harbour",
+    "prospectScore": 25,
+    "flags": [
+      "WELLNESS_FOCUS",
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=5280560563262994064"
+  },
+  {
+    "name": "Royal Trend Natural Hair Salon",
+    "address": "12204 Miramar Pkwy Suite 20, Miramar, FL 33025, USA",
+    "phone": "(786) 925-0100",
+    "website": "",
+    "rating": 5,
+    "reviewCount": 66,
+    "neighborhood": "South Beach",
+    "prospectScore": 25,
+    "flags": [
+      "WELLNESS_FOCUS",
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=9392657786005098033"
+  },
+  {
+    "name": "The Spa at The Miami Beach EDITION",
+    "address": "2901 Collins Ave, Miami Beach, FL 33140, USA",
+    "phone": "(786) 257-4539",
+    "website": "https://www.marriott.com/en-us/hotels/miaeb-the-miami-beach-edition/experiences/?scid=feed67b0-9a2f-4de1-8df6-114544116108",
+    "rating": 4.5,
+    "reviewCount": 76,
+    "neighborhood": "South Beach",
+    "prospectScore": 25,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=9244430372927421127"
+  },
+  {
+    "name": "Flourished Luxury Spa & Doula Service Center",
+    "address": "1783 NE 162nd St, North Miami Beach, FL 33162, USA",
+    "phone": "(305) 349-3647",
+    "website": "http://www.flourished.co/",
+    "rating": 4.4,
+    "reviewCount": 116,
+    "neighborhood": "Aventura",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=4943946473653530234"
+  },
+  {
+    "name": "Nafkar Beauty - Luxury Spa Miami Beach",
+    "address": "400 Alton Rd Ste 105M, Miami Beach, FL 33139, USA",
+    "phone": "(786) 395-8506",
+    "website": "https://nafkarbeauty.com/",
+    "rating": 5,
+    "reviewCount": 114,
+    "neighborhood": "South Beach",
+    "prospectScore": 20,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=8687467125434791863"
+  },
+  {
+    "name": "Health and Beauty Family",
+    "address": "17070 Collins Ave #259, Sunny Isles Beach, FL 33160, USA",
+    "phone": "(305) 399-7473",
+    "website": "http://healthbeautyfamily.com/",
+    "rating": 4.8,
+    "reviewCount": 147,
+    "neighborhood": "Coconut Grove",
+    "prospectScore": 20,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=4197736573165552030"
+  },
+  {
+    "name": "Jennspa Facial Brickell Miami And Mobile Services",
+    "address": "848 Brickell Ave, Miami, FL 33131, USA",
+    "phone": "(305) 981-6143",
+    "website": "https://jennspa.com/",
+    "rating": 5,
+    "reviewCount": 22,
+    "neighborhood": "Brickell",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=2114233287565862752"
+  },
+  {
+    "name": "Cananga Beauty | Beauty Salon and Spa in Hallandale",
+    "address": "1250 E Hallandale Beach Blvd Suite 306 Floor 3, Hallandale Beach, FL 33009, USA",
+    "phone": "(786) 350-8214",
+    "website": "https://canangabeauty.glossgenius.com/",
+    "rating": 4.9,
+    "reviewCount": 105,
+    "neighborhood": "Aventura",
+    "prospectScore": 20,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=11122498741781899122"
+  },
+  {
+    "name": "La Verde Salon & Spa",
+    "address": "1025 E Hallandale Beach Blvd Suite 13, Hallandale Beach, FL 33009, USA",
+    "phone": "(954) 456-6224",
+    "website": "https://www.laverdesalon.com/",
+    "rating": 4.8,
+    "reviewCount": 144,
+    "neighborhood": "Aventura",
+    "prospectScore": 20,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=6144763369552166314"
+  },
+  {
+    "name": "Dvir Skincare",
+    "address": "16385 Biscayne Blvd, Aventura, FL 33160, USA",
+    "phone": "(561) 666-2312",
+    "website": "http://www.dvirskincare.com/?utm_source=google&utm_medium=wix_google_business_profile&utm_campaign=15661194965208426508",
+    "rating": 5,
+    "reviewCount": 44,
+    "neighborhood": "Aventura",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=18362644510820414826"
+  },
+  {
+    "name": "D' Luxury Beauty Salon & Spa",
+    "address": "1178 S Powerline Rd, Pompano Beach, FL 33069, USA",
+    "phone": "(954) 933-1072",
+    "website": "https://dluxurybeautysalonspa.com/",
+    "rating": 4.8,
+    "reviewCount": 44,
+    "neighborhood": "Coconut Grove",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=58897785265882117"
+  },
+  {
+    "name": "Crystal's luxury beauty bar",
+    "address": "2700 N Miami Ave, Miami, FL 33127, USA",
+    "phone": "",
+    "website": "http://www.instagram.com/crystalsluxurybeautybar",
+    "rating": 4.9,
+    "reviewCount": 35,
+    "neighborhood": "Wynwood",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=11569207640158708156"
+  },
+  {
+    "name": "Cowshed",
+    "address": "4385 Collins Ave, Miami Beach, FL 33140, USA",
+    "phone": "(786) 507-7904",
+    "website": "https://www.cowshed.com/",
+    "rating": 4.9,
+    "reviewCount": 15,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=1177309396763574429"
+  },
+  {
+    "name": "Flawless by Melissa Fox",
+    "address": "470 Biltmore Way #102, Coral Gables, FL 33134, USA",
+    "phone": "(786) 615-3736",
+    "website": "https://www.flawlessbymelissafox.com/",
+    "rating": 4.8,
+    "reviewCount": 134,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 20,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=10412433398898798618"
+  },
+  {
+    "name": "Lavish Laser Med Spa",
+    "address": "65 NE 16th St, Miami, FL 33132, USA",
+    "phone": "(754) 287-2084",
+    "website": "https://lavishlasermedspa.com/?utm_campaign=gmb&utm_medium=mainlink&utm_source=google_profile",
+    "rating": 4.9,
+    "reviewCount": 23,
+    "neighborhood": "Coconut Grove",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=1750147719581905530"
+  },
+  {
+    "name": "The Palms Salon & Day Spa",
+    "address": "501 N Ridgewood Ave #D, Edgewater, FL 32132, USA",
+    "phone": "(386) 444-6065",
+    "website": "http://thepalmssalon.club/",
+    "rating": 4.9,
+    "reviewCount": 36,
+    "neighborhood": "Edgewater",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=2890740599402365786"
+  },
+  {
+    "name": "Sage & Honey Hair Studio",
+    "address": "1400 Salzedo St # 103, Coral Gables, FL 33134, USA",
+    "phone": "(786) 310-0290",
+    "website": "http://sageandhoneyhairstudio.com/",
+    "rating": 4.8,
+    "reviewCount": 32,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=5378103822209339387"
+  },
+  {
+    "name": "Beauty Energy Salon & Spa",
+    "address": "555 NE 15th St #214, Miami, FL 33132, USA",
+    "phone": "(786) 536-4409",
+    "website": "https://instagram.com/beautyenergysalon?igshid=MWZjMTM2ODFkZg==",
+    "rating": 4.9,
+    "reviewCount": 131,
+    "neighborhood": "Brickell",
+    "prospectScore": 20,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=7174961494124544532"
+  },
+  {
+    "name": "Zuka Beauty",
+    "address": "15400 Biscayne Blvd # 105, Aventura, FL 33160, USA",
+    "phone": "(305) 940-3220",
+    "website": "http://zuka.beauty.com/",
+    "rating": 4.9,
+    "reviewCount": 48,
+    "neighborhood": "Aventura",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=5642393428136863328"
+  },
+  {
+    "name": "Borsalo Med Spa Cryo",
+    "address": "1920 E Hallandale Beach Blvd UNIT 901, Hallandale Beach, FL 33009, USA",
+    "phone": "(754) 799-5595",
+    "website": "https://borsalo.com/",
+    "rating": 5,
+    "reviewCount": 10,
+    "neighborhood": "Aventura",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=8832981314819131009"
+  },
+  {
+    "name": "Biotech Cosmetic Surgery and Medical Spa",
+    "address": "1111 Kane Concourse suite 111, Bay Harbor Islands, FL 33154, USA",
+    "phone": "(305) 692-9154",
+    "website": "https://biotechwellnesscenter.com/",
+    "rating": 4.9,
+    "reviewCount": 189,
+    "neighborhood": "Bal Harbour",
+    "prospectScore": 20,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=15754790406998351872"
+  },
+  {
+    "name": "Prime Body & Spa",
+    "address": "1645 SW 27th Ave, Miami, FL 33145, USA",
+    "phone": "(305) 563-7606",
+    "website": "https://www.vagaro.com/us03/primebodyspa",
+    "rating": 4.9,
+    "reviewCount": 28,
+    "neighborhood": "Edgewater",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=13288929136945968282"
+  },
+  {
+    "name": "Una Beauty Spa",
+    "address": "358 San Lorenzo Ave Unit 3225, Coral Gables, FL 33146, USA",
+    "phone": "(786) 444-8644",
+    "website": "https://unabeautyspa.com/",
+    "rating": 5,
+    "reviewCount": 11,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=12577458946387089205"
+  },
+  {
+    "name": "Hotties Hub Hair Salon",
+    "address": "40 SW 13th St, Miami, FL 33130, USA",
+    "phone": "(754) 752-6642",
+    "website": "https://www.vagaro.com/nycchichair",
+    "rating": 5,
+    "reviewCount": 35,
+    "neighborhood": "Brickell",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=7097270943663478377"
+  },
+  {
+    "name": "Dua Spa by K'alma",
+    "address": "1300 S Miami Ave, Miami, FL 33130, USA",
+    "phone": "(305) 239-1340",
+    "website": "https://duaspamiami.com/",
+    "rating": 4.9,
+    "reviewCount": 48,
+    "neighborhood": "Brickell",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=10842972799715270258"
+  },
+  {
+    "name": "Skin Rituals Miami",
+    "address": "175 SW 7th St Ste 2006, Office#1, Miami, FL 33130, USA",
+    "phone": "(305) 520-9260",
+    "website": "https://skinritualsmiami.com/",
+    "rating": 5,
+    "reviewCount": 104,
+    "neighborhood": "Brickell",
+    "prospectScore": 20,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=2191959197931908902"
+  },
+  {
+    "name": "MindyKim Skincare",
+    "address": "3301 NE 1st Ave STE 112, Miami, FL 33137, USA",
+    "phone": "(786) 449-0822",
+    "website": "http://www.mindykimskincare.com/",
+    "rating": 4.8,
+    "reviewCount": 157,
+    "neighborhood": "Wynwood",
+    "prospectScore": 20,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=16727019097749162470"
+  },
+  {
+    "name": "hairshop.mia",
+    "address": "My Suite @ Beauty square, 3201 N Miami Ave, Miami, FL 33127, USA",
+    "phone": "(305) 417-8910",
+    "website": "https://hairshopmia.square.site/",
+    "rating": 5,
+    "reviewCount": 17,
+    "neighborhood": "Wynwood",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=13076180758617851699"
+  },
+  {
+    "name": "LÚMIA Beauty and Skincare",
+    "address": "9480 Harding Ave, Surfside, FL 33154, USA",
+    "phone": "(786) 704-8416",
+    "website": "http://www.lumialuxury.com/",
+    "rating": 4.9,
+    "reviewCount": 48,
+    "neighborhood": "Bal Harbour",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=16461930832811851576"
+  },
+  {
+    "name": "Gustavo Briand Studio",
+    "address": "1125 5th St Suite 29, Miami Beach, FL 33139, USA",
+    "phone": "(305) 672-3600",
+    "website": "http://www.gustavobriandstudios.com/",
+    "rating": 5,
+    "reviewCount": 110,
+    "neighborhood": "South Beach",
+    "prospectScore": 20,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=1979974938776998428"
+  },
+  {
+    "name": "West Avenue Salon",
+    "address": "959 West Ave #14, Miami Beach, FL 33139, USA",
+    "phone": "(305) 534-3023",
+    "website": "http://www.marconorma.com/",
+    "rating": 4.8,
+    "reviewCount": 137,
+    "neighborhood": "South Beach",
+    "prospectScore": 20,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=17356362665066354350"
+  },
+  {
+    "name": "Cami Salon & Spa",
+    "address": "941 4th St, Miami Beach, FL 33139, USA",
+    "phone": "(305) 538-2264",
+    "website": "http://www.camisalon.com/",
+    "rating": 5,
+    "reviewCount": 36,
+    "neighborhood": "South Beach",
+    "prospectScore": 20,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=1829361089218207743"
+  },
+  {
+    "name": "Bamford Wellness Spa",
+    "address": "2341 Collins Ave 2nd Floor, Miami Beach, FL 33139, USA",
+    "phone": "(305) 604-6792",
+    "website": "https://www.1hotels.com/south-beach/do/bamford-wellness-spa?utm_source=google-gbp&utm_medium=organic&utm_campaign=gbp",
+    "rating": 4.2,
+    "reviewCount": 46,
+    "neighborhood": "South Beach",
+    "prospectScore": 15,
+    "flags": [
+      "WELLNESS_FOCUS"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=9659973740861601816"
+  },
+  {
+    "name": "Amala Wellness",
+    "address": "108 SW 9th St Suite 16, Miami, FL 33130, USA",
+    "phone": "(786) 781-3772",
+    "website": "https://www.amala-wellness.com/",
+    "rating": 5,
+    "reviewCount": 25,
+    "neighborhood": "Brickell",
+    "prospectScore": 15,
+    "flags": [
+      "WELLNESS_FOCUS",
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=13562203833117892862"
+  },
+  {
+    "name": "Near me spa wellness & aesthetics",
+    "address": "1920 E Hallandale Beach Blvd Suite 802, Hallandale Beach, FL 33009, USA",
+    "phone": "(305) 793-5455",
+    "website": "http://near-me-spa.squarespace.com/",
+    "rating": 5,
+    "reviewCount": 25,
+    "neighborhood": "Bal Harbour",
+    "prospectScore": 15,
+    "flags": [
+      "WELLNESS_FOCUS",
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=1896325455320317497"
+  },
+  {
+    "name": "Artisan Beauty Studio and Art Gallery",
+    "address": "1607 Ponce de Leon Blvd STE 111, Coral Gables, FL 33134, USA",
+    "phone": "(305) 444-0988",
+    "website": "http://artisangallery.us/",
+    "rating": 4.9,
+    "reviewCount": 58,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 15,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=12727571465956155780"
+  },
+  {
+    "name": "Savage Beauty Boutique",
+    "address": "5716 W Hallandale Beach Blvd Ste B, West Park, FL 33023, USA",
+    "phone": "(954) 997-0351",
+    "website": "https://savagebeautyhairbtq.as.me/",
+    "rating": 4.7,
+    "reviewCount": 25,
+    "neighborhood": "Bal Harbour",
+    "prospectScore": 15,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=12004656368947955537"
+  },
+  {
+    "name": "Miami Holistic Care",
+    "address": "111 NE 1st St #908, Miami, FL 33132, USA",
+    "phone": "(786) 490-7157",
+    "website": "http://miamiholisticcare.com/",
+    "rating": 5,
+    "reviewCount": 38,
+    "neighborhood": "Downtown Miami",
+    "prospectScore": 15,
+    "flags": [
+      "WELLNESS_FOCUS",
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=13540808841197313344"
+  },
+  {
+    "name": "Heavenly Day Spa",
+    "address": "220 Alhambra Cir STE 100, Coral Gables, FL 33134, USA",
+    "phone": "(786) 353-2110",
+    "website": "http://heavenlydayspausa.com/",
+    "rating": 5,
+    "reviewCount": 55,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 15,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=12355828257210729538"
+  },
+  {
+    "name": "Glow Secret Beauty studio",
+    "address": "7501 E Treasure Dr suite 105, Miami Beach, FL 33141, USA",
+    "phone": "(305) 505-4375",
+    "website": "https://www.instagram.com/miabeautybyeli?igsh=MThmbjIzMDh2YnB0dg==",
+    "rating": 4.9,
+    "reviewCount": 76,
+    "neighborhood": "Miami Beach",
+    "prospectScore": 15,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=3459359316039407072"
+  },
+  {
+    "name": "Infinity Beauty Lab Med Spa",
+    "address": "40 SW 13th St suite 606, Miami, FL 33130, USA",
+    "phone": "(561) 232-0263",
+    "website": "http://www.infinitybeautylab.com/",
+    "rating": 5,
+    "reviewCount": 58,
+    "neighborhood": "Brickell",
+    "prospectScore": 15,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=234037088509461458"
+  },
+  {
+    "name": "A Beauty and Body Salon and Spa",
+    "address": "4715 NW 157th St #115, Miami Lakes, FL 33014, USA",
+    "phone": "(305) 813-3700",
+    "website": "https://www.abeautyandbody.com/",
+    "rating": 5,
+    "reviewCount": 52,
+    "neighborhood": "Design District",
+    "prospectScore": 15,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=11093983824302702514"
+  },
+  {
+    "name": "Edward James Salon",
+    "address": "9999 SW 72nd St STE 106, Miami, FL 33173, USA",
+    "phone": "(305) 279-0958",
+    "website": "http://edwardjamesandcompany.com/",
+    "rating": 4.9,
+    "reviewCount": 75,
+    "neighborhood": "South Beach",
+    "prospectScore": 15,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=10825470891336262152"
+  },
+  {
+    "name": "Skin Spa New York - Miami Beach Medical Spa",
+    "address": "1212 Lincoln Rd Suite 206, Miami Beach, FL 33139, USA",
+    "phone": "(305) 397-8484",
+    "website": "https://skinspanewyork.com/pages/miami-beach?utm_source=google&utm_medium=organic&utm_campaign=google-business-profile-miami-beach",
+    "rating": 4.7,
+    "reviewCount": 62,
+    "neighborhood": "South Beach",
+    "prospectScore": 10,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=12023028491596775128"
+  },
+  {
+    "name": "Luis Vivas Hair Studio and Nail Salon",
+    "address": "Alexander Hotel, 5225 Collins Ave #415, Miami Beach, FL 33140, USA",
+    "phone": "(561) 884-7428",
+    "website": "http://luisvivashairstudio.com/",
+    "rating": 4.8,
+    "reviewCount": 40,
+    "neighborhood": "South Beach",
+    "prospectScore": 5,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=13793411345978885023"
+  },
+  {
+    "name": "The Pampered Parlor",
+    "address": "4100 Salzedo St STE 1, Coral Gables, FL 33146, USA",
+    "phone": "(786) 238-7007",
+    "website": "https://www.thepamperedparlor.com/",
+    "rating": 5,
+    "reviewCount": 31,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 5,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=9377694568339712231"
+  },
+  {
+    "name": "STYLE Beauty Bar & Boutique",
+    "address": "8831 S Dixie Hwy, Pinecrest, FL 33156, USA",
+    "phone": "(305) 965-5590",
+    "website": "https://stylebeautybarboutique.com/",
+    "rating": 4.3,
+    "reviewCount": 33,
+    "neighborhood": "Coconut Grove",
+    "prospectScore": 5,
+    "flags": [],
+    "googleMapsUrl": "https://maps.google.com/?cid=11367952451588321335"
+  },
+  {
+    "name": "SOLACE SPA",
+    "address": "3201 N Miami Ave Suite 109 Sub-Suite 14, Miami, FL 33127, USA",
+    "phone": "(786) 567-4843",
+    "website": "http://solacespa.co/",
+    "rating": 5,
+    "reviewCount": 10,
+    "neighborhood": "South Beach",
+    "prospectScore": 5,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=4504608423223897712"
+  },
+  {
+    "name": "Vivi Beauty Spa",
+    "address": "1340 S Dixie Hwy Ste 303, Coral Gables, FL 33146, USA",
+    "phone": "(650) 703-3670",
+    "website": "https://vivibeautyspa.com/",
+    "rating": 5,
+    "reviewCount": 45,
+    "neighborhood": "Coral Gables",
+    "prospectScore": 5,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=8271806102010619692"
+  },
+  {
+    "name": "Keratin Smoothening Treatment Hair Salon",
+    "address": "80 SW 8th St Suite 102, Miami, FL 33130, USA",
+    "phone": "(754) 752-6647",
+    "website": "https://www.vagaro.com/nycchichair",
+    "rating": 5,
+    "reviewCount": 30,
+    "neighborhood": "Brickell",
+    "prospectScore": 5,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=3732455928115428085"
+  },
+  {
+    "name": "Spa 3067",
+    "address": "800 SE 4th Ave SUITE 502, Hallandale Beach, FL 33009, USA",
+    "phone": "(305) 947-7546",
+    "website": "http://www.spa3067.com/",
+    "rating": 5,
+    "reviewCount": 34,
+    "neighborhood": "Aventura",
+    "prospectScore": 5,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=9755845081824122566"
+  },
+  {
+    "name": "Le Chic Salon & Spa",
+    "address": "1125 5th St Suite 12+13, Miami Beach, FL 33139, USA",
+    "phone": "(786) 391-9304",
+    "website": "",
+    "rating": 5,
+    "reviewCount": 17,
+    "neighborhood": "South Beach",
+    "prospectScore": 5,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=14289872027483010122"
+  },
+  {
+    "name": "SKIN House of Beauty",
+    "address": "407 Lincoln Rd ste 9a, Miami Beach, FL 33139, USA",
+    "phone": "(786) 536-7200",
+    "website": "http://www.skinhouseofbeauty.com/",
+    "rating": 5,
+    "reviewCount": 29,
+    "neighborhood": "South Beach",
+    "prospectScore": 5,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=1781510794411635198"
+  },
+  {
+    "name": "LALA RIVERS HAIR SALON & SPA",
+    "address": "1709 E Hallandale Beach Blvd suite 4, Hallandale Beach, FL 33009, USA",
+    "phone": "(305) 988-3069",
+    "website": "",
+    "rating": 5,
+    "reviewCount": 27,
+    "neighborhood": "Aventura",
+    "prospectScore": 5,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=6596198072087487731"
+  },
+  {
+    "name": "Alma Loft Spa",
+    "address": "8291 NE 2nd Ave Suite 6, Miami, FL 33138, USA",
+    "phone": "(786) 752-7316",
+    "website": "https://almaloftspa.com/",
+    "rating": 5,
+    "reviewCount": 21,
+    "neighborhood": "South Beach",
+    "prospectScore": 5,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=1217016656169828551"
+  },
+  {
+    "name": "Beauty & Detox Break Spa",
+    "address": "1717 N Bayshore Dr #212, Miami, FL 33132, USA",
+    "phone": "(786) 710-3996",
+    "website": "https://www.detoxandbeautybreak.com/",
+    "rating": 5,
+    "reviewCount": 12,
+    "neighborhood": "Wynwood",
+    "prospectScore": 5,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=3264055834892095320"
+  },
+  {
+    "name": "Sheesa beauty salon and spa",
+    "address": "744 NE 125th St suite 7, North Miami, FL 33161, USA",
+    "phone": "(305) 479-9553",
+    "website": "https://sheesabeautysalonandspa.zoca.com/?utm_source=googlemaps&utm_medium=googlemaps&utm_campaign=googlemaps",
+    "rating": 5,
+    "reviewCount": 32,
+    "neighborhood": "Bal Harbour",
+    "prospectScore": 5,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=3556305237714276750"
+  },
+  {
+    "name": "She Chic Salon Hair Studio",
+    "address": "407 Lincoln Rd Suite 8th Floor 8-I, Miami Beach, FL 33139, USA",
+    "phone": "(786) 674-8710",
+    "website": "http://brazilianblowouthairstylist.com/",
+    "rating": 5,
+    "reviewCount": 14,
+    "neighborhood": "South Beach",
+    "prospectScore": 5,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=5174351741954542323"
+  },
+  {
+    "name": "Lucky Lady Beauty Salon",
+    "address": "900 6th St #34, Miami Beach, FL 33139, USA",
+    "phone": "(305) 531-5948",
+    "website": "",
+    "rating": 4.8,
+    "reviewCount": 42,
+    "neighborhood": "South Beach",
+    "prospectScore": 5,
+    "flags": [
+      "SUITE"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=6158882094954713093"
+  },
+  {
+    "name": "ONE aveda salon",
+    "address": "1020 S Federal Hwy # 103, Delray Beach, FL 33483, USA",
+    "phone": "(561) 272-1147",
+    "website": "http://onesalondelray.com/",
+    "rating": 4.9,
+    "reviewCount": 394,
+    "neighborhood": "South Beach",
+    "prospectScore": -20,
+    "flags": [
+      "NOT_MIAMI",
+      "BRAND_LOCKED"
+    ],
+    "googleMapsUrl": "https://maps.google.com/?cid=3309194845458480628"
+  }
+];
+
+    function loadData() {
+      salons = SALON_DATA;
+      loadStatuses();
+      populateNeighborhoods();
+      setupEventListeners();
+      renderGrid();
+    }
+
+    // Initialize
+    loadData();
+  </script>
+</body>
+</html>

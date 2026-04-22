@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Bank Feed Categorization Dashboard</title>
+<link rel="preconnect" href="https://use.typekit.net">
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4efe9;--surface:#faf8f5;--w:#fff;--text:#102B26;--mid:#3a5a54;--dim:#7a9490;--bdr:#ddd8d0;--bdrl:#e8e2da;--gold:#D4A574;--goldl:rgba(212,165,116,.15);--goldb:rgba(212,165,116,.4);--teal:#102B26;--tealm:#1e4a42;--teall:rgba(16,43,38,.08);--tealb:rgba(16,43,38,.2);--hbg:rgba(125,163,125,.12);--hbdr:rgba(80,130,80,.3);--htxt:#2d5a2d;--mbg:rgba(212,165,116,.12);--mbdr:rgba(212,165,116,.35);--mtxt:#7a4a10;--lbg:rgba(180,70,70,.08);--lbdr:rgba(180,70,70,.25);--ltxt:#7a2020;--r:6px;--rs:4px;--fh:'orpheus-pro',Georgia,serif;--fb:'DM Sans',-apple-system,sans-serif;--sh:0 1px 4px rgba(16,43,38,.07)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:14px}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);line-height:1.6}
+.wrap{max-width:1400px;margin:0 auto;padding:32px 28px 60px}
+.ph{display:grid;grid-template-columns:1fr auto;align-items:start;gap:24px;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--bdr)}
+.brand{font-size:11px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.ptitle{font-family:var(--fh);font-size:32px;font-weight:400;line-height:1.15;margin-bottom:6px}
+.psub{font-size:13px;color:var(--dim)}
+.hmeta{text-align:right}
+.mlabel{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.mval{font-size:13px;font-weight:600;color:var(--text)}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin-bottom:28px}
+.sc{background:var(--w);border:1px solid var(--bdr);border-radius:var(--r);padding:16px 18px;box-shadow:var(--sh)}
+.sc.h{border-top:3px solid var(--htxt)}.sc.m{border-top:3px solid var(--gold)}.sc.l{border-top:3px solid #b04040}.sc.t{border-top:3px solid var(--teal)}
+.slabel{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.sval{font-size:24px;font-weight:700;line-height:1.1}
+.sval.hc{color:var(--htxt)}.sval.mc{color:#7a4a10}.sval.lc{color:#7a2020}.sval.tc{color:var(--teal)}
+.ssub{font-size:11px;color:var(--dim);margin-top:2px}
+.section{background:var(--w);border:1px solid var(--bdr);border-radius:var(--r);margin-bottom:16px;box-shadow:var(--sh);overflow:hidden}
+.sh2{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--bdrl);background:var(--surface);cursor:pointer;user-select:none;gap:12px}
+.sh2:hover{background:var(--bg)}
+.shl{display:flex;align-items:center;gap:10px;flex:1}
+.stitle{font-family:var(--fh);font-size:16px;font-weight:400}
+.bgs{display:flex;gap:6px;flex-wrap:wrap}
+.badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap}
+.bh{background:var(--hbg);color:var(--htxt);border:1px solid var(--hbdr)}
+.bm{background:var(--mbg);color:var(--mtxt);border:1px solid var(--mbdr)}
+.bl{background:var(--lbg);color:var(--ltxt);border:1px solid var(--lbdr)}
+.bg{background:var(--goldl);color:#7a4a10;border:1px solid var(--goldb)}
+.bt{background:var(--teall);color:var(--teal);border:1px solid var(--tealb)}
+.bx{background:rgba(0,0,0,.04);color:var(--dim);border:1px solid var(--bdr)}
+.chev{font-size:14px;color:var(--dim);transition:transform .2s;flex-shrink:0}
+.collapsed .chev{transform:rotate(-90deg)}
+.sbody{padding:0}.sbody.hidden{display:none}
+.two{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead th{padding:8px 12px;background:var(--surface);color:var(--dim);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);text-align:left;white-space:nowrap;cursor:pointer;user-select:none}
+thead th:hover{color:var(--text);background:var(--bg)}
+thead th.sa::after{content:' ↑';color:var(--gold)}
+thead th.sd::after{content:' ↓';color:var(--gold)}
+tbody tr{transition:background .1s}
+tbody tr:hover{background:var(--surface)}
+tr.rh{background:rgba(125,163,125,.06)}tr.rm{background:rgba(212,165,116,.06)}tr.rl{background:rgba(180,70,70,.05)}
+tr.rh:hover{background:rgba(125,163,125,.11)}tr.rm:hover{background:rgba(212,165,116,.11)}tr.rl:hover{background:rgba(180,70,70,.09)}
+td{padding:7px 12px;border-bottom:1px solid var(--bdrl);vertical-align:top}
+td.dt{font-size:11px;color:var(--dim);white-space:nowrap}
+td.vd{font-weight:500;max-width:180px}
+td.am{text-align:right;white-space:nowrap;font-weight:600;font-variant-numeric:tabular-nums}
+td.am.sp{color:var(--text)}td.am.rc{color:var(--htxt)}
+td.ct{font-weight:500;max-width:220px}
+td.nt{font-size:11px;color:var(--dim);max-width:220px}
+td.ex{font-size:11px;color:var(--dim);max-width:160px}
+.pill{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;letter-spacing:.3px;white-space:nowrap}
+.pH{background:var(--hbg);color:var(--htxt);border:1px solid var(--hbdr)}
+.pM{background:var(--mbg);color:var(--mtxt);border:1px solid var(--mbdr)}
+.pL{background:var(--lbg);color:var(--ltxt);border:1px solid var(--lbdr)}
+tfoot td{padding:8px 12px;font-weight:700;border-top:2px solid var(--bdr);font-size:12px;background:var(--surface)}
+.nb{margin:12px 16px;padding:10px 14px;border-radius:var(--rs);font-size:11.5px;line-height:1.5;border-left:3px solid}
+.nb.w{background:var(--mbg);border-color:var(--gold);color:#7a4a10}
+.nb.i{background:var(--teall);border-color:var(--tealm);color:var(--teal)}
+.nb.e{background:var(--lbg);border-color:#b04040;color:var(--ltxt)}
+.nb.s{background:var(--hbg);border-color:var(--htxt);color:var(--htxt)}
+.sbp{padding:16px 20px}
+.rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0;padding:8px 16px}
+.rr{display:flex;align-items:flex-start;gap:10px;padding:7px 8px;border-radius:var(--rs);font-size:12px}
+.rr:hover{background:var(--surface)}
+.rv{font-weight:600;min-width:150px;color:var(--text)}
+.ra{color:var(--gold);flex-shrink:0;font-weight:700}
+.rc2{color:var(--mid);flex:1}
+.rr.nr .rc2{color:#b04040;font-weight:600}
+.fbar{background:var(--w);border:1px solid var(--bdr);border-radius:var(--r);padding:12px 16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:16px;box-shadow:var(--sh)}
+select{font-family:var(--fb);font-size:12px;color:var(--text);background:var(--surface);border:1px solid var(--bdr);border-radius:var(--rs);padding:5px 8px;cursor:pointer;outline:none}
+.btn{font-family:var(--fb);font-size:11px;font-weight:600;padding:6px 14px;border:1px solid var(--bdr);border-radius:var(--rs);background:var(--surface);color:var(--text);cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn:hover{background:var(--teall);border-color:var(--tealb)}
+.btn.primary{background:var(--teal);color:var(--surface);border-color:var(--teal)}
+.btn.primary:hover{background:var(--tealm)}
+.btn.gold{background:var(--goldl);border-color:var(--goldb);color:#7a4a10}
+.flabel{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--dim)}
+.fgrp{display:flex;align-items:center;gap:6px}
+.fdiv{width:1px;height:20px;background:var(--bdr)}
+.issue-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;padding:16px}
+.issue-card{background:var(--lbg);border:1px solid var(--lbdr);border-radius:var(--rs);padding:14px}
+.issue-card.warn{background:var(--mbg);border-color:var(--mbdr)}
+.issue-card.info{background:var(--teall);border-color:var(--tealb)}
+.ic-title{font-size:12px;font-weight:700;color:var(--ltxt);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.ic-title.warn{color:var(--mtxt)}
+.ic-title.info{color:var(--teal)}
+.ic-body{font-size:12px;color:var(--text);line-height:1.5}
+.sub-table table{font-size:12px}
+h4.sec-sub{font-family:var(--fh);font-size:13px;font-weight:400;color:var(--mid);padding:10px 20px 0;margin-bottom:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="ph">
+  <div>
+    <div class="brand">AWARE Hair LLC &mdash; Finance</div>
+    <div class="ptitle">Bank Feed Categorization Dashboard</div>
+    <div class="psub">TY2025 focus &mdash; 7 accounts (5 bank + 2 credit card) &mdash; 2026 transactions deferred &mdash; QBO-verified 2026-03-13</div>
+  </div>
+  <div class="hmeta">
+    <div class="mlabel">Generated</div>
+    <div class="mval">March 13, 2026</div>
+    <div style="margin-top:10px">
+      <div class="mlabel">Verified Against</div>
+      <div class="mval">QBO 2026-03-13 [LIVE]</div>
+    </div>
+    <div style="margin-top:10px">
+      <div class="mlabel">Accounts</div>
+      <div class="mval">7 accounts (incl. PayPal, Sales Tax)</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY CARDS -->
+<div class="sgrid" id="summary-cards"></div>
+
+<!-- CRITICAL ISSUES -->
+<div class="section">
+  <div class="sh2" onclick="toggle(this)">
+    <div class="shl"><div class="stitle">Critical Issues - QBO Category Overrides Required</div><div class="bgs"><span class="badge bl">ACTION REQUIRED</span></div></div>
+    <div class="chev">&#9660;</div>
+  </div>
+  <div class="sbody">
+    <div class="issue-grid">
+      <div class="issue-card">
+        <div class="ic-title">Amazon "Outdoor Warehouse"</div>
+        <div class="ic-body">QBO invented this category - it does not exist in chart of accounts.<br><strong>Rule:</strong> Amazon under $50 &rarr; Office/Admin (HIGH). $50-$99 &rarr; Office/Admin (MEDIUM). $100+ &rarr; REVIEW (need receipt). Items tagged COGS need investigation.</div>
+      </div>
+      <div class="issue-card">
+        <div class="ic-title">Temu.com "Fixed Asset Furniture"</div>
+        <div class="ic-body">WRONG on all Temu transactions. Temu sells packaging, trade show, and inventory items &mdash; not fixed assets.<br><strong>Rule:</strong> All Temu items &rarr; REVIEW. These are credits/returns; category must match original purchase.</div>
+      </div>
+      <div class="issue-card warn">
+        <div class="ic-title warn">Shopify Payments Payouts "Merchant Processing Fees"</div>
+        <div class="ic-body">QBO inconsistently suggests "Merchant Processing Fees" for newer payouts and "Sales Revenue:B2C Sales" for older ones. Neither is correct if A2X has already posted the revenue.<br><strong>Rule:</strong> All Shopify Payouts &rarr; MATCH to A2X entries. Do NOT create duplicate revenue.</div>
+      </div>
+      <div class="issue-card warn">
+        <div class="ic-title warn">Transfer / Autopay Items Posted as Expenses</div>
+        <div class="ic-body">Capital One Autopay payments, American Express payments, internal Shopify transfers, and Transfer Premier Bank items should all be posted as <strong>TRANSFERS</strong> or matched &mdash; not as expenses or income.</div>
+      </div>
+      <div class="issue-card info">
+        <div class="ic-title info">Partner Equity Deposits</div>
+        <div class="ic-body">Harlan Irvine ($25K) and Mark Segal ($50K) deposits are <strong>equity contributions, NOT income</strong>. Harlan's smaller deposits reclassified as Spa Sante B2B revenue. Jade Wong deposits reclassified as partner loans payable (not equity).</div>
+      </div>
+      <div class="issue-card warn">
+        <div class="ic-title warn">MISCELLANEOUS / "Universal" Payments Need Clarification</div>
+        <div class="ic-body">"Universal" appears 4x in checking ($7,400 total). "MISCELLANEOUS Utilities" items total ~$10,800 across 9 entries (includes $1,000 x2 + $600 entries). These are too large to auto-post &mdash; all need David to identify vendor/purpose before categorizing.</div>
+      </div>
+      <div class="issue-card warn">
+        <div class="ic-title warn">Shopify Payouts as Merchant Processing Fees</div>
+        <div class="ic-body">34 Shopify Payments Payouts ($11,736 total) are pre-labeled "Merchant Processing Fees" by QBO. These MUST be matched to A2X entries, not posted as fees. Double-check before any payout posting.</div>
+      </div>
+      <div class="issue-card">
+        <div class="ic-title">Qing Zhao - Possible Duplicates</div>
+        <div class="ic-body">4 entries with 2 same-day pairs (07/18 x2, 09/22 x2). Likely duplicates - $4,000 double-count risk. Verify before posting any Qing Zhao entries.</div>
+      </div>
+      <div class="issue-card">
+        <div class="ic-title info">October 2025 Rent - VERIFIED</div>
+        <div class="ic-body">$11,400 in October is catch-up for skipped months. David confirmed avg $3,500/mo. QBO posted: $23,700 (Jan-Sep) + pending: $15,700 (Mar-Oct) = $39,400 total. Target $42,000. Payments are lumpy - $0 in Apr-Jul, heavy in Jan-Feb and Oct. Pattern consistent with irregular payment schedule to landlord.</div>
+      </div>
+      <div class="issue-card warn">
+        <div class="ic-title warn">Capital One Transfer Gap</div>
+        <div class="ic-body">$921.88 checking outflow (09/12) has no matching CC inflow. $2,493.88 CC inflow (03/11) has no matching checking outflow. Both need reconciliation before closing.</div>
+      </div>
+      <div class="issue-card">
+        <div class="ic-title">PayPal Account Missing [NEW 2026-03-13]</div>
+        <div class="ic-body">QBO audit discovered PayPal account (ID 242) with 11 TY2025 transactions ($1,578.73 B2C sales + $170 refund). <strong>Not in any previous dashboard version.</strong> All appear A2X-posted. Verify matches before bank feed posting.</div>
+      </div>
+      <div class="issue-card">
+        <div class="ic-title">AmEx Massively Incomplete [NEW 2026-03-13]</div>
+        <div class="ic-body">Dashboard had only 2 AmEx items ($495). QBO shows 35 transactions totaling $5,023.64 in charges. Missing vendors: Amazon, Home Depot, Berlin Packaging, Southwest Airlines, Twilio SendGrid, Groupon, Sunday App, interest, late fees. <strong>Also: $0 payments recorded against AmEx in QBO</strong> - the $245 autopay from checking is unposted.</div>
+      </div>
+      <div class="issue-card warn">
+        <div class="ic-title info">3 Null-Description Deposits - IDENTIFIED [2026-03-13]</div>
+        <div class="ic-body">All 3 are Spa Sante B2B invoice payments: Feb 28 ($2,807.60), Jun 1 ($1,263.20), Jun 10 ($2,884.40). Total $6,955.20. QBO already has matching Payment records for these exact amounts/dates. Bank feed items should auto-match to existing payments when processed.</div>
+      </div>
+      <div class="issue-card info">
+        <div class="ic-title info">Q4 P&L Gap Confirmed [NEW 2026-03-13]</div>
+        <div class="ic-body">QBO P&L shows $0 for Software, Utilities, Phone, Health Insurance, Office/Admin in Oct-Dec 2025. This is expected - those ARE the pending bank feed items. Once posted, Q4 will fill in. Net income currently shows -$64,909 [LIVE].</div>
+      </div>
+      <div class="issue-card">
+        <div class="ic-title">Category Name Corrections [REVIEWER 2026-03-13]</div>
+        <div class="ic-body">Independent review flagged 5 category names that didn't match actual QBO accounts. All corrected: "Gifts &amp; Entertainment" &rarr; Charitable Contributions, "Inventory returns" &rarr; Credit to original account, "Equipment (review depreciation)" &rarr; Office Equipment, "General business expenses" &rarr; Miscellaneous Expense, "COGS:Raw Materials" &rarr; COGS - B2C (Product Cost). Note: Vehicle Lease, Utilities, Raw Materials (Packaging/Ingredients), and Contract labor DO exist in QBO despite not appearing in the reference chart-of-accounts.md.</div>
+      </div>
+      <div class="issue-card warn">
+        <div class="ic-title warn">Pre-Filing CPA Review Items [REVIEWER 2026-03-13]</div>
+        <div class="ic-body">Before filing: (1) <s>Untamed gala ($584)</s> RESOLVED - sponsorship event with donated gift baskets + participation. Category: Trade Shows &amp; Events (100% deductible as marketing). (2) <s>Total Wine ($155)</s> RESOLVED - split 3 ways, AWARE's portion accepted as Meals - Business (50% deductible). (3) <s>Oct rent $11,400</s> VERIFIED - catch-up for skipped months, avg $3,500/mo confirmed. (4) <s>Seyed Hossein Zo 1099</s> NOT NEEDED - paid to a company, not an individual. <s>Qing Zhao 1099</s> ALREADY FILED - W-9 on file. (5) Create "Partner Loans Payable" account in QBO for Jade Wong transactions.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DAVID'S REVIEW QUEUE -->
+<div class="section">
+  <div class="sh2" onclick="toggle(this)">
+    <div class="shl"><div class="stitle">David's Review Queue &mdash; All REVIEW Items, Sorted by Amount</div><div class="bgs"><span class="badge bl" id="review-count-badge">-- items</span><span class="badge bg" id="review-total-badge">$0</span></div></div>
+    <div class="chev">&#9660;</div>
+  </div>
+  <div class="sbody">
+    <div class="nb w"><strong>Priority:</strong> Focus on items above $500 first. Shopify Payout matching should be handled in batch via A2X reconciliation, not item-by-item.</div>
+    <div style="padding:12px 16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--bdrl)">
+      <button class="btn primary" onclick="copyAllResponses()">Copy All Responses</button>
+      <button class="btn gold" onclick="markAllReviewed()">Mark All Answered as Reviewed</button>
+      <span style="font-size:11px;color:var(--dim)" id="response-counter">0 / -- answered</span>
+    </div>
+    <div class="two"><table id="review-table"><thead><tr><th onclick="sortReview(0)">Account</th><th onclick="sortReview(1)">Date</th><th onclick="sortReview(2)">Vendor</th><th onclick="sortReview(3)">Amount ↓</th><th>Question / Issue</th><th style="min-width:220px">David's Answer</th><th style="min-width:120px">Category</th></tr></thead><tbody id="review-tbody"></tbody></table></div>
+  </div>
+</div>
+
+<!-- RECURRING SUBSCRIPTIONS -->
+<div class="section">
+  <div class="sh2" onclick="toggle(this)">
+    <div class="shl"><div class="stitle">Recurring Subscriptions Summary</div><div class="bgs"><span class="badge bh">13 services</span><span class="badge bt">All: Software & Apps / Utilities</span></div></div>
+    <div class="chev">&#9660;</div>
+  </div>
+  <div class="sbody">
+    <div class="nb s">All items below are HIGH confidence. Post as indicated category. No receipt review required.</div>
+    <div class="two"><table id="subs-table"></table></div>
+  </div>
+</div>
+
+<!-- PARTNER EQUITY -->
+<div class="section">
+  <div class="sh2" onclick="toggle(this)">
+    <div class="shl"><div class="stitle">Partner Equity Investments</div><div class="bgs"><span class="badge bh">HIGH confidence</span><span class="badge bt">NOT income</span></div></div>
+    <div class="chev">&#9660;</div>
+  </div>
+  <div class="sbody">
+    <div class="nb i">These are equity contributions. Post to <strong>Partner investments:Equity Investments by [Name]</strong>. Jade Wong deposits reclassified as partner loans payable (see Checking Received). Only Harlan ($25K) and Mark ($50K) are equity.</div>
+    <div class="two"><table id="equity-table"></table></div>
+  </div>
+</div>
+
+<!-- FILTER BAR for account tables -->
+<div class="fbar">
+  <span class="flabel">Filter accounts:</span>
+  <div class="fgrp">
+    <select id="conf-filter" onchange="filterAll()">
+      <option value="">All confidence</option>
+      <option value="HIGH">HIGH only</option>
+      <option value="MEDIUM">MEDIUM only</option>
+      <option value="REVIEW">REVIEW only</option>
+    </select>
+  </div>
+  <div class="fdiv"></div>
+  <button class="btn" onclick="expandAll()">Expand All</button>
+  <button class="btn" onclick="collapseAll()">Collapse All</button>
+  <button class="btn gold" onclick="printPage()">Print / Export PDF</button>
+</div>
+
+<!-- ACCOUNT TABLES -->
+<div id="account-sections"></div>
+
+<!-- SHOPIFY BALANCE SPECIAL -->
+<div class="section" id="sec-shopify">
+  <div class="sh2" onclick="toggle(this)">
+    <div class="shl">
+      <div class="stitle">Shopify Balance</div>
+      <div class="bgs"><span class="badge bx">384 items</span><span class="badge bl">Payout matching required</span></div>
+    </div>
+    <div class="chev">&#9660;</div>
+  </div>
+  <div class="sbody">
+    <div class="nb e"><strong>Critical:</strong> ~200+ Shopify Payments Payouts should MATCH to existing A2X-posted transactions, not be posted as new revenue. Handle via A2X reconciliation in QBO first, then return to remaining items.</div>
+    <div style="padding:12px 16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--bdrl)">
+      <button class="btn primary" onclick="copySection('sec-shopify')">Copy Notes</button>
+      <span style="font-size:11px;color:var(--dim)" class="section-counter" data-section="sec-shopify">0 / -- noted</span>
+    </div>
+    <div class="two"><table id="shopify-table"></table></div>
+  </div>
+</div>
+
+<!-- AMEX -->
+<div class="section" id="sec-amex">
+  <div class="sh2" onclick="toggle(this)">
+    <div class="shl"><div class="stitle">American Express - Original Items</div><div class="bgs"><span class="badge bx">2 items</span><span class="badge bl">35 QBO txns total - see expanded section</span></div></div>
+    <div class="chev">&#9660;</div>
+  </div>
+  <div class="sbody">
+    <div style="padding:12px 16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--bdrl)">
+      <button class="btn primary" onclick="copySection('sec-amex')">Copy Notes</button>
+      <span style="font-size:11px;color:var(--dim)" class="section-counter" data-section="sec-amex">0 / -- noted</span>
+    </div>
+    <div class="two"><table id="amex-table"></table></div>
+  </div>
+</div>
+
+<!-- INTUIT PAYMENTS -->
+<div class="section" id="sec-intuit">
+  <div class="sh2" onclick="toggle(this)">
+    <div class="shl"><div class="stitle">Intuit Payments Account</div><div class="bgs"><span class="badge bx">1 item</span><span class="badge bh">Spa Sante B2B</span></div></div>
+    <div class="chev">&#9660;</div>
+  </div>
+  <div class="sbody">
+    <div class="nb s">Tina Mui Pacific moved to Deferred (needs clarification). Spa Sante payments confirmed as B2B revenue.</div>
+    <div style="padding:12px 16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--bdrl)">
+      <button class="btn primary" onclick="copySection('sec-intuit')">Copy Notes</button>
+      <span style="font-size:11px;color:var(--dim)" class="section-counter" data-section="sec-intuit">0 / -- noted</span>
+    </div>
+    <div class="two"><table id="intuit-table"></table></div>
+  </div>
+</div>
+
+<!-- PAYPAL (NEW - discovered via QBO audit 2026-03-13) -->
+<div class="section" id="sec-paypal">
+  <div class="sh2" onclick="toggle(this)">
+    <div class="shl"><div class="stitle">PayPal Account</div><div class="bgs"><span class="badge bl">NEW - was missing</span><span class="badge bx">11 QBO txns</span><span class="badge bh">B2C Sales</span></div></div>
+    <div class="chev">&#9660;</div>
+  </div>
+  <div class="sbody">
+    <div class="nb e"><strong>Gap found:</strong> PayPal account (QBO ID 242) had 11 TY2025 transactions totaling $1,578.73 in B2C sales + $170 refund. These were entirely missing from the previous dashboard version. All appear to be A2X-posted already - verify matches before posting bank feed items.</div>
+    <div class="two"><table id="paypal-table"></table></div>
+  </div>
+</div>
+
+<!-- AMEX - EXPANDED ITEMS (discovered via QBO audit) -->
+<div class="section" id="sec-amex-expanded">
+  <div class="sh2" onclick="toggle(this)">
+    <div class="shl"><div class="stitle">American Express - Additional Items from QBO Audit</div><div class="bgs"><span class="badge bl">GAP - 33 txns were missing</span><span class="badge bm">Amounts TBD</span></div></div>
+    <div class="chev">&#9660;</div>
+  </div>
+  <div class="sbody">
+    <div class="nb e"><strong>Major gap:</strong> QBO shows 35 transactions on Blue Business Cash (AmEx) but dashboard only had 2 items. The card was charged $5,023.64 but shows $0 in payments during TY2025. These vendors were identified from QBO but exact amounts need to be pulled from the AmEx statement. <strong>Also: AmEx payments ($245 autopay from checking) are not reflected in QBO.</strong></div>
+    <div class="two"><table id="amex-expanded-table"></table></div>
+  </div>
+</div>
+
+<!-- QBO RECONCILIATION (added 2026-03-13) -->
+<div class="section" id="sec-recon">
+  <div class="sh2" onclick="toggle(this)">
+    <div class="shl"><div class="stitle">QBO Reconciliation - Posted vs Dashboard</div><div class="bgs"><span class="badge bt">LIVE: QBO 2026-03-13</span><span class="badge bg">517 posted txns</span></div></div>
+    <div class="chev">&#9660;</div>
+  </div>
+  <div class="sbody">
+    <div class="nb i"><strong>How to read:</strong> "Posted" = already categorized in QBO. "Dashboard" = pending items tracked here. Together they should account for all bank activity. Gaps indicate missing items.</div>
+    <div class="two"><table id="recon-table"></table></div>
+    <h4 class="sec-sub">Gap Items</h4>
+    <div class="two"><table id="gap-table"></table></div>
+    <h4 class="sec-sub">P&L Highlights [LIVE: QBO 2026-03-13]</h4>
+    <div class="rg" id="pnl-highlights"></div>
+  </div>
+</div>
+
+<!-- DEFERRED: 2026 -->
+<div class="section collapsed" id="sec-deferred-2026">
+  <div class="sh2" onclick="toggle(this)">
+    <div class="shl">
+      <div class="stitle">Deferred - 2026 Transactions (Not in Scope)</div>
+      <div class="bgs"><span class="badge bx" id="deferred-2026-count">-- items</span><span class="badge bm">TY2026</span></div>
+    </div>
+    <div class="chev">&#9660;</div>
+  </div>
+  <div class="sbody hidden">
+    <div class="nb i">These transactions are dated January-March 2026 and are out of scope for TY2025 filing. They will be addressed after TY2025 close.</div>
+    <div class="two"><table id="deferred-2026-table"></table></div>
+  </div>
+</div>
+
+<!-- DEFERRED: NEEDS CLARIFICATION -->
+<div class="section collapsed" id="sec-deferred-later">
+  <div class="sh2" onclick="toggle(this)">
+    <div class="shl">
+      <div class="stitle">Deferred - Needs Further Clarification</div>
+      <div class="bgs"><span class="badge bl" id="deferred-later-count">-- items</span><span class="badge bl">Blocked</span></div>
+    </div>
+    <div class="chev">&#9660;</div>
+  </div>
+  <div class="sbody hidden">
+    <div class="nb w">Remaining items that still need additional information from David. Harlan/Jade deposits have been resolved and moved to main arrays.</div>
+    <div style="padding:12px 16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--bdrl)">
+      <button class="btn primary" onclick="copySection('sec-deferred-later')">Copy Notes</button>
+      <span style="font-size:11px;color:var(--dim)" class="section-counter" data-section="sec-deferred-later">0 / -- noted</span>
+    </div>
+    <div class="two"><table id="deferred-later-table"></table></div>
+  </div>
+</div>
+
+<!-- COWORK EXECUTION SUMMARY -->
+<div class="section">
+  <div class="sh2" onclick="toggle(this)">
+    <div class="shl"><div class="stitle">QBO Execution Summary &mdash; Phase Plan</div><div class="bgs"><span class="badge bt">3 phases</span></div></div>
+    <div class="chev">&#9660;</div>
+  </div>
+  <div class="sbody">
+    <div style="padding:16px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
+      <div style="background:var(--hbg);border:1px solid var(--hbdr);border-radius:var(--rs);padding:16px">
+        <div style="font-weight:700;color:var(--htxt);margin-bottom:8px;text-transform:uppercase;font-size:11px;letter-spacing:.5px">Phase 1 &mdash; Auto-Post (HIGH confidence)</div>
+        <div style="font-size:13px;line-height:1.7">
+          All AT&amp;T charges (~6 items)<br>
+          All Alibaba charges (5 items)<br>
+          All recurring subscriptions (60+ items)<br>
+          All partner equity deposits (10+ items)<br>
+          All Capital One Autopay / transfer items<br>
+          Blue Shield health insurance (6 items)<br>
+          US Bank vehicle lease (6 items)<br>
+          CA State Tax payments (5+ items)<br>
+          Uline, FedEx, Klaviyo, Zapier, Notion, Canva, Google<br>
+          <strong>Estimated: ~200 items, safe to batch post</strong>
+        </div>
+      </div>
+      <div style="background:var(--mbg);border:1px solid var(--mbdr);border-radius:var(--rs);padding:16px">
+        <div style="font-weight:700;color:var(--mtxt);margin-bottom:8px;text-transform:uppercase;font-size:11px;letter-spacing:.5px">Phase 2 &mdash; Post with Caution (MEDIUM)</div>
+        <div style="font-size:13px;line-height:1.7">
+          Amazon $50-$99 items (Office/Admin, review notes)<br>
+          Untamed x2 (Marketing &amp; Advertising)<br>
+          Executive Women membership (Dues &amp; Subs)<br>
+          Shopify Balance sales tax transfers<br>
+          Faire Wholesale order received<br>
+          MISCELLANEOUS items QBO correctly identified<br>
+          <strong>Estimated: ~100 items, spot-check before posting</strong>
+        </div>
+      </div>
+      <div style="background:var(--lbg);border:1px solid var(--lbdr);border-radius:var(--rs);padding:16px">
+        <div style="font-weight:700;color:var(--ltxt);margin-bottom:8px;text-transform:uppercase;font-size:11px;letter-spacing:.5px">Phase 3 &mdash; David Must Review First</div>
+        <div style="font-size:13px;line-height:1.7">
+          All Shopify Payout matching (200+ items via A2X)<br>
+          All Temu returns (6 items, $991 total)<br>
+          Amazon $100+ items (15 items, ~$3,500)<br>
+          Universal payments (4 items, $7,400)<br>
+          MISCELLANEOUS Utilities $1K-2K items<br>
+          Qing Zhao payments ($8,000 total)<br>
+          Seyed Hossein Zo payments ($10,195)<br>
+          Total Wine, Marshalls, Icustomize, Mediacom<br>
+          Intuit refunds x2, Tina Mui payment<br>
+          <strong>Estimated: ~230 items, block post until resolved</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+// ===================== DATA =====================
+
+// Capital One Credit Card - Charges
+const cc_charges = [
+  {dt:"12/12/2025",v:"Airbnb",am:997.24,ex:"Travel:Hotels",cat:"Travel:Hotels",cf:"HIGH",nt:"QBO correct"},
+  {dt:"12/03/2025",v:"Alibaba",am:875.42,ex:"Raw Materials (Packaging)",cat:"Raw Materials (Packaging)",cf:"HIGH",nt:""},
+  {dt:"12/18/2025",v:"Alibaba",am:844.52,ex:"Raw Materials (Packaging)",cat:"Raw Materials (Packaging)",cf:"HIGH",nt:""},
+  {dt:"12/12/2025",v:"Amazon",am:723.81,ex:"Outdoor Warehouse",cat:"Office Equipment (under $2,500 threshold - expense, not capitalize)",cf:"HIGH",nt:"Laser engraver for gua shas - $723.81 under $2,500 Section 179 threshold per expense-categories.md"},
+  {dt:"11/01/2025",v:"AT&T",am:384.09,ex:"Utilities:Phone service",cat:"Utilities:Phone service",cf:"HIGH",nt:""},
+  {dt:"12/01/2025",v:"AT&T",am:379.23,ex:"Utilities:Phone service",cat:"Utilities:Phone service",cf:"HIGH",nt:""},
+  {dt:"10/01/2025",v:"AT&T",am:372.36,ex:"Utilities:Phone service",cat:"Utilities:Phone service",cf:"HIGH",nt:""},
+  {dt:"12/04/2025",v:"Veracity Insurance",am:325,ex:"Insurance",cat:"Insurance",cf:"HIGH",nt:""},
+  {dt:"11/18/2025",v:"Untamed",am:308.44,ex:"Marketing & Advertising",cat:"Trade Shows & Events",cf:"HIGH",nt:"Sponsorship event - donated gift baskets + participation tickets"},
+  {dt:"11/06/2025",v:"Untamed",am:275.80,ex:"Marketing & Advertising",cat:"Trade Shows & Events",cf:"HIGH",nt:"Sponsorship event - donated gift baskets + participation tickets"},
+  {dt:"12/12/2025",v:"Delta (x3 flights)",am:704.91,ex:"",cat:"Travel",cf:"HIGH",nt:"$234.97 x3 - flights"},
+  {dt:"09/30/2025",v:"Amazon",am:175.55,ex:"Office / Admin",cat:"Office / Admin",cf:"HIGH",nt:"Printer ink per David"},
+  {dt:"12/10/2025",v:"Federal Express",am:161.88,ex:"Freight-Inbound",cat:"Outbound Shipping",cf:"HIGH",nt:"Outbound shipping per David"},
+  {dt:"12/11/2025",v:"Total Wine & More",am:154.90,ex:"",cat:"Meals - Business",cf:"HIGH",nt:"Split 3 ways - AWARE's portion. Business entertainment/team event (50% deductible)"},
+  {dt:"12/17/2025",v:"Amazon",am:153.64,ex:"Outdoor Warehouse",cat:"Office / Admin",cf:"HIGH",nt:"Printer ink per David"},
+  {dt:"11/20/2025",v:"Usa Beauty Llc",am:143,ex:"Education and Training",cat:"Education & Training",cf:"HIGH",nt:""},
+  {dt:"12/10/2025",v:"Amazon",am:141.58,ex:"Outdoor Warehouse",cat:"COGS - B2C (Product Cost)",cf:"HIGH",nt:"Gua shas per David"},
+  {dt:"11/17/2025",v:"Amazon",am:118.50,ex:"Office / Admin",cat:"COGS - B2C (Product Cost)",cf:"HIGH",nt:"Gua shas per David"},
+  {dt:"10/01/2025",v:"Amazon",am:109.62,ex:"Office / Admin",cat:"Office / Admin",cf:"HIGH",nt:"Office supplies per David"},
+  {dt:"10/10/2025",v:"Amazon",am:105.35,ex:"Office / Admin",cat:"COGS - B2C (Product Cost)",cf:"HIGH",nt:"Gua shas per David"},
+  {dt:"10/31/2025",v:"Amazon",am:104.84,ex:"Supplies",cat:"COGS - B2C (Product Cost)",cf:"HIGH",nt:"Gua shas per David"},
+  {dt:"12/13/2025",v:"Amazon",am:102.57,ex:"Office / Admin",cat:"COGS - B2C (Product Cost)",cf:"HIGH",nt:"Gua shas per David"},
+  {dt:"12/02/2025",v:"Mediacom (x3)",am:300,ex:"",cat:"Marketing & Advertising",cf:"HIGH",nt:"Beauty awards submission query per David"},
+  {dt:"12/04/2025",v:"Amazon",am:91.27,ex:"Office / Admin",cat:"Samples & Giveaways",cf:"HIGH",nt:"Holiday supplies (scarves) per David"},
+  {dt:"12/08/2025",v:"Amazon",am:85.31,ex:"Outdoor Warehouse",cat:"Samples & Giveaways",cf:"HIGH",nt:"Holiday supplies (scarves) per David"},
+  {dt:"10/11/2025",v:"In Discover Print",am:82.31,ex:"Raw Materials (Packaging)",cat:"Raw Materials (Packaging)",cf:"HIGH",nt:"Printing/packaging"},
+  {dt:"12/20/2025",v:"In Discover Print",am:82.31,ex:"Raw Materials (Packaging)",cat:"Raw Materials (Packaging)",cf:"HIGH",nt:""},
+  {dt:"12/15/2025",v:"Amazon",am:81.39,ex:"Office / Admin",cat:"Trade Shows & Events",cf:"HIGH",nt:"Event supplies per David"},
+  {dt:"10/07/2025",v:"Amazon",am:81.19,ex:"Office / Admin",cat:"Trade Shows & Events",cf:"HIGH",nt:"Event supplies per David"},
+  {dt:"10/25/2025",v:"Amazon",am:79.95,ex:"Office / Admin",cat:"Trade Shows & Events",cf:"HIGH",nt:"Event supplies per David"},
+  {dt:"12/29/2025",v:"Alibaba",am:72.10,ex:"Raw Materials (Packaging)",cat:"Raw Materials (Packaging)",cf:"HIGH",nt:""},
+  {dt:"12/08/2025",v:"Amazon",am:69.01,ex:"Office / Admin",cat:"Trade Shows & Events",cf:"HIGH",nt:"Event supplies per David"},
+  {dt:"12/24/2025",v:"In Discover Print",am:49.39,ex:"Raw Materials (Packaging)",cat:"Raw Materials (Packaging)",cf:"HIGH",nt:"Printing per David"},
+  {dt:"12/13/2025",v:"Amazon (x2)",am:83.38,ex:"Office / Admin",cat:"Office / Admin",cf:"HIGH",nt:"$41.69 x2, under $50 each"},
+  {dt:"11/18/2025",v:"Amazon",am:40.02,ex:"Office / Admin",cat:"Office / Admin",cf:"HIGH",nt:"Under $50"},
+  {dt:"Various",v:"Amazon (x3 small)",am:116.47,ex:"Office / Admin",cat:"Office / Admin",cf:"HIGH",nt:"$39.50, $39.48, $37.49 - all under $50"},
+  {dt:"Monthly (x6)",v:"Intuit / QBO",am:228,ex:"Software & Apps",cat:"Software & Apps",cf:"HIGH",nt:"$38/mo x6 - QBO Payments subscription"},
+  {dt:"Various",v:"Amazon (x4 small)",am:132.61,ex:"Office / Admin",cat:"Office / Admin",cf:"HIGH",nt:"$37.29-$32.91 - all under $50"},
+  {dt:"12/18/2025",v:"Marshalls",am:32.66,ex:"Fixed Asset Furniture",cat:"Trade Shows & Events",cf:"HIGH",nt:"Event materials per David"},
+  {dt:"10/02/2025",v:"Federal Express",am:32.58,ex:"Outbound Shipping",cat:"Shipping & Delivery",cf:"HIGH",nt:"Outbound Shipping - accept QBO suggestion"},
+  {dt:"Various",v:"Amazon (x2 small)",am:61.56,ex:"Office / Admin",cat:"Office / Admin",cf:"HIGH",nt:"$31.94, $29.62 - under $50"},
+  {dt:"11/17/2025",v:"Klaviyo Software",am:30,ex:"Software & Apps",cat:"Software & Apps",cf:"HIGH",nt:""},
+  {dt:"12/16/2025",v:"Klaviyo Software",am:30,ex:"Software & Apps",cat:"Software & Apps",cf:"HIGH",nt:""},
+  {dt:"Monthly (x5)",v:"Zapier",am:149.95,ex:"Software & Apps",cat:"Software & Apps",cf:"HIGH",nt:"$29.99/mo x5"},
+  {dt:"Various",v:"Amazon (x4 small)",am:112,ex:"Office / Admin",cat:"Office / Admin",cf:"HIGH",nt:"$27-$29 range, under $50"},
+  {dt:"11/28/2025",v:"Target",am:24.41,ex:"Office / Admin",cat:"Office / Admin",cf:"HIGH",nt:"Office supplies"},
+  {dt:"12/13/2025",v:"Amazon",am:24.04,ex:"Office / Admin",cat:"Office / Admin",cf:"HIGH",nt:"Under $50"},
+  {dt:"Monthly (x6)",v:"Notion Labs",am:144,ex:"Software & Apps",cat:"Software & Apps",cf:"HIGH",nt:"$24/mo x6"},
+  {dt:"Various",v:"Amazon (x5 small)",am:107,ex:"Office / Admin",cat:"Office / Admin",cf:"HIGH",nt:"$21-$23 range, under $50"},
+  {dt:"10/08/2025",v:"Alibaba",am:21.63,ex:"Raw Materials (Packaging)",cat:"Raw Materials (Packaging)",cf:"HIGH",nt:""},
+  {dt:"Monthly (x4)",v:"OpenAI ChatGPT",am:80,ex:"Software & Apps",cat:"Software & Apps",cf:"HIGH",nt:"$20/mo x4"},
+  {dt:"Various",v:"Amazon (x8 micro)",am:128,ex:"Office / Admin",cat:"Office / Admin",cf:"HIGH",nt:"$15-$18 range, all under $50"},
+  {dt:"Monthly (x6)",v:"Google Workspace",am:108,ex:"Software & Apps",cat:"Software & Apps",cf:"HIGH",nt:"$18/mo x6"},
+  {dt:"Monthly (x6)",v:"Canva",am:89.94,ex:"Software & Apps",cat:"Software & Apps",cf:"HIGH",nt:"$14.99/mo x6"},
+  {dt:"Various",v:"Amazon (x6 micro)",am:72,ex:"Office / Admin",cat:"Office / Admin",cf:"HIGH",nt:"$10-$14 range, under $50"},
+  {dt:"Monthly (x5)",v:"Gorgias",am:50,ex:"Software & Apps",cat:"Software & Apps",cf:"HIGH",nt:"$10/mo x5"},
+  {dt:"Various",v:"Amazon (x9 micro)",am:65,ex:"Office / Admin",cat:"Office / Admin",cf:"HIGH",nt:"$6-$10 range, under $50"},
+  {dt:"Various",v:"Amazon (x2 micro)",am:12.71,ex:"Office / Admin",cat:"Office / Admin",cf:"HIGH",nt:"$6.57, $6.14"},
+  {dt:"10/16/2025",v:"Klaviyo Software",am:20,ex:"Software & Apps",cat:"Software & Apps",cf:"HIGH",nt:""},
+  {dt:"12/13/2025",v:"Amazon",am:54.20,ex:"Office / Admin",cat:"Office / Admin",cf:"HIGH",nt:"Office supplies per David"},
+];
+
+// Capital One - Received
+const cc_received = [
+  {dt:"Various (x51)",v:"Amazon Returns",am:0,ex:"Office / Admin",cat:"Office / Admin (returns)",cf:"HIGH",nt:"Match returns to original purchases by timing per David"},
+  {dt:"10/11/2025",v:"Capital One Autopay",am:62.34,ex:"AWARE HAIR LLC",cat:"TRANSFER",cf:"HIGH",nt:"CC payment from checking"},
+  {dt:"11/05/2025",v:"Amazon",am:105.35,ex:"Office / Admin",cat:"Office / Admin (return)",cf:"HIGH",nt:"Confirmed per David"},
+  {dt:"12/16/2025",v:"Temu.com",am:121.39,ex:"Fixed Asset Furniture",cat:"Credit to original purchase account (match return to charge)",cf:"HIGH",nt:"Returns of holiday scarf purchases - excess inventory per David"},
+  {dt:"12/15/2025",v:"Cash Back Reward",am:141.85,ex:"Credit card rewards",cat:"Credit card rewards",cf:"HIGH",nt:"QBO correct"},
+  {dt:"12/23/2025",v:"Amazon",am:153.64,ex:"Office / Admin",cat:"Office / Admin (return)",cf:"HIGH",nt:"Confirmed per David - match to 12/17 charge"},
+  {dt:"12/15/2025",v:"Temu.com",am:187.98,ex:"Fixed Asset Furniture",cat:"Credit to original purchase account (match return to charge)",cf:"HIGH",nt:"Returns of holiday scarf purchases - excess inventory per David"},
+  {dt:"12/12/2025",v:"Temu.com",am:323.76,ex:"Fixed Asset Furniture",cat:"Credit to original purchase account (match return to charge)",cf:"HIGH",nt:"Returns of holiday scarf purchases - excess inventory per David"},
+  {dt:"12/11/2025",v:"Capital One Autopay",am:879.82,ex:"AWARE HAIR LLC",cat:"TRANSFER",cf:"HIGH",nt:"CC payment"},
+  {dt:"11/11/2025",v:"Capital One Autopay",am:1145.44,ex:"AWARE HAIR LLC",cat:"TRANSFER",cf:"HIGH",nt:"CC payment"},
+  {dt:"12/31/2025",v:"Capital One Mobile",am:6893.85,ex:"AWARE HAIR LLC",cat:"TRANSFER",cf:"HIGH",nt:"CC payment"},
+];
+
+// Checking - Spent
+const chk_spent = [
+  {dt:"12/31/2025",v:"Capital One Ca",am:6893.85,ex:"Capital One Credit",cat:"TRANSFER to CC",cf:"HIGH",nt:""},
+  {dt:"10/20/2025",v:"MISCELLANEOUS",am:5300,ex:"Rent",cat:"Rent",cf:"HIGH",nt:"Confirmed rent payment"},
+  {dt:"11/17/2025",v:"Settlement",am:4637.50,ex:"Raw Materials (Ingredients)",cat:"Raw Materials (Ingredients)",cf:"HIGH",nt:""},
+  {dt:"10/24/2025",v:"CosmoProf",am:3975.04,ex:"Raw Materials (Ingredients)",cat:"Trade Shows & Events",cf:"HIGH",nt:"Trade show booth per David"},
+  {dt:"10/08/2025",v:"MISCELLANEOUS",am:3600,ex:"Rent",cat:"Rent",cf:"HIGH",nt:"Confirmed rent"},
+  {dt:"10/09/2025",v:"Settlement",am:2500,ex:"Raw Materials (Ingredients)",cat:"Raw Materials (Ingredients)",cf:"HIGH",nt:""},
+  {dt:"10/21/2025",v:"MISCELLANEOUS",am:2500,ex:"Rent",cat:"Rent",cf:"HIGH",nt:"Confirmed rent"},
+  {dt:"12/30/2025",v:"MISCELLANEOUS",am:2000,ex:"Utilities",cat:"Utilities",cf:"HIGH",nt:"Utilities payment to rental landlord per David"},
+  {dt:"11/12/2025",v:"Capital One",am:1145.44,ex:"Capital One Credit",cat:"TRANSFER to CC",cf:"HIGH",nt:""},
+  {dt:"09/24/2025",v:"MISCELLANEOUS",am:1000,ex:"Utilities",cat:"Utilities",cf:"HIGH",nt:"Utilities payment to rental landlord per David"},
+  {dt:"10/22/2025",v:"MISCELLANEOUS",am:1000,ex:"Rent",cat:"Utilities",cf:"HIGH",nt:"Utilities payment to rental landlord per David"},
+  {dt:"11/10/2025",v:"MISCELLANEOUS",am:1000,ex:"Utilities",cat:"Utilities",cf:"HIGH",nt:"Utilities payment to rental landlord per David"},
+  {dt:"11/24/2025",v:"MISCELLANEOUS",am:1000,ex:"Utilities",cat:"Utilities",cf:"HIGH",nt:"Utilities payment to rental landlord per David"},
+  {dt:"09/12/2025",v:"Capital One Crcardpmt",am:921.88,ex:"",cat:"TRANSFER to CC",cf:"HIGH",nt:""},
+  {dt:"12/11/2025",v:"Capital One",am:879.82,ex:"",cat:"TRANSFER to CC",cf:"HIGH",nt:""},
+  {dt:"09/26/2025",v:"MISCELLANEOUS",am:800,ex:"Utilities:Phone service",cat:"Utilities:Phone service",cf:"HIGH",nt:"Twilio - phone"},
+  {dt:"Various (x4)",v:"CA State Tax",am:3000,ex:"Taxes paid",cat:"Taxes paid",cf:"HIGH",nt:"$800 x3 + $600 x1 = $3,000 - CA estimated taxes"},
+  {dt:"10/30/2025",v:"CA State Tax",am:600,ex:"Taxes paid",cat:"Taxes paid",cf:"HIGH",nt:""},
+  {dt:"11/12/2025",v:"MISCELLANEOUS",am:600,ex:"Utilities",cat:"Utilities",cf:"HIGH",nt:"Utilities payment to rental landlord per David"},
+  {dt:"10/01/2025",v:"Blue Shield",am:566.08,ex:"Health insurance",cat:"Employee benefits:Health insurance",cf:"HIGH",nt:""},
+  {dt:"04/07/2025",v:"Settlement",am:514.22,ex:"Commissions & fees",cat:"Commissions & fees",cf:"HIGH",nt:""},
+  {dt:"09/19/2025",v:"Misc Telephone Trf",am:500,ex:"Utilities",cat:"Utilities",cf:"HIGH",nt:"Utilities not phone service per David"},
+  {dt:"Monthly (x6)",v:"U Bank N (US Bank)",am:2979.24,ex:"Vehicle Lease",cat:"Vehicle Lease",cf:"HIGH",nt:"$496.54/mo x6"},
+  {dt:"10/29/2025",v:"Ca Dept Tax",am:476,ex:"Taxes paid",cat:"Taxes paid",cf:"HIGH",nt:""},
+  {dt:"10/10/2025",v:"MISCELLANEOUS",am:400,ex:"Utilities:Phone service",cat:"Utilities",cf:"HIGH",nt:"Utilities not phone service per David"},
+  {dt:"04/02/2025",v:"MISCELLANEOUS",am:300,ex:"Rent",cat:"Rent",cf:"HIGH",nt:""},
+  {dt:"12/11/2025",v:"Settlement",am:282,ex:"Raw Materials (Ingredients)",cat:"Raw Materials (Ingredients)",cf:"HIGH",nt:""},
+  {dt:"10/14/2025",v:"Intuit",am:218.95,ex:"Bank Service Charges",cat:"Software & Apps",cf:"HIGH",nt:"Tax software per David"},
+  {dt:"Monthly (x5)",v:"Blue Shield",am:920,ex:"Health insurance",cat:"Employee benefits:Health insurance",cf:"HIGH",nt:"~$183-186/mo"},
+  {dt:"10/14/2025",v:"Capital One",am:62.34,ex:"Capital One Credit",cat:"TRANSFER to CC",cf:"HIGH",nt:"Jade Wong card?"},
+  {dt:"Various (x2)",v:"American Express",am:70,ex:"Blue Business Cash",cat:"TRANSFER to AmEx",cf:"HIGH",nt:"$35 each"},
+  {dt:"Monthly (x7)",v:"American Express / Misc Fees",am:245,ex:"Various",cat:"TRANSFER to AmEx / Bank Service Charges",cf:"HIGH",nt:"$35 each - distinguish AmEx payments from bank fees"},
+  {dt:"03/18/2025",v:"Settlement Ach Offset",am:26.50,ex:"General business expenses",cat:"Miscellaneous Expense (identify if possible)",cf:"HIGH",nt:"Low charge - just attribute per David"},
+  {dt:"11/17/2025",v:"Settlement",am:20.05,ex:"Raw Materials (Ingredients)",cat:"Raw Materials (Ingredients)",cf:"HIGH",nt:""},
+  {dt:"10/15/2025",v:"MISCELLANEOUS",am:15,ex:"Bank Service Charges",cat:"Bank Service Charges",cf:"HIGH",nt:""},
+];
+
+// Checking - Received
+const chk_recv = [
+  {dt:"04/03/2025",v:"Teller Xfr",am:300,ex:"",cat:"TRANSFER",cf:"HIGH",nt:"Internal transfer per David"},
+  {dt:"05/19/2025",v:"Deposit (was labeled Harlan Irvine)",am:255,ex:"Equity:Harlan Irvine",cat:"Sales of Product Income",cf:"MEDIUM",nt:"Likely Spa Sante payment per David. Match to B2B invoice."},
+  {dt:"04/07/2025",v:"Misc Telephone Trf",am:400,ex:"AWARE HAIR LLC",cat:"TRANSFER",cf:"HIGH",nt:"Internal transfer"},
+  {dt:"Various",v:"Spa Sante Payments (x8, was Harlan Irvine)",am:5835.40,ex:"Equity:Harlan Irvine",cat:"Sales of Product Income",cf:"HIGH",nt:"David: NOT Harlan deposits. Spa Sante salon payments ($405,$408,$486,$787.20,$794,$831.20,$858,$1,266). Match to B2B invoices."},
+  {dt:"03/19/2025",v:"Misc Telephone Trf",am:600,ex:"Credit card rewards",cat:"TRANSFER",cf:"HIGH",nt:"Internal transfer per David"},
+  {dt:"04/24/2025",v:"Deposit",am:623,ex:"",cat:"Sales of Product Income",cf:"HIGH",nt:"Salon purchase - B2B sale basic package per David. Match with A2X."},
+  {dt:"04/16/2025",v:"Aware Hair Shopify",am:725,ex:"Shopify Balance",cat:"TRANSFER from Shopify",cf:"HIGH",nt:""},
+  {dt:"06/03/2025",v:"Jade Wong Sender",am:1503.47,ex:"Equity:Jade Wong",cat:"Loan Payable - Short-Term (Jade Wong partner loan)",cf:"HIGH",nt:"Not equity per David. Reclassified as partner loan to company."},
+  {dt:"03/28/2025",v:"Misc Telephone Trf",am:1500,ex:"AWARE HAIR LLC",cat:"Rent",cf:"HIGH",nt:"Rent per David"},
+  {dt:"Various",v:"Aware Hair Shopify (x6)",am:24000,ex:"Shopify Balance",cat:"TRANSFER from Shopify",cf:"HIGH",nt:"$1K-$10K range - internal transfers"},
+  {dt:"Various (x3)",v:"Jade Wong Sender",am:6000,ex:"Equity:Jade Wong",cat:"Loan Payable - Short-Term (Jade Wong partner loan)",cf:"HIGH",nt:"Not equity per David. $2,000 x3 reclassified as partner loans to company."},
+  {dt:"08/13/2025",v:"Misc Telephone Trf",am:2500,ex:"Credit card rewards",cat:"Rent",cf:"HIGH",nt:"Rent per David"},
+  {dt:"08/12/2025",v:"Posted Returned Rev",am:5896.74,ex:"Capital One Credit",cat:"TRANSFER to Capital One",cf:"HIGH",nt:"Credit card Capital One payment per David"},
+  {dt:"09/19/2025",v:"Incoming Wire Aa (Mark Segal)",am:50000,ex:"Equity:Mark Segal",cat:"Partner investments:Mark Segal",cf:"HIGH",nt:"Major equity investment"},
+];
+
+// Shopify Balance - grouped by type
+const shopify_grouped = [
+  {type:"Shopify Payments Payouts",count:"~200+",amount:"~$40,000+",ex:"Sales Revenue:B2C Sales / Merchant Processing Fees (inconsistent)",cat:"MATCH to A2X entries",cf:"HIGH",nt:"Match to A2X per David. Entries already posted. Reconcile payout deposits to A2X journal entries."},
+  {type:"Sales Tax Transfers",count:"~90",amount:"~$2,000",ex:"Sales Tax",cat:"Sales Tax",cf:"HIGH",nt:"Internal Shopify tax movements - post as Sales Tax"},
+  {type:"Shopify Subscription",count:"~30",amount:"~$5,500",ex:"Software & Apps",cat:"SPLIT: Software (~$600/yr) + Shipping Labels (~$4,900)",cf:"MEDIUM",nt:"David: software only a few hundred/yr. Bulk is shipping labels. Match against A2X to separate."},
+  {type:"APY Earned / Rewards",count:"~12",amount:"~$150",ex:"Interest earned",cat:"Interest earned",cf:"HIGH",nt:"Monthly interest / rewards from Shopify Balance"},
+  {type:"Global-E Fees (under $10)",count:"~4",amount:"~$30",ex:"Bank Service Charges",cat:"Bank Service Charges",cf:"HIGH",nt:"Small intl order processing fees. Accept QBO suggestion (Bank Service Charges or Merchant Processing Fees)."},
+  {type:"Global-E Fees ($10+)",count:"~2",amount:"~$70",ex:"Various",cat:"SKIP for David",cf:"LOW",nt:"Larger fees: $48.04 (Management Fees?), $19.71 (Merchant Processing). Need identification."},
+  {type:"Transfer Global-E (TY2025)",count:"~5",amount:"~$875",ex:"",cat:"MATCH to A2X journal entry",cf:"HIGH",nt:"International sales payouts via Global-E. A2X bundles into settlement JEs. Click MATCH not Add. If no A2X match, SKIP."},
+  {type:"Transfer Global-E (TY2026)",count:"~3",amount:"~$300",ex:"",cat:"SKIP",cf:"HIGH",nt:"Out of TY2025 scope (Jan-Mar 2026 dates). Do not post or match."},
+  {type:"Dana Le",count:"1",amount:"$45.00",ex:"",cat:"Commissions & fees",cf:"HIGH",nt:"Affiliate payout per David"},
+  {type:"Qing Zhao Aware (x4)",count:"4",amount:"$8,000.00",ex:"",cat:"Contract Labor",cf:"HIGH",nt:"Contractor - 1099 implications per David"},
+  {type:"Seyed Hossein Zo (x3)",count:"3",amount:"$10,195.00",ex:"",cat:"COGS - B2C (Product Cost)",cf:"HIGH",nt:"COGS - payments for products to manufacturer per David"},
+];
+
+// AmEx
+const amex_items = [
+  {dt:"Monthly (x7)",v:"Autopay Payments",am:245,ex:"",cat:"TRANSFER to Checking",cf:"HIGH",nt:"$35/mo - payments from checking account"},
+  {dt:"Various",v:"Kxbx X",am:250,ex:"",cat:"Credit card rewards",cf:"HIGH",nt:"Credit card rewards per David"},
+];
+
+// Intuit Payments
+const intuit_items = [
+  {dt:"Various (x2)",v:"Intuit (Spa Sante)",am:2980,ex:"",cat:"Sales of Product Income",cf:"HIGH",nt:"Payments from Spa Sante matching B2B revenue - only B2B account processing Intuit invoices per David"},
+];
+
+// PayPal Account (MISSING from previous version - discovered via QBO audit)
+const paypal_items = [
+  {dt:"01/04/2025",v:"Junia Lapp",am:42.00,ex:"B2C Sales - Shopify",cat:"Sales of Product Income",cf:"HIGH",nt:"PayPal B2C order. Already posted via A2X."},
+  {dt:"02/04/2025",v:"Thomas Caffey",am:62.00,ex:"B2C Sales - Shopify",cat:"Sales of Product Income",cf:"HIGH",nt:"PayPal B2C order. Already posted via A2X."},
+  {dt:"03/14/2025",v:"William Kiplinger",am:39.00,ex:"B2C Sales - Shopify",cat:"Sales of Product Income",cf:"HIGH",nt:"PayPal B2C order"},
+  {dt:"04/22/2025",v:"Denise Leong",am:62.00,ex:"B2C Sales - Shopify",cat:"Sales of Product Income",cf:"HIGH",nt:"PayPal B2C order"},
+  {dt:"05/14/2025",v:"David Kallus (refund)",am:-170.00,ex:"Sales Returns & Allowances",cat:"Sales Returns & Allowances",cf:"HIGH",nt:"PayPal refund"},
+  {dt:"Various (x6 more)",v:"Ana Vasquez, Brian Godoy, Adam Wei, Zoe Glassner, others",am:1543.73,ex:"B2C Sales - Shopify",cat:"Sales of Product Income",cf:"HIGH",nt:"Remaining PayPal B2C orders. All posted via A2X."},
+];
+
+// AmEx - EXPANDED from QBO audit (was 2 items, now includes all 35 QBO transactions)
+const amex_expanded_items = [
+  {dt:"Various",v:"Amazon Marketplace / Amazon.com",am:0,ex:"",cat:"REVIEW",cf:"REVIEW",nt:"Multiple charges - need receipt review [QBO 2026-03-13]"},
+  {dt:"Various",v:"AplPay HOMEDEPOT.COM",am:0,ex:"",cat:"REVIEW",cf:"REVIEW",nt:"Gallon buckets - packaging or office? [QBO 2026-03-13]"},
+  {dt:"Various",v:"BERLINPACKAGING",am:0,ex:"Raw Materials (Packaging)",cat:"Raw Materials (Packaging)",cf:"MEDIUM",nt:"Packaging supplier [QBO 2026-03-13]"},
+  {dt:"Various",v:"Southwest Airlines (x2)",am:0,ex:"Travel",cat:"Travel",cf:"HIGH",nt:"2 card suffixes in QBO [QBO 2026-03-13]"},
+  {dt:"Various",v:"TWILIO SENDGRID",am:0,ex:"Software & Apps",cat:"Software & Apps",cf:"HIGH",nt:"Email infrastructure [QBO 2026-03-13]"},
+  {dt:"Various",v:"GROUPON INC.",am:0,ex:"",cat:"REVIEW",cf:"REVIEW",nt:"Business purpose unclear [QBO 2026-03-13]"},
+  {dt:"Various",v:"AplPay SUNDAY APP",am:0,ex:"",cat:"REVIEW",cf:"REVIEW",nt:"Unknown app [QBO 2026-03-13]"},
+  {dt:"Various",v:"Interest Charge on Purchases",am:0,ex:"CC interest",cat:"CC Interest",cf:"HIGH",nt:"Credit card interest [QBO 2026-03-13]"},
+  {dt:"Various",v:"LATE FEE",am:0,ex:"Bank Service Charges",cat:"Bank Service Charges",cf:"HIGH",nt:"AmEx late payment fee [QBO 2026-03-13]"},
+  {dt:"Various",v:"Hubspot Inc.",am:0,ex:"Software & Apps",cat:"Software & Apps",cf:"MEDIUM",nt:"Marketing CRM? [QBO 2026-03-13]"},
+];
+
+// QBO Reconciliation Data [LIVE: QBO 2026-03-13]
+const qboRecon = {
+  generated: "2026-03-13",
+  accounts: [
+    {name:"Capital One Credit",id:144,posted:177,debits:27520.36,credits:29089.89,net:-1569.53,dashboardItems:"73 (grouped)",status:"Partial match"},
+    {name:"AWARE HAIR LLC Checking",id:189,posted:90,debits:10093.15,credits:73994.74,net:-63901.59,dashboardItems:"54 (grouped)",status:"Partial match"},
+    {name:"Shopify Balance",id:17,posted:185,debits:68567.02,credits:479.29,net:68087.73,dashboardItems:"9 (grouped ~384 items)",status:"Grouped"},
+    {name:"Blue Business Cash (AmEx)",id:217,posted:35,debits:0,credits:5023.64,net:-5023.64,dashboardItems:"2 + 10 new",status:"GAP - was 2 items, 33 missing"},
+    {name:"PayPal",id:242,posted:11,debits:1578.73,credits:170.00,net:1408.73,dashboardItems:"6 (NEW)",status:"NEW - was missing entirely"},
+    {name:"QuickBooks Checking",id:193,posted:5,debits:1269.61,credits:72.15,net:1197.46,dashboardItems:"1",status:"Partial - 4 missing"},
+    {name:"Sales Tax",id:241,posted:14,debits:69.72,credits:661.75,net:-592.03,dashboardItems:"0 (via Shopify grouped)",status:"Covered"},
+  ],
+  totalPosted: 517,
+  a2xJournalEntries: 462,
+  trialBalanceTotal: 596174.29,
+  netIncome: -64908.96,
+  grossProfit: -187.13,
+  pnlHighlights: {
+    b2bRevenue: 86597.00,
+    b2cRevenue: 65685.53,
+    cogsB2C: 91558.63,
+    totalExpenses: 66039.00,
+    rent: 23700.00,
+    vehicleLease: 12232.72,
+    utilities: 4800.00,
+    phoneService: 3992.96,
+    healthInsurance: 5287.29,
+    softwareApps: 1806.78,
+    marketing: 2107.34,
+  },
+  gaps: [
+    {issue:"PayPal account missing from dashboard",impact:"$1,579 B2C revenue + $170 refund untracked",severity:"HIGH"},
+    {issue:"AmEx only had 2 items, QBO has 35 transactions",impact:"~$4,529 in untracked charges",severity:"HIGH"},
+    {issue:"QB Checking has 5 txns, dashboard shows 1",impact:"4 transactions unaccounted",severity:"MEDIUM"},
+    {issue:"AmEx shows $0 debits (no payments recorded in QBO)",impact:"$245 autopay in dashboard but not posted",severity:"MEDIUM"},
+    {issue:"3 null-description checking deposits",impact:"$6,955 unidentified (Feb $2,808 + Jun $1,263 + Jun $2,884)",severity:"HIGH"},
+    {issue:"Q4 expenses $0 in QBO P&L",impact:"Expected - pending bank feed items not yet posted",severity:"INFO"},
+    {issue:"A2X JE count: 462 vs dashboard '200+'",impact:"Dashboard underestimates. ~230 settlement entries.",severity:"LOW"},
+  ]
+};
+
+// ===================== DEFERRED ITEMS =====================
+
+// 2026 transactions - handle after TY2025 filing
+const deferred_2026 = [
+  {src:"Capital One CC",dt:"01/17/2026",v:"In Indie Beauty",am:5500,cat:"Trade Shows & Events",nt:"Industry expo"},
+  {src:"Capital One CC",dt:"03/03/2026",v:"Www Iattrichology.com",am:850,cat:"Education & Training",nt:"Trichology cert"},
+  {src:"Capital One CC",dt:"02/24/2026",v:"Amazon",am:491.01,cat:"REVIEW",nt:"Need receipt"},
+  {src:"Capital One CC",dt:"01/02/2026",v:"AT&T",am:379.65,cat:"Utilities:Phone service",nt:""},
+  {src:"Capital One CC",dt:"02/02/2026",v:"AT&T",am:379.44,cat:"Utilities:Phone service",nt:""},
+  {src:"Capital One CC",dt:"03/02/2026",v:"AT&T",am:379.16,cat:"Utilities:Phone service",nt:""},
+  {src:"Shopify Balance",dt:"03/02/2026",v:"Revenue Inspi Sale",am:825,cat:"Marketing & Advertising",nt:"Outgoing marketing/event payment"},
+  {src:"Shopify Balance",dt:"03/12/2026",v:"Transfer NABHANI HOLDINGS",am:525,cat:"REVIEW",nt:"Unresolved - need more info from David"},
+  {src:"Capital One CC",dt:"01/23/2026",v:"Amazon",am:307.20,cat:"REVIEW",nt:"Need receipt"},
+  {src:"Capital One CC",dt:"02/26/2026",v:"Amazon",am:196.45,cat:"REVIEW",nt:"Need receipt"},
+  {src:"Capital One CC",dt:"02/10/2026",v:"Founders",am:185.10,cat:"Education & Training",nt:""},
+  {src:"Capital One CC",dt:"01/31/2026",v:"Henry Miami",am:173.11,cat:"Meals - Business",nt:"Restaurant"},
+  {src:"Capital One CC",dt:"01/28/2026",v:"Tst Olds Havana",am:154.94,cat:"Meals - Business",nt:"Restaurant"},
+  {src:"Capital One CC",dt:"02/03/2026",v:"Executive Women",am:150,cat:"Dues & Subscriptions",nt:"Professional membership"},
+  {src:"Capital One CC",dt:"01/24/2026",v:"Lax Smartparking",am:144.79,cat:"Travel",nt:"Airport parking"},
+  {src:"Capital One CC",dt:"02/24/2026",v:"Amazon",am:137.36,cat:"REVIEW",nt:"Need receipt"},
+  {src:"Capital One CC",dt:"01/26/2026",v:"Tst Havana Ocea",am:129,cat:"Meals - Business",nt:"Restaurant"},
+  {src:"Capital One CC",dt:"02/27/2026",v:"Amazon",am:118.44,cat:"REVIEW",nt:"Need receipt"},
+  {src:"Capital One CC",dt:"02/04/2026",v:"Uline",am:113.86,cat:"Packaging Materials",nt:"Shipping supplies"},
+  {src:"Capital One CC",dt:"02/07/2026",v:"Amazon",am:105.93,cat:"REVIEW",nt:"Need receipt"},
+  {src:"Capital One CC",dt:"02/24/2026",v:"Namecheap",am:97.54,cat:"Software & Apps",nt:"Domain registration"},
+  {src:"Capital One CC",dt:"02/02/2026",v:"Veracity Insurance",am:97.50,cat:"Insurance",nt:""},
+  {src:"Capital One CC",dt:"03/02/2026",v:"Veracity Insurance",am:97.50,cat:"Insurance",nt:""},
+  {src:"Capital One CC",dt:"02/24/2026",v:"Amazon",am:93.52,cat:"REVIEW",nt:"Near $100"},
+  {src:"Capital One CC",dt:"01/24/2026",v:"Amazon",am:91.76,cat:"REVIEW",nt:"Near $100"},
+  {src:"Capital One CC",dt:"02/26/2026",v:"Amazon",am:88.68,cat:"Office / Admin",nt:"Under $100"},
+  {src:"Capital One CC",dt:"01/19/2026",v:"Amazon",am:82.09,cat:"Office / Admin",nt:"Under $100"},
+  {src:"Capital One CC",dt:"01/15/2026",v:"Amazon",am:74.27,cat:"Office / Admin",nt:"Under $100"},
+  {src:"Capital One CC",dt:"01/05/2026",v:"Amazon",am:64.12,cat:"Office / Admin",nt:"Under $100"},
+  {src:"Capital One CC",dt:"01/23/2026",v:"Amazon",am:61.44,cat:"Office / Admin",nt:"Under $100"},
+  {src:"Capital One CC",dt:"02/24/2026",v:"Amazon",am:59.22,cat:"Office / Admin",nt:"Under $100"},
+  {src:"Capital One CC",dt:"01/23/2026",v:"Icustomize",am:56.36,cat:"Marketing & Advertising",nt:"Custom embroidery - AWARE uniform per David"},
+  {src:"Capital One CC",dt:"01/24/2026",v:"Amazon",am:53.66,cat:"Office / Admin",nt:"Under $100"},
+  {src:"Capital One CC",dt:"01/24/2026",v:"Amazon",am:50.28,cat:"Office / Admin",nt:"Under $100"},
+  {src:"Capital One CC",dt:"01/17/2026",v:"Target",am:47.11,cat:"Office / Admin",nt:"Office supplies"},
+  {src:"Capital One CC",dt:"01/23/2026",v:"Amazon",am:46.02,cat:"Office / Admin",nt:"Under $50"},
+  {src:"Capital One CC",dt:"01/24/2026",v:"Amazon",am:45.04,cat:"Office / Admin",nt:"Under $50"},
+  {src:"Capital One CC",dt:"01/16/2026",v:"Klaviyo Software",am:45,cat:"Software & Apps",nt:""},
+  {src:"Capital One CC",dt:"02/16/2026",v:"Klaviyo Software",am:45,cat:"Software & Apps",nt:""},
+  {src:"Capital One CC",dt:"01/24/2026",v:"In Discover Print",am:43.90,cat:"Raw Materials (Packaging)",nt:""},
+  {src:"Capital One CC",dt:"01/22/2026",v:"Amazon (x2)",am:85.28,cat:"Office / Admin",nt:"Under $50 each"},
+  {src:"Capital One CC",dt:"01/29-30/2026",v:"Miami Bch Prking (x2)",am:40,cat:"Vehicle expenses:Parking",nt:""},
+  {src:"Capital One CC",dt:"02/06/2026",v:"Secretary of State (x2)",am:40,cat:"Business licenses",nt:"$20 each"},
+  {src:"Capital One CC",dt:"03/09/2026",v:"OpenAI *ChatGPT Subscr",am:20,cat:"Software & Apps",nt:""},
+  {src:"Capital One CC",dt:"03/02/2026",v:"Facebook",am:9.92,cat:"Marketing & Advertising",nt:"FB ads"},
+  {src:"Capital One CC",dt:"02/28/2026",v:"Facebook (x2)",am:16,cat:"Marketing & Advertising",nt:"$8 each"},
+  {src:"Capital One CC",dt:"01/24/2026",v:"Amazon",am:4.97,cat:"Office / Admin",nt:"Office supplies per David"},
+  {src:"Capital One CC",dt:"03/02/2026",v:"Facebook",am:4.96,cat:"Marketing & Advertising",nt:"FB ads"},
+  {src:"Capital One CC",dt:"03/04/2026",v:"Track",am:3.10,cat:"Bank Service Charges",nt:""},
+  {src:"Capital One CC",dt:"03/02/2026",v:"Facebook (x3 micro)",am:5.03,cat:"Marketing & Advertising",nt:"$2.48, $1.31, $1.24"},
+  {src:"Capital One CC (recv)",dt:"01/09/2026",v:"Temu.com",am:55.36,cat:"Credit to original purchase account (match return to charge)",nt:"Holiday scarf returns"},
+  {src:"Capital One CC (recv)",dt:"02/17/2026",v:"Amazon",am:65.44,cat:"Office / Admin (return)",nt:""},
+  {src:"Capital One CC (recv)",dt:"01/20/2026",v:"Usa Beauty Llc",am:143,cat:"REVIEW",nt:"Refund? Match to 11/20 charge"},
+  {src:"Capital One CC (recv)",dt:"01/05/2026",v:"Temu.com",am:147.41,cat:"Credit to original purchase account (match return to charge)",nt:"Holiday scarf returns"},
+  {src:"Capital One CC (recv)",dt:"01/06/2026",v:"Temu.com",am:155.30,cat:"Credit to original purchase account (match return to charge)",nt:"Holiday scarf returns"},
+  {src:"Capital One CC (recv)",dt:"01/31/2026",v:"Amazon",am:307.20,cat:"Office / Admin (return)",nt:"Match to 01/23 charge"},
+  {src:"Capital One CC (recv)",dt:"03/11/2026",v:"Capital One Autopay",am:2493.88,cat:"TRANSFER",nt:"CC payment"},
+  {src:"Capital One CC (recv)",dt:"01/23/2026",v:"Capital One Online",am:6670.30,cat:"TRANSFER",nt:"CC payment"},
+  {src:"Checking (spent)",dt:"01/26/2026",v:"Capital One Online",am:6670.30,cat:"TRANSFER to CC",nt:""},
+  {src:"Checking (spent)",dt:"02/19/2026",v:"Universal",am:3900,cat:"REVIEW",nt:"Skip per David"},
+  {src:"Checking (spent)",dt:"01/06/2026",v:"MISCELLANEOUS",am:2000,cat:"Utilities",nt:"Landlord per David"},
+  {src:"Checking (spent)",dt:"01/30/2026",v:"Universal",am:2000,cat:"REVIEW",nt:"Skip per David"},
+  {src:"Checking (spent)",dt:"01/06/2026",v:"Settlement",am:1811,cat:"Raw Materials (Ingredients)",nt:""},
+  {src:"Checking (spent)",dt:"01/14/2026",v:"MISCELLANEOUS",am:1700,cat:"Utilities",nt:"Landlord per David"},
+  {src:"Checking (spent)",dt:"01/13/2026",v:"MISCELLANEOUS",am:1500,cat:"Utilities",nt:"Landlord per David"},
+  {src:"Checking (spent)",dt:"01/21/2026",v:"MISCELLANEOUS",am:1500,cat:"Rent",nt:"Spa Sante rent"},
+  {src:"Checking (spent)",dt:"02/09/2026",v:"Universal",am:1000,cat:"REVIEW",nt:"Skip per David"},
+  {src:"Checking (spent)",dt:"02/03/2026",v:"Ca Dept Tax",am:799,cat:"Taxes paid",nt:""},
+  {src:"Checking (spent)",dt:"02/11/2026",v:"Universal",am:500,cat:"REVIEW",nt:"Skip per David"},
+  {src:"Checking (spent)",dt:"03/02/2026",v:"Blue Shield",am:183,cat:"Employee benefits:Health insurance",nt:""},
+  {src:"Checking (spent)",dt:"01/27/2026",v:"Overdraft Fee",am:35,cat:"Bank Service Charges",nt:""},
+  {src:"Checking (recv)",dt:"01/06/2026",v:"Faire Wholesale Order",am:211.58,cat:"Sales of Product Income",nt:"Sale payout per David"},
+  {src:"Checking (recv)",dt:"02/10/2026",v:"Deposit (Harlan Irvine)",am:25000,cat:"Partner investments:Harlan Irvine",nt:"Equity contribution"},
+];
+
+// Items needing further clarification - handle after main categorization
+const deferred_later = [
+  {src:"Shopify Balance",dt:"Various",v:"Melio Tx",am:0.45,cat:"Bank Service Charges",nt:"Accepted - tiny payment processing amount"},
+  {src:"Intuit (QBO Checking)",dt:"05/19/2025",v:"Tina Mui Pacific",am:1261.85,cat:"TRANSFER",nt:"RESOLVED: Internal transfer from QBO Checking to AWARE HAIR LLC (Pacific Premier). Memo: 'transfer'. QBO mismatched to Tina Mui vendor. No P&L impact - just funds moving between AWARE's own accounts. Accept as Transfer in bank feed."},
+];
+
+// Recurring Subscriptions
+const subs = [
+  {s:"AT&T",mo:379,months:6,total:2274,cat:"Utilities:Phone service"},
+  {s:"Shopify",mo:204,months:12,total:5500,cat:"Software & Apps"},
+  {s:"Klaviyo",mo:0,months:5,total:170,cat:"Software & Apps",nt:"Upgrade path: $20 (Oct) + $30 (Nov-Dec) + $45 (Jan-Feb) = $170"},
+  {s:"Zapier",mo:29.99,months:5,total:150,cat:"Software & Apps"},
+  {s:"Notion",mo:24,months:6,total:144,cat:"Software & Apps"},
+  {s:"Google Workspace",mo:18,months:6,total:108,cat:"Software & Apps"},
+  {s:"Canva",mo:14.99,months:6,total:90,cat:"Software & Apps"},
+  {s:"OpenAI ChatGPT",mo:20,months:4,total:80,cat:"Software & Apps"},
+  {s:"Gorgias",mo:10,months:5,total:50,cat:"Software & Apps"},
+  {s:"Intuit / QBO",mo:38,months:6,total:228,cat:"Software & Apps"},
+  {s:"Veracity Insurance",mo:130,months:3,total:520,cat:"Insurance"},
+  {s:"US Bank Vehicle Lease",mo:496.54,months:6,total:2979,cat:"Vehicle Lease"},
+  {s:"Blue Shield Health",mo:0,months:6,total:1484,cat:"Employee benefits:Health insurance",nt:"$566 (Oct) + $186 (Oct) + $183 x4 (Dec-Mar) = $1,484"},
+];
+
+// Partner Equity
+const equity = [
+  {partner:"Harlan Irvine",items:"$25,000 (confirmed equity). Smaller deposits reclassified as Spa Sante B2B revenue.",total:25000,cat:"Partner investments:Harlan Irvine"},
+  {partner:"Jade Wong",items:"Reclassified as partner loans payable ($7,503.47 total). Not equity contributions.",total:0,cat:"Loan Payable - Short-Term (Jade Wong partner loan)"},
+  {partner:"Mark Segal",items:"$50,000 wire",total:50000,cat:"Partner investments:Mark Segal"},
+];
+
+// Review queue - consolidated
+const reviewItems = [
+  {acct:"Shopify Balance",dt:"Various",v:"Shopify Payments Payouts (~200+ items)",am:40000,q:"Must MATCH to A2X entries. Do NOT post as new revenue. Resolve A2X reconciliation first.",answer:"Match with A2X - entries already posted",cat:"MATCH to A2X"},
+  {acct:"Checking",dt:"09/19/2025",v:"Incoming Wire - Mark Segal",am:50000,q:"Confirm = equity contribution (not loan). QBO suggests Partner investments:Mark Segal.",answer:"Equity contribution",cat:"Partner investments:Mark Segal"},
+  {acct:"Checking",dt:"Various",v:"MISCELLANEOUS Utilities (x9 items)",am:10800,q:"~$600-$2,000 each. 'Utilities' too vague. Confirm vendor for each large payment.",answer:"Utilities payment to rental landlord",cat:"Utilities"},
+  {acct:"Shopify Balance",dt:"Various (x3)",v:"Seyed Hossein Zo",am:10195,q:"WARNING: Do NOT accept QBO's 'Travel' suggestion for $4,868 entry. These are Shopify Balance outflows.",answer:"COGS - payments for products to manufacturer",cat:"COGS - B2C (Product Cost)"},
+  {acct:"Shopify Balance",dt:"Various (x4)",v:"Qing Zhao Aware",am:8000,q:"Owner draw? Partner? Contractor?",answer:"Contractor 1099",cat:"Contract Labor"},
+  {acct:"Checking",dt:"08/12/2025",v:"Posted Returned Rev",am:5896.74,q:"What revenue was reversed? Match to original transaction.",answer:"Credit card Capital One payment",cat:"TRANSFER to Capital One"},
+  {acct:"Checking",dt:"10/24/2025",v:"CosmoProf",am:3975.04,q:"CosmoProf is a beauty supply distributor.",answer:"Trade show booth",cat:"Trade Shows & Events"},
+  {acct:"Intuit",dt:"Various (x2)",v:"Intuit refunds",am:2980,q:"$1,490 x2 received. Duplicate? Refund?",answer:"Payments from Spa Sante matching B2B revenue",cat:"Sales of Product Income"},
+  {acct:"Checking",dt:"08/13/2025",v:"Misc Telephone Trf",am:2500,q:"QBO suggests 'Credit card rewards' - likely wrong.",answer:"Rent",cat:"Rent"},
+  {acct:"Checking",dt:"03/28/2025",v:"Misc Telephone Trf",am:1500,q:"Internal transfer? Confirm source.",answer:"Rent",cat:"Rent"},
+  {acct:"Capital One CC",dt:"12/12/2025",v:"Temu.com (x6 returns)",am:991,q:"All Temu returns categorized as 'Fixed Asset Furniture' by QBO - WRONG.",answer:"Returns of holiday scarf purchases - excess inventory",cat:"Credit to original purchase account (match return to charge)"},
+  {acct:"Capital One CC",dt:"12/12/2025",v:"Amazon",am:723.81,q:"$100+ Amazon - need receipt.",answer:"Laser engraver for gua shas - potentially depreciable equipment",cat:"Equipment (review depreciation)"},
+  {acct:"Shopify Balance",dt:"Various",v:"Dana Le",am:45,q:"Who is Dana Le?",answer:"Affiliate payout",cat:"Commissions & fees"},
+  {acct:"Checking",dt:"04/24/2025",v:"Deposit",am:623,q:"Unidentified deposit.",answer:"Salon purchase - B2B sale basic package. Match with A2X.",cat:"Sales of Product Income"},
+  {acct:"Checking",dt:"03/19/2025",v:"Misc Telephone Trf",am:600,q:"QBO suggests 'Credit card rewards' - likely wrong.",answer:"Internal transfer",cat:"TRANSFER"},
+  {acct:"Capital One CC",dt:"12/02/2025",v:"Mediacom (x3)",am:300,q:"$100 each x3. Unknown vendor.",answer:"Beauty awards submission query",cat:"Marketing & Advertising"},
+  {acct:"AmEx",dt:"Various",v:"Kxbx X",am:250,q:"Unknown source of $250 credit.",answer:"Credit card rewards",cat:"Credit card rewards"},
+  {acct:"Checking",dt:"01/06/2026",v:"Faire Wholesale Order",am:211.58,q:"Received from Faire - is this a sale payout or purchase credit?",answer:"Sale payout",cat:"Sales of Product Income"},
+  {acct:"Capital One CC",dt:"09/30/2025",v:"Amazon",am:175.55,q:"$100+ Amazon.",answer:"Printer ink",cat:"Office / Admin"},
+  {acct:"Capital One CC",dt:"12/11/2025",v:"Total Wine & More",am:154.90,q:"Business purpose?",answer:"Split 3 ways, AWARE portion accepted",cat:"Meals - Business"},
+  {acct:"Capital One CC",dt:"12/17/2025",v:"Amazon",am:153.64,q:"$100+ Amazon.",answer:"Printer ink",cat:"Office / Admin"},
+  {acct:"Capital One CC",dt:"12/10/2025",v:"Amazon",am:141.58,q:"$100+ Amazon.",answer:"Gua shas",cat:"COGS - B2C (Product Cost)"},
+  {acct:"Capital One CC",dt:"11/17/2025",v:"Amazon",am:118.50,q:"$100+ Amazon.",answer:"Gua shas",cat:"COGS - B2C (Product Cost)"},
+  {acct:"Capital One CC",dt:"10/01/2025",v:"Amazon",am:109.62,q:"$100+ Amazon.",answer:"Office supplies",cat:"Office / Admin"},
+  {acct:"Capital One CC",dt:"10/10/2025",v:"Amazon",am:105.35,q:"$100+ Amazon.",answer:"Gua shas",cat:"COGS - B2C (Product Cost)"},
+  {acct:"Capital One CC",dt:"10/31/2025",v:"Amazon",am:104.84,q:"$100+ Amazon.",answer:"Gua shas",cat:"COGS - B2C (Product Cost)"},
+  {acct:"Capital One CC",dt:"12/13/2025",v:"Amazon",am:102.57,q:"$100+ Amazon.",answer:"Gua shas",cat:"COGS - B2C (Product Cost)"},
+  {acct:"Capital One CC",dt:"12/12/2025",v:"Amazon (returns)",am:0,q:"46 Amazon returns - match each to original purchase.",answer:"Match to original purchases",cat:"Match returns"},
+  {acct:"Capital One CC",dt:"12/18/2025",v:"Marshalls",am:32.66,q:"QBO suggests 'Fixed Asset Furniture' - WRONG.",answer:"Event materials",cat:"Trade Shows & Events"},
+  {acct:"Checking",dt:"03/18/2025",v:"Settlement Ach Offset",am:26.50,q:"QBO: 'General business expenses' - too vague.",answer:"Low charge - just attribute",cat:"Miscellaneous Expense (identify if possible)"},
+];
+
+// ===================== RENDER FUNCTIONS =====================
+
+function fmt(n){return n===0?'—':'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function pill(cf){return `<span class="pill p${cf[0]}">${cf}</span>`}
+function rowClass(cf){return cf==='HIGH'?'rh':cf==='MEDIUM'?'rm':'rl'}
+
+function toggle(hdr){
+  const sec=hdr.closest('.section');
+  sec.classList.toggle('collapsed');
+  const body=sec.querySelector('.sbody');
+  body.classList.toggle('hidden');
+}
+
+function expandAll(){document.querySelectorAll('.section').forEach(s=>{s.classList.remove('collapsed');const b=s.querySelector('.sbody');if(b)b.classList.remove('hidden')})}
+function collapseAll(){document.querySelectorAll('.section').forEach(s=>{s.classList.add('collapsed');const b=s.querySelector('.sbody');if(b)b.classList.add('hidden')})}
+function printPage(){window.print()}
+
+function buildTable(rows, cols, id){
+  const hdr=cols.map(c=>`<th>${c.label}</th>`).join('');
+  const body=rows.map(r=>{
+    const cf=r.cf||'HIGH';
+    const tds=cols.map(c=>{
+      const v=r[c.key];
+      if(c.key==='cf') return `<td class="conf-cell">${pill(cf)}</td>`;
+      if(c.key==='am'||c.key==='amount') return `<td class="am sp">${fmt(typeof v==='number'?v:parseFloat(v)||0)}</td>`;
+      return `<td class="${c.cls||''}">${v||''}</td>`;
+    }).join('');
+    return `<tr class="${rowClass(cf)}">${tds}</tr>`;
+  }).join('');
+  return `<thead><tr>${hdr}</tr></thead><tbody>${body}</tbody>`;
+}
+
+function buildAccountTable(items, tableId, note){
+  const cols=[
+    {key:'dt',label:'Date',cls:'dt'},
+    {key:'v',label:'Vendor',cls:'vd'},
+    {key:'am',label:'Amount',cls:''},
+    {key:'ex',label:'QBO Suggestion',cls:'ex'},
+    {key:'cat',label:'Our Category',cls:'ct'},
+    {key:'cf',label:'Conf',cls:''},
+    {key:'nt',label:'Notes',cls:'nt'},
+  ];
+  const el=document.getElementById(tableId);
+  if(el) el.innerHTML=buildTable(items,cols,tableId);
+}
+
+// Sort state
+let reviewSortCol=3, reviewSortDir=-1;
+function sortReview(col){
+  if(reviewSortCol===col) reviewSortDir*=-1; else {reviewSortCol=col;reviewSortDir=-1;}
+  renderReviewTable();
+  document.querySelectorAll('#review-table thead th').forEach((th,i)=>{
+    th.classList.remove('sa','sd');
+    if(i===col) th.classList.add(reviewSortDir===1?'sa':'sd');
+  });
+}
+
+function renderReviewTable(){
+  const sorted=[...reviewItems].sort((a,b)=>{
+    const keys=['acct','dt','v','am'];
+    const k=keys[reviewSortCol];
+    const av=a[k], bv=b[k];
+    if(typeof av==='number') return (av-bv)*reviewSortDir;
+    return av.localeCompare(bv)*reviewSortDir;
+  });
+  const tbody=document.getElementById('review-tbody');
+  if(!tbody) return;
+  tbody.innerHTML=sorted.map((r,i)=>`
+    <tr class="rl" id="review-row-${i}">
+      <td class="dt">${r.acct}</td>
+      <td class="dt">${r.dt}</td>
+      <td class="vd">${r.v}</td>
+      <td class="am sp">${r.am>0?fmt(r.am):'—'}</td>
+      <td class="nt" style="font-size:11px">${r.q}</td>
+      <td><textarea class="review-input" data-idx="${i}" rows="2" placeholder="Enter answer..." style="width:100%;min-width:200px;font-family:var(--fb);font-size:12px;padding:6px 8px;border:1px solid var(--bdr);border-radius:var(--rs);background:var(--surface);color:var(--text);resize:vertical" oninput="updateCounter()">${r.answer||''}</textarea></td>
+      <td><input type="text" class="review-cat" data-idx="${i}" placeholder="Category..." style="width:100%;min-width:110px;font-family:var(--fb);font-size:12px;padding:6px 8px;border:1px solid var(--bdr);border-radius:var(--rs);background:var(--surface);color:var(--text)" value="${r.cat||''}"></td>
+    </tr>`).join('');
+}
+
+function filterAll(){
+  const cf=document.getElementById('conf-filter').value;
+  document.querySelectorAll('tbody tr').forEach(tr=>{
+    if(!cf){tr.style.display='';return;}
+    const pill=tr.querySelector('.pill');
+    if(pill && pill.textContent===cf) tr.style.display=''; else tr.style.display='none';
+  });
+}
+
+function renderSummaryCards(){
+  const ty2025Items=cc_charges.length+cc_received.length+chk_spent.length+chk_recv.length+shopify_grouped.length+amex_items.length+intuit_items.length+paypal_items.length+amex_expanded_items.length;
+  const deferredCount=deferred_2026.length+deferred_later.length;
+  const reviewCount=reviewItems.length;
+  const cards=[
+    {label:'QBO Posted Txns',val:qboRecon.totalPosted,cls:'t tc',sub:'[LIVE: QBO 2026-03-13]'},
+    {label:'Dashboard Items',val:ty2025Items,cls:'t tc',sub:'TY2025 ('+deferredCount+' deferred)'},
+    {label:'Answered',val:reviewItems.filter(r=>r.answer).length+'/'+reviewCount,cls:'h hc',sub:'Review items resolved'},
+    {label:'A2X Journal Entries',val:qboRecon.a2xJournalEntries,cls:'h hc',sub:'~230 settlements'},
+    {label:'Net Income',val:fmt(qboRecon.netIncome),cls:'l lc',sub:'Before pending items posted'},
+    {label:'Partner Equity',val:'$75,000',cls:'t tc',sub:'Mark $50K + Harlan $25K'},
+    {label:'Gaps Found',val:qboRecon.gaps.filter(g=>g.severity==='HIGH').length,cls:'l lc',sub:'HIGH severity'},
+    {label:'Deferred (2026)',val:deferred_2026.length,cls:'m mc',sub:'Out of scope'},
+  ];
+  document.getElementById('summary-cards').innerHTML=cards.map(c=>`
+    <div class="sc ${c.cls.split(' ')[0]}">
+      <div class="slabel">${c.label}</div>
+      <div class="sval ${c.cls.split(' ')[1]}">${c.val}</div>
+      <div class="ssub">${c.sub}</div>
+    </div>`).join('');
+}
+
+function renderReviewBadges(){
+  const el1=document.getElementById('review-count-badge');
+  const el2=document.getElementById('review-total-badge');
+  if(el1) el1.textContent=reviewItems.length+' items';
+  const total=reviewItems.reduce((s,r)=>s+r.am,0);
+  if(el2) el2.textContent='$'+Math.round(total/1000)+'K+ total';
+}
+
+function renderSubsTable(){
+  const hdr='<thead><tr><th>Service</th><th>Approx Monthly</th><th>Months</th><th>Est. Total</th><th>Category</th><th>Confidence</th><th>Notes</th></tr></thead>';
+  const totals=subs.reduce((s,r)=>s+r.total,0);
+  const body='<tbody>'+subs.map(s=>`<tr class="rh">
+    <td class="vd">${s.s}</td>
+    <td class="am sp">${s.mo?fmt(s.mo):'—'}</td>
+    <td style="text-align:center">${s.months}</td>
+    <td class="am sp">${fmt(s.total)}</td>
+    <td class="ct">${s.cat}</td>
+    <td><span class="pill pH">HIGH</span></td>
+    <td class="nt">${s.nt||''}</td>
+  </tr>`).join('')+'</tbody>';
+  const foot=`<tfoot><tr><td colspan="3" style="color:var(--dim);font-size:10px;text-transform:uppercase">Total recurring</td><td class="am sp">${fmt(totals)}</td><td colspan="3"></td></tr></tfoot>`;
+  const el=document.getElementById('subs-table');
+  if(el) el.innerHTML=hdr+body+foot;
+}
+
+function renderEquityTable(){
+  const hdr='<thead><tr><th>Partner</th><th>Deposits</th><th>Total Invested</th><th>QBO Category</th><th>Confidence</th></tr></thead>';
+  const total=equity.reduce((s,r)=>s+r.total,0);
+  const body='<tbody>'+equity.map(e=>`<tr class="rh">
+    <td class="vd">${e.partner}</td>
+    <td class="nt">${e.items}</td>
+    <td class="am rc">${fmt(e.total)}</td>
+    <td class="ct">${e.cat}</td>
+    <td><span class="pill pH">HIGH</span></td>
+  </tr>`).join('')+'</tbody>';
+  const foot=`<tfoot><tr><td colspan="2" style="color:var(--dim);font-size:10px;text-transform:uppercase">Total equity contributions</td><td class="am rc">${fmt(total)}</td><td colspan="2"></td></tr></tfoot>`;
+  const el=document.getElementById('equity-table');
+  if(el) el.innerHTML=hdr+body+foot;
+}
+
+function renderShopifyTable(){
+  const hdr='<thead><tr><th>Transaction Type</th><th>Count</th><th>Approx Amount</th><th>QBO Suggestion</th><th>Our Category</th><th>Confidence</th><th>Notes</th><th style="min-width:160px">David\'s Notes</th></tr></thead>';
+  const body='<tbody>'+shopify_grouped.map((r,i)=>{
+    const cf=r.cf;
+    return `<tr class="${rowClass(cf)}">
+      <td class="vd">${r.type}</td>
+      <td style="text-align:center">${r.count}</td>
+      <td class="am sp">${r.amount}</td>
+      <td class="ex">${r.ex||'—'}</td>
+      <td class="ct">${r.cat}</td>
+      <td>${pill(cf)}</td>
+      <td class="nt">${r.nt}</td>
+      <td><textarea class="section-input" data-section="sec-shopify" data-row="${i}" rows="1" placeholder="Add note..." style="width:100%;min-width:150px;font-family:var(--fb);font-size:11px;padding:4px 6px;border:1px solid var(--bdr);border-radius:var(--rs);background:var(--surface);color:var(--text);resize:vertical" oninput="updateSectionCounter('sec-shopify')"></textarea></td>
+    </tr>`;
+  }).join('')+'</tbody>';
+  const el=document.getElementById('shopify-table');
+  if(el) el.innerHTML=hdr+body;
+}
+
+function renderAmexTable(){
+  const hdr='<thead><tr><th>Date</th><th>Vendor</th><th>Amount</th><th>Category</th><th>Confidence</th><th>Notes</th><th style="min-width:160px">David\'s Notes</th></tr></thead>';
+  const body='<tbody>'+amex_items.map((r,i)=>`<tr class="${rowClass(r.cf)}">
+    <td class="dt">${r.dt}</td>
+    <td class="vd">${r.v}</td>
+    <td class="am sp">${fmt(r.am)}</td>
+    <td class="ct">${r.cat}</td>
+    <td>${pill(r.cf)}</td>
+    <td class="nt">${r.nt}</td>
+    <td><textarea class="section-input" data-section="sec-amex" data-row="${i}" rows="1" placeholder="Add note..." style="width:100%;min-width:150px;font-family:var(--fb);font-size:11px;padding:4px 6px;border:1px solid var(--bdr);border-radius:var(--rs);background:var(--surface);color:var(--text);resize:vertical" oninput="updateSectionCounter('sec-amex')"></textarea></td>
+  </tr>`).join('')+'</tbody>';
+  const el=document.getElementById('amex-table');
+  if(el) el.innerHTML=hdr+body;
+}
+
+function renderIntuitTable(){
+  const hdr='<thead><tr><th>Date</th><th>Vendor</th><th>Amount</th><th>Category</th><th>Confidence</th><th>Notes</th><th style="min-width:160px">David\'s Notes</th></tr></thead>';
+  const body='<tbody>'+intuit_items.map((r,i)=>`<tr class="rl">
+    <td class="dt">${r.dt}</td>
+    <td class="vd">${r.v}</td>
+    <td class="am sp">${fmt(r.am)}</td>
+    <td class="ct">${r.cat}</td>
+    <td>${pill(r.cf)}</td>
+    <td class="nt">${r.nt}</td>
+    <td><textarea class="section-input" data-section="sec-intuit" data-row="${i}" rows="1" placeholder="Add note..." style="width:100%;min-width:150px;font-family:var(--fb);font-size:11px;padding:4px 6px;border:1px solid var(--bdr);border-radius:var(--rs);background:var(--surface);color:var(--text);resize:vertical" oninput="updateSectionCounter('sec-intuit')"></textarea></td>
+  </tr>`).join('')+'</tbody>';
+  const el=document.getElementById('intuit-table');
+  if(el) el.innerHTML=hdr+body;
+}
+
+function renderAccountSections(){
+  const sections=[
+    {
+      id:'sec-cc-charges',
+      title:'Capital One Credit Card — Charges',
+      badges:[{cls:'bx',txt:'184 line items grouped'},{cls:'bh',txt:'Mostly HIGH'}],
+      data:cc_charges,
+      note:null
+    },
+    {
+      id:'sec-cc-recv',
+      title:'Capital One Credit Card — Returns & Payments Received',
+      badges:[{cls:'bx',txt:'64 items'},{cls:'bl',txt:'Temu returns need review'}],
+      data:cc_received,
+      note:'Amazon returns should be matched to original charges. Temu returns categorized as "Fixed Asset Furniture" by QBO — all WRONG.'
+    },
+    {
+      id:'sec-chk-spent',
+      title:'AWARE Checking — Payments Out',
+      badges:[{cls:'bx',txt:'69 items grouped'},{cls:'bm',txt:'Universal payments unresolved'}],
+      data:chk_spent,
+      note:null
+    },
+    {
+      id:'sec-chk-recv',
+      title:'AWARE Checking — Deposits & Transfers In',
+      badges:[{cls:'bx',txt:'30 items'},{cls:'bh',txt:'Partner equity identified'}],
+      data:chk_recv,
+      note:null
+    }
+  ];
+  const cols=[
+    {key:'dt',label:'Date',cls:'dt'},
+    {key:'v',label:'Vendor',cls:'vd'},
+    {key:'am',label:'Amount',cls:''},
+    {key:'ex',label:'QBO Suggestion',cls:'ex'},
+    {key:'cat',label:'Our Category',cls:'ct'},
+    {key:'cf',label:'Conf',cls:''},
+    {key:'nt',label:'Notes',cls:'nt'},
+  ];
+
+  const container=document.getElementById('account-sections');
+  if(!container) return;
+
+  container.innerHTML=sections.map(sec=>{
+    const hdr=cols.map(c=>`<th>${c.label}</th>`).join('')+'<th style="min-width:160px">David\'s Notes</th>';
+    const body=sec.data.map((r,ri)=>{
+      const cf=r.cf;
+      const tds=cols.map(c=>{
+        if(c.key==='cf') return `<td>${pill(cf)}</td>`;
+        if(c.key==='am') return `<td class="am sp">${fmt(typeof r.am==='number'?r.am:0)}</td>`;
+        return `<td class="${c.cls}">${r[c.key]||''}</td>`;
+      }).join('');
+      const notesTd=`<td><textarea class="section-input" data-section="${sec.id}" data-row="${ri}" rows="1" placeholder="Add note..." style="width:100%;min-width:150px;font-family:var(--fb);font-size:11px;padding:4px 6px;border:1px solid var(--bdr);border-radius:var(--rs);background:var(--surface);color:var(--text);resize:vertical" oninput="updateSectionCounter('${sec.id}')"></textarea></td>`;
+      return `<tr class="${rowClass(cf)}">${tds}${notesTd}</tr>`;
+    }).join('');
+    const badges=sec.badges.map(b=>`<span class="badge ${b.cls}">${b.txt}</span>`).join('');
+    const noteHtml=sec.note?`<div class="nb w">${sec.note}</div>`:'';
+    const totals=sec.data.reduce((s,r)=>s+(r.am||0),0);
+    return `
+      <div class="section" id="${sec.id}">
+        <div class="sh2" onclick="toggle(this)">
+          <div class="shl"><div class="stitle">${sec.title}</div><div class="bgs">${badges}</div></div>
+          <div class="chev">&#9660;</div>
+        </div>
+        <div class="sbody">
+          ${noteHtml}
+          <div style="padding:12px 16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--bdrl)">
+            <button class="btn primary" onclick="copySection('${sec.id}')">Copy Notes</button>
+            <span style="font-size:11px;color:var(--dim)" class="section-counter" data-section="${sec.id}">0 / ${sec.data.length} noted</span>
+          </div>
+          <div class="two">
+            <table>
+              <thead><tr>${hdr}</tr></thead>
+              <tbody>${body}</tbody>
+              <tfoot><tr>
+                <td colspan="2" class="total-label" style="font-size:10px;text-transform:uppercase;color:var(--dim)">Section total</td>
+                <td class="am sp">${fmt(totals)}</td>
+                <td colspan="5"></td>
+              </tr></tfoot>
+            </table>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderDeferred2026Table(){
+  const el=document.getElementById('deferred-2026-table');
+  if(!el) return;
+  const hdr='<thead><tr><th>Source</th><th>Date</th><th>Vendor</th><th>Amount</th><th>Category</th><th>Notes</th></tr></thead>';
+  const body='<tbody>'+deferred_2026.map(r=>`<tr class="rm">
+    <td class="dt">${r.src}</td>
+    <td class="dt">${r.dt}</td>
+    <td class="vd">${r.v}</td>
+    <td class="am sp">${fmt(r.am)}</td>
+    <td class="ct">${r.cat}</td>
+    <td class="nt">${r.nt}</td>
+  </tr>`).join('')+'</tbody>';
+  const total=deferred_2026.reduce((s,r)=>s+r.am,0);
+  const foot=`<tfoot><tr><td colspan="3" style="color:var(--dim);font-size:10px;text-transform:uppercase">Total deferred (2026)</td><td class="am sp">${fmt(total)}</td><td colspan="2"></td></tr></tfoot>`;
+  el.innerHTML=hdr+body+foot;
+  const badge=document.getElementById('deferred-2026-count');
+  if(badge) badge.textContent=deferred_2026.length+' items';
+}
+
+function renderDeferredLaterTable(){
+  const el=document.getElementById('deferred-later-table');
+  if(!el) return;
+  const hdr='<thead><tr><th>Source</th><th>Date</th><th>Vendor</th><th>Amount</th><th>Category</th><th>Notes</th><th style="min-width:160px">David\'s Notes</th></tr></thead>';
+  const body='<tbody>'+deferred_later.map((r,i)=>`<tr class="rl">
+    <td class="dt">${r.src}</td>
+    <td class="dt">${r.dt}</td>
+    <td class="vd">${r.v}</td>
+    <td class="am sp">${fmt(r.am)}</td>
+    <td class="ct">${r.cat}</td>
+    <td class="nt">${r.nt}</td>
+    <td><textarea class="section-input" data-section="sec-deferred-later" data-row="${i}" rows="1" placeholder="Add note..." style="width:100%;min-width:150px;font-family:var(--fb);font-size:11px;padding:4px 6px;border:1px solid var(--bdr);border-radius:var(--rs);background:var(--surface);color:var(--text);resize:vertical" oninput="updateSectionCounter('sec-deferred-later')"></textarea></td>
+  </tr>`).join('')+'</tbody>';
+  const total=deferred_later.reduce((s,r)=>s+r.am,0);
+  const foot=`<tfoot><tr><td colspan="3" style="color:var(--dim);font-size:10px;text-transform:uppercase">Total deferred</td><td class="am sp">${fmt(total)}</td><td colspan="3"></td></tr></tfoot>`;
+  el.innerHTML=hdr+body+foot;
+  const badge=document.getElementById('deferred-later-count');
+  if(badge) badge.textContent=deferred_later.length+' items';
+}
+
+// ===================== NEW RENDER FUNCTIONS (QBO Audit 2026-03-13) =====================
+
+function renderPayPalTable(){
+  const hdr='<thead><tr><th>Date</th><th>Customer</th><th>Amount</th><th>QBO Suggestion</th><th>Category</th><th>Confidence</th><th>Notes</th></tr></thead>';
+  const body='<tbody>'+paypal_items.map(r=>`<tr class="${rowClass(r.cf)}">
+    <td class="dt">${r.dt}</td>
+    <td class="vd">${r.v}</td>
+    <td class="am ${r.am<0?'':'rc'}">${fmt(Math.abs(r.am))}</td>
+    <td class="ex">${r.ex||''}</td>
+    <td class="ct">${r.cat}</td>
+    <td>${pill(r.cf)}</td>
+    <td class="nt">${r.nt}</td>
+  </tr>`).join('')+'</tbody>';
+  const total=paypal_items.reduce((s,r)=>s+r.am,0);
+  const foot=`<tfoot><tr><td colspan="2" style="color:var(--dim);font-size:10px;text-transform:uppercase">Net PayPal</td><td class="am rc">${fmt(total)}</td><td colspan="4"></td></tr></tfoot>`;
+  const el=document.getElementById('paypal-table');
+  if(el) el.innerHTML=hdr+body+foot;
+}
+
+function renderAmexExpandedTable(){
+  const hdr='<thead><tr><th>Date</th><th>Vendor</th><th>Amount</th><th>QBO Suggestion</th><th>Category</th><th>Confidence</th><th>Notes</th></tr></thead>';
+  const body='<tbody>'+amex_expanded_items.map(r=>`<tr class="${rowClass(r.cf)}">
+    <td class="dt">${r.dt}</td>
+    <td class="vd">${r.v}</td>
+    <td class="am sp">${r.am?fmt(r.am):'TBD'}</td>
+    <td class="ex">${r.ex||''}</td>
+    <td class="ct">${r.cat}</td>
+    <td>${pill(r.cf)}</td>
+    <td class="nt">${r.nt}</td>
+  </tr>`).join('')+'</tbody>';
+  const el=document.getElementById('amex-expanded-table');
+  if(el) el.innerHTML=hdr+body;
+}
+
+function renderReconTable(){
+  const hdr='<thead><tr><th>Account</th><th>QBO ID</th><th>Posted Txns</th><th>Net Activity</th><th>Dashboard Items</th><th>Status</th></tr></thead>';
+  const body='<tbody>'+qboRecon.accounts.map(a=>{
+    const cls=a.status.includes('GAP')||a.status.includes('NEW')?'rl':a.status.includes('Partial')?'rm':'rh';
+    return `<tr class="${cls}">
+      <td class="vd">${a.name}</td>
+      <td class="dt">${a.id}</td>
+      <td style="text-align:center;font-weight:600">${a.posted}</td>
+      <td class="am sp">${fmt(a.net)}</td>
+      <td class="ct">${a.dashboardItems}</td>
+      <td class="nt">${a.status}</td>
+    </tr>`;
+  }).join('')+'</tbody>';
+  const foot=`<tfoot><tr><td style="color:var(--dim);font-size:10px;text-transform:uppercase">Total</td><td></td><td style="text-align:center;font-weight:700">${qboRecon.totalPosted}</td><td></td><td></td><td style="font-size:10px;color:var(--dim)">A2X JEs: ${qboRecon.a2xJournalEntries} | Trial bal: ${fmt(qboRecon.trialBalanceTotal)}</td></tr></tfoot>`;
+  const el=document.getElementById('recon-table');
+  if(el) el.innerHTML=hdr+body+foot;
+}
+
+function renderGapTable(){
+  const hdr='<thead><tr><th>Issue</th><th>Impact</th><th>Severity</th></tr></thead>';
+  const body='<tbody>'+qboRecon.gaps.map(g=>{
+    const cls=g.severity==='HIGH'?'rl':g.severity==='MEDIUM'?'rm':'rh';
+    const p=g.severity==='HIGH'?'pL':g.severity==='MEDIUM'?'pM':'pH';
+    return `<tr class="${cls}"><td class="vd">${g.issue}</td><td class="nt">${g.impact}</td><td><span class="pill ${p}">${g.severity}</span></td></tr>`;
+  }).join('')+'</tbody>';
+  const el=document.getElementById('gap-table');
+  if(el) el.innerHTML=hdr+body;
+}
+
+function renderPnlHighlights(){
+  const items=[
+    {label:'B2B Revenue',val:fmt(qboRecon.pnlHighlights.b2bRevenue),cls:'rc'},
+    {label:'B2C Revenue',val:fmt(qboRecon.pnlHighlights.b2cRevenue),cls:'rc'},
+    {label:'COGS (B2C)',val:fmt(qboRecon.pnlHighlights.cogsB2C),cls:'sp'},
+    {label:'Gross Profit',val:fmt(qboRecon.grossProfit),cls:qboRecon.grossProfit<0?'sp':'rc'},
+    {label:'Total Expenses',val:fmt(qboRecon.pnlHighlights.totalExpenses),cls:'sp'},
+    {label:'Net Income',val:fmt(qboRecon.netIncome),cls:qboRecon.netIncome<0?'sp':'rc'},
+    {label:'Rent (posted)',val:fmt(qboRecon.pnlHighlights.rent),cls:'sp'},
+    {label:'Vehicle Lease',val:fmt(qboRecon.pnlHighlights.vehicleLease),cls:'sp'},
+    {label:'Utilities + Phone',val:fmt(qboRecon.pnlHighlights.utilities+qboRecon.pnlHighlights.phoneService),cls:'sp'},
+    {label:'Health Insurance',val:fmt(qboRecon.pnlHighlights.healthInsurance),cls:'sp'},
+    {label:'Software & Apps',val:fmt(qboRecon.pnlHighlights.softwareApps),cls:'sp'},
+    {label:'Marketing',val:fmt(qboRecon.pnlHighlights.marketing),cls:'sp'},
+  ];
+  const el=document.getElementById('pnl-highlights');
+  if(el) el.innerHTML=items.map(i=>`<div class="rr"><span class="rv">${i.label}</span><span class="ra ${i.cls}">${i.val}</span></div>`).join('');
+}
+
+// ===================== REVIEW INTERACTIVITY =====================
+function updateCounter(){
+  const inputs=document.querySelectorAll('.review-input');
+  const filled=[...inputs].filter(t=>t.value.trim().length>0).length;
+  const el=document.getElementById('response-counter');
+  if(el) el.textContent=filled+' / '+inputs.length+' answered';
+}
+
+function copyAllResponses(){
+  const inputs=document.querySelectorAll('.review-input');
+  const cats=document.querySelectorAll('.review-cat');
+  const sorted=[...reviewItems].sort((a,b)=>{
+    const keys=['acct','dt','v','am'];
+    const k=keys[reviewSortCol];
+    const av=a[k],bv=b[k];
+    if(typeof av==='number') return (av-bv)*reviewSortDir;
+    return av.localeCompare(bv)*reviewSortDir;
+  });
+  const lines=[];
+  inputs.forEach((ta,i)=>{
+    const ans=ta.value.trim();
+    const cat=cats[i]?cats[i].value.trim():'';
+    if(!ans&&!cat) return;
+    const r=sorted[i];
+    lines.push(`## ${r.acct} | ${r.dt} | ${r.v} | $${r.am.toLocaleString()}`);
+    if(ans) lines.push(`Answer: ${ans}`);
+    if(cat) lines.push(`Category: ${cat}`);
+    lines.push('');
+  });
+  if(!lines.length){alert('No responses entered yet.');return;}
+  const text=lines.join('\n');
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.querySelector('.btn.primary');
+    const orig=btn.textContent;
+    btn.textContent='Copied!';
+    btn.style.background='var(--sage)';
+    setTimeout(()=>{btn.textContent=orig;btn.style.background='';},1500);
+  }).catch(()=>{
+    const w=window.open('','_blank','width=600,height=400');
+    w.document.write('<pre>'+text.replace(/</g,'&lt;')+'</pre>');
+  });
+}
+
+function markAllReviewed(){
+  const inputs=document.querySelectorAll('.review-input');
+  inputs.forEach((ta,i)=>{
+    if(ta.value.trim()){
+      const row=ta.closest('tr');
+      if(row){
+        row.style.opacity='0.5';
+        row.style.background='var(--surface)';
+      }
+    }
+  });
+  const btn=document.querySelector('.btn.gold');
+  const orig=btn.textContent;
+  btn.textContent='Marked!';
+  setTimeout(()=>{btn.textContent=orig;},1200);
+}
+
+function copySection(sectionId){
+  const inputs=document.querySelectorAll(`.section-input[data-section="${sectionId}"]`);
+  const lines=[];
+  inputs.forEach(ta=>{
+    const val=ta.value.trim();
+    if(!val) return;
+    const row=ta.closest('tr');
+    const cells=row.querySelectorAll('td');
+    const vendor=cells[1]?cells[1].textContent:'';
+    const amount=cells[2]?cells[2].textContent:'';
+    const date=cells[0]?cells[0].textContent:'';
+    lines.push(`## ${date} | ${vendor} | ${amount}`);
+    lines.push(`Note: ${val}`);
+    lines.push('');
+  });
+  if(!lines.length){alert('No notes entered yet.');return;}
+  const text=lines.join('\n');
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=event.target;
+    const orig=btn.textContent;
+    btn.textContent='Copied!';
+    btn.style.background='var(--sage)';
+    setTimeout(()=>{btn.textContent=orig;btn.style.background='';},1500);
+  }).catch(()=>{
+    const w=window.open('','_blank','width=600,height=400');
+    w.document.write('<pre>'+text.replace(/</g,'&lt;')+'</pre>');
+  });
+}
+
+function updateSectionCounter(sectionId){
+  const inputs=document.querySelectorAll(`.section-input[data-section="${sectionId}"]`);
+  const filled=[...inputs].filter(t=>t.value.trim().length>0).length;
+  const el=document.querySelector(`.section-counter[data-section="${sectionId}"]`);
+  if(el) el.textContent=filled+' / '+inputs.length+' noted';
+}
+
+// ===================== INIT =====================
+document.addEventListener('DOMContentLoaded',()=>{
+  renderSummaryCards();
+  renderReviewBadges();
+  renderReviewTable();
+  renderSubsTable();
+  renderEquityTable();
+  renderAccountSections();
+  renderShopifyTable();
+  renderAmexTable();
+  renderIntuitTable();
+  renderPayPalTable();
+  renderAmexExpandedTable();
+  renderReconTable();
+  renderGapTable();
+  renderPnlHighlights();
+  renderDeferred2026Table();
+  renderDeferredLaterTable();
+
+  // default sort review by amount desc
+  document.querySelectorAll('#review-table thead th').forEach((th,i)=>{
+    if(i===3) th.classList.add('sd');
+  });
+});
+</script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

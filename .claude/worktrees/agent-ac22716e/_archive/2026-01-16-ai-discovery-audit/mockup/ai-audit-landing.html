@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Discovery Audit | AWARE Hair</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cream: #f4efe9;
+      --forest: #102b26;
+      --forest-light: #1a3d35;
+      --teal: #113035;
+      --black: #031612;
+      --gray: #bdbfbf;
+      --sage: #8a9a8e;
+      --gold: #c4a35a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--forest);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .serif {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+    }
+
+    /* Announcement Bar */
+    .announcement {
+      background: var(--forest);
+      color: var(--cream);
+      text-align: center;
+      padding: 12px 20px;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+
+    .announcement a {
+      color: var(--cream);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    /* Header */
+    header {
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(16, 43, 38, 0.1);
+    }
+
+    .logo {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: 4px;
+      color: var(--forest);
+      text-decoration: none;
+    }
+
+    nav a {
+      color: var(--forest);
+      text-decoration: none;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-left: 40px;
+    }
+
+    nav a:hover {
+      opacity: 0.7;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 85vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+    }
+
+    .hero-content {
+      padding: 80px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 600px;
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--sage);
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(42px, 5vw, 64px);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--teal);
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--forest);
+      opacity: 0.8;
+      margin-bottom: 48px;
+      max-width: 480px;
+    }
+
+    .hero-visual {
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(138, 154, 142, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(17, 48, 53, 0.3) 0%, transparent 50%);
+    }
+
+    .hero-visual-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: var(--cream);
+      text-align: center;
+      padding: 60px;
+    }
+
+    .visual-stat {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 120px;
+      font-weight: 400;
+      line-height: 1;
+      opacity: 0.15;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .visual-text {
+      position: relative;
+      z-index: 1;
+    }
+
+    .visual-text h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: 16px;
+      opacity: 0.9;
+    }
+
+    .visual-text p {
+      font-size: 14px;
+      opacity: 0.6;
+      max-width: 300px;
+    }
+
+    /* Form */
+    .audit-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--forest);
+      opacity: 0.7;
+    }
+
+    .form-input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--gray);
+      padding: 12px 0;
+      font-size: 16px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--forest);
+      transition: border-color 0.3s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--forest);
+    }
+
+    .form-input::placeholder {
+      color: var(--sage);
+    }
+
+    .btn-primary {
+      background: var(--forest);
+      color: var(--cream);
+      border: none;
+      padding: 18px 40px;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 12px;
+    }
+
+    .btn-primary:hover {
+      background: var(--teal);
+    }
+
+    .form-note {
+      font-size: 12px;
+      color: var(--sage);
+      margin-top: 8px;
+    }
+
+    /* Stats Section */
+    .stats-section {
+      background: var(--black);
+      color: var(--cream);
+      padding: 100px 60px;
+    }
+
+    .stats-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .stats-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+
+    .stats-header p {
+      opacity: 0.6;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 60px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 72px;
+      font-weight: 400;
+      line-height: 1;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--cream) 0%, var(--sage) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      opacity: 0.5;
+      margin-bottom: 8px;
+    }
+
+    .stat-description {
+      font-size: 14px;
+      opacity: 0.7;
+      max-width: 250px;
+      margin: 0 auto;
+    }
+
+    /* What You Learn Section */
+    .learn-section {
+      padding: 120px 60px;
+      background: var(--cream);
+    }
+
+    .learn-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .learn-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+
+    .learn-header p {
+      color: var(--sage);
+      font-size: 16px;
+    }
+
+    .learn-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .learn-item {
+      display: flex;
+      gap: 24px;
+      padding: 32px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(16, 43, 38, 0.08);
+      transition: all 0.3s;
+    }
+
+    .learn-item:hover {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: rgba(16, 43, 38, 0.15);
+    }
+
+    .learn-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 400;
+      color: var(--sage);
+      line-height: 1;
+      opacity: 0.5;
+    }
+
+    .learn-content h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .learn-content p {
+      font-size: 14px;
+      color: var(--forest);
+      opacity: 0.7;
+    }
+
+    /* The Opportunity Section */
+    .opportunity-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 600px;
+    }
+
+    .opportunity-visual {
+      background: linear-gradient(135deg, var(--teal) 0%, var(--forest) 100%);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .opportunity-visual::before {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border: 1px solid rgba(244, 239, 233, 0.1);
+      border-radius: 50%;
+      animation: pulse 8s ease-in-out infinite;
+    }
+
+    .opportunity-visual::after {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border: 1px solid rgba(244, 239, 233, 0.15);
+      border-radius: 50%;
+      animation: pulse 8s ease-in-out infinite 1s;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    .opportunity-visual-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: var(--cream);
+    }
+
+    .opportunity-visual-content .big-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 96px;
+      font-weight: 400;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .opportunity-visual-content p {
+      font-size: 14px;
+      opacity: 0.7;
+      max-width: 200px;
+    }
+
+    .opportunity-content {
+      padding: 80px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .opportunity-content h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 38px;
+      font-weight: 400;
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+
+    .opportunity-content p {
+      font-size: 16px;
+      opacity: 0.8;
+      margin-bottom: 16px;
+      max-width: 450px;
+    }
+
+    .opportunity-list {
+      list-style: none;
+      margin: 32px 0;
+    }
+
+    .opportunity-list li {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(16, 43, 38, 0.1);
+      font-size: 15px;
+    }
+
+    .opportunity-list li::before {
+      content: '→';
+      color: var(--sage);
+    }
+
+    /* CTA Section */
+    .cta-section {
+      background: var(--black);
+      color: var(--cream);
+      padding: 120px 60px;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+
+    .cta-section p {
+      opacity: 0.6;
+      margin-bottom: 40px;
+      font-size: 16px;
+    }
+
+    .cta-form {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .cta-form .form-input {
+      background: rgba(244, 239, 233, 0.05);
+      border: 1px solid rgba(244, 239, 233, 0.2);
+      color: var(--cream);
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      width: 100%;
+    }
+
+    .cta-form .form-input::placeholder {
+      color: rgba(244, 239, 233, 0.4);
+    }
+
+    .cta-form .btn-primary {
+      background: var(--cream);
+      color: var(--forest);
+      width: 100%;
+    }
+
+    .cta-form .btn-primary:hover {
+      background: var(--sage);
+      color: var(--cream);
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 60px;
+      border-top: 1px solid rgba(16, 43, 38, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-size: 12px;
+      color: var(--sage);
+    }
+
+    footer a {
+      color: var(--forest);
+      text-decoration: none;
+      font-size: 12px;
+      margin-left: 24px;
+    }
+
+    /* Decorative Elements */
+    .decorative-line {
+      width: 60px;
+      height: 1px;
+      background: var(--sage);
+      margin: 24px 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-visual {
+        min-height: 400px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .learn-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .opportunity-section {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding: 20px;
+      }
+
+      .hero-content {
+        padding: 60px 20px;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-in {
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+  </style>
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement">
+    Free tool for salon professionals — <a href="#audit-form">Discover your AI visibility score</a>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <a href="https://awarehair.com" class="logo">AWARE</a>
+    <nav>
+      <a href="https://awarehair.com/collections/all">Shop</a>
+      <a href="https://awarehair.com/pages/about-us">Our Story</a>
+      <a href="https://awarehair.com/pages/registration">Pro Portal</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="hero-eyebrow">For Salon Professionals</span>
+      <h1 class="hero-title">
+        Is Your Salon<br>
+        <em>Visible to AI?</em>
+      </h1>
+      <p class="hero-subtitle">
+        When clients ask ChatGPT for salon recommendations, do you appear?
+        Most salon owners have no idea. Discover your score in 60 seconds.
+      </p>
+
+      <form class="audit-form" id="audit-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Salon Name</label>
+            <input type="text" class="form-input" placeholder="e.g., Sholé Beverly Hills" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">City</label>
+            <input type="text" class="form-input" placeholder="e.g., Beverly Hills, CA" required>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="Your email for the full report" required>
+        </div>
+        <button type="submit" class="btn-primary">Discover Your AI Score →</button>
+        <p class="form-note">Free analysis • No credit card • Results in 60 seconds</p>
+      </form>
+    </div>
+
+    <div class="hero-visual">
+      <span class="visual-stat">AI</span>
+      <div class="hero-visual-content">
+        <div class="visual-text">
+          <h3>The Discovery Shift</h3>
+          <p>By 2026, AI assistants will be the primary way new clients find salons</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="stats-header">
+      <h2>The Way Clients Find Salons is Changing</h2>
+      <p>AI is reshaping local discovery. Here's what the data shows.</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">40%</div>
+        <div class="stat-label">Under 35</div>
+        <p class="stat-description">of people under 35 now ask AI for local service recommendations</p>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">30%</div>
+        <div class="stat-label">Searches</div>
+        <p class="stat-description">of Google searches display AI Overview results at the top</p>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">2.3×</div>
+        <div class="stat-label">Advantage</div>
+        <p class="stat-description">higher recommendation rate for salons with specialty positioning</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- What You'll Learn Section -->
+  <section class="learn-section">
+    <div class="learn-header">
+      <h2>What Your Report Reveals</h2>
+      <p>A comprehensive analysis of your salon's AI discoverability</p>
+    </div>
+
+    <div class="learn-grid">
+      <div class="learn-item">
+        <span class="learn-number">01</span>
+        <div class="learn-content">
+          <h3>Your AI Discovery Score</h3>
+          <p>A 0-100 score showing how likely AI assistants are to recommend your salon</p>
+        </div>
+      </div>
+      <div class="learn-item">
+        <span class="learn-number">02</span>
+        <div class="learn-content">
+          <h3>Category Breakdown</h3>
+          <p>Detailed analysis across Google Business, Reviews, Digital Footprint, and AI Signals</p>
+        </div>
+      </div>
+      <div class="learn-item">
+        <span class="learn-number">03</span>
+        <div class="learn-content">
+          <h3>Your Biggest Gaps</h3>
+          <p>Specific insights on what's hurting your visibility and costing you clients</p>
+        </div>
+      </div>
+      <div class="learn-item">
+        <span class="learn-number">04</span>
+        <div class="learn-content">
+          <h3>Action Plan</h3>
+          <p>Prioritized recommendations to improve your score, ranked by impact</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Scalp Care Opportunity -->
+  <section class="opportunity-section">
+    <div class="opportunity-visual">
+      <div class="opportunity-visual-content">
+        <div class="big-number">2.3×</div>
+        <p>Higher AI recommendation rate with specialty positioning</p>
+      </div>
+    </div>
+    <div class="opportunity-content">
+      <h2>The Scalp Care<br>Opportunity</h2>
+      <p>
+        Salons with clearly defined specialties are significantly more likely
+        to be recommended by AI assistants. Scalp care is the fastest-growing
+        salon service category.
+      </p>
+      <ul class="opportunity-list">
+        <li>Differentiate from generalist competitors</li>
+        <li>Capture high-intent specialty searches</li>
+        <li>Build authority AI systems recognize</li>
+        <li>Increase average ticket by 40%</li>
+      </ul>
+      <p style="font-size: 14px; opacity: 0.6;">
+        AWARE partners with forward-thinking salons to build scalp care expertise
+        and AI visibility together.
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <h2>Ready to See Your Score?</h2>
+    <p>Get your free AI Discovery Audit and find out where you stand</p>
+
+    <form class="cta-form">
+      <input type="text" class="form-input" placeholder="Salon Name" required>
+      <input type="text" class="form-input" placeholder="City or Zip Code" required>
+      <input type="email" class="form-input" placeholder="Email for your report" required>
+      <button type="submit" class="btn-primary">Get Your Free Score →</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2024 AWARE Hair. All rights reserved.</p>
+    <div>
+      <a href="https://awarehair.com/pages/privacy-policy">Privacy</a>
+      <a href="https://awarehair.com/pages/terms-of-service">Terms</a>
+      <a href="mailto:partners@awarehair.com">Contact</a>
+    </div>
+  </footer>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

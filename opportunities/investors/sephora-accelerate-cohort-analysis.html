@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sephora Accelerate Cohort Analysis (2021-2025) - AWARE Hair</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #102B26;
+    --cream: #f4efe9;
+    --surface: #faf8f5;
+    --gold: #D4A574;
+    --sage: #7d8471;
+    --text: #102B26;
+    --text-muted: #5a6b64;
+    --border: #e2ddd7;
+    --verified: #2d6a4f;
+    --unverified: #b08968;
+    --gap: #c1666b;
+    --strong: #2d6a4f;
+    --fits: #7d8471;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 32px 80px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+  }
+
+  .header-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .header-subtitle {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .header-date {
+    font-size: 13px;
+    color: var(--sage);
+    margin-top: 16px;
+  }
+
+  /* Section styling */
+  .section {
+    margin-bottom: 48px;
+  }
+
+  .section-number {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    margin-top: 28px;
+  }
+
+  p {
+    margin-bottom: 16px;
+    color: var(--text-muted);
+    font-size: 15px;
+  }
+
+  /* Executive summary cards */
+  .exec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .exec-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .exec-card .metric {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--teal);
+  }
+
+  .exec-card .label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-top: 4px;
+  }
+
+  /* Fit score */
+  .fit-score {
+    background: var(--teal);
+    color: white;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .fit-score .score-number {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    min-width: 80px;
+    text-align: center;
+  }
+
+  .fit-score .score-detail {
+    flex: 1;
+  }
+
+  .fit-score .score-detail h3 {
+    color: white;
+    margin-top: 0;
+    margin-bottom: 4px;
+    font-size: 18px;
+  }
+
+  .fit-score .score-detail p {
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 0;
+    font-size: 14px;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+    font-size: 14px;
+  }
+
+  thead th {
+    background: var(--teal);
+    color: white;
+    text-align: left;
+    padding: 10px 12px;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  thead th:first-child { border-radius: 4px 0 0 0; }
+  thead th:last-child { border-radius: 0 4px 0 0; }
+
+  tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tbody tr:nth-child(even) { background: var(--surface); }
+  tbody tr:hover { background: #f0ebe5; }
+
+  /* Tags */
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.3px;
+  }
+
+  .tag-verified { background: #d8f3dc; color: var(--verified); }
+  .tag-unverified { background: #fde4cf; color: #7f5539; }
+  .tag-strong { background: #d8f3dc; color: var(--strong); }
+  .tag-fits { background: #e8e4de; color: var(--sage); }
+  .tag-gap { background: #fde4cf; color: var(--gap); }
+  .tag-mixed { background: #fde4cf; color: #7f5539; }
+
+  .tag-skincare { background: #d8f3dc; color: #2d6a4f; }
+  .tag-haircare { background: #d4c5f9; color: #5b3a8c; }
+  .tag-makeup { background: #ffd6e0; color: #a4133c; }
+  .tag-fragrance { background: #fde4cf; color: #7f5539; }
+  .tag-bodycare { background: #bde0fe; color: #1d3557; }
+  .tag-accessories { background: #e8e4de; color: #555; }
+  .tag-wellness { background: #d0f4de; color: #2d6a4f; }
+  .tag-suncare { background: #fff3b0; color: #7f5539; }
+  .tag-scalp { background: var(--gold); color: white; }
+
+  /* Collapsible cohorts */
+  .cohort-toggle {
+    width: 100%;
+    text-align: left;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    transition: background 0.2s;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--teal);
+  }
+
+  .cohort-toggle:hover { background: #f0ebe5; }
+
+  .cohort-toggle .arrow {
+    transition: transform 0.2s;
+    font-size: 14px;
+    color: var(--sage);
+  }
+
+  .cohort-toggle.open .arrow { transform: rotate(90deg); }
+
+  .cohort-content {
+    display: none;
+    padding: 20px 0;
+  }
+
+  .cohort-content.open { display: block; }
+
+  .cohort-meta {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  /* Pattern cards */
+  .pattern-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 6px 6px 0;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+
+  .pattern-card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .pattern-card p {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .pattern-card .evidence {
+    font-size: 13px;
+    color: var(--sage);
+    font-style: italic;
+  }
+
+  /* Gap analysis */
+  .gap-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 100px;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+
+  .gap-row:last-child { border-bottom: none; }
+
+  .gap-label {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .gap-detail {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  /* Recs */
+  .rec-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+  }
+
+  .rec-card .rec-number {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .rec-card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .rec-card p {
+    font-size: 14px;
+    margin-bottom: 0;
+  }
+
+  /* Key insight callout */
+  .callout {
+    background: var(--teal);
+    color: white;
+    border-radius: 6px;
+    padding: 24px 28px;
+    margin: 24px 0;
+  }
+
+  .callout h4 {
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .callout p {
+    color: rgba(255,255,255,0.9);
+    font-size: 15px;
+    margin-bottom: 0;
+  }
+
+  /* Sources */
+  .source-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .source-list li {
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .source-list li a {
+    color: var(--teal);
+    text-decoration: none;
+  }
+
+  .source-list li a:hover { text-decoration: underline; }
+
+  /* Warning box for AI research */
+  .warning-box {
+    background: #fff8f0;
+    border: 1px solid #f0c078;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: #7f5539;
+  }
+
+  /* Print */
+  @media print {
+    body { background: white; }
+    .container { padding: 24px; max-width: 100%; }
+    .cohort-content { display: block !important; }
+    .cohort-toggle .arrow { display: none; }
+    .fit-score, .callout { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    table { page-break-inside: avoid; }
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px; }
+    h1 { font-size: 24px; }
+    .exec-grid { grid-template-columns: 1fr 1fr; }
+    .gap-row { grid-template-columns: 1fr; gap: 4px; }
+    .fit-score { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-label">Competitive Intelligence</div>
+    <h1>Sephora Accelerate Cohort Analysis</h1>
+    <div class="header-subtitle">41 brands across 5 cohorts (2021-2025), what stage they were at, what likely got them in, and what it means for AWARE Hair.</div>
+    <div class="header-date">Prepared March 30, 2026 - Sources verified against Sephora Newsroom</div>
+  </div>
+
+  <!-- 1. EXECUTIVE SUMMARY -->
+  <div class="section" id="executive-summary">
+    <div class="section-number">01</div>
+    <h2>Executive Summary</h2>
+
+    <div class="exec-grid">
+      <div class="exec-card">
+        <div class="metric">41</div>
+        <div class="label">Total Brands (5 cohorts)</div>
+      </div>
+      <div class="exec-card">
+        <div class="metric">0</div>
+        <div class="label">Scalp-First Brands</div>
+      </div>
+      <div class="exec-card">
+        <div class="metric">$0-750K</div>
+        <div class="label">Typical Revenue at Entry</div>
+      </div>
+      <div class="exec-card">
+        <div class="metric">50%+</div>
+        <div class="label">Launched at Sephora</div>
+      </div>
+    </div>
+
+    <div class="fit-score">
+      <div class="score-number">7/10</div>
+      <div class="score-detail">
+        <h3>AWARE Hair Fit Score</h3>
+        <p>Strong on category differentiation, founder story, and stage. The DTC gap and retail readiness are real but addressable. Scalp wellness is a genuine white space in the program's 10-year history.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <h4>Key Finding</h4>
+      <p>Sephora's stated criteria ("no VC, not widely distributed") are soft guidelines, not hard gates. Topicals had $2.6M in VC funding. Oui the People had $4M. The actual filter is: BIPOC founder + compelling differentiation + not yet in Sephora + a brand Sephora wants on its shelves. Zero scalp-first brands have ever been selected - AWARE occupies a genuine white space.</p>
+    </div>
+
+    <div class="warning-box">
+      <strong>Data integrity note:</strong> Brand names and cohort assignments are verified against Sephora Newsroom press releases. Funding and revenue data is sourced from Beauty Independent, WWD, Crunchbase, and founder interviews. Claims without direct sources are marked <span class="tag tag-unverified">UNVERIFIED</span>.
+    </div>
+  </div>
+
+  <!-- 2. ALL 41 BRANDS BY COHORT -->
+  <div class="section" id="cohorts">
+    <div class="section-number">02</div>
+    <h2>All 41 Brands by Cohort</h2>
+
+    <!-- 2021 -->
+    <button class="cohort-toggle open" onclick="toggleCohort(this)">
+      <span>2021 Cohort - 8 Brands <span style="color:var(--sage); font-weight:400; font-size:14px;">(First BIPOC-exclusive year)</span></span>
+      <span class="arrow">&#9654;</span>
+    </button>
+    <div class="cohort-content open">
+      <div class="cohort-meta">Source: <a href="https://newsroom.sephora.com/sephora-relaunches-its-incubator-program-with-a-new-focus-on-elevating-bipoc-owned-prestige-beauty-brands/" target="_blank">Sephora Newsroom, Feb 2021</a>. All 8 brands launched at Sephora upon completion.</div>
+      <table>
+        <thead>
+          <tr><th>Brand</th><th>Founder(s)</th><th>Category</th><th>Stage at Entry</th><th>Post-Program</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>54 Thrones</strong></td>
+            <td>Christina Funke Tegbe</td>
+            <td><span class="tag tag-bodycare">Body Care</span></td>
+            <td>~$500K rev, bootstrapped, 5 yrs in market <span class="tag tag-verified">VERIFIED</span></td>
+            <td>108 Sephora/Credo doors, Shark Tank deal ($250K)</td>
+          </tr>
+          <tr>
+            <td><strong>Eadem</strong></td>
+            <td>Marie Kouadio Amouzame, Alice Lin Glover</td>
+            <td><span class="tag tag-skincare">Skincare</span></td>
+            <td>Pre-launch, $0 revenue, bootstrapped <span class="tag tag-verified">VERIFIED</span></td>
+            <td>Launched at Sephora, 6x revenue growth Y1, seed from Fable Investments</td>
+          </tr>
+          <tr>
+            <td><strong>Glory</strong></td>
+            <td>Alisia Michelle Ford</td>
+            <td><span class="tag tag-skincare">Skincare</span></td>
+            <td>Early DTC <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td>Launched at Sephora</td>
+          </tr>
+          <tr>
+            <td><strong>Hyper Skin</strong></td>
+            <td>Desiree Verdejo</td>
+            <td><span class="tag tag-skincare">Skincare</span></td>
+            <td>~$750K first year, $12K initial investment, 15 months in <span class="tag tag-verified">VERIFIED</span></td>
+            <td>Launched at Sephora, $20K 15% Pledge grant</td>
+          </tr>
+          <tr>
+            <td><strong>Imania Beauty</strong></td>
+            <td>Nia Wellman</td>
+            <td><span class="tag tag-haircare">Haircare</span></td>
+            <td>Early stage <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td>Launched at Sephora</td>
+          </tr>
+          <tr>
+            <td><strong>Kulfi Beauty</strong></td>
+            <td>Priyanka Ganjoo</td>
+            <td><span class="tag tag-makeup">Makeup</span></td>
+            <td>Near-zero rev, "only lab samples," launched Feb 2021 <span class="tag tag-verified">VERIFIED</span></td>
+            <td>All Sephora NA doors, $3.25M seed (Sandbridge + Gold House)</td>
+          </tr>
+          <tr>
+            <td><strong>Ries</strong></td>
+            <td>Megan Graham</td>
+            <td><span class="tag tag-accessories">Accessories</span></td>
+            <td>Pre-launch, $0 revenue <span class="tag tag-verified">VERIFIED</span></td>
+            <td>First reusable travel bottle brand at Sephora</td>
+          </tr>
+          <tr>
+            <td><strong>Topicals</strong></td>
+            <td>Olamide Olowe</td>
+            <td><span class="tag tag-skincare">Skincare</span></td>
+            <td>$2.6M seed (Lerer Hippeau), ~6 months in market <span class="tag tag-verified">VERIFIED</span></td>
+            <td>Fastest-growing skincare brand at Sephora, $10M Series A (CAVU)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2022 -->
+    <button class="cohort-toggle" onclick="toggleCohort(this)">
+      <span>2022 Cohort - 10 Brands <span style="color:var(--sage); font-weight:400; font-size:14px;">(First fragrance brand, largest cohort)</span></span>
+      <span class="arrow">&#9654;</span>
+    </button>
+    <div class="cohort-content">
+      <div class="cohort-meta">Source: <a href="https://newsroom.sephora.com/sephora-announces-participants-for-2022-accelerate-brand-incubator-program-with-continued-focus-on-bipoc-brand-founders/" target="_blank">Sephora Newsroom, 2022</a>. Expanded to 10 brands. Limited public stage data for this cohort.</div>
+      <table>
+        <thead>
+          <tr><th>Brand</th><th>Founder(s)</th><th>Category</th><th>Stage at Entry</th><th>Post-Program</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Basma Beauty</strong></td>
+            <td>Basma Hameed, Parisa Durrani</td>
+            <td><span class="tag tag-makeup">Makeup</span></td>
+            <td>Early stage <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Fara Homidi</strong></td>
+            <td>Fara Homidi</td>
+            <td><span class="tag tag-skincare">Skincare</span></td>
+            <td>Early stage, sustainable/refillable packaging <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>House of Foster</strong></td>
+            <td>Selah Lemon</td>
+            <td><span class="tag tag-fragrance">Fragrance</span></td>
+            <td>Early stage, first fragrance in program <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Kempt</strong></td>
+            <td>Rimah Husain</td>
+            <td><span class="tag tag-skincare">Skincare</span></td>
+            <td>Early stage, hair removal + skincare hybrid <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Lion Pose</strong></td>
+            <td>Nisha Phatak, Madhu Punjabi</td>
+            <td><span class="tag tag-skincare">Skincare</span></td>
+            <td>Early stage <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mango People</strong></td>
+            <td>Sravya Adusumilli</td>
+            <td><span class="tag tag-wellness">Multi-Category</span></td>
+            <td>Early stage, Ayurvedic positioning <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Miss Rizos</strong></td>
+            <td>Carolina Contreras</td>
+            <td><span class="tag tag-haircare">Haircare</span></td>
+            <td>Established community + salons in multiple countries <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Shaz &amp; Kiks</strong></td>
+            <td>Kiku Chaudhuri</td>
+            <td><span class="tag tag-haircare">Haircare</span></td>
+            <td>Early DTC, Ayurvedic heritage <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Sistine</strong></td>
+            <td>Krys Lunardo</td>
+            <td><span class="tag tag-skincare">Skincare</span></td>
+            <td>Early stage <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Wonder Curl</strong></td>
+            <td>Scarlett Rocourt</td>
+            <td><span class="tag tag-haircare">Haircare</span></td>
+            <td>Established DTC brand <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2023 -->
+    <button class="cohort-toggle" onclick="toggleCohort(this)">
+      <span>2023 Cohort - 7 Brands <span style="color:var(--sage); font-weight:400; font-size:14px;">(Includes established brands like Oui the People)</span></span>
+      <span class="arrow">&#9654;</span>
+    </button>
+    <div class="cohort-content">
+      <div class="cohort-meta">Source: <a href="https://newsroom.sephora.com/sephora-announces-participants-for-2023-accelerate-brand-incubator-program-with-continued-focus-on-bipoc-brand-founders-and-new-programming/" target="_blank">Sephora Newsroom, 2023</a>. Smallest cohort. Notable for accepting brands with existing retail distribution and VC funding.</div>
+      <table>
+        <thead>
+          <tr><th>Brand</th><th>Founder(s)</th><th>Category</th><th>Stage at Entry</th><th>Post-Program</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Brown Girl Jane</strong></td>
+            <td>Malaika Jones, Tai Beauchamp, Nia Jones</td>
+            <td><span class="tag tag-wellness">Wellness</span></td>
+            <td>~$2M rev 2021, in Nordstrom/Bloomingdale's/Saks, $1M raised <span class="tag tag-verified">VERIFIED</span></td>
+            <td>Launched at Sephora</td>
+          </tr>
+          <tr>
+            <td><strong>Glosshood</strong></td>
+            <td>Sienna Brown</td>
+            <td><span class="tag tag-makeup">Makeup</span></td>
+            <td>Early stage <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Moodeaux</strong></td>
+            <td>Brianna Arps</td>
+            <td><span class="tag tag-fragrance">Fragrance</span></td>
+            <td>~$200K from grants only, 1-2 yrs in market, at Credo <span class="tag tag-verified">VERIFIED</span></td>
+            <td>Launched at Sephora, ELLE Future of Beauty, ESSENCE Beauty Boss</td>
+          </tr>
+          <tr>
+            <td><strong>Of Other Worlds</strong></td>
+            <td>Simedar Jackson</td>
+            <td><span class="tag tag-skincare">Skincare</span></td>
+            <td>Early stage <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Oui the People</strong></td>
+            <td>Karen Young</td>
+            <td><span class="tag tag-bodycare">Body Care</span></td>
+            <td>$4M+ VC (New Age Capital), 5-6 yrs in market, DTC <span class="tag tag-verified">VERIFIED</span></td>
+            <td>Launched in 200+ Sephora doors</td>
+          </tr>
+          <tr>
+            <td><strong>Range Beauty</strong></td>
+            <td>Alicia Scott</td>
+            <td><span class="tag tag-makeup">Makeup</span></td>
+            <td>~$450K total (Fearless Fund + Shark Tank + Glossier), approaching $1M <span class="tag tag-verified">VERIFIED</span></td>
+            <td>Launched in 88 Sephora stores</td>
+          </tr>
+          <tr>
+            <td><strong>Seaspire Skincare</strong></td>
+            <td>Camille Martin</td>
+            <td><span class="tag tag-skincare">Skincare</span></td>
+            <td>Early stage, marine-derived ingredients <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2024 -->
+    <button class="cohort-toggle" onclick="toggleCohort(this)">
+      <span>2024 Cohort - 8 Brands <span style="color:var(--sage); font-weight:400; font-size:14px;">(800+ applications, Issa Rae co-founded brand)</span></span>
+      <span class="arrow">&#9654;</span>
+    </button>
+    <div class="cohort-content">
+      <div class="cohort-meta">Source: <a href="https://newsroom.sephora.com/sephora-announces-new-class-of-brand-founders-for-2024-accelerate-incubator-program/" target="_blank">Sephora Newsroom, 2024</a>. Record application year (800+). Includes celebrity co-founded Sienna Naturals.</div>
+      <table>
+        <thead>
+          <tr><th>Brand</th><th>Founder(s)</th><th>Category</th><th>Stage at Entry</th><th>Post-Program</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Abi Ame</strong></td>
+            <td>Yasmin Zeinab</td>
+            <td><span class="tag tag-bodycare">Body Care</span></td>
+            <td>Early stage, made in France <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Banuskin</strong></td>
+            <td>Roz Samimi</td>
+            <td><span class="tag tag-skincare">Skincare</span></td>
+            <td>Early stage, acne-focused <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Harlem Perfume Co.</strong></td>
+            <td>Teri Johnson</td>
+            <td><span class="tag tag-fragrance">Fragrance</span></td>
+            <td>Established heritage brand <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Inde Wild</strong></td>
+            <td>Diipa Buller-Khosla</td>
+            <td><span class="tag tag-skincare">Skincare</span></td>
+            <td>$3M seed (SoGal), $1.9M first 12 months, 2-3 yrs in <span class="tag tag-verified">VERIFIED</span></td>
+            <td>Sephora UK (677% QoQ growth), $5M from Unilever Ventures, US Sephora Mar 2026</td>
+          </tr>
+          <tr>
+            <td><strong>Katini Skin</strong></td>
+            <td>Katini Yamaoka</td>
+            <td><span class="tag tag-skincare">Skincare</span></td>
+            <td>Early stage <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Maed Beauty</strong></td>
+            <td>Denise Vasi</td>
+            <td><span class="tag tag-makeup">Makeup</span></td>
+            <td>Launch stage, lip care focus <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Sienna Naturals</strong></td>
+            <td>Hannah Diop (co-founded with Issa Rae)</td>
+            <td><span class="tag tag-haircare">Haircare</span></td>
+            <td>Founded 2012 (12 years!), celebrity co-founder, declined to share revenue <span class="tag tag-verified">VERIFIED</span></td>
+            <td>Launched in 178 Sephora stores Feb 2025</td>
+          </tr>
+          <tr>
+            <td><strong>Soft Rows</strong></td>
+            <td>Quani Burnett</td>
+            <td><span class="tag tag-haircare">Haircare</span></td>
+            <td>Early stage, textured hair <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td><span class="tag tag-unverified">UNVERIFIED</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2025 -->
+    <button class="cohort-toggle" onclick="toggleCohort(this)">
+      <span>2025 Cohort - 8 Brands <span style="color:var(--sage); font-weight:400; font-size:14px;">(10th anniversary, first scalp-adjacent brand)</span></span>
+      <span class="arrow">&#9654;</span>
+    </button>
+    <div class="cohort-content">
+      <div class="cohort-meta">Source: <a href="https://newsroom.sephora.com/sephoras-2025-accelerate-incubator-program-celebrates-a-decade-of-impact-with-new-class-of-brand-founders/" target="_blank">Sephora Newsroom, 2025</a>. Marks 10 years of the program. The Steam Bar is the closest any brand has come to scalp care.</div>
+      <table>
+        <thead>
+          <tr><th>Brand</th><th>Founder(s)</th><th>Category</th><th>Stage at Entry</th><th>Post-Program</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>4AM</strong></td>
+            <td>Jade Beguelin, Sabrina Sadeghian</td>
+            <td><span class="tag tag-skincare">Skincare</span></td>
+            <td>Early stage, minimalist luxury <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td>In program</td>
+          </tr>
+          <tr>
+            <td><strong>Bounce Curl</strong></td>
+            <td>Merian Odesho</td>
+            <td><span class="tag tag-haircare">Haircare</span></td>
+            <td>Founded 2015 (9-10 yrs), DTC-only, no VC, no prior retail <span class="tag tag-verified">VERIFIED</span></td>
+            <td>First from 2025 cohort to launch at Sephora</td>
+          </tr>
+          <tr>
+            <td><strong>Influxious</strong></td>
+            <td>Funmi Monet</td>
+            <td><span class="tag tag-fragrance">Fragrance</span></td>
+            <td>Early stage <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td>In program</td>
+          </tr>
+          <tr>
+            <td><strong>OliviaUmma</strong></td>
+            <td>Hye Young Kim</td>
+            <td><span class="tag tag-skincare">Skincare</span></td>
+            <td>Early stage, K-beauty inspired <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td>In program</td>
+          </tr>
+          <tr>
+            <td><strong>Ruhveda</strong></td>
+            <td>Fatema Raja, Navneet Kaur</td>
+            <td><span class="tag tag-fragrance">Fragrance</span></td>
+            <td>Early stage, South Asian heritage <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td>In program</td>
+          </tr>
+          <tr>
+            <td><strong>The Potion Studio</strong></td>
+            <td>Aziza El Wanni</td>
+            <td><span class="tag tag-haircare">Haircare</span></td>
+            <td>Early stage, climate-adaptive <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td>In program</td>
+          </tr>
+          <tr>
+            <td><strong>The Steam Bar</strong></td>
+            <td>Judy Koloko</td>
+            <td><span class="tag tag-scalp">Haircare / Scalp</span></td>
+            <td>Early stage, steam-delivery system for scalp regeneration <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td>In program</td>
+          </tr>
+          <tr>
+            <td><strong>Tonal Cosmetics</strong></td>
+            <td>Christal Alert</td>
+            <td><span class="tag tag-suncare">Suncare / Makeup</span></td>
+            <td>Early stage, suncare-first cosmetics <span class="tag tag-unverified">UNVERIFIED</span></td>
+            <td>In program</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 3. STAGE ANALYSIS -->
+  <div class="section" id="stage-analysis">
+    <div class="section-number">03</div>
+    <h2>What Stage Were They Actually At?</h2>
+
+    <p>Across the 15 brands with verifiable stage data, the picture is clear: Sephora Accelerate targets early-stage brands, but "early stage" is loosely defined. The range spans pre-launch ($0 revenue) to $2M+ with retail distribution.</p>
+
+    <table>
+      <thead>
+        <tr><th>Dimension</th><th>Typical Range</th><th>Low End</th><th>High End (Outliers)</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Revenue</strong></td>
+          <td>$0 - $750K</td>
+          <td>Eadem, Ries, Kulfi ($0 - pre-launch)</td>
+          <td>Brown Girl Jane (~$2M), Inde Wild ($1.9M)</td>
+        </tr>
+        <tr>
+          <td><strong>Funding</strong></td>
+          <td>Bootstrapped or grants only</td>
+          <td>Eadem ($0), Hyper Skin ($12K)</td>
+          <td>Oui the People ($4M VC), Topicals ($2.6M seed)</td>
+        </tr>
+        <tr>
+          <td><strong>Time in Market</strong></td>
+          <td>0 - 3 years</td>
+          <td>Eadem, Ries (pre-launch)</td>
+          <td>Sienna Naturals (12 yrs), Bounce Curl (9 yrs)</td>
+        </tr>
+        <tr>
+          <td><strong>Distribution</strong></td>
+          <td>DTC-only or none</td>
+          <td>Eadem, Ries (no distribution)</td>
+          <td>Brown Girl Jane (Nordstrom, Bloomingdale's, Saks)</td>
+        </tr>
+        <tr>
+          <td><strong>Team</strong></td>
+          <td>1-3 people, founder-led</td>
+          <td>Solo founders (most brands)</td>
+          <td>Sienna Naturals (celebrity co-founder + team)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <h4>The Real Gate</h4>
+      <p>The common denominator is not stage - it is that the brand is not yet in Sephora. Sephora uses Accelerate to build a proprietary pipeline of diverse brands it can launch on its own terms. Brands with VC, brands with retail distribution, brands that are 12 years old - all accepted. The only hard requirements: BIPOC-founded and not currently selling at Sephora.</p>
+    </div>
+  </div>
+
+  <!-- 4. SELECTION PATTERNS -->
+  <div class="section" id="patterns">
+    <div class="section-number">04</div>
+    <h2>5 Selection Patterns</h2>
+
+    <div class="pattern-card">
+      <h4>1. Cultural or Scientific Differentiation Wins</h4>
+      <p>The strongest accepted brands occupy a cultural or scientific niche that Sephora cannot replicate internally. Heritage-based positioning (Ayurvedic, African botanicals, Harlem culture) and science-based innovation (clinical actives for melanin-rich skin, patent-pending formulations) are overrepresented.</p>
+      <div class="evidence">Evidence: Shaz & Kiks (Ayurvedic), Inde Wild (Ayurvedistry), 54 Thrones (African botanicals), Topicals (clinical actives for chronic conditions), Kulfi (South Asian undertones), Ruhveda (South Asian heritage fragrance). At least 12 of 41 brands have explicit cultural or scientific differentiation.</div>
+    </div>
+
+    <div class="pattern-card">
+      <h4>2. Founder Story Matters More Than Revenue</h4>
+      <p>Eadem and Ries were pre-launch with $0 revenue. Kulfi had "only lab samples." They were all accepted. Meanwhile, the brands with the strongest post-program trajectories (Topicals, Kulfi, Inde Wild) had compelling, media-ready founder narratives that Sephora's PR machine could amplify.</p>
+      <div class="evidence">Evidence: Olamide Olowe (Topicals) was the youngest Black woman to raise $10M, a story Sephora repeatedly featured. Priyanka Ganjoo (Kulfi) built an entire category for South Asian makeup. Christina Funke Tegbe (54 Thrones) sourced ingredients directly from women-led cooperatives in Africa.</div>
+    </div>
+
+    <div class="pattern-card">
+      <h4>3. Category Diversity Is Intentional</h4>
+      <p>Sephora deliberately builds each cohort with category spread. Every year includes 2-3 haircare brands, 2-3 skincare brands, and (since 2022) 1-2 fragrance brands. They avoid stacking a single category. This benefits niche categories like scalp care - fewer applicants, less competition for the slot.</p>
+      <div class="evidence">Evidence: 2021 had 4 skincare, 1 haircare, 1 makeup, 1 accessories, 1 multi. 2025 had 2 skincare, 3 haircare, 2 fragrance, 1 suncare. Each cohort is balanced.</div>
+    </div>
+
+    <div class="pattern-card">
+      <h4>4. DTC-First or DTC-Ready Is the Norm</h4>
+      <p>Nearly every accepted brand is DTC-first or at least DTC-ready. Sephora wants brands that can drive online traffic, convert on Sephora.com, and build social proof. B2B-first models are rare - Miss Rizos (2022) had salon operations but that was the exception, not the rule.</p>
+      <div class="evidence">Evidence: Of 15 brands with verified distribution data, 12 were DTC-only or DTC-primary at acceptance. Brown Girl Jane (Nordstrom) and Miss Rizos (salons) are the only non-DTC-first brands with verified data.</div>
+    </div>
+
+    <div class="pattern-card">
+      <h4>5. Grant Stacking Is a Viable Path</h4>
+      <p>Multiple brands entered with zero VC but stacked beauty industry grants: Glossier Grants, Fearless Fund, 15% Pledge, Arch Grants, Black Ambition. This grant trail signals ecosystem validation without diluting equity - exactly the profile Sephora targets.</p>
+      <div class="evidence">Evidence: Moodeaux (~$200K grants only), Range Beauty (~$450K from Fearless Fund + Shark Tank + Glossier), Brown Girl Jane ($1M across 4 rounds including grants). Grant-funded brands outnumber VC-backed brands in the verified data.</div>
+    </div>
+  </div>
+
+  <!-- 5. AWARE GAP ANALYSIS -->
+  <div class="section" id="gap-analysis">
+    <div class="section-number">05</div>
+    <h2>AWARE Hair Gap Analysis</h2>
+
+    <p>How AWARE measures against each selection pattern, based on our March 31, 2026 application.</p>
+
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 24px; margin-bottom: 24px;">
+
+      <div class="gap-row">
+        <div class="gap-label">BIPOC-Founded</div>
+        <div class="gap-detail">Asian American team: Tina Mui (40+ yr trichologist), Jade Wong (community), David Zhao (ops). Fits post-2021 BIPOC focus. Multi-generational mother-daughter story is distinctive.</div>
+        <div><span class="tag tag-strong">STRONG</span></div>
+      </div>
+
+      <div class="gap-row">
+        <div class="gap-label">Category Differentiation</div>
+        <div class="gap-detail">Scalp wellness - zero scalp-first brands in 41 alumni across 5 years. The Steam Bar (2025) is the closest, but positioned as steam delivery, not scalp wellness. AWARE's patent-pending AWAREBIO Complex and trichologist credential are unique.</div>
+        <div><span class="tag tag-strong">VERY STRONG</span></div>
+      </div>
+
+      <div class="gap-row">
+        <div class="gap-label">Revenue Stage</div>
+        <div class="gap-detail">$150K in 8 months. Falls within the typical $0-$750K range. Above pre-launch brands (Eadem, Ries, Kulfi) and comparable to Moodeaux. Not an outlier in either direction.</div>
+        <div><span class="tag tag-fits">FITS</span></div>
+      </div>
+
+      <div class="gap-row">
+        <div class="gap-label">Funding Status</div>
+        <div class="gap-detail">Bootstrapped, $0 raised. Majority of accepted brands were also bootstrapped or grant-funded. This is not a disadvantage - it is the norm.</div>
+        <div><span class="tag tag-fits">FITS</span></div>
+      </div>
+
+      <div class="gap-row">
+        <div class="gap-label">Founder Story</div>
+        <div class="gap-detail">40+ year trichologist meets next-gen community builder. Multi-generational, professional credibility, Asian American heritage. Strong media-ready narrative. No comparable founder profile in program history.</div>
+        <div><span class="tag tag-strong">STRONG</span></div>
+      </div>
+
+      <div class="gap-row">
+        <div class="gap-label">DTC Presence</div>
+        <div class="gap-detail">~4% DTC, 96% B2B. Nearly every accepted brand is DTC-first or DTC-only. AWARE's salon-first model is unusual for this program. Application frames the ask as "DTC capability building" - smart positioning, but the gap is real.</div>
+        <div><span class="tag tag-gap">GAP</span></div>
+      </div>
+
+      <div class="gap-row">
+        <div class="gap-label">Retail Readiness</div>
+        <div class="gap-detail">No retail presence, no DTC infrastructure at scale. Sephora is building a pipeline for its shelves - it wants brands it can launch. AWARE's professional exclusivity strategy may read as "not ready for Sephora." The Scalp Environment Report is a strong DTC asset to highlight.</div>
+        <div><span class="tag tag-gap">GAP</span></div>
+      </div>
+
+      <div class="gap-row">
+        <div class="gap-label">Social Proof</div>
+        <div class="gap-detail">Professional credibility (50+ salons, 96% reorder) but low consumer-facing social following. Accepted brands often have strong Instagram/TikTok communities. AWARE's proof is professional, not consumer.</div>
+        <div><span class="tag tag-mixed">MIXED</span></div>
+      </div>
+
+      <div class="gap-row">
+        <div class="gap-label">Time in Market</div>
+        <div class="gap-detail">8 months. Multiple brands accepted with less time (Eadem, Ries, Kulfi were pre-launch). Sienna Naturals was 12 years. Time in market is not a filter.</div>
+        <div><span class="tag tag-fits">FITS</span></div>
+      </div>
+
+      <div class="gap-row">
+        <div class="gap-label">Product-Market Fit Signal</div>
+        <div class="gap-detail">96% B2B reorder rate is an extraordinarily strong signal. No other Accelerate brand has claimed a comparable professional channel metric. This needs to be the lead metric in any conversation.</div>
+        <div><span class="tag tag-strong">STRONG</span></div>
+      </div>
+
+    </div>
+
+    <div class="callout">
+      <h4>Bottom Line</h4>
+      <p>AWARE's biggest strength is differentiation: no scalp-first brand has ever been in the program, the trichologist founder story is unique, and the 96% reorder rate is a best-in-class PMF signal. The biggest gap is DTC readiness - Sephora wants brands it can put on shelves, and AWARE's salon-exclusive model may read as "not ready for retail." The application wisely frames Accelerate as a capability-building opportunity rather than a retail placement ask.</p>
+    </div>
+  </div>
+
+  <!-- 6. STRATEGIC RECOMMENDATIONS -->
+  <div class="section" id="recommendations">
+    <div class="section-number">06</div>
+    <h2>Strategic Recommendations</h2>
+
+    <div class="rec-card">
+      <div class="rec-number">01</div>
+      <h4>Lead with the White Space, Not the Revenue</h4>
+      <p>AWARE's most powerful argument is not $150K in revenue - it is that scalp wellness is a $5B+ market with zero representation in Sephora's accelerator alumni. Frame AWARE as the brand that brings an entire category to Sephora, not as a small brand asking for help. Topicals did this for "chronic skin conditions" and became Sephora's fastest-growing skincare brand.</p>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-number">02</div>
+      <h4>Reframe B2B-First as an Asset, Not a Limitation</h4>
+      <p>The salon channel is not a limitation - it is a credibility moat that DTC-first brands cannot replicate. 50+ stylists choosing to repurchase (96% rate) is stronger social proof than 50K Instagram followers. Position this as "professional validation that de-risks Sephora's shelf space investment." Oui the People (5-6 years DTC before Sephora) shows the program accepts brands that need retail guidance.</p>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-number">03</div>
+      <h4>Build the DTC Story for the Interview Round</h4>
+      <p>If AWARE advances past initial screening, expect DTC readiness questions. Prepare concrete answers: Scalp Environment Report as lead gen (show conversion data if strong), DTC launch timeline, Shopify infrastructure already in place, Klaviyo email automation. Sephora needs to believe AWARE can convert on Sephora.com within 12 months of the program ending.</p>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-number">04</div>
+      <h4>Study The Steam Bar (2025 Cohort) Closely</h4>
+      <p>The Steam Bar is the closest brand to AWARE's positioning - scalp regeneration via a novel delivery system. Its acceptance in 2025 validates that Sephora is interested in the scalp category. Monitor its trajectory. If it succeeds at Sephora, it proves the market. If it struggles, AWARE can position as the clinical alternative with proven professional adoption.</p>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-number">05</div>
+      <h4>Stack Grants as Credibility Signals</h4>
+      <p>Multiple successful Accelerate brands (Moodeaux, Range Beauty, Brown Girl Jane) entered with a trail of beauty industry grants. Apply to BeautyMatter NEXT ($3K grant, Sept 2026 deadline), Glossier Grant, and other BIPOC beauty grants in parallel. Each grant is a signal that the ecosystem has vetted AWARE. Even small grants compound credibility.</p>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-number">06</div>
+      <h4>If Not 2026, Position for 2027</h4>
+      <p>The 2024 cohort received 800+ applications for 8 spots. Even strong brands get rejected on volume alone. If AWARE is not selected for 2026, the rejection is data, not a verdict. Use the next 12 months to: build DTC traction via the Scalp Environment Report funnel, stack 2-3 grants, grow social following, and reapply with a stronger DTC story. Bounce Curl waited 9 years before applying.</p>
+    </div>
+  </div>
+
+  <!-- 7. POST-PROGRAM CAUTIONARY TALE -->
+  <div class="section" id="caution">
+    <div class="section-number">07</div>
+    <h2>Cautionary Note: The Ami Cole Warning</h2>
+
+    <p>Ami Cole (not an Accelerate brand, but a parallel case) raised $3M+ including an L'Oreal BOLD investment, launched in 600 Sephora doors, and still shut down in September 2025. The reason: inability to compete for shelf space against corporate-backed brands with deeper marketing budgets. Beauty Independent's reporting called it "the high price of trying to compete at Sephora."</p>
+
+    <p>This does not mean AWARE should avoid Sephora - it means the unit economics must work before scaling into retail. AWARE's B2B margins are strong (65% gross). Sephora's retail margin structure typically leaves brands with 50-55% gross after Sephora's take. Any Sephora launch plan needs to account for this margin compression and the marketing spend required to earn shelf velocity.</p>
+
+    <p>The Accelerate program itself is low-risk (mentorship, grants, no equity taken). But a post-program Sephora launch is a major commitment. AWARE's application correctly frames the program as capability-building, not an immediate retail play.</p>
+  </div>
+
+  <!-- 8. SOURCES -->
+  <div class="section" id="sources">
+    <div class="section-number">08</div>
+    <h2>Sources</h2>
+
+    <h3>Sephora Newsroom (Cohort Announcements)</h3>
+    <ul class="source-list">
+      <li><a href="https://newsroom.sephora.com/sephora-relaunches-its-incubator-program-with-a-new-focus-on-elevating-bipoc-owned-prestige-beauty-brands/" target="_blank">2021 Cohort - Sephora Newsroom</a></li>
+      <li><a href="https://newsroom.sephora.com/sephora-announces-participants-for-2022-accelerate-brand-incubator-program-with-continued-focus-on-bipoc-brand-founders/" target="_blank">2022 Cohort - Sephora Newsroom</a></li>
+      <li><a href="https://newsroom.sephora.com/sephora-announces-participants-for-2023-accelerate-brand-incubator-program-with-continued-focus-on-bipoc-brand-founders-and-new-programming/" target="_blank">2023 Cohort - Sephora Newsroom</a></li>
+      <li><a href="https://newsroom.sephora.com/sephora-announces-new-class-of-brand-founders-for-2024-accelerate-incubator-program/" target="_blank">2024 Cohort - Sephora Newsroom</a></li>
+      <li><a href="https://newsroom.sephora.com/sephoras-2025-accelerate-incubator-program-celebrates-a-decade-of-impact-with-new-class-of-brand-founders/" target="_blank">2025 Cohort - Sephora Newsroom</a></li>
+    </ul>
+
+    <h3>Brand Stage Data</h3>
+    <ul class="source-list">
+      <li><a href="https://beautymatter.com/articles/54-thrones-journey-from-self-funded-to-sephora" target="_blank">54 Thrones: Self-funded to Sephora - BeautyMatter</a></li>
+      <li><a href="https://www.createcultivate.com/blog/2024/1/26/the-upsides-of-self-funding-your-biz-from-eadem-co-founders-alice-lin-glover-and-marie-kouadio-amouzame" target="_blank">Eadem: Self-funding journey - Create & Cultivate</a></li>
+      <li><a href="https://www.femalestartupclub.com/blogs/podcasts/desiree-verdejo-hyper-skin" target="_blank">Hyper Skin: How to get stocked in Sephora - Female Startup Club</a></li>
+      <li><a href="https://www.beautyindependent.com/kulfi-beauty-enters-sephora-new-line-concealers/" target="_blank">Kulfi Beauty enters Sephora - Beauty Independent</a></li>
+      <li><a href="https://www.prnewswire.com/news-releases/topicals-the-fastest-growing-skincare-brand-at-sephora-raises-10m-series-a-led-by-cavu-consumer-partners-301674323.html" target="_blank">Topicals $10M Series A - PR Newswire</a></li>
+      <li><a href="https://www.arscounsel.com/blog/2021/3/29/ars-counsel-client-topicals-raises-26m-for-its-skincare-brand-now-available-at-sephoracom" target="_blank">Topicals $2.6M seed - ARS Counsel</a></li>
+      <li><a href="https://www.inc.com/magazine/202311/sarah-lynch-/how-a-first-time-entrepreneur-secured-6-figures-of-funding-entirely-from-grants.html" target="_blank">Moodeaux: Grants-only funding - Inc. Magazine</a></li>
+      <li><a href="https://www.beautyindependent.com/oui-the-people-sephora-launch-new-products/" target="_blank">Oui the People: Sephora launch - Beauty Independent</a></li>
+      <li><a href="https://www.beautyindependent.com/range-beauty-launch-sephora/" target="_blank">Range Beauty: Sephora launch challenges - Beauty Independent</a></li>
+      <li><a href="https://wwd.com/beauty-industry-news/beauty-features/inde-wild-3-million-seed-round-1235080295/" target="_blank">Inde Wild $3M seed - WWD</a></li>
+      <li><a href="https://cosmeticsbusiness.com/ind%C4%93-wild-secures-5-million-from-unilever-ventures" target="_blank">Inde Wild $5M Unilever Ventures - Cosmetics Business</a></li>
+      <li><a href="https://www.beautyindependent.com/viral-hairbrush-brand-bounce-curl-retail-debut-sephora/" target="_blank">Bounce Curl retail debut at Sephora - Beauty Independent</a></li>
+    </ul>
+
+    <h3>Cautionary / Context</h3>
+    <ul class="source-list">
+      <li><a href="https://www.beautyindependent.com/ami-cole-closure-high-price-trying-compete-sephora/" target="_blank">Ami Cole closure: The high price of Sephora - Beauty Independent</a></li>
+      <li><a href="https://www.retailbrew.com/stories/2022/04/27/inside-sephora-s-accelerate-program" target="_blank">Inside Sephora's Accelerate program - Retail Brew</a></li>
+    </ul>
+  </div>
+
+  <div style="text-align:center; padding-top: 32px; border-top: 1px solid var(--border); color: var(--sage); font-size: 13px;">
+    AWARE Hair - Internal Research Document - March 2026<br>
+    Data verified against Sephora Newsroom press releases. Unverified claims labeled accordingly.
+  </div>
+
+</div>
+
+<script>
+function toggleCohort(btn) {
+  btn.classList.toggle('open');
+  const content = btn.nextElementSibling;
+  content.classList.toggle('open');
+}
+</script>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

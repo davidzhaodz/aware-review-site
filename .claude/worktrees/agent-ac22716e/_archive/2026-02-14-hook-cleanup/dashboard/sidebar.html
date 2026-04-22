@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #1e1e1e;
+            --bg2: #252526;
+            --bg3: #2d2d2d;
+            --text: #d4d4d4;
+            --text2: #888;
+            --text3: #666;
+            --border: #333;
+            --green: #4caf50;
+            --yellow: #f9a825;
+            --red: #f44336;
+            --purple: #9c27b0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', Menlo, monospace;
+            background: var(--bg);
+            color: var(--text);
+            padding: 8px;
+            font-size: 11px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 6px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text2);
+        }
+
+        .header-btns {
+            display: flex;
+            gap: 4px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            color: var(--text3);
+            cursor: pointer;
+            font-size: 12px;
+            padding: 2px;
+        }
+        .icon-btn:hover { color: var(--text); }
+        .icon-btn.muted { color: var(--red); }
+
+        /* Stats row */
+        .stats-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .stat {
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 9px;
+            font-weight: 600;
+        }
+        .stat.working { background: var(--green); color: #000; }
+        .stat.waiting { background: var(--yellow); color: #000; }
+        .stat.error { background: var(--red); color: #fff; }
+        .stat.total { background: var(--bg3); }
+        .stat.tasks { background: none; color: var(--text3); }
+
+        /* Usage mini widget */
+        .usage-mini {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 9px;
+            color: var(--text3);
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .usage-mini-item {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .usage-mini-bar {
+            font-size: 8px;
+            letter-spacing: 0.5px;
+        }
+        .usage-mini-bar.rolling { color: var(--green); }
+        .usage-mini-bar.weekly { color: #00bcd4; }
+        .usage-mini-bar.warning { color: var(--yellow); }
+
+        /* Project colors */
+        .colors { --c1: #f44336; --c2: #2196f3; --c3: #4caf50; --c4: #ff9800; --c5: #9c27b0; --c6: #00bcd4; }
+
+        /* Instances */
+        .instances {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .instance {
+            background: var(--bg2);
+            border-radius: 4px;
+            padding: 8px;
+            border-left: 3px solid var(--border);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .instance.working {
+            border-left-color: var(--green);
+            animation: pulse 2s infinite;
+        }
+
+        .instance.waiting {
+            border-left-color: var(--yellow);
+            background: linear-gradient(90deg, rgba(249,168,37,0.08) 0%, var(--bg2) 100%);
+        }
+
+        .instance.error {
+            border-left-color: var(--red);
+            background: linear-gradient(90deg, rgba(244,67,54,0.08) 0%, var(--bg2) 100%);
+        }
+
+        .instance.stale { opacity: 0.5; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .name-row {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .project-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .name {
+            font-weight: 600;
+            font-size: 11px;
+        }
+
+        .badges {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .badge {
+            font-size: 8px;
+            text-transform: uppercase;
+            padding: 1px 4px;
+            border-radius: 2px;
+            background: var(--bg3);
+        }
+
+        .badge.status { display: none; } /* Hide status badge, border shows it */
+        .badge.branch { background: var(--purple); color: #fff; font-size: 8px; }
+        .badge.time { background: none; color: var(--text3); padding: 0; }
+        .badge.duration { background: none; color: var(--text3); font-size: 8px; }
+
+        .meta-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 3px;
+            font-size: 9px;
+            color: var(--text3);
+        }
+
+        .task {
+            font-size: 10px;
+            color: var(--text2);
+            margin-top: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Task history (shown on click) */
+        .history {
+            display: none;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid var(--border);
+            font-size: 9px;
+        }
+
+        .instance.expanded .history { display: block; }
+
+        .history-item {
+            color: var(--text3);
+            padding: 2px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .empty {
+            text-align: center;
+            color: #555;
+            padding: 20px 10px;
+            font-size: 10px;
+        }
+
+        /* Mini log */
+        .log-section {
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border);
+        }
+
+        .log-title {
+            font-size: 9px;
+            color: var(--text3);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .log {
+            max-height: 80px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            font-size: 9px;
+            color: var(--text3);
+            padding: 1px 0;
+            display: flex;
+            gap: 6px;
+        }
+
+        .log-entry .time { color: #555; }
+        .log-entry.working .msg { color: var(--green); }
+        .log-entry.waiting .msg { color: var(--yellow); }
+        .log-entry.error .msg { color: var(--red); }
+
+        /* Controls */
+        .controls {
+            margin-top: 8px;
+            display: flex;
+            gap: 4px;
+        }
+
+        .btn {
+            flex: 1;
+            background: var(--bg3);
+            border: none;
+            color: var(--text2);
+            padding: 4px;
+            border-radius: 3px;
+            font-size: 9px;
+            cursor: pointer;
+        }
+        .btn:hover { background: #444; color: var(--text); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span class="title">Claude Instances</span>
+        <div class="header-btns">
+            <button class="icon-btn" id="mute-btn" onclick="toggleMute()" title="Toggle sound">🔔</button>
+            <button class="icon-btn" onclick="openFull()" title="Open full dashboard">↗</button>
+        </div>
+    </div>
+
+    <div class="stats-row">
+        <span class="stat working" id="working-stat">0</span>
+        <span class="stat waiting" id="waiting-stat">0</span>
+        <span class="stat error" id="error-stat" style="display:none">0</span>
+        <span class="stat total" id="total-stat">0</span>
+        <span class="stat tasks" id="tasks-stat">0 today</span>
+    </div>
+
+    <div class="usage-mini" id="usage-mini">
+        <div class="usage-mini-item">
+            <span>5h:</span>
+            <span class="usage-mini-bar rolling" id="mini-bar-rolling">░░░░░</span>
+            <span id="mini-pct-rolling">--%</span>
+        </div>
+        <div class="usage-mini-item">
+            <span>Wk:</span>
+            <span class="usage-mini-bar weekly" id="mini-bar-weekly">░░░░░</span>
+            <span id="mini-pct-weekly">--%</span>
+        </div>
+    </div>
+
+    <div class="instances" id="instances">
+        <div class="empty">No active instances</div>
+    </div>
+
+    <div class="log-section">
+        <div class="log-title">Activity</div>
+        <div class="log" id="log"></div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" onclick="cleanup()">Cleanup</button>
+        <button class="btn" onclick="clearAll()">Clear</button>
+    </div>
+
+    <script src="usage/tracker.js"></script>
+    <script>
+        const PROJECT_COLORS = ['#f44336', '#2196f3', '#4caf50', '#ff9800', '#9c27b0', '#00bcd4'];
+        let lastData = null;
+        let log = [];
+        let projectColorMap = {};
+        let colorIndex = 0;
+
+        // Settings from localStorage
+        let settings = { sound: true };
+        try {
+            const saved = localStorage.getItem('claude-dashboard-settings');
+            if (saved) settings = { ...settings, ...JSON.parse(saved) };
+            updateMuteUI();
+        } catch (e) {}
+
+        // Custom names from localStorage
+        let customNames = {};
+        try {
+            const saved = localStorage.getItem('claude-dashboard-names');
+            if (saved) customNames = JSON.parse(saved);
+        } catch (e) {}
+
+        function toggleMute() {
+            settings.sound = !settings.sound;
+            localStorage.setItem('claude-dashboard-settings', JSON.stringify(settings));
+            updateMuteUI();
+        }
+
+        function updateMuteUI() {
+            const btn = document.getElementById('mute-btn');
+            btn.textContent = settings.sound ? '🔔' : '🔕';
+            btn.classList.toggle('muted', !settings.sound);
+        }
+
+        function getProjectColor(project) {
+            if (!project) return '#555';
+            if (!projectColorMap[project]) {
+                projectColorMap[project] = PROJECT_COLORS[colorIndex % PROJECT_COLORS.length];
+                colorIndex++;
+            }
+            return projectColorMap[project];
+        }
+
+        function getElapsed(timeStr) {
+            if (!timeStr) return 0;
+            const [h, m] = timeStr.split(':').map(Number);
+            const now = new Date();
+            const then = new Date();
+            then.setHours(h, m, 0, 0);
+            if (then > now) then.setDate(then.getDate() - 1);
+            return Math.floor((now - then) / 60000);
+        }
+
+        function formatElapsed(min) {
+            if (min < 1) return 'now';
+            if (min < 60) return min + 'm';
+            return Math.floor(min / 60) + 'h';
+        }
+
+        function getSessionDuration(started) {
+            if (!started) return '';
+            const start = new Date(started);
+            const mins = Math.floor((new Date() - start) / 60000);
+            if (mins < 1) return '< 1m';
+            if (mins < 60) return mins + 'm';
+            return Math.floor(mins / 60) + 'h' + (mins % 60) + 'm';
+        }
+
+        async function loadStatus() {
+            try {
+                const response = await fetch('status.json?t=' + Date.now());
+                if (!response.ok) throw new Error('No status');
+                const data = await response.json();
+
+                if (lastData) detectChanges(lastData.instances || [], data.instances || []);
+                lastData = data;
+
+                // Filter stale (>10 min)
+                const instances = (data.instances || []).filter(i => getElapsed(i.time) < 10);
+                render(instances);
+                updateStats(instances, data.stats || {});
+
+                // Update usage tracker
+                if (typeof UsageTracker !== 'undefined') {
+                    UsageTracker.updateFromStatus(data);
+                    updateMiniUsage();
+                }
+            } catch (e) {}
+        }
+
+        // Mini usage widget
+        function miniProgressBar(percentage, width = 5) {
+            const filled = Math.round((percentage / 100) * width);
+            return '█'.repeat(filled) + '░'.repeat(width - filled);
+        }
+
+        function updateMiniUsage() {
+            if (typeof UsageTracker === 'undefined') return;
+
+            const summary = UsageTracker.getSummary();
+            const rolling = summary.rolling;
+            const weekly = summary.weekly;
+
+            const rollingBar = document.getElementById('mini-bar-rolling');
+            const rollingPct = document.getElementById('mini-pct-rolling');
+            if (rollingBar) {
+                rollingBar.textContent = miniProgressBar(rolling.percentage);
+                rollingBar.classList.toggle('warning', rolling.percentage > 80);
+            }
+            if (rollingPct) rollingPct.textContent = rolling.percentage + '%';
+
+            const weeklyBar = document.getElementById('mini-bar-weekly');
+            const weeklyPct = document.getElementById('mini-pct-weekly');
+            if (weeklyBar) {
+                weeklyBar.textContent = miniProgressBar(weekly.percentage);
+                weeklyBar.classList.toggle('warning', weekly.percentage > 80);
+            }
+            if (weeklyPct) weeklyPct.textContent = weekly.percentage + '%';
+        }
+
+        function detectChanges(oldInst, newInst) {
+            const oldMap = new Map(oldInst.map(i => [i.id, i]));
+            newInst.forEach(inst => {
+                const old = oldMap.get(inst.id);
+                const name = customNames[inst.id] || inst.name || inst.id;
+                if (!old) {
+                    addLog(`${name} started`, 'working');
+                } else if (old.status !== inst.status) {
+                    addLog(`${name} → ${inst.status}`, inst.status);
+                }
+            });
+        }
+
+        function addLog(msg, type) {
+            const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            log.unshift({ time, msg, type });
+            if (log.length > 20) log.pop();
+            renderLog();
+        }
+
+        function renderLog() {
+            document.getElementById('log').innerHTML = log.slice(0, 5).map(e =>
+                `<div class="log-entry ${e.type}"><span class="time">${e.time}</span><span class="msg">${e.msg}</span></div>`
+            ).join('');
+        }
+
+        function updateStats(instances, stats) {
+            const w = instances.filter(i => i.status === 'working').length;
+            const wa = instances.filter(i => i.status === 'waiting').length;
+            const err = instances.filter(i => i.status === 'error').length;
+
+            document.getElementById('working-stat').textContent = w;
+            document.getElementById('waiting-stat').textContent = wa;
+            document.getElementById('total-stat').textContent = instances.length;
+            document.getElementById('tasks-stat').textContent = (stats.tasksToday || 0) + ' today';
+
+            const errEl = document.getElementById('error-stat');
+            if (err > 0) {
+                errEl.style.display = 'inline';
+                errEl.textContent = err;
+            } else {
+                errEl.style.display = 'none';
+            }
+        }
+
+        function render(instances) {
+            const el = document.getElementById('instances');
+            if (!instances.length) {
+                el.innerHTML = '<div class="empty">No active instances<br><small>Start a Claude session</small></div>';
+                return;
+            }
+
+            el.innerHTML = instances.map(i => {
+                const elapsed = getElapsed(i.time);
+                const name = customNames[i.id] || i.name || 'Claude ' + (i.id || '').slice(0, 6);
+                const duration = getSessionDuration(i.started);
+                const projectColor = getProjectColor(i.project);
+
+                return `
+                    <div class="instance ${i.status} ${elapsed > 5 ? 'stale' : ''}" onclick="toggleExpand(this)">
+                        <div class="row">
+                            <div class="name-row">
+                                <div class="project-dot" style="background:${projectColor}" title="${i.project || 'Unknown'}"></div>
+                                <span class="name">${name}</span>
+                            </div>
+                            <div class="badges">
+                                ${i.branch ? `<span class="badge branch">${i.branch}</span>` : ''}
+                                ${duration ? `<span class="badge duration">${duration}</span>` : ''}
+                                <span class="badge time">${formatElapsed(elapsed)}</span>
+                            </div>
+                        </div>
+                        <div class="meta-row">
+                            <span>📁 ${i.cwd ? i.cwd.split('/').pop() : ''}</span>
+                            ${(i.tasksCompleted || 0) > 0 ? `<span>✓ ${i.tasksCompleted}</span>` : ''}
+                            ${(i.errors || 0) > 0 ? `<span style="color:var(--red)">⚠ ${i.errors}</span>` : ''}
+                        </div>
+                        ${i.task ? `<div class="task">${i.task}</div>` : ''}
+                        <div class="history">
+                            ${(i.taskHistory || []).slice(-3).reverse().map(t =>
+                                `<div class="history-item">• ${t || '(empty)'}</div>`
+                            ).join('') || '<div class="history-item">No history</div>'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleExpand(el) {
+            el.classList.toggle('expanded');
+        }
+
+        function cleanup() {
+            addLog('Cleanup', '');
+            loadStatus();
+        }
+
+        function clearAll() {
+            lastData = { instances: [], stats: {} };
+            render([]);
+            updateStats([], {});
+            addLog('Cleared all', '');
+        }
+
+        function openFull() {
+            window.open('index.html', '_blank');
+        }
+
+        loadStatus();
+        setInterval(loadStatus, 2000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARE Hair - Post-Show Follow-Up Workflow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2D4739;
+      --sage: #7A8F7D;
+      --cream: #F8F6F1;
+      --sand: #E8E4DC;
+      --charcoal: #2C2C2C;
+      --warm-gray: #6B6B6B;
+      --gold: #B8956E;
+      --hot: #9B4D4D;
+      --warm: #B8956E;
+      --cool: #5B7B8F;
+    }
+
+    @page { size: letter; margin: 0.4in; }
+    @media print {
+      html, body { width: 8.5in; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .no-print { display: none !important; }
+      .page { page-break-after: always; }
+      .page:last-child { page-break-after: auto; }
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      color: var(--charcoal);
+      background: #e0e0e0;
+      padding: 20px;
+    }
+
+    .page {
+      width: 8.5in;
+      min-height: 11in;
+      margin: 0 auto 20px;
+      background: white;
+      padding: 0.4in 0.5in;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--forest);
+    }
+
+    .header .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--forest);
+    }
+
+    .header-right {
+      text-align: right;
+      font-size: 10px;
+      color: var(--warm-gray);
+    }
+
+    .header-right strong { color: var(--charcoal); }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--forest);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--sand);
+    }
+
+    /* Timeline */
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin-bottom: 20px;
+      background: var(--cream);
+      padding: 14px 12px;
+    }
+
+    .timeline-day {
+      text-align: center;
+      padding: 6px 4px;
+      font-size: 9px;
+      color: var(--warm-gray);
+      position: relative;
+    }
+
+    .timeline-day.active {
+      background: var(--forest);
+      color: white;
+      font-weight: 600;
+    }
+
+    .timeline-day .day-num {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+
+    .timeline-day.active .day-num {
+      color: white;
+    }
+
+    /* Priority badges */
+    .priority-badge {
+      display: inline-block;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      color: white;
+    }
+    .priority-badge.hot { background: var(--hot); }
+    .priority-badge.warm { background: var(--warm); }
+    .priority-badge.cool { background: var(--cool); }
+
+    /* Lead classification */
+    .classify-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .classify-card {
+      padding: 12px 14px;
+      border: 1px solid var(--sand);
+    }
+
+    .classify-card .class-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .classify-card .class-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+
+    .classify-card .class-criteria {
+      font-size: 10px;
+      color: var(--warm-gray);
+      line-height: 1.5;
+    }
+
+    /* Email template */
+    .email-block {
+      border: 1px solid var(--sand);
+      margin-bottom: 14px;
+    }
+
+    .email-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 14px;
+      background: var(--cream);
+      border-bottom: 1px solid var(--sand);
+    }
+
+    .email-header .email-meta {
+      font-size: 10px;
+      color: var(--charcoal);
+    }
+
+    .email-header .email-meta strong {
+      color: var(--forest);
+    }
+
+    .email-subject {
+      padding: 8px 14px;
+      background: rgba(45, 71, 57, 0.04);
+      border-bottom: 1px solid var(--sand);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+
+    .email-body {
+      padding: 12px 14px;
+      font-size: 10.5px;
+      line-height: 1.6;
+      color: var(--charcoal);
+    }
+
+    .email-body p {
+      margin-bottom: 8px;
+    }
+
+    .email-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .email-body .placeholder {
+      background: #FFF3CD;
+      padding: 1px 4px;
+      font-weight: 600;
+      font-size: 10px;
+    }
+
+    /* Workflow steps */
+    .workflow-step {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+      align-items: start;
+    }
+
+    .step-timing {
+      text-align: center;
+      padding: 8px 6px;
+      background: var(--forest);
+      color: white;
+    }
+
+    .step-timing .timing-day {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .step-timing .timing-label {
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+
+    .step-content .step-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 4px;
+    }
+
+    .step-content .step-actions {
+      font-size: 10px;
+      color: var(--warm-gray);
+      line-height: 1.5;
+    }
+
+    /* Checklist items */
+    .action-list {
+      list-style: none;
+      margin-top: 8px;
+    }
+
+    .action-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 4px 0;
+      font-size: 10px;
+      color: var(--charcoal);
+      line-height: 1.4;
+    }
+
+    .action-list li .cb {
+      width: 10px;
+      height: 10px;
+      border: 1.5px solid var(--sage);
+      border-radius: 2px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Notes box */
+    .notes-box {
+      background: var(--cream);
+      padding: 12px 14px;
+      margin-top: 14px;
+    }
+
+    .notes-box .notes-title {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--forest);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .notes-box ul {
+      list-style: none;
+      font-size: 10px;
+      color: var(--charcoal);
+      line-height: 1.6;
+    }
+
+    .page-num {
+      text-align: right;
+      font-size: 9px;
+      color: var(--warm-gray);
+      margin-top: 12px;
+    }
+
+    .print-btn {
+      position: fixed; bottom: 20px; right: 20px;
+      background: var(--forest); color: white; border: none;
+      padding: 12px 24px; font-family: 'DM Sans', sans-serif;
+      font-size: 12px; font-weight: 500; cursor: pointer; z-index: 100;
+    }
+    .print-btn:hover { background: #3D5A4A; }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1: Overview + Lead Classification -->
+  <div class="page">
+    <div class="header">
+      <div class="logo">AWARE</div>
+      <div class="header-right">
+        <strong>Post-Show Follow-Up Workflow</strong><br>
+        Cosmoprof Miami 2026 | Jan 27-29
+      </div>
+    </div>
+
+    <div class="section-title">Follow-Up Timeline</div>
+    <div class="timeline">
+      <div class="timeline-day"><div class="day-num">29</div>Show ends</div>
+      <div class="timeline-day active"><div class="day-num">30</div>Day 1</div>
+      <div class="timeline-day"><div class="day-num">31</div>Day 2</div>
+      <div class="timeline-day active"><div class="day-num">1</div>Day 3</div>
+      <div class="timeline-day"><div class="day-num">2-4</div>---</div>
+      <div class="timeline-day active"><div class="day-num">5</div>Day 7</div>
+      <div class="timeline-day"><div class="day-num">12</div>Day 14</div>
+    </div>
+
+    <div class="section-title">Lead Classification</div>
+    <div class="classify-grid">
+      <div class="classify-card">
+        <div class="class-header">
+          <span class="priority-badge hot">Hot</span>
+          <span class="class-title">Ready to Order</span>
+        </div>
+        <div class="class-criteria">
+          - Placed order at show<br>
+          - Requested pilot proposal<br>
+          - Asked about territory exclusivity<br>
+          - Gave specific timeline ("Q1", "next month")<br>
+          - Distributor with established network
+        </div>
+      </div>
+      <div class="classify-card">
+        <div class="class-header">
+          <span class="priority-badge warm">Warm</span>
+          <span class="class-title">Interested, Needs Nurture</span>
+        </div>
+        <div class="class-criteria">
+          - Spent 5+ minutes at booth<br>
+          - Took materials + samples<br>
+          - Mentioned they'd "look into it"<br>
+          - Asked about pricing/MOQs<br>
+          - Salon owner exploring new brands
+        </div>
+      </div>
+      <div class="classify-card">
+        <div class="class-header">
+          <span class="priority-badge cool">Cool</span>
+          <span class="class-title">Long-Term Prospect</span>
+        </div>
+        <div class="class-criteria">
+          - Quick booth visit, took card<br>
+          - Scanned QR code only<br>
+          - Media/press contact<br>
+          - "Not looking right now"<br>
+          - Industry connection (not buyer)
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Day-of-Show Tasks (Jan 29, evening)</div>
+    <ul class="action-list">
+      <li><span class="cb"></span>Sort all lead capture sheets by priority (H/W/C)</li>
+      <li><span class="cb"></span>Enter leads into CRM/spreadsheet with notes from conversations</li>
+      <li><span class="cb"></span>Photo/scan all business cards, attach to lead records</li>
+      <li><span class="cb"></span>Draft personalized notes for each Hot lead (reference specific conversation points)</li>
+      <li><span class="cb"></span>Confirm sample kit shipping list (who gets samples shipped?)</li>
+      <li><span class="cb"></span>Team debrief: top 5 leads, any commitments made, next steps agreed</li>
+    </ul>
+
+    <div class="notes-box">
+      <div class="notes-title">Key Principle</div>
+      <ul>
+        <li>- Speed wins. Hot leads should hear from you within 24 hours of show close.</li>
+        <li>- Personalize every email. Reference something specific from your conversation.</li>
+        <li>- Always include a clear next step (call, sample, proposal, meeting).</li>
+        <li>- Use the show special deadline (Feb 5) as natural urgency without being pushy.</li>
+      </ul>
+    </div>
+
+    <div class="page-num">1 / 4</div>
+  </div>
+
+  <!-- PAGE 2: Hot Lead Sequence -->
+  <div class="page">
+    <div class="header">
+      <div class="logo">AWARE</div>
+      <div class="header-right">
+        <strong>Hot Lead Sequence</strong><br>
+        <span class="priority-badge hot">Priority: Immediate</span>
+      </div>
+    </div>
+
+    <div class="workflow-step">
+      <div class="step-timing">
+        <div class="timing-day">1</div>
+        <div class="timing-label">Day After</div>
+      </div>
+      <div class="step-content">
+        <div class="step-title">Personal Email + Proposal</div>
+        <div class="step-actions">Send within 24 hours of show close. Attach pilot proposal or order form as discussed.</div>
+      </div>
+    </div>
+
+    <div class="email-block">
+      <div class="email-header">
+        <div class="email-meta"><strong>Day 1</strong> | Hot Lead - Distributor/Buyer</div>
+      </div>
+      <div class="email-subject">Subject: Great connecting at Cosmoprof - next steps for <span class="placeholder">[COMPANY]</span></div>
+      <div class="email-body">
+        <p>Hi <span class="placeholder">[NAME]</span>,</p>
+        <p>Great speaking with you at Cosmoprof yesterday. I really enjoyed our conversation about <span class="placeholder">[SPECIFIC TOPIC - e.g., "the gap in professional scalp care for your Southeast territory"]</span>.</p>
+        <p>As discussed, I'm attaching our <span class="placeholder">[pilot proposal / territory terms / order form]</span>. The key points we covered:</p>
+        <p>- <span class="placeholder">[Point 1 from conversation]</span><br>
+        - <span class="placeholder">[Point 2]</span><br>
+        - <span class="placeholder">[Point 3]</span></p>
+        <p>Our show special (10% off first order + free shipping) is valid through February 5, so there's a window to lock in preferential pricing.</p>
+        <p>I'd love to schedule a 20-minute call this week to answer any questions and talk next steps. Do you have availability <span class="placeholder">[Thursday or Friday]</span>?</p>
+        <p>Best,<br>David Zhao<br>AWARE Hair | (626) 688-9844<br>david@awarehair.com</p>
+      </div>
+    </div>
+
+    <div class="workflow-step">
+      <div class="step-timing">
+        <div class="timing-day">3</div>
+        <div class="timing-label">Days After</div>
+      </div>
+      <div class="step-content">
+        <div class="step-title">Follow-Up Call + Value Add</div>
+        <div class="step-actions">If no reply to Day 1 email, call directly. If replied, send additional data they requested.</div>
+      </div>
+    </div>
+
+    <div class="email-block">
+      <div class="email-header">
+        <div class="email-meta"><strong>Day 3</strong> | Hot Lead - No Reply</div>
+      </div>
+      <div class="email-subject">Subject: Re: Great connecting at Cosmoprof - next steps for <span class="placeholder">[COMPANY]</span></div>
+      <div class="email-body">
+        <p>Hi <span class="placeholder">[NAME]</span>,</p>
+        <p>Quick follow-up from my note earlier this week. I know post-show inboxes are brutal, so I'll keep this short.</p>
+        <p>I put together our sell-through data from existing salon partners - the 96% repurchase rate and 28-day reorder cycle are the numbers that tend to get distributors excited. Happy to walk through the data on a quick call.</p>
+        <p>Would 15 minutes work this week? I'm flexible on timing.</p>
+        <p>David<br>(626) 688-9844</p>
+      </div>
+    </div>
+
+    <div class="workflow-step">
+      <div class="step-timing">
+        <div class="timing-day">7</div>
+        <div class="timing-label">Days After</div>
+      </div>
+      <div class="step-content">
+        <div class="step-title">Final Push + Deadline Reminder</div>
+        <div class="step-actions">Last touch before show special expires. Create urgency without pressure.</div>
+      </div>
+    </div>
+
+    <div class="email-block">
+      <div class="email-header">
+        <div class="email-meta"><strong>Day 7</strong> | Hot Lead - Still No Response</div>
+      </div>
+      <div class="email-subject">Subject: Show pricing expires Wednesday - wanted to make sure you saw this</div>
+      <div class="email-body">
+        <p>Hi <span class="placeholder">[NAME]</span>,</p>
+        <p>Heads up that our Cosmoprof show special expires February 5 (this Wednesday). I wanted to make sure you had the chance to take advantage of the first-order pricing before it resets.</p>
+        <p>If timing isn't right, no problem at all. I'll keep you on our radar and circle back when we launch our Scalp Oil in Q2.</p>
+        <p>Either way, it was great meeting you at the show. Hope it was productive for your team.</p>
+        <p>David</p>
+      </div>
+    </div>
+
+    <div class="page-num">2 / 4</div>
+  </div>
+
+  <!-- PAGE 3: Warm Lead Sequence -->
+  <div class="page">
+    <div class="header">
+      <div class="logo">AWARE</div>
+      <div class="header-right">
+        <strong>Warm Lead Sequence</strong><br>
+        <span class="priority-badge warm">Priority: Within 48 Hours</span>
+      </div>
+    </div>
+
+    <div class="workflow-step">
+      <div class="step-timing">
+        <div class="timing-day">1</div>
+        <div class="timing-label">Day After</div>
+      </div>
+      <div class="step-content">
+        <div class="step-title">Introduction Email + Sample Confirmation</div>
+        <div class="step-actions">Confirm sample shipment, provide digital materials, keep the door open.</div>
+      </div>
+    </div>
+
+    <div class="email-block">
+      <div class="email-header">
+        <div class="email-meta"><strong>Day 1</strong> | Warm Lead - Salon Owner</div>
+      </div>
+      <div class="email-subject">Subject: Your AWARE sample kit is on its way</div>
+      <div class="email-body">
+        <p>Hi <span class="placeholder">[NAME]</span>,</p>
+        <p>Thanks for stopping by our booth at Cosmoprof! It was great chatting about <span class="placeholder">[scalp care / your salon / the products]</span>.</p>
+        <p>Good news: your professional sample kit (shampoo, conditioner, and leave-in) is shipping today. You should receive it within 5 business days at <span class="placeholder">[address or "your salon"]</span>.</p>
+        <p>In the meantime, here are a few things that might be helpful:</p>
+        <p>- Our full product line and pricing: <span class="placeholder">[link]</span><br>
+        - How salons are adding $70-250/client with scalp services: <span class="placeholder">[link]</span><br>
+        - Starter package options (4, 8, or 12 units): <span class="placeholder">[link]</span></p>
+        <p>Once you've had a chance to try the products, I'd love to hear what you think. Feel free to reach out anytime.</p>
+        <p>Best,<br>David Zhao<br>AWARE Hair | (626) 688-9844</p>
+      </div>
+    </div>
+
+    <div class="workflow-step">
+      <div class="step-timing">
+        <div class="timing-day">7</div>
+        <div class="timing-label">Days After</div>
+      </div>
+      <div class="step-content">
+        <div class="step-title">Check-In + Social Proof</div>
+        <div class="step-actions">Samples should have arrived. Share a case study or testimonial relevant to their situation.</div>
+      </div>
+    </div>
+
+    <div class="email-block">
+      <div class="email-header">
+        <div class="email-meta"><strong>Day 7</strong> | Warm Lead - After Samples Delivered</div>
+      </div>
+      <div class="email-subject">Subject: How are the AWARE samples working out?</div>
+      <div class="email-body">
+        <p>Hi <span class="placeholder">[NAME]</span>,</p>
+        <p>Hope you've had a chance to try the AWARE samples! Most stylists notice the difference after 2-3 uses, especially the scalp feel after the shampoo.</p>
+        <p>I wanted to share a quick case study from <span class="placeholder">[similar salon type]</span> that started carrying us last year. They went from a 4-unit starter to reordering every 28 days, and added a $150 scalp treatment to their service menu. Their clients love it.</p>
+        <p>If you have any questions about getting started, our smallest package is just 4 units ($104 wholesale). Happy to chat whenever works for you.</p>
+        <p>David<br>(626) 688-9844</p>
+      </div>
+    </div>
+
+    <div class="workflow-step">
+      <div class="step-timing">
+        <div class="timing-day">14</div>
+        <div class="timing-label">Days After</div>
+      </div>
+      <div class="step-content">
+        <div class="step-title">Gentle Close or Long-Term Nurture</div>
+        <div class="step-actions">Final direct outreach. If no response, add to monthly newsletter list.</div>
+      </div>
+    </div>
+
+    <div class="email-block">
+      <div class="email-header">
+        <div class="email-meta"><strong>Day 14</strong> | Warm Lead - Final Touch</div>
+      </div>
+      <div class="email-subject">Subject: No pressure, just checking in</div>
+      <div class="email-body">
+        <p>Hi <span class="placeholder">[NAME]</span>,</p>
+        <p>Just a quick note to say I'm here whenever you're ready to explore AWARE for your salon. No rush, no pressure.</p>
+        <p>If you'd like, I can add you to our monthly partner newsletter - it includes salon tips, new product launches, and marketing support materials. Just reply "yes" and I'll get you on the list.</p>
+        <p>Either way, it was great meeting you at Cosmoprof. Wishing you a great Q1.</p>
+        <p>David</p>
+      </div>
+    </div>
+
+    <div class="page-num">3 / 4</div>
+  </div>
+
+  <!-- PAGE 4: Cool Lead Sequence + Master Checklist -->
+  <div class="page">
+    <div class="header">
+      <div class="logo">AWARE</div>
+      <div class="header-right">
+        <strong>Cool Leads + Master Checklist</strong><br>
+        <span class="priority-badge cool">Priority: Within 1 Week</span>
+      </div>
+    </div>
+
+    <div class="workflow-step">
+      <div class="step-timing">
+        <div class="timing-day">3</div>
+        <div class="timing-label">Days After</div>
+      </div>
+      <div class="step-content">
+        <div class="step-title">Brief Touchpoint Email</div>
+        <div class="step-actions">Short, low-pressure. Provide one useful resource. No hard ask.</div>
+      </div>
+    </div>
+
+    <div class="email-block">
+      <div class="email-header">
+        <div class="email-meta"><strong>Day 3</strong> | Cool Lead - Light Touch</div>
+      </div>
+      <div class="email-subject">Subject: Nice meeting you at Cosmoprof</div>
+      <div class="email-body">
+        <p>Hi <span class="placeholder">[NAME]</span>,</p>
+        <p>Quick note to say it was nice connecting at Cosmoprof Miami. In case you're curious to learn more about what we're building at AWARE, here's our brand overview: <span class="placeholder">[link]</span></p>
+        <p>We're a professional-exclusive scalp care line - trichologist-founded, clean formulation, and growing quickly in the pro channel. If scalp care ever comes across your radar, I'd love to chat.</p>
+        <p>All the best,<br>David Zhao<br>AWARE Hair | david@awarehair.com</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <div class="section-title">Post-Show Master Checklist</div>
+      <ul class="action-list">
+        <li><span class="cb"></span>Sort and classify all leads (Hot / Warm / Cool) - Day 0</li>
+        <li><span class="cb"></span>Enter all leads into CRM with full notes - Day 0</li>
+        <li><span class="cb"></span>Send Hot lead emails (personalized) - Day 1</li>
+        <li><span class="cb"></span>Send Warm lead emails + confirm sample shipments - Day 1</li>
+        <li><span class="cb"></span>Send Cool lead emails - Day 3</li>
+        <li><span class="cb"></span>Follow up with Hot leads (call if no reply) - Day 3</li>
+        <li><span class="cb"></span>Ship all sample kits promised at show - Day 1-3</li>
+        <li><span class="cb"></span>Send sell-through data to interested distributors - Day 3</li>
+        <li><span class="cb"></span>Hot lead final push (deadline reminder) - Day 7</li>
+        <li><span class="cb"></span>Warm lead check-in (samples arrived?) - Day 7</li>
+        <li><span class="cb"></span>Warm lead final touch / nurture offer - Day 14</li>
+        <li><span class="cb"></span>Add non-responders to monthly newsletter - Day 14</li>
+        <li><span class="cb"></span>Process any orders received during follow-up window</li>
+        <li><span class="cb"></span>Update CRM with final status for each lead</li>
+        <li><span class="cb"></span>Team retrospective: what worked, what to improve for next show</li>
+      </ul>
+    </div>
+
+    <div class="notes-box">
+      <div class="notes-title">CRM Tags to Apply</div>
+      <ul>
+        <li>- Source: cosmoprof-miami-2026</li>
+        <li>- Priority: hot / warm / cool</li>
+        <li>- Type: distributor / retailer / salon / media / other</li>
+        <li>- Status: contacted / replied / meeting-scheduled / order-placed / no-response / nurture</li>
+        <li>- Show Special: eligible (if order placed by Feb 5) / expired</li>
+      </ul>
+    </div>
+
+    <div class="notes-box" style="margin-top: 10px;">
+      <div class="notes-title">Tools Needed</div>
+      <ul>
+        <li>- Email: Send from david@awarehair.com (personal, not bulk)</li>
+        <li>- CRM: Log all touches, set reminders for follow-up days</li>
+        <li>- Shipping: Prepare sample kits with packing slips referencing the show</li>
+        <li>- Calendar: Block time Day 1 and Day 3 for follow-up calls</li>
+        <li>- Attachments: Have pilot proposal, order form, and sell-through PDF ready to send</li>
+      </ul>
+    </div>
+
+    <div class="page-num">4 / 4</div>
+  </div>
+
+  <button class="print-btn no-print" onclick="window.print()">Print / Save PDF</button>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

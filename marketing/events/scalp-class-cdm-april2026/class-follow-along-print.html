@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scalp Education Class - Stylist Follow-Along</title>
+
+  <!-- AWARE Fonts -->
+  <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-text: #1a1a1a;
+      --color-text-secondary: #444444;
+      --color-header: #031612;
+      --color-bronze: #9a7045;
+      --color-green: #031612;
+      --color-border: #cccccc;
+      --color-surface: #f5f5f5;
+
+      --font-heading: "orpheuspro", Georgia, "Times New Roman", serif;
+      --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+
+      /* Typography scale - optimized for dense print handout */
+      --fs-body: 9.5pt;
+      --fs-small: 8.5pt;
+      --fs-label: 8.5pt;
+      --fs-caption: 7.5pt;
+      --fs-micro: 7.5pt;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background: #d0d0d0;
+      color: var(--color-text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 24px;
+      gap: 32px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-label {
+      font-family: var(--font-body);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--color-text-secondary);
+      margin-bottom: -20px;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       PAGE BASE
+       ═══════════════════════════════════════════════════════════════ */
+    .page {
+      width: 8.5in;
+      height: 11in;
+      background: var(--color-bg);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .page-inner {
+      width: 100%;
+      height: 100%;
+      padding: 0.4in 0.5in 0.35in;
+      display: flex;
+      flex-direction: column;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       HEADER
+       ═══════════════════════════════════════════════════════════════ */
+    .header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3px;
+    }
+
+    .header-meta {
+      font-size: var(--fs-caption);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--color-text-secondary);
+    }
+
+    .header-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 3px 0;
+    }
+
+    .header-divider::before,
+    .header-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--color-border);
+    }
+
+    .header-divider span {
+      font-size: 8px;
+      color: var(--color-bronze);
+      opacity: 0.7;
+      line-height: 1;
+    }
+
+    .header-title {
+      font-family: var(--font-heading);
+      font-size: 24pt;
+      font-weight: 400;
+      color: var(--color-header);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 2px;
+    }
+
+    .header-subtitle {
+      font-family: var(--font-body);
+      font-size: var(--fs-small);
+      font-weight: 400;
+      color: var(--color-text-secondary);
+      letter-spacing: 0.02em;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       SECTION NUMBERING & TITLES
+       ═══════════════════════════════════════════════════════════════ */
+    .section {
+      margin-bottom: 12px;
+    }
+
+    .page-2 .section {
+      margin-bottom: 6px;
+    }
+
+    .page-2 .page-inner {
+      padding: 0.35in 0.5in 0.3in;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 4px;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 2px;
+    }
+
+    .section-num {
+      font-family: var(--font-heading);
+      font-size: 14pt;
+      font-weight: 400;
+      color: var(--color-bronze);
+      line-height: 1;
+      opacity: 0.6;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 13pt;
+      font-weight: 400;
+      color: var(--color-header);
+      line-height: 1.2;
+    }
+
+    .section-desc {
+      font-size: var(--fs-body);
+      color: var(--color-text-secondary);
+      line-height: 1.45;
+      margin-bottom: 4px;
+    }
+
+    .section-desc em {
+      font-style: italic;
+      color: var(--color-text);
+    }
+
+    .section-desc-continued {
+      margin-top: 4px;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       SCALP REFRAME - TEXT + SCALP DIAGRAM
+       ═══════════════════════════════════════════════════════════════ */
+    .scalp-reframe {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .scalp-reframe-text {
+      flex: 1;
+    }
+
+    .scalp-reframe-img {
+      flex-shrink: 0;
+      width: 155px;
+    }
+
+    .scalp-reframe-img img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+      border: 1px solid var(--color-border);
+      background: #fff;
+      padding: 6px;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       4 PILLARS - 4 COLUMN GRID
+       ═══════════════════════════════════════════════════════════════ */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .pillar {
+      background: #ffffff;
+      border: 1.5px solid var(--color-border);
+      border-radius: 5px;
+      padding: 8px 7px 7px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pillar-icon {
+      font-size: 16px;
+      margin-bottom: 2px;
+      line-height: 1;
+    }
+
+    .pillar-name {
+      font-family: var(--font-body);
+      font-size: var(--fs-label);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-header);
+      margin-bottom: 1px;
+    }
+
+    .pillar-subtitle {
+      font-family: var(--font-body);
+      font-size: var(--fs-caption);
+      font-weight: 400;
+      color: var(--color-bronze);
+      letter-spacing: 0.02em;
+      margin-bottom: 3px;
+    }
+
+    .pillar-desc {
+      font-size: var(--fs-small);
+      color: var(--color-text-secondary);
+      line-height: 1.35;
+      text-align: left;
+    }
+
+    .pillar-signal {
+      margin-top: auto;
+      border-top: 1px solid var(--color-border);
+      padding-top: 3px;
+    }
+
+    .pillar > .pillar-desc:not(.pillar-signal) {
+      margin-bottom: 4px;
+    }
+
+    .pillar-signal-label {
+      color: var(--color-bronze);
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       CLIENT SYMPTOMS - 3 COLUMN
+       ═══════════════════════════════════════════════════════════════ */
+    .selfcheck-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .selfcheck-col {
+      background: #ffffff;
+      border: 1.5px solid var(--color-border);
+      border-radius: 5px;
+      padding: 7px 8px 6px;
+    }
+
+    .selfcheck-label {
+      font-family: var(--font-body);
+      font-size: var(--fs-label);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-header);
+      margin-bottom: 3px;
+    }
+
+    .selfcheck-label span {
+      font-weight: 400;
+      font-size: var(--fs-caption);
+      color: var(--color-text-secondary);
+      text-transform: none;
+      letter-spacing: 0;
+      margin-left: 3px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 5px;
+      margin-bottom: 2px;
+      font-size: var(--fs-small);
+      color: var(--color-text-secondary);
+      line-height: 1.3;
+    }
+
+    .check-item .checkbox {
+      width: 10px;
+      height: 10px;
+      border: 1px solid var(--color-border);
+      border-radius: 2px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      background: #fff;
+    }
+
+    .check-warning {
+      font-size: var(--fs-caption);
+      color: var(--color-bronze);
+      margin-top: 2px;
+      font-style: italic;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       SCOPE CALLOUT
+       ═══════════════════════════════════════════════════════════════ */
+    .fascia-callout {
+      background: #ffffff;
+      border: 1.5px solid var(--color-header);
+      border-radius: 5px;
+      padding: 7px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .fascia-icon {
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .fascia-text {
+      font-size: var(--fs-body);
+      color: var(--color-text);
+      line-height: 1.4;
+    }
+
+    .fascia-text strong {
+      color: var(--color-header);
+      font-weight: 700;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       GUA SHA QUICK-REF CALLOUT
+       ═══════════════════════════════════════════════════════════════ */
+    .guasha-ref {
+      background: #ffffff;
+      border: 1.5px solid var(--color-header);
+      border-radius: 5px;
+      padding: 7px 12px;
+      margin-bottom: 6px;
+    }
+
+    .guasha-ref-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 5px;
+    }
+
+    .guasha-ref-badge {
+      background: #ffffff;
+      border: 1.5px solid var(--color-header);
+      color: var(--color-header);
+      font-size: var(--fs-micro);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 2px 8px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .guasha-ref-title {
+      font-family: var(--font-heading);
+      font-size: 12pt;
+      color: var(--color-header);
+    }
+
+    .guasha-steps-inline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: 5px;
+    }
+
+    .guasha-step-mini {
+      text-align: center;
+      padding: 4px;
+      background: var(--color-bg);
+      border-radius: 4px;
+    }
+
+    .guasha-step-mini .step-n {
+      font-family: var(--font-heading);
+      font-size: 11pt;
+      color: var(--color-bronze);
+      line-height: 1;
+    }
+
+    .guasha-step-mini .step-loc {
+      font-size: var(--fs-small);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-header);
+    }
+
+    .guasha-step-mini .step-detail {
+      font-size: var(--fs-caption);
+      color: var(--color-text-secondary);
+      line-height: 1.3;
+    }
+
+    .guasha-ref-note {
+      font-size: var(--fs-small);
+      color: var(--color-text-secondary);
+      font-style: italic;
+      line-height: 1.35;
+    }
+
+    .guasha-ref-note strong {
+      font-style: normal;
+      color: var(--color-header);
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       PAGE 2 HEADER
+       ═══════════════════════════════════════════════════════════════ */
+    .page2-header {
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .page2-title {
+      font-family: var(--font-heading);
+      font-size: 20pt;
+      font-weight: 400;
+      color: var(--color-header);
+      line-height: 1.2;
+    }
+
+    .page2-subtitle {
+      font-size: var(--fs-small);
+      color: var(--color-text-secondary);
+      letter-spacing: 0.02em;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       4R PROTOCOL GRID
+       ═══════════════════════════════════════════════════════════════ */
+    .protocol-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .protocol-step {
+      border-radius: 5px;
+      padding: 8px 7px 7px;
+      text-align: center;
+      border: 1.5px solid var(--color-border);
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .protocol-img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      margin-bottom: 4px;
+    }
+
+    .protocol-r {
+      font-family: var(--font-heading);
+      font-size: 12pt;
+      font-weight: 400;
+      color: var(--color-bronze);
+      line-height: 1;
+      margin-bottom: 1px;
+    }
+
+    .protocol-name {
+      font-family: var(--font-body);
+      font-size: var(--fs-label);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-header);
+      margin-bottom: 1px;
+    }
+
+    .protocol-product {
+      font-size: var(--fs-small);
+      font-weight: 500;
+      color: var(--color-header);
+      margin-bottom: 3px;
+    }
+
+    .protocol-desc {
+      font-size: var(--fs-small);
+      color: var(--color-text-secondary);
+      line-height: 1.3;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       TECHNIQUE + SAFETY BARS
+       ═══════════════════════════════════════════════════════════════ */
+    .technique-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .technique-box {
+      flex: 1;
+      border-radius: 5px;
+      padding: 8px 10px;
+      font-size: var(--fs-body);
+      line-height: 1.4;
+    }
+
+    .technique-principle {
+      background: #ffffff;
+      border: 1.5px solid var(--color-header);
+      color: var(--color-text);
+      text-align: center;
+    }
+
+    .technique-principle strong {
+      color: var(--color-header);
+      font-weight: 700;
+    }
+
+    .technique-safety {
+      background: #ffffff;
+      border: 1.5px solid var(--color-border);
+      color: var(--color-text-secondary);
+    }
+
+    .technique-safety strong {
+      color: var(--color-text);
+      font-weight: 600;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       SERVICE MENU - 3 COLUMN TIERS
+       ═══════════════════════════════════════════════════════════════ */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 0.85fr;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .menu-card {
+      background: #ffffff;
+      border: 1.5px solid var(--color-border);
+      border-radius: 5px;
+      padding: 8px 10px 7px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .menu-card-featured {
+      border-color: var(--color-header);
+    }
+
+    .menu-tier {
+      font-family: var(--font-heading);
+      font-size: 11pt;
+      color: var(--color-bronze);
+      line-height: 1;
+      margin-bottom: 1px;
+    }
+
+    .menu-name {
+      font-family: var(--font-body);
+      font-size: var(--fs-label);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-header);
+      margin-bottom: 3px;
+    }
+
+    .menu-price {
+      font-family: var(--font-heading);
+      font-size: 14pt;
+      color: var(--color-header);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .menu-price-note {
+      font-family: var(--font-body);
+      font-size: var(--fs-micro);
+      color: var(--color-bronze);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    .menu-desc {
+      font-size: var(--fs-small);
+      color: var(--color-text-secondary);
+      line-height: 1.4;
+    }
+
+    .menu-note {
+      font-size: var(--fs-caption);
+      color: var(--color-text-secondary);
+      font-style: italic;
+      text-align: center;
+      margin-top: 3px;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       BOOKING SCRIPTS BOX
+       ═══════════════════════════════════════════════════════════════ */
+    .booking-box {
+      background: #ffffff;
+      border: 1.5px solid var(--color-header);
+      border-radius: 5px;
+      padding: 7px 14px;
+      margin-bottom: 6px;
+    }
+
+    .booking-scripts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .booking-script {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .booking-script-label {
+      font-family: var(--font-body);
+      font-size: var(--fs-caption);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-bronze);
+    }
+
+    .booking-script-text {
+      font-size: var(--fs-small);
+      color: var(--color-text);
+      line-height: 1.4;
+      font-style: italic;
+    }
+
+    .booking-script-text strong {
+      font-style: normal;
+      color: var(--color-header);
+      font-weight: 600;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       TAKEAWAYS
+       ═══════════════════════════════════════════════════════════════ */
+    .takeaways-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .takeaway-card {
+      background: #ffffff;
+      border: 1.5px solid var(--color-border);
+      border-radius: 5px;
+      padding: 7px 8px 6px;
+      text-align: center;
+    }
+
+    .takeaway-icon {
+      font-size: 18px;
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+
+    .takeaway-title {
+      font-size: var(--fs-label);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-header);
+      margin-bottom: 2px;
+    }
+
+    .takeaway-desc {
+      font-size: var(--fs-small);
+      color: var(--color-text-secondary);
+      line-height: 1.3;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════════ */
+    .footer {
+      margin-top: auto;
+      margin-bottom: 4px;
+      border-top: 1px solid var(--color-border);
+      padding-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .footer-qr {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .qr-box {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      flex-shrink: 0;
+    }
+
+    .qr-box img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .qr-label {
+      font-size: var(--fs-small);
+      color: var(--color-text-secondary);
+      line-height: 1.35;
+    }
+
+    .qr-label strong {
+      color: var(--color-text);
+      font-weight: 600;
+      display: block;
+    }
+
+    .footer-offer {
+      background: #ffffff;
+      border: 1.5px solid var(--color-header);
+      border-radius: 4px;
+      padding: 7px 14px;
+      text-align: center;
+    }
+
+    .footer-contact {
+      text-align: center;
+      flex: 1;
+    }
+
+    .footer-contact-label {
+      font-size: var(--fs-micro);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-text-secondary);
+      margin-bottom: 3px;
+    }
+
+    .footer-contact-email {
+      font-family: var(--font-heading);
+      font-size: 14pt;
+      color: var(--color-header);
+      line-height: 1.1;
+      margin-bottom: 2px;
+    }
+
+    .footer-contact-sub {
+      font-size: var(--fs-small);
+      color: var(--color-text-secondary);
+      font-style: italic;
+    }
+
+    .footer-offer-label {
+      font-size: var(--fs-micro);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-text-secondary);
+      margin-bottom: 1px;
+    }
+
+    .footer-offer-code {
+      font-family: var(--font-body);
+      font-size: 12pt;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--color-header);
+    }
+
+    .footer-offer-terms {
+      font-size: var(--fs-micro);
+      color: var(--color-text-secondary);
+    }
+
+    .footer-social {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .footer-social-handle {
+      font-size: var(--fs-body);
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .footer-social-cta {
+      font-size: var(--fs-small);
+      color: var(--color-text-secondary);
+    }
+
+    /* Page 1 footer (simpler) */
+    .page1-footer {
+      margin-top: auto;
+      border-top: 1px solid var(--color-border);
+      padding-top: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .page1-footer-text {
+      font-size: var(--fs-caption);
+      color: var(--color-text-secondary);
+    }
+
+    .page1-footer-text .mid-dot {
+      color: var(--color-bronze);
+      opacity: 0.6;
+      padding: 0 3px;
+    }
+
+    .page1-footer-logo img {
+      height: 18px;
+      width: auto;
+      opacity: 0.6;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       PRINT
+       ═══════════════════════════════════════════════════════════════ */
+    @media print {
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      body { background: white; padding: 0; gap: 0; }
+      .page-label { display: none; }
+      .page { box-shadow: none; }
+      .page-1 { page-break-after: always; }
+      @page { size: letter; margin: 0; }
+    }
+
+    @media screen {
+      .page {
+        box-shadow:
+          0 1px 3px rgba(16, 43, 38, 0.06),
+          0 8px 32px rgba(16, 43, 38, 0.10);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PAGE 1 - FOUNDATION + CLINICAL LENS
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="page-label">Page 1 - Foundation</div>
+  <div class="page page-1">
+    <div class="page-inner">
+
+      <!-- Header -->
+      <div class="header">
+        <div class="header-top">
+          <div class="header-meta">AWARE Hair Scalp Education</div>
+          <div class="header-meta">For Licensed Professionals</div>
+        </div>
+        <div class="header-divider"><span>&#9670;</span></div>
+        <h1 class="header-title">Scalp Health Masterclass</h1>
+        <p class="header-subtitle">Presented by AWARE Hair and Tina Mui</p>
+      </div>
+
+      <!-- Section 1: You See More Scalps Than Dermatologists -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">1</span>
+          <h2 class="section-title">You See More Scalps Than Dermatologists</h2>
+        </div>
+        <div class="scalp-reframe">
+          <div class="scalp-reframe-text">
+            <p class="section-desc">
+              Think of the scalp like a <em>garden</em>. The hair is what grows above the surface, but everything depends on the soil underneath. Compared to the face, the scalp has more follicles, more sebaceous (oil) glands, more friction from brushing, styling, and tension, and it is a covered environment, warm and humid under the hair, so the microbiome shifts more easily.
+            </p>
+            <p class="section-desc section-desc-continued">
+              Your clients sit in your chair every 4 to 6 weeks. You part their hair section by section, you are at the bowl with your hands on their scalp. <em>You are the first to see change. That is your opportunity to catch it early and build a service around it.</em>
+            </p>
+          </div>
+          <div class="scalp-reframe-img">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Hair_follicle-en.svg" alt="Cross-section of a hair follicle showing skin layers, sebaceous gland, and dermal papilla">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: 4 Pillars of Scalp Health -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">2</span>
+          <h2 class="section-title">The 4 Pillars of Scalp Health</h2>
+        </div>
+        <div class="pillars-grid">
+
+          <div class="pillar">
+            <div class="pillar-icon">&#9678;</div>
+            <p class="pillar-name">Barrier</p>
+            <p class="pillar-subtitle">The Scalp's "Roof"</p>
+            <p class="pillar-desc">Cells plus lipids that keep the good in and bad out. When compromised, the scalp becomes porous and reactive.</p>
+            <p class="pillar-desc pillar-signal"><strong class="pillar-signal-label">At the chair:</strong> Tightness after shampoo, stinging with color, thin red patches at the part.</p>
+          </div>
+
+          <div class="pillar">
+            <div class="pillar-icon">&#9672;</div>
+            <p class="pillar-name">Microbiome</p>
+            <p class="pillar-subtitle">The Ecosystem</p>
+            <p class="pillar-desc">Bacteria and yeast that live on the scalp naturally. Not sterile, balanced. Problems come from shifts, not dirt.</p>
+            <p class="pillar-desc pillar-signal"><strong class="pillar-signal-label">At the chair:</strong> Recurrent flakes days after washing, waxy scaling, odor at the roots.</p>
+          </div>
+
+          <div class="pillar">
+            <div class="pillar-icon">&#9888;</div>
+            <p class="pillar-name">Inflammation</p>
+            <p class="pillar-subtitle">The Alarm System</p>
+            <p class="pillar-desc">An immune response. The scalp saying something is stressing it. The bridge between discomfort and hair issues.</p>
+            <p class="pillar-desc pillar-signal"><strong class="pillar-signal-label">At the chair:</strong> Tender crown, warmth, itch they can't ignore, redness along the hairline.</p>
+          </div>
+
+          <div class="pillar">
+            <div class="pillar-icon" style="font-size: 19px;">&#8635;</div>
+            <p class="pillar-name">Circulation</p>
+            <p class="pillar-subtitle">Traffic + Tension</p>
+            <p class="pillar-desc">Follicles need blood flow for nutrients and oxygen. When flow is restricted, follicles shrink and growth slows.</p>
+            <p class="pillar-desc pillar-signal"><strong class="pillar-signal-label">At the chair:</strong> Tight scalp, jaw tension, thinning at the crown where the galea is thickest.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Section 3: What Your Clients Are Telling You -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">3</span>
+          <h2 class="section-title">What Your Clients Are Telling You</h2>
+        </div>
+        <div class="selfcheck-grid">
+
+          <div class="selfcheck-col">
+            <p class="selfcheck-label">Symptom <span>What they say</span></p>
+            <div class="check-item"><div class="checkbox"></div> "My hair feels thinner"</div>
+            <div class="check-item"><div class="checkbox"></div> "I have dandruff / flakes"</div>
+            <div class="check-item"><div class="checkbox"></div> "My scalp itches"</div>
+            <div class="check-item"><div class="checkbox"></div> "I have a lot of build-up"</div>
+            <div class="check-item"><div class="checkbox"></div> "It burns after color"</div>
+          </div>
+
+          <div class="selfcheck-col">
+            <p class="selfcheck-label">Ask <span>Before recommending</span></p>
+            <div class="check-item"><div class="checkbox"></div> Any new stress or life change?</div>
+            <div class="check-item"><div class="checkbox"></div> New medication or product?</div>
+            <div class="check-item"><div class="checkbox"></div> Diet shifts, protein, iron?</div>
+            <div class="check-item"><div class="checkbox"></div> How often do you wash?</div>
+            <div class="check-item"><div class="checkbox"></div> What are you using at home?</div>
+          </div>
+
+          <div class="selfcheck-col">
+            <p class="selfcheck-label">See <span>What you observe</span></p>
+            <div class="check-item"><div class="checkbox"></div> Widened part or sparse crown</div>
+            <div class="check-item"><div class="checkbox"></div> Dry powdery vs waxy yellow flakes</div>
+            <div class="check-item"><div class="checkbox"></div> Redness or reactive patches</div>
+            <div class="check-item"><div class="checkbox"></div> Build-up at nape or hairline</div>
+            <div class="check-item check-warning">Up to 150 hairs / day of shedding is normal</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Scope Callout -->
+      <div class="fascia-callout">
+        <div class="fascia-icon">&#9670;</div>
+        <p class="fascia-text">
+          <strong>Know your scope:</strong> You are not diagnosing. You are observing, asking, and caring for the scalp environment. Refer to a dermatologist for sudden or patchy loss, large yellow flakes that stick to the scalp, visible lesions, persistent pain, or anything that looks off to you.
+        </p>
+      </div>
+
+      <!-- Scalp Analysis Quick-Ref -->
+      <div class="guasha-ref">
+        <div class="guasha-ref-header">
+          <span class="guasha-ref-badge">Scalp Check</span>
+          <span class="guasha-ref-title">The 4 Zones to Analyze</span>
+        </div>
+        <div class="guasha-steps-inline">
+          <div class="guasha-step-mini">
+            <p class="step-n">01</p>
+            <p class="step-loc">Crown</p>
+            <p class="step-detail">Overall balance. Oil, dryness, density.</p>
+          </div>
+          <div class="guasha-step-mini">
+            <p class="step-n">02</p>
+            <p class="step-loc">Hairline + Temples</p>
+            <p class="step-detail">Recession, breakage, tension from ponytails.</p>
+          </div>
+          <div class="guasha-step-mini">
+            <p class="step-n">03</p>
+            <p class="step-loc">Sides</p>
+            <p class="step-detail">Is it isolated or widespread? Barrier check.</p>
+          </div>
+          <div class="guasha-step-mini">
+            <p class="step-n">04</p>
+            <p class="step-loc">Nape</p>
+            <p class="step-detail">Build-up, congestion, tenderness.</p>
+          </div>
+        </div>
+        <p class="guasha-ref-note">
+          At each zone, mentally run the <strong>4 pillars</strong>: barrier, microbiome, inflammation, circulation. Look for patterns, not diagnoses. Does what you see match what the client is telling you?
+        </p>
+      </div>
+
+      <!-- Page 1 footer -->
+      <div class="page1-footer">
+        <p class="page1-footer-text">
+          Scalp Education <span class="mid-dot">&middot;</span> For Licensed Professionals <span class="mid-dot">&middot;</span> awarehair.com <span class="mid-dot">&middot;</span> Page 1 of 2
+        </p>
+        <div class="page1-footer-logo">
+          <img src="https://d3k81ch9hvuctc.cloudfront.net/company/UmRhdX/images/83b4c942-f697-41fe-b12e-b187691a4f91.png" alt="AWARE">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PAGE 2 - PROTOCOL + YOUR SERVICE MENU
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="page-label">Page 2 - Protocol + Service Menu</div>
+  <div class="page page-2">
+    <div class="page-inner">
+
+      <!-- Page 2 Header -->
+      <div class="page2-header">
+        <div class="header-divider"><span>&#9670;</span></div>
+        <h2 class="page2-title">Protocol + Your Service Menu</h2>
+        <p class="page2-subtitle">A baseline framework, a technique to practice, and to offer scalp services at your chair</p>
+      </div>
+
+      <!-- Section 4: 4R Framework -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">4</span>
+          <h2 class="section-title">The 4R Framework</h2>
+        </div>
+        <div class="protocol-grid">
+
+          <div class="protocol-step">
+            <img class="protocol-img" src="../../../assets/images/products/shampoo-tight.png" alt="Shampoo">
+            <p class="protocol-r">R1</p>
+            <p class="protocol-name">Reset</p>
+            <p class="protocol-product">9&middot;1 Shampoo</p>
+            <p class="protocol-desc">Clear the follicular opening. Double cleanse: first wash lifts, second treats the scalp.</p>
+          </div>
+
+          <div class="protocol-step">
+            <img class="protocol-img" src="../../../assets/images/products/conditioner-tight.png" alt="Conditioner + Scalp Mask">
+            <p class="protocol-r">R2</p>
+            <p class="protocol-name">Repair</p>
+            <p class="protocol-product">9&middot;1 Conditioner</p>
+            <p class="protocol-desc">Restore the barrier and support microbiome balance. Doubles as a scalp mask.</p>
+          </div>
+
+          <div class="protocol-step">
+            <img class="protocol-img" src="../../../assets/images/products/leave-in-tight.png" alt="Leave-In">
+            <p class="protocol-r">R3</p>
+            <p class="protocol-name">Reinforce</p>
+            <p class="protocol-product">9&middot;1 Leave-In</p>
+            <p class="protocol-desc">Shield against UV, pollution, and heat. Protect the part line where damage concentrates.</p>
+          </div>
+
+          <div class="protocol-step">
+            <img class="protocol-img" src="../../../assets/images/products/gua-sha-no-shadow.png" alt="Gua Sha">
+            <p class="protocol-r">R4</p>
+            <p class="protocol-name">Reactivate</p>
+            <p class="protocol-product">Scalp Gua Sha</p>
+            <p class="protocol-desc">Release fascia, stimulate circulation, support a healthy follicle environment.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Gua Sha Quick Reference -->
+      <div class="guasha-ref">
+        <div class="guasha-ref-header">
+          <span class="guasha-ref-badge">At the Bowl</span>
+          <span class="guasha-ref-title">Gua Sha: The 4 Steps</span>
+        </div>
+        <div class="guasha-steps-inline">
+          <div class="guasha-step-mini">
+            <p class="step-n">01</p>
+            <p class="step-loc">Hairline</p>
+            <p class="step-detail">Front to back, 8-10 strokes</p>
+          </div>
+          <div class="guasha-step-mini">
+            <p class="step-n">02</p>
+            <p class="step-loc">Crown (Baihui)</p>
+            <p class="step-detail">Circular / radial, 8-10 strokes</p>
+          </div>
+          <div class="guasha-step-mini">
+            <p class="step-n">03</p>
+            <p class="step-loc">Temples</p>
+            <p class="step-detail">Upward + small circles, 8-10 each</p>
+          </div>
+          <div class="guasha-step-mini">
+            <p class="step-n">04</p>
+            <p class="step-loc">Nape</p>
+            <p class="step-detail">Upward to crown, 8-10 strokes</p>
+          </div>
+        </div>
+        <p class="guasha-ref-note">
+          <strong>Credibility tip:</strong> The crown point is called <em>Baihui</em> in traditional Chinese medicine, "hundred meetings." Say to the client: "I'm going to work the Baihui point at your crown." Offer a 2-minute version during conditioning as a complimentary touch, or build the full sequence into a paid tier.
+        </p>
+      </div>
+
+      <!-- Technique Principle + Safety -->
+      <div class="technique-bar">
+        <div class="technique-box technique-principle">
+          <strong>Key Principle:</strong> Move the scalp tissue, not just the hair. Light to medium pressure, flat surface in full contact. If it feels like scraping, ease up.
+        </div>
+        <div class="technique-box technique-safety">
+          <strong>Do not gua sha when:</strong> Open sores, active infection, severe flare-ups, or immediately after a chemical service. If it causes pain, stop.
+        </div>
+      </div>
+
+      <!-- Section 5: Your Scalp Service Menu -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">5</span>
+          <h2 class="section-title">Your Scalp Service Menu</h2>
+        </div>
+        <div class="menu-grid">
+
+          <div class="menu-card">
+            <p class="menu-tier">Tier 1</p>
+            <p class="menu-name">Scalp Analysis</p>
+            <p class="menu-price">$25&ndash;35<span class="menu-price-note">15 min add-on</span></p>
+            <p class="menu-desc">4-zone scalp check under magnification. Walk the client through what you see, ask the right questions, give home care recommendations.</p>
+          </div>
+
+          <div class="menu-card menu-card-featured">
+            <p class="menu-tier">Tier 2</p>
+            <p class="menu-name">Analysis + Treatment</p>
+            <p class="menu-price">$55&ndash;75<span class="menu-price-note">30 min add-on</span></p>
+            <p class="menu-desc">Everything in Tier 1, plus a treatment: scalp mask with the 9&middot;1 Conditioner, bowl oil massage (skip if color that day), or full gua sha sequence.</p>
+          </div>
+
+          <div class="menu-card">
+            <p class="menu-tier">Add-On</p>
+            <p class="menu-name">Gua Sha Touch</p>
+            <p class="menu-price">Complimentary</p>
+            <p class="menu-desc">A 2-minute gua sha during the conditioning step on any appointment. Costs only time, elevates every visit, builds tips.</p>
+          </div>
+
+        </div>
+        <p class="menu-note">Suggested ranges. Set pricing that fits your market and your clientele.</p>
+      </div>
+
+      <!-- Section 6: How to Book It -->
+      <div class="booking-box">
+        <div class="booking-scripts">
+          <div class="booking-script">
+            <p class="booking-script-label">At the chair</p>
+            <p class="booking-script-text"><strong>Say:</strong> "Next time you're in, let's book you for a scalp check. I'll look at it under the microscope so we can actually see what's going on."</p>
+          </div>
+          <div class="booking-script">
+            <p class="booking-script-label">Online booking</p>
+            <p class="booking-script-text"><strong>Add a pop-up at checkout:</strong> "Would you like to add a 15-minute scalp analysis to your appointment?"</p>
+          </div>
+          <div class="booking-script">
+            <p class="booking-script-label">Front desk</p>
+            <p class="booking-script-text"><strong>Receptionist prompt:</strong> "Would you like to add a scalp analysis? Same way you'd offer a deep conditioning treatment."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Takeaways -->
+      <div class="takeaways-grid">
+        <div class="takeaway-card">
+          <div class="takeaway-icon">&#9888;</div>
+          <p class="takeaway-title">Common Mistakes</p>
+          <p class="takeaway-desc">10-second lather, rinsing out too quickly, skipping the double cleanse, shampooing with nails.</p>
+        </div>
+        <div class="takeaway-card">
+          <div class="takeaway-icon">&#9672;</div>
+          <p class="takeaway-title">Book It, Don't Gift It</p>
+          <p class="takeaway-desc">Free previews train clients to expect free. The analysis is the service. Book it and charge for it.</p>
+        </div>
+        <div class="takeaway-card">
+          <div class="takeaway-icon">&#9678;</div>
+          <p class="takeaway-title">Start With One</p>
+          <p class="takeaway-desc">Add Tier 1 first. Add Tier 2 when you're comfortable. The framework is here whenever you're ready.</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <div class="footer-qr">
+          <div class="qr-box">
+            <img src="assets/qr-professional-portal.png" alt="QR - Professional Portal">
+          </div>
+          <div class="qr-label">
+            <strong>Carry AWARE in your salon</strong>
+            Scan to learn more about offering<br>AWARE in your salon.
+          </div>
+        </div>
+
+        <div class="footer-contact">
+          <p class="footer-contact-label">Questions from the chair?</p>
+          <p class="footer-contact-email">jade@awarehair.com</p>
+          <p class="footer-contact-sub">Text or email anytime.</p>
+        </div>
+
+        <div class="footer-social">
+          <p class="footer-social-handle">@awarehaircare</p>
+          <p class="footer-social-cta">Tag us at the bowl.</p>
+          <p class="footer-social-cta" style="font-style: italic; margin-top: 2px;">Proactive Scalp Wellness, Simplified.</p>
+        </div>
+      </div>
+
+      <!-- Page 2 footer bar -->
+      <div class="page1-footer">
+        <p class="page1-footer-text">
+          Scalp Education <span class="mid-dot">&middot;</span> For Licensed Professionals <span class="mid-dot">&middot;</span> awarehair.com <span class="mid-dot">&middot;</span> Page 2 of 2
+        </p>
+        <div class="page1-footer-logo">
+          <img src="https://d3k81ch9hvuctc.cloudfront.net/company/UmRhdX/images/83b4c942-f697-41fe-b12e-b187691a4f91.png" alt="AWARE">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

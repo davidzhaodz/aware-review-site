@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Great Lengths B2B-to-Stylist Deep Dive - AWARE Hair</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://use.typekit.net">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<style>
+:root {
+  --teal: #102B26; --cream: #f4efe9; --surface: #faf8f5; --gold: #D4A574; --sage: #7d8471;
+  --gold-muted: #c9a67a;
+  --teal-06: rgba(16, 43, 38, 0.06); --teal-08: rgba(16, 43, 38, 0.08); --teal-12: rgba(16, 43, 38, 0.12);
+  --teal-20: rgba(16, 43, 38, 0.20); --teal-40: rgba(16, 43, 38, 0.40); --teal-60: rgba(16, 43, 38, 0.60);
+  --red: #8b2635; --red-bg: #fde8ea;
+  --green: #2d6a4f; --green-bg: #e8f5e9;
+  --amber: #9a6d00; --amber-bg: #fef3d0;
+  --blue: #1a5276; --blue-bg: #e8f0f8;
+  --heading: 'orpheus-pro', Georgia, 'Times New Roman', serif;
+  --body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius: 6px;
+  --transition: 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--body); background: var(--cream); color: var(--teal); line-height: 1.65; font-size: 15px; -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { font-family: var(--heading); font-weight: 400; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1.1; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.2; margin-top: 56px; margin-bottom: 8px; padding-top: 40px; border-top: 1px solid var(--teal-12); }
+h3 { font-size: 1.15rem; line-height: 1.3; margin-top: 32px; margin-bottom: 12px; }
+h4 { font-family: var(--body); font-weight: 600; font-size: 14px; margin-top: 20px; margin-bottom: 8px; }
+p { margin-bottom: 14px; }
+.label { font-family: var(--body); font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); }
+.section-num { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--sage); display: block; margin-bottom: 4px; font-family: var(--body); font-weight: 600; }
+.gold-divider { width: 64px; height: 1px; background: var(--gold); opacity: 0.4; margin: 20px 0; }
+.container { max-width: 960px; margin: 0 auto; padding: 0 32px; }
+section { padding: 64px 0; }
+.cover { background: var(--teal); color: var(--cream); min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 48px 80px; position: relative; overflow: hidden; }
+.cover::before { content: ''; position: absolute; top: -30%; right: -15%; width: 650px; height: 650px; border-radius: 50%; border: 1px solid rgba(212, 165, 116, 0.08); }
+.cover::after { content: ''; position: absolute; bottom: -20%; left: -10%; width: 500px; height: 500px; border-radius: 50%; border: 1px solid rgba(212, 165, 116, 0.05); }
+.cover .inner { max-width: 960px; margin: 0 auto; width: 100%; }
+.cover .label { color: var(--gold); margin-bottom: 32px; }
+.cover h1 { margin-bottom: 28px; max-width: 720px; }
+.cover h1 em { font-style: italic; color: var(--gold); }
+.cover-desc { font-size: 15px; color: rgba(244,239,233,0.65); max-width: 660px; line-height: 1.65; margin-top: 8px; }
+.cover-meta { display: flex; gap: 40px; margin-top: 28px; font-size: 13px; color: rgba(244,239,233,0.5); flex-wrap: wrap; }
+.cover-meta strong { color: rgba(244,239,233,0.75); font-weight: 500; }
+.cover-nav { position: absolute; top: 40px; right: 48px; }
+.cover-nav .logo-text { font-family: var(--heading); font-size: 18px; color: var(--cream); letter-spacing: 0.08em; }
+.stats-row { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat-card { flex: 1; min-width: 140px; padding: 20px; background: var(--surface); border: 1px solid var(--teal-12); border-radius: var(--radius); text-align: center; }
+.stat-card .stat-value { font-family: var(--heading); font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.1; margin-bottom: 4px; }
+.stat-card .stat-label { font-size: 11px; color: var(--teal-40); font-weight: 500; letter-spacing: 0.3px; }
+.stat-card.highlight { border-color: var(--gold); border-width: 1.5px; }
+.stat-card.highlight .stat-value { color: var(--gold-muted); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0; }
+th { text-align: left; font-weight: 600; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--sage); padding: 10px 16px; border-bottom: 2px solid var(--teal-12); }
+td { padding: 12px 16px; border-bottom: 1px solid var(--teal-06); line-height: 1.5; vertical-align: top; }
+tr:hover td { background: rgba(212, 165, 116, 0.04); }
+.tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; }
+.tag-high { background: var(--green-bg); color: var(--green); }
+.tag-med { background: var(--amber-bg); color: var(--amber); }
+.tag-low { background: var(--teal-06); color: var(--teal-40); }
+.tag-new { background: var(--blue-bg); color: var(--blue); }
+.tag-winner { background: var(--gold); color: white; }
+.tag-verified { background: var(--green-bg); color: var(--green); }
+.tag-unverified { background: var(--amber-bg); color: var(--amber); }
+.tag-estimated { background: var(--teal-06); color: var(--teal-60); }
+.insight-box { margin: 28px 0; padding: 24px 28px; background: var(--surface); border: 1px solid var(--teal-12); border-left: 3px solid var(--gold); border-radius: var(--radius); }
+.insight-box .insight-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+.insight-box p { font-size: 13px; color: var(--teal-60); line-height: 1.6; margin-bottom: 10px; }
+.insight-box p:last-child { margin-bottom: 0; }
+.insight-box strong { color: var(--teal); }
+.aware-box { margin: 28px 0; padding: 24px 28px; background: rgba(45, 106, 79, 0.04); border: 1px solid rgba(45, 106, 79, 0.12); border-left: 3px solid var(--green); border-radius: var(--radius); }
+.aware-box .aware-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+.aware-box ul { list-style: none; padding: 0; }
+.aware-box li { font-size: 13px; color: var(--teal); line-height: 1.6; padding: 6px 0; padding-left: 16px; position: relative; }
+.aware-box li::before { content: ''; position: absolute; left: 0; top: 14px; width: 6px; height: 6px; border-radius: 50%; background: var(--green); opacity: 0.4; }
+.contrast-box { margin: 28px 0; padding: 24px 28px; background: rgba(139, 38, 53, 0.04); border: 1px solid rgba(139, 38, 53, 0.12); border-left: 3px solid var(--red); border-radius: var(--radius); }
+.contrast-box .contrast-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--red); margin-bottom: 10px; }
+.pull-quote { font-family: var(--heading); font-size: clamp(1.2rem, 2.5vw, 1.65rem); line-height: 1.45; color: var(--teal); margin: 32px 0; padding-left: 28px; border-left: 2px solid var(--gold); }
+.pull-quote em { font-style: italic; color: var(--gold-muted); }
+.unknown-box { margin: 28px 0; padding: 24px 28px; background: var(--teal-06); border: 1px solid var(--teal-12); border-radius: var(--radius); }
+.unknown-box .unknown-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal-40); margin-bottom: 12px; }
+.unknown-box li { font-size: 13px; color: var(--teal-60); line-height: 1.6; margin-bottom: 6px; list-style-position: inside; }
+.toc { columns: 2; column-gap: 32px; margin-top: 24px; }
+.toc-item { display: block; padding: 8px 0; border-bottom: 1px solid var(--teal-06); break-inside: avoid; text-decoration: none; color: var(--teal); transition: color var(--transition); }
+.toc-item:hover { color: var(--gold); }
+.toc-num { font-family: var(--heading); font-size: 18px; color: var(--gold); margin-right: 10px; }
+.toc-name { font-size: 14px; font-weight: 500; }
+.ad-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; margin: 24px 0; }
+.ad-card { background: white; border: 1px solid var(--teal-12); border-radius: var(--radius); overflow: hidden; transition: border-color var(--transition), box-shadow var(--transition); }
+.ad-card:hover { border-color: var(--gold); box-shadow: 0 4px 20px rgba(16, 43, 38, 0.08); }
+.ad-card img { width: 100%; height: auto; display: block; border-bottom: 1px solid var(--teal-12); }
+.ad-card figcaption { padding: 14px 16px; }
+.ad-card .ad-angle-name { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.ad-card .ad-copy { font-size: 12px; color: var(--teal-60); line-height: 1.5; font-style: italic; margin-bottom: 10px; }
+.full-screenshot { margin: 24px 0; border: 1px solid var(--teal-12); border-radius: var(--radius); overflow: hidden; }
+.full-screenshot img { width: 100%; height: auto; display: block; }
+.full-screenshot .screenshot-caption { padding: 10px 16px; font-size: 11px; color: var(--teal-40); background: var(--teal-06); border-top: 1px solid var(--teal-12); }
+.matrix-table td:nth-child(2), .matrix-table td:nth-child(3), .matrix-table td:nth-child(4), .matrix-table td:nth-child(5) { text-align: center; }
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+.compare-card { padding: 24px; background: var(--surface); border: 1px solid var(--teal-12); border-radius: var(--radius); }
+.compare-card h4 { margin-top: 0; margin-bottom: 12px; }
+.four-way { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0; margin: 24px 0; border: 1px solid var(--teal-12); border-radius: var(--radius); overflow: hidden; }
+.four-way > div { padding: 18px; }
+.four-way > div:not(:last-child) { border-right: 1px solid var(--teal-12); }
+.four-way > div:nth-child(1) { background: var(--surface); }
+.four-way > div:nth-child(2) { background: rgba(45, 106, 79, 0.04); }
+.four-way > div:nth-child(3) { background: rgba(212, 165, 116, 0.06); }
+.four-way > div:nth-child(4) { background: rgba(26, 82, 118, 0.05); }
+.four-way h4 { margin-top: 0; font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--sage); }
+.sources { font-size: 12px; color: var(--teal-60); line-height: 1.7; }
+.sources ol { padding-left: 20px; }
+.sources li { margin-bottom: 8px; }
+.sources a { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--teal-12); }
+.sources a:hover { border-color: var(--gold); }
+.figure-meta-line { font-size: 12px; color: var(--teal-40); margin-top: -8px; }
+.figure-meta-line a { color: var(--gold); text-decoration: none; font-weight: 600; border-bottom: 1px solid transparent; transition: border-color var(--transition); }
+.figure-meta-line a:hover { border-color: var(--gold); }
+@media (max-width: 768px) {
+  .cover { padding: 0 24px 56px; }
+  .container { padding: 0 20px; }
+  section { padding: 48px 0; }
+  .stats-row { flex-direction: column; }
+  .stat-card { min-width: auto; }
+  .compare-grid, .four-way { grid-template-columns: 1fr; }
+  .four-way > div:not(:last-child) { border-right: none; border-bottom: 1px solid var(--teal-12); }
+  .toc { columns: 1; }
+  .cover-meta { gap: 20px; }
+  .ad-gallery { grid-template-columns: 1fr; }
+  table { font-size: 12px; }
+  td, th { padding: 8px 10px; }
+}
+@media print {
+  .cover { min-height: auto; padding: 40px 24px; }
+  section { padding: 32px 0; page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="cover-nav"><span class="logo-text">AWARE</span></div>
+  <div class="inner">
+    <p class="label">Competitive Intelligence - B2B Deep Dive No. 4</p>
+    <div style="width: 64px; height: 1px; background: var(--gold); opacity: 0.4; margin: 20px 0;"></div>
+    <h1>Great Lengths: <em>The Certification Moat</em> Model</h1>
+    <p class="cover-desc">
+      The 33-year-old Italian extensions brand runs a structurally distinct B2B model: zero direct paid stylist acquisition, ~10 active consumer-facing ads driving demand to a salon locator, and the most developed certification program of any competitor we've analyzed - with co-op advertising funding, monthly free advanced classes, a private stylist Facebook group, and a mobile stylist portal. Plus: a quiet but huge strategic shift this quarter to a "no certification required" Linea Weft launch, breaking the certification-only model for the first time in the brand's history.
+    </p>
+    <div class="cover-meta">
+      <span><strong>Live Data</strong> &ensp;April 21, 2026</span>
+      <span><strong>Sources</strong> &ensp;Meta Ad Library, greatlengths.com, @greatlengthsusa IG (via Xpoz)</span>
+      <span><strong>Prior Deep Dives</strong> &ensp;Innersense, K18, Davines (4-way comparison included)</span>
+      <span><strong>Prepared for</strong> &ensp;David Zhao</span>
+    </div>
+  </div>
+</section>
+
+<!-- THESIS -->
+<section>
+  <div class="container">
+    <span class="section-num">01 &mdash; The Thesis</span>
+    <p class="label">Why Great Lengths Matters</p>
+    <h2 style="border-top: none; padding-top: 0; margin-top: 8px;">The Certification Moat</h2>
+    <div class="gold-divider"></div>
+
+    <div class="pull-quote">
+      Innersense pays for stylist trial. K18 pays for consumer demand. Davines pays for shared meaning. Great Lengths makes <em>the certification itself</em> the product. The 2-day GL Certified course is the gate that limits supply, the marketing engine that drives stylists to apply, and the relationship event that anchors a multi-year B2B revenue stream. The paid media is just the demand generator that fills the consultations.
+    </div>
+
+    <p>
+      Great Lengths is the fourth and final brand in this competitive series. Their B2B model is structurally closest to K18's (consumer demand pulls salons into the channel) but with one critical difference: <strong>distribution is impossible without certification</strong>. A salon cannot stock or apply Great Lengths bonded extensions without sending stylists to the 2-day course. This makes certification not a nurture asset but the actual gate to becoming a customer.
+    </p>
+
+    <p>
+      A keyword search of the Meta Ad Library for "greatlengths.com" on April 21, 2026 returns ~10 active ads. Of those, <strong>9 are brand-direct CONSUMER ads</strong> and 1 is a salon-run ad (Hair Extension Lab Kansas City) tagging Great Lengths in the salon's own promotion. Every brand-direct ad uses a "find a certified stylist near you" CTA driving to /where-we-are. Zero ads recruit stylists into certification - that work is done entirely by the consumer demand the consumer ads generate, plus an Instagram-native certification-class scheduling cadence (7 upcoming class dates in 6 weeks across 5 cities + virtual).
+    </p>
+
+    <div class="stats-row">
+      <div class="stat-card highlight">
+        <div class="stat-value">~10</div>
+        <div class="stat-label">Active Great Lengths ads (all consumer)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">0</div>
+        <div class="stat-label">Brand-direct B2B paid ads</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">122K</div>
+        <div class="stat-label">@greatlengthsusa IG (verified)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">'93</div>
+        <div class="stat-label">"Salon exclusive since" (33 years)</div>
+      </div>
+    </div>
+
+    <h3>Table of Contents</h3>
+    <div class="toc">
+      <a class="toc-item" href="#findings"><span class="toc-num">01</span><span class="toc-name">Five Key Findings</span></a>
+      <a class="toc-item" href="#consumer-paid"><span class="toc-num">02</span><span class="toc-name">The Consumer-Paid Demand Engine</span></a>
+      <a class="toc-item" href="#certification-program"><span class="toc-num">03</span><span class="toc-name">The Certification Program (Behind the Public Page)</span></a>
+      <a class="toc-item" href="#linea-shift"><span class="toc-num">04</span><span class="toc-name">The "No Certification Required" Linea Shift</span></a>
+      <a class="toc-item" href="#instagram"><span class="toc-num">05</span><span class="toc-name">@greatlengthsusa: One Account, All Audiences</span></a>
+      <a class="toc-item" href="#ambassadors"><span class="toc-num">06</span><span class="toc-name">The GL Collective &amp; Ambassador Roster</span></a>
+      <a class="toc-item" href="#four-way"><span class="toc-num">07</span><span class="toc-name">Four Models Side by Side</span></a>
+      <a class="toc-item" href="#transferability"><span class="toc-num">08</span><span class="toc-name">Transferability Matrix for AWARE</span></a>
+      <a class="toc-item" href="#priority-actions"><span class="toc-num">09</span><span class="toc-name">Priority Action Items</span></a>
+      <a class="toc-item" href="#unknowns"><span class="toc-num">10</span><span class="toc-name">What We Still Don't Know</span></a>
+      <a class="toc-item" href="#sources"><span class="toc-num">11</span><span class="toc-name">Sources &amp; Methodology</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- FIVE FINDINGS -->
+<section id="findings">
+  <div class="container">
+    <span class="section-num">02 &mdash; Key Findings</span>
+    <h2>Five Findings That Matter Most</h2>
+    <div class="gold-divider"></div>
+
+    <div class="insight-box">
+      <div class="insight-title">Finding 01 &middot; All paid media is consumer-targeted; stylist demand comes from the consultations</div>
+      <p>9 of 10 active ads are brand-direct CONSUMER ads with "find a certified stylist near you" as the unifying CTA, driving to greatlengths.com/where-we-are (salon locator). Recurring offer language: <em>"commitment-free consultation."</em> The 10th is a salon-run UGC ad (Hair Extension Lab Kansas City). There are zero brand-direct ads aimed at recruiting stylists into certification - the certification page (greatlengths.com/become-a-certified-salon) is reached only via organic discovery or the Instagram class-schedule posts. <span class="tag tag-verified">VERIFIED via Meta Ad Library 2026-04-21</span></p>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-title">Finding 02 &middot; The certification program is far deeper than the public page suggests</div>
+      <p>The public certification landing page is sparse: a hero, a generic "Send your application" button, no pricing, no duration disclosed. But the actual program (revealed in a single @greatlengthsusa Instagram post on April 14, 2026) is the most developed B2B program of any brand we've analyzed: 2-day class format, monthly free advanced education classes (cutting, styling, business building, social media, consultations), <strong>a co-op advertising program that helps fund stylist marketing</strong>, dedicated in-house support team, salon locator that drives consumer traffic, red-carpet placements that link back to certified stylists, private Facebook group for certified stylists, free marketing images and pre-made social assets, and a mobile app + stylist portal with a comprehensive business center.</p>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-title">Finding 03 &middot; A 33-year strategic shift just happened: GL Linea Weft launches "no certification required"</div>
+      <p>For the first time in Great Lengths' 33-year history, they are launching a product that <strong>does not require certification to purchase or apply</strong>. The new GL Linea Weft (a sewn-in style requiring less skill than bonded extensions) was launched in April 2026 with the explicit "no certification required" framing repeated in 8+ Instagram posts. This breaks the brand's defining moat. The strategic logic: wefts are a different category than bonded keratin extensions, the technical skill barrier is lower, and the addressable stylist pool is larger if Great Lengths doesn't gate it. The bonded line remains certification-only. This is a deliberate two-tier go-to-market: high-craft / high-margin / certification-only for bonded; lower-craft / mass-access for wefts.</p>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-title">Finding 04 &middot; @greatlengthsusa serves both audiences from one verified account</div>
+      <p>122,856 followers, verified, 6,339 posts. No separate @greatlengthspro account exists (we checked - "User not found"). Great Lengths runs one Instagram for both consumers and stylists. The bio reads <em>"✺ Certified @bcorporation ✺ Ethically sourced Indian human hair ✺ Salon exclusive since '93 ✺ Tag #GreatLengthsUSA / #HowIWearMyGL to be featured."</em> Recent post mix is dominated by the GL Linea Weft launch (15+ of 30 posts), with stylist-recruitment / certification-schedule posts and ambassador content woven through.</p>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-title">Finding 05 &middot; Named ambassador roster + Artistic Director, with celebrity endorsements baked into ads</div>
+      <p>Great Lengths runs a formally named "GL Collective" + "Global Ambassador" structure. Newly announced (Mar 2026): <strong>Dimitris Giannetos as GL Global Ambassador</strong>, with the framing <em>"His journey with us comes full circle, having started his career as a stylist using Great Lengths"</em> [VERIFIED via @greatlengthsusa Mar 2026]. Other ambassadors mentioned: Riawna Capri, Nikki Lee (NineZeroOne), Marc Mena, Justine Marjan. <strong>Danielle Keasling is GL USA Artistic Director</strong>. One Meta ad uses Justine Marjan as the on-camera testimonial (<em>"All hair extensions are not created equal. Celebrity hairstylist Justine Marjan gives the lowdown on why she exclusively uses Great Lengths for her clients."</em>).</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP DIVE 1: CONSUMER-PAID -->
+<section id="consumer-paid">
+  <div class="container">
+    <span class="section-num">Deep Dive 01</span>
+    <h2>The Consumer-Paid Demand Engine</h2>
+    <div class="gold-divider"></div>
+
+    <p>A keyword search of the Meta Ad Library for "greatlengths.com" returns ~10 active ads on April 21, 2026. The full grid:</p>
+
+    <div class="full-screenshot">
+      <img src="great-lengths-ads/meta-search-greatlengths-full.png" alt="Meta Ad Library full search results for greatlengths.com showing all 10 active ads, 9 brand-direct consumer ads + 1 salon-run UGC ad" loading="lazy">
+      <div class="screenshot-caption">Meta Ad Library search for <code>greatlengths.com</code> &middot; April 21, 2026 &middot; 9 brand-direct consumer ads + 1 salon-run UGC ad</div>
+    </div>
+
+    <h3>The unifying creative pattern</h3>
+
+    <p>Every brand-direct ad follows the same template: short video (7-24 seconds), close-up product or application footage, feature callouts overlaid, and a "find a certified stylist near you" footer with "Learn more" CTA. The variation is the hook copy:</p>
+
+    <table>
+      <thead>
+        <tr><th>Library ID</th><th>Started</th><th>Hook Copy</th><th>Link</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>4264371303800532</td><td>Nov 2 2025</td><td>"Not all extensions are created equal. So why do girls (and guys) go crazy for Great Lengths?"</td><td><a href="https://www.facebook.com/ads/library/?id=4264371303800532" target="_blank" rel="noopener">View &#8599;</a></td></tr>
+        <tr><td>2342876109504398</td><td>Dec 10 2025</td><td>"Hair extensions suited for everyday life"</td><td><a href="https://www.facebook.com/ads/library/?id=2342876109504398" target="_blank" rel="noopener">View &#8599;</a></td></tr>
+        <tr><td>2659281861116270</td><td>Dec 9 2025</td><td>"Dream hair loading. Our ethically sourced &amp; traceable hair extensions will give you beautiful hair all season long with zero in-salon maintenance."</td><td><a href="https://www.facebook.com/ads/library/?id=2659281861116270" target="_blank" rel="noopener">View &#8599;</a></td></tr>
+        <tr><td>766842149765593</td><td>Dec 9 2025</td><td>"Hairflipping our way into a new season with fresh inches!" (B Corp + traceability + 80 colors callouts)</td><td><a href="https://www.facebook.com/ads/library/?id=766842149765593" target="_blank" rel="noopener">View &#8599;</a></td></tr>
+        <tr><td>770841735774087</td><td>Oct 13 2025</td><td>"Spring into a new season with high quality, ethically sourced fine hair extensions."</td><td><a href="https://www.facebook.com/ads/library/?id=770841735774087" target="_blank" rel="noopener">View &#8599;</a></td></tr>
+        <tr><td>1549407849743661</td><td>Dec 7 2025</td><td>"Added volume, color, and length = the Great Lengths trifecta."</td><td><a href="https://www.facebook.com/ads/library/?id=1549407849743661" target="_blank" rel="noopener">View &#8599;</a></td></tr>
+        <tr><td>9472497345733042</td><td>Apr 20 2026 <span class="tag tag-new">22 hrs old</span></td><td>"Oops, you might have just manifested your dream hair...gently processed without bleach or harsh chemicals so the hair maintains true virgin quality"</td><td><a href="https://www.facebook.com/ads/library/?id=9472497345733042" target="_blank" rel="noopener">View &#8599;</a></td></tr>
+        <tr><td>2598566523941142</td><td>Dec 7 2025</td><td>"Hair extensions that'll keep you feeling fabulous all 4 season long. Why Great Lengths? Ethically sourced, gentle keratin bonds that last 3-5 months with 0 in-salon move ups."</td><td><a href="https://www.facebook.com/ads/library/?id=2598566523941142" target="_blank" rel="noopener">View &#8599;</a></td></tr>
+        <tr><td>834265119406093</td><td>Dec 10 2025</td><td><strong>Justine Marjan testimonial</strong>: "Celebrity hairstylist Justine Marjan gives the lowdown on why she exclusively uses Great Lengths for her clients."</td><td><a href="https://www.facebook.com/ads/library/?id=834265119406093" target="_blank" rel="noopener">View &#8599;</a></td></tr>
+        <tr><td>3103272023216305</td><td>Apr 21 2026 <span class="tag tag-new">9 hrs old</span></td><td><strong>Salon-run</strong> (Hair Extension Lab Kansas City): "this is your sign to book that consultation!" - tagged with #howiwearmygl</td><td><a href="https://www.facebook.com/ads/library/?id=3103272023216305" target="_blank" rel="noopener">View &#8599;</a></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Three frame-extracted creatives, hook to CTA</h3>
+
+    <p>Frames extracted via the same yt-dlp + ffmpeg method developed in the Innersense deep-dive. (Two ads failed download with "Unable to extract ad data" errors - the Justine Marjan testimonial and the April 20 freshie. yt-dlp shows intermittent failures on certain Meta ad placements; the visible Library entries serve as proof of activity.)</p>
+
+    <h4 style="margin-top: 32px;">Creative 1 &middot; "Why girls (and guys) go crazy" &middot; 24-second &middot; Started Nov 2, 2025</h4>
+
+    <div class="ad-gallery">
+      <figure class="ad-card">
+        <img src="great-lengths-ads/ad-gl-why-girls-go-crazy-hook.png" alt="Why girls go crazy hook frame" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">HOOK &middot; 0:02</div>
+          <div class="ad-copy">Opening visual</div>
+        </figcaption>
+      </figure>
+      <figure class="ad-card">
+        <img src="great-lengths-ads/ad-gl-why-girls-go-crazy-mid.png" alt="Mid frame: branded keratin tab close-up reading Great Lengths with finished blonde hair below and ethically sourced caption overlay" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">MID &middot; 0:12</div>
+          <div class="ad-copy">Branded keratin tab close-up reading "Great Lengths" with finished blonde hair below; "✨ ETHICALLY SOURCED" overlay - the product hardware itself as proof point</div>
+        </figcaption>
+      </figure>
+      <figure class="ad-card">
+        <img src="great-lengths-ads/ad-gl-why-girls-go-crazy-cta.png" alt="Why girls go crazy CTA frame" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">CTA &middot; 0:22</div>
+          <div class="ad-copy">Sign-off frame</div>
+        </figcaption>
+      </figure>
+    </div>
+
+    <p class="figure-meta-line">
+      <strong>Copy</strong>: "Not all extensions are created equal. So why do girls (and guys) go crazy for Great Lengths? Gentle keratin attachments that mimic + protect natural hair. Bonds that expand + contract with your hair when wet or dry, allowing for zero tension. Lasts 3-5 months with no in-salon maintenance..." &middot;
+      <a href="https://www.facebook.com/ads/library/?id=4264371303800532" target="_blank" rel="noopener">View in Ad Library &#8599;</a>
+    </p>
+
+    <h4 style="margin-top: 40px;">Creative 2 &middot; "GL Difference" &middot; 17-second &middot; Started Dec 9, 2025</h4>
+
+    <div class="ad-gallery">
+      <figure class="ad-card">
+        <img src="great-lengths-ads/ad-gl-gl-difference-hook.png" alt="GL Difference hook frame" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">HOOK &middot; 0:01</div>
+          <div class="ad-copy">Opening application shot</div>
+        </figcaption>
+      </figure>
+      <figure class="ad-card">
+        <img src="great-lengths-ads/ad-gl-gl-difference-mid.png" alt="Mid frame: at-the-chair close-up of stylist applying extensions with feature callouts including Lasts 3-5 months, No in-salon maintenance, 100% ethically sourced and traceable, Professionally applied by certified stylists" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">MID &middot; 0:08</div>
+          <div class="ad-copy">At-the-chair close-up of certified stylist applying extensions, with multiple feature callout buttons: "Lasts 3-5 months" / "No in-salon maintenance" / "100% ethically sourced &amp; traceable" / "Professionally applied by certified stylists"</div>
+        </figcaption>
+      </figure>
+      <figure class="ad-card">
+        <img src="great-lengths-ads/ad-gl-gl-difference-cta.png" alt="GL Difference CTA frame" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">CTA &middot; 0:15</div>
+          <div class="ad-copy">Final beat</div>
+        </figcaption>
+      </figure>
+    </div>
+
+    <p class="figure-meta-line">
+      <strong>Copy</strong>: "Hairflipping our way into a new season with fresh inches! ✅100% ethically sourced and traceable human hair, ✅only certified B Corp extension brand, ✅over 80 colors, ✅professionally applied by certified stylists" &middot;
+      <a href="https://www.facebook.com/ads/library/?id=766842149765593" target="_blank" rel="noopener">View in Ad Library &#8599;</a>
+    </p>
+
+    <h4 style="margin-top: 40px;">Creative 3 &middot; Salon-run UGC (Hair Extension Lab Kansas City) &middot; 7-second &middot; Started Apr 21, 2026 (9 hrs)</h4>
+
+    <div class="ad-gallery">
+      <figure class="ad-card">
+        <img src="great-lengths-ads/ad-gl-salon-kansas-city-hook.png" alt="Salon Kansas City hook frame" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">HOOK &middot; 0:00</div>
+          <div class="ad-copy">Salon mirror reflection</div>
+        </figcaption>
+      </figure>
+      <figure class="ad-card">
+        <img src="great-lengths-ads/ad-gl-salon-kansas-city-mid.png" alt="Mid frame: real salon environment with consultation in progress, repeated text overlay Book that consultation, Book that consultation, Book that consultation, Book that consultation" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">MID &middot; 0:03</div>
+          <div class="ad-copy">Real salon environment (EXIT sign visible) with consultation in progress; rhythmic repeated text overlay: "Book that consultation, Book that consultation, Book that consultation, Book that consultation"</div>
+        </figcaption>
+      </figure>
+      <figure class="ad-card">
+        <img src="great-lengths-ads/ad-gl-salon-kansas-city-cta.png" alt="Salon Kansas City CTA frame" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">CTA &middot; 0:06</div>
+          <div class="ad-copy">Sign-off frame, "Visit Instagram" CTA from salon's own page</div>
+        </figcaption>
+      </figure>
+    </div>
+
+    <p class="figure-meta-line">
+      <strong>Copy</strong>: "this is your sign to book that consultation! 📍 #howiwearmygl #hairextensions #greatlengths #kansascity #glbrandelite #greatlengthsusa #luxuryhair #trending #viral" &middot;
+      <strong>Advertiser</strong>: Hair Extension Lab Kansas City (certified salon, NOT GL-direct) &middot;
+      <a href="https://www.facebook.com/ads/library/?id=3103272023216305" target="_blank" rel="noopener">View in Ad Library &#8599;</a>
+    </p>
+
+    <div class="insight-box">
+      <div class="insight-title">The salon-run UGC ad mechanic</div>
+      <p>Great Lengths actively encourages certified salons to run their own paid ads tagged with brand hashtags (#howiwearmygl, #greatlengthsusa, #glbrandelite). The certification program reportedly includes <strong>a co-op advertising program where Great Lengths "helps foot the bill" of the stylist's marketing efforts</strong> [VERIFIED via @greatlengthsusa April 14 2026 post]. So salon-run ads tagging GL are likely partially funded by GL itself - a structural similarity to K18's #k18partner whitelist program, but routed through certification status rather than ambassador program enrollment.</p>
+    </div>
+
+    <div class="aware-box">
+      <div class="aware-title">What this means for AWARE</div>
+      <ul>
+        <li>The "find a certified stylist near you" CTA pattern is replicable as soon as AWARE has a salon locator + meaningful partner count to populate it. Today, our partner page is too sparse to support this CTA at scale.</li>
+        <li>The repeated-text-overlay format ("book that consultation x4") is a proven creator-style pattern - low production cost, high attention - worth borrowing for any AWARE consumer ads pointing toward partner salons.</li>
+        <li>A small co-op ad program for top AWARE partner salons (matching 50% of their AWARE-related ad spend up to a cap) is the cheapest way to put paid distribution behind partner stylist content.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP DIVE 2: CERTIFICATION PROGRAM -->
+<section id="certification-program">
+  <div class="container">
+    <span class="section-num">Deep Dive 02</span>
+    <h2>The Certification Program (Behind the Public Page)</h2>
+    <div class="gold-divider"></div>
+
+    <p>The public certification page at greatlengths.com/become-a-certified-salon is deliberately spare. The hero says <em>"Education is at the heart of Great Lengths"</em>, the CTA is "Send your application," and there is no disclosed pricing, duration, or curriculum on the public site [VERIFIED via WebFetch April 21, 2026]. But a single Instagram post on April 14, 2026 lays out the actual program in full. The real program is the most developed B2B certification system of any brand we've analyzed:</p>
+
+    <h3>Format and cadence</h3>
+
+    <ul style="padding-left: 20px; margin-bottom: 20px;">
+      <li style="margin-bottom: 8px;"><strong>2-day in-person classes</strong>, hosted at certified partner salons across the US</li>
+      <li style="margin-bottom: 8px;"><strong>7 upcoming dates announced for April-May 2026</strong>: Apr 12-13 Virtual, Apr 19-20 Kansas City (@hairuwear_inc), Apr 19-20 NYC (@arrojonyc), Apr 26-27 Indianapolis (@themaesalon), Apr 26-27 Pittsburgh (@rustbeautyhouse), May 3-4 Miami (@emilianobreitsalon), May 17-18 Virtual</li>
+      <li style="margin-bottom: 8px;"><strong>Cadence approx 2 classes per week</strong> across the country, hosted by salons that already have GL certification</li>
+    </ul>
+
+    <h3>What the certification actually delivers (from @greatlengthsusa April 14, 2026)</h3>
+
+    <div class="insight-box">
+      <div class="insight-title">The full certified-stylist benefits stack [VERIFIED]</div>
+      <p>Direct quote from the post:</p>
+      <ul style="font-size: 13px; padding-left: 20px; margin-top: 8px;">
+        <li>Access to ethically sourced and traceable hair with unmatched quality</li>
+        <li><strong>Multiple free monthly online advanced education classes offered exclusively for certified stylists</strong> (cutting, styling, application, business building, social media, perfecting consultations)</li>
+        <li>Dedicated in-house support team readily available</li>
+        <li><strong>Co-op advertising program where we help foot the bill of your GL marketing efforts</strong></li>
+        <li>A salon locator which helps put new clients in your chair</li>
+        <li>Engaging in red carpet and other press-worthy efforts (all published articles link to the salon locator)</li>
+        <li>A Great Lengths Certified Stylist <strong>private Facebook group</strong> offering exclusive updates, information, and a place for stylists to connect</li>
+        <li>Free marketing images, as well as pre-made social media assets</li>
+        <li><strong>A mobile app and stylist portal with a comprehensive business center</strong> (announcements, forms, purchase history, marketing images, educational videos)</li>
+        <li>Exclusive bragging rights</li>
+      </ul>
+    </div>
+
+    <h3>Why this works as a B2B moat</h3>
+
+    <p>Each element of this stack is independently valuable; together, they make decertification nearly unthinkable. A stylist who completes the GL certification doesn't just buy access to a product - they get an ongoing relationship that includes ad funding, monthly continuing education, peer community, salon-locator lead generation, and operational tooling. The switching cost is high not because Great Lengths charges you to leave, but because <strong>the value you receive only as a certified stylist would have to be replicated by switching to a competitor</strong> - and no competitor in extensions runs a comparable program.</p>
+
+    <p>The economic logic is also clean: a certified stylist's first-year wholesale orders likely cover GL's certification cost multiple times over (extensions are high ticket and consumed/replaced quarterly), so all the ongoing benefits are subsidized by the next stylist's wholesale orders. The program is self-funding at scale.</p>
+
+    <div class="contrast-box">
+      <div class="contrast-title">Versus the certification programs of K18 and Davines</div>
+      <p>K18's "Get Certified" funnel is the front door to the K18 PRO Artist Program but the public-facing certification offer is light - mainly access to the certification + the profit calculator. Davines requires a full account login to see what's behind their pro platform - we couldn't verify whether the program structure matches GL's depth. <strong>Great Lengths is the only brand that publicly itemizes 10+ specific certified-stylist benefits in a single post.</strong> This is itself a recruiting tactic: the post serves as the closing pitch for stylists considering signup.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP DIVE 3: LINEA SHIFT -->
+<section id="linea-shift">
+  <div class="container">
+    <span class="section-num">Deep Dive 03</span>
+    <h2>The "No Certification Required" Linea Shift</h2>
+    <div class="gold-divider"></div>
+
+    <p>The single most important strategic move Great Lengths has made in this scan is the launch of <strong>GL Linea Weft</strong> in April 2026 with the explicit framing <em>"no certification required"</em>. After 33 years of certification-only distribution, this is the brand's first product available to non-certified stylists.</p>
+
+    <h3>The verbatim "no certification required" framing</h3>
+
+    <p>Counted across the 30 most recent @greatlengthsusa posts, the phrase <strong>"no certification required"</strong> appears in at least 7 distinct Linea Weft launch posts. Sample [VERIFIED via @greatlengthsusa April 2026]:</p>
+
+    <div class="pull-quote">
+      "Discover the luxury performance of GL Weft Linea for yourself, no certification required. Head to @greatlengthusa's bio to begin your journey with the industry's longest-trusted hair extension partner."
+    </div>
+
+    <p>Other variations: <em>"Head to @greatlengthusa's bio to set up your account—no certification required"</em> &middot; <em>"Head to the link in @greatlengthsusa's bio to start your account set up– no certification required!"</em> &middot; <em>"Check out their upcoming certification class schedule to begin your journey as a premium GL keratin bonded stylist."</em> (last one preserves the certification framing for the bonded line specifically).</p>
+
+    <h3>Why this matters strategically</h3>
+
+    <ul style="padding-left: 20px; margin-bottom: 20px;">
+      <li style="margin-bottom: 8px;"><strong>The category is shifting</strong>: Wefts (sewn-in hair, less skill-intensive than bonded keratin extensions) have grown rapidly in the past 3 years. Great Lengths was missing the segment because their certification gate kept stylists from buying the product.</li>
+      <li style="margin-bottom: 8px;"><strong>Lower skill barrier means lower legal/risk exposure</strong>: Bonded extensions can damage hair if applied incorrectly, which is why Great Lengths required certification. Wefts don't require the same skill, so the certification justification doesn't apply.</li>
+      <li style="margin-bottom: 8px;"><strong>Two-tier go-to-market</strong>: Bonded extensions remain certification-only (the moat). Wefts become open-access (the volume play). Great Lengths gets both: high-margin bonded revenue from the locked-in certified base, plus volume revenue from the much larger weft-buying market.</li>
+      <li style="margin-bottom: 8px;"><strong>Quiet repositioning of certification</strong>: Certification is no longer "the gate to all GL product." It's now "the gate to the premium bonded line." This is a brand-positioning downshift for the certification - it becomes optional for some product lines, which weakens the absolutism of the moat slightly.</li>
+    </ul>
+
+    <h3>The launch tactical playbook</h3>
+
+    <p>Independent of strategy, the launch tactics are textbook product-launch execution:</p>
+
+    <ul style="padding-left: 20px; margin-bottom: 20px;">
+      <li style="margin-bottom: 8px;"><strong>"Linea Launch" event in NYC</strong> with named ambassadors (Dimitris, Nikki Lee, Riawna, Danielle Keasling) - a real-world activation event for the trade community</li>
+      <li style="margin-bottom: 8px;"><strong>Editorial photoshoot at Milk Studios LA</strong> for the ICONA campaign - the brand collateral that anchors all subsequent Linea content</li>
+      <li style="margin-bottom: 8px;"><strong>5 dedicated Linea Weft classes scheduled in May-August</strong> (Dallas, Brea CA, Orlando, multiple) - hands-on training even though certification isn't required</li>
+      <li style="margin-bottom: 8px;"><strong>15+ Instagram posts in 30 days</strong> on Linea (50% of recent feed)</li>
+      <li style="margin-bottom: 8px;"><strong>Ambassador unboxing content</strong> from named stylists (@francohernandezhair, @sydneyannlopezhair) - mimicking influencer launch playbook</li>
+      <li style="margin-bottom: 8px;"><strong>Specific product specifications repeated</strong>: 30" thin/flexible spine, 36 colorfast shades, 9 months performance, no return hair, true reusability</li>
+    </ul>
+
+    <div class="aware-box">
+      <div class="aware-title">What this means for AWARE</div>
+      <ul>
+        <li>The two-tier "premium gated / volume open" go-to-market model is structurally portable. AWARE's equivalent would be: keep the salon-exclusive line for partner salons, but open a smaller consumer line (or single product) for direct DTC purchase. We've explicitly chosen NOT to do this so far - the question is whether ever doing it would weaken our salon-exclusive moat the way Linea slightly weakens GL's certification moat.</li>
+        <li>The launch playbook (event + editorial + dedicated classes + 50% of social feed for 30 days) is replicable for any AWARE product launch. The discipline of making one product the singular focus for a full month is the part most worth copying.</li>
+        <li>The ambassador unboxing format is the cheapest social asset to commission for a product launch - send the launch product to 3-5 partner stylists, ask for unboxing reels, repost.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP DIVE 4: INSTAGRAM -->
+<section id="instagram">
+  <div class="container">
+    <span class="section-num">Deep Dive 04</span>
+    <h2>@greatlengthsusa: One Account, All Audiences</h2>
+    <div class="gold-divider"></div>
+
+    <h3>Profile fundamentals</h3>
+
+    <table>
+      <tbody>
+        <tr><td><strong>Handle</strong></td><td>@greatlengthsusa &middot; <span class="tag tag-verified">VERIFIED</span></td></tr>
+        <tr><td><strong>Followers</strong></td><td>122,856</td></tr>
+        <tr><td><strong>Posts</strong></td><td>6,339 (highest cadence of any brand we've analyzed)</td></tr>
+        <tr><td><strong>Bio</strong></td><td>"✺ Certified @bcorporation ✺ Ethically sourced Indian human hair ✺ Salon exclusive since '93 ✺ Tag #GreatLengthsUSA / #HowIWearMyGL to be featured"</td></tr>
+        <tr><td><strong>External link</strong></td><td>linktr.ee/greatlengthsusa</td></tr>
+        <tr><td><strong>Separate pro IG?</strong></td><td>No. <code>@greatlengthspro</code> does not exist (Xpoz returned "User not found")</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Content pillars (30 most recent posts)</h3>
+
+    <table>
+      <thead>
+        <tr><th>Pillar</th><th>% of posts</th><th>Editorial role</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>GL Linea Weft launch</strong></td><td>~50%</td><td>Drive Linea adoption among non-certified stylists + reinforce with certified base</td></tr>
+        <tr><td><strong>Certification class scheduling</strong></td><td>~7%</td><td>Direct stylist recruitment into the certification funnel</td></tr>
+        <tr><td><strong>ICONA editorial campaign</strong></td><td>~10%</td><td>Brand prestige content from Milk Studios shoot - portfolio for the trade community</td></tr>
+        <tr><td><strong>Ambassador / GL Collective announcements</strong></td><td>~7%</td><td>Industry credibility via celebrity stylist partnerships</td></tr>
+        <tr><td><strong>Salon-run reposts (#HowIWearMyGL)</strong></td><td>~10%</td><td>UGC submission engine - rewarding certified salons publicly</td></tr>
+        <tr><td><strong>Coachella / red-carpet placements</strong></td><td>~3%</td><td>Consumer aspiration content (Camilla Cabello at Coachella)</td></tr>
+        <tr><td><strong>Technique deep-dives</strong></td><td>~7%</td><td>Stylist education on placement, tension, weft installs (educator @sydneyannlopezhair)</td></tr>
+        <tr><td><strong>B Corp / sustainability</strong></td><td>~3%</td><td>Brand positioning credibility</td></tr>
+      </tbody>
+    </table>
+
+    <p>Notable observation: <strong>50% of recent posts are about ONE product launch (Linea Weft)</strong>. This is unusually concentrated. Innersense's recent feed is split across many initiatives; Davines' is split across WWHT + ICONA + brand essays + color line. Great Lengths is going hard on a single launch in a 30-day window. This is consistent with the strategic importance of the "no certification required" pivot - Great Lengths needs Linea to land for the two-tier strategy to work.</p>
+
+    <div class="contrast-box">
+      <div class="contrast-title">Why one consolidated account works for Great Lengths</div>
+      <p>Great Lengths sells extensions, which are inherently a salon-channel product (consumers don't apply them at home). This means the consumer audience and the stylist audience are looking at the SAME content from different angles. A consumer post showing a stunning blonde transformation is also stylist proof that GL extensions look great when applied well. A stylist-recruitment certification class post is also consumer proof that GL training is rigorous. The audiences overlap so heavily that a single account serves both well.</p>
+      <p>For brands where consumer and stylist content diverge sharply (Innersense, Davines), the dual-account strategy makes sense. For brands where the audiences see the same content with different meanings (K18, Great Lengths), single-account is more efficient. AWARE's products fit closer to the GL/K18 pattern - stylists evaluate the same scalp transformation content consumers see.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP DIVE 5: AMBASSADORS -->
+<section id="ambassadors">
+  <div class="container">
+    <span class="section-num">Deep Dive 05</span>
+    <h2>The GL Collective &amp; Ambassador Roster</h2>
+    <div class="gold-divider"></div>
+
+    <p>Great Lengths runs a formally named ambassador program with two tiers: the GL Collective (named industry stylists) and the Global Ambassador (a singular celebrity-tier appointment).</p>
+
+    <h3>Newly announced (March 2026): Dimitris Giannetos as GL Global Ambassador</h3>
+
+    <div class="pull-quote">
+      "Officially welcoming Dimitris Giannetos as Great Lengths Global Ambassador and a member of The GL Collective! From red carpets to fashion editorials and global campaigns, @dimitrishair is known for creating modern, polished, and camera-ready styles that feel both effortless and wearable. <em>His journey with us comes full circle, having started his career as a stylist using Great Lengths and now stepping into his role as Global Ambassador.</em>"
+      <br>&mdash; @greatlengthsusa, March 2026 [VERIFIED]
+    </div>
+
+    <p>Note the framing of "comes full circle": Great Lengths is positioning Dimitris not as a hired endorser but as a former GL stylist returning as an ambassador. This is a recruiting message wrapped in an ambassador announcement: <strong>"the stylists who use our product become the people who define the industry."</strong></p>
+
+    <h3>Named ambassadors / GL Collective members</h3>
+
+    <table>
+      <thead><tr><th>Name</th><th>Role</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Dimitris Giannetos</strong> (@dimitrishair)</td><td>Global Ambassador, GL Collective</td><td>@greatlengthsusa Mar 2026 [VERIFIED]</td></tr>
+        <tr><td><strong>Danielle Keasling</strong> (@danielle.keasling)</td><td>GL USA Artistic Director</td><td>Multiple posts as creative lead</td></tr>
+        <tr><td><strong>Justine Marjan</strong></td><td>Celebrity hairstylist endorser (Meta ad testimonial)</td><td>Meta Library ad #834265119406093</td></tr>
+        <tr><td><strong>Riawna Capri</strong> (@riawna)</td><td>Tagged in ambassador group photos</td><td>NineZeroOne salon</td></tr>
+        <tr><td><strong>Nikki Lee</strong> (@nikkilee901)</td><td>Tagged in ambassador group photos</td><td>NineZeroOne salon (@ninezeroone)</td></tr>
+        <tr><td><strong>Marc Mena</strong> (@marcmena)</td><td>Tagged in launch event recap</td><td>Linea NYC launch event</td></tr>
+        <tr><td>Franco Hernandez (@hairbyfranco)</td><td>ICONA campaign stylist</td><td>Milk Studios shoot credits</td></tr>
+        <tr><td>Michael Gierl (@michaelmaxgierl)</td><td>ICONA campaign stylist</td><td>Milk Studios shoot credits</td></tr>
+        <tr><td>Kristina Noto (@kristinanotodoesmyhair)</td><td>ICONA campaign stylist</td><td>Milk Studios shoot credits</td></tr>
+        <tr><td>Nanci Lee Randolph (@nancileehair)</td><td>ICONA campaign stylist</td><td>Milk Studios shoot credits</td></tr>
+        <tr><td>Richard Mannah (@richardmannah)</td><td>ICONA campaign stylist</td><td>Milk Studios shoot credits</td></tr>
+        <tr><td>Jenya Karpova (@jenyahair)</td><td>ICONA campaign stylist</td><td>Milk Studios shoot credits</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Marketing team named in production credits</h3>
+
+    <table>
+      <tbody>
+        <tr><td><strong>Jennifer Martin</strong> (@jenn.martinkc)</td><td>GL Director of Marketing</td></tr>
+        <tr><td><strong>Katrina Koomen</strong> (@katrina.koomen)</td><td>Marketing Manager</td></tr>
+        <tr><td><strong>Nicole Napolitano</strong> (@nnnapolitanooo)</td><td>Digital Content Director</td></tr>
+      </tbody>
+    </table>
+
+    <p>All names cross-checked against multiple @greatlengthsusa post credits [VERIFIED]. Production credits in 4+ separate posts about ICONA / Linea launch consistently list the same team, suggesting an in-house production capability rather than agency-led work.</p>
+
+    <div class="aware-box">
+      <div class="aware-title">What this means for AWARE</div>
+      <ul>
+        <li>The "career full circle" ambassador framing is the most effective recruiting message GL surfaced. Replicable for AWARE: when partner stylists progress from new to mature within our network, that journey is the recruiting pitch for newer stylists. Document and publish the stories.</li>
+        <li>A formal "GL Collective" structure is more sophisticated than AWARE needs at our stage. But informally listing 3-5 partner stylists as "AWARE Featured Educators" with credits in any AWARE editorial content is the micro-version of the same mechanic.</li>
+        <li>In-house content production (named marketing team across multiple posts) is the long-term cost-efficient model. AWARE currently uses agency/freelance for most production - worth considering if monthly content volume justifies an in-house hire over the next 12-18 months.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FOUR-WAY COMPARISON -->
+<section id="four-way">
+  <div class="container">
+    <span class="section-num">Cross-Brand Analysis</span>
+    <h2>Four Models Side by Side</h2>
+    <div class="gold-divider"></div>
+
+    <p>The complete picture across all four deep-dives. Each brand optimizes its B2B paid media for a different dominant outcome.</p>
+
+    <div class="four-way">
+      <div>
+        <h4>Innersense</h4>
+        <p style="font-size:11px;"><strong>Trial-Conversion</strong></p>
+        <p style="font-size:11px; color: var(--teal-60); margin-top: 6px;">~5 active B2B paid ads, FREE TRIAL KIT offer, soft-gated education hub, Founders Summit annual event. @innersensepro 15K (not verified). Optimizes for stylist trial → first wholesale order.</p>
+      </div>
+      <div>
+        <h4>K18</h4>
+        <p style="font-size:11px;"><strong>Demand-Pull</strong></p>
+        <p style="font-size:11px; color: var(--teal-60); margin-top: 6px;">~4,800 DTC ads, 0 brand-direct B2B ads, 2 #k18partner whitelist ads to consumers, 9-distributor wholesale network, certification + profit calculator. @k18hairpro 5.5K. Optimizes for consumer demand pulling salons.</p>
+      </div>
+      <div>
+        <h4>Davines</h4>
+        <p style="font-size:11px;"><strong>Brand-Affinity</strong></p>
+        <p style="font-size:11px; color: var(--teal-60); margin-top: 6px;">~12 active brand-essay video ads, hard-gated davinespro.com, World Wide Hair Tour annual event, Creative Collective. @davinespro 51K verified. Optimizes for community membership and shared meaning.</p>
+      </div>
+      <div>
+        <h4>Great Lengths</h4>
+        <p style="font-size:11px;"><strong>Certification Moat</strong></p>
+        <p style="font-size:11px; color: var(--teal-60); margin-top: 6px;">~10 brand-direct CONSUMER ads, salon-locator CTA, 2-day certification + co-op ad fund + monthly free classes + private FB group + mobile portal. @greatlengthsusa 122K verified. Optimizes for unfulfilled consumer demand at certified salons.</p>
+      </div>
+    </div>
+
+    <h3>The complete dimension matrix</h3>
+
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Innersense</th>
+          <th>K18</th>
+          <th>Davines</th>
+          <th>Great Lengths</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Active brand-direct B2B paid ads</td><td>~5</td><td>0</td><td>~12</td><td>0</td></tr>
+        <tr><td>Active brand-direct DTC paid ads</td><td>~21</td><td>~4,800</td><td>(consumer site link)</td><td>~9</td></tr>
+        <tr><td>Pro destination</td><td>innersensepro.com (redirect)</td><td>k18hairpro.com (separate)</td><td>davinespro.com (separate, gated)</td><td>greatlengths.com/become-a-certified-salon (subpage)</td></tr>
+        <tr><td>Pro funnel gate</td><td>Soft modal</td><td>Open + email capture</td><td>Hard sign-in</td><td>Application form (no public details)</td></tr>
+        <tr><td>Primary B2B offer</td><td>Free Trial Kit</td><td>Get Certified + profit calc</td><td>Knowledge access (no offer)</td><td>2-day certification + ongoing benefits stack</td></tr>
+        <tr><td>Pro IG followers</td><td>15K @innersensepro</td><td>5.5K @k18hairpro</td><td><strong>51K verified</strong> @davinespro</td><td>(no separate pro account)</td></tr>
+        <tr><td>Main IG followers</td><td>(not pulled)</td><td>505K @k18hair verified</td><td>750 @davines (essentially abandoned)</td><td><strong>122K @greatlengthsusa verified</strong></td></tr>
+        <tr><td>Annual event</td><td>Founders Summit (Austin)</td><td>(none surfaced)</td><td>WWHT Valencia 2026</td><td>Linea Launch NYC + 7 cert classes/month</td></tr>
+        <tr><td>Co-op advertising</td><td>(unclear)</td><td>(unclear)</td><td>Distributor-led (Bassett WWHT discount)</td><td><strong>Yes, explicit</strong> ("we help foot the bill")</td></tr>
+        <tr><td>B Corp certified</td><td>No</td><td>No</td><td>Yes (since 2016)</td><td>Yes ("only certified B Corp extension brand")</td></tr>
+        <tr><td>Distribution model</td><td>Direct + select wholesale</td><td>9+ distributors (SalonCentric, CosmoProf, etc.)</td><td>Direct + named distributors</td><td>Certification-only (bonded) + open-access (Linea Weft, new)</td></tr>
+        <tr><td>Ad voice register</td><td>Stylist-as-hero outcome</td><td>Consumer urgency / pseudo-pro</td><td>Editorial poetry</td><td>Education + social proof + B Corp credibility</td></tr>
+        <tr><td>Ownership / heritage</td><td>Independent (Greg + Joanne Starkman)</td><td>Acquired by Unilever <span class="tag tag-unverified">UNVERIFIED year</span></td><td>Independent family-owned (Italy)</td><td>"Salon exclusive since '93" (33 years, ownership unverified)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Where AWARE actually sits</h3>
+
+    <div class="aware-box">
+      <div class="aware-title">The 4-brand assessment</div>
+      <ul>
+        <li><strong>Innersense's model is closest to executable now</strong>: trial-conversion B2B paid ads at AWARE's stage. Top recommendation from the Innersense deep-dive remains valid.</li>
+        <li><strong>K18's model is unreachable</strong>: requires DTC ad spend AWARE doesn't have.</li>
+        <li><strong>Davines' model is aspirational</strong>: requires 20+ years of brand equity. Voice/positioning ideas are stealable in micro.</li>
+        <li><strong>Great Lengths' model is partially applicable</strong>: AWARE doesn't have a certification gate (no skill barrier on scalp products), but the "ongoing benefits stack" - co-op ads, free monthly education, private community group, marketing assets - is exactly what we should build for our top-tier salon partners. Call it the AWARE Partner Benefits program.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- TRANSFERABILITY MATRIX -->
+<section id="transferability">
+  <div class="container">
+    <span class="section-num">Transferability</span>
+    <h2>Transferability Matrix for AWARE</h2>
+    <div class="gold-divider"></div>
+
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>Great Lengths Tactic</th>
+          <th>Applicability</th>
+          <th>Cost</th>
+          <th>Complexity</th>
+          <th>Impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Public itemized partner-benefits post (the @greatlengthsusa cert post)</strong></td>
+          <td><span class="tag tag-high">High</span></td>
+          <td>Content time only</td>
+          <td><span class="tag tag-low">Low</span></td>
+          <td><span class="tag tag-high">High</span></td>
+        </tr>
+        <tr>
+          <td><strong>Co-op advertising program (match partner stylist ad spend up to a cap)</strong></td>
+          <td><span class="tag tag-high">High</span></td>
+          <td>$500-2K/mo per top partner</td>
+          <td><span class="tag tag-med">Medium</span></td>
+          <td><span class="tag tag-high">High</span></td>
+        </tr>
+        <tr>
+          <td><strong>Monthly free advanced education classes for partner salons</strong></td>
+          <td><span class="tag tag-high">High</span></td>
+          <td>Tina's time + production</td>
+          <td><span class="tag tag-med">Medium</span></td>
+          <td><span class="tag tag-high">High</span></td>
+        </tr>
+        <tr>
+          <td><strong>Private Facebook (or Slack/Discord) group for partner salons</strong></td>
+          <td><span class="tag tag-high">High</span></td>
+          <td>Moderation time</td>
+          <td><span class="tag tag-low">Low</span></td>
+          <td><span class="tag tag-med">Medium</span></td>
+        </tr>
+        <tr>
+          <td><strong>"Find a Partner Salon" locator on awarehair.com</strong></td>
+          <td><span class="tag tag-high">High</span></td>
+          <td>Dev time</td>
+          <td><span class="tag tag-med">Medium</span></td>
+          <td><span class="tag tag-high">High</span></td>
+        </tr>
+        <tr>
+          <td><strong>Free marketing images / social assets package for partners</strong></td>
+          <td><span class="tag tag-high">High</span></td>
+          <td>Photography / design time</td>
+          <td><span class="tag tag-med">Medium</span></td>
+          <td><span class="tag tag-med">Medium</span></td>
+        </tr>
+        <tr>
+          <td><strong>"Find a certified stylist near you" CTA in consumer ads</strong></td>
+          <td><span class="tag tag-med">Medium</span></td>
+          <td>Free (copy choice)</td>
+          <td><span class="tag tag-low">Low</span></td>
+          <td><span class="tag tag-high">High</span> when locator is populated</td>
+        </tr>
+        <tr>
+          <td><strong>"Career full circle" ambassador framing</strong></td>
+          <td><span class="tag tag-high">High</span></td>
+          <td>Free (story choice)</td>
+          <td><span class="tag tag-low">Low</span></td>
+          <td><span class="tag tag-med">Medium</span></td>
+        </tr>
+        <tr>
+          <td><strong>Two-tier "premium gated / volume open" product strategy</strong></td>
+          <td><span class="tag tag-low">Low</span></td>
+          <td>Brand risk</td>
+          <td><span class="tag tag-high">High</span></td>
+          <td><span class="tag tag-low">Conflicts with salon-exclusive moat</span></td>
+        </tr>
+        <tr>
+          <td><strong>B Corp certification application</strong></td>
+          <td><span class="tag tag-med">Medium</span></td>
+          <td>Application + audit time</td>
+          <td><span class="tag tag-high">High</span></td>
+          <td><span class="tag tag-med">Medium</span> (positioning value)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PRIORITY ACTIONS -->
+<section id="priority-actions">
+  <div class="container">
+    <span class="section-num">Actions</span>
+    <h2>Priority Action Items for AWARE</h2>
+    <div class="gold-divider"></div>
+
+    <ol style="padding-left: 24px; font-size: 14px; line-height: 1.7;">
+      <li style="margin-bottom: 14px;">
+        <strong>Write the AWARE Partner Benefits post.</strong> Adapt Great Lengths' April 14 cert benefits post format. List 6-10 specific things AWARE partner salons get that non-partners don't (founder access, sample kit, training session with Tina, marketing assets, salon locator, social repost, partner directory, etc.). Publish on @aware Instagram or future @aware_pro account. Cost: a few hours. Impact: highest-leverage public-facing recruiting asset we'd own.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Pilot a small co-op advertising program for our top 5 partner salons.</strong> Match up to $500/mo per partner of their AWARE-related social ad spend, capped at total $2,500/mo for 6 months. Track partner ad output, leads to partner salons, and net new client acquisitions. This is the single most valuable element of GL's certification stack and is replicable now at minimal cost. Could pilot inside Q3 2026.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Schedule a recurring monthly Tina education session for AWARE partner salons.</strong> 60-minute Zoom, free, for partner salons only. Topics rotate (scalp protocols, retail conversation, social content, business building) - same playbook as GL's monthly free advanced classes. The exclusivity is the value (consumers don't get this). Start September 2026; enrollment is automatic for active partner salons.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Spin up a private partner Slack or Facebook group.</strong> 50+ AWARE partner salons currently lack a peer-to-peer connection mechanism. GL's private Facebook group is a high-value low-cost retention asset. AWARE's equivalent: a private channel where partners share scalp transformations, ask Tina questions, surface emerging client concerns. Slack > Facebook for AWARE's audience profile.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Build the "Find an AWARE Partner Salon" page.</strong> Today partners are an opaque list. Make them a discoverable map/directory at awarehair.com/find-a-partner. Once populated with 30+ verified partners, this unlocks the "find a certified stylist near you" CTA pattern for any AWARE consumer marketing - exactly the GL/K18 demand-pull mechanic. Q3 2026 build.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Steal the "career full circle" ambassador framing for partner stylist features.</strong> When AWARE eventually publishes partner spotlight content (mentioned in prior deep-dives' actions), the strongest framing isn't "this is an AWARE stylist" but "this is a stylist whose practice grew because of AWARE." Document the journey, not just the credit. The GL Dimitris announcement is the model.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Reject the two-tier (premium-exclusive + volume-open) product strategy.</strong> Great Lengths just did this with Linea Weft. The strategic argument FOR doing it: bigger TAM, faster volume growth. The argument AGAINST for AWARE: our entire positioning is salon-exclusivity, and the moment we open ANY product to non-partner stylists or DTC, the moat starts to leak. GL can do this because their bonded line still requires certification (a physical-skill gate). AWARE has no equivalent gate to fall back on if we open the door even partially.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Investigate B Corp certification.</strong> Both Davines and Great Lengths feature B Corp prominently in their bios and ad copy. AWARE's clean ingredient story and salon-channel ethics likely qualify. Worth a one-conversation feasibility check with a B Corp consultant. Same recommendation as the Davines deep-dive - reinforced here.
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- UNKNOWNS -->
+<section id="unknowns">
+  <div class="container">
+    <span class="section-num">Gaps</span>
+    <h2>What We Still Don't Know</h2>
+    <div class="gold-divider"></div>
+
+    <div class="unknown-box">
+      <div class="unknown-title">Data we cannot access</div>
+      <ul>
+        <li>Cost of GL certification (price not disclosed publicly)</li>
+        <li>Total certified salon count (the ~2,000 figure circulating in earlier research not re-verified during this scan)</li>
+        <li>Actual co-op advertising program budget per stylist</li>
+        <li>Application acceptance rate for certification (not all applicants pass / get accepted)</li>
+        <li>Linea Weft sales since launch (no public data; only the launch volume in social signals)</li>
+        <li>Mobile app downloads / active users in the certified-stylist portal</li>
+      </ul>
+    </div>
+
+    <div class="unknown-box">
+      <div class="unknown-title">Verification gaps in this scan</div>
+      <ul>
+        <li>Justine Marjan ad (834265119406093) and the Apr 20 fresh ad (9472497345733042) failed yt-dlp download - "Unable to extract ad data" errors. The library entries themselves serve as proof of activity but no frame-extracted analysis was possible.</li>
+        <li>Great Lengths ownership / parent company / acquisition history not pursued during this scan</li>
+        <li>The Brand was founded 1991 in Italy per common knowledge but not re-verified against a primary source in this scan</li>
+        <li>The "salon exclusive since '93" claim from the IG bio was accepted at face value</li>
+      </ul>
+    </div>
+
+    <div class="unknown-box">
+      <div class="unknown-title">Questions worth investigating</div>
+      <ul>
+        <li>Does Great Lengths run separate paid ads for certification recruitment that we missed (e.g. on LinkedIn, professional newsletters, trade publications)?</li>
+        <li>How does GL price its bonded extensions wholesale vs the new Linea Weft? (Affects how much margin pressure the two-tier launch creates)</li>
+        <li>What's the certification renewal model - one-time event or annual recertification? Affects the "switching cost" calculation.</li>
+        <li>How does the salon locator rank salons - by proximity only, or weighted by engagement / volume / certification recency? Important for understanding what behaviors GL incentivizes among certified salons.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SOURCES -->
+<section id="sources">
+  <div class="container">
+    <span class="section-num">Methodology</span>
+    <h2>Sources &amp; Methodology</h2>
+    <div class="gold-divider"></div>
+
+    <h3>Primary sources</h3>
+    <div class="sources">
+      <ol>
+        <li><strong>Meta Ad Library</strong> - April 21, 2026 via Playwright. Two searches: "Great Lengths" (~2,500 noisy results, mostly false positives matching the phrase) and "greatlengths.com" (~10 active brand-direct ads + 1 salon-run ad). <a href="https://www.facebook.com/ads/library/?active_status=active&amp;ad_type=all&amp;country=US&amp;media_type=all&amp;q=greatlengths.com&amp;search_type=keyword_unordered" target="_blank" rel="noopener">Replicate URL keyword search</a></li>
+        <li><strong>greatlengths.com/become-a-certified-salon</strong> - WebFetch April 21, 2026. Public certification page is intentionally minimal.</li>
+        <li><strong>greatlengths.com</strong> - WebFetch April 21, 2026 for site structure (pro path, salon locator, distribution model).</li>
+        <li><strong>@greatlengthsusa Instagram</strong> - Xpoz getInstagramUser + getInstagramPostsByUser, April 21, 2026. 122,856 followers verified, 6,339 posts. 30 most recent posts pulled.</li>
+        <li><strong>@greatlengthspro Instagram</strong> - Xpoz returned "User not found" - the dedicated pro account does not exist.</li>
+        <li><strong>@greatlengthsusa April 14, 2026 certification benefits post</strong> - the single most informative source on the actual program structure.</li>
+      </ol>
+    </div>
+
+    <h3>Video frame extraction</h3>
+    <p style="font-size: 13px; color: var(--teal-60);">
+      Same yt-dlp + ffmpeg + pngquant method as the prior three deep-dives. 5 ads attempted, 3 succeeded (4264371303800532 = 24s, 766842149765593 = 17s, 3103272023216305 = 7s salon-run). 2 failed with "Unable to extract ad data" errors (Justine Marjan testimonial and the Apr 20 freshie). The Library entries themselves remain accessible and serve as proof of activity for those 2 ads.
+    </p>
+
+    <h3>Verification labeling</h3>
+    <p style="font-size: 13px; color: var(--teal-60);">Same convention as prior deep-dives: <span class="tag tag-verified">VERIFIED</span> = confirmed at primary source URL during scan, <span class="tag tag-estimated">ESTIMATED</span> = derived from comparables, <span class="tag tag-unverified">UNVERIFIED</span> = cited but not re-confirmed.</p>
+
+    <h3>Known gaps in methodology</h3>
+    <ul style="font-size: 13px; padding-left: 20px;">
+      <li>Did not submit a certification application (would have revealed pricing, application fields, geographic restrictions)</li>
+      <li>Did not access the certified-stylist mobile app or portal (gated behind certification)</li>
+      <li>Did not analyze GL's TikTok or YouTube footprint (Instagram + Meta Ad Library only)</li>
+      <li>Did not analyze the salon-run ad ecosystem at scale - we found one (Hair Extension Lab Kansas City) but there are likely many more salon-run ads tagging GL that don't show up under the keyword search</li>
+    </ul>
+
+    <h3>Update cadence recommendation</h3>
+    <p style="font-size: 13px; color: var(--teal-60);">Track GL Linea Weft adoption signals monthly via @greatlengthsusa (post mix, ambassador unboxing volume, class enrollment). Re-scan Meta Ad Library quarterly. Watch for any further "no certification required" product launches - if a second product follows Linea, the certification moat is being deliberately phased out as a strategic priority.</p>
+
+    <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--teal-12); font-size: 12px; color: var(--teal-40);">
+      Document generated April 21, 2026 &middot; Prepared for David Zhao &middot; AWARE Hair Control &middot; marketing/competitor-intel/great-lengths-b2b-stylist-deep-dive.html &middot; Phase B No. 3 of 3 (series complete)
+    </div>
+  </div>
+</section>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

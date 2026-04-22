@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instagram Recovery - Meta Contacts | @awarehaircare</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    color: #102B26;
+    background: #fff;
+    padding: 48px 56px;
+    line-height: 1.55;
+    font-size: 13px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  @media print {
+    body { padding: 32px 40px; }
+    .page-break { page-break-before: always; }
+    .no-break { break-inside: avoid; }
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #102B26;
+    margin-bottom: 32px;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+  }
+  .header .subtitle {
+    font-size: 13px;
+    color: #666;
+    margin-top: 4px;
+  }
+  .header .badge {
+    background: #dc2626;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  /* Priority banner */
+  .priority-banner {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-bottom: 28px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .priority-banner strong { color: #dc2626; }
+
+  /* Section headers */
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #102B26;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e5e5e5;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .num {
+    background: #102B26;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Contact cards */
+  .contact-card {
+    background: #faf8f5;
+    border: 1px solid #e8e4de;
+    border-radius: 6px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    break-inside: avoid;
+  }
+  .contact-card.priority-1 {
+    border-left: 4px solid #dc2626;
+  }
+  .contact-card.priority-2 {
+    border-left: 4px solid #D4A574;
+  }
+  .contact-card.priority-3 {
+    border-left: 4px solid #7d8471;
+  }
+  .contact-card .name {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .contact-card .title {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 8px;
+  }
+  .contact-card .details {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .contact-card .details .label {
+    font-weight: 600;
+    color: #555;
+    display: inline;
+  }
+  .contact-card .linkedin {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #0a66c2;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .contact-card .approach {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 4px;
+    padding: 8px 10px;
+    margin-top: 8px;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .contact-card .approach strong { color: #166534; font-size: 10px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .verified {
+    font-size: 10px;
+    color: #166534;
+    background: #dcfce7;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 500;
+    margin-left: 6px;
+  }
+
+  /* Outreach order */
+  .outreach-order {
+    background: #102B26;
+    color: #fff;
+    border-radius: 6px;
+    padding: 18px 20px;
+    margin: 24px 0;
+  }
+  .outreach-order h3 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #D4A574;
+  }
+  .outreach-order ol {
+    padding-left: 20px;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  .outreach-order li { padding-left: 4px; }
+  .outreach-order .note {
+    margin-top: 12px;
+    font-size: 11px;
+    color: #9ca3af;
+    font-style: italic;
+  }
+
+  /* Senior contacts (dimmed) */
+  .senior-section {
+    opacity: 0.65;
+    margin-top: 28px;
+  }
+  .senior-section .section-title {
+    font-size: 13px;
+    color: #888;
+  }
+
+  /* Warnings */
+  .warnings {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-top: 24px;
+  }
+  .warnings h3 {
+    font-size: 12px;
+    font-weight: 700;
+    color: #92400e;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .warnings ul {
+    padding-left: 18px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #78350f;
+  }
+
+  /* Timeline */
+  .timeline {
+    margin-top: 24px;
+    padding: 14px 18px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+  }
+  .timeline h3 { font-size: 12px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .timeline ul { padding-left: 18px; font-size: 12px; line-height: 1.7; }
+
+  /* Footer */
+  .footer {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid #e5e5e5;
+    font-size: 11px;
+    color: #999;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>Instagram Account Recovery</h1>
+    <div class="subtitle">Meta Contacts & Escalation Guide for @awarehaircare</div>
+  </div>
+  <div class="badge">Confidential</div>
+</div>
+
+<div class="priority-banner">
+  <strong>Account hacked March 12, 2026.</strong> Data permanent deletion deadline: ~September 12, 2026 (180 days). Video selfie verification: 24-72 hrs per attempt. Meta Verified chat support: same-day possible.
+</div>
+
+<!-- OUTREACH ORDER -->
+<div class="outreach-order">
+  <h3>Recommended Outreach Order</h3>
+  <ol>
+    <li><strong>Annie Edmonds</strong> - owns Abusive Account Operations (the hacked accounts function)</li>
+    <li><strong>Michael Zolli</strong> - Senior Director, Problem Integrity Operations</li>
+    <li><strong>Daniel Roberts</strong> - Meta comms lead, public story angle</li>
+    <li><strong>Aristya Pradita / Rob Aiken</strong> - mid-level, more reachable</li>
+    <li><strong>Kate Gotimer</strong> - VP escalation only if others fail</li>
+  </ol>
+  <div class="note">LinkedIn InMail or connection request with a brief, professional note is the recommended channel. Meta employees do not have public business emails.</div>
+</div>
+
+<!-- PRIMARY CONTACTS -->
+<div class="section-title"><span class="num">1</span> Integrity & Support Operations Team</div>
+<p style="font-size: 12px; color: #666; margin-bottom: 16px;">Reports to Kate Gotimer, VP. This team is directly responsible for hacked account recovery at Meta.</p>
+
+<div class="contact-card priority-1 no-break">
+  <div class="name">Annie Edmonds (Duggan) <span class="verified">VERIFIED</span></div>
+  <div class="title">Global Head, Abusive Account Operations - Meta</div>
+  <div class="details">
+    <div><span class="label">LinkedIn:</span> linkedin.com/in/annieduggan87</div>
+    <div><span class="label">Sources:</span> LinkedIn, The Org, RocketReach, ZoomInfo</div>
+  </div>
+  <div class="approach">
+    <strong>Highest priority contact</strong><br>
+    Her team literally handles compromised/hacked accounts at scale. Send a professional LinkedIn message describing the @awarehaircare situation with a forensic evidence summary.
+  </div>
+</div>
+
+<div class="contact-card priority-1 no-break">
+  <div class="name">Michael Zolli <span class="verified">VERIFIED</span></div>
+  <div class="title">Senior Director, Problem Integrity Operations - Meta</div>
+  <div class="details">
+    <div><span class="label">LinkedIn:</span> linkedin.com/in/mzolli</div>
+    <div><span class="label">Location:</span> Menlo Park, CA. At Meta since 2013.</div>
+    <div><span class="label">Sources:</span> LinkedIn, The Org, ZoomInfo</div>
+  </div>
+  <div class="approach">
+    <strong>Frame as problem escalation</strong><br>
+    His team handles user-reported problems including account compromise. Frame outreach as: "a problem the standard recovery tools have failed to solve."
+  </div>
+</div>
+
+<div class="contact-card priority-2 no-break">
+  <div class="name">Kate Gotimer <span class="verified">VERIFIED</span></div>
+  <div class="title">VP, Integrity & Support Operations - Meta (since March 2024)</div>
+  <div class="details">
+    <div><span class="label">LinkedIn:</span> linkedin.com/in/kategotimer</div>
+    <div><span class="label">Location:</span> Austin, TX</div>
+    <div><span class="label">Direct reports:</span> Annie Edmonds, Michael Zolli, Rob Aiken</div>
+    <div><span class="label">Sources:</span> LinkedIn, The Org, ZoomInfo, ContactOut</div>
+  </div>
+  <div class="approach">
+    <strong>VP-level escalation only</strong><br>
+    Do NOT contact first. Escalate to her only if Annie Edmonds and Michael Zolli do not respond.
+  </div>
+</div>
+
+<div class="contact-card priority-3 no-break">
+  <div class="name">Rob Aiken <span class="verified">VERIFIED</span></div>
+  <div class="title">Global Integrity Operations - Meta</div>
+  <div class="details">
+    <div><span class="label">LinkedIn:</span> linkedin.com/in/robaiken1</div>
+    <div><span class="label">Location:</span> Ireland (Meta EU operations)</div>
+    <div><span class="label">Sources:</span> LinkedIn, The Org</div>
+  </div>
+  <div class="approach">
+    <strong>Operational-level, potentially more reachable</strong><br>
+    Less senior than Zolli but in the same org. Good secondary contact.
+  </div>
+</div>
+
+<div class="contact-card priority-3 no-break">
+  <div class="name">Renee Medina <span class="verified">VERIFIED</span></div>
+  <div class="title">Head of Global Support Quality - Meta</div>
+  <div class="details">
+    <div><span class="label">LinkedIn:</span> linkedin.com/in/reneemedina</div>
+    <div><span class="label">Location:</span> Austin, TX</div>
+    <div><span class="label">Sources:</span> LinkedIn, The Org, RocketReach, SignalHire</div>
+  </div>
+  <div class="approach">
+    <strong>Support quality angle</strong><br>
+    Frame the case as a support quality failure: account hacked, standard recovery tools failing. Her team is responsible for the quality of the recovery experience.
+  </div>
+</div>
+
+<div class="contact-card priority-3 no-break">
+  <div class="name">Aristya Pradita <span class="verified">VERIFIED</span></div>
+  <div class="title">Staff Product Operations Manager, Instagram Trust & Safety</div>
+  <div class="details">
+    <div><span class="label">LinkedIn:</span> linkedin.com/in/aristyapradita</div>
+    <div><span class="label">Instagram:</span> @aristya</div>
+    <div><span class="label">Location:</span> Austin, TX</div>
+    <div><span class="label">Sources:</span> LinkedIn, The Org</div>
+  </div>
+  <div class="approach">
+    <strong>Mid-level, more reachable</strong><br>
+    Individual contributor in Instagram T&S product operations. More likely to respond to a direct message.
+  </div>
+</div>
+
+<div class="contact-card priority-3 no-break">
+  <div class="name">Sean Nguyen <span class="verified">VERIFIED</span></div>
+  <div class="title">Sr. Manager / Sr. Director, Integrity - Meta</div>
+  <div class="details">
+    <div><span class="label">LinkedIn:</span> linkedin.com/in/sean-nguyen-89159023b</div>
+    <div><span class="label">Sources:</span> LinkedIn (Stanford education confirmed)</div>
+  </div>
+  <div class="approach">
+    <strong>Manager-level, direct operational access</strong><br>
+    Senior manager/director tier has more operational access than VP-level for individual case escalation.
+  </div>
+</div>
+
+<div class="contact-card priority-3 no-break">
+  <div class="name">Christina Pollalis <span class="verified">VERIFIED</span></div>
+  <div class="title">Program Manager, Trust and Safety - Meta</div>
+  <div class="details">
+    <div><span class="label">LinkedIn:</span> linkedin.com/in/cpollali</div>
+    <div><span class="label">Location:</span> Seattle, WA. 500+ connections.</div>
+    <div><span class="label">Sources:</span> LinkedIn</div>
+  </div>
+  <div class="approach">
+    <strong>Operational PM, closer to tooling and workflows</strong><br>
+    Program managers run the processes for account reviews. Generally more accessible than directors or VPs.
+  </div>
+</div>
+
+<!-- PUBLIC-FACING -->
+<div class="page-break"></div>
+<div class="section-title" style="margin-top: 4px;"><span class="num">2</span> Public-Facing Meta Contacts</div>
+
+<div class="contact-card priority-2 no-break">
+  <div class="name">Daniel Roberts <span class="verified">VERIFIED</span></div>
+  <div class="title">Public Affairs Lead, Strategic Response Communication - Meta</div>
+  <div class="details">
+    <div><span class="label">LinkedIn:</span> linkedin.com/in/danielcroberts</div>
+    <div><span class="label">X / Twitter:</span> @danroberts0101</div>
+    <div><span class="label">Sources:</span> LinkedIn, PRWeek, Ragan Communications</div>
+  </div>
+  <div class="approach">
+    <strong>Story pitch angle</strong><br>
+    He is the Meta spokesperson who publicly addressed the Dec 2025 account recovery hub launch. Journalists have quoted him on this exact topic. Frame as: "small professional haircare brand, 50+ salon clients depend on this account, standard recovery is failing."
+  </div>
+</div>
+
+<div class="contact-card priority-3 no-break">
+  <div class="name">Ella Irwin <span class="verified">VERIFIED</span></div>
+  <div class="title">Head of AI Safety / Product Lead for Generative AI Safety - Meta</div>
+  <div class="details">
+    <div><span class="label">LinkedIn:</span> linkedin.com/in/ella-irwin-5275861</div>
+    <div><span class="label">Previous:</span> Head of Trust & Safety at X (Twitter)</div>
+    <div><span class="label">Public presence:</span> SXSW 2025 speaker</div>
+    <div><span class="label">Sources:</span> LinkedIn, SXSW 2025 listing, press coverage</div>
+  </div>
+  <div class="approach">
+    <strong>Relevant if AI moderation flagged the account</strong><br>
+    If AI-driven moderation incorrectly disabled the account, she is the relevant contact. She has a public speaking presence that makes her more reachable.
+  </div>
+</div>
+
+<!-- SENIOR (dimmed) -->
+<div class="senior-section no-break">
+  <div class="section-title">Senior Leadership (for reference, do not contact first)</div>
+  <div class="contact-card" style="border-left: 4px solid #ccc;">
+    <div class="name">Antigone Davis</div>
+    <div class="title">VP & Global Head of Safety, Meta</div>
+    <div class="details">
+      <div><span class="label">X:</span> @DavisAntigone &nbsp;|&nbsp; <span class="label">LinkedIn:</span> linkedin.com/in/antigone-davis</div>
+      <div>Scope: child safety, content moderation policy. Not individual account recovery.</div>
+    </div>
+  </div>
+  <div class="contact-card" style="border-left: 4px solid #ccc;">
+    <div class="name">Guy Rosen</div>
+    <div class="title">Chief Information Security Officer (CISO), Meta</div>
+    <div class="details">
+      <div><span class="label">LinkedIn:</span> linkedin.com/in/guyro</div>
+      <div>Was head of Integrity (T&S operations) 2017-2022. Platform-wide security infrastructure.</div>
+    </div>
+  </div>
+</div>
+
+<!-- WARNINGS -->
+<div class="warnings no-break">
+  <h3>Do Not</h3>
+  <ul>
+    <li>Pay any third-party "recovery service" - Meta sued multiple operators in 2025</li>
+    <li>Submit multiple simultaneous appeals through different forms (creates conflicting tickets)</li>
+    <li>Contact Antigone Davis or Guy Rosen directly for individual case resolution</li>
+    <li>Cold-message Kate Gotimer first - start with Annie Edmonds or Michael Zolli</li>
+  </ul>
+</div>
+
+<!-- TIMELINE -->
+<div class="timeline no-break">
+  <h3>Key Deadlines</h3>
+  <ul>
+    <li><strong>Data deletion:</strong> ~180 days from Mar 12 = approx Sep 12, 2026</li>
+    <li><strong>Video selfie verification:</strong> 24-72 hours per attempt</li>
+    <li><strong>Meta Verified chat ($14.99/mo):</strong> can be same-day if you get a good agent</li>
+    <li><strong>Government complaints (IC3/FTC/CA AG):</strong> weeks to months, indirect pressure only</li>
+  </ul>
+</div>
+
+<!-- LEVERAGE -->
+<div class="timeline no-break" style="margin-top: 12px;">
+  <h3>Leverage Points</h3>
+  <ul>
+    <li>If AWARE has a Meta ads agency (official Meta Business Partner), ask them to escalate through their Meta account manager</li>
+    <li>Advertisers spending $1K+/month historically get assigned a Meta account rep</li>
+    <li>Earned media coverage of the hack can accelerate resolution - tech journalists at The Verge, TechCrunch sometimes contact Meta PR for comment</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div>Prepared for Jade Wong & David Zhao, AWARE Hair</div>
+  <div>March 14, 2026</div>
+</div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

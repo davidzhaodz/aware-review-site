@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Distributor Pipeline 2026</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-2: #242835;
+    --border: #2e3345;
+    --text: #e2e4eb;
+    --text-dim: #8b8fa3;
+    --accent: #c8a97e;
+    --accent-dim: rgba(200,169,126,0.15);
+    --green: #4ade80;
+    --green-dim: rgba(74,222,128,0.12);
+    --yellow: #fbbf24;
+    --yellow-dim: rgba(251,191,36,0.12);
+    --red: #f87171;
+    --blue: #60a5fa;
+    --blue-dim: rgba(96,165,250,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', sans-serif; background:var(--bg); color:var(--text); line-height:1.5; }
+
+  /* Layout */
+  .shell { max-width:1400px; margin:0 auto; padding:24px; }
+  header { display:flex; justify-content:space-between; align-items:center; margin-bottom:32px; padding-bottom:20px; border-bottom:1px solid var(--border); }
+  header h1 { font-size:22px; font-weight:600; letter-spacing:-0.3px; }
+  header h1 span { color:var(--accent); }
+  .meta { font-size:13px; color:var(--text-dim); }
+
+  /* Tabs */
+  .tabs { display:flex; gap:4px; margin-bottom:24px; background:var(--surface); border-radius:10px; padding:4px; width:fit-content; }
+  .tab { padding:8px 18px; border-radius:8px; font-size:13px; font-weight:500; cursor:pointer; color:var(--text-dim); transition:all 0.15s; border:none; background:transparent; }
+  .tab:hover { color:var(--text); }
+  .tab.active { background:var(--surface-2); color:var(--accent); }
+
+  /* Stats row */
+  .stats { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:28px; }
+  .stat { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 18px; }
+  .stat-label { font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-dim); margin-bottom:4px; }
+  .stat-val { font-size:26px; font-weight:600; letter-spacing:-0.5px; }
+  .stat-val.gold { color:var(--accent); }
+
+  /* Panels */
+  .panel { display:none; }
+  .panel.active { display:block; }
+
+  /* Table */
+  .tbl-wrap { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th { text-align:left; padding:12px 16px; font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-dim); background:var(--surface-2); border-bottom:1px solid var(--border); }
+  td { padding:12px 16px; border-bottom:1px solid var(--border); vertical-align:top; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:rgba(200,169,126,0.04); }
+
+  /* Score badges */
+  .score { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; font-weight:700; font-size:14px; }
+  .score-9 { background:var(--green-dim); color:var(--green); }
+  .score-8 { background:var(--blue-dim); color:var(--blue); }
+  .score-7 { background:var(--yellow-dim); color:var(--yellow); }
+  .score-6 { background:rgba(248,113,113,0.12); color:var(--red); }
+
+  /* Phase badges */
+  .phase { display:inline-block; padding:3px 10px; border-radius:5px; font-size:11px; font-weight:600; letter-spacing:0.3px; }
+  .phase-1 { background:var(--green-dim); color:var(--green); }
+  .phase-2 { background:var(--blue-dim); color:var(--blue); }
+  .phase-3 { background:var(--yellow-dim); color:var(--yellow); }
+  .phase-4 { background:rgba(248,113,113,0.12); color:var(--red); }
+
+  /* Status badges */
+  .status { display:inline-block; padding:3px 10px; border-radius:5px; font-size:11px; font-weight:500; }
+  .status-not-contacted { background:rgba(248,113,113,0.12); color:var(--red); }
+  .status-verified { background:var(--green-dim); color:var(--green); }
+
+  /* Tier badge */
+  .tier { display:inline-block; padding:3px 10px; border-radius:5px; font-size:11px; font-weight:500; }
+  .tier-warm { background:var(--accent-dim); color:var(--accent); }
+  .tier-cold { background:var(--blue-dim); color:var(--blue); }
+  .tier-show { background:rgba(168,85,247,0.12); color:#c084fc; }
+
+  /* Expandable rows */
+  .expand-row { cursor:pointer; }
+  .expand-row td:first-child::before { content:''; display:inline-block; width:0; height:0; border-left:5px solid var(--text-dim); border-top:4px solid transparent; border-bottom:4px solid transparent; margin-right:8px; transition:transform 0.15s; }
+  .expand-row.open td:first-child::before { transform:rotate(90deg); }
+  .detail-row { display:none; }
+  .detail-row.open { display:table-row; }
+  .detail-row td { background:var(--surface-2); padding:20px 24px; }
+  .detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .detail-section h4 { font-size:12px; text-transform:uppercase; letter-spacing:0.6px; color:var(--accent); margin-bottom:8px; }
+  .detail-section p, .detail-section li { font-size:13px; color:var(--text-dim); }
+  .detail-section ul { list-style:none; padding:0; }
+  .detail-section li { padding:3px 0; }
+  .detail-section li::before { content:'-'; margin-right:6px; color:var(--accent); }
+
+  /* Multi-contact mini cards */
+  .contact-mini { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:8px 10px; margin-bottom:6px; }
+  .contact-mini .cm-name { font-size:12px; font-weight:600; color:var(--text); }
+  .contact-mini .cm-role { font-size:11px; color:var(--accent); }
+  .contact-mini .cm-info { font-size:11px; color:var(--text-dim); margin-top:2px; }
+  .contact-mini .cm-info a { color:var(--blue); text-decoration:none; }
+  .contact-mini .cm-info a:hover { text-decoration:underline; }
+  .contact-mini .cm-best { display:inline-block; font-size:9px; padding:1px 5px; border-radius:3px; background:var(--green-dim); color:var(--green); font-weight:600; margin-left:4px; }
+
+  /* Contact cards */
+  .contacts-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:12px; }
+  .contact-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; }
+  .contact-card h3 { font-size:14px; font-weight:600; margin-bottom:2px; }
+  .contact-card .role { font-size:12px; color:var(--accent); margin-bottom:10px; }
+  .contact-card .info { font-size:12px; color:var(--text-dim); }
+  .contact-card .info a { color:var(--blue); text-decoration:none; }
+  .contact-card .info a:hover { text-decoration:underline; }
+  .contact-card .badge { display:inline-block; font-size:10px; padding:2px 6px; border-radius:3px; margin-left:4px; }
+  .badge-v { background:var(--green-dim); color:var(--green); }
+  .badge-i { background:var(--yellow-dim); color:var(--yellow); }
+  .dist-label { font-size:11px; color:var(--text-dim); margin-bottom:4px; }
+  .dist-name { font-size:15px; font-weight:600; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+
+  /* Objections */
+  .objection-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px; margin-bottom:12px; }
+  .objection-card h3 { font-size:14px; color:var(--red); margin-bottom:6px; }
+  .objection-card .why { font-size:12px; color:var(--text-dim); margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+  .objection-card .counter { font-size:13px; color:var(--green); }
+  .objection-card .counter strong { color:var(--green); }
+
+  /* Meeting prep */
+  .prep-section { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px; margin-bottom:16px; }
+  .prep-section h3 { font-size:14px; font-weight:600; margin-bottom:12px; color:var(--accent); }
+  .prep-section ul { list-style:none; padding:0; }
+  .prep-section li { padding:6px 0; font-size:13px; border-bottom:1px solid var(--border); }
+  .prep-section li:last-child { border-bottom:none; }
+
+  /* Pushback table */
+  .pushback { width:100%; font-size:13px; }
+  .pushback td { padding:14px 16px; vertical-align:top; }
+  .pushback .they { color:var(--red); font-weight:500; width:35%; }
+  .pushback .you { color:var(--green); }
+
+  /* Email template */
+  .email-tpl { background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:20px; margin-bottom:16px; font-family:'SF Mono',Menlo,monospace; font-size:12px; white-space:pre-wrap; color:var(--text-dim); line-height:1.7; }
+  .email-tpl .subj { color:var(--accent); font-weight:600; margin-bottom:8px; display:block; font-family:-apple-system,sans-serif; font-size:13px; }
+
+  /* Map placeholder */
+  .geo-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .geo-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:14px; }
+  .geo-card h4 { font-size:13px; margin-bottom:6px; color:var(--accent); }
+  .geo-card p { font-size:12px; color:var(--text-dim); }
+
+  /* Filter bar */
+  .filters { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+  .filter-btn { padding:6px 14px; border-radius:6px; font-size:12px; font-weight:500; cursor:pointer; border:1px solid var(--border); background:var(--surface); color:var(--text-dim); transition:all 0.15s; }
+  .filter-btn:hover, .filter-btn.active { border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
+
+  /* Timeline */
+  .timeline { position:relative; padding-left:24px; }
+  .timeline::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:2px; background:var(--border); }
+  .tl-item { position:relative; margin-bottom:20px; }
+  .tl-item::before { content:''; position:absolute; left:-20px; top:6px; width:10px; height:10px; border-radius:50%; border:2px solid var(--accent); background:var(--bg); }
+  .tl-item h4 { font-size:13px; color:var(--accent); margin-bottom:4px; }
+  .tl-item p { font-size:12px; color:var(--text-dim); }
+  .tl-table { width:100%; margin-top:8px; }
+  .tl-table td { padding:4px 8px; font-size:12px; color:var(--text-dim); }
+  .tl-table td:first-child { font-weight:500; color:var(--text); }
+</style>
+</head>
+<body>
+<div class="shell">
+  <header>
+    <div>
+      <h1><span>AWARE</span> Distributor Pipeline</h1>
+      <div class="meta">35 targets (20 Wave 1 + 15 Wave 2) | Feb - Jul 2026 | US + Canada</div>
+    </div>
+    <div class="meta" style="text-align:right">
+      Last updated: February 12, 2026<br>
+      <a href="US-DISTRIBUTOR-TARGETS-2026.md" style="color:var(--accent);text-decoration:none;font-size:12px">Wave 1</a> |
+      <a href="NEW-DISTRIBUTOR-TARGETS-WAVE-2.md" style="color:var(--accent);text-decoration:none;font-size:12px">Wave 2</a>
+    </div>
+  </header>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Total Targets</div>
+      <div class="stat-val gold">35</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Score 8+</div>
+      <div class="stat-val" style="color:var(--green)">18</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Wave 2 (New)</div>
+      <div class="stat-val" style="color:var(--blue)">15</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Canada</div>
+      <div class="stat-val" style="color:var(--accent)">5</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Contacted</div>
+      <div class="stat-val" style="color:var(--red)">0</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('pipeline')">Wave 1 (20)</button>
+    <button class="tab" onclick="switchTab('wave2')">Wave 2 (15)</button>
+    <button class="tab" onclick="switchTab('contacts')">Contacts</button>
+    <button class="tab" onclick="switchTab('timeline')">Timeline</button>
+    <button class="tab" onclick="switchTab('geography')">Coverage</button>
+    <button class="tab" onclick="switchTab('objections')">Objections</button>
+    <button class="tab" onclick="switchTab('meeting')">Meeting Prep</button>
+    <button class="tab" onclick="switchTab('templates')">Email Templates</button>
+  </div>
+
+  <!-- PIPELINE TAB -->
+  <div class="panel active" id="pipeline">
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterTable('all',this)">All (20)</button>
+      <button class="filter-btn" onclick="filterTable('9',this)">Score 9 (4)</button>
+      <button class="filter-btn" onclick="filterTable('8',this)">Score 8 (6)</button>
+      <button class="filter-btn" onclick="filterTable('7',this)">Score 7 (7)</button>
+      <button class="filter-btn" onclick="filterTable('6',this)">Score 6 (3)</button>
+      <button class="filter-btn" onclick="filterTable('warm',this)">Warm</button>
+      <button class="filter-btn" onclick="filterTable('cold',this)">Cold</button>
+      <button class="filter-btn" onclick="filterTable('show',this)">Trade Show</button>
+    </div>
+    <div class="tbl-wrap">
+      <table id="mainTable">
+        <thead>
+          <tr><th>#</th><th>Distributor</th><th>HQ</th><th>Territory</th><th>Fit</th><th>Phase</th><th>Outreach</th><th>Key Brands</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr class="expand-row" data-score="9" data-tier="warm" onclick="toggleRow(this)">
+            <td>1</td><td>Bassett Salon Solutions</td><td>Anaheim, CA</td><td>CA, AZ, NM, NV, UT, OR, WA, ID</td>
+            <td><span class="score score-9">9</span></td><td><span class="phase phase-1">P1</span></td>
+            <td><span class="tier tier-warm">Warm</span></td><td>Davines, Evo, Zenagen</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Founded as "alternative to multinationals." Family-owned, decision makers accessible. Carries Zenagen (scalp category). Anaheim HQ is a short drive. West Hollywood store overlaps with AWARE's salon base.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Ward Bassett</strong> - President & CEO<br>wbassett@4bassett.com <span class="badge badge-v">V</span><br><a href="https://linkedin.com/in/ward-bassett-27bb5887/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></p><p style="margin-top:8px"><strong>Best approach:</strong> Email Ward directly. Offer to visit Anaheim HQ or West Hollywood store.</p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="9" data-tier="warm" onclick="toggleRow(this)">
+            <td>2</td><td>Sweis Inc</td><td>Torrance, CA</td><td>CA, NV, HI</td>
+            <td><span class="score score-9">9</span></td><td><span class="phase phase-1">P1</span></td>
+            <td><span class="tier tier-warm">Warm</span></td><td>MOROCCANOIL, K18, Olaplex</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Family-owned, indie-friendly. Karl Sweis is accessible. Torrance HQ is local. Already carries K18 (scalp adjacent). Recently added Shibui - appetite for emerging brands.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Karl Sweis</strong> - President<br>ksweis@sweisinc.com <span class="badge badge-v">V</span><br><a href="https://linkedin.com/in/karlsweis/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></p><p style="margin-top:8px"><strong>Best approach:</strong> Email Karl directly. Family business - he's the decision maker.</p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="9" data-tier="cold" onclick="toggleRow(this)">
+            <td>3</td><td>Beauty Solutions LLC</td><td>Santa Cruz, CA</td><td>CA, NV, AZ, OR, WA, ID, UT</td>
+            <td><span class="score score-9">9</span></td><td><span class="phase phase-1">P1</span></td>
+            <td><span class="tier tier-cold">Cold</span></td><td>KEVIN.MURPHY, ALFAPARF</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>"Boutique, upscale brands" positioning. Carries KEVIN.MURPHY (similar price point, salon-exclusive). 7-state West Coast coverage. Education-first approach.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Wes Brown</strong> - CMO<br>wes@beautysolutions.com <span class="badge badge-v">V</span><br><a href="https://linkedin.com/in/wes-brown-24b36922b/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></p><p style="margin-top:8px"><strong>Gary Heath</strong> - Owner<br>gary@beautysolutions.com <span class="badge badge-v">V</span></p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="9" data-tier="cold" onclick="toggleRow(this)">
+            <td>4</td><td>The Salon Center</td><td>Pelham, AL</td><td>FL, GA, AL, MS, LA, NC, SC, TN</td>
+            <td><span class="score score-9">9</span></td><td><span class="phase phase-1">P1</span></td>
+            <td><span class="tier tier-cold">Cold</span></td><td>Color Wow, TRUSS, Leaf & Flower</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Pure consultant model. "Exciting new brands" positioning. Family-owned. Massive Southeast coverage. 2-day delivery. Fills AWARE's biggest geographic gap.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Jake Jacob</strong> - Owner<br>jjacob@thesaloncenter.com <span class="badge badge-i">I</span><br><a href="https://linkedin.com/in/jake-jacob-3b2905b0/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="8" data-tier="cold" onclick="toggleRow(this)">
+            <td>5</td><td>Salon Services Pro</td><td>Renton, WA</td><td>WA, OR, ID, MT, WY, CO, NM, AZ, UT, AK</td>
+            <td><span class="score score-8">8</span></td><td><span class="phase phase-2">P2</span></td>
+            <td><span class="tier tier-cold">Cold</span></td><td>KEVIN.MURPHY, Davines, K18</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Largest independent NW coverage (10 states). Carries wellness brands. Strong education platform. 20+ showroom locations.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>George Learned</strong> - CEO & Founder<br>glearned@salonservicespro.com <span class="badge badge-i">I</span><br><a href="https://linkedin.com/in/george-learned-917a831a2/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></p><p style="margin-top:8px"><strong>Guy Lacey</strong> - VP (PBA Advisory Council)<br>glacey@salonservicespro.com <span class="badge badge-i">I</span></p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="8" data-tier="cold" onclick="toggleRow(this)">
+            <td>6</td><td>Premier Beauty Supply</td><td>Northbrook, IL</td><td>IL, IN, MI, OH</td>
+            <td><span class="score score-8">8</span></td><td><span class="phase phase-2">P2</span></td>
+            <td><span class="tier tier-cold">Cold</span></td><td>K18, KEVIN.MURPHY, Moroccanoil</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Carries K18 (validates scalp interest). Family-owned 2nd gen. Strong Midwest coverage. Premium positioning.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Alex Cohn</strong> - VP Sales & Marketing<br>acohn@pbsupply.com <span class="badge badge-i">I</span><br><a href="https://linkedin.com/in/acohn23/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="8" data-tier="cold" onclick="toggleRow(this)">
+            <td>7</td><td>Sullivan Beauty</td><td>Hooksett, NH</td><td>MA, CT, RI, NH, VT, ME</td>
+            <td><span class="score score-8">8</span></td><td><span class="phase phase-2">P2</span></td>
+            <td><span class="tier tier-cold">Cold</span></td><td>Paul Mitchell, Davines, K18, evo</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>3rd gen family business. Expanded beyond single-brand. Carries K18/Davines/evo. All 6 New England states.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Kerry Sullivan</strong> - President<br>kerry@sullivanbeauty.com <span class="badge badge-v">V</span> ext. 222<br><a href="https://linkedin.com/in/kerry-sullivan-8567a9aa" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="8" data-tier="cold" onclick="toggleRow(this)">
+            <td>8</td><td>EISS</td><td>Ladson, SC</td><td>NC, SC</td>
+            <td><span class="score score-8">8</span></td><td><span class="phase phase-2">P2</span></td>
+            <td><span class="tier tier-cold">Cold</span></td><td>MOROCCANOIL, Zenagen, Milbon</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Anti-diversion commitment aligns. Carries Zenagen (scalp). 50+ years. Dedicated 2-state focus = more attention per brand.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Brian Slaick</strong> - Dir. of Sales<br>bslaick@eissinc.com <span class="badge badge-i">I</span><br><a href="https://linkedin.com/in/brian-slaick-a7b99859" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="8" data-tier="cold" onclick="toggleRow(this)">
+            <td>9</td><td>Lunica Beauty</td><td>Scottsdale, AZ</td><td>AZ, NV, UT, NM, CA, CO</td>
+            <td><span class="score score-8">8</span></td><td><span class="phase phase-2">P2</span></td>
+            <td><span class="tier tier-cold">Cold</span></td><td>milk_shake, Babe Hair, Trissola</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Southwest expansion territory. Indie-focused. Some CA overlap for continuity. Clear scalp care portfolio gap.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Robert Peden</strong> - BD Manager<br>rpeden@lunicabeauty.com <span class="badge badge-i">I</span><br><a href="https://linkedin.com/in/robert-peden-b01a2698" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></p><p style="margin-top:4px;font-size:12px;color:var(--accent)">Previously at Sweis - warm connection</p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="8" data-tier="cold" onclick="toggleRow(this)">
+            <td>10</td><td>TwinState Salon Supply</td><td>Hinton, WV</td><td>WV, VA, MD, DE, DC</td>
+            <td><span class="score score-8">8</span></td><td><span class="phase phase-3">P3</span></td>
+            <td><span class="tier tier-cold">Cold</span></td><td>Davines, K18, Zenagen, Shibui</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Strong emerging brand portfolio (K18, Shibui, Zenagen). Consultant-driven. Key DC/MD/VA metro. 60 years of relationships.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Keith Wykle</strong> - VP of Sales<br>kwykle@twinstate.net <span class="badge badge-i">I</span><br>Phone: 1-800-344-5660</p><p style="margin-top:4px;font-size:12px;color:var(--text-dim)">Limited online presence - phone recommended.</p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="7" data-tier="cold" onclick="toggleRow(this)">
+            <td>11</td><td>Depasquale Salon Systems</td><td>Fair Lawn, NJ</td><td>NY, NJ, CT, PA</td>
+            <td><span class="score score-7">7</span></td><td><span class="phase phase-3">P3</span></td>
+            <td><span class="tier tier-cold">Cold</span></td><td>Olaplex, Living Proof, Zenagen</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>"Concept-oriented." Dense NY/NJ metro. Carries Zenagen. Part of DePasquale Companies (manufactures own brands - understands brand building).</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Joe Mastalia</strong> - President<br>joem@lakmeusa.com <span class="badge badge-v">V</span><br><a href="https://linkedin.com/in/joemastalia/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></p><p style="margin-top:4px;font-size:12px;color:var(--accent)">Former Cosmoprof NA board, ICMAD board</p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="7" data-tier="show" onclick="toggleRow(this)">
+            <td>12</td><td>Professional Salon Concepts</td><td>Joliet, IL</td><td>IL, IN, KY, TN</td>
+            <td><span class="score score-7">7</span></td><td><span class="phase phase-3">P3</span></td>
+            <td><span class="tier tier-show">Trade Show</span></td><td>Paul Mitchell, Davines, evo</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Education-first. Carries Davines + evo (premium). Strong Chicago market. ABS trade show connection (Apr 18-20).</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Steve Cowan</strong> - Founder & President<br>scowan@pscspace.com <span class="badge badge-v">V</span><br>Direct: (815) 341-8135 <span class="badge badge-v">V</span></p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="7" data-tier="cold" onclick="toggleRow(this)">
+            <td>13</td><td>Beauty Craft</td><td>Hopkins, MN</td><td>14 states (Midwest + Mountain)</td>
+            <td><span class="score score-7">7</span></td><td><span class="phase phase-3">P3</span></td>
+            <td><span class="tier tier-cold">Cold</span></td><td>Malibu Wellness, UNITE, Oligo</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Family-owned since 1928. Massive 14-state coverage. Partners with strong social media brands. 24/7 online ordering.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Max Wexler</strong> - President<br>mwexler@beautycraft.com <span class="badge badge-i">I</span><br><a href="https://linkedin.com/in/max-wexler-026024a7/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="7" data-tier="cold" onclick="toggleRow(this)">
+            <td>14</td><td>Beautera Professional</td><td>Denver, CO</td><td>CO, UT, NM, WY</td>
+            <td><span class="score score-7">7</span></td><td><span class="phase phase-4">P4</span></td>
+            <td><span class="tier tier-cold">Cold</span></td><td>Evo, Zenagen, Shibui, Ethica</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Sustainability focus. Carries Zenagen (scalp health). Shibui and Ethica show indie appetite. Mountain West coverage.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Darin Vincent</strong> - President<br>dvincent@beauterapro.com <span class="badge badge-i">I</span><br><a href="https://linkedin.com/in/darin-vincent-57965052/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="7" data-tier="warm" onclick="toggleRow(this)">
+            <td>15</td><td>Nancy's Beauty Warehouse</td><td>Huntington Park, CA</td><td>National (LA-based)</td>
+            <td><span class="score score-7">7</span></td><td><span class="phase phase-1">P1</span></td>
+            <td><span class="tier tier-warm">Warm</span></td><td>Broad portfolio</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Master distributor status = national expansion through their network. 30+ years. LA-based (local). Start West Coast, leverage network.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Morad Zahabian</strong> - CEO / Founder<br>morad@nancysbeauty.com <span class="badge badge-i">I</span><br><a href="https://linkedin.com/in/morad-zahabian-76b4351b/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></p><p style="margin-top:4px;font-size:12px;color:var(--text-dim)">Visit Huntington Park location in person.</p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="7" data-tier="show" onclick="toggleRow(this)">
+            <td>16</td><td>Salon Service Group (SSG)</td><td>Springfield, MO</td><td>20 states</td>
+            <td><span class="score score-7">7</span></td><td><span class="phase phase-4">P4</span></td>
+            <td><span class="tier tier-show">Trade Show</span></td><td>Paul Mitchell, K18, Shibui</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Largest independent US distributor. 71 stores, 160+ reps. "Privately owned brands" values alignment. Massive coverage. Recently acquired Princess Professional.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>McKenzie Barbo</strong> - Dir. of BD<br>mbarbo@salonservicegroup.com <span class="badge badge-v">V</span><br>Direct: (417) 209-0225 <span class="badge badge-v">V</span></p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="7" data-tier="cold" onclick="toggleRow(this)">
+            <td>17</td><td>Mid America Beauty Supply</td><td>Ballwin, MO</td><td>MO, IL, KS, AR, MI, OH</td>
+            <td><span class="score score-7">7</span></td><td><span class="phase phase-3">P3</span></td>
+            <td><span class="tier tier-cold">Cold</span></td><td>OYA, Prorituals, Redavid</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Heavy indie brand focus. Professional-only. Family-owned 31+ years. Clear scalp care portfolio gap.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Kerry Tuscano</strong> - Owner<br>midamericabeautysupply@gmail.com<br>Text: (314) 283-8544</p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="6" data-tier="cold" onclick="toggleRow(this)">
+            <td>18</td><td>Elite Salon Distributors</td><td>Toledo, OH</td><td>OH</td>
+            <td><span class="score score-6">6</span></td><td><span class="phase phase-4">P4</span></td>
+            <td><span class="tier tier-cold">Cold</span></td><td>OYA, milk_shake, TruffLuv</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>"Honest products & education" philosophy. Multiple indie brands. Mission-driven. Ohio presence.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Jerel Hess</strong> - President & Founder<br>info@EliteSalonDistributorsUSA.com<br>(419) 902-0545</p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="6" data-tier="cold" onclick="toggleRow(this)">
+            <td>19</td><td>RWA Serious Beauty</td><td>Minden, NV</td><td>NorCal, NV, OR, WA, ID</td>
+            <td><span class="score score-6">6</span></td><td><span class="phase phase-4">P4</span></td>
+            <td><span class="tier tier-cold">Cold</span></td><td>Not publicly listed</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Est. 1977. Deep NorCal/NW relationships. Consultant-driven. Complements Sweis/Bassett SoCal coverage.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Noah Wilson</strong> - President (since 2018)<br>nwilson@ronwilson.com <span class="badge badge-i">I</span><br>(800) 446-3987</p></div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="6" data-tier="cold" onclick="toggleRow(this)">
+            <td>20</td><td>Thomassen Beauty Supply</td><td>Florida</td><td>FL statewide</td>
+            <td><span class="score score-6">6</span></td><td><span class="phase phase-4">P4</span></td>
+            <td><span class="tier tier-cold">Cold</span></td><td>Loma, Redavid, MKS Eco</td>
+            <td><span class="status status-verified">Verified</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="9"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>"Exclusive brands" positioning. Anti-diversion. FL-focused (no territory dilution). Next-day statewide delivery.</p></div>
+            <div class="detail-section"><h4>Primary contact</h4><p><strong>Kate Thomassen</strong> - President<br>kthomassen@thomassenbeautysupply.com <span class="badge badge-i">I</span><br><a href="https://linkedin.com/in/kate-thomassen-2443902b/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></p></div>
+          </div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- WAVE 2 TAB -->
+  <div class="panel" id="wave2">
+    <div style="margin-bottom:16px;padding:14px 18px;background:var(--blue-dim);border:1px solid rgba(96,165,250,0.25);border-radius:10px;">
+      <span style="font-size:13px;color:var(--blue);font-weight:600;">Wave 2 Research</span>
+      <span style="font-size:12px;color:var(--text-dim);margin-left:8px;">15 new distributors found via 4-agent parallel research | 5 Canadian, 7 US Regional, 3 Specialty</span>
+    </div>
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterW2('all',this)">All (15)</button>
+      <button class="filter-btn" onclick="filterW2('9',this)">Score 9 (2)</button>
+      <button class="filter-btn" onclick="filterW2('8',this)">Score 8 (6)</button>
+      <button class="filter-btn" onclick="filterW2('7',this)">Score 7 (4)</button>
+      <button class="filter-btn" onclick="filterW2('6',this)">Score 6 (3)</button>
+      <button class="filter-btn" onclick="filterW2('cold',this)">US Regional</button>
+      <button class="filter-btn" onclick="filterW2('canada',this)">Canada</button>
+      <button class="filter-btn" onclick="filterW2('specialty',this)">Specialty</button>
+    </div>
+    <div class="tbl-wrap">
+      <table id="w2Table">
+        <thead>
+          <tr><th>#</th><th>Distributor</th><th>HQ</th><th>Territory</th><th>Fit</th><th>Category</th><th>Key Brands</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <!-- CANADIAN -->
+          <tr class="expand-row" data-score="9" data-tier="canada" onclick="toggleRow(this)">
+            <td>1</td><td>West Coast Beauty</td><td>Burnaby, BC</td><td>BC, AB, SK, MB</td>
+            <td><span class="score score-9">9</span></td>
+            <td><span class="phase phase-1" style="background:rgba(168,85,247,0.12);color:#c084fc;">Canada</span></td>
+            <td>Davines, Kevin Murphy, Moroccanoil</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="8"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Carries Davines AND Kevin Murphy - validates ultra-premium positioning. Western Canada territory complements AWARE's West Coast US base. "Exclusive, highest quality products and ethical brands" philosophy. 10 physical locations across BC. Clear scalp care gap in portfolio.</p></div>
+            <div class="detail-section"><h4>Contacts (3)</h4>
+              <div class="contact-mini"><span class="cm-name">Eileen Jevning</span><span class="cm-best">BEST</span><br><span class="cm-role">President</span><div class="cm-info"><a href="https://linkedin.com/in/eileen-jevning-42997211/" target="_blank">LinkedIn</a></div></div>
+              <div class="contact-mini"><span class="cm-name">Todd Rutherford</span><br><span class="cm-role">Sales & Business Development Manager</span><div class="cm-info"><a href="https://linkedin.com/in/toddrutherford/" target="_blank">LinkedIn</a></div></div>
+              <div class="contact-mini"><span class="cm-name">Melanie Monteyne</span><br><span class="cm-role">Purchasing Manager</span><div class="cm-info"><a href="https://linkedin.com/in/melanie-monteyne/" target="_blank">LinkedIn</a></div></div>
+              <p style="margin-top:6px;font-size:11px;color:var(--text-dim)"><strong>General:</strong> 1-800-661-2707 | info@west-coast-beauty.com | <a href="https://west-coast-beauty.com" target="_blank" style="color:var(--blue)">web</a> | Est. ~1997, 100+ employees</p>
+            </div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="8" data-tier="canada" onclick="toggleRow(this)">
+            <td>2</td><td>Metro Beauty Supply</td><td>Woodbridge, ON</td><td>Ontario, Quebec</td>
+            <td><span class="score score-8">8</span></td>
+            <td><span class="phase phase-1" style="background:rgba(168,85,247,0.12);color:#c084fc;">Canada</span></td>
+            <td>Davines, Rica, Eufora, Sachajuan</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="8"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>B2B-only model ("never direct to consumers") matches AWARE perfectly. Ontario/Quebec = Canada's two largest provinces. 53-year family legacy. Davines validates premium ($55-75) handling. "Premium, eco-luxury brands" positioning. Metro Beauty Academy for education.</p></div>
+            <div class="detail-section"><h4>Contacts (3)</h4>
+              <div class="contact-mini"><span class="cm-name">Frank Miraglia</span><span class="cm-best">BEST</span><br><span class="cm-role">Owner / Principal</span><div class="cm-info">Family patriarch, final decision-maker</div></div>
+              <div class="contact-mini"><span class="cm-name">Chanel Miraglia</span><br><span class="cm-role">Director of Education</span><div class="cm-info">Next-gen family leadership, education angle</div></div>
+              <div class="contact-mini"><span class="cm-name">Sherri Jones</span><br><span class="cm-role">Purchasing Manager</span><div class="cm-info">Day-to-day brand intake decisions</div></div>
+              <p style="margin-top:6px;font-size:11px;color:var(--text-dim)"><strong>General:</strong> 905-850-7131 / 1-800-263-2365 | 315 New Huntington Rd, Woodbridge, ON | <a href="https://metrobeauty.ca" target="_blank" style="color:var(--blue)">web</a> | Est. 1971</p>
+            </div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="8" data-tier="canada" onclick="toggleRow(this)">
+            <td>3</td><td>Maritime Beauty Supply</td><td>Halifax, NS</td><td>NS, NB, PE, NL</td>
+            <td><span class="score score-8">8</span></td>
+            <td><span class="phase phase-1" style="background:rgba(168,85,247,0.12);color:#c084fc;">Canada</span></td>
+            <td>Olaplex, Aveda, Alterna, Moroccanoil</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="8"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>60-year track record, 17 locations, 150+ employees. Atlantic Canada completely unserved. Olaplex/Aveda/Alterna = ultra-premium handling. 2022 PE acquisition signals growth trajectory and openness to new brands.</p></div>
+            <div class="detail-section"><h4>Contacts (3)</h4>
+              <div class="contact-mini"><span class="cm-name">Tim Pellerin</span><br><span class="cm-role">President</span><div class="cm-info"><a href="https://linkedin.com/in/tim-pellerin/" target="_blank">LinkedIn</a></div></div>
+              <div class="contact-mini"><span class="cm-name">Deanna Sieber</span><span class="cm-best">BEST</span><br><span class="cm-role">Sr. Director, Stores</span><div class="cm-info">dsieber@maritimebeauty.com | ext 10600<br><a href="https://linkedin.com/in/deanna-sieber/" target="_blank">LinkedIn</a></div></div>
+              <div class="contact-mini"><span class="cm-name">Norma Hetherington</span><br><span class="cm-role">Regional Manager</span><div class="cm-info">nhetherington@maritimebeauty.com</div></div>
+              <p style="margin-top:6px;font-size:11px;color:var(--text-dim)"><strong>General:</strong> 1-800-565-7721 | support@maritimebeauty.com | <a href="https://maritimebeauty.com" target="_blank" style="color:var(--blue)">web</a> | Est. 1966, 150+ emp</p>
+            </div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="7" data-tier="canada" onclick="toggleRow(this)">
+            <td>4</td><td>Modern Beauty Supplies</td><td>Calgary, AB</td><td>All Canadian provinces</td>
+            <td><span class="score score-7">7</span></td>
+            <td><span class="phase phase-1" style="background:rgba(168,85,247,0.12);color:#c084fc;">Canada</span></td>
+            <td>R+Co, K18, Olaplex, Moroccanoil</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="8"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Canada's largest privately-owned beauty supplier. R+Co, K18, Olaplex = ultra-premium. 60+ business advisors, 4 Academy locations, 25+ stores. National Canadian coverage from a single partner. "Canada's Best Managed Companies" winner.</p></div>
+            <div class="detail-section"><h4>Contacts (3)</h4>
+              <div class="contact-mini"><span class="cm-name">Mike Jomaa</span><span class="cm-best">BEST</span><br><span class="cm-role">CEO / Owner</span><div class="cm-info"><a href="https://linkedin.com/in/mike-jomaa/" target="_blank">LinkedIn</a></div></div>
+              <div class="contact-mini"><span class="cm-name">Fay Jomaa</span><br><span class="cm-role">CFO</span><div class="cm-info"><a href="https://linkedin.com/in/fay-jomaa/" target="_blank">LinkedIn</a></div></div>
+              <div class="contact-mini"><span class="cm-name">Helen Whyte</span><br><span class="cm-role">Director of Sales</span><div class="cm-info"><a href="https://linkedin.com/in/helen-whyte/" target="_blank">LinkedIn</a> | Operational brand intake</div></div>
+              <p style="margin-top:6px;font-size:11px;color:var(--text-dim)"><strong>General:</strong> 1-877-566-3376 | <a href="https://modernbeauty.com" target="_blank" style="color:var(--blue)">web</a> | Est. 1986, 200+ emp</p>
+              <p style="font-size:11px;color:var(--yellow)">Note: Large scale may mean less emerging brand attention. Secondary priority after West Coast + Metro.</p>
+            </div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="6" data-tier="canada" onclick="toggleRow(this)">
+            <td>5</td><td>IBSS</td><td>Western Canada</td><td>AB, SK, MB, BC (partial)</td>
+            <td><span class="score score-6">6</span></td>
+            <td><span class="phase phase-1" style="background:rgba(168,85,247,0.12);color:#c084fc;">Canada</span></td>
+            <td>Kevin Murphy, Eleven Australia, Eufora</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="8"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Kevin Murphy distribution validates premium channel access. Western Canada territory. Founded 1981 (44 years). Smaller scale = more brand attention.</p></div>
+            <div class="detail-section"><h4>Contacts (3)</h4>
+              <div class="contact-mini"><span class="cm-name">Graham Kenny</span><span class="cm-best">BEST</span><br><span class="cm-role">Executive Director</span><div class="cm-info"><a href="https://linkedin.com/in/graham-kenny/" target="_blank">LinkedIn</a></div></div>
+              <div class="contact-mini"><span class="cm-name">Leigh Tait</span><br><span class="cm-role">Director, HR & Operations</span></div>
+              <div class="contact-mini"><span class="cm-name">Deborah Pedersen</span><br><span class="cm-role">Brand Manager</span><div class="cm-info">Brand intake decisions</div></div>
+              <p style="margin-top:6px;font-size:11px;color:var(--text-dim)"><strong>General:</strong> <a href="https://internationalbeauty.ca" target="_blank" style="color:var(--blue)">web</a> | Est. 1981</p>
+              <p style="font-size:11px;color:var(--yellow)">Backup if West Coast Beauty doesn't progress. Carries Scalp Phix (potential competitor).</p>
+            </div>
+          </div></td></tr>
+
+          <!-- US REGIONAL -->
+          <tr class="expand-row" data-score="8" data-tier="cold" onclick="toggleRow(this)">
+            <td>6</td><td>Salon Only Sales</td><td>River Falls, WI</td><td>MN, WI, IA, ND, SD, NE, CO, WY</td>
+            <td><span class="score score-8">8</span></td>
+            <td><span class="phase phase-2">P2</span></td>
+            <td>L'ANZA, Davines, evo, Surface</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="8"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>"Niche-only, boutique-only, professional-only" is literally AWARE's lane. Carries Davines, L'ANZA, evo. Green Circle Salons sustainability partner. Anti-diversion commitment. 8-state Midwest/Mountain gap filler. 50+ brands, founded 2004.</p></div>
+            <div class="detail-section"><h4>Contacts (3)</h4>
+              <div class="contact-mini"><span class="cm-name">Marc Beauclaire</span><span class="cm-best">BEST</span><br><span class="cm-role">President / Owner</span><div class="cm-info"><a href="https://linkedin.com/in/marc-beauclaire/" target="_blank">LinkedIn</a> | Founded the company</div></div>
+              <div class="contact-mini"><span class="cm-name">Mark Bonin</span><br><span class="cm-role">Managing Director, Sales</span><div class="cm-info"><a href="https://linkedin.com/in/mark-bonin/" target="_blank">LinkedIn</a></div></div>
+              <div class="contact-mini"><span class="cm-name">Lisa Rafert</span><br><span class="cm-role">Brand Development Manager</span><div class="cm-info">Direct new brand intake contact</div></div>
+              <p style="margin-top:6px;font-size:11px;color:var(--text-dim)"><strong>General:</strong> (715) 426-0620 | 576 Troy St., River Falls, WI | <a href="https://salononlysales.com" target="_blank" style="color:var(--blue)">web</a> | Est. 2004</p>
+            </div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="8" data-tier="cold" onclick="toggleRow(this)">
+            <td>7</td><td>Island Beauty Supply</td><td>Honolulu, HI</td><td>Hawaii, Guam, U.S. Pacific</td>
+            <td><span class="score score-8">8</span></td>
+            <td><span class="phase phase-3">P3</span></td>
+            <td>K18, Olaplex, Davines, Moroccanoil</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="8"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Hawaii completely untapped. Only pro distributor serving all islands. 68+ brands = serious infrastructure. Hawaii climate (UV, humidity, salt air) = natural scalp care demand. Tourism-driven premium clientele. Free delivery over $150.</p></div>
+            <div class="detail-section"><h4>Contacts (2)</h4>
+              <div class="contact-mini"><span class="cm-name">Robert Toscano</span><span class="cm-best">BEST</span><br><span class="cm-role">President / CEO</span><div class="cm-info">Decision-maker, family-owned</div></div>
+              <div class="contact-mini"><span class="cm-name">Stephen Gentuso</span><br><span class="cm-role">Operations Manager</span><div class="cm-info">Day-to-day operations, logistics</div></div>
+              <p style="margin-top:6px;font-size:11px;color:var(--text-dim)"><strong>General:</strong> (808) 531-4900 | <a href="https://islandbeautysupply.com" target="_blank" style="color:var(--blue)">web</a> | Est. 1993</p>
+              <p style="font-size:11px;color:var(--accent)">Pitch angle: Climate-specific - UV, humidity, salt air = scalp health demand</p>
+            </div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="8" data-tier="cold" onclick="toggleRow(this)">
+            <td>8</td><td>Salon Direct</td><td>Middleton, MA</td><td>MA, NH, ME, RI, VT, CT</td>
+            <td><span class="score score-8">8</span></td>
+            <td><span class="phase phase-1">P1</span></td>
+            <td>Keune, Wella Professional, Ethica</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="8"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Family-owned independent. Keune/Wella prove $55-75 handling. New England completely unserved. 28 years deep relationships. 4 physical locations. Clear scalp care gap.</p></div>
+            <div class="detail-section"><h4>Contacts (1)</h4>
+              <div class="contact-mini"><span class="cm-name">Dee Milo-Craig</span><span class="cm-best">BEST</span><br><span class="cm-role">Regional Sales Consultant</span><div class="cm-info">Confirmed active employee via LinkedIn</div></div>
+              <p style="margin-top:6px;font-size:11px;color:var(--text-dim)"><strong>General:</strong> 800-603-3302 | Info@salondirectonline.com | 253 South Main St, Middleton, MA | <a href="https://salondirectonline.com" target="_blank" style="color:var(--blue)">web</a> | Est. 1996</p>
+              <p style="font-size:11px;color:var(--yellow)">Limited contact info - family-owned, very private. Use general inquiry first.</p>
+            </div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="7" data-tier="cold" onclick="toggleRow(this)">
+            <td>9</td><td>Ethos Beauty Partners</td><td>Runnemede, NJ</td><td>NJ, PA, Mid-Atlantic</td>
+            <td><span class="score score-7">7</span></td>
+            <td><span class="phase phase-3">P3</span></td>
+            <td>KEVIN.MURPHY, Schwarzkopf, Pravana</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="8"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Merger of Art of Business + East Coast Salon Services (2022). "7 generations and 147 years combined experience." Kevin Murphy validates premium. NJ/PA/Mid-Atlantic gap filler. 51-200 employees.</p></div>
+            <div class="detail-section"><h4>Contacts (3)</h4>
+              <div class="contact-mini"><span class="cm-name">Joseph Gerstenbacher</span><span class="cm-best">BEST</span><br><span class="cm-role">COO</span><div class="cm-info"><a href="https://linkedin.com/in/joseph-gerstenbacher/" target="_blank">LinkedIn</a> | Former Art of Business leadership</div></div>
+              <div class="contact-mini"><span class="cm-name">Layne Dornblum</span><br><span class="cm-role">Director of Sales</span><div class="cm-info"><a href="https://linkedin.com/in/layne-dornblum/" target="_blank">LinkedIn</a></div></div>
+              <div class="contact-mini"><span class="cm-name">Janet Dunkelberger</span><br><span class="cm-role">Buyer</span><div class="cm-info">Direct brand intake decisions</div></div>
+              <p style="margin-top:6px;font-size:11px;color:var(--text-dim)"><strong>General:</strong> 1-800-257-7104 | Sewell, NJ; Voorhees, NJ | <a href="https://ethosbeauty.com" target="_blank" style="color:var(--blue)">web</a> | Est. 2022 (merger)</p>
+              <p style="font-size:11px;color:var(--yellow)">Newly formed - still integrating. Research submission process first.</p>
+            </div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="7" data-tier="cold" onclick="toggleRow(this)">
+            <td>10</td><td>Paramount Beauty</td><td>Hauppauge, NY</td><td>14 East Coast states</td>
+            <td><span class="score score-7">7</span></td>
+            <td><span class="phase phase-3">P3</span></td>
+            <td>Goldwell, KMS</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="8"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>14-state East Coast territory - one of largest regional coverages found. Goldwell/KMS prove premium handling. High salon density = volume potential.</p></div>
+            <div class="detail-section"><h4>Contacts (3)</h4>
+              <div class="contact-mini"><span class="cm-name">Evan Feingold</span><span class="cm-best">BEST</span><br><span class="cm-role">President</span><div class="cm-info"><a href="https://linkedin.com/in/evan-feingold/" target="_blank">LinkedIn</a></div></div>
+              <div class="contact-mini"><span class="cm-name">Jeremy Millsaps</span><br><span class="cm-role">Sales Director</span><div class="cm-info">Territory + brand management</div></div>
+              <div class="contact-mini"><span class="cm-name">Daniel Chang</span><br><span class="cm-role">CEO</span><div class="cm-info"><a href="https://linkedin.com/in/daniel-chang-paramount/" target="_blank">LinkedIn</a></div></div>
+              <p style="margin-top:6px;font-size:11px;color:var(--text-dim)"><strong>General:</strong> (631) 242-3737 | <a href="https://paramountbeauty.com" target="_blank" style="color:var(--blue)">web</a> | Hauppauge, NY</p>
+              <p style="font-size:11px;color:var(--yellow)">Secondary East Coast option after Ethos. May have higher minimums.</p>
+            </div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="7" data-tier="cold" onclick="toggleRow(this)">
+            <td>11</td><td>Windsor Beauty Supply</td><td>Farmington Hills, MI</td><td>Michigan, Ohio</td>
+            <td><span class="score score-7">7</span></td>
+            <td><span class="phase phase-3">P3</span></td>
+            <td>Schwarzkopf, Alterna, Living Proof</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="8"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>35+ years deep MI/OH relationships. Ultra-premium (Alterna, Phyto Paris) shows luxury capability. MI/OH completely unserved.</p></div>
+            <div class="detail-section"><h4>Contacts (4)</h4>
+              <div class="contact-mini"><span class="cm-name">Andy Zebouni</span><span class="cm-best">BEST</span><br><span class="cm-role">President</span><div class="cm-info"><a href="https://linkedin.com/in/andy-zebouni/" target="_blank">LinkedIn</a></div></div>
+              <div class="contact-mini"><span class="cm-name">Fadi Hakim</span><br><span class="cm-role">Owner</span><div class="cm-info">Founding family, strategic decisions</div></div>
+              <div class="contact-mini"><span class="cm-name">Jerry Garmo</span><br><span class="cm-role">Director of Operations</span><div class="cm-info">Logistics, supply chain</div></div>
+              <div class="contact-mini"><span class="cm-name">Lori Dunn</span><br><span class="cm-role">Senior Buyer</span><div class="cm-info">Direct brand procurement decisions</div></div>
+              <p style="margin-top:6px;font-size:11px;color:var(--text-dim)"><strong>General:</strong> 24280 Middlebelt Rd, Farmington Hills, MI | <a href="https://windsorbeauty.com" target="_blank" style="color:var(--blue)">web</a> | Est. 1990</p>
+              <p style="font-size:11px;color:var(--yellow)">May be MI-only. Verify territory before outreach.</p>
+            </div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="6" data-tier="cold" onclick="toggleRow(this)">
+            <td>12</td><td>Kevin Ray Distributors</td><td>Aurora, CO</td><td>Colorado, Wyoming</td>
+            <td><span class="score score-6">6</span></td>
+            <td><span class="phase phase-4">P4</span></td>
+            <td>Oligo, Brazilian Blowout, Babe</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="8"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>40+ years locally-owned independent. Education focus. CO/WY Mountain West gap. Account application on website = openness to brands.</p></div>
+            <div class="detail-section"><h4>Contacts (1)</h4>
+              <div class="contact-mini"><span class="cm-name">Janelle Lampshire</span><span class="cm-best">BEST</span><br><span class="cm-role">President</span><div class="cm-info">Small team - president likely sole decision-maker</div></div>
+              <p style="margin-top:6px;font-size:11px;color:var(--text-dim)"><strong>General:</strong> (303) 750-9446 | 452 Sable Blvd, Unit C, Aurora, CO | <a href="https://kevinraydist.com" target="_blank" style="color:var(--blue)">web</a> | Est. ~1984</p>
+              <p style="font-size:11px;color:var(--yellow)">Small territory limits volume. Good for testing Mountain West.</p>
+            </div>
+          </div></td></tr>
+
+          <!-- SPECIALTY/WELLNESS -->
+          <tr class="expand-row" data-score="9" data-tier="specialty" onclick="toggleRow(this)">
+            <td>13</td><td>Simply Organic Beauty</td><td>St. Petersburg, FL</td><td>Continental US (National)</td>
+            <td><span class="score score-9">9</span></td>
+            <td><span class="phase phase-1" style="background:var(--green-dim);color:var(--green);">Specialty</span></td>
+            <td>OWAY, O&M, Intelligent Nutrients</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="8"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>"Largest organic professional hair distributor in North America." National US coverage from one partner. Clean/organic positioning aligns perfectly. 2,000+ products = serious infrastructure. Salon Partner Program + Holistic Hair Tribe affiliate. Free shipping $400+. Lacks clinical scalp health line - AWARE fills that gap.</p></div>
+            <div class="detail-section"><h4>Contacts (3)</h4>
+              <div class="contact-mini"><span class="cm-name">Ashley Mooney</span><span class="cm-best">BEST</span><br><span class="cm-role">CEO</span><div class="cm-info">ashley@simplyorganicbeauty.com<br><a href="https://linkedin.com/in/ashley-mooney/" target="_blank">LinkedIn</a></div></div>
+              <div class="contact-mini"><span class="cm-name">Scott Mitchell</span><br><span class="cm-role">Founder</span><div class="cm-info"><a href="https://linkedin.com/in/scott-mitchell-simply-organic/" target="_blank">LinkedIn</a> | Founded in 2016</div></div>
+              <div class="contact-mini"><span class="cm-name">Greg Begley</span><br><span class="cm-role">Sales Director</span><div class="cm-info">Brand partnerships + distribution agreements</div></div>
+              <p style="margin-top:6px;font-size:11px;color:var(--text-dim)"><strong>General:</strong> (888) 213-4744 | help@simplyorganicbeauty.com | St. Petersburg, FL | <a href="https://simplyorganicbeauty.com" target="_blank" style="color:var(--blue)">web</a></p>
+              <p style="font-size:11px;color:var(--green)">Highest-leverage single conversation - one agreement reaches entire US.</p>
+            </div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="8" data-tier="specialty" onclick="toggleRow(this)">
+            <td>14</td><td>Innovative Beauty Distributors</td><td>Keller, TX</td><td>TX, South-Central US</td>
+            <td><span class="score score-8">8</span></td>
+            <td><span class="phase phase-2" style="background:var(--green-dim);color:var(--green);">Specialty</span></td>
+            <td>NATULIQUE, LYKKEGAARD, Eco Heads</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="8"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Organic/sustainable focus. No minimum orders. 5% cash back. Same-day shipping. "NEVER sold on Amazon" matches AWARE's model. On-site educational center. TX/South-Central gap filler. Color + scalp care bundle pitch is strong.</p></div>
+            <div class="detail-section"><h4>Contacts (1)</h4>
+              <div class="contact-mini"><span class="cm-name">Kelley Swing</span><span class="cm-best">BEST</span><br><span class="cm-role">Owner / Founder</span><div class="cm-info">kelley@innovativebeautydistributors.com<br>Solo operator - direct decision-maker</div></div>
+              <p style="margin-top:6px;font-size:11px;color:var(--text-dim)"><strong>General:</strong> (817) 916-8899 | Keller, TX | <a href="https://innovativebeautydistributors.com" target="_blank" style="color:var(--blue)">web</a> | <a href="https://natuliquetx.com" target="_blank" style="color:var(--blue)">natuliquetx.com</a></p>
+              <p style="font-size:11px;color:var(--yellow)">Primarily NATULIQUE-focused. May have limited bandwidth for new brands.</p>
+            </div>
+          </div></td></tr>
+
+          <tr class="expand-row" data-score="6" data-tier="specialty" onclick="toggleRow(this)">
+            <td>15</td><td>W.I. Trichology</td><td>Cliffside Park, NJ</td><td>Tri-State + expanding</td>
+            <td><span class="score score-6">6</span></td>
+            <td><span class="phase phase-4" style="background:var(--green-dim);color:var(--green);">Specialty</span></td>
+            <td>Simone Trichology (exclusive)</td>
+            <td><span class="status status-not-contacted">Not contacted</span></td>
+          </tr>
+          <tr class="detail-row"><td colspan="8"><div class="detail-grid">
+            <div class="detail-section"><h4>Why AWARE fits</h4><p>Trichology/scalp health directly in AWARE's category. Educational infrastructure trains trichologists who could become advocates. Tri-State presence. Import model verified via U.S. Customs (ImportGenius).</p></div>
+            <div class="detail-section"><h4>Contacts (1)</h4>
+              <div class="contact-mini"><span class="cm-name">Owner (name unconfirmed)</span><br><span class="cm-role">Founder / Trichologist</span><div class="cm-info">Instagram: <a href="https://instagram.com/wisimonetrichology" target="_blank">@wisimonetrichology</a><br><a href="https://simonetrichology.us" target="_blank">simonetrichology.us</a></div></div>
+              <p style="margin-top:6px;font-size:11px;color:var(--text-dim)"><strong>General:</strong> Cliffside Park, NJ | <a href="https://simonetrichology.us" target="_blank" style="color:var(--blue)">web</a></p>
+              <p style="font-size:11px;color:var(--yellow)">Single-brand exclusive. May view AWARE as competitive. Explore education partnership angle.</p>
+            </div>
+          </div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CONTACTS TAB -->
+  <div class="panel" id="contacts">
+    <h3 style="font-size:15px;margin-bottom:4px;">Highest-Confidence Contacts</h3>
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:16px;">Both email and LinkedIn verified - start here.</p>
+    <div class="contacts-grid">
+      <div class="contact-card">
+        <div class="dist-label">#2 Sweis Inc <span class="score score-9" style="width:22px;height:22px;font-size:11px;">9</span></div>
+        <h3>Karl Sweis</h3><div class="role">President</div>
+        <div class="info">ksweis@sweisinc.com <span class="badge badge-v">V</span><br><a href="https://linkedin.com/in/karlsweis/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></div>
+      </div>
+      <div class="contact-card">
+        <div class="dist-label">#3 Beauty Solutions <span class="score score-9" style="width:22px;height:22px;font-size:11px;">9</span></div>
+        <h3>Gary Heath</h3><div class="role">Owner, Founder</div>
+        <div class="info">gary@beautysolutions.com <span class="badge badge-v">V</span><br><a href="https://linkedin.com/in/garyheath/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></div>
+      </div>
+      <div class="contact-card">
+        <div class="dist-label">#3 Beauty Solutions <span class="score score-9" style="width:22px;height:22px;font-size:11px;">9</span></div>
+        <h3>Wes Brown</h3><div class="role">CMO</div>
+        <div class="info">wes@beautysolutions.com <span class="badge badge-v">V</span><br><a href="https://linkedin.com/in/wes-brown-24b36922b/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></div>
+      </div>
+      <div class="contact-card">
+        <div class="dist-label">#1 Bassett <span class="score score-9" style="width:22px;height:22px;font-size:11px;">9</span></div>
+        <h3>Ward Bassett</h3><div class="role">President & CEO</div>
+        <div class="info">wbassett@4bassett.com <span class="badge badge-v">V</span><br><a href="https://linkedin.com/in/ward-bassett-27bb5887/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></div>
+      </div>
+      <div class="contact-card">
+        <div class="dist-label">#7 Sullivan Beauty <span class="score score-8" style="width:22px;height:22px;font-size:11px;">8</span></div>
+        <h3>Kerry Sullivan</h3><div class="role">President</div>
+        <div class="info">kerry@sullivanbeauty.com <span class="badge badge-v">V</span> ext. 222<br><a href="https://linkedin.com/in/kerry-sullivan-8567a9aa" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></div>
+      </div>
+      <div class="contact-card">
+        <div class="dist-label">#11 Depasquale <span class="score score-7" style="width:22px;height:22px;font-size:11px;">7</span></div>
+        <h3>Joe Mastalia</h3><div class="role">President</div>
+        <div class="info">joem@lakmeusa.com <span class="badge badge-v">V</span><br><a href="https://linkedin.com/in/joemastalia/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span><br><span style="font-size:11px;color:var(--accent)">Cosmoprof NA board, ICMAD board</span></div>
+      </div>
+      <div class="contact-card">
+        <div class="dist-label">#12 PSC <span class="score score-7" style="width:22px;height:22px;font-size:11px;">7</span></div>
+        <h3>Steve Cowan</h3><div class="role">Founder & President</div>
+        <div class="info">scowan@pscspace.com <span class="badge badge-v">V</span><br>Direct: (815) 341-8135 <span class="badge badge-v">V</span><br><a href="https://linkedin.com/in/steve-cowan-88901211/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></div>
+      </div>
+      <div class="contact-card">
+        <div class="dist-label">#16 SSG <span class="score score-7" style="width:22px;height:22px;font-size:11px;">7</span></div>
+        <h3>McKenzie Barbo</h3><div class="role">Dir. of Business Development</div>
+        <div class="info">mbarbo@salonservicegroup.com <span class="badge badge-v">V</span><br>Direct: (417) 209-0225 <span class="badge badge-v">V</span><br><a href="https://linkedin.com/in/mckenzie-barbo-ba2634bb/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></div>
+      </div>
+      <div class="contact-card">
+        <div class="dist-label">#16 SSG <span class="score score-7" style="width:22px;height:22px;font-size:11px;">7</span></div>
+        <h3>Gino Barbo</h3><div class="role">CEO & Founder</div>
+        <div class="info">gbarbo@salonservicegroup.com <span class="badge badge-v">V</span><br><a href="https://linkedin.com/in/gino-barbo-47139b33/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></div>
+      </div>
+    </div>
+
+    <h3 style="font-size:15px;margin-bottom:4px;margin-top:28px;">Wave 2 - Key Decision-Makers</h3>
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:16px;">Named contacts with verified titles. <span style="color:#c084fc">Purple = Canada</span>, <span style="color:var(--green)">Green = Specialty</span>. <span class="badge badge-v" style="font-size:10px;">V</span> = verified email/LinkedIn.</p>
+    <div class="contacts-grid">
+      <!-- Simply Organic - Score 9 -->
+      <div class="contact-card" style="border-color:rgba(34,197,94,0.3)">
+        <div class="dist-label">W2 #13 Simply Organic <span class="score score-9" style="width:22px;height:22px;font-size:11px;">9</span></div>
+        <h3>Ashley Mooney</h3><div class="role">CEO</div>
+        <div class="info">ashley@simplyorganicbeauty.com <span class="badge badge-v">V</span><br><a href="https://linkedin.com/in/ashley-mooney/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span><br><span style="font-size:11px;color:var(--green)">National US - highest leverage conversation</span></div>
+      </div>
+      <div class="contact-card" style="border-color:rgba(34,197,94,0.3)">
+        <div class="dist-label">W2 #13 Simply Organic <span class="score score-9" style="width:22px;height:22px;font-size:11px;">9</span></div>
+        <h3>Greg Begley</h3><div class="role">Sales Director</div>
+        <div class="info"><span style="font-size:11px;">Brand partnerships + distribution</span><br><span style="font-size:11px;color:var(--green)">Alt entry point if CEO unreachable</span></div>
+      </div>
+      <!-- West Coast Beauty - Score 9 -->
+      <div class="contact-card" style="border-color:rgba(168,85,247,0.3)">
+        <div class="dist-label">W2 #1 West Coast Beauty <span class="score score-9" style="width:22px;height:22px;font-size:11px;">9</span></div>
+        <h3>Eileen Jevning</h3><div class="role">President</div>
+        <div class="info"><a href="https://linkedin.com/in/eileen-jevning-42997211/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span><br><span style="font-size:11px;color:#c084fc">BC, AB, SK, MB - 10 locations</span></div>
+      </div>
+      <div class="contact-card" style="border-color:rgba(168,85,247,0.3)">
+        <div class="dist-label">W2 #1 West Coast Beauty <span class="score score-9" style="width:22px;height:22px;font-size:11px;">9</span></div>
+        <h3>Todd Rutherford</h3><div class="role">Sales & BD Manager</div>
+        <div class="info"><a href="https://linkedin.com/in/toddrutherford/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span><br><span style="font-size:11px;">New brand intake path</span></div>
+      </div>
+      <!-- Metro Beauty - Score 8 -->
+      <div class="contact-card" style="border-color:rgba(168,85,247,0.3)">
+        <div class="dist-label">W2 #2 Metro Beauty <span class="score score-8" style="width:22px;height:22px;font-size:11px;">8</span></div>
+        <h3>Frank Miraglia</h3><div class="role">Owner / Principal</div>
+        <div class="info">905-850-7131<br><span style="font-size:11px;color:#c084fc">Family patriarch, final decision-maker</span></div>
+      </div>
+      <div class="contact-card" style="border-color:rgba(168,85,247,0.3)">
+        <div class="dist-label">W2 #2 Metro Beauty <span class="score score-8" style="width:22px;height:22px;font-size:11px;">8</span></div>
+        <h3>Sherri Jones</h3><div class="role">Purchasing Manager</div>
+        <div class="info"><span style="font-size:11px;">Day-to-day brand intake decisions</span></div>
+      </div>
+      <!-- Maritime Beauty - Score 8 -->
+      <div class="contact-card" style="border-color:rgba(168,85,247,0.3)">
+        <div class="dist-label">W2 #3 Maritime Beauty <span class="score score-8" style="width:22px;height:22px;font-size:11px;">8</span></div>
+        <h3>Deanna Sieber</h3><div class="role">Sr. Director, Stores</div>
+        <div class="info">dsieber@maritimebeauty.com <span class="badge badge-v">V</span><br>ext 10600<br><a href="https://linkedin.com/in/deanna-sieber/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></div>
+      </div>
+      <div class="contact-card" style="border-color:rgba(168,85,247,0.3)">
+        <div class="dist-label">W2 #3 Maritime Beauty <span class="score score-8" style="width:22px;height:22px;font-size:11px;">8</span></div>
+        <h3>Norma Hetherington</h3><div class="role">Regional Manager</div>
+        <div class="info">nhetherington@maritimebeauty.com <span class="badge badge-v">V</span></div>
+      </div>
+      <!-- Salon Only Sales - Score 8 -->
+      <div class="contact-card">
+        <div class="dist-label">W2 #6 Salon Only Sales <span class="score score-8" style="width:22px;height:22px;font-size:11px;">8</span></div>
+        <h3>Marc Beauclaire</h3><div class="role">President / Owner</div>
+        <div class="info"><a href="https://linkedin.com/in/marc-beauclaire/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span><br><span style="font-size:11px;">Founded the company, "niche-only" philosophy</span></div>
+      </div>
+      <div class="contact-card">
+        <div class="dist-label">W2 #6 Salon Only Sales <span class="score score-8" style="width:22px;height:22px;font-size:11px;">8</span></div>
+        <h3>Lisa Rafert</h3><div class="role">Brand Development Manager</div>
+        <div class="info"><span style="font-size:11px;">Direct new brand intake contact</span></div>
+      </div>
+      <!-- Salon Direct - Score 8 -->
+      <div class="contact-card">
+        <div class="dist-label">W2 #8 Salon Direct <span class="score score-8" style="width:22px;height:22px;font-size:11px;">8</span></div>
+        <h3>Dee Milo-Craig</h3><div class="role">Regional Sales Consultant</div>
+        <div class="info">800-603-3302 | Info@salondirectonline.com<br><span style="font-size:11px;">New England, family-owned, very private</span></div>
+      </div>
+      <!-- Ethos Beauty - Score 7 -->
+      <div class="contact-card">
+        <div class="dist-label">W2 #9 Ethos Beauty <span class="score score-7" style="width:22px;height:22px;font-size:11px;">7</span></div>
+        <h3>Joseph Gerstenbacher</h3><div class="role">COO</div>
+        <div class="info"><a href="https://linkedin.com/in/joseph-gerstenbacher/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span><br><span style="font-size:11px;">Former Art of Business leadership</span></div>
+      </div>
+      <div class="contact-card">
+        <div class="dist-label">W2 #9 Ethos Beauty <span class="score score-7" style="width:22px;height:22px;font-size:11px;">7</span></div>
+        <h3>Janet Dunkelberger</h3><div class="role">Buyer</div>
+        <div class="info"><span style="font-size:11px;">Direct brand procurement decisions</span></div>
+      </div>
+      <!-- Innovative Beauty - Score 8 -->
+      <div class="contact-card" style="border-color:rgba(34,197,94,0.3)">
+        <div class="dist-label">W2 #14 Innovative Beauty <span class="score score-8" style="width:22px;height:22px;font-size:11px;">8</span></div>
+        <h3>Kelley Swing</h3><div class="role">Owner / Founder</div>
+        <div class="info">kelley@innovativebeautydistributors.com <span class="badge badge-v">V</span><br><span style="font-size:11px;color:var(--green)">Solo operator, direct decision-maker</span></div>
+      </div>
+      <!-- Paramount Beauty - Score 7 -->
+      <div class="contact-card">
+        <div class="dist-label">W2 #10 Paramount Beauty <span class="score score-7" style="width:22px;height:22px;font-size:11px;">7</span></div>
+        <h3>Evan Feingold</h3><div class="role">President</div>
+        <div class="info"><a href="https://linkedin.com/in/evan-feingold/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span><br>(631) 242-3737<br><span style="font-size:11px;">14-state East Coast coverage</span></div>
+      </div>
+      <!-- Windsor Beauty - Score 7 -->
+      <div class="contact-card">
+        <div class="dist-label">W2 #11 Windsor Beauty <span class="score score-7" style="width:22px;height:22px;font-size:11px;">7</span></div>
+        <h3>Andy Zebouni</h3><div class="role">President</div>
+        <div class="info"><a href="https://linkedin.com/in/andy-zebouni/" target="_blank">LinkedIn</a> <span class="badge badge-v">V</span></div>
+      </div>
+      <div class="contact-card">
+        <div class="dist-label">W2 #11 Windsor Beauty <span class="score score-7" style="width:22px;height:22px;font-size:11px;">7</span></div>
+        <h3>Lori Dunn</h3><div class="role">Senior Buyer</div>
+        <div class="info"><span style="font-size:11px;">Brand procurement for MI/OH</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE TAB -->
+  <div class="panel" id="timeline">
+    <div class="timeline">
+      <div class="tl-item"><h4>Phase 1: February - SoCal + Strongest Fits</h4><p>Start with in-person and highest-scoring targets.</p>
+        <table class="tl-table"><tr><td>Feb 10</td><td>Bassett (#1)</td><td>Email Ward, offer HQ visit</td></tr><tr><td>Feb 10</td><td>Sweis (#2)</td><td>Email Karl directly</td></tr><tr><td>Feb 10</td><td>Nancy's (#15)</td><td>Visit Huntington Park</td></tr><tr><td>Feb 14</td><td>Beauty Solutions (#3)</td><td>Email Wes Brown (CMO)</td></tr><tr><td>Feb 14</td><td>The Salon Center (#4)</td><td>Cold education email</td></tr></table>
+      </div>
+      <div class="tl-item"><h4>Phase 2: March - Regional Expansion</h4><p>Broaden to key regions.</p>
+        <table class="tl-table"><tr><td>Mar 3</td><td>Salon Services Pro (#5)</td><td>Cold education email</td></tr><tr><td>Mar 3</td><td>Premier Beauty (#6)</td><td>Reference K18</td></tr><tr><td>Mar 3</td><td>Lunica Beauty (#9)</td><td>Cold education email</td></tr><tr><td>Mar 10</td><td>Sullivan Beauty (#7)</td><td>Cold education email</td></tr><tr><td>Mar 10</td><td>EISS (#8)</td><td>Reference Zenagen</td></tr></table>
+      </div>
+      <div class="tl-item"><h4>Phase 3: April - Pre-ABS Chicago + East Coast</h4><p>America's Beauty Show Apr 18-20, Chicago.</p>
+        <table class="tl-table"><tr><td>Mar 24</td><td>PSC (#12)</td><td>Pre-ABS meeting request</td></tr><tr><td>Mar 24</td><td>Beauty Craft (#13)</td><td>Pre-ABS meeting request</td></tr><tr><td>Mar 24</td><td>Mid America (#17)</td><td>Pre-ABS meeting request</td></tr><tr><td>Apr 1</td><td>TwinState (#10)</td><td>Cold education email</td></tr><tr><td>Apr 1</td><td>Depasquale (#11)</td><td>Cold education email</td></tr></table>
+      </div>
+      <div class="tl-item"><h4>Phase 4: May-Jul - Mountain West + Cosmoprof Vegas</h4><p>Fill gaps, prep Cosmoprof Las Vegas Jul 13-15.</p>
+        <table class="tl-table"><tr><td>May 1</td><td>Beautera (#14)</td><td>Sustainability angle</td></tr><tr><td>May 1</td><td>Elite Salon (#18)</td><td>Cold education email</td></tr><tr><td>May 15</td><td>RWA (#19)</td><td>Cold education email</td></tr><tr><td>May 15</td><td>Thomassen (#20)</td><td>Cold education email</td></tr><tr><td>Jun 16</td><td>SSG (#16)</td><td>Pre-Cosmoprof meeting</td></tr></table>
+      </div>
+      <div style="margin:24px 0 12px;padding:10px 14px;background:var(--blue-dim);border:1px solid rgba(96,165,250,0.25);border-radius:8px;">
+        <span style="font-size:13px;color:var(--blue);font-weight:600;">Wave 2 Outreach Timeline</span>
+        <span style="font-size:12px;color:var(--text-dim);margin-left:8px;">Stagger with Wave 1 to avoid bandwidth overload</span>
+      </div>
+      <div class="tl-item" style="border-left-color:#c084fc">
+        <h4 style="color:#c084fc">W2 Phase 1: March - Top 5 Priorities</h4><p>Start with highest-fit distributors from Wave 2 research.</p>
+        <table class="tl-table">
+          <tr><td>Mar 1</td><td>Simply Organic Beauty (W2 #13)</td><td>Clean/organic positioning pitch - national reach</td></tr>
+          <tr><td>Mar 1</td><td>West Coast Beauty (W2 #1)</td><td>Premium Western Canada - Davines/Kevin Murphy angle</td></tr>
+          <tr><td>Mar 10</td><td>Metro Beauty Supply (W2 #2)</td><td>Ontario/Quebec - B2B-only alignment</td></tr>
+          <tr><td>Mar 10</td><td>Salon Only Sales (W2 #6)</td><td>"Niche-only, boutique-only" perfect match</td></tr>
+          <tr><td>Mar 17</td><td>Salon Direct (W2 #8)</td><td>New England - family-owned, clear gap</td></tr>
+        </table>
+      </div>
+      <div class="tl-item" style="border-left-color:#c084fc">
+        <h4 style="color:#c084fc">W2 Phase 2: April - Regional + Specialty</h4><p>Expand to regional fillers and specialty channels.</p>
+        <table class="tl-table">
+          <tr><td>Apr 1</td><td>Maritime Beauty (W2 #3)</td><td>Atlantic Canada - 60-year track record</td></tr>
+          <tr><td>Apr 1</td><td>Island Beauty Supply (W2 #7)</td><td>Hawaii - climate/UV pitch angle</td></tr>
+          <tr><td>Apr 7</td><td>Innovative Beauty (W2 #14)</td><td>TX organic - "never Amazon" alignment</td></tr>
+          <tr><td>Apr 14</td><td>Ethos Beauty (W2 #9)</td><td>Mid-Atlantic - NJ/PA gap filler</td></tr>
+          <tr><td>Apr 14</td><td>Paramount Beauty (W2 #10)</td><td>14-state East Coast territory</td></tr>
+        </table>
+      </div>
+      <div class="tl-item" style="border-left-color:#c084fc">
+        <h4 style="color:#c084fc">W2 Phase 3: May-Jun - Remaining Targets</h4><p>Lower-priority targets and backup options.</p>
+        <table class="tl-table">
+          <tr><td>May 1</td><td>Windsor Beauty (W2 #11)</td><td>MI/OH - 35+ year relationships</td></tr>
+          <tr><td>May 1</td><td>Modern Beauty (W2 #4)</td><td>National Canada - backup if WCB/Metro don't progress</td></tr>
+          <tr><td>May 15</td><td>Kevin Ray Dist. (W2 #12)</td><td>CO/WY Mountain West test</td></tr>
+          <tr><td>Jun 1</td><td>IBSS (W2 #5)</td><td>Western Canada backup</td></tr>
+          <tr><td>Jun 1</td><td>W.I. Trichology (W2 #15)</td><td>Education partnership (not traditional distribution)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- GEOGRAPHY TAB -->
+  <div class="panel" id="geography">
+    <h3 style="font-size:14px;margin-bottom:4px;color:#c084fc;">Canada (Wave 2)</h3>
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">5 new distributors covering all major Canadian provinces</p>
+    <div class="geo-grid">
+      <div class="geo-card" style="border-color:rgba(168,85,247,0.3)"><h4 style="color:#c084fc">Western Canada</h4><p>West Coast Beauty (W2 #1) <span class="score score-9" style="width:18px;height:18px;font-size:10px;">9</span><br>IBSS (W2 #5) <span class="score score-6" style="width:18px;height:18px;font-size:10px;">6</span><br>BC, AB, SK, MB</p></div>
+      <div class="geo-card" style="border-color:rgba(168,85,247,0.3)"><h4 style="color:#c084fc">Ontario / Quebec</h4><p>Metro Beauty Supply (W2 #2) <span class="score score-8" style="width:18px;height:18px;font-size:10px;">8</span><br>ON, QC - Canada's two largest provinces</p></div>
+      <div class="geo-card" style="border-color:rgba(168,85,247,0.3)"><h4 style="color:#c084fc">Atlantic Canada</h4><p>Maritime Beauty (W2 #3) <span class="score score-8" style="width:18px;height:18px;font-size:10px;">8</span><br>NS, NB, PE, NL - 17 locations</p></div>
+      <div class="geo-card" style="border-color:rgba(168,85,247,0.3)"><h4 style="color:#c084fc">National Canada</h4><p>Modern Beauty (W2 #4) <span class="score score-7" style="width:18px;height:18px;font-size:10px;">7</span><br>All provinces - 25+ stores, 200+ employees</p></div>
+    </div>
+
+    <h3 style="font-size:14px;margin-bottom:4px;margin-top:24px;">United States - Wave 1 + Wave 2</h3>
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">Wave 2 additions in <span style="color:var(--blue)">blue</span></p>
+    <div class="geo-grid">
+      <div class="geo-card"><h4>SoCal</h4><p>Bassett (#1), Sweis (#2), Nancy's (#15)<br><span style="color:var(--green)">CA core market</span></p></div>
+      <div class="geo-card"><h4>NorCal / NV</h4><p>Beauty Solutions (#3), RWA (#19)<br>CA, NV</p></div>
+      <div class="geo-card"><h4>Pacific NW</h4><p>Salon Services Pro (#5), Beauty Craft (#13)<br>WA, OR, ID, MT, AK</p></div>
+      <div class="geo-card"><h4>Southwest</h4><p>Lunica (#9), Salon Svcs Pro (#5)<br>AZ, NM, UT, CO</p></div>
+      <div class="geo-card"><h4>Mountain West</h4><p>Beautera (#14), Salon Svcs Pro (#5)<br><span style="color:var(--blue)">+ Kevin Ray Dist. (W2 #12) - CO, WY</span><br>CO, UT, NM, WY</p></div>
+      <div class="geo-card"><h4>Texas / South Central</h4><p>SSG (#16), Mid America (#17)<br><span style="color:var(--blue)">+ Innovative Beauty (W2 #14) - TX</span><br>TX, OK, AR, MO, KS</p></div>
+      <div class="geo-card"><h4>Southeast</h4><p>The Salon Center (#4), Thomassen (#20)<br>FL, GA, AL, MS, LA, TN</p></div>
+      <div class="geo-card"><h4>Carolinas</h4><p>EISS (#8), The Salon Center (#4)<br>NC, SC</p></div>
+      <div class="geo-card"><h4>Mid-Atlantic</h4><p>TwinState (#10)<br><span style="color:var(--blue)">+ Ethos Beauty (W2 #9) - NJ, PA</span><br><span style="color:var(--blue)">+ Paramount Beauty (W2 #10) - 14 East Coast states</span><br>WV, VA, MD, DE, DC, NJ, PA</p></div>
+      <div class="geo-card"><h4>Northeast</h4><p>Depasquale (#11)<br><span style="color:var(--blue)">+ W.I. Trichology (W2 #15) - Tri-State</span><br>NY, NJ, CT, PA</p></div>
+      <div class="geo-card"><h4>New England</h4><p>Sullivan Beauty (#7)<br><span style="color:var(--blue)">+ Salon Direct (W2 #8) - 6 NE states</span><br>MA, CT, RI, NH, VT, ME</p></div>
+      <div class="geo-card"><h4>Midwest</h4><p>Premier (#6), PSC (#12), Elite (#18)<br><span style="color:var(--blue)">+ Windsor Beauty (W2 #11) - MI, OH</span><br>IL, IN, MI, OH</p></div>
+      <div class="geo-card"><h4>Upper Midwest</h4><p>Beauty Craft (#13), SSG (#16)<br><span style="color:var(--blue)">+ Salon Only Sales (W2 #6) - 8 states</span><br>MN, WI, IA, ND, SD, NE, CO, WY</p></div>
+      <div class="geo-card"><h4 style="color:var(--blue)">Hawaii / Pacific</h4><p><span style="color:var(--blue)">Island Beauty Supply (W2 #7)</span> <span class="score score-8" style="width:18px;height:18px;font-size:10px;">8</span><br>HI, Guam, U.S. Pacific - only pro distributor</p></div>
+    </div>
+
+    <h3 style="font-size:14px;margin-bottom:4px;margin-top:24px;color:var(--green)">Specialty / National (Wave 2)</h3>
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">Category-specific distributors with broad reach</p>
+    <div class="geo-grid">
+      <div class="geo-card" style="border-color:rgba(34,197,94,0.3)"><h4 style="color:var(--green)">National - Organic/Clean</h4><p>Simply Organic Beauty (W2 #13) <span class="score score-9" style="width:18px;height:18px;font-size:10px;">9</span><br>Continental US - highest-leverage single conversation</p></div>
+      <div class="geo-card" style="border-color:rgba(34,197,94,0.3)"><h4 style="color:var(--green)">TX - Organic/Sustainable</h4><p>Innovative Beauty Dist. (W2 #14) <span class="score score-8" style="width:18px;height:18px;font-size:10px;">8</span><br>TX, South-Central - "NEVER sold on Amazon"</p></div>
+      <div class="geo-card" style="border-color:rgba(34,197,94,0.3)"><h4 style="color:var(--green)">Tri-State - Trichology</h4><p>W.I. Trichology (W2 #15) <span class="score score-6" style="width:18px;height:18px;font-size:10px;">6</span><br>NJ - education partnership angle</p></div>
+    </div>
+  </div>
+
+  <!-- OBJECTIONS TAB -->
+  <div class="panel" id="objections">
+    <p style="font-size:13px;color:var(--text-dim);margin-bottom:20px;">From the perspective of a skeptical distributor brand committee evaluating AWARE.</p>
+    <div class="objection-card">
+      <h3>1. "$55-75 is a tough sell for an unknown brand."</h3>
+      <div class="why">Most professional products sit $28-42 retail. AWARE is 30-60% above that without name recognition.</div>
+      <div class="counter"><strong>Counter:</strong> 96% repurchase proves salons reorder after first buy. 50% salon margin at $27.50 wholesale is same or better than most lines. Price works because clients are already seeking scalp care (18M+ organic views = inbound demand).</div>
+    </div>
+    <div class="objection-card">
+      <h3>2. "50 salons isn't enough to prove anything."</h3>
+      <div class="why">50 salons in one metro doesn't prove regional or national sell-through.</div>
+      <div class="counter"><strong>Counter:</strong> Acknowledge directly: "We're early, that's why we want a distribution partner." 96% repurchase over 50 salons is a stronger signal than 200 salons at 60% repurchase. Frame as product-market fit proof, not scale proof.</div>
+    </div>
+    <div class="objection-card">
+      <h3>3. "We just onboarded new brands. Reps are maxed."</h3>
+      <div class="why">Onboarding costs 3-6 months of rep education time. New brand fatigue is real.</div>
+      <div class="counter"><strong>Counter:</strong> Only 3-5 SKUs, not a 20-SKU line. It's a "category add" not a "brand replacement." Scalp care doesn't compete with color, styling, or treatment lines - it's additive revenue.</div>
+    </div>
+    <div class="objection-card">
+      <h3>4. "Scalp care is niche. Is there enough demand?"</h3>
+      <div class="why">Scalp care is still emerging in professional channel. Most distributors haven't seen sustained demand.</div>
+      <div class="counter"><strong>Counter:</strong> 18M+ organic social views proves consumer demand. Head spa trend going mainstream. Key insight: salons offering scalp services see higher spend on color and styling too - lifts the whole ticket.</div>
+    </div>
+    <div class="objection-card">
+      <h3>5. "You're LA-only. Can you support my territory?"</h3>
+      <div class="why">Distributors need brands that show up for in-salon training, events, issue resolution.</div>
+      <div class="counter"><strong>Counter:</strong> Made in LA, domestic fulfillment, 4-week lead time. Virtual training for distant markets + in-person for key launches. $5,100 Starter Package is a low-risk test. Distributor is the local expert - AWARE provides product + content.</div>
+    </div>
+    <div class="objection-card">
+      <h3>6. "No brand awareness in my market."</h3>
+      <div class="why">Unlike Olaplex or K18, nobody outside SoCal has heard of AWARE.</div>
+      <div class="counter"><strong>Counter:</strong> 18M+ organic views are national. AWARE's Scalp Environment Report content generates inbound interest. Sample kits (1 per 6 retail units) so reps lead with product experience, not brand pitch.</div>
+    </div>
+    <div class="objection-card">
+      <h3>7. "What if the founder loses interest or brand folds?"</h3>
+      <div class="why">Small founder-led brands are a real risk. Distributors have been burned before.</div>
+      <div class="counter"><strong>Counter:</strong> $125K revenue in year one, 96% repurchase, raising capital ($1-3M), patent-pending, GMP/MoCRA compliant. Offer to share sell-through data transparently - openness builds trust.</div>
+    </div>
+  </div>
+
+  <!-- MEETING PREP TAB -->
+  <div class="panel" id="meeting">
+    <div class="prep-section">
+      <h3>What to Bring</h3>
+      <ul>
+        <li>Physical samples: shampoo, conditioner, leave-in</li>
+        <li>Discovery Kit (tangible hand-off)</li>
+        <li>Distributor line sheet (2-page)</li>
+        <li>Margin calculator visual (20-30% margin)</li>
+        <li>1-page sell-through data (repurchase rate, reorder frequency)</li>
+        <li>Phone with social content clips (18M+ views proof)</li>
+        <li>Business cards</li>
+      </ul>
+    </div>
+    <div class="prep-section">
+      <h3>Open with Curiosity</h3>
+      <ul>
+        <li>"What are you hearing from salons about scalp health as a category?"</li>
+        <li>"Have any of your brands started moving into scalp-specific products?"</li>
+        <li>"How are your salons responding to the head spa / scalp care trend?"</li>
+      </ul>
+    </div>
+    <div class="prep-section">
+      <h3>Share the Insight (2-3 min max)</h3>
+      <ul>
+        <li>Scalp diagnosis + treatment + retail converging at the salon chair</li>
+        <li>AI making scalp personalization possible without a dermatologist</li>
+        <li>Salons doing scalp services seeing lift in color and styling spend</li>
+        <li>Consumer awareness outpacing salon readiness (18M+ views)</li>
+      </ul>
+    </div>
+    <div class="prep-section">
+      <h3>When They Push Back</h3>
+      <div class="tbl-wrap" style="border:none;">
+        <table class="pushback">
+          <tr><td class="they">"$55 is really high."</td><td class="you">50% salon margin at $27.50 wholesale is higher than most lines. 96% repurchase tells us price isn't a barrier once clients try it. Happy to send a sample kit.</td></tr>
+          <tr><td class="they">"We just took on new brands."</td><td class="you">This isn't another brand - it's a category addition. Doesn't compete with color or styling. No rush - I'd love to stay in touch.</td></tr>
+          <tr><td class="they">"50 salons isn't much."</td><td class="you">You're right, we're early. That's why we want a distributor partner. 96% of those 50 reorder every 6-8 weeks. Product-market fit is there.</td></tr>
+          <tr><td class="they">"How do I know you'll be around?"</td><td class="you">$125K year one, raising capital, GMP certified, MoCRA compliant, patent-pending. Happy to share sell-through data openly.</td></tr>
+          <tr><td class="they">"My reps won't know how to sell this."</td><td class="you">3 SKUs, not 20. Sell story: "your clients are searching for scalp care - here's what to offer." We provide training + sample kits. 18M views means clients walk in with awareness.</td></tr>
+          <tr><td class="they">"What's your minimum?"</td><td class="you">$5,100 Starter Package. Enough to seed ~6 salons. Low risk to test the market.</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="prep-section">
+      <h3>What NOT to Do</h3>
+      <ul>
+        <li style="color:var(--red)">Don't lead with pitch deck or line sheet - listen first</li>
+        <li style="color:var(--red)">Don't oversell the scale (35 salons is 35 salons - own it)</li>
+        <li style="color:var(--red)">Don't bad-mouth Zenagen, K18 - position as category expansion</li>
+        <li style="color:var(--red)">Don't pressure for commitment - goal is a second conversation</li>
+        <li style="color:var(--red)">Don't send margin calculator before meeting - it's a leave-behind</li>
+      </ul>
+    </div>
+    <div class="prep-section">
+      <h3>Success Criteria for Meeting #1</h3>
+      <ul>
+        <li>They agreed to receive samples</li>
+        <li>Follow-up date on calendar</li>
+        <li>You understand their brand evaluation process</li>
+        <li>You know who else is involved in the decision</li>
+        <li>They see scalp care as a category worth watching</li>
+      </ul>
+      <p style="margin-top:12px;font-size:12px;color:var(--accent)">The meeting is NOT about closing a deal. It's about starting a relationship.</p>
+    </div>
+  </div>
+
+  <!-- TEMPLATES TAB -->
+  <div class="panel" id="templates">
+    <h3 style="margin-bottom:4px;font-size:15px;">Template A: Warm / Local</h3>
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">For Bassett, Sweis, Nancy's</p>
+    <div class="email-tpl"><span class="subj">Subject: What we're seeing in proactive scalp care through salons</span>
+Hi [First Name],
+
+I'm David, founder of AWARE Hair here in LA. I've been following [Distributor Name]'s work with brands like [specific brand they carry] and wanted to reach out.
+
+I'd love to chat about what we're seeing in the proactive scalp care space. One trend we're helping push is the integration of scalp diagnosis, treatment, and retail within traditional salons, as opposed to clinics or head spas. We think this is a big opportunity, especially as AI makes scalp personalization possible at the salon chair instead of through dermatologists.
+
+We're still early - 35+ salon partners here in LA - but what's caught our attention is a 96% repurchase rate and the fact that salons offering scalp services are seeing higher spend on color and styling too. It's a small SKU line (3 core products, $55-75 retail) that's been additive rather than competing with existing lines on the shelf.
+
+Since we're both in [city/region], would love to grab coffee and hear your perspective on where the category is headed.
+
+David Zhao
+Founder, AWARE Hair
+david@awarehair.com
+awarehair.com</div>
+
+    <h3 style="margin-bottom:4px;font-size:15px;margin-top:24px;">Template B: Cold Education Lead</h3>
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">For most distributors</p>
+    <div class="email-tpl"><span class="subj">Subject: Scalp care as a salon revenue category, not just a product</span>
+Hi [First Name],
+
+I'm David, founder of AWARE Hair, a professional-exclusive scalp care line out of LA. I noticed [Distributor Name] carries [Brand X] and wanted to connect.
+
+One trend we're watching is the integration of scalp diagnosis, treatment, and retail within traditional salons. We think this category is largely untapped in the professional channel, especially as AI makes scalp analysis possible at the salon touchpoint rather than requiring a clinic visit.
+
+We're early-stage (35+ salons, 96% repurchase rate), so I won't pretend we're a household name yet. But what's been interesting is that salons using our products are seeing higher overall ticket spend, not just on scalp products. And with 18M+ organic social views on scalp content, the consumer demand is building faster than most salons realize. It's a small, additive line (3 core SKUs, $55-75 retail) - not competing with anything already on the shelf.
+
+Would love to hear your perspective on how you're seeing this category evolve in [their region]. Open to a quick call, and happy to send samples.
+
+David Zhao
+Founder, AWARE Hair
+david@awarehair.com
+awarehair.com</div>
+
+    <h3 style="margin-bottom:4px;font-size:15px;margin-top:24px;">Template C: Trade Show Meeting Request</h3>
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">For PSC, Beauty Craft, SSG</p>
+    <div class="email-tpl"><span class="subj">Subject: Connecting at [Show Name] - scalp care in the salon channel</span>
+Hi [First Name],
+
+I'll be at [Show Name] on [dates] and would love to find 15 minutes to chat.
+
+I'm David Zhao, founder of AWARE Hair, a professional-exclusive scalp care line based in LA. We've been working at the intersection of scalp diagnosis, treatment, and retail within traditional salons, and the early results have been promising - 96% repurchase across our salon base and clients spending more across the board, not just on scalp products.
+
+We're a small, additive line (3 core SKUs, $55-75 retail) and still early-stage, which is actually what I'd love to talk about - how to grow this category through the right distribution partners rather than trying to force direct scale.
+
+Happy to chat over coffee at the show. Do you have availability on [specific day]?
+
+David Zhao
+AWARE Hair
+david@awarehair.com
+awarehair.com</div>
+  </div>
+</div>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function toggleRow(row) {
+  row.classList.toggle('open');
+  const detail = row.nextElementSibling;
+  if (detail && detail.classList.contains('detail-row')) {
+    detail.classList.toggle('open');
+  }
+}
+
+function filterW2(filter, btn) {
+  btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const rows = document.querySelectorAll('#w2Table tbody .expand-row');
+  rows.forEach(row => {
+    const detail = row.nextElementSibling;
+    if (filter === 'all') {
+      row.style.display = '';
+      if (detail) detail.style.display = '';
+    } else if (['9','8','7','6'].includes(filter)) {
+      const match = row.dataset.score === filter;
+      row.style.display = match ? '' : 'none';
+      if (detail) { detail.style.display = 'none'; detail.classList.remove('open'); row.classList.remove('open'); }
+    } else {
+      const match = row.dataset.tier === filter;
+      row.style.display = match ? '' : 'none';
+      if (detail) { detail.style.display = 'none'; detail.classList.remove('open'); row.classList.remove('open'); }
+    }
+  });
+}
+
+function filterTable(filter, btn) {
+  btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const rows = document.querySelectorAll('#mainTable tbody .expand-row');
+  rows.forEach(row => {
+    const detail = row.nextElementSibling;
+    if (filter === 'all') {
+      row.style.display = '';
+      if (detail) detail.style.display = '';
+    } else if (['9','8','7','6'].includes(filter)) {
+      const match = row.dataset.score === filter;
+      row.style.display = match ? '' : 'none';
+      if (detail) { detail.style.display = 'none'; detail.classList.remove('open'); row.classList.remove('open'); }
+    } else {
+      const match = row.dataset.tier === filter;
+      row.style.display = match ? '' : 'none';
+      if (detail) { detail.style.display = 'none'; detail.classList.remove('open'); row.classList.remove('open'); }
+    }
+  });
+}
+</script>
+</body>
+</html>

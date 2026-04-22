@@ -1,0 +1,2139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Entrepreneurial Mindset - David Zhao, Wake Forest Guest Lecture</title>
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f4efe9;--bg2:#ffffff;--bg3:#ece7e0;
+  --text:#102B26;--text2:#3d4f49;--text3:#8a9690;
+  --gold:#D4A574;--gold-light:rgba(212,165,116,.08);--gold-glow:rgba(212,165,116,.15);
+  --sage:#7d8471;--sage-light:rgba(125,132,113,.06);--sage-glow:rgba(125,132,113,.12);
+  --teal:#102B26;--teal-light:rgba(16,43,38,.05);--teal-glow:rgba(16,43,38,.10);
+  --border:rgba(16,43,38,.10);
+  --ease-expo:cubic-bezier(0.16,1,0.3,1);
+  --ease-out:cubic-bezier(0.33,1,0.68,1);
+  --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text)}
+body{font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;cursor:default}
+h1,h2,h3,.serif{font-family:orpheus-pro,Georgia,serif}
+
+body::before{
+  content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:200px;
+}
+
+/* ═══════════════════════════════════════════
+   SLIDE SYSTEM
+   ═══════════════════════════════════════════ */
+.deck{position:relative;width:100vw;height:100vh}
+.slide{
+  position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+  padding:48px 80px;opacity:0;visibility:hidden;
+  transition:opacity .5s var(--ease-expo),transform .5s var(--ease-expo);
+  transform:translateY(12px);overflow:hidden;
+}
+.slide.active{opacity:1;visibility:visible;transform:translateY(0)}
+.slide.exiting{opacity:0;transform:translateY(-12px);transition-timing-function:ease-in-out}
+
+.progress{position:fixed;top:0;left:0;height:2px;background:var(--teal);z-index:100;transition:width .4s var(--ease-out)}
+.counter{position:fixed;bottom:20px;right:36px;z-index:100;font-size:13px;letter-spacing:.5px;color:var(--text3);font-variant-numeric:tabular-nums}
+.counter .current{color:var(--teal);font-weight:600}
+.nav-hint{position:fixed;bottom:20px;left:36px;z-index:100;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);opacity:.35}
+
+/* ═══════════════════════════════════════════
+   TYPOGRAPHY - PRESENTATION SCALE
+   ═══════════════════════════════════════════ */
+.context-label{font-size:clamp(14px,1.3vw,20px);letter-spacing:3px;text-transform:uppercase;color:var(--text3);margin-bottom:16px;font-weight:500}
+.part-label{font-size:clamp(13px,1.2vw,18px);letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-weight:600}
+.slide-title{
+  font-family:orpheus-pro,serif;font-size:clamp(52px,7vw,100px);
+  font-weight:500;line-height:1.05;color:var(--text);
+  letter-spacing:-0.03em;max-width:1100px;
+}
+.slide-subtitle{font-size:clamp(20px,2.2vw,30px);color:var(--text2);margin-top:24px;max-width:800px;line-height:1.55;font-weight:300}
+.supporting-line{font-size:clamp(20px,2.2vw,30px);color:var(--text2);margin-top:24px;max-width:720px;line-height:1.6;font-weight:300}
+
+/* ═══════════════════════════════════════════
+   DECORATIVE
+   ═══════════════════════════════════════════ */
+.orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px)}
+.orb-teal{background:var(--teal);opacity:.04}
+.orb-gold{background:var(--gold);opacity:.05}
+.accent-line{position:absolute;top:0;right:100px;width:1px;height:100%;background:linear-gradient(to bottom,transparent,var(--teal-glow),transparent)}
+.deco-ring{position:absolute;border-radius:50%;border:1px solid var(--gold-glow);pointer-events:none}
+#particles{position:absolute;inset:0;z-index:0;pointer-events:none}
+
+/* ═══════════════════════════════════════════
+   CENTERED SLIDE (for quotes, hooks, theses)
+   ═══════════════════════════════════════════ */
+.centered-slide{text-align:center;align-items:center}
+
+/* ═══════════════════════════════════════════
+   DARK SLIDES (dramatic contrast)
+   ═══════════════════════════════════════════ */
+.slide--dark{background:#0e1f1b}
+.slide--dark .slide-title,.slide--dark .big-text{color:#f4efe9}
+.slide--dark .slide-subtitle,.slide--dark .supporting-line,.slide--dark .challenge-prompt{color:rgba(244,239,233,.6)}
+.slide--dark .context-label{color:rgba(244,239,233,.35)}
+.slide--dark .part-label{color:var(--gold)}
+.slide--dark .big-text-attr{color:rgba(244,239,233,.3)}
+.slide--dark .interactive-cta--hand{background:rgba(212,165,116,.12);border-color:rgba(212,165,116,.25);color:var(--gold)}
+.slide--dark .built-badge{color:rgba(244,239,233,.3)}
+.slide--dark .reveal-hint{color:rgba(244,239,233,.3)}
+.slide--dark .reveal-hint .cmd-key{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:rgba(244,239,233,.5)}
+.slide--dark .skill-tags .skill-tag{opacity:.7}
+.slide--dark .revealable.revealed .slide-title{color:#f4efe9}
+.slide--dark .revealable.revealed .supporting-line{color:rgba(244,239,233,.6)}
+.slide--dark .typewriter-cursor{border-color:var(--gold)}
+
+/* ═══════════════════════════════════════════
+   BIG QUOTE / HOOK TEXT
+   ═══════════════════════════════════════════ */
+.big-text{
+  font-family:orpheus-pro,serif;font-size:clamp(36px,5vw,72px);
+  font-style:italic;font-weight:400;line-height:1.25;color:var(--text);
+  max-width:1000px;text-align:center;letter-spacing:-0.015em;
+}
+.big-text-attr{
+  font-family:'DM Sans',sans-serif;font-style:normal;
+  font-size:clamp(14px,1.2vw,18px);color:var(--text3);text-transform:uppercase;letter-spacing:2px;margin-top:36px;
+}
+
+/* Typewriter cursor */
+.typewriter-cursor{display:inline;border-right:2px solid var(--gold);animation:blink .8s step-end infinite;margin-left:2px}
+.typewriter-cursor.done{border-color:transparent;animation:none}
+@keyframes blink{50%{border-color:transparent}}
+
+/* ═══════════════════════════════════════════
+   STORY SLIDES
+   ═══════════════════════════════════════════ */
+.challenge-prompt{
+  font-family:orpheus-pro,serif;font-size:clamp(22px,2.8vw,40px);
+  font-weight:400;line-height:1.35;color:var(--text2);
+  border-left:3px solid var(--teal);padding-left:32px;margin-top:28px;max-width:720px;
+}
+
+/* ═══════════════════════════════════════════
+   REVEAL MECHANIC (R key)
+   ═══════════════════════════════════════════ */
+.revealable{opacity:0;transform:translateY(12px);transition:opacity .6s var(--ease-expo),transform .6s var(--ease-expo);pointer-events:none}
+.revealable.revealed{opacity:1;transform:translateY(0);pointer-events:auto}
+.reveal-hint{
+  position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+  font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;
+  display:flex;align-items:center;gap:8px;opacity:.4;transition:opacity .3s;
+}
+.reveal-hint.hidden{opacity:0}
+.cmd-key{font-family:'DM Sans',monospace;font-size:11px;background:var(--bg3);border:1px solid var(--border);padding:2px 8px;border-radius:4px;color:var(--text3)}
+
+/* ═══════════════════════════════════════════
+   SKILL TAGS
+   ═══════════════════════════════════════════ */
+.skill-tags{display:flex;flex-wrap:wrap;gap:8px}
+.skill-tag{
+  display:inline-flex;align-items:center;padding:6px 14px;border-radius:100px;
+  font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;border:1px solid;
+}
+.skill-tag--gold{color:var(--gold);border-color:var(--gold-glow);background:var(--gold-light)}
+.skill-tag--sage{color:var(--sage);border-color:var(--sage-glow);background:var(--sage-light)}
+.skill-tag--teal{color:var(--teal);border-color:var(--teal-glow);background:var(--teal-light)}
+
+/* Slide footer */
+.slide-footer{position:absolute;bottom:20px;left:80px;right:80px;display:flex;align-items:center;justify-content:space-between}
+.slide-footer .skill-tags{opacity:.5}
+
+/* ═══════════════════════════════════════════
+   INTERACTIVE ELEMENTS
+   ═══════════════════════════════════════════ */
+.interactive-cta{
+  display:inline-flex;align-items:center;gap:12px;margin-top:36px;padding:clamp(14px,2vh,22px) clamp(28px,3vw,44px);
+  border-radius:100px;font-size:clamp(14px,1.3vw,18px);font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  animation:gentlePulse 2s ease-in-out infinite;
+}
+.interactive-cta--hand{background:var(--gold-light);border:1px solid var(--gold-glow);color:var(--gold)}
+.interactive-cta .cta-icon{font-size:22px}
+@keyframes gentlePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.85;transform:scale(1.02)}}
+
+.interactive-subtext{font-size:clamp(14px,1.3vw,18px);color:var(--text3);margin-top:20px;font-weight:300;font-style:italic}
+
+/* ═══════════════════════════════════════════
+   ASSIGNMENT CARD
+   ═══════════════════════════════════════════ */
+.assignment-card{
+  background:var(--bg2);border:2px solid var(--gold-glow);border-radius:16px;
+  padding:clamp(32px,4vh,56px) clamp(32px,4vw,64px);
+  margin-top:clamp(24px,4vh,48px);max-width:800px;
+}
+.assignment-card-title{
+  font-family:orpheus-pro,serif;font-size:clamp(24px,2.5vw,36px);font-weight:500;
+  color:var(--text);margin-bottom:16px;
+}
+.assignment-steps{list-style:none;padding:0}
+.assignment-steps li{
+  font-size:clamp(16px,1.6vw,22px);color:var(--text2);line-height:1.6;
+  padding:8px 0 8px 28px;position:relative;
+}
+.assignment-steps li::before{
+  content:'';position:absolute;left:2px;top:50%;transform:translateY(-50%);
+  width:10px;height:10px;border-radius:50%;border:1.5px solid var(--gold);
+}
+
+/* Assignment card drop animation */
+.assignment-card{opacity:0;transform:translateY(-40px)}
+[data-slide="11"].active .assignment-card{animation:cardDrop .7s var(--ease-spring) .4s both}
+@keyframes cardDrop{from{opacity:0;transform:translateY(-40px)}to{opacity:1;transform:translateY(0)}}
+.assignment-steps li{opacity:0}
+[data-slide="11"].active .assignment-steps li:nth-child(1){animation:fadeUp .5s var(--ease-expo) 1.2s both}
+[data-slide="11"].active .assignment-steps li:nth-child(2){animation:fadeUp .5s var(--ease-expo) 2s both}
+[data-slide="11"].active .assignment-steps li:nth-child(3){animation:fadeUp .5s var(--ease-expo) 2.8s both}
+.assignment-steps li::before{transition:background .3s,width .3s,height .3s}
+[data-slide="11"].active .assignment-steps li::after{
+  content:'';position:absolute;left:4px;top:50%;
+  width:6px;height:3px;margin-top:-3px;
+  border-left:1.5px solid var(--gold);border-bottom:1.5px solid var(--gold);
+  transform:rotate(-45deg) scale(0);opacity:0;
+}
+[data-slide="11"].active .assignment-steps li:nth-child(1)::after{animation:checkDraw .4s var(--ease-expo) 1.7s both}
+[data-slide="11"].active .assignment-steps li:nth-child(2)::after{animation:checkDraw .4s var(--ease-expo) 2.5s both}
+[data-slide="11"].active .assignment-steps li:nth-child(3)::after{animation:checkDraw .4s var(--ease-expo) 3.3s both}
+@keyframes checkDraw{to{transform:rotate(-45deg) scale(1);opacity:1}}
+
+/* ═══════════════════════════════════════════
+   SKILL QUIZ OVERLAY (Q key)
+   ═══════════════════════════════════════════ */
+.skill-quiz{
+  position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;
+  background:rgba(16,43,38,.7);backdrop-filter:blur(12px);
+  opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;
+}
+.skill-quiz.open{opacity:1;visibility:visible}
+.skill-quiz-panel{text-align:center;transform:scale(.95);transition:transform .3s var(--ease-expo)}
+.skill-quiz.open .skill-quiz-panel{transform:scale(1)}
+.skill-quiz-title{font-family:orpheus-pro,serif;font-size:clamp(28px,3.5vw,48px);color:#fff;font-weight:500;margin-bottom:40px}
+.skill-quiz-options{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.skill-quiz-pill{
+  padding:clamp(14px,2vh,20px) clamp(24px,3vw,36px);border-radius:100px;
+  font-size:clamp(16px,1.5vw,22px);font-weight:500;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;
+  cursor:pointer;transition:background .2s,transform .15s;
+}
+.skill-quiz-pill:hover{background:rgba(255,255,255,.2);transform:scale(1.05)}
+.skill-quiz-pill.correct{background:var(--gold);border-color:var(--gold);color:var(--text)}
+.skill-quiz-dismiss{margin-top:32px;font-size:13px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px}
+
+/* ═══════════════════════════════════════════
+   COMMAND PALETTE (/ key)
+   ═══════════════════════════════════════════ */
+.cmd-palette{
+  position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;
+  background:rgba(16,43,38,.6);backdrop-filter:blur(8px);
+  opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s;
+}
+.cmd-palette.open{opacity:1;visibility:visible}
+.cmd-panel{
+  background:var(--bg);border:1px solid var(--border);border-radius:12px;
+  width:480px;max-width:90vw;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.15);
+  transform:translateY(8px);transition:transform .2s var(--ease-expo);
+}
+.cmd-palette.open .cmd-panel{transform:translateY(0)}
+.cmd-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.cmd-header .cmd-icon{font-size:14px;color:var(--gold);font-family:'DM Sans',monospace;background:var(--gold-light);border:1px solid var(--gold-glow);padding:2px 8px;border-radius:4px;font-weight:600}
+.cmd-header .cmd-title{font-size:14px;color:var(--text);font-weight:500}
+.cmd-list{padding:8px 0}
+.cmd-item{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;font-size:13px;color:var(--text2)}
+.cmd-keys{display:flex;gap:4px}
+.cmd-footer{padding:12px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--text3);text-align:center;font-style:italic}
+
+/* Takeaway overlay - full-screen centered, dramatic reveal */
+.takeaway-overlay{
+  position:absolute;inset:0;z-index:10;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:rgba(10,22,18,.92);
+  opacity:0;pointer-events:none;
+  transition:opacity .8s var(--ease-expo);
+  padding:clamp(32px,5vw,80px);
+}
+.takeaway-overlay.visible{opacity:1;pointer-events:auto}
+.takeaway-overlay .takeaway-line{
+  width:60px;height:1px;background:var(--gold);margin-bottom:clamp(16px,2.5vh,28px);
+  transform:scaleX(0);transition:transform .6s var(--ease-expo) .3s;
+}
+.takeaway-overlay.visible .takeaway-line{transform:scaleX(1)}
+.takeaway-overlay .takeaway-text{
+  font-family:orpheus-pro,serif;font-size:clamp(32px,4.5vw,64px);color:#f4efe9;
+  font-weight:400;font-style:italic;line-height:1.3;text-align:center;
+  max-width:900px;
+  opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease-expo) .4s,transform .6s var(--ease-expo) .4s;
+}
+.takeaway-overlay.visible .takeaway-text{opacity:1;transform:translateY(0)}
+.takeaway-overlay .takeaway-dismiss{
+  font-size:clamp(11px,1vw,14px);color:rgba(244,239,233,.25);margin-top:clamp(24px,4vh,40px);
+  text-transform:uppercase;letter-spacing:2px;
+  opacity:0;transition:opacity .6s .8s;
+}
+.takeaway-overlay.visible .takeaway-dismiss{opacity:1}
+
+/* Q&A / Close */
+.qa-contact{font-size:clamp(16px,1.5vw,20px);color:rgba(244,239,233,.45);line-height:1.8;margin-top:24px}
+.qa-contact strong{color:rgba(244,239,233,.7);font-weight:500}
+
+/* Built with AI badge */
+.built-badge{
+  position:absolute;bottom:48px;display:flex;align-items:center;gap:8px;
+  font-size:11px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;
+  opacity:0;animation:fadeIn 1s 2.5s both;
+}
+.built-badge .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);animation:gentlePulse 2s ease-in-out infinite}
+@keyframes fadeIn{to{opacity:.5}}
+
+/* ═══════════════════════════════════════════
+   FULLSCREEN CANVAS OVERLAYS
+   ═══════════════════════════════════════════ */
+.canvas-overlay{position:absolute;inset:0;z-index:1}
+.canvas-context-label{
+  position:absolute;top:48px;left:80px;z-index:2;
+  font-size:clamp(12px,1.1vw,16px);letter-spacing:3px;text-transform:uppercase;
+  color:rgba(244,239,233,.3);font-weight:500;
+}
+
+/* ═══════════════════════════════════════════
+   SLIDE 6: DASHBOARD GRID
+   ═══════════════════════════════════════════ */
+.dashboard-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;
+  gap:16px;width:100%;max-width:1100px;margin:0 auto;
+  position:relative;z-index:1;
+}
+.dash-card{
+  background:rgba(14,31,27,.8);border:1px solid rgba(212,165,116,.12);
+  border-radius:8px;padding:clamp(16px,2vh,28px) clamp(16px,1.5vw,24px);
+  opacity:0;transform:translateY(20px);
+  transition:opacity .5s var(--ease-expo),transform .5s var(--ease-expo),border-color .4s,box-shadow .4s;
+}
+.dash-card.built{opacity:1;transform:translateY(0)}
+.dash-card-label{
+  font-size:clamp(10px,.9vw,13px);letter-spacing:2px;text-transform:uppercase;
+  color:rgba(244,239,233,.3);margin-bottom:12px;font-weight:600;
+}
+.dash-card-visual{position:relative;height:clamp(80px,12vh,140px);display:flex;align-items:flex-end;gap:8px}
+.dash-bar{
+  flex:1;background:rgba(212,165,116,.5);border-radius:3px 3px 0 0;
+  transform-origin:bottom;transform:scaleY(0);transition:transform .6s var(--ease-expo);
+}
+.dash-bar.grown{transform:scaleY(1)}
+.dash-line-svg{position:absolute;inset:0;overflow:visible}
+.dash-big-num{
+  font-family:orpheus-pro,serif;font-size:clamp(32px,4vw,56px);font-weight:600;
+  color:var(--gold);line-height:1;font-variant-numeric:tabular-nums;
+}
+.dash-donut-svg{width:clamp(80px,10vh,120px);height:clamp(80px,10vh,120px);margin:0 auto}
+.dash-status{
+  font-family:'DM Sans',monospace;font-size:clamp(18px,2.5vw,36px);font-weight:600;
+  transition:color .5s;
+}
+.dash-status-sub{font-size:clamp(10px,.9vw,13px);color:rgba(244,239,233,.25);margin-top:8px;text-transform:uppercase;letter-spacing:1px}
+.dash-card.ping{border-color:rgba(212,165,116,.5);box-shadow:0 0 30px rgba(212,165,116,.15)}
+
+/* ═══════════════════════════════════════════
+   SLIDE 7: PATTERN REVEAL
+   ═══════════════════════════════════════════ */
+.pattern-words{
+  display:flex;gap:clamp(20px,3vw,48px);justify-content:center;align-items:baseline;
+  flex-wrap:wrap;margin-top:clamp(32px,6vh,64px);
+}
+.pattern-word{
+  font-family:orpheus-pro,serif;font-size:clamp(28px,3.5vw,48px);font-weight:500;
+  line-height:1.2;
+}
+.pattern-word--lit{color:var(--text)}
+.pattern-word--dim{color:var(--bg3)}
+.pattern-caption{
+  font-size:clamp(18px,2vw,26px);color:var(--text2);margin-top:clamp(32px,5vh,56px);
+  font-weight:300;line-height:1.6;text-align:center;
+}
+
+/* ═══════════════════════════════════════════
+   SLIDE 8: NETWORK (full viewport SVG)
+   ═══════════════════════════════════════════ */
+.network-full-svg{position:absolute;inset:0;z-index:1;width:100%;height:100%}
+.network-challenge{
+  position:absolute;top:48px;left:80px;z-index:2;
+  font-family:orpheus-pro,serif;font-size:clamp(18px,2vw,28px);
+  color:rgba(244,239,233,.5);font-weight:400;max-width:500px;line-height:1.4;
+}
+.network-answer{
+  position:absolute;bottom:80px;right:80px;z-index:2;
+  font-family:orpheus-pro,serif;font-size:clamp(24px,3vw,44px);
+  color:var(--gold);font-weight:500;max-width:500px;text-align:right;line-height:1.2;
+}
+
+/* ═══════════════════════════════════════════
+   SLIDE 10: TERMINAL
+   ═══════════════════════════════════════════ */
+.terminal-window{
+  background:#0a1612;border:1px solid rgba(212,165,116,.25);border-radius:12px;
+  max-width:800px;width:90%;margin:0 auto;overflow:hidden;position:relative;z-index:1;
+}
+.terminal-chrome{
+  display:flex;align-items:center;gap:8px;padding:12px 16px;
+  border-bottom:1px solid rgba(244,239,233,.08);
+}
+.terminal-dot{width:12px;height:12px;border-radius:50%}
+.terminal-dot--red{background:#ff5f56}
+.terminal-dot--yellow{background:#ffbd2e}
+.terminal-dot--green{background:#27c93f}
+.terminal-title{
+  flex:1;text-align:center;font-size:12px;color:rgba(244,239,233,.3);
+  letter-spacing:1px;font-family:'DM Sans',monospace;
+}
+.terminal-body{
+  padding:clamp(16px,2vh,28px) clamp(16px,2vw,28px);
+  font-family:'DM Sans',monospace;font-size:clamp(13px,1.2vw,16px);
+  line-height:1.8;min-height:clamp(300px,45vh,500px);
+  color:rgba(244,239,233,.5);
+}
+.term-cmd{color:var(--gold)}
+.term-success{color:var(--sage)}
+.term-num{color:var(--gold)}
+.term-cursor{
+  display:inline-block;width:8px;height:clamp(13px,1.2vw,16px);
+  background:var(--gold);animation:blink .8s step-end infinite;
+  vertical-align:text-bottom;
+}
+
+/* ═══════════════════════════════════════════
+   REUSABLE ANIMATION PATTERNS
+   ═══════════════════════════════════════════ */
+.draw-line{stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
+.slide.active .draw-line{animation:drawStroke .8s var(--ease-expo) forwards}
+@keyframes drawStroke{to{stroke-dashoffset:0}}
+@keyframes ping{0%{transform:scale(1);opacity:.6}100%{transform:scale(3);opacity:0}}
+
+@keyframes floatDot{
+  0%,100%{transform:translate(0,0)}
+  25%{transform:translate(var(--fx,10px),var(--fy,-15px))}
+  50%{transform:translate(var(--fx2,-8px),var(--fy2,12px))}
+  75%{transform:translate(var(--fx3,14px),var(--fy3,-8px))}
+}
+.floating-dot{
+  position:absolute;width:6px;height:6px;border-radius:50%;
+  background:var(--gold);opacity:.12;pointer-events:none;
+  animation:floatDot var(--dur,20s) ease-in-out infinite;
+}
+
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes lineGrow{to{transform:scaleX(1)}}
+
+.slide--dark.active::after{
+  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:60vw;height:60vh;border-radius:50%;pointer-events:none;z-index:0;
+  background:radial-gradient(circle,rgba(212,165,116,.06) 0%,transparent 70%);
+  animation:glowPulse 6s ease-in-out infinite;
+}
+@keyframes glowPulse{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}}
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════ */
+.slide.active .fade-up{animation:fadeUp .5s var(--ease-expo) both}
+.slide.active .fade-up:nth-child(1){animation-delay:.1s}
+.slide.active .fade-up:nth-child(2){animation-delay:.2s}
+.slide.active .fade-up:nth-child(3){animation-delay:.3s}
+.slide.active .fade-up:nth-child(4){animation-delay:.4s}
+.slide.active .fade-up:nth-child(5){animation-delay:.5s}
+.slide.active .fade-up:nth-child(6){animation-delay:.6s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* Hero moment - slow opacity reveal for quote slides */
+.hero-slide.active .fade-up{animation:heroReveal .8s var(--ease-expo) both}
+@keyframes heroReveal{from{opacity:0}to{opacity:1}}
+
+@keyframes springIn{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+
+@keyframes dotAppear{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+@keyframes netBreathe{0%,100%{transform:translate(0,0)}50%{transform:translate(var(--bx,2px),var(--by,-2px))}}
+
+@media(prefers-reduced-motion:reduce){
+  .slide{transition:opacity .2s ease}
+  .slide.active .fade-up,.hero-slide.active .fade-up{
+    animation:simpleReveal .2s ease both !important;animation-delay:0s !important;
+  }
+  @keyframes simpleReveal{from{opacity:0}to{opacity:1}}
+  .interactive-cta,.built-badge .badge-dot{animation:none !important}
+}
+
+@media(max-width:1024px){
+  .slide{padding:40px 36px}
+  .slide-footer{left:36px;right:36px}
+  .dashboard-grid{grid-template-columns:repeat(2,1fr)}
+  .pattern-words{flex-direction:column;align-items:center}
+  #particles{display:none}
+  .canvas-context-label{left:36px;top:36px}
+  .network-challenge{left:36px;top:36px}
+  .network-answer{right:36px;bottom:60px}
+}
+
+/* ═══════════════════════════════════════════
+   GLOBE SLIDE
+   ═══════════════════════════════════════════ */
+.globe-slide{background:#0a1612;padding:0 !important}
+#globe-container{position:absolute;inset:0;z-index:1}
+
+/* Bottom name bar */
+.globe-overlay{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:48px 80px;
+}
+.globe-name{
+  font-family:orpheus-pro,serif;font-size:clamp(36px,4vw,60px);
+  font-weight:500;color:#f4efe9;letter-spacing:-0.02em;
+  opacity:0;transition:opacity .8s;
+}
+.globe-name.visible{opacity:1}
+.globe-role{
+  font-size:clamp(14px,1.3vw,20px);color:rgba(244,239,233,.4);
+  margin-top:8px;font-weight:300;
+  opacity:0;transition:opacity .8s .3s;
+}
+.globe-role.visible{opacity:1}
+
+/* Country counter */
+.globe-counter{
+  position:absolute;top:48px;right:80px;z-index:2;
+  text-align:right;pointer-events:none;
+}
+.globe-counter-num{
+  font-family:orpheus-pro,serif;font-size:clamp(48px,6vw,80px);
+  font-weight:600;color:var(--gold);line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.globe-counter-label{
+  font-size:clamp(11px,1vw,14px);color:rgba(244,239,233,.3);
+  text-transform:uppercase;letter-spacing:2px;margin-top:4px;
+}
+
+/* Location card */
+.globe-loc-card{
+  position:absolute;top:48px;left:80px;z-index:2;pointer-events:none;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .5s var(--ease-expo),transform .5s var(--ease-expo);
+}
+.globe-loc-card.visible{opacity:1;transform:translateY(0)}
+.globe-loc-flag{font-size:clamp(36px,4vw,56px);line-height:1;margin-bottom:8px}
+.globe-loc-name{
+  font-family:orpheus-pro,serif;font-size:clamp(22px,2.5vw,36px);
+  font-weight:500;color:#f4efe9;line-height:1.2;
+}
+.globe-loc-role{
+  font-size:clamp(13px,1.2vw,18px);color:var(--gold);margin-top:6px;
+  text-transform:uppercase;letter-spacing:2px;font-weight:600;
+}
+.globe-loc-sub{
+  font-size:clamp(12px,1vw,15px);color:rgba(244,239,233,.35);margin-top:4px;font-weight:300;
+}
+
+/* "Click to continue" prompt */
+.globe-prompt{
+  position:absolute;bottom:48px;left:50%;transform:translateX(-50%);z-index:2;
+  font-size:12px;color:rgba(244,239,233,.25);text-transform:uppercase;letter-spacing:2px;
+  pointer-events:none;animation:gentlePulse 2s ease-in-out infinite;
+}
+
+/* Final AWARE moment */
+.globe-loc-card.final .globe-loc-flag{font-size:clamp(48px,5vw,72px)}
+.globe-loc-card.final .globe-loc-name{font-size:clamp(32px,4vw,56px)}
+.globe-loc-card.final{
+  top:50%;left:50%;transform:translate(-50%,-50%) translateY(8px);text-align:center;
+}
+.globe-loc-card.final.visible{transform:translate(-50%,-50%) translateY(0)}
+</style>
+<script src="https://unpkg.com/globe.gl@2.21.1/dist/globe.gl.min.js"></script>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="counter"><span class="current" id="currentSlide">1</span> / <span id="totalSlides">12</span></div>
+<div class="nav-hint">/ for shortcuts</div>
+
+<!-- Skill quiz overlay -->
+<div class="skill-quiz" id="skillQuiz">
+  <div class="skill-quiz-panel">
+    <div class="skill-quiz-title">Which discovery skill was that?</div>
+    <div class="skill-quiz-options">
+      <div class="skill-quiz-pill" onclick="highlightSkill(this)">Associating</div>
+      <div class="skill-quiz-pill" onclick="highlightSkill(this)">Questioning</div>
+      <div class="skill-quiz-pill" onclick="highlightSkill(this)">Observing</div>
+      <div class="skill-quiz-pill" onclick="highlightSkill(this)">Networking</div>
+      <div class="skill-quiz-pill" onclick="highlightSkill(this)">Experimenting</div>
+    </div>
+    <div class="skill-quiz-dismiss">Press Q or Esc to close</div>
+  </div>
+</div>
+
+<!-- Command palette -->
+<div class="cmd-palette" id="cmdPalette">
+  <div class="cmd-panel">
+    <div class="cmd-header"><span class="cmd-icon">/</span><span class="cmd-title">Keyboard Shortcuts</span></div>
+    <div class="cmd-list">
+      <div class="cmd-item">Navigate <div class="cmd-keys"><span class="cmd-key">&rarr;</span><span class="cmd-key">&larr;</span><span class="cmd-key">Space</span></div></div>
+      <div class="cmd-item">Reveal hidden content <div class="cmd-keys"><span class="cmd-key">R</span></div></div>
+      <div class="cmd-item">Skill quiz overlay <div class="cmd-keys"><span class="cmd-key">Q</span></div></div>
+      <div class="cmd-item">Jump to slide <div class="cmd-keys"><span class="cmd-key">1</span>-<span class="cmd-key">9</span></div></div>
+    </div>
+    <div class="cmd-footer">This entire presentation was built by an AI.</div>
+  </div>
+</div>
+
+<div class="deck" id="deck">
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 1: THE HOOK
+     Pattern interrupt. No title slide. Direct engagement.
+     ═══════════════════════════════════════════ -->
+<div class="slide centered-slide slide--dark active" data-slide="1">
+  <canvas id="particles" width="1920" height="1080"></canvas>
+  <div class="fade-up big-text" style="font-style:normal;text-shadow:0 0 80px rgba(212,165,116,.15)">
+    7 jobs in 10 years across 6 countries. My parents still don't really understand what I do.
+  </div>
+  <div class="fade-up" style="margin-top:32px">
+    <div class="big-text-attr">But I've been doing the exact same thing the whole time.</div>
+  </div>
+  <div class="built-badge" style="display:none">
+    <span class="badge-dot"></span>
+    This presentation was built entirely with AI
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 2: 3D GLOBE JOURNEY
+     Animated career + travel map. Builds authority fast.
+     ═══════════════════════════════════════════ -->
+<div class="slide globe-slide" data-slide="2">
+  <div id="globe-container"></div>
+  <div class="globe-loc-card" id="globeLocCard">
+    <div class="globe-loc-flag" id="globeLocFlag"></div>
+    <div class="globe-loc-name" id="globeLocName"></div>
+    <div class="globe-loc-role" id="globeLocRole"></div>
+    <div class="globe-loc-sub" id="globeLocSub"></div>
+  </div>
+  <div class="globe-counter">
+    <div class="globe-counter-num" id="globeCounterNum">0</div>
+    <div class="globe-counter-label">countries</div>
+  </div>
+  <div class="globe-overlay">
+    <div class="globe-name" id="globeName">David Zhao</div>
+    <div class="globe-role" id="globeRole">Co-Founder, AWARE Hair &nbsp;/&nbsp; Ex-Oliver Wyman, Deloitte &nbsp;/&nbsp; University of Waterloo</div>
+  </div>
+  <div class="globe-prompt" id="globePrompt">Click or press &rarr; to continue</div>
+  <div id="globeSkipBtn" style="position:absolute;bottom:48px;right:80px;z-index:10;pointer-events:auto;cursor:pointer;
+    display:flex;align-items:center;gap:8px;padding:10px 24px;border-radius:100px;
+    font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+    background:rgba(212,165,116,.12);border:1px solid rgba(212,165,116,.25);color:#D4A574;
+    transition:background .2s,transform .15s;opacity:0;animation:fadeIn 1s 3s both"
+    onclick="goTo(current+1)">
+    Skip to next slide &rarr;
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 3: INTERACTIVE CHECK-IN
+     Early engagement - get students talking.
+     ═══════════════════════════════════════════ -->
+<div class="slide centered-slide slide--dark" data-slide="3">
+  <div class="orb orb-gold" style="width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+  <div class="fade-up big-text" style="font-style:normal;font-size:clamp(36px,5vw,72px);text-shadow:0 0 80px rgba(212,165,116,.1)">
+    Quick show of hands - how many of you know <em style="color:var(--gold);font-style:italic">exactly</em> what you want to do after school?
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 4: THE THESIS
+     ═══════════════════════════════════════════ -->
+<div class="slide centered-slide hero-slide" data-slide="4">
+  <div class="orb orb-teal" style="width:600px;height:600px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+  <div class="deco-ring" style="width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%);opacity:.04"></div>
+  <div class="fade-up big-text" style="font-style:normal;font-size:clamp(40px,5.5vw,80px)">
+    Entrepreneurship isn't a career path. It's a lens.
+  </div>
+  <div class="fade-up big-text-attr">Forget my resume. Watch the pattern.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 4: SPREADSHEET WATERFALL
+     Matrix-style cascading text. Click to freeze, click for time reveal.
+     ═══════════════════════════════════════════ -->
+<div class="slide slide--dark" data-slide="5" style="padding:0">
+  <canvas id="waterfallCanvas" class="canvas-overlay"></canvas>
+  <div class="canvas-context-label">First real job. A consulting firm. Day three.</div>
+  <div class="takeaway-overlay" id="takeaway5">
+    <div class="takeaway-line"></div>
+    <div class="takeaway-text">See the system, not the task.</div>
+    <div class="takeaway-dismiss">click or &rarr; to continue</div>
+  </div>
+  <div id="waterfallReveal" style="position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none">
+    <div style="display:flex;align-items:center;gap:clamp(20px,3vw,48px)">
+      <span id="wfTimeBefore" style="font-family:orpheus-pro,serif;font-size:clamp(64px,10vw,140px);font-weight:600;color:rgba(244,239,233,.35);position:relative;line-height:1">3h<span id="wfStrike" style="position:absolute;left:0;right:0;top:50%;height:4px;background:var(--gold);transform:scaleX(0);transform-origin:left;border-radius:2px;transition:transform .5s var(--ease-expo)"></span></span>
+      <span id="wfTimeAfter" style="font-family:orpheus-pro,serif;font-size:clamp(80px,12vw,160px);font-weight:600;color:var(--gold);line-height:1;opacity:0;transform:scale(0);transition:opacity .6s,transform .6s var(--ease-spring)">15m</span>
+    </div>
+    <div id="wfCaption" style="font-size:clamp(16px,1.8vw,24px);color:rgba(244,239,233,.5);margin-top:clamp(16px,3vh,32px);opacity:0;transition:opacity .6s .3s;font-weight:300">I spent a weekend writing a macro.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 5: SCATTER PLOT
+     Auto-building data visualization.
+     ═══════════════════════════════════════════ -->
+<div class="slide slide--dark" data-slide="6" data-has-reveal="true" style="padding:0">
+  <canvas id="scatterCanvas" class="canvas-overlay"></canvas>
+  <div class="canvas-context-label">An investment fund in San Francisco</div>
+  <div class="takeaway-overlay" id="takeaway6">
+    <div class="takeaway-line"></div>
+    <div class="takeaway-text">You don't need permission to build something useful.</div>
+    <div class="takeaway-dismiss">click or &rarr; to continue</div>
+  </div>
+  <div id="scatterCounter" style="position:absolute;bottom:80px;right:80px;z-index:2;text-align:right;opacity:0;transition:opacity .5s">
+    <div style="font-family:orpheus-pro,serif;font-size:clamp(36px,5vw,64px);font-weight:600;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums" id="scatterPct">0%</div>
+    <div style="font-size:clamp(11px,1vw,14px);color:rgba(244,239,233,.3);text-transform:uppercase;letter-spacing:2px;margin-top:4px"></div>
+  </div>
+  <div class="revealable" style="position:absolute;bottom:48px;left:80px;z-index:2;font-family:orpheus-pro,serif;font-size:clamp(20px,2.5vw,36px);color:var(--gold);font-weight:500">
+    Nobody asked me to build this.
+  </div>
+  <div class="reveal-hint" style="z-index:2">Press <span class="cmd-key">R</span> to reveal</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 6: DASHBOARD SELF-BUILD
+     3x2 grid of cards that build themselves.
+     ═══════════════════════════════════════════ -->
+<div class="slide slide--dark centered-slide" data-slide="7" style="padding:clamp(32px,5vh,60px) clamp(32px,5vw,80px)">
+  <div class="canvas-context-label" style="position:absolute;top:48px;left:80px">COVID. A government in the Middle East.</div>
+  <div class="takeaway-overlay" id="takeaway7">
+    <div class="takeaway-line"></div>
+    <div class="takeaway-text">"That's just how it works" is the most expensive sentence in any organization.</div>
+    <div class="takeaway-dismiss">click or &rarr; to continue</div>
+  </div>
+  <div class="dashboard-grid" id="dashGrid">
+    <div class="dash-card" id="dashCard0">
+      <div class="dash-card-label">Revenue by Sector</div>
+      <div class="dash-card-visual" id="dashBars0"></div>
+    </div>
+    <div class="dash-card" id="dashCard1">
+      <div class="dash-card-label">Trend Analysis</div>
+      <div class="dash-card-visual">
+        <svg class="dash-line-svg" id="dashLine1" viewBox="0 0 200 100" preserveAspectRatio="none" fill="none">
+          <polyline id="dashPolyline1" points="" stroke="#D4A574" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="dash-card" id="dashCard2">
+      <div class="dash-card-label">Total Expenditure</div>
+      <div class="dash-card-visual" style="align-items:center;justify-content:center">
+        <div class="dash-big-num" id="dashBigNum">$0</div>
+      </div>
+    </div>
+    <div class="dash-card" id="dashCard3">
+      <div class="dash-card-label">Budget Allocation</div>
+      <div class="dash-card-visual" style="align-items:center;justify-content:center">
+        <svg class="dash-donut-svg" viewBox="0 0 120 120" id="dashDonut">
+          <circle cx="60" cy="60" r="50" stroke="rgba(244,239,233,.08)" stroke-width="10" fill="none"/>
+          <circle id="dashDonutArc" cx="60" cy="60" r="50" stroke="#D4A574" stroke-width="10" fill="none"
+            stroke-dasharray="314" stroke-dashoffset="314" stroke-linecap="round"
+            transform="rotate(-90 60 60)" style="transition:stroke-dashoffset 1s var(--ease-expo)"/>
+        </svg>
+      </div>
+    </div>
+    <div class="dash-card" id="dashCard4">
+      <div class="dash-card-label">Quarterly Output</div>
+      <div class="dash-card-visual" id="dashBars4"></div>
+    </div>
+    <div class="dash-card" id="dashCard5">
+      <div class="dash-card-label">Data Freshness</div>
+      <div class="dash-card-visual" style="align-items:center;justify-content:center;flex-direction:column">
+        <div class="dash-status" id="dashStatus" style="color:rgba(200,80,80,.7)">45 DAYS OLD</div>
+        <div class="dash-status-sub">Last data refresh</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 7: NETWORK GROWTH
+     Full-viewport SVG network that builds in waves.
+     ═══════════════════════════════════════════ -->
+<div class="slide slide--dark" data-slide="8" data-has-reveal="true" style="padding:0">
+  <svg class="network-full-svg" id="networkSvg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid meet"></svg>
+  <div class="network-challenge">Every carrier on the same shelf.<br>How do you win?</div>
+  <div class="network-answer revealable" id="networkAnswer">Your customers ARE the channel.</div>
+  <div class="takeaway-overlay" id="takeaway8">
+    <div class="takeaway-line"></div>
+    <div class="takeaway-text">When the game is rigged, don't play better - change the game.</div>
+    <div class="takeaway-dismiss">click or &rarr; to continue</div>
+  </div>
+  <div class="reveal-hint" style="z-index:2">Press <span class="cmd-key">R</span> to reveal</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 8: CONVERGENCE -> AWARE HAIR
+     Floating shapes merge on click, reveal AWARE.
+     ═══════════════════════════════════════════ -->
+<div class="slide slide--dark centered-slide" data-slide="9" style="padding:0">
+  <canvas id="convergeCanvas" class="canvas-overlay"></canvas>
+  <div id="convergeLabel" style="position:absolute;z-index:2;top:55%;left:50%;transform:translate(-50%,0);opacity:0;pointer-events:none;text-align:center">
+    <div style="font-family:orpheus-pro,serif;font-size:clamp(48px,6vw,88px);font-weight:500;color:#f4efe9;letter-spacing:-0.03em" id="convergeName"></div>
+    <div style="font-size:clamp(16px,1.8vw,24px);color:rgba(244,239,233,.4);margin-top:12px;font-weight:300">Professional scalp care. Salon-exclusive.</div>
+    <div id="convergeSkills" style="display:flex;gap:clamp(12px,2vw,28px);justify-content:center;margin-top:clamp(16px,3vh,32px);opacity:0;transition:opacity .6s .6s"></div>
+  </div>
+  <div class="takeaway-overlay" id="takeaway9">
+    <div class="takeaway-line"></div>
+    <div class="takeaway-text">You don't need to know the destination to build the skills that get you there.</div>
+    <div class="takeaway-dismiss">click or &rarr; to continue</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 9: TERMINAL SESSION + AI TOOLS
+     AI tools demo with typewriter effect and screenshots.
+     ═══════════════════════════════════════════ -->
+<div class="slide slide--dark centered-slide" data-slide="10" style="padding:clamp(32px,5vh,60px) clamp(32px,5vw,80px)">
+  <div class="fade-up part-label">Why This Matters Right Now</div>
+  <h1 class="fade-up slide-title" style="max-width:100%;font-size:clamp(36px,4.5vw,64px);color:#f4efe9;margin-bottom:clamp(16px,3vh,32px)">The Bottleneck Isn't Building. It's Seeing.</h1>
+  <div class="terminal-window" id="terminalWindow" style="max-width:800px;width:100%">
+    <div class="terminal-chrome">
+      <div class="terminal-dot terminal-dot--red"></div>
+      <div class="terminal-dot terminal-dot--yellow"></div>
+      <div class="terminal-dot terminal-dot--green"></div>
+      <div class="terminal-title">claude-code</div>
+    </div>
+    <div class="terminal-body" id="terminalBody"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 10: THE ASSIGNMENT
+     ═══════════════════════════════════════════ -->
+<div class="slide centered-slide" data-slide="11">
+  <div class="orb orb-teal" style="width:400px;height:400px;top:-100px;right:-80px"></div>
+  <div class="fade-up part-label">Your Assignment</div>
+  <h1 class="fade-up slide-title" style="max-width:100%">This Week. One Hour.</h1>
+  <div class="fade-up assignment-card">
+    <div class="assignment-card-title">Find your "that's just how we do it."</div>
+    <ul class="assignment-steps">
+      <li>Find one process in your life - class, job, club, anything - and ask: why?</li>
+      <li>Spend one hour making it better. Not perfect. Just better.</li>
+      <li>The point isn't the solution. It's building the habit of seeing.</li>
+    </ul>
+  </div>
+  <div class="fade-up interactive-subtext" style="margin-top:24px">Raise your hand if you already have one in mind.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 12: CLOSE + Q&A (merged)
+     ═══════════════════════════════════════════ -->
+<div class="slide centered-slide hero-slide slide--dark" data-slide="12" style="box-shadow:inset 0 0 150px rgba(0,0,0,0.3)">
+  <div class="floating-dot" style="--dur:18s;--fx:15px;--fy:-20px;--fx2:-12px;--fy2:18px;--fx3:8px;--fy3:-10px;top:15%;left:20%"></div>
+  <div class="floating-dot" style="--dur:22s;--fx:-10px;--fy:12px;--fx2:16px;--fy2:-14px;--fx3:-6px;--fy3:10px;top:25%;left:70%"></div>
+  <div class="floating-dot" style="--dur:25s;--fx:8px;--fy:-18px;--fx2:-14px;--fy2:10px;--fx3:12px;--fy3:-16px;top:60%;left:15%"></div>
+  <div class="floating-dot" style="--dur:19s;--fx:-12px;--fy:14px;--fx2:10px;--fy2:-12px;--fx3:-8px;--fy3:16px;top:70%;left:80%"></div>
+  <div class="floating-dot" style="--dur:23s;--fx:14px;--fy:-10px;--fx2:-8px;--fy2:16px;--fx3:10px;--fy3:-14px;top:40%;left:40%"></div>
+  <div class="floating-dot" style="--dur:20s;--fx:-16px;--fy:8px;--fx2:12px;--fy2:-16px;--fx3:-10px;--fy3:12px;top:80%;left:30%"></div>
+  <div class="floating-dot" style="--dur:26s;--fx:10px;--fy:-14px;--fx2:-10px;--fy2:14px;--fx3:16px;--fy3:-8px;top:20%;left:50%"></div>
+  <div class="floating-dot" style="--dur:21s;--fx:-8px;--fy:16px;--fx2:14px;--fy2:-10px;--fx3:-12px;--fy3:8px;top:50%;left:85%"></div>
+  <div class="floating-dot" style="--dur:24s;--fx:12px;--fy:-12px;--fx2:-16px;--fy2:8px;--fx3:8px;--fy3:-18px;top:35%;left:10%"></div>
+  <div class="floating-dot" style="--dur:17s;--fx:-14px;--fy:10px;--fx2:8px;--fy2:-18px;--fx3:-10px;--fy3:14px;top:75%;left:55%"></div>
+  <div class="deco-ring" style="width:600px;height:600px;top:50%;left:50%;opacity:.06;border-color:rgba(212,165,116,.1);animation:spin 60s linear infinite"></div>
+  <div class="deco-ring" style="width:400px;height:400px;top:50%;left:50%;opacity:.04;border-color:rgba(212,165,116,.08);animation:spin 45s linear infinite reverse"></div>
+  <div class="fade-up big-text" id="closingQuote"></div>
+  <div class="fade-up big-text-attr" id="closingAttr" style="opacity:0">Once you start seeing, you can't stop.</div>
+  <div class="built-badge" style="opacity:0;animation:fadeIn 1s 8s both;bottom:20px">
+    <span class="badge-dot"></span>
+    This presentation was built entirely with AI
+  </div>
+  <div id="closingContact" class="qa-contact" style="opacity:0;transition:opacity .8s .5s">
+    <div style="width:60px;height:1px;background:var(--gold);margin:24px auto;opacity:.4"></div>
+    <strong>David Zhao</strong><br>
+    Co-Founder, AWARE Hair<br>
+    david@awarehair.com
+  </div>
+</div>
+
+<!-- Slide 13 removed for public version -->
+
+</div><!-- end .deck -->
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+const CLOSING_SLIDE = 11;
+const GLOBE_SLIDE = 1;
+const CHECKIN_SLIDE = 2;
+const WATERFALL_SLIDE = 4;
+const SCATTER_SLIDE = 5;
+const DASHBOARD_SLIDE = 6;
+const NETWORK_SLIDE = 7;
+const CONVERGE_SLIDE = 8;
+const TERMINAL_SLIDE = 9;
+let cmdOpen = false;
+let quizOpen = false;
+
+document.getElementById('totalSlides').textContent = total;
+
+function goTo(n) {
+  if (n < 0 || n >= total || n === current) return;
+  hideTakeaways();
+  const prev = slides[current];
+  const next = slides[n];
+
+  next.querySelectorAll('.fade-up').forEach(el => {
+    el.style.animation = 'none';
+    el.offsetHeight;
+    el.style.animation = '';
+  });
+
+  prev.classList.remove('active');
+  prev.classList.add('exiting');
+  setTimeout(() => prev.classList.remove('exiting'), 500);
+
+  next.classList.add('active');
+  current = n;
+
+  if (n === CLOSING_SLIDE) startTypewriter();
+  if (n === GLOBE_SLIDE && !globeInstance) setTimeout(() => initGlobe(), 300);
+  if (n === WATERFALL_SLIDE) initWaterfall();
+  if (n === SCATTER_SLIDE) initScatter();
+  if (n === DASHBOARD_SLIDE) initDashboard();
+  if (n === NETWORK_SLIDE) initNetwork();
+  if (n === CONVERGE_SLIDE) initConvergence();
+  if (n === TERMINAL_SLIDE) initTerminal();
+
+  // Deactivate canvases when leaving
+  if (prev.dataset.slide == '5') waterfallActive = false;
+  if (prev.dataset.slide == '6') scatterActive = false;
+  if (prev.dataset.slide == '9') convergeActive = false;
+
+  document.getElementById('currentSlide').textContent = current + 1;
+  document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+}
+
+// ═══════════════════════════════════════════
+// REVEAL MECHANIC (R key)
+// ═══════════════════════════════════════════
+function revealContent() {
+  const s = slides[current];
+  if (!s.dataset.hasReveal) return;
+  const items = s.querySelectorAll('.revealable:not(.revealed)');
+  items.forEach((el, i) => setTimeout(() => el.classList.add('revealed'), i * 150));
+  const hint = s.querySelector('.reveal-hint');
+  if (hint) hint.classList.add('hidden');
+  // Show takeaway after reveal
+  showTakeaway(current);
+}
+
+// ═══════════════════════════════════════════
+// SKILL QUIZ (Q key)
+// ═══════════════════════════════════════════
+function toggleQuiz() {
+  quizOpen = !quizOpen;
+  document.getElementById('skillQuiz').classList.toggle('open', quizOpen);
+  if (quizOpen) document.querySelectorAll('.skill-quiz-pill').forEach(p => p.classList.remove('correct'));
+}
+function highlightSkill(pill) { pill.classList.toggle('correct'); }
+
+// ═══════════════════════════════════════════
+// COMMAND PALETTE
+// ═══════════════════════════════════════════
+function toggleCmd() {
+  cmdOpen = !cmdOpen;
+  document.getElementById('cmdPalette').classList.toggle('open', cmdOpen);
+}
+
+// ═══════════════════════════════════════════
+// TYPEWRITER (closing quote)
+// ═══════════════════════════════════════════
+const closingText = '"Every interesting thing in my career started the same way. I was in a room, doing a job, and I noticed something that didn\'t make sense. And instead of ignoring it, I did something about it."';
+let typewriterRan = false;
+function startTypewriter() {
+  if (typewriterRan) return;
+  typewriterRan = true;
+  const el = document.getElementById('closingQuote');
+  el.innerHTML = '<span class="typewriter-cursor"></span>';
+  let i = 0;
+  function type() {
+    if (i < closingText.length) {
+      el.querySelector('.typewriter-cursor').insertAdjacentText('beforebegin', closingText.charAt(i));
+      i++;
+      setTimeout(type, 30);
+    } else {
+      el.querySelector('.typewriter-cursor').classList.add('done');
+      setTimeout(() => {
+        document.getElementById('closingAttr').style.transition = 'opacity .8s';
+        document.getElementById('closingAttr').style.opacity = '1';
+      }, 400);
+      setTimeout(() => {
+        document.getElementById('closingContact').style.opacity = '1';
+      }, 1200);
+    }
+  }
+  setTimeout(type, 600);
+}
+
+// ═══════════════════════════════════════════
+// PARTICLE CONSTELLATION (title slide)
+// ═══════════════════════════════════════════
+(function() {
+  const canvas = document.getElementById('particles');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w, h;
+  const pts = [];
+  const N = 80;
+  const D = 160;
+
+  function resize() { w = canvas.width = innerWidth; h = canvas.height = innerHeight; }
+  resize();
+  addEventListener('resize', resize);
+
+  for (let i = 0; i < N; i++) pts.push({ x: Math.random()*w, y: Math.random()*h, vx: (Math.random()-.5)*.4, vy: (Math.random()-.5)*.4, r: Math.random()*2+1 });
+
+  let mx = w/2, my = h/2;
+  addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    if (current !== 0) { requestAnimationFrame(draw); return; }
+    for (const p of pts) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > w) p.vx *= -1;
+      if (p.y < 0 || p.y > h) p.vy *= -1;
+      const dx = mx-p.x, dy = my-p.y, dist = Math.sqrt(dx*dx+dy*dy);
+      if (dist < 200) { p.vx += dx*.00003; p.vy += dy*.00003; }
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(212,165,116,0.5)'; ctx.fill();
+    }
+    for (let i = 0; i < pts.length; i++) for (let j = i+1; j < pts.length; j++) {
+      const dx = pts[i].x-pts[j].x, dy = pts[i].y-pts[j].y, dist = Math.sqrt(dx*dx+dy*dy);
+      if (dist < D) {
+        ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y);
+        ctx.strokeStyle = `rgba(212,165,116,${.18*(1-dist/D)})`; ctx.lineWidth = .5; ctx.stroke();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+// ═══════════════════════════════════════════
+// SLIDE 4: SPREADSHEET WATERFALL
+// ═══════════════════════════════════════════
+let waterfallCanvas = null;
+let waterfallCtx = null;
+let waterfallActive = false;
+let waterfallPhase = 0; // 0=cascading, 1=frozen, 2=time revealed
+let waterfallInited = false;
+let waterfallColumns = [];
+
+const wfFormulas = [
+  '=VLOOKUP(', '=INDEX(MATCH(', 'SUM(A3:F47)', '=IF(AND(', '$12,847.22',
+  'B7:K234', '=SUMPRODUCT(', '$3,291.00', 'OFFSET(C2,', '=IFERROR(',
+  'NPV(0.08,', '$45,120.33', 'A1:Z500', '=COUNTIFS(', '$892.15',
+  'HLOOKUP(', 'PMT(0.05,', '$7,654.89', '=INDIRECT(', 'R1C1:R50C12',
+  '=AVERAGE(', '$102,445', 'MATCH(1,0)', '=XLOOKUP(', '$28,903.44',
+  'MOD(ROW(),', '=LEN(TRIM(', '$1,547.62', 'COUNTA(B:B)', '=TEXT(NOW()',
+  'INDEX(A:A,', '$67,234.11', '=ROUND(SUM(', 'LARGE(D2:D', '$4,892.00',
+  '=MID(A1,3,', 'YEARFRAC(', '$19,203.55', '=CHOOSE(MON', 'RANDBETWEEN',
+];
+
+function initWaterfall() {
+  if (waterfallInited) { waterfallActive = true; return; }
+  waterfallInited = true;
+  waterfallCanvas = document.getElementById('waterfallCanvas');
+  waterfallCanvas.width = innerWidth;
+  waterfallCanvas.height = innerHeight;
+  waterfallCtx = waterfallCanvas.getContext('2d');
+  waterfallActive = true;
+
+  const numCols = 18;
+  const colWidth = innerWidth / numCols;
+  for (let c = 0; c < numCols; c++) {
+    const speed = 0.5 + Math.random() * 1.5;
+    const chars = [];
+    const numChars = 15 + Math.floor(Math.random() * 10);
+    for (let i = 0; i < numChars; i++) {
+      chars.push({
+        text: wfFormulas[Math.floor(Math.random() * wfFormulas.length)],
+        y: -Math.random() * innerHeight * 2,
+        size: 11 + Math.floor(Math.random() * 6),
+        opacity: 0.3 + Math.random() * 0.4,
+      });
+    }
+    waterfallColumns.push({ x: colWidth * c + colWidth * 0.1, speed, chars, frozen: false, fadeOut: 0 });
+  }
+
+  requestAnimationFrame(drawWaterfall);
+}
+
+function drawWaterfall() {
+  if (!waterfallActive) { requestAnimationFrame(drawWaterfall); return; }
+  const ctx = waterfallCtx;
+  const w = waterfallCanvas.width;
+  const h = waterfallCanvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  ctx.font = '13px "DM Sans", monospace';
+
+  for (const col of waterfallColumns) {
+    if (waterfallPhase === 1) {
+      // Fade out from edges
+      col.fadeOut = Math.min(col.fadeOut + 0.02, 1);
+      const edgeDist = Math.abs(col.x - w / 2) / (w / 2);
+      const fadeAlpha = 1 - (col.fadeOut * (0.3 + edgeDist * 0.7));
+      if (fadeAlpha <= 0) continue;
+      for (const ch of col.chars) {
+        ctx.globalAlpha = ch.opacity * fadeAlpha;
+        ctx.font = ch.size + 'px "DM Sans", monospace';
+        ctx.fillStyle = '#D4A574';
+        ctx.fillText(ch.text, col.x, ch.y);
+      }
+    } else if (waterfallPhase === 0) {
+      for (const ch of col.chars) {
+        ch.y += col.speed;
+        if (ch.y > h + 50) {
+          ch.y = -50 - Math.random() * 200;
+          ch.text = wfFormulas[Math.floor(Math.random() * wfFormulas.length)];
+        }
+        ctx.globalAlpha = ch.opacity;
+        ctx.font = ch.size + 'px "DM Sans", monospace';
+        ctx.fillStyle = '#D4A574';
+        ctx.fillText(ch.text, col.x, ch.y);
+      }
+    }
+  }
+  ctx.globalAlpha = 1;
+
+  if (waterfallPhase === 1) {
+    const allFaded = waterfallColumns.every(c => c.fadeOut >= 1);
+    if (allFaded) {
+      // Transition to phase 2 automatically
+      waterfallPhase = 2;
+      showWaterfallReveal();
+    }
+  }
+
+  requestAnimationFrame(drawWaterfall);
+}
+
+function showWaterfallReveal() {
+  const reveal = document.getElementById('waterfallReveal');
+  reveal.style.transition = 'opacity .6s var(--ease-expo)';
+  reveal.style.opacity = '1';
+  // Strikethrough animation
+  setTimeout(() => {
+    document.getElementById('wfStrike').style.transform = 'scaleX(1)';
+  }, 300);
+  // Show 15m
+  setTimeout(() => {
+    const after = document.getElementById('wfTimeAfter');
+    after.style.opacity = '1';
+    after.style.transform = 'scale(1)';
+  }, 800);
+  // Show caption
+  setTimeout(() => {
+    document.getElementById('wfCaption').style.opacity = '1';
+  }, 1000);
+  // Show takeaway
+  setTimeout(() => showTakeaway(WATERFALL_SLIDE), 1800);
+}
+
+function isWaterfallActive() {
+  return current === WATERFALL_SLIDE && waterfallPhase < 2;
+}
+
+function advanceWaterfall() {
+  if (waterfallPhase === 0) {
+    // Freeze
+    waterfallPhase = 1;
+  }
+  // Phase 1 auto-transitions to 2 via fade
+}
+
+// ═══════════════════════════════════════════
+// SLIDE 5: SCATTER PLOT
+// ═══════════════════════════════════════════
+let scatterCanvas = null;
+let scatterCtx = null;
+let scatterActive = false;
+let scatterInited = false;
+let scatterTealDots = [];
+let scatterGoldDots = [];
+let scatterAnimStep = 0;
+
+function initScatter() {
+  if (scatterInited) { scatterActive = true; return; }
+  scatterInited = true;
+  scatterCanvas = document.getElementById('scatterCanvas');
+  scatterCanvas.width = innerWidth;
+  scatterCanvas.height = innerHeight;
+  scatterCtx = scatterCanvas.getContext('2d');
+  scatterActive = true;
+
+  const margin = { left: 120, right: 80, top: 80, bottom: 100 };
+  const pw = scatterCanvas.width - margin.left - margin.right;
+  const ph = scatterCanvas.height - margin.top - margin.bottom;
+
+  // Generate teal dots along y=1.1x with noise
+  for (let i = 0; i < 25; i++) {
+    const xNorm = 0.05 + Math.random() * 0.9;
+    const yNorm = xNorm * 1.1 + (Math.random() - 0.5) * 0.25;
+    scatterTealDots.push({
+      x: margin.left + xNorm * pw,
+      y: margin.top + (1 - Math.min(Math.max(yNorm, 0), 1)) * ph,
+      scale: 0, targetScale: 1, appeared: false, delay: 200 + i * 80,
+    });
+  }
+
+  // Gold prediction dots near the line
+  for (let i = 0; i < 12; i++) {
+    const xNorm = 0.1 + Math.random() * 0.8;
+    const yNorm = xNorm * 1.1 + (Math.random() - 0.5) * 0.12;
+    scatterGoldDots.push({
+      x: margin.left + xNorm * pw,
+      y: margin.top + (1 - Math.min(Math.max(yNorm, 0), 1)) * ph,
+      scale: 0, targetScale: 1, appeared: false, delay: 2500 + i * 60,
+    });
+  }
+
+  const startTime = performance.now();
+
+  function drawScatter() {
+    if (!scatterActive) { requestAnimationFrame(drawScatter); return; }
+    const ctx = scatterCtx;
+    const w = scatterCanvas.width;
+    const h = scatterCanvas.height;
+    const elapsed = performance.now() - startTime;
+    ctx.clearRect(0, 0, w, h);
+
+    // Draw axes
+    const axisAlpha = Math.min(elapsed / 600, 1);
+    ctx.globalAlpha = axisAlpha * 0.4;
+    ctx.strokeStyle = 'rgba(244,239,233,.3)';
+    ctx.lineWidth = 1;
+    // Y axis
+    ctx.beginPath();
+    ctx.moveTo(margin.left, margin.top);
+    ctx.lineTo(margin.left, margin.top + ph);
+    ctx.stroke();
+    // X axis
+    ctx.beginPath();
+    ctx.moveTo(margin.left, margin.top + ph);
+    ctx.lineTo(margin.left + pw, margin.top + ph);
+    ctx.stroke();
+
+    // Axis labels
+    ctx.globalAlpha = axisAlpha * 0.25;
+    ctx.fillStyle = '#f4efe9';
+    ctx.font = '12px "DM Sans", sans-serif';
+    ctx.save();
+    ctx.translate(margin.left - 40, margin.top + ph / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = 'center';
+    ctx.fillText('Private Valuation', 0, 0);
+    ctx.restore();
+    ctx.textAlign = 'center';
+    ctx.fillText('Public Market Multiple', margin.left + pw / 2, margin.top + ph + 40);
+
+    // Teal dots
+    ctx.globalAlpha = 1;
+    for (const dot of scatterTealDots) {
+      if (elapsed > dot.delay && !dot.appeared) { dot.appeared = true; }
+      if (dot.appeared) {
+        dot.scale = Math.min(dot.scale + 0.08, dot.targetScale);
+        ctx.beginPath();
+        ctx.arc(dot.x, dot.y, 6 * dot.scale, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(16,43,38,0.7)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(125,132,113,0.5)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+    }
+
+    // Regression line
+    const lineDelay = 2200;
+    if (elapsed > lineDelay) {
+      const lineProgress = Math.min((elapsed - lineDelay) / 600, 1);
+      ctx.setLineDash([6, 4]);
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = 'rgba(244,239,233,.5)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      const x1 = margin.left;
+      const y1 = margin.top + ph;
+      const x2 = margin.left + pw * lineProgress;
+      const y2 = margin.top + ph * (1 - 1.1 * lineProgress);
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, Math.max(y2, margin.top));
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // Gold dots (predictions)
+    for (const dot of scatterGoldDots) {
+      if (elapsed > dot.delay && !dot.appeared) { dot.appeared = true; }
+      if (dot.appeared) {
+        dot.scale = Math.min(dot.scale + 0.08, dot.targetScale);
+        ctx.globalAlpha = 1;
+        ctx.beginPath();
+        ctx.arc(dot.x, dot.y, 5 * dot.scale, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(212,165,116,0.8)';
+        ctx.fill();
+      }
+    }
+
+    // Counter
+    const counterDelay = 3200;
+    if (elapsed > counterDelay) {
+      const counterEl = document.getElementById('scatterCounter');
+      counterEl.style.opacity = '1';
+      const pctProgress = Math.min((elapsed - counterDelay) / 1000, 1);
+      const eased = 1 - Math.pow(1 - pctProgress, 3);
+      document.getElementById('scatterPct').textContent = '';
+    }
+
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(drawScatter);
+  }
+  requestAnimationFrame(drawScatter);
+}
+
+// ═══════════════════════════════════════════
+// SLIDE 6: DASHBOARD SELF-BUILD
+// ═══════════════════════════════════════════
+let dashInited = false;
+let dashPhase = 0; // 0=building, 1=transformed
+
+function initDashboard() {
+  if (dashInited) return;
+  dashInited = true;
+
+  const cards = document.querySelectorAll('.dash-card');
+  const delays = [0, 500, 1000, 1500, 2000, 2500];
+
+  // Card 0: Bar chart
+  const bars0 = document.getElementById('dashBars0');
+  const barHeights0 = [60, 85, 45, 70];
+  barHeights0.forEach((h, i) => {
+    const bar = document.createElement('div');
+    bar.className = 'dash-bar';
+    bar.style.height = h + '%';
+    bars0.appendChild(bar);
+    setTimeout(() => bar.classList.add('grown'), delays[0] + 300 + i * 120);
+  });
+
+  // Card 4: Bar chart
+  const bars4 = document.getElementById('dashBars4');
+  const barHeights4 = [50, 75, 90, 40, 65];
+  barHeights4.forEach((h, i) => {
+    const bar = document.createElement('div');
+    bar.className = 'dash-bar';
+    bar.style.height = h + '%';
+    bars4.appendChild(bar);
+    setTimeout(() => bar.classList.add('grown'), delays[4] + 300 + i * 100);
+  });
+
+  // Build cards sequentially
+  cards.forEach((card, i) => {
+    setTimeout(() => card.classList.add('built'), delays[i]);
+  });
+
+  // Card 1: Line chart draw
+  setTimeout(() => {
+    const points = [10, 35, 25, 60, 50, 75, 65, 85, 70, 90];
+    const polyline = document.getElementById('dashPolyline1');
+    const pointStr = points.map((p, i) => `${(i / (points.length - 1)) * 200},${100 - p}`).join(' ');
+    polyline.setAttribute('points', pointStr);
+    const len = polyline.getTotalLength();
+    polyline.style.strokeDasharray = len;
+    polyline.style.strokeDashoffset = len;
+    polyline.style.transition = 'stroke-dashoffset 1s var(--ease-expo)';
+    setTimeout(() => { polyline.style.strokeDashoffset = '0'; }, 100);
+  }, delays[1] + 200);
+
+  // Card 2: Big number counter
+  setTimeout(() => {
+    const el = document.getElementById('dashBigNum');
+    const start = performance.now();
+    function tick(now) {
+      const p = Math.min((now - start) / 1200, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = '$X.XB';
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }, delays[2] + 200);
+
+  // Card 3: Donut chart
+  setTimeout(() => {
+    const arc = document.getElementById('dashDonutArc');
+    arc.style.strokeDashoffset = '314' * 0.3; // 70% fill
+  }, delays[3] + 300);
+}
+
+function isDashboardActive() {
+  return current === DASHBOARD_SLIDE && dashPhase === 0 && dashInited;
+}
+
+function advanceDashboard() {
+  if (dashPhase !== 0) return;
+  dashPhase = 1;
+  // Transform card 5: old -> real-time
+  const status = document.getElementById('dashStatus');
+  status.textContent = 'REAL-TIME';
+  status.style.color = 'var(--gold)';
+  const card5 = document.getElementById('dashCard5');
+  card5.classList.add('ping');
+  setTimeout(() => card5.classList.remove('ping'), 1500);
+
+  // Re-animate other cards
+  const cards = document.querySelectorAll('.dash-card');
+  cards.forEach((card, i) => {
+    if (i === 5) return;
+    setTimeout(() => {
+      card.classList.add('ping');
+      setTimeout(() => card.classList.remove('ping'), 600);
+    }, i * 100);
+  });
+  // Show takeaway
+  showTakeaway(DASHBOARD_SLIDE);
+
+  // Re-grow bars with new heights
+  const bars0 = document.getElementById('dashBars0').querySelectorAll('.dash-bar');
+  const newH0 = [75, 55, 90, 60];
+  bars0.forEach((b, i) => {
+    b.classList.remove('grown');
+    b.style.height = newH0[i] + '%';
+    setTimeout(() => b.classList.add('grown'), 100 + i * 80);
+  });
+
+  const bars4 = document.getElementById('dashBars4').querySelectorAll('.dash-bar');
+  const newH4 = [80, 45, 70, 85, 55];
+  bars4.forEach((b, i) => {
+    b.classList.remove('grown');
+    b.style.height = newH4[i] + '%';
+    setTimeout(() => b.classList.add('grown'), 100 + i * 80);
+  });
+
+  // Update big number
+  const el = document.getElementById('dashBigNum');
+  const start = performance.now();
+  function tick(now) {
+    const p = Math.min((now - start) / 800, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = '$X.XB';
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  // Update donut
+  const arc = document.getElementById('dashDonutArc');
+  arc.style.strokeDashoffset = '314' * 0.25;
+}
+
+// ═══════════════════════════════════════════
+// SLIDE 8: NETWORK GROWTH (full viewport SVG)
+// ═══════════════════════════════════════════
+let networkInited = false;
+
+function initNetwork() {
+  if (networkInited) return;
+  networkInited = true;
+
+  const svg = document.getElementById('networkSvg');
+  const cx = 960, cy = 540;
+  const rings = [
+    { count: 6, radius: 160, r: 18, stroke: '#D4A574', fill: 'rgba(212,165,116,.15)', sw: 2, delay: 600 },
+    { count: 12, radius: 300, r: 12, stroke: 'rgba(244,239,233,.35)', fill: 'rgba(244,239,233,.06)', sw: 1.5, delay: 1400 },
+    { count: 18, radius: 440, r: 7, stroke: 'rgba(125,132,113,.4)', fill: 'rgba(125,132,113,.1)', sw: 1, delay: 2200 },
+  ];
+
+  // Center node
+  const centerG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  centerG.style.opacity = '0';
+  centerG.innerHTML = `
+    <circle cx="${cx}" cy="${cy}" r="28" fill="rgba(212,165,116,.15)" stroke="#D4A574" stroke-width="2.5"/>
+    <text x="${cx}" y="${cy + 5}" text-anchor="middle" fill="#D4A574" font-size="12" font-family="DM Sans" font-weight="600">BRAND</text>
+  `;
+  svg.appendChild(centerG);
+  setTimeout(() => {
+    centerG.style.transition = 'opacity .6s';
+    centerG.style.opacity = '1';
+  }, 200);
+
+  let allNodes = [{ x: cx, y: cy }]; // center
+  let prevRingNodes = [{ x: cx, y: cy }];
+
+  rings.forEach((ring, ri) => {
+    const ringNodes = [];
+    const angleOffset = ri * 0.3; // stagger rotation
+    for (let i = 0; i < ring.count; i++) {
+      const angle = (Math.PI * 2 / ring.count) * i + angleOffset;
+      const nx = cx + Math.cos(angle) * ring.radius;
+      const ny = cy + Math.sin(angle) * ring.radius;
+      ringNodes.push({ x: nx, y: ny });
+
+      // Line to nearest parent
+      const parent = prevRingNodes[Math.floor(i / (ring.count / prevRingNodes.length)) % prevRingNodes.length];
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', parent.x);
+      line.setAttribute('y1', parent.y);
+      line.setAttribute('x2', nx);
+      line.setAttribute('y2', ny);
+      line.setAttribute('stroke', ring.stroke);
+      line.setAttribute('stroke-width', ring.sw * 0.6);
+      line.setAttribute('opacity', '0.25');
+      if (ri > 0) {
+        line.setAttribute('stroke-dasharray', '4 4');
+      }
+      line.style.opacity = '0';
+      svg.appendChild(line);
+      const lineDelay = ring.delay + i * 100 - 50;
+      setTimeout(() => { line.style.transition = 'opacity .4s'; line.style.opacity = '1'; }, lineDelay);
+
+      // Node circle
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('cx', nx);
+      circle.setAttribute('cy', ny);
+      circle.setAttribute('r', ring.r);
+      circle.setAttribute('fill', ring.fill);
+      circle.setAttribute('stroke', ring.stroke);
+      circle.setAttribute('stroke-width', ring.sw);
+      circle.style.opacity = '0';
+      circle.style.transformOrigin = `${nx}px ${ny}px`;
+      circle.style.transform = 'scale(0)';
+
+      // Breathing animation for outer ring
+      if (ri === 2) {
+        const bx = (Math.random() - 0.5) * 6;
+        const by = (Math.random() - 0.5) * 6;
+        circle.style.setProperty('--bx', bx + 'px');
+        circle.style.setProperty('--by', by + 'px');
+      }
+
+      svg.appendChild(circle);
+      const nodeDelay = ring.delay + i * 100;
+      setTimeout(() => {
+        circle.style.transition = 'opacity .3s, transform .4s var(--ease-spring)';
+        circle.style.opacity = '1';
+        circle.style.transform = 'scale(1)';
+        if (ri === 2) {
+          setTimeout(() => {
+            circle.style.animation = `netBreathe ${3 + Math.random() * 2}s ease-in-out infinite`;
+          }, 400);
+        }
+      }, nodeDelay);
+    }
+    prevRingNodes = ringNodes;
+    allNodes = allNodes.concat(ringNodes);
+  });
+}
+
+// ═══════════════════════════════════════════
+// SLIDE 9: CONVERGENCE
+// ═══════════════════════════════════════════
+let convergeCanvas = null;
+let convergeCtx = null;
+let convergeActive = false;
+let convergeInited = false;
+let converging = false;
+let convergeDone = false;
+let convergeShapes = [];
+let convergeBurst = { active: false, time: 0 };
+
+function initConvergence() {
+  if (convergeInited) { convergeActive = true; return; }
+  convergeInited = true;
+  convergeCanvas = document.getElementById('convergeCanvas');
+  convergeCanvas.width = innerWidth;
+  convergeCanvas.height = innerHeight;
+  convergeCtx = convergeCanvas.getContext('2d');
+  convergeActive = true;
+
+  const cx = innerWidth / 2;
+  const cy = innerHeight / 2;
+
+  // Five shapes: eye, question mark, flask, web, circles
+  const shapes = [
+    { name: 'Observing', type: 'eye', x: cx - 300, y: cy - 200, vx: 0, vy: 0, phase: Math.random() * Math.PI * 2, freq: 0.3 + Math.random() * 0.2, ampX: 80 + Math.random() * 40, ampY: 60 + Math.random() * 30, baseX: cx - 300, baseY: cy - 200 },
+    { name: 'Questioning', type: 'question', x: cx + 280, y: cy - 180, vx: 0, vy: 0, phase: Math.random() * Math.PI * 2, freq: 0.25 + Math.random() * 0.2, ampX: 70 + Math.random() * 40, ampY: 50 + Math.random() * 30, baseX: cx + 280, baseY: cy - 180 },
+    { name: 'Experimenting', type: 'flask', x: cx - 250, y: cy + 200, vx: 0, vy: 0, phase: Math.random() * Math.PI * 2, freq: 0.35 + Math.random() * 0.2, ampX: 60 + Math.random() * 40, ampY: 70 + Math.random() * 30, baseX: cx - 250, baseY: cy + 200 },
+    { name: 'Networking', type: 'web', x: cx + 300, y: cy + 180, vx: 0, vy: 0, phase: Math.random() * Math.PI * 2, freq: 0.28 + Math.random() * 0.2, ampX: 75 + Math.random() * 40, ampY: 55 + Math.random() * 30, baseX: cx + 300, baseY: cy + 180 },
+    { name: 'Associating', type: 'circles', x: cx + 20, y: cy - 260, vx: 0, vy: 0, phase: Math.random() * Math.PI * 2, freq: 0.32 + Math.random() * 0.2, ampX: 65 + Math.random() * 40, ampY: 65 + Math.random() * 30, baseX: cx + 20, baseY: cy - 260 },
+  ];
+  convergeShapes = shapes;
+
+  requestAnimationFrame(drawConvergence);
+}
+
+function drawConvergence() {
+  if (!convergeActive) { requestAnimationFrame(drawConvergence); return; }
+  const ctx = convergeCtx;
+  const w = convergeCanvas.width;
+  const h = convergeCanvas.height;
+  const cx = w / 2;
+  const cy = h / 2;
+  const t = performance.now() / 1000;
+  ctx.clearRect(0, 0, w, h);
+
+  if (convergeBurst.active) {
+    const bt = (performance.now() - convergeBurst.time) / 1000;
+    // Radial gradient flash expanding
+    const radius = bt * 400;
+    const alpha = Math.max(0, 1 - bt * 1.2);
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+    grad.addColorStop(0, `rgba(212,165,116,${alpha * 0.5})`);
+    grad.addColorStop(0.5, `rgba(212,165,116,${alpha * 0.2})`);
+    grad.addColorStop(1, 'rgba(212,165,116,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Unified glow
+    if (bt > 0.5) {
+      const glowAlpha = Math.min((bt - 0.5) * 2, 0.4);
+      const gGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 80);
+      gGrad.addColorStop(0, `rgba(212,165,116,${glowAlpha})`);
+      gGrad.addColorStop(1, 'rgba(212,165,116,0)');
+      ctx.fillStyle = gGrad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 80, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    if (bt > 1.0 && !convergeDone) {
+      convergeDone = true;
+      // Skip AWARE name typing - go straight to takeaway
+      setTimeout(() => showTakeaway(CONVERGE_SLIDE), 800);
+    }
+
+    requestAnimationFrame(drawConvergence);
+    return;
+  }
+
+  const size = 40;
+
+  for (const s of convergeShapes) {
+    if (!converging) {
+      s.x = s.baseX + Math.sin(t * s.freq + s.phase) * s.ampX;
+      s.y = s.baseY + Math.cos(t * s.freq * 0.7 + s.phase + 1) * s.ampY;
+    } else {
+      // Spring force toward center
+      const dx = cx - s.x;
+      const dy = cy - s.y;
+      const k = 0.04;
+      const damping = 0.88;
+      s.vx = (s.vx + dx * k) * damping;
+      s.vy = (s.vy + dy * k) * damping;
+      s.x += s.vx;
+      s.y += s.vy;
+    }
+
+    // Check if all shapes near center
+    if (converging) {
+      const allClose = convergeShapes.every(sh => {
+        const ddx = cx - sh.x;
+        const ddy = cy - sh.y;
+        return Math.sqrt(ddx * ddx + ddy * ddy) < 20;
+      });
+      if (allClose && !convergeBurst.active) {
+        convergeBurst.active = true;
+        convergeBurst.time = performance.now();
+      }
+    }
+
+    ctx.globalAlpha = convergeBurst.active ? 0 : 0.55;
+    ctx.strokeStyle = '#D4A574';
+    ctx.fillStyle = 'rgba(212,165,116,0.15)';
+    ctx.lineWidth = 1.5;
+
+    switch (s.type) {
+      case 'eye':
+        // Eye shape
+        ctx.beginPath();
+        ctx.ellipse(s.x, s.y, size * 0.6, size * 0.3, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, size * 0.12, 0, Math.PI * 2);
+        ctx.fillStyle = '#D4A574';
+        ctx.fill();
+        ctx.fillStyle = 'rgba(212,165,116,0.15)';
+        break;
+      case 'question':
+        ctx.font = `${size}px orpheus-pro, serif`;
+        ctx.fillStyle = 'rgba(212,165,116,0.6)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('?', s.x, s.y);
+        ctx.fillStyle = 'rgba(212,165,116,0.15)';
+        break;
+      case 'flask':
+        // Simple flask/beaker
+        ctx.beginPath();
+        ctx.moveTo(s.x - size * 0.15, s.y - size * 0.4);
+        ctx.lineTo(s.x + size * 0.15, s.y - size * 0.4);
+        ctx.lineTo(s.x + size * 0.35, s.y + size * 0.3);
+        ctx.lineTo(s.x - size * 0.35, s.y + size * 0.3);
+        ctx.closePath();
+        ctx.stroke();
+        // Liquid
+        ctx.beginPath();
+        ctx.moveTo(s.x - size * 0.25, s.y + size * 0.05);
+        ctx.lineTo(s.x + size * 0.25, s.y + size * 0.05);
+        ctx.lineTo(s.x + size * 0.35, s.y + size * 0.3);
+        ctx.lineTo(s.x - size * 0.35, s.y + size * 0.3);
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(212,165,116,0.2)';
+        ctx.fill();
+        ctx.fillStyle = 'rgba(212,165,116,0.15)';
+        break;
+      case 'web':
+        // Network/web: dots + lines
+        const pts = [];
+        for (let i = 0; i < 5; i++) {
+          const angle = (Math.PI * 2 / 5) * i - Math.PI / 2;
+          pts.push({ x: s.x + Math.cos(angle) * size * 0.4, y: s.y + Math.sin(angle) * size * 0.4 });
+        }
+        // Lines between all
+        ctx.strokeStyle = 'rgba(212,165,116,0.3)';
+        for (let i = 0; i < pts.length; i++) {
+          for (let j = i + 1; j < pts.length; j++) {
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.stroke();
+          }
+        }
+        // Dots
+        ctx.fillStyle = '#D4A574';
+        for (const p of pts) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.strokeStyle = '#D4A574';
+        ctx.fillStyle = 'rgba(212,165,116,0.15)';
+        break;
+      case 'circles':
+        // Overlapping circles (Venn-like)
+        ctx.beginPath();
+        ctx.arc(s.x - size * 0.15, s.y, size * 0.25, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(s.x + size * 0.15, s.y, size * 0.25, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(s.x, s.y - size * 0.2, size * 0.25, 0, Math.PI * 2);
+        ctx.stroke();
+        break;
+    }
+  }
+
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(drawConvergence);
+}
+
+function typeConvergeName() {
+  const label = document.getElementById('convergeLabel');
+  label.style.transition = 'opacity .6s';
+  label.style.opacity = '1';
+  const nameEl = document.getElementById('convergeName');
+  const text = 'AWARE';
+  let i = 0;
+  function t() {
+    if (i < text.length) {
+      nameEl.textContent += text[i];
+      i++;
+      setTimeout(t, 120);
+    } else {
+      // Show skill labels
+      const skills = ['Associating', 'Questioning', 'Observing', 'Networking', 'Experimenting'];
+      const container = document.getElementById('convergeSkills');
+      skills.forEach(s => {
+        const span = document.createElement('span');
+        span.textContent = s;
+        span.style.cssText = 'font-size:clamp(11px,1.1vw,15px);color:rgba(212,165,116,.6);text-transform:uppercase;letter-spacing:2px;font-weight:500';
+        container.appendChild(span);
+      });
+      container.style.opacity = '1';
+    }
+  }
+  setTimeout(t, 300);
+}
+
+function isConvergeActive() {
+  return current === CONVERGE_SLIDE && !converging && convergeInited && !convergeDone;
+}
+
+function advanceConverge() {
+  converging = true;
+  convergeShapes.forEach(s => { s.vx = 0; s.vy = 0; });
+}
+
+// ═══════════════════════════════════════════
+// SLIDE 11: TERMINAL SESSION
+// ═══════════════════════════════════════════
+let terminalInited = false;
+let terminalDone = false;
+
+const terminalLines = [
+  { text: '$ claude', cls: 'term-cmd', delay: 0 },
+  { text: '', delay: 400 },
+  { text: '> morning-brief', cls: 'term-cmd', delay: 600 },
+  { text: '', delay: 200 },
+  { text: '  Loading calendar... 3 meetings today', delay: 100 },
+  { text: '  Loading tasks... 2 P0, 4 P1', delay: 100 },
+  { text: '  Loading email... 12 unread, 3 need response', delay: 100 },
+  { text: '', delay: 200 },
+  { text: '  \u2713 Brief ready.', cls: 'term-success', delay: 300 },
+  { text: '', delay: 500 },
+  { text: '> find-salons --city chicago --tags "holistic,organic"', cls: 'term-cmd', delay: 200 },
+  { text: '', delay: 200 },
+  { text: '  Searching Google Places... 47 results', delay: 100 },
+  { text: '  Enriching with websites... done', delay: 100 },
+  { text: '  Scoring fit...', delay: 100 },
+  { text: '  \u2713 Top 5 uploaded to outreach pipeline', cls: 'term-success', delay: 300 },
+  { text: '', delay: 500 },
+  { text: '> scalp-report --zip 90210', cls: 'term-cmd', delay: 200 },
+  { text: '', delay: 200 },
+  { text: '  UV Index: 8.2 (very high)', delay: 100 },
+  { text: '  Pollen: medium-high', delay: 100 },
+  { text: '  Air Quality: 42 (good)', delay: 100 },
+  { text: '  \u2713 Report generated (12,847 total served)', cls: 'term-success', delay: 200 },
+];
+
+function initTerminal() {
+  if (terminalInited) return;
+  terminalInited = true;
+
+  const body = document.getElementById('terminalBody');
+  let totalDelay = 0;
+
+  terminalLines.forEach((line, idx) => {
+    totalDelay += line.delay || 0;
+    const charTime = line.text.length * 25;
+
+    setTimeout(() => {
+      if (terminalDone) return;
+      if (line.text === '') {
+        body.innerHTML += '<br>';
+        return;
+      }
+      const span = document.createElement('span');
+      span.style.display = 'block';
+      if (line.cls) span.className = line.cls;
+
+      // Highlight numbers in gold
+      const processed = line.text.replace(/(\d[\d,.]*)/g, '<span class="term-num">$1</span>');
+
+      // Typewrite effect
+      let charIdx = 0;
+      const raw = line.text;
+      function typeChar() {
+        if (terminalDone) { span.innerHTML = processed; return; }
+        if (charIdx < raw.length) {
+          span.textContent += raw[charIdx];
+          charIdx++;
+          setTimeout(typeChar, 25);
+        } else {
+          // Apply rich formatting after typing completes
+          span.innerHTML = processed;
+        }
+      }
+      body.appendChild(span);
+      typeChar();
+
+      // Scroll to bottom
+      body.scrollTop = body.scrollHeight;
+    }, totalDelay);
+
+    totalDelay += charTime;
+  });
+}
+
+function skipTerminal() {
+  if (terminalDone) return;
+  terminalDone = true;
+  const body = document.getElementById('terminalBody');
+  body.innerHTML = '';
+  terminalLines.forEach(line => {
+    if (line.text === '') { body.innerHTML += '<br>'; return; }
+    const processed = line.text.replace(/(\d[\d,.]*)/g, '<span class="term-num">$1</span>');
+    body.innerHTML += `<span class="${line.cls || ''}" style="display:block">${processed}</span>`;
+  });
+}
+
+// ═══════════════════════════════════════════
+// KEYBOARD NAVIGATION
+// ═══════════════════════════════════════════
+addEventListener('keydown', e => {
+  if (e.target.closest('button')) return;
+
+  if (e.key === '/' || e.key === '?') { e.preventDefault(); toggleCmd(); return; }
+  if (cmdOpen) { if (e.key === 'Escape') toggleCmd(); return; }
+  if (e.key === 'q' || e.key === 'Q') { toggleQuiz(); return; }
+  if (quizOpen) { if (e.key === 'Escape') toggleQuiz(); return; }
+
+  if (e.key === 'r' || e.key === 'R') { revealContent(); return; }
+
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+    e.preventDefault();
+    if (isGlobeActive()) { advanceGlobe(); return; }
+    if (isWaterfallActive()) { advanceWaterfall(); return; }
+    if (isDashboardActive()) { advanceDashboard(); return; }
+    if (isConvergeActive()) { advanceConverge(); return; }
+    if (current === TERMINAL_SLIDE && terminalInited && !terminalDone) { skipTerminal(); return; }
+    goTo(current+1);
+  }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current-1); }
+  if (e.key === 'Home') goTo(0);
+  if (e.key === 'End') goTo(total-1);
+  if (e.key === 'Escape') goTo(0);
+
+  const d = parseInt(e.key);
+  if (d >= 1 && d <= 9 && d <= total) goTo(d-1);
+  if (e.key === '0' && total >= 10) goTo(9);
+});
+
+addEventListener('click', e => {
+  if (cmdOpen) { toggleCmd(); return; }
+  if (quizOpen && !e.target.closest('.skill-quiz-pill')) { toggleQuiz(); return; }
+  if (e.target.closest('a,button,.skill-quiz-pill,.cmd-panel')) return;
+  if (isGlobeActive()) { advanceGlobe(); return; }
+  if (isWaterfallActive()) { advanceWaterfall(); return; }
+  if (isDashboardActive()) { advanceDashboard(); return; }
+  if (isConvergeActive()) { advanceConverge(); return; }
+  if (current === TERMINAL_SLIDE && terminalInited && !terminalDone) { skipTerminal(); return; }
+  const x = e.clientX / innerWidth;
+  if (x < .33) goTo(current-1); else goTo(current+1);
+});
+
+let tx = 0;
+addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+addEventListener('touchend', e => {
+  if (e.target.closest('button')) return;
+  const d = tx - e.changedTouches[0].clientX;
+  if (Math.abs(d) > 50) { if (d > 0) goTo(current+1); else goTo(current-1); }
+});
+
+document.getElementById('progress').style.width = (1/total*100)+'%';
+
+// ═══════════════════════════════════════════
+// 3D GLOBE JOURNEY ANIMATION
+// ═══════════════════════════════════════════
+let globeInstance = null;
+let globeReady = false;
+let globeStep = -1;
+let globeAnimating = false;
+let globeArcs = [];
+let globePoints = [];
+let globeCountry = 0;
+
+const globeSteps = [
+  { type:'career', flag:'\u{1F1E8}\u{1F1F3}', name:'China', role:'Born', sub:'Dalian', lat:38.91, lng:121.60, alt:2.0 },
+  { type:'career', flag:'\u{1F1E8}\u{1F1E6}', name:'University of Waterloo', role:'Student', sub:'Canada', lat:43.47, lng:-80.52, alt:1.2 },
+  { type:'career', flag:'\u{1F3E2}', name:'Deloitte', role:'Consultant', sub:'Toronto, Canada', lat:43.65, lng:-79.38, alt:1.0 },
+  { type:'career', flag:'\u{1F309}', name:'Investment Fund', role:'Investment Analyst', sub:'San Francisco, USA', lat:37.77, lng:-122.42, alt:1.3 },
+  { type:'career', flag:'\u{1F5FD}', name:'Oliver Wyman', role:'Consultant', sub:'New York, USA', lat:40.71, lng:-74.01, alt:1.2 },
+  { type:'career', flag:'\u{1F1E6}\u{1F1EA}', name:'Oliver Wyman', role:'Consultant', sub:'Dubai, UAE', lat:25.20, lng:55.27, alt:1.8 },
+  { type:'career', flag:'\u{1F1E7}\u{1F1ED}', name:'Government Advisory', role:'Consultant', sub:'Middle East', lat:26.07, lng:50.55, alt:1.2 },
+  { type:'career', flag:'\u{1F1EE}\u{1F1F6}', name:'Multinational Telecom', role:'Strategy', sub:'Middle East', lat:33.31, lng:44.37, alt:1.2 },
+  { type:'travel' },
+  { type:'career', flag:'\u{1F1FA}\u{1F1F8}', name:'Los Angeles', role:'Co-Founder, AWARE Hair', sub:'California, USA', lat:34.05, lng:-118.24, alt:1.3 },
+];
+
+const travelPins = [
+  { lat:-33.92, lng:18.42, flag:'\u{1F1FF}\u{1F1E6}' }, { lat:-17.83, lng:31.05, flag:'\u{1F1FF}\u{1F1FC}' },
+  { lat:30.04, lng:31.24, flag:'\u{1F1EA}\u{1F1EC}' }, { lat:33.59, lng:-7.62, flag:'\u{1F1F2}\u{1F1E6}' },
+  { lat:-6.17, lng:35.74, flag:'\u{1F1F9}\u{1F1FF}' },
+  { lat:41.39, lng:2.17, flag:'\u{1F1EA}\u{1F1F8}' }, { lat:38.72, lng:-9.14, flag:'\u{1F1F5}\u{1F1F9}' },
+  { lat:48.86, lng:2.35, flag:'\u{1F1EB}\u{1F1F7}' }, { lat:51.51, lng:-0.13, flag:'\u{1F1EC}\u{1F1E7}' },
+  { lat:37.98, lng:23.73, flag:'\u{1F1EC}\u{1F1F7}' }, { lat:41.90, lng:12.50, flag:'\u{1F1EE}\u{1F1F9}' },
+  { lat:43.86, lng:15.41, flag:'\u{1F1ED}\u{1F1F7}' }, { lat:41.01, lng:28.98, flag:'\u{1F1F9}\u{1F1F7}' },
+  { lat:52.37, lng:4.90, flag:'\u{1F1F3}\u{1F1F1}' }, { lat:47.50, lng:19.04, flag:'\u{1F1ED}\u{1F1FA}' },
+  { lat:-33.87, lng:151.21, flag:'\u{1F1E6}\u{1F1FA}' }, { lat:13.76, lng:100.50, flag:'\u{1F1F9}\u{1F1ED}' },
+  { lat:14.60, lng:120.98, flag:'\u{1F1F5}\u{1F1ED}' }, { lat:10.82, lng:106.63, flag:'\u{1F1FB}\u{1F1F3}' },
+  { lat:35.68, lng:139.69, flag:'\u{1F1EF}\u{1F1F5}' }, { lat:37.57, lng:126.98, flag:'\u{1F1F0}\u{1F1F7}' },
+  { lat:-8.34, lng:115.09, flag:'\u{1F1EE}\u{1F1E9}' }, { lat:3.14, lng:101.69, flag:'\u{1F1F2}\u{1F1FE}' },
+  { lat:13.36, lng:103.86, flag:'\u{1F1F0}\u{1F1ED}' }, { lat:28.61, lng:77.21, flag:'\u{1F1EE}\u{1F1F3}' },
+];
+
+function initGlobe() {
+  if (globeInstance) return;
+  if (typeof Globe === 'undefined') return;
+  const container = document.getElementById('globe-container');
+  if (!container || container.clientWidth === 0) return;
+
+  globeInstance = Globe({
+    animateIn: false,
+    waitForGlobeReady: true
+  })(container)
+    .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
+    .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
+    .backgroundColor('rgba(0,0,0,0)')
+    .showAtmosphere(true)
+    .atmosphereColor('#D4A574')
+    .atmosphereAltitude(0.15)
+    .arcsData([])
+    .arcStartLat('startLat').arcStartLng('startLng')
+    .arcEndLat('endLat').arcEndLng('endLng')
+    .arcColor('color')
+    .arcAltitudeAutoScale(0.4)
+    .arcStroke(1.5)
+    .arcDashLength(0.6).arcDashGap(0.3)
+    .arcDashAnimateTime(2000)
+    .arcsTransitionDuration(800)
+    .pointsData([])
+    .pointLat('lat').pointLng('lng')
+    .pointColor(d => d.isTravel ? 'rgba(125,132,113,0.7)' : '#D4A574')
+    .pointAltitude(d => d.isFinal ? 0.06 : d.isTravel ? 0.01 : 0.04)
+    .pointRadius(d => d.isFinal ? 1.0 : d.isTravel ? 0.3 : 0.6)
+    .pointsMerge(false)
+    .pointsTransitionDuration(600)
+    .onGlobeReady(() => {
+      globeInstance.renderer().setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      globeInstance.pointOfView({ lat: 31, lng: 121, altitude: 2.5 }, 0);
+      const c = globeInstance.controls();
+      c.autoRotate = true; c.autoRotateSpeed = 0.3; c.enableZoom = false;
+      globeReady = true;
+    });
+}
+
+function advanceGlobe() {
+  if (!globeReady || globeAnimating) return false;
+  globeStep++;
+  if (globeStep >= globeSteps.length) return false;
+
+  const step = globeSteps[globeStep];
+  const card = document.getElementById('globeLocCard');
+  const counterNum = document.getElementById('globeCounterNum');
+  const nameEl = document.getElementById('globeName');
+  const roleEl = document.getElementById('globeRole');
+  const prompt = document.getElementById('globePrompt');
+
+  globeInstance.controls().autoRotate = false;
+  card.classList.remove('visible', 'final');
+
+  if (step.type === 'career') {
+    globeAnimating = true;
+    const CAM = 1400;
+
+    globeInstance.pointOfView({ lat: step.lat, lng: step.lng, altitude: step.alt }, CAM);
+
+    setTimeout(() => {
+      let prevCareer = null;
+      for (let j = globeStep - 1; j >= 0; j--) {
+        if (globeSteps[j].type === 'career') { prevCareer = globeSteps[j]; break; }
+      }
+      if (prevCareer) {
+        globeArcs = [...globeArcs, {
+          startLat: prevCareer.lat, startLng: prevCareer.lng,
+          endLat: step.lat, endLng: step.lng,
+          color: ['rgba(212,165,116,0)', 'rgba(212,165,116,0.8)']
+        }];
+        globeInstance.arcsData(globeArcs);
+      }
+
+      globePoints = [...globePoints, { lat: step.lat, lng: step.lng }];
+      globeInstance.pointsData(globePoints);
+
+      document.getElementById('globeLocFlag').textContent = step.flag;
+      document.getElementById('globeLocName').textContent = step.name;
+      document.getElementById('globeLocRole').textContent = step.role;
+      document.getElementById('globeLocSub').textContent = step.sub;
+      card.classList.add('visible');
+
+      globeCountry++;
+      counterNum.textContent = globeCountry;
+
+      if (globeStep === globeSteps.length - 1) {
+        setTimeout(() => {
+          nameEl.classList.add('visible');
+          roleEl.classList.add('visible');
+          prompt.textContent = 'Press \u2192 to continue';
+        }, 600);
+      }
+
+      globeAnimating = false;
+    }, CAM);
+
+  } else if (step.type === 'travel') {
+    globeAnimating = true;
+    card.classList.remove('visible');
+
+    globeInstance.pointOfView({ lat: 20, lng: 30, altitude: 2.6 }, 1500);
+    const controls = globeInstance.controls();
+    setTimeout(() => { controls.autoRotate = true; controls.autoRotateSpeed = 1.2; }, 1500);
+
+    const PIN_DELAY = 140;
+    travelPins.forEach((pin, i) => {
+      setTimeout(() => {
+        globePoints = [...globePoints, { lat: pin.lat, lng: pin.lng, isTravel: true }];
+        globeInstance.pointsData(globePoints);
+        globeCountry++;
+        counterNum.textContent = globeCountry;
+      }, 800 + i * PIN_DELAY);
+    });
+
+    const totalPinTime = 800 + travelPins.length * PIN_DELAY + 600;
+    setTimeout(() => {
+      controls.autoRotate = false;
+      document.getElementById('globeLocFlag').textContent = '\u{1F30D}';
+      document.getElementById('globeLocName').textContent = '30+ Countries';
+      document.getElementById('globeLocRole').textContent = 'Explored';
+      document.getElementById('globeLocSub').textContent = 'Africa, Europe, Asia, Australia';
+      card.classList.add('visible');
+      globeAnimating = false;
+    }, totalPinTime);
+  }
+
+  return true;
+}
+
+function isGlobeActive() {
+  if (current !== GLOBE_SLIDE || !globeReady) return false;
+  if (globeStep >= globeSteps.length - 1) return false;
+  return true;
+}
+
+// Show takeaway overlay on a slide
+function showTakeaway(slideIndex) {
+  const bar = document.getElementById('takeaway' + (slideIndex + 1));
+  if (bar) setTimeout(() => bar.classList.add('visible'), 500);
+}
+
+// Hide all takeaway overlays when leaving a slide
+function hideTakeaways() {
+  document.querySelectorAll('.takeaway-overlay.visible').forEach(b => b.classList.remove('visible'));
+}
+
+// Handle resize for canvas slides
+addEventListener('resize', () => {
+  if (waterfallCanvas) { waterfallCanvas.width = innerWidth; waterfallCanvas.height = innerHeight; }
+  if (scatterCanvas) { scatterCanvas.width = innerWidth; scatterCanvas.height = innerHeight; }
+  if (convergeCanvas) { convergeCanvas.width = innerWidth; convergeCanvas.height = innerHeight; }
+});
+
+/* Speaker notes and presenter tools removed for public version */
+
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

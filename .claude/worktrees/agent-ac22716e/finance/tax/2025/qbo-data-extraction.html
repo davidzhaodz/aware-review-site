@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - QBO Data Extraction &rarr; Form 1065</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0d14; --bg2: #10131c; --card: #161923; --card-border: #232738;
+  --card-hover: #1c2030; --text: #e2e4ea; --text-dim: #7c7f8e; --text-muted: #52556a;
+  --accent: #6366f1; --accent-light: #818cf8; --accent-glow: rgba(99,102,241,0.12);
+  --accent-border: rgba(99,102,241,0.3);
+  --red: #f43f5e; --red-dim: rgba(244,63,94,0.1); --red-border: rgba(244,63,94,0.25);
+  --amber: #f59e0b; --amber-dim: rgba(245,158,11,0.1); --amber-border: rgba(245,158,11,0.25);
+  --green: #10b981; --green-dim: rgba(16,185,129,0.1); --green-border: rgba(16,185,129,0.25);
+  --font: 'DM Sans', -apple-system, system-ui, sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', monospace;
+  --radius: 10px; --radius-sm: 6px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.55;min-height:100vh;}
+.container{max-width:1100px;margin:0 auto;padding:20px 24px 60px;}
+
+/* ── BREADCRUMB ── */
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);margin-bottom:16px;}
+.breadcrumb a{color:var(--accent);text-decoration:none;font-weight:500;}
+.breadcrumb a:hover{color:var(--accent-light);text-decoration:underline;}
+.breadcrumb .sep{color:var(--text-muted);}
+
+/* ── HEADER ── */
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:20px;}
+.page-title{font-size:20px;font-weight:800;letter-spacing:-0.5px;}
+.page-title span{color:var(--accent);}
+.page-subtitle{font-size:13px;color:var(--text-dim);margin-top:4px;}
+.header-actions{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* ── PROGRESS BAR ── */
+.progress-wrap{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:14px 18px;margin-bottom:20px;}
+.progress-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+.progress-top .p-label{font-size:13px;font-weight:600;}
+.progress-top .p-pct{font-size:13px;font-weight:700;color:var(--accent);font-family:var(--mono);}
+.prog-bar{height:6px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));border-radius:3px;transition:width .4s ease;}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.toolbar-btn{padding:7px 14px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;font-family:var(--font);cursor:pointer;border:1px solid var(--card-border);background:var(--card);color:var(--text-dim);transition:all .15s;letter-spacing:0.2px;}
+.toolbar-btn:hover{color:var(--text);background:var(--card-hover);border-color:rgba(255,255,255,0.1);}
+.toolbar-btn.accent{background:var(--accent-glow);color:var(--accent);border-color:var(--accent-border);}
+.toolbar-btn.accent:hover{background:rgba(99,102,241,0.2);}
+.toolbar-btn.danger{color:var(--red);border-color:var(--red-border);}
+.toolbar-btn.danger:hover{background:var(--red-dim);}
+
+/* ── SECTIONS ── */
+.section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);margin-bottom:16px;overflow:hidden;}
+.section-header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;}
+.section-header:hover{background:rgba(255,255,255,0.02);}
+.section-header h2{font-size:14px;font-weight:700;display:flex;align-items:center;gap:10px;}
+.section-num{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;background:var(--accent-glow);color:var(--accent);border:1px solid var(--accent-border);flex-shrink:0;}
+.section-toggle{font-size:18px;color:var(--text-muted);transition:transform .2s;line-height:1;}
+.section.collapsed .section-toggle{transform:rotate(-90deg);}
+.section.collapsed .section-body{display:none;}
+.section-body{padding:0 18px 18px;}
+.section-instructions{background:rgba(99,102,241,0.05);border:1px solid rgba(99,102,241,0.12);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:var(--accent-light);line-height:1.6;}
+.section-instructions code{background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:11px;}
+
+/* ── SUB-SECTIONS ── */
+.sub-section{margin-bottom:18px;}
+.sub-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,0.04);}
+
+/* ── DATA TABLE ── */
+.data-table{width:100%;border-collapse:collapse;}
+.data-table th{text-align:left;padding:6px 10px;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);font-weight:700;border-bottom:1px solid var(--card-border);background:rgba(255,255,255,0.02);}
+.data-table td{padding:5px 10px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:12px;vertical-align:middle;}
+.data-table tr:hover td{background:rgba(255,255,255,0.01);}
+.data-table .acct-num{font-family:var(--mono);font-size:11px;color:var(--text-muted);}
+.data-table .maps-to{font-size:10px;color:var(--text-muted);white-space:nowrap;}
+.data-table .total-row td{border-top:2px solid var(--card-border);font-weight:700;padding-top:8px;padding-bottom:8px;}
+.data-table .total-row .computed{color:var(--accent);font-family:var(--mono);font-size:13px;}
+.data-table .subtotal-row td{border-top:1px solid var(--card-border);font-weight:600;color:var(--text-dim);}
+
+/* ── INPUT FIELDS ── */
+.num-input{width:130px;padding:6px 10px;border-radius:var(--radius-sm);border:1px solid var(--card-border);background:var(--bg2);color:var(--text);font-family:var(--mono);font-size:12px;text-align:right;transition:border-color .15s,box-shadow .15s;outline:none;}
+.num-input:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-glow);}
+.num-input.has-value{border-color:rgba(99,102,241,0.2);}
+.num-input.readonly{background:rgba(255,255,255,0.02);border-color:transparent;color:var(--accent);font-weight:600;cursor:default;}
+.num-input.warning{border-color:var(--amber-border);background:var(--amber-dim);}
+
+/* ── BALANCE SHEET DUAL COLUMNS ── */
+.bs-table .boy{font-family:var(--mono);font-size:11px;color:var(--text-muted);text-align:right;padding-right:14px;}
+
+/* ── VENDOR TABLE ── */
+.vendor-table{width:100%;border-collapse:collapse;}
+.vendor-table th{text-align:left;padding:6px 10px;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);font-weight:700;border-bottom:1px solid var(--card-border);}
+.vendor-table td{padding:5px 10px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:12px;}
+.vendor-input{width:100%;padding:6px 10px;border-radius:var(--radius-sm);border:1px solid var(--card-border);background:var(--bg2);color:var(--text);font-family:var(--font);font-size:12px;outline:none;}
+.vendor-input:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-glow);}
+.vendor-check{width:16px;height:16px;accent-color:var(--accent);}
+.add-row-btn{padding:6px 14px;border-radius:var(--radius-sm);font-size:11px;font-weight:600;font-family:var(--font);cursor:pointer;border:1px dashed var(--card-border);background:transparent;color:var(--text-dim);margin-top:8px;transition:all .15s;}
+.add-row-btn:hover{border-color:var(--accent-border);color:var(--accent);}
+
+/* ── SUMMARY CARDS ── */
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;}
+.summary-card{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);padding:16px 18px;}
+.summary-card h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:var(--text-dim);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,0.04);}
+.summary-line{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;font-size:12px;}
+.summary-line .sl-label{color:var(--text-dim);}
+.summary-line .sl-value{font-family:var(--mono);font-weight:600;}
+.summary-line.bold{font-weight:700;}
+.summary-line.bold .sl-label{color:var(--text);}
+.summary-line.bold .sl-value{color:var(--accent);font-size:13px;}
+.summary-line.indent .sl-label{padding-left:16px;font-size:11px;}
+.summary-sep{border:none;border-top:1px solid rgba(255,255,255,0.04);margin:6px 0;}
+
+/* ── VALIDATIONS ── */
+.validation-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;}
+.val-card{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius);border:1px solid var(--card-border);background:var(--bg2);transition:all .15s;}
+.val-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;}
+.val-card.pass .val-icon{background:var(--green-dim);color:var(--green);}
+.val-card.fail .val-icon{background:var(--red-dim);color:var(--red);}
+.val-card.neutral .val-icon{background:rgba(255,255,255,0.04);color:var(--text-muted);}
+.val-card.pass{border-color:var(--green-border);}
+.val-card.fail{border-color:var(--red-border);}
+.val-text{font-size:12px;font-weight:500;}
+.val-detail{font-size:10px;color:var(--text-muted);margin-top:2px;}
+
+/* ── EXPORT SECTION ── */
+.export-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;}
+.export-card{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);padding:18px;text-align:center;cursor:pointer;transition:all .15s;}
+.export-card:hover{border-color:var(--accent-border);background:var(--accent-glow);}
+.export-card .ec-icon{font-size:24px;margin-bottom:8px;}
+.export-card .ec-title{font-size:13px;font-weight:700;margin-bottom:4px;}
+.export-card .ec-desc{font-size:11px;color:var(--text-dim);}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--card);border:1px solid var(--green-border);border-radius:var(--radius);padding:12px 20px;font-size:13px;font-weight:600;color:var(--green);box-shadow:0 8px 32px rgba(0,0,0,0.4);transform:translateY(80px);opacity:0;transition:all .3s ease;z-index:1000;pointer-events:none;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* ── CONFIRM MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:999;}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:24px;max-width:380px;width:90%;text-align:center;}
+.modal h3{font-size:15px;font-weight:700;margin-bottom:8px;}
+.modal p{font-size:13px;color:var(--text-dim);margin-bottom:18px;}
+.modal-actions{display:flex;gap:10px;justify-content:center;}
+
+/* ── PRINT ── */
+@media print{
+  body{background:#fff;color:#111;font-size:11px;}
+  .container{max-width:100%;padding:10px;}
+  .breadcrumb,.toolbar,.section-toggle,.num-input,.add-row-btn,.export-grid,.modal-overlay,.toast,.header-actions,.progress-wrap{display:none!important;}
+  .section,.summary-card,.val-card{break-inside:avoid;border:1px solid #ddd;background:#fff;}
+  .section.collapsed .section-body{display:block!important;}
+  .section-header{cursor:default;padding:10px 14px;}
+  .section-header h2{font-size:13px;}
+  .section-num{background:#eee;color:#333;border-color:#ccc;}
+  .data-table th{background:#f5f5f5;color:#666;}
+  .num-input.readonly{background:transparent;color:#111;border:none;padding:0;text-align:right;}
+  .computed-display{font-family:var(--mono);font-size:12px;font-weight:700;text-align:right;}
+  .summary-line .sl-value{color:#111;}
+  .val-card.pass{border-color:#10b981;}
+  .val-card.fail{border-color:#f43f5e;}
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .container{padding:14px 12px 40px;}
+  .page-header{flex-direction:column;}
+  .num-input{width:100px;}
+  .summary-grid{grid-template-columns:1fr;}
+  .validation-grid{grid-template-columns:1fr;}
+  .export-grid{grid-template-columns:1fr;}
+  .data-table{font-size:11px;}
+  .data-table th,.data-table td{padding:4px 6px;}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- BREADCRUMB -->
+  <nav class="breadcrumb">
+    <a href="tax-dashboard.html">Tax Command Center</a>
+    <span class="sep">/</span>
+    <span>QBO Data Extraction</span>
+  </nav>
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <div class="page-title">QBO Data <span>Extraction</span></div>
+      <div class="page-subtitle">Enter QBO report values below. All 1065 lines auto-compute in real time.</div>
+    </div>
+    <div class="header-actions">
+      <a href="tax-dashboard.html" class="toolbar-btn">Back to Dashboard</a>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-top">
+      <span class="p-label">Fields Completed</span>
+      <span class="p-pct" id="progressPct">0 / 0</span>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <button class="toolbar-btn" onclick="toggleAllSections(true)">Expand All</button>
+    <button class="toolbar-btn" onclick="toggleAllSections(false)">Collapse All</button>
+    <button class="toolbar-btn accent" onclick="scrollToSummary()">View Summary</button>
+    <div style="flex:1"></div>
+    <button class="toolbar-btn danger" onclick="confirmClear()">Clear All</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SECTION 1: P&L REPORT DATA                     -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="section" id="sec-pl">
+    <div class="section-header" onclick="toggleSection('sec-pl')">
+      <h2><span class="section-num">1</span> Profit & Loss Report</h2>
+      <span class="section-toggle">&#9660;</span>
+    </div>
+    <div class="section-body">
+      <div class="section-instructions">
+        Open QBO &rarr; <code>Reports</code> &rarr; <code>Profit and Loss</code> &rarr; Date range: <code>Jan 1 - Dec 31, 2025</code>. Enter each line below as it appears in QBO.
+      </div>
+
+      <!-- Revenue -->
+      <div class="sub-section">
+        <div class="sub-title">Revenue</div>
+        <table class="data-table">
+          <thead><tr><th>QBO Account</th><th>Acct #</th><th>Amount</th><th>Maps To</th></tr></thead>
+          <tbody>
+            <tr><td>Product Sales - B2B</td><td class="acct-num">4000</td><td><input class="num-input" data-key="rev_b2b" data-group="revenue"></td><td class="maps-to">Line 1a (part)</td></tr>
+            <tr><td>Product Sales - DTC</td><td class="acct-num">4001</td><td><input class="num-input" data-key="rev_dtc" data-group="revenue"></td><td class="maps-to">Line 1a (part)</td></tr>
+            <tr><td>Shipping Income</td><td class="acct-num">4100</td><td><input class="num-input" data-key="rev_shipping" data-group="revenue"></td><td class="maps-to">Line 1a (part)</td></tr>
+            <tr><td>Other Income</td><td class="acct-num">4200</td><td><input class="num-input" data-key="rev_other" data-group="revenue"></td><td class="maps-to">Line 7</td></tr>
+            <tr><td>Interest Income</td><td class="acct-num">7000</td><td><input class="num-input" data-key="rev_interest" data-group="revenue"></td><td class="maps-to">Line 7 (part)</td></tr>
+            <tr class="total-row"><td colspan="2"><strong>Total Gross Receipts</strong></td><td><input class="num-input readonly" id="calc_gross_receipts" readonly></td><td class="maps-to"><strong>Line 1a</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Contra Revenue -->
+      <div class="sub-section">
+        <div class="sub-title">Contra Revenue</div>
+        <table class="data-table">
+          <thead><tr><th>QBO Account</th><th>Acct #</th><th>Amount</th><th>Maps To</th></tr></thead>
+          <tbody>
+            <tr><td>Returns & Refunds</td><td class="acct-num">4901</td><td><input class="num-input" data-key="contra_returns" data-group="contra"></td><td class="maps-to">Line 2 (part)</td></tr>
+            <tr><td>Discounts Given</td><td class="acct-num">4900</td><td><input class="num-input" data-key="contra_discounts" data-group="contra"></td><td class="maps-to">Line 2 (part)</td></tr>
+            <tr class="total-row"><td colspan="2"><strong>Total Returns/Allowances</strong></td><td><input class="num-input readonly" id="calc_returns" readonly></td><td class="maps-to"><strong>Line 2</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- COGS -->
+      <div class="sub-section">
+        <div class="sub-title">Cost of Goods Sold</div>
+        <table class="data-table">
+          <thead><tr><th>QBO Account</th><th>Acct #</th><th>Amount</th><th>Maps To</th></tr></thead>
+          <tbody>
+            <tr><td>Product Cost</td><td class="acct-num">5001</td><td><input class="num-input" data-key="cogs_product" data-group="cogs"></td><td class="maps-to">Schedule A</td></tr>
+            <tr><td>Packaging Cost</td><td class="acct-num">5002</td><td><input class="num-input" data-key="cogs_packaging" data-group="cogs"></td><td class="maps-to">Schedule A</td></tr>
+            <tr><td>Freight In</td><td class="acct-num">5003</td><td><input class="num-input" data-key="cogs_freight" data-group="cogs"></td><td class="maps-to">Schedule A</td></tr>
+            <tr><td>Inventory Adjustments</td><td class="acct-num">5100</td><td><input class="num-input" data-key="cogs_inv_adj" data-group="cogs"></td><td class="maps-to">Schedule A</td></tr>
+            <tr class="total-row"><td colspan="2"><strong>Total COGS</strong></td><td><input class="num-input readonly" id="calc_cogs" readonly></td><td class="maps-to"><strong>Line 4</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Expenses -->
+      <div class="sub-section">
+        <div class="sub-title">Operating Expenses</div>
+        <table class="data-table">
+          <thead><tr><th>QBO Account</th><th>Acct #</th><th>Amount</th><th>Maps To</th></tr></thead>
+          <tbody>
+            <tr><td>Advertising & Marketing</td><td class="acct-num">6000</td><td><input class="num-input" data-key="exp_advertising" data-group="exp20"></td><td class="maps-to">Line 20</td></tr>
+            <tr><td>Trade Shows & Events</td><td class="acct-num">6001</td><td><input class="num-input" data-key="exp_tradeshows" data-group="exp20"></td><td class="maps-to">Line 20</td></tr>
+            <tr><td>Samples & Giveaways</td><td class="acct-num">6002</td><td><input class="num-input" data-key="exp_samples" data-group="exp20"></td><td class="maps-to">Line 20</td></tr>
+            <tr><td>Design Services</td><td class="acct-num">6003</td><td><input class="num-input" data-key="exp_design" data-group="exp20"></td><td class="maps-to">Line 20</td></tr>
+            <tr><td>Photography</td><td class="acct-num">6004</td><td><input class="num-input" data-key="exp_photography" data-group="exp20"></td><td class="maps-to">Line 20</td></tr>
+            <tr><td>Shipping & Delivery</td><td class="acct-num">6100</td><td><input class="num-input" data-key="exp_shipping" data-group="exp20"></td><td class="maps-to">Line 20</td></tr>
+            <tr><td>Packaging Materials</td><td class="acct-num">6101</td><td><input class="num-input" data-key="exp_packaging" data-group="exp20"></td><td class="maps-to">Line 20</td></tr>
+            <tr><td>Software Subscriptions</td><td class="acct-num">6200</td><td><input class="num-input" data-key="exp_software" data-group="exp20"></td><td class="maps-to">Line 20</td></tr>
+            <tr><td>Website Hosting</td><td class="acct-num">6201</td><td><input class="num-input" data-key="exp_website" data-group="exp20"></td><td class="maps-to">Line 20</td></tr>
+            <tr><td>Payment Processing</td><td class="acct-num">6202</td><td><input class="num-input" data-key="exp_payment_proc" data-group="exp20"></td><td class="maps-to">Line 20</td></tr>
+            <tr><td>Professional Services</td><td class="acct-num">6300</td><td><input class="num-input" data-key="exp_professional" data-group="exp20"></td><td class="maps-to">Line 20</td></tr>
+            <tr><td>Legal Fees</td><td class="acct-num">6301</td><td><input class="num-input" data-key="exp_legal" data-group="exp20"></td><td class="maps-to">Line 20</td></tr>
+            <tr><td>Accounting Fees</td><td class="acct-num">6302</td><td><input class="num-input" data-key="exp_accounting" data-group="exp20"></td><td class="maps-to">Line 20</td></tr>
+            <tr><td>Contractor Payments</td><td class="acct-num">6303</td><td><input class="num-input" data-key="exp_contractors" data-group="exp20"></td><td class="maps-to">Line 20</td></tr>
+            <tr><td>Travel</td><td class="acct-num">6400</td><td><input class="num-input" data-key="exp_travel" data-group="exp20"></td><td class="maps-to">Line 20</td></tr>
+            <tr><td>Meals - Business <span style="font-size:10px;color:var(--amber)">(enter full, 50% deductible)</span></td><td class="acct-num">6401</td><td><input class="num-input" data-key="exp_meals" data-group="exp_meals"></td><td class="maps-to">Line 20</td></tr>
+            <tr class="subtotal-row"><td colspan="2">Subtotal Line 20 Expenses</td><td><input class="num-input readonly" id="calc_line20" readonly></td><td class="maps-to">Line 20</td></tr>
+
+            <tr><td colspan="4" style="padding:8px 0 4px;border:none;"></td></tr>
+
+            <tr><td>Office Supplies</td><td class="acct-num">6500</td><td><input class="num-input" data-key="exp_office_supplies" data-group="exp18"></td><td class="maps-to">Line 18</td></tr>
+            <tr><td>Office Equipment</td><td class="acct-num">6501</td><td><input class="num-input" data-key="exp_office_equip" data-group="exp18"></td><td class="maps-to">Line 18</td></tr>
+            <tr class="subtotal-row"><td colspan="2">Subtotal Line 18 Expenses</td><td><input class="num-input readonly" id="calc_line18" readonly></td><td class="maps-to">Line 18</td></tr>
+
+            <tr><td colspan="4" style="padding:8px 0 4px;border:none;"></td></tr>
+
+            <tr><td>Insurance - General</td><td class="acct-num">6600</td><td><input class="num-input" data-key="exp_insurance_gen" data-group="exp15"></td><td class="maps-to">Line 15</td></tr>
+            <tr><td>Insurance - Product</td><td class="acct-num">6601</td><td><input class="num-input" data-key="exp_insurance_prod" data-group="exp15"></td><td class="maps-to">Line 15</td></tr>
+            <tr><td>Interest Expense</td><td class="acct-num">6801</td><td><input class="num-input" data-key="exp_interest" data-group="exp15"></td><td class="maps-to">Line 15</td></tr>
+            <tr class="subtotal-row"><td colspan="2">Subtotal Line 15 Expenses</td><td><input class="num-input readonly" id="calc_line15" readonly></td><td class="maps-to">Line 15</td></tr>
+
+            <tr><td colspan="4" style="padding:8px 0 4px;border:none;"></td></tr>
+
+            <tr><td>Taxes - Franchise</td><td class="acct-num">6700</td><td><input class="num-input" data-key="exp_tax_franchise" data-group="exp14"></td><td class="maps-to">Line 14</td></tr>
+            <tr><td>Taxes - Other</td><td class="acct-num">6701</td><td><input class="num-input" data-key="exp_tax_other" data-group="exp14"></td><td class="maps-to">Line 14</td></tr>
+            <tr><td>Licenses & Permits</td><td class="acct-num">6702</td><td><input class="num-input" data-key="exp_licenses" data-group="exp14"></td><td class="maps-to">Line 14</td></tr>
+            <tr class="subtotal-row"><td colspan="2">Subtotal Line 14 Expenses</td><td><input class="num-input readonly" id="calc_line14" readonly></td><td class="maps-to">Line 14</td></tr>
+
+            <tr><td colspan="4" style="padding:8px 0 4px;border:none;"></td></tr>
+
+            <tr><td>Bank Service Charges</td><td class="acct-num">6800</td><td><input class="num-input" data-key="exp_bank_charges" data-group="exp20b"></td><td class="maps-to">Line 20</td></tr>
+            <tr><td>Credit Card Fees</td><td class="acct-num">6802</td><td><input class="num-input" data-key="exp_cc_fees" data-group="exp20b"></td><td class="maps-to">Line 20</td></tr>
+
+            <tr><td colspan="4" style="padding:8px 0 4px;border:none;"></td></tr>
+
+            <tr><td>Guaranteed Payments</td><td class="acct-num">&mdash;</td><td><input class="num-input" data-key="exp_guaranteed" data-group="exp_special"></td><td class="maps-to">Line 10</td></tr>
+            <tr><td>Rent / Lease</td><td class="acct-num">&mdash;</td><td><input class="num-input" data-key="exp_rent" data-group="exp_special"></td><td class="maps-to">Line 13</td></tr>
+            <tr><td>Depreciation</td><td class="acct-num">&mdash;</td><td><input class="num-input" data-key="exp_depreciation" data-group="exp_special"></td><td class="maps-to">Line 16c</td></tr>
+
+            <tr class="total-row"><td colspan="2"><strong>Total Expenses</strong></td><td><input class="num-input readonly" id="calc_total_exp" readonly></td><td class="maps-to"></td></tr>
+            <tr class="total-row"><td colspan="2"><strong>Net Income (Loss)</strong></td><td><input class="num-input readonly" id="calc_net_income" readonly></td><td class="maps-to"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SECTION 2: BALANCE SHEET                        -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="section" id="sec-bs">
+    <div class="section-header" onclick="toggleSection('sec-bs')">
+      <h2><span class="section-num">2</span> Balance Sheet</h2>
+      <span class="section-toggle">&#9660;</span>
+    </div>
+    <div class="section-body">
+      <div class="section-instructions">
+        Open QBO &rarr; <code>Reports</code> &rarr; <code>Balance Sheet</code> &rarr; As of: <code>December 31, 2025</code>. Beginning of Year values are pre-filled from TY2024 ending balances.
+      </div>
+
+      <!-- Assets -->
+      <div class="sub-section">
+        <div class="sub-title">Assets</div>
+        <table class="data-table bs-table">
+          <thead><tr><th>Account</th><th style="text-align:right;padding-right:14px">Beginning of Year</th><th>End of Year</th></tr></thead>
+          <tbody>
+            <tr><td>Cash (Checking 1000 + Savings 1001)</td><td class="boy">$40,338</td><td><input class="num-input" data-key="bs_cash" data-group="bs_assets" data-boy="40338"></td></tr>
+            <tr><td>Accounts Receivable (1100)</td><td class="boy">$2,803</td><td><input class="num-input" data-key="bs_ar" data-group="bs_assets" data-boy="2803"></td></tr>
+            <tr><td>Inventory (1200)</td><td class="boy">$82,362</td><td><input class="num-input" data-key="bs_inventory" data-group="bs_assets" data-boy="82362"></td></tr>
+            <tr><td>Prepaid Expenses (1300)</td><td class="boy">$4,997</td><td><input class="num-input" data-key="bs_prepaid" data-group="bs_assets" data-boy="4997"></td></tr>
+            <tr><td>Loans to Partners</td><td class="boy">$6,581</td><td><input class="num-input" data-key="bs_loans_partner" data-group="bs_assets" data-boy="6581"></td></tr>
+            <tr><td>Equipment (1500) gross</td><td class="boy">$21,538</td><td><input class="num-input" data-key="bs_equipment" data-group="bs_assets" data-boy="21538"></td></tr>
+            <tr><td>Accumulated Depreciation (1501)</td><td class="boy">($455)</td><td><input class="num-input" data-key="bs_accum_depr" data-group="bs_assets_neg" data-boy="-455"></td></tr>
+            <tr><td>Intangible Assets gross</td><td class="boy">$74,072</td><td><input class="num-input" data-key="bs_intangibles" data-group="bs_assets" data-boy="74072"></td></tr>
+            <tr><td>Accumulated Amortization</td><td class="boy">($2,862)</td><td><input class="num-input" data-key="bs_accum_amort" data-group="bs_assets_neg" data-boy="-2862"></td></tr>
+            <tr><td>Other Assets</td><td class="boy">$27,050</td><td><input class="num-input" data-key="bs_other_assets" data-group="bs_assets" data-boy="27050"></td></tr>
+            <tr class="total-row"><td><strong>Total Assets</strong></td><td class="boy" style="font-weight:700">$256,424</td><td><input class="num-input readonly" id="calc_total_assets" readonly></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Liabilities -->
+      <div class="sub-section">
+        <div class="sub-title">Liabilities</div>
+        <table class="data-table bs-table">
+          <thead><tr><th>Account</th><th style="text-align:right;padding-right:14px">Beginning of Year</th><th>End of Year</th></tr></thead>
+          <tbody>
+            <tr><td>Accounts Payable (2000)</td><td class="boy">$1,331</td><td><input class="num-input" data-key="bs_ap" data-group="bs_liab" data-boy="1331"></td></tr>
+            <tr><td>Sales Tax Payable (2200)</td><td class="boy">$0</td><td><input class="num-input" data-key="bs_sales_tax" data-group="bs_liab" data-boy="0"></td></tr>
+            <tr><td>Other Current Liabilities</td><td class="boy">$1,058</td><td><input class="num-input" data-key="bs_other_current" data-group="bs_liab" data-boy="1058"></td></tr>
+            <tr><td>Partner Loans (&gt;1yr)</td><td class="boy">$54,980</td><td><input class="num-input" data-key="bs_partner_loans" data-group="bs_liab" data-boy="54980"></td></tr>
+            <tr class="total-row"><td><strong>Total Liabilities</strong></td><td class="boy" style="font-weight:700">$57,369</td><td><input class="num-input readonly" id="calc_total_liab" readonly></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Equity -->
+      <div class="sub-section">
+        <div class="sub-title">Equity</div>
+        <table class="data-table bs-table">
+          <thead><tr><th>Account</th><th style="text-align:right;padding-right:14px">Beginning of Year</th><th>End of Year</th></tr></thead>
+          <tbody>
+            <tr><td>Partners' Capital (total)</td><td class="boy">$199,055</td><td><input class="num-input" data-key="bs_partners_cap" data-group="bs_equity" data-boy="199055"></td></tr>
+            <tr><td>Retained Earnings <span id="re-warn" style="font-size:10px;color:var(--amber);display:none">(should be $0)</span></td><td class="boy">$0</td><td><input class="num-input" data-key="bs_retained" data-group="bs_equity" data-boy="0"></td></tr>
+            <tr class="total-row"><td><strong>Total Equity</strong></td><td class="boy" style="font-weight:700">$199,055</td><td><input class="num-input readonly" id="calc_total_equity" readonly></td></tr>
+            <tr class="total-row"><td><strong>Total Liabilities + Equity</strong></td><td class="boy" style="font-weight:700">$256,424</td><td><input class="num-input readonly" id="calc_total_le" readonly></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SECTION 3: VENDOR SUMMARY                       -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="section" id="sec-vendor">
+    <div class="section-header" onclick="toggleSection('sec-vendor')">
+      <h2><span class="section-num">3</span> Vendor Summary (1099 Cross-Reference)</h2>
+      <span class="section-toggle">&#9660;</span>
+    </div>
+    <div class="section-body">
+      <div class="section-instructions">
+        Open QBO &rarr; <code>Reports</code> &rarr; <code>Expenses by Vendor Summary</code> &rarr; Date range: <code>Jan 1 - Dec 31, 2025</code>. Enter vendors paid $600+ for 1099 cross-reference.
+      </div>
+      <table class="vendor-table" id="vendorTable">
+        <thead><tr><th style="width:40%">Vendor Name</th><th style="width:35%">Total Paid 2025</th><th style="width:25%;text-align:center">1099 Filed?</th></tr></thead>
+        <tbody id="vendorBody"></tbody>
+      </table>
+      <button class="add-row-btn" onclick="addVendorRow()">+ Add Vendor Row</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SECTION 4: AUTO-GENERATED SUMMARY               -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="section" id="sec-summary">
+    <div class="section-header" onclick="toggleSection('sec-summary')">
+      <h2><span class="section-num">4</span> Auto-Generated Summary</h2>
+      <span class="section-toggle">&#9660;</span>
+    </div>
+    <div class="section-body">
+      <div class="summary-grid" id="summaryGrid">
+
+        <!-- 1065 Page 1 -->
+        <div class="summary-card">
+          <h3>Form 1065 Page 1</h3>
+          <div class="summary-line"><span class="sl-label">Line 1a - Gross Receipts</span><span class="sl-value" id="s_1a">-</span></div>
+          <div class="summary-line"><span class="sl-label">Line 2 - Returns/Allowances</span><span class="sl-value" id="s_2">-</span></div>
+          <div class="summary-line bold"><span class="sl-label">Line 3 - Gross Profit (after returns)</span><span class="sl-value" id="s_3">-</span></div>
+          <div class="summary-line"><span class="sl-label">Line 4 - COGS</span><span class="sl-value" id="s_4">-</span></div>
+          <div class="summary-line bold"><span class="sl-label">Line 5 - Gross Profit (after COGS)</span><span class="sl-value" id="s_5">-</span></div>
+          <hr class="summary-sep">
+          <div class="summary-line"><span class="sl-label">Line 7 - Other Income</span><span class="sl-value" id="s_7">-</span></div>
+          <div class="summary-line bold"><span class="sl-label">Line 8 - Total Income</span><span class="sl-value" id="s_8">-</span></div>
+          <hr class="summary-sep">
+          <div class="summary-line"><span class="sl-label">Line 10 - Guaranteed Payments</span><span class="sl-value" id="s_10">-</span></div>
+          <div class="summary-line"><span class="sl-label">Line 13 - Rent</span><span class="sl-value" id="s_13">-</span></div>
+          <div class="summary-line"><span class="sl-label">Line 14 - Taxes & Licenses</span><span class="sl-value" id="s_14">-</span></div>
+          <div class="summary-line"><span class="sl-label">Line 15 - Insurance + Interest</span><span class="sl-value" id="s_15">-</span></div>
+          <div class="summary-line"><span class="sl-label">Line 16c - Depreciation</span><span class="sl-value" id="s_16c">-</span></div>
+          <div class="summary-line"><span class="sl-label">Line 18 - Office Expenses</span><span class="sl-value" id="s_18">-</span></div>
+          <div class="summary-line"><span class="sl-label">Line 20 - Other Deductions</span><span class="sl-value" id="s_20">-</span></div>
+          <hr class="summary-sep">
+          <div class="summary-line bold"><span class="sl-label">Line 22 - Total Deductions</span><span class="sl-value" id="s_22">-</span></div>
+          <div class="summary-line bold"><span class="sl-label">Line 23 - Ordinary Income (Loss)</span><span class="sl-value" id="s_23">-</span></div>
+        </div>
+
+        <!-- Schedule L -->
+        <div class="summary-card">
+          <h3>Schedule L (Balance Sheet)</h3>
+          <div class="summary-line bold"><span class="sl-label">Total Assets (EOY)</span><span class="sl-value" id="s_l_assets">-</span></div>
+          <div class="summary-line bold"><span class="sl-label">Total Liabilities (EOY)</span><span class="sl-value" id="s_l_liab">-</span></div>
+          <div class="summary-line bold"><span class="sl-label">Total Equity (EOY)</span><span class="sl-value" id="s_l_equity">-</span></div>
+          <div class="summary-line bold"><span class="sl-label">Liab + Equity</span><span class="sl-value" id="s_l_le">-</span></div>
+          <hr class="summary-sep">
+          <h3 style="margin-top:12px">Schedule M-1 (Book/Tax Reconciliation)</h3>
+          <div class="summary-line"><span class="sl-label">Net income per books</span><span class="sl-value" id="s_m1_books">-</span></div>
+          <div class="summary-line indent"><span class="sl-label">+ 50% meals disallowance</span><span class="sl-value" id="s_m1_meals">-</span></div>
+          <div class="summary-line indent"><span class="sl-label">+ Penalties (if any)</span><span class="sl-value" id="s_m1_penalties">-</span></div>
+          <div class="summary-line bold"><span class="sl-label">= Income per return</span><span class="sl-value" id="s_m1_return">-</span></div>
+          <hr class="summary-sep">
+          <h3 style="margin-top:12px">Schedule M-2 (Capital Account)</h3>
+          <div class="summary-line"><span class="sl-label">Beginning capital</span><span class="sl-value">$199,055</span></div>
+          <div class="summary-line indent"><span class="sl-label">+ Contributions</span><span class="sl-value" id="s_m2_contrib">-</span></div>
+          <div class="summary-line indent"><span class="sl-label">+ Net income per books</span><span class="sl-value" id="s_m2_income">-</span></div>
+          <div class="summary-line indent"><span class="sl-label">- Distributions</span><span class="sl-value" id="s_m2_distrib">-</span></div>
+          <div class="summary-line indent"><span class="sl-label">- Guaranteed payments</span><span class="sl-value" id="s_m2_guar">-</span></div>
+          <div class="summary-line bold"><span class="sl-label">= Ending capital (should match L Line 21)</span><span class="sl-value" id="s_m2_ending">-</span></div>
+          <div style="margin-top:12px;">
+            <label style="font-size:11px;color:var(--text-dim);">Contributions (M-2 input)</label>
+            <input class="num-input" data-key="m2_contributions" data-group="m2" style="width:120px;margin-left:8px;">
+          </div>
+          <div style="margin-top:6px;">
+            <label style="font-size:11px;color:var(--text-dim);">Distributions (M-2 input)</label>
+            <input class="num-input" data-key="m2_distributions" data-group="m2" style="width:120px;margin-left:8px;">
+          </div>
+          <div style="margin-top:6px;">
+            <label style="font-size:11px;color:var(--text-dim);">Penalties (M-1 input)</label>
+            <input class="num-input" data-key="m1_penalties" data-group="m1" style="width:120px;margin-left:8px;">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SECTION 5: VALIDATIONS                          -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="section" id="sec-validations">
+    <div class="section-header" onclick="toggleSection('sec-validations')">
+      <h2><span class="section-num">5</span> Validations</h2>
+      <span class="section-toggle">&#9660;</span>
+    </div>
+    <div class="section-body">
+      <div class="validation-grid" id="validationGrid">
+        <div class="val-card neutral" id="val-balance">
+          <div class="val-icon">-</div>
+          <div><div class="val-text">Schedule L Balance</div><div class="val-detail">Total Assets = Total Liabilities + Equity</div></div>
+        </div>
+        <div class="val-card neutral" id="val-retained">
+          <div class="val-icon">-</div>
+          <div><div class="val-text">Retained Earnings</div><div class="val-detail">Should be $0 after allocation to capital accounts</div></div>
+        </div>
+        <div class="val-card neutral" id="val-m2">
+          <div class="val-icon">-</div>
+          <div><div class="val-text">M-2 Ending = L Line 21</div><div class="val-detail">Ending capital from M-2 should match Schedule L equity</div></div>
+        </div>
+        <div class="val-card neutral" id="val-net">
+          <div class="val-icon">-</div>
+          <div><div class="val-text">Net Income Computed Correctly</div><div class="val-detail">Gross Receipts - Returns - COGS - Total Expenses</div></div>
+        </div>
+        <div class="val-card neutral" id="val-cogs">
+          <div class="val-icon">-</div>
+          <div><div class="val-text">COGS Consistency</div><div class="val-detail">COGS from P&L = sum of Schedule A components</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SECTION 6: EXPORT                               -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="section" id="sec-export">
+    <div class="section-header" onclick="toggleSection('sec-export')">
+      <h2><span class="section-num">6</span> Export</h2>
+      <span class="section-toggle">&#9660;</span>
+    </div>
+    <div class="section-body">
+      <div class="export-grid">
+        <div class="export-card" onclick="copySummary()">
+          <div class="ec-icon">&#128203;</div>
+          <div class="ec-title">Copy Summary to Clipboard</div>
+          <div class="ec-desc">Formatted text with all computed values for TaxAct entry</div>
+        </div>
+        <div class="export-card" onclick="exportToTaxAct()">
+          <div class="ec-icon">&#128279;</div>
+          <div class="ec-title">Export to TaxAct Package</div>
+          <div class="ec-desc">Save values to localStorage for taxact-input-package.html</div>
+        </div>
+        <div class="export-card" onclick="window.print()">
+          <div class="ec-icon">&#128424;</div>
+          <div class="ec-title">Print Report</div>
+          <div class="ec-desc">Clean printable layout of all sections and computed values</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- CLEAR CONFIRM MODAL -->
+<div class="modal-overlay" id="clearModal">
+  <div class="modal">
+    <h3>Clear All Data?</h3>
+    <p>This will remove all entered values and reset the form. This cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="toolbar-btn" onclick="closeClearModal()">Cancel</button>
+      <button class="toolbar-btn danger" onclick="clearAll()">Clear Everything</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   QBO DATA EXTRACTION ENGINE
+   ══════════════════════════════════════════════ */
+
+const STORAGE_PREFIX = 'qbo-extract-';
+const VENDOR_KEY = STORAGE_PREFIX + 'vendors';
+
+// ── INITIALIZATION ──
+document.addEventListener('DOMContentLoaded', () => {
+  loadAllValues();
+  initVendorRows();
+  attachInputListeners();
+  recalcAll();
+  updateProgress();
+});
+
+// ── STORAGE ──
+function save(key, val) {
+  localStorage.setItem(STORAGE_PREFIX + key, val);
+}
+function load(key) {
+  return localStorage.getItem(STORAGE_PREFIX + key);
+}
+
+function loadAllValues() {
+  document.querySelectorAll('.num-input[data-key]').forEach(inp => {
+    const stored = load(inp.dataset.key);
+    if (stored !== null && stored !== '') {
+      inp.value = stored;
+      inp.classList.add('has-value');
+    }
+  });
+}
+
+function attachInputListeners() {
+  document.querySelectorAll('.num-input[data-key]').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const raw = inp.value.replace(/[^0-9.\-]/g, '');
+      save(inp.dataset.key, raw);
+      inp.classList.toggle('has-value', raw !== '');
+      recalcAll();
+      updateProgress();
+    });
+    inp.addEventListener('blur', () => {
+      formatInput(inp);
+    });
+    inp.addEventListener('focus', () => {
+      // Show raw number on focus for editing
+      const raw = load(inp.dataset.key);
+      if (raw !== null && raw !== '') {
+        inp.value = raw;
+      }
+    });
+  });
+}
+
+function formatInput(inp) {
+  const raw = load(inp.dataset.key);
+  if (raw !== null && raw !== '') {
+    const num = parseFloat(raw);
+    if (!isNaN(num)) {
+      inp.value = fmtDollar(num);
+    }
+  }
+}
+
+// ── NUMBER HELPERS ──
+function getVal(key) {
+  const raw = load(key);
+  if (raw === null || raw === '') return 0;
+  return parseFloat(raw) || 0;
+}
+
+function fmtDollar(n) {
+  if (n === 0) return '$0';
+  const abs = Math.abs(n);
+  const formatted = '$' + abs.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  if (n < 0) return '(' + formatted + ')';
+  return formatted;
+}
+
+function fmtDollarCents(n) {
+  if (n === 0) return '$0.00';
+  const abs = Math.abs(n);
+  const formatted = '$' + abs.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  if (n < 0) return '(' + formatted + ')';
+  return formatted;
+}
+
+function setReadonly(id, val) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.value = fmtDollar(val);
+    el.style.color = val < 0 ? 'var(--red)' : 'var(--accent)';
+  }
+}
+
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.textContent = fmtDollar(val);
+    el.style.color = val < 0 ? 'var(--red)' : '';
+  }
+}
+
+// ── RECALCULATE ALL ──
+function recalcAll() {
+  // Revenue
+  const grossReceipts = getVal('rev_b2b') + getVal('rev_dtc') + getVal('rev_shipping');
+  setReadonly('calc_gross_receipts', grossReceipts);
+
+  const otherIncome = getVal('rev_other') + getVal('rev_interest');
+
+  // Contra
+  const totalReturns = getVal('contra_returns') + getVal('contra_discounts');
+  setReadonly('calc_returns', totalReturns);
+
+  // COGS
+  const totalCOGS = getVal('cogs_product') + getVal('cogs_packaging') + getVal('cogs_freight') + getVal('cogs_inv_adj');
+  setReadonly('calc_cogs', totalCOGS);
+
+  // Expense groups
+  const line20_main = getVal('exp_advertising') + getVal('exp_tradeshows') + getVal('exp_samples')
+    + getVal('exp_design') + getVal('exp_photography') + getVal('exp_shipping')
+    + getVal('exp_packaging') + getVal('exp_software') + getVal('exp_website')
+    + getVal('exp_payment_proc') + getVal('exp_professional') + getVal('exp_legal')
+    + getVal('exp_accounting') + getVal('exp_contractors') + getVal('exp_travel')
+    + getVal('exp_meals');
+  const line20_extra = getVal('exp_bank_charges') + getVal('exp_cc_fees');
+  const totalLine20 = line20_main + line20_extra;
+  setReadonly('calc_line20', totalLine20);
+
+  const totalLine18 = getVal('exp_office_supplies') + getVal('exp_office_equip');
+  setReadonly('calc_line18', totalLine18);
+
+  const totalLine15 = getVal('exp_insurance_gen') + getVal('exp_insurance_prod') + getVal('exp_interest');
+  setReadonly('calc_line15', totalLine15);
+
+  const totalLine14 = getVal('exp_tax_franchise') + getVal('exp_tax_other') + getVal('exp_licenses');
+  setReadonly('calc_line14', totalLine14);
+
+  const guaranteed = getVal('exp_guaranteed');
+  const rent = getVal('exp_rent');
+  const depreciation = getVal('exp_depreciation');
+
+  const totalExpenses = totalLine20 + totalLine18 + totalLine15 + totalLine14 + guaranteed + rent + depreciation;
+  setReadonly('calc_total_exp', totalExpenses);
+
+  const netIncome = grossReceipts - totalReturns - totalCOGS + otherIncome - totalExpenses;
+  setReadonly('calc_net_income', netIncome);
+
+  // ── Balance Sheet ──
+  const assetKeys = ['bs_cash','bs_ar','bs_inventory','bs_prepaid','bs_loans_partner','bs_equipment','bs_intangibles','bs_other_assets'];
+  const assetNegKeys = ['bs_accum_depr','bs_accum_amort'];
+  let totalAssets = 0;
+  assetKeys.forEach(k => totalAssets += getVal(k));
+  assetNegKeys.forEach(k => totalAssets += getVal(k)); // these are entered as negative
+  setReadonly('calc_total_assets', totalAssets);
+
+  const liabKeys = ['bs_ap','bs_sales_tax','bs_other_current','bs_partner_loans'];
+  let totalLiab = 0;
+  liabKeys.forEach(k => totalLiab += getVal(k));
+  setReadonly('calc_total_liab', totalLiab);
+
+  const totalEquity = getVal('bs_partners_cap') + getVal('bs_retained');
+  setReadonly('calc_total_equity', totalEquity);
+
+  const totalLE = totalLiab + totalEquity;
+  setReadonly('calc_total_le', totalLE);
+
+  // Retained earnings warning
+  const reWarn = document.getElementById('re-warn');
+  const retainedVal = getVal('bs_retained');
+  if (retainedVal !== 0 && load('bs_retained') !== null && load('bs_retained') !== '') {
+    reWarn.style.display = 'inline';
+    document.querySelector('[data-key="bs_retained"]').classList.add('warning');
+  } else {
+    reWarn.style.display = 'none';
+    document.querySelector('[data-key="bs_retained"]').classList.remove('warning');
+  }
+
+  // ── Summary Section ──
+  const line3 = grossReceipts - totalReturns;
+  const line5 = line3 - totalCOGS;
+  const line8 = line5 + otherIncome;
+  const totalDeductions = guaranteed + rent + totalLine14 + totalLine15 + depreciation + totalLine18 + totalLine20;
+  const line23 = line8 - totalDeductions;
+
+  setText('s_1a', grossReceipts);
+  setText('s_2', totalReturns);
+  setText('s_3', line3);
+  setText('s_4', totalCOGS);
+  setText('s_5', line5);
+  setText('s_7', otherIncome);
+  setText('s_8', line8);
+  setText('s_10', guaranteed);
+  setText('s_13', rent);
+  setText('s_14', totalLine14);
+  setText('s_15', totalLine15);
+  setText('s_16c', depreciation);
+  setText('s_18', totalLine18);
+  setText('s_20', totalLine20);
+  setText('s_22', totalDeductions);
+  setText('s_23', line23);
+
+  setText('s_l_assets', totalAssets);
+  setText('s_l_liab', totalLiab);
+  setText('s_l_equity', totalEquity);
+  setText('s_l_le', totalLE);
+
+  // M-1
+  const mealsDisallowance = Math.round(getVal('exp_meals') * 0.5);
+  const penalties = getVal('m1_penalties');
+  const incomePerReturn = netIncome + mealsDisallowance + penalties;
+  setText('s_m1_books', netIncome);
+  setText('s_m1_meals', mealsDisallowance);
+  setText('s_m1_penalties', penalties);
+  setText('s_m1_return', incomePerReturn);
+
+  // M-2
+  const contributions = getVal('m2_contributions');
+  const distributions = getVal('m2_distributions');
+  const m2Ending = 199055 + contributions + netIncome - distributions - guaranteed;
+  setText('s_m2_contrib', contributions);
+  setText('s_m2_income', netIncome);
+  setText('s_m2_distrib', distributions);
+  setText('s_m2_guar', guaranteed);
+  setText('s_m2_ending', m2Ending);
+
+  // ── Validations ──
+  runValidations(totalAssets, totalLE, retainedVal, m2Ending, totalEquity, netIncome, grossReceipts, totalReturns, totalCOGS, otherIncome, totalExpenses);
+}
+
+function runValidations(totalAssets, totalLE, retainedVal, m2Ending, totalEquity, netIncome, grossReceipts, totalReturns, totalCOGS, otherIncome, totalExpenses) {
+  const hasBS = hasAnyValue(['bs_cash','bs_ar','bs_inventory','bs_ap','bs_partners_cap']);
+
+  // 1. Assets = L+E
+  setValidation('val-balance', hasBS, Math.abs(totalAssets - totalLE) < 1,
+    hasBS ? `Assets: ${fmtDollar(totalAssets)} | L+E: ${fmtDollar(totalLE)}` : 'Enter balance sheet data');
+
+  // 2. Retained Earnings = 0
+  const hasRE = load('bs_retained') !== null && load('bs_retained') !== '';
+  setValidation('val-retained', hasRE, Math.abs(retainedVal) < 1,
+    hasRE ? `Retained Earnings: ${fmtDollar(retainedVal)}` : 'Enter retained earnings');
+
+  // 3. M-2 ending = equity
+  const hasM2 = hasBS && hasAnyValue(['exp_guaranteed']);
+  setValidation('val-m2', hasM2, Math.abs(m2Ending - totalEquity) < 1,
+    hasM2 ? `M-2 Ending: ${fmtDollar(m2Ending)} | L Equity: ${fmtDollar(totalEquity)}` : 'Enter P&L and balance sheet data');
+
+  // 4. Net income check
+  const hasPL = hasAnyValue(['rev_b2b','rev_dtc']);
+  const expectedNet = grossReceipts - totalReturns - totalCOGS + otherIncome - totalExpenses;
+  setValidation('val-net', hasPL, Math.abs(netIncome - expectedNet) < 1,
+    hasPL ? `Net Income: ${fmtDollar(netIncome)}` : 'Enter P&L data');
+
+  // 5. COGS consistency (always pass since we compute from components)
+  const hasCOGS = hasAnyValue(['cogs_product','cogs_packaging','cogs_freight']);
+  setValidation('val-cogs', hasCOGS, true,
+    hasCOGS ? `COGS: ${fmtDollar(totalCOGS)} (computed from components)` : 'Enter COGS data');
+}
+
+function hasAnyValue(keys) {
+  return keys.some(k => load(k) !== null && load(k) !== '');
+}
+
+function setValidation(id, hasData, passes, detail) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.className = 'val-card ' + (hasData ? (passes ? 'pass' : 'fail') : 'neutral');
+  el.querySelector('.val-icon').textContent = hasData ? (passes ? '\u2713' : '\u2717') : '-';
+  el.querySelector('.val-detail').textContent = detail;
+}
+
+// ── PROGRESS ──
+function updateProgress() {
+  const all = document.querySelectorAll('.num-input[data-key]');
+  let filled = 0;
+  all.forEach(inp => {
+    const raw = load(inp.dataset.key);
+    if (raw !== null && raw !== '') filled++;
+  });
+  const total = all.length;
+  document.getElementById('progressPct').textContent = filled + ' / ' + total;
+  const pct = total > 0 ? Math.round((filled / total) * 100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+// ── SECTION TOGGLE ──
+function toggleSection(id) {
+  document.getElementById(id).classList.toggle('collapsed');
+}
+
+function toggleAllSections(expand) {
+  document.querySelectorAll('.section').forEach(sec => {
+    if (expand) sec.classList.remove('collapsed');
+    else sec.classList.add('collapsed');
+  });
+}
+
+function scrollToSummary() {
+  document.getElementById('sec-summary').classList.remove('collapsed');
+  document.getElementById('sec-summary').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── VENDOR ROWS ──
+function initVendorRows() {
+  const stored = localStorage.getItem(VENDOR_KEY);
+  if (stored) {
+    const vendors = JSON.parse(stored);
+    vendors.forEach(v => addVendorRow(v.name, v.amount, v.filed));
+  }
+  if (!stored || JSON.parse(stored).length === 0) {
+    for (let i = 0; i < 5; i++) addVendorRow();
+  }
+}
+
+function addVendorRow(name, amount, filed) {
+  const tbody = document.getElementById('vendorBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><input class="vendor-input" type="text" placeholder="Vendor name..." value="${name || ''}"></td>
+    <td><input class="num-input" type="text" placeholder="$0" value="${amount || ''}" style="width:100%"></td>
+    <td style="text-align:center"><input class="vendor-check" type="checkbox" ${filed ? 'checked' : ''}></td>
+  `;
+  tbody.appendChild(tr);
+  tr.querySelectorAll('input').forEach(inp => {
+    inp.addEventListener('input', saveVendors);
+    inp.addEventListener('change', saveVendors);
+  });
+}
+
+function saveVendors() {
+  const rows = document.querySelectorAll('#vendorBody tr');
+  const vendors = [];
+  rows.forEach(tr => {
+    const inputs = tr.querySelectorAll('input');
+    vendors.push({
+      name: inputs[0].value,
+      amount: inputs[1].value,
+      filed: inputs[2].checked
+    });
+  });
+  localStorage.setItem(VENDOR_KEY, JSON.stringify(vendors));
+}
+
+// ── CLEAR ALL ──
+function confirmClear() {
+  document.getElementById('clearModal').classList.add('show');
+}
+function closeClearModal() {
+  document.getElementById('clearModal').classList.remove('show');
+}
+function clearAll() {
+  closeClearModal();
+  // Remove all qbo-extract keys
+  const keysToRemove = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith(STORAGE_PREFIX)) keysToRemove.push(key);
+  }
+  keysToRemove.forEach(k => localStorage.removeItem(k));
+  localStorage.removeItem(VENDOR_KEY);
+
+  // Reset all inputs
+  document.querySelectorAll('.num-input[data-key]').forEach(inp => {
+    inp.value = '';
+    inp.classList.remove('has-value', 'warning');
+  });
+  document.querySelectorAll('.num-input.readonly').forEach(inp => {
+    inp.value = '$0';
+  });
+
+  // Reset vendor table
+  document.getElementById('vendorBody').innerHTML = '';
+  for (let i = 0; i < 5; i++) addVendorRow();
+
+  recalcAll();
+  updateProgress();
+  showToast('All data cleared');
+}
+
+// ── EXPORT: COPY SUMMARY ──
+function copySummary() {
+  const lines = [];
+  lines.push('=== AWARE HAIR LLC - TY2025 QBO EXTRACTION ===');
+  lines.push('Generated: ' + new Date().toLocaleString());
+  lines.push('');
+  lines.push('--- FORM 1065 PAGE 1 ---');
+  lines.push('Line 1a  Gross Receipts:      ' + txt('s_1a'));
+  lines.push('Line 2   Returns/Allowances:  ' + txt('s_2'));
+  lines.push('Line 3   Net Receipts:        ' + txt('s_3'));
+  lines.push('Line 4   COGS:                ' + txt('s_4'));
+  lines.push('Line 5   Gross Profit:        ' + txt('s_5'));
+  lines.push('Line 7   Other Income:        ' + txt('s_7'));
+  lines.push('Line 8   Total Income:        ' + txt('s_8'));
+  lines.push('Line 10  Guaranteed Payments:  ' + txt('s_10'));
+  lines.push('Line 13  Rent:                ' + txt('s_13'));
+  lines.push('Line 14  Taxes & Licenses:    ' + txt('s_14'));
+  lines.push('Line 15  Insurance + Interest: ' + txt('s_15'));
+  lines.push('Line 16c Depreciation:        ' + txt('s_16c'));
+  lines.push('Line 18  Office Expenses:     ' + txt('s_18'));
+  lines.push('Line 20  Other Deductions:    ' + txt('s_20'));
+  lines.push('Line 22  Total Deductions:    ' + txt('s_22'));
+  lines.push('Line 23  Ordinary Income:     ' + txt('s_23'));
+  lines.push('');
+  lines.push('--- SCHEDULE L ---');
+  lines.push('Total Assets (EOY):    ' + txt('s_l_assets'));
+  lines.push('Total Liabilities:     ' + txt('s_l_liab'));
+  lines.push('Total Equity:          ' + txt('s_l_equity'));
+  lines.push('Liab + Equity:         ' + txt('s_l_le'));
+  lines.push('');
+  lines.push('--- SCHEDULE M-1 ---');
+  lines.push('Net income per books:  ' + txt('s_m1_books'));
+  lines.push('+ 50% meals disallow:  ' + txt('s_m1_meals'));
+  lines.push('+ Penalties:           ' + txt('s_m1_penalties'));
+  lines.push('= Income per return:   ' + txt('s_m1_return'));
+  lines.push('');
+  lines.push('--- SCHEDULE M-2 ---');
+  lines.push('Beginning capital:     $199,055');
+  lines.push('+ Contributions:       ' + txt('s_m2_contrib'));
+  lines.push('+ Net income:          ' + txt('s_m2_income'));
+  lines.push('- Distributions:       ' + txt('s_m2_distrib'));
+  lines.push('- Guaranteed payments: ' + txt('s_m2_guar'));
+  lines.push('= Ending capital:      ' + txt('s_m2_ending'));
+
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    showToast('Summary copied to clipboard');
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = lines.join('\n');
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('Summary copied to clipboard');
+  });
+}
+
+function txt(id) {
+  const el = document.getElementById(id);
+  return el ? el.textContent : '-';
+}
+
+// ── EXPORT: TAXACT PACKAGE ──
+function exportToTaxAct() {
+  // Gather all computed values into a transfer object
+  const transfer = {
+    line_1a: getVal('rev_b2b') + getVal('rev_dtc') + getVal('rev_shipping'),
+    line_2: getVal('contra_returns') + getVal('contra_discounts'),
+    line_4: getVal('cogs_product') + getVal('cogs_packaging') + getVal('cogs_freight') + getVal('cogs_inv_adj'),
+    line_7: getVal('rev_other') + getVal('rev_interest'),
+    line_10: getVal('exp_guaranteed'),
+    line_13: getVal('exp_rent'),
+    line_14: getVal('exp_tax_franchise') + getVal('exp_tax_other') + getVal('exp_licenses'),
+    line_15: getVal('exp_insurance_gen') + getVal('exp_insurance_prod') + getVal('exp_interest'),
+    line_16c: getVal('exp_depreciation'),
+    line_18: getVal('exp_office_supplies') + getVal('exp_office_equip'),
+    line_20: getVal('exp_advertising') + getVal('exp_tradeshows') + getVal('exp_samples') + getVal('exp_design') + getVal('exp_photography') + getVal('exp_shipping') + getVal('exp_packaging') + getVal('exp_software') + getVal('exp_website') + getVal('exp_payment_proc') + getVal('exp_professional') + getVal('exp_legal') + getVal('exp_accounting') + getVal('exp_contractors') + getVal('exp_travel') + getVal('exp_meals') + getVal('exp_bank_charges') + getVal('exp_cc_fees'),
+    meals_full: getVal('exp_meals'),
+    timestamp: new Date().toISOString()
+  };
+
+  // Save all raw values too
+  const allData = {};
+  document.querySelectorAll('.num-input[data-key]').forEach(inp => {
+    const raw = load(inp.dataset.key);
+    if (raw !== null && raw !== '') allData[inp.dataset.key] = parseFloat(raw);
+  });
+  transfer.raw = allData;
+
+  localStorage.setItem('taxact-transfer-data', JSON.stringify(transfer));
+  showToast('Data saved for TaxAct package');
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ── FORMAT ON LOAD ──
+window.addEventListener('load', () => {
+  document.querySelectorAll('.num-input[data-key]').forEach(inp => {
+    formatInput(inp);
+  });
+});
+</script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salon-Exclusive Campaign - AWARE Hair Team Playbook</title>
+  <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --color-primary: #D4A574;
+      --color-background: #102B26;
+      --color-background-light: #f4efe9;
+      --color-surface: #faf8f5;
+      --color-text: #102B26;
+      --color-text-light: #f4efe9;
+      --color-text-muted: #4a5c56;
+      --color-sage: #7d8471;
+      --color-divider: #d4cfc6;
+      --color-green: #4a8c6b;
+      --color-green-bg: #f2f8f5;
+      --color-amber: #b8860b;
+      --color-amber-bg: #fffbf0;
+      --color-red: #c45b4a;
+      --typography-font-heading: 'orpheus-pro', Georgia, serif;
+      --typography-font-body: 'DM Sans', -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0a1f1c;
+      font-family: var(--typography-font-body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--color-primary);
+      transition: width 400ms ease;
+      z-index: 100;
+    }
+
+    #deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 450ms ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .slide-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4.5% 7%;
+      overflow: hidden;
+    }
+
+    .bg-dark  { background: var(--color-background); }
+    .bg-light { background: var(--color-background-light); }
+    .bg-white { background: #ffffff; }
+
+    #slide-counter {
+      position: fixed;
+      bottom: 22px;
+      right: 32px;
+      font-family: var(--typography-font-body);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.3);
+      z-index: 100;
+      transition: color 300ms;
+    }
+    #slide-counter.on-light { color: rgba(16,43,38,0.3); }
+
+    .nav-btn {
+      position: fixed;
+      bottom: 18px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      z-index: 100;
+      opacity: 0.5;
+      transition: opacity 200ms;
+    }
+    .nav-btn:hover { opacity: 1; }
+    .nav-btn.prev { left: 40px; }
+    .nav-btn.next { right: 80px; }
+    .nav-btn svg { display: block; }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .slide.active .animate-fade-up {
+      animation: fadeUp 550ms ease forwards;
+    }
+    .slide.active .animate-scale {
+      animation: scaleIn 500ms ease forwards;
+    }
+    .slide.active .animate-stagger > * {
+      opacity: 0;
+      animation: fadeUp 480ms ease forwards;
+    }
+    .slide.active .animate-stagger > *:nth-child(1) { animation-delay:  80ms; }
+    .slide.active .animate-stagger > *:nth-child(2) { animation-delay: 160ms; }
+    .slide.active .animate-stagger > *:nth-child(3) { animation-delay: 240ms; }
+    .slide.active .animate-stagger > *:nth-child(4) { animation-delay: 320ms; }
+    .slide.active .animate-stagger > *:nth-child(5) { animation-delay: 400ms; }
+    .slide.active .animate-stagger > *:nth-child(6) { animation-delay: 480ms; }
+
+    /* --- Typography --- */
+    .slide-label {
+      font-family: var(--typography-font-body);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .slide-label.on-dark  { color: var(--color-primary); }
+    .slide-label.on-light { color: var(--color-sage); }
+    .slide-label.on-white { color: var(--color-sage); }
+
+    .slide-title {
+      font-family: var(--typography-font-heading);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.14;
+    }
+    .slide-title.on-dark  { color: var(--color-text-light); }
+    .slide-title.on-light { color: var(--color-text); }
+    .slide-title.on-white { color: var(--color-text); }
+
+    .slide-title.xl { font-size: clamp(2.8rem, 5.2vw, 4.8rem); }
+    .slide-title.lg { font-size: clamp(2rem,   3.6vw, 3.1rem); }
+    .slide-title.md { font-size: clamp(1.5rem,  2.6vw, 2.2rem); }
+
+    .slide-subtitle {
+      font-family: var(--typography-font-body);
+      font-weight: 300;
+      font-size: clamp(0.95rem, 1.5vw, 1.2rem);
+      margin-top: 14px;
+      line-height: 1.65;
+    }
+    .slide-subtitle.on-dark { color: rgba(244,239,233,0.65); }
+
+    .slide-date {
+      font-family: var(--typography-font-body);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      margin-top: 30px;
+    }
+    .slide-date.on-dark { color: rgba(244,239,233,0.35); }
+
+    .gold-rule {
+      width: 44px;
+      height: 2px;
+      background: var(--color-primary);
+      margin: 18px 0;
+    }
+
+    /* Title bg accent */
+    .title-bg-accent {
+      position: absolute;
+      top: 0; right: 0;
+      width: 42%;
+      height: 100%;
+      background: linear-gradient(135deg, transparent 0%, rgba(212,165,116,0.055) 100%);
+      pointer-events: none;
+    }
+
+    /* --- Feature Grid (Slide 2) --- */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .feature-card {
+      background: #ffffff;
+      border-left: 3px solid var(--color-primary);
+      padding: 16px 18px;
+      border-radius: 4px;
+    }
+    .feature-card-number {
+      font-family: var(--typography-font-heading);
+      font-size: clamp(1.3rem, 1.9vw, 1.75rem);
+      font-weight: 400;
+      color: var(--color-primary);
+      margin-bottom: 4px;
+    }
+    .feature-card-title {
+      font-family: var(--typography-font-body);
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 5px;
+      letter-spacing: 0.01em;
+    }
+    .feature-card-desc {
+      font-family: var(--typography-font-body);
+      font-size: 12px;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+    }
+
+    /* --- Geo chips (Slide 3) --- */
+    .geo-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+    .geo-chip {
+      background: var(--color-background-light);
+      border: 1px solid var(--color-divider);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-text-muted);
+    }
+    .geo-chip strong { color: var(--color-primary); font-weight: 700; }
+
+    /* --- Data Table (Slide 4) --- */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .data-table th {
+      background: var(--color-background);
+      color: var(--color-text-light);
+      padding: 10px 14px;
+      text-align: left;
+      font-family: var(--typography-font-body);
+      font-weight: 600;
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .data-table td {
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--color-divider);
+      font-family: var(--typography-font-body);
+      color: var(--color-text);
+      font-size: 12.5px;
+    }
+    .data-table tr:nth-child(even) td { background: var(--color-background-light); }
+    .badge-verified {
+      display: inline-block;
+      background: var(--color-green-bg);
+      color: var(--color-green);
+      border: 1px solid rgba(74,140,107,0.35);
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .table-note {
+      font-family: var(--typography-font-body);
+      font-size: 12.5px;
+      color: var(--color-text-muted);
+      margin-top: 12px;
+      font-style: italic;
+    }
+
+    /* --- Two column (Slides 5, 8, 12) --- */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      align-items: start;
+    }
+    .col-label {
+      font-family: var(--typography-font-body);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-sage);
+      margin-bottom: 10px;
+    }
+
+    /* Email mockup (Slide 5) */
+    .email-mockup {
+      background: #ffffff;
+      border-radius: 5px;
+      box-shadow: 0 3px 20px rgba(16,43,38,0.11);
+      padding: 18px 20px;
+      font-family: var(--typography-font-body);
+      font-size: 12px;
+      color: var(--color-text);
+      line-height: 1.72;
+    }
+    .email-subject {
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .email-subject span {
+      font-weight: 400;
+      color: var(--color-text-muted);
+      font-size: 11px;
+      margin-left: 4px;
+    }
+    .highlight-gold {
+      background: rgba(212,165,116,0.2);
+      padding: 1px 3px;
+      border-radius: 2px;
+    }
+
+    /* Timeline list (Slide 5 right col) */
+    .timeline-list { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+    .timeline-item { display: flex; gap: 12px; align-items: flex-start; }
+    .timeline-dot {
+      width: 26px; height: 26px;
+      background: var(--color-primary);
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #fff;
+      margin-top: 2px;
+    }
+    .timeline-item-text strong { display: block; font-size: 12.5px; color: var(--color-text); font-weight: 700; margin-bottom: 2px; }
+    .timeline-item-text span  { font-size: 12px; color: var(--color-text-muted); }
+
+    /* --- Before/After table (Slide 6) --- */
+    .before-after-table { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 12.5px; }
+    .before-after-table th {
+      padding: 9px 16px;
+      text-align: left;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .before-after-table th.col-before  { color: rgba(244,239,233,0.38); }
+    .before-after-table th.col-after   { color: var(--color-primary); }
+    .before-after-table th.col-reason  { color: rgba(244,239,233,0.38); }
+    .before-after-table td { padding: 8px 16px; border-bottom: 1px solid rgba(244,239,233,0.07); }
+    .before-after-table td.col-before  { color: rgba(244,239,233,0.3); text-decoration: line-through; }
+    .before-after-table td.col-after   { color: var(--color-text-light); font-weight: 500; }
+    .before-after-table td.col-reason  { color: rgba(244,239,233,0.5); font-style: italic; }
+    .gold-note {
+      margin-top: 18px;
+      padding: 13px 17px;
+      border: 1px solid rgba(212,165,116,0.28);
+      border-radius: 4px;
+      font-family: var(--typography-font-body);
+      font-size: 12.5px;
+      color: var(--color-primary);
+      font-style: italic;
+    }
+
+    /* --- SEO table (Slide 7) --- */
+    .seo-table { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 13px; }
+    .seo-table th {
+      padding: 9px 14px;
+      text-align: left;
+      background: var(--color-background);
+      color: var(--color-text-light);
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .seo-table td { padding: 8px 14px; border-bottom: 1px solid var(--color-divider); font-family: var(--typography-font-body); color: var(--color-text); }
+    .seo-table tr:nth-child(even) td { background: var(--color-background-light); }
+    .score-badge {
+      display: inline-block;
+      background: var(--color-primary);
+      color: #fff;
+      padding: 2px 9px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .comp-low  { color: var(--color-green); font-weight: 600; }
+    .comp-vlow { color: #3a7a5e; font-weight: 700; }
+    .comp-med  { color: var(--color-amber); font-weight: 600; }
+    .callout-box {
+      margin-top: 14px;
+      padding: 13px 17px;
+      border: 1px solid var(--color-primary);
+      border-radius: 4px;
+      background: #fff9f3;
+    }
+    .callout-box p { font-family: var(--typography-font-body); font-size: 13px; color: var(--color-text); line-height: 1.6; font-style: italic; }
+
+    /* --- Referral card / bullet list (Slide 8) --- */
+    .referral-card {
+      background: #ffffff;
+      border-radius: 5px;
+      box-shadow: 0 2px 14px rgba(16,43,38,0.09);
+      padding: 16px 18px;
+      font-family: var(--typography-font-body);
+      font-size: 12.5px;
+      color: var(--color-text);
+      line-height: 1.7;
+    }
+    .annotation {
+      display: block;
+      font-size: 11px;
+      color: var(--color-sage);
+      font-style: italic;
+      margin-top: 6px;
+    }
+    .annotation::before { content: "← "; color: var(--color-primary); }
+    .stat-callout {
+      margin-top: 12px;
+      padding: 11px 14px;
+      background: var(--color-green-bg);
+      border-radius: 4px;
+      font-size: 13px;
+      color: var(--color-text);
+    }
+    .stat-callout strong { color: var(--color-green); }
+    .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+    .bullet-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--color-text); line-height: 1.5; }
+    .bullet-list li::before { content: "—"; color: var(--color-primary); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+    /* --- Expert cards (Slide 9) --- */
+    .expert-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin-top: 26px; }
+    .expert-card { background: #ffffff; border-top: 3px solid var(--color-primary); border-radius: 4px; padding: 18px 18px 16px; box-shadow: 0 2px 12px rgba(16,43,38,0.07); }
+    .expert-card-badge { font-family: var(--typography-font-body); font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-primary); margin-bottom: 10px; }
+    .expert-card-body { font-family: var(--typography-font-body); font-size: 12.5px; color: var(--color-text); line-height: 1.65; margin-bottom: 13px; }
+    .expert-card-source { font-family: var(--typography-font-body); font-size: 11px; color: var(--color-sage); font-style: italic; }
+
+    /* --- Horizontal timeline (Slide 10) --- */
+    .h-timeline { display: grid; grid-template-columns: repeat(5,1fr); gap: 0; margin-top: 30px; position: relative; }
+    .h-timeline::before {
+      content: '';
+      position: absolute;
+      top: 27px;
+      left: calc(10% + 14px);
+      right: calc(10% + 14px);
+      height: 2px;
+      background: var(--color-divider);
+    }
+    .timeline-step { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 6px; }
+    .timeline-circle {
+      width: 54px; height: 54px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--typography-font-body);
+      font-size: 10.5px; font-weight: 700; color: #fff;
+      margin-bottom: 13px;
+      position: relative; z-index: 1;
+    }
+    .timeline-step-label { font-family: var(--typography-font-heading); font-size: 0.97rem; font-weight: 400; color: var(--color-text); margin-bottom: 5px; }
+    .timeline-step-desc { font-family: var(--typography-font-body); font-size: 11.5px; color: var(--color-text-muted); line-height: 1.5; font-style: italic; }
+    .timeline-funnel-note {
+      margin-top: 26px;
+      padding: 11px 18px;
+      background: #ffffff;
+      border-radius: 4px;
+      border-left: 3px solid var(--color-primary);
+      font-family: var(--typography-font-body);
+      font-size: 13px;
+      color: var(--color-text-muted);
+    }
+    .timeline-funnel-note strong { color: var(--color-text); }
+
+    /* --- Metrics (Slide 11) --- */
+    .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 22px; align-items: center; }
+    .metric-cards { display: flex; flex-direction: column; gap: 12px; }
+    .metric-card { background: rgba(255,255,255,0.07); border-radius: 4px; padding: 13px 17px; border-left: 3px solid var(--color-primary); }
+    .metric-card-label { font-family: var(--typography-font-body); font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-primary); margin-bottom: 4px; }
+    .metric-card-value { font-family: var(--typography-font-body); font-size: 12.5px; color: rgba(244,239,233,0.82); line-height: 1.5; }
+    .big-number-block { text-align: center; margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(244,239,233,0.1); }
+    .big-number { font-family: var(--typography-font-heading); font-size: clamp(2.8rem, 5.5vw, 5.2rem); font-weight: 400; color: var(--color-primary); line-height: 1; }
+    .big-number-label { font-family: var(--typography-font-body); font-size: 12.5px; color: rgba(244,239,233,0.48); margin-top: 8px; letter-spacing: 0.04em; }
+
+    /* --- Checklist (Slide 12) --- */
+    .col-header {
+      font-family: var(--typography-font-body);
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: 13px; padding-bottom: 10px;
+      border-bottom: 2px solid var(--color-divider);
+    }
+    .col-header.done { color: var(--color-green); }
+    .col-header.todo { color: var(--color-amber); }
+    .checklist-col { display: flex; flex-direction: column; gap: 9px; }
+    .checklist-item { display: flex; gap: 10px; align-items: flex-start; font-family: var(--typography-font-body); font-size: 13px; line-height: 1.5; }
+    .check-green { width: 18px; height: 18px; background: var(--color-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .check-green svg { display: block; }
+    .check-amber { width: 18px; height: 18px; background: var(--color-amber); border-radius: 50%; flex-shrink: 0; margin-top: 2px; }
+    .checklist-item-text { color: var(--color-text); }
+
+    ::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body>
+
+<div id="progress-bar" style="width: 8.33%;"></div>
+
+<div id="deck">
+
+  <!-- SLIDE 1 - TITLE (DARK) -->
+  <div class="slide bg-dark" data-slide="1" data-theme="dark">
+    <div class="title-bg-accent"></div>
+    <div class="slide-content" style="justify-content: flex-end; padding-bottom: 10%;">
+      <div class="animate-fade-up">
+        <div class="slide-label on-dark">AWARE HAIR - TEAM PLAYBOOK</div>
+        <div class="gold-rule"></div>
+        <h1 class="slide-title xl on-dark">Salon-Exclusive<br>Campaign</h1>
+        <p class="slide-subtitle on-dark">How we're reaching 390 salon professionals<br>who value exclusivity</p>
+        <div class="slide-date on-dark">March 23, 2026 - Confidential</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 - EXECUTIVE SUMMARY (LIGHT) -->
+  <div class="slide bg-light" data-slide="2" data-theme="light">
+    <div class="slide-content">
+      <div class="animate-fade-up">
+        <div class="slide-label on-light">EXECUTIVE SUMMARY</div>
+        <h2 class="slide-title lg on-light">What we built in one session</h2>
+      </div>
+      <div class="feature-grid animate-stagger">
+        <div class="feature-card">
+          <div class="feature-card-number">714</div>
+          <div class="feature-card-title">Salons Discovered</div>
+          <div class="feature-card-desc">Scraped KM locator across 65 US metros</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-number">390</div>
+          <div class="feature-card-title">Leads Uploaded</div>
+          <div class="feature-card-desc">Enriched, verified (96.2%), uploaded to Instantly</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-number">6</div>
+          <div class="feature-card-title">Sequences Refined</div>
+          <div class="feature-card-desc">Premium voice, SalonCentric positioning, reframed 96% stat</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-number">2,750</div>
+          <div class="feature-card-title">Word Article</div>
+          <div class="feature-card-desc">"Why Salon-Exclusive Still Matters in 2026"</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-number">35-Day</div>
+          <div class="feature-card-title">Follow-Up Protocol</div>
+          <div class="feature-card-desc">Hour 0 call through Day 35 close</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-number">3</div>
+          <div class="feature-card-title">Expert Reviews</div>
+          <div class="feature-card-desc">Strategy consultant, beauty industry vet, DTC founder</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 - DISCOVERY PIPELINE (WHITE) -->
+  <div class="slide bg-white" data-slide="3" data-theme="white">
+    <div class="slide-content">
+      <div class="animate-fade-up">
+        <div class="slide-label on-white">LEAD DISCOVERY</div>
+        <h2 class="slide-title lg on-white">How we found 714 salons</h2>
+      </div>
+      <div style="flex:1; min-height:0; max-height:210px; position:relative; margin-top:18px;" class="animate-scale">
+        <canvas id="funnelChart"></canvas>
+      </div>
+      <div class="geo-chips">
+        <div class="geo-chip">CA: <strong>158</strong></div>
+        <div class="geo-chip">IL: <strong>69</strong></div>
+        <div class="geo-chip">TX: <strong>65</strong></div>
+        <div class="geo-chip">OH: <strong>47</strong></div>
+        <div class="geo-chip">AZ: <strong>29</strong></div>
+        <div class="geo-chip">PA: <strong>28</strong></div>
+        <div class="geo-chip">OR: <strong>26</strong></div>
+        <div class="geo-chip">NY: <strong>24</strong></div>
+        <div class="geo-chip">FL: <strong>21</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 - SAMPLE TARGETS (WHITE) -->
+  <div class="slide bg-white" data-slide="4" data-theme="white">
+    <div class="slide-content" style="padding-top: 3.5%;">
+      <div class="animate-fade-up">
+        <div class="slide-label on-white">THE LEADS</div>
+        <h2 class="slide-title md on-white">The leads are real. Here are 8 of them.</h2>
+      </div>
+      <div class="animate-scale" style="overflow:hidden; border-radius:4px; box-shadow:0 2px 14px rgba(16,43,38,0.08); margin-top:16px;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Salon</th>
+              <th>City</th>
+              <th>Rating</th>
+              <th>Reviews</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>MAVO HAIRLOUNGE</td><td>Fort Lauderdale, FL</td><td>4.9</td><td>363</td><td><span class="badge-verified">Verified</span></td></tr>
+            <tr><td>L'ATELIER PRIVE</td><td>Miami, FL</td><td>5.0</td><td>79</td><td><span class="badge-verified">Verified</span></td></tr>
+            <tr><td>HK Salon</td><td>Miami Beach, FL</td><td>4.9</td><td>611</td><td><span class="badge-verified">Verified</span></td></tr>
+            <tr><td>THE FIX SALON</td><td>Little Rock, AR</td><td>4.9</td><td>159</td><td><span class="badge-verified">Verified</span></td></tr>
+            <tr><td>Duo Salon</td><td>Phoenix, AZ</td><td>4.8</td><td>129</td><td><span class="badge-verified">Verified</span></td></tr>
+            <tr><td>Lady and Wolf</td><td>Scottsdale, AZ</td><td>4.8</td><td>185</td><td><span class="badge-verified">Verified</span></td></tr>
+            <tr><td>First &amp; Mane</td><td>Scottsdale, AZ</td><td>5.0</td><td>473</td><td><span class="badge-verified">Verified</span></td></tr>
+            <tr><td>Glam of Scottsdale</td><td>Scottsdale, AZ</td><td>4.7</td><td>222</td><td><span class="badge-verified">Verified</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-note animate-fade-up">All 390 leads carry Kevin Murphy products. Average Google rating: 4.78 stars.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 - EMAIL CAMPAIGN (LIGHT) -->
+  <div class="slide bg-light" data-slide="5" data-theme="light">
+    <div class="slide-content" style="padding-top: 3.5%;">
+      <div class="animate-fade-up">
+        <div class="slide-label on-light">EMAIL CAMPAIGN</div>
+        <h2 class="slide-title md on-light">Sequence K: The Neighborhood Drop-In</h2>
+      </div>
+      <div class="two-col" style="margin-top:16px;">
+        <div class="animate-scale">
+          <div class="col-label">Email 1 Preview</div>
+          <div class="email-mockup">
+            <div class="email-subject">Subject: salons in {{city}} <span>- Day 1</span></div>
+            <p>Hi {{firstName|there}},</p><br>
+            <p>We partner with <span class="highlight-gold">a small number of salons</span> in the {{custom.city}} area. I'm reaching out because <span class="highlight-gold">your salon stood out to me</span>.</p><br>
+            <p>We make trichologist-developed scalp care - only available through salon partners. <span class="highlight-gold">Not on Amazon, not at SalonCentric</span>, not anywhere your clients can buy it without you. If scalp care is part of what you offer, I'd like to send you a professional sample kit.</p><br>
+            <p>No pitch call, no rep visit. Just the products.</p><br>
+            <p>Best,<br>David<br><span style="color:var(--color-sage);">AWARE Hair</span></p>
+          </div>
+        </div>
+        <div class="animate-fade-up" style="animation-delay:180ms;">
+          <div class="col-label">4-Email Arc</div>
+          <ul class="timeline-list">
+            <li class="timeline-item">
+              <div class="timeline-dot">1</div>
+              <div class="timeline-item-text"><strong>"salons in {{city}}"</strong><span>Day 1 - The local angle</span></div>
+            </li>
+            <li class="timeline-item">
+              <div class="timeline-dot">2</div>
+              <div class="timeline-item-text"><strong>"re: salons in {{city}}"</strong><span>Day 4 - Sample kit offer</span></div>
+            </li>
+            <li class="timeline-item">
+              <div class="timeline-dot">3</div>
+              <div class="timeline-item-text"><strong>"why we're not on amazon"</strong><span>Day 9 - The story (with SalonCentric mention)</span></div>
+            </li>
+            <li class="timeline-item">
+              <div class="timeline-dot">4</div>
+              <div class="timeline-item-text"><strong>"last note"</strong><span>Day 15 - Clean exit (22 words)</span></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 - VOICE CALIBRATION (DARK) -->
+  <div class="slide bg-dark" data-slide="6" data-theme="dark">
+    <div class="slide-content" style="padding-top: 3.5%;">
+      <div class="animate-fade-up">
+        <div class="slide-label on-dark">VOICE CALIBRATION</div>
+        <h2 class="slide-title md on-dark">Why every word was deliberate</h2>
+      </div>
+      <div class="animate-scale" style="overflow:hidden; border-radius:4px; background:rgba(255,255,255,0.05); margin-top:16px;">
+        <table class="before-after-table">
+          <thead>
+            <tr>
+              <th class="col-before" style="width:32%;">Before</th>
+              <th class="col-after"  style="width:33%;">After</th>
+              <th class="col-reason">Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-before">"scalp stuff"</td>
+              <td class="col-after">"scalp-focused services"</td>
+              <td class="col-reason">Premium brand language</td>
+            </tr>
+            <tr>
+              <td class="col-before">"no worries at all"</td>
+              <td class="col-after">"completely understand"</td>
+              <td class="col-reason">We're selective, not apologetic</td>
+            </tr>
+            <tr>
+              <td class="col-before">"just wanted to bump this"</td>
+              <td class="col-after">"circling back"</td>
+              <td class="col-reason">Not mass-email language</td>
+            </tr>
+            <tr>
+              <td class="col-before">"free sample kit"</td>
+              <td class="col-after">"complimentary professional sample kit"</td>
+              <td class="col-reason">Premium positioning</td>
+            </tr>
+            <tr>
+              <td class="col-before">"We work with a few salons"</td>
+              <td class="col-after">"We partner with a small number of salons"</td>
+              <td class="col-reason">Selectivity signal</td>
+            </tr>
+            <tr>
+              <td class="col-before">"trying to figure out"</td>
+              <td class="col-after">"your salon stood out to me"</td>
+              <td class="col-reason">Chosen, not mass-targeted</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="gold-note animate-fade-up">
+        96% stat reframed across all 6 sequences: "Most brands lose half their accounts in year one. We've held 96% of ours."
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 - SEO KEYWORDS (WHITE) -->
+  <div class="slide bg-white" data-slide="7" data-theme="white">
+    <div class="slide-content" style="padding-top: 3.5%;">
+      <div class="animate-fade-up">
+        <div class="slide-label on-white">CONTENT STRATEGY</div>
+        <h2 class="slide-title md on-white">Where salon owners search</h2>
+      </div>
+      <div class="animate-scale" style="overflow:hidden; border-radius:4px; box-shadow:0 2px 12px rgba(16,43,38,0.08); margin-top:16px;">
+        <table class="seo-table">
+          <thead>
+            <tr>
+              <th style="width:55%;">Keyword</th>
+              <th style="width:15%;">Score</th>
+              <th>Competition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>professional scalp care for salons</td><td><span class="score-badge">8.2</span></td><td><span class="comp-low">Low</span></td></tr>
+            <tr><td>salon exclusive brands 2026</td><td><span class="score-badge">8.1</span></td><td><span class="comp-low">Low</span></td></tr>
+            <tr><td>why salon exclusive matters</td><td><span class="score-badge">7.8</span></td><td><span class="comp-vlow">Very Low</span></td></tr>
+            <tr><td>salon exclusive products not on amazon</td><td><span class="score-badge">7.5</span></td><td><span class="comp-low">Low-Med</span></td></tr>
+            <tr><td>scalp care brands for salons wholesale</td><td><span class="score-badge">7.5</span></td><td><span class="comp-med">Medium</span></td></tr>
+            <tr><td>how to choose salon products to carry</td><td><span class="score-badge">7.0</span></td><td><span class="comp-vlow">Very Low</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout-box animate-fade-up">
+        <p>"Nobody is writing for the salon owner deciding which brands to stock based on distribution strategy. That's our content gap."</p>
+      </div>
+      <p style="font-size:12px; color:var(--color-text-muted); margin-top:10px; font-style:italic;">Article drafted: "Why Salon-Exclusive Still Matters in 2026" - 2,750 words. Use as follow-up link when salons reply to email.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 8 - PRO PORTAL + REFERRALS (LIGHT) -->
+  <div class="slide bg-light" data-slide="8" data-theme="light">
+    <div class="slide-content" style="padding-top: 3.5%;">
+      <div class="animate-fade-up">
+        <div class="slide-label on-light">CONVERSION PATHS</div>
+        <h2 class="slide-title md on-light">Two conversion paths</h2>
+      </div>
+      <div class="two-col" style="margin-top:16px;">
+        <div class="animate-fade-up">
+          <div class="col-label">The Pro Portal</div>
+          <ul class="bullet-list">
+            <li>awarehair.com/pages/professional is already live</li>
+            <li>Email links point here when salon owners Google us</li>
+            <li>Full page: hero, logo carousel, benefits, stats, testimonials, application form</li>
+            <li>Consider adding SalonCentric positioning to pro-stats section</li>
+          </ul>
+        </div>
+        <div class="animate-fade-up" style="animation-delay:180ms;">
+          <div class="col-label">Partner Referrals - Template C</div>
+          <div class="referral-card">
+            <div style="font-weight:700; font-size:12px; margin-bottom:9px; color:var(--color-text-muted);">Subject: Thinking of you</div>
+            <p>Hi [name],</p><br>
+            <p>...do you know any salon owners who might be <span class="highlight-gold">rethinking their product lineup</span> lately? Especially anyone looking to add something their clients <span class="highlight-gold">can't find at a chain store</span>.</p>
+          </div>
+          <span class="annotation">"rethinking their product lineup" - only resonates if they know about KM</span>
+          <span class="annotation">"can't find at a chain store" - subtle SalonCentric signal</span>
+          <div class="stat-callout">
+            Referrals convert at <strong>40-50%</strong>. 30 minutes of David's time.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9 - EXPERT REVIEW (WHITE) -->
+  <div class="slide bg-white" data-slide="9" data-theme="white">
+    <div class="slide-content">
+      <div class="animate-fade-up">
+        <div class="slide-label on-white">EXPERT REVIEW</div>
+        <h2 class="slide-title lg on-white">What three independent reviewers told us</h2>
+      </div>
+      <div class="expert-grid animate-stagger">
+        <div class="expert-card">
+          <div class="expert-card-badge">Focus</div>
+          <p class="expert-card-body">"Run 2-3 channels, not 7. At $125K revenue with a solo founder, parallel execution dilutes everything. Priority: cold email + referrals + events."</p>
+          <div class="expert-card-source">- Strategy Consultant</div>
+        </div>
+        <div class="expert-card">
+          <div class="expert-card-badge">Post-Reply Gap</div>
+          <p class="expert-card-body">"The sequences are excellent. The plan stopped at 'reply with your address.' Built a 35-day follow-up protocol. David calls every reply within 4 hours."</p>
+          <div class="expert-card-source">- Beauty Industry Veteran (20 years)</div>
+        </div>
+        <div class="expert-card">
+          <div class="expert-card-badge">Reframe the Stat</div>
+          <p class="expert-card-body">"'96% reorder rate' doesn't mean anything without context. Now reads: 'Most brands lose half their accounts in year one. We've held 96% of ours.'"</p>
+          <div class="expert-card-source">- DTC Founder ($100K to $5M)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10 - POST-SAMPLE PROTOCOL (LIGHT) -->
+  <div class="slide bg-light" data-slide="10" data-theme="light">
+    <div class="slide-content">
+      <div class="animate-fade-up">
+        <div class="slide-label on-light">EXECUTION PROTOCOL</div>
+        <h2 class="slide-title lg on-light">What happens after they reply</h2>
+      </div>
+      <div class="h-timeline animate-stagger">
+        <div class="timeline-step">
+          <div class="timeline-circle">HR 0</div>
+          <div class="timeline-step-label">David calls</div>
+          <div class="timeline-step-desc">"Put a voice to the name. Ask: how did you hear about us?"</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-circle">DAY 0</div>
+          <div class="timeline-step-label">Ship same day</div>
+          <div class="timeline-step-desc">Kit + price sheet + handwritten note</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-circle">DAY 5</div>
+          <div class="timeline-step-label">Arrival check</div>
+          <div class="timeline-step-desc">"Everything come through okay?"</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-circle">DAY 14</div>
+          <div class="timeline-step-label">First check-in</div>
+          <div class="timeline-step-desc">"Has your team had a chance to try?"</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-circle">DAY 21</div>
+          <div class="timeline-step-label">Decision</div>
+          <div class="timeline-step-desc">"If it's a fit, happy to talk about getting some on your shelf."</div>
+        </div>
+      </div>
+      <div class="timeline-funnel-note animate-fade-up">
+        Target: Reply <strong>(90%)</strong> - Tried <strong>(75%)</strong> - First Order <strong>(40%)</strong> - Second Order <strong>(96%)</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 11 - CONVERSION MATH (DARK) -->
+  <div class="slide bg-dark" data-slide="11" data-theme="dark">
+    <div class="slide-content" style="padding-top: 3.5%;">
+      <div class="animate-fade-up">
+        <div class="slide-label on-dark">CONVERSION MATH</div>
+        <h2 class="slide-title md on-dark">The realistic funnel</h2>
+      </div>
+      <div class="metrics-grid">
+        <div style="max-height:220px; position:relative;" class="animate-scale">
+          <canvas id="channelChart"></canvas>
+        </div>
+        <div class="metric-cards animate-stagger">
+          <div class="metric-card">
+            <div class="metric-card-label">Cold Email</div>
+            <div class="metric-card-value">390 leads x 4% - 16 replies - 10 kits - 4 orders</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-card-label">Referrals</div>
+            <div class="metric-card-value">10 partner asks x 50% - 5 intros - 4 orders</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-card-label">Events</div>
+            <div class="metric-card-value">8 attendees x 35% - 3 orders</div>
+          </div>
+        </div>
+      </div>
+      <div class="big-number-block animate-fade-up">
+        <div class="big-number">9-13</div>
+        <div class="big-number-label">New salon partners in 60 days - 26 weeks of pipeline - 6-month window of peak receptivity</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 12 - ACTIONS (LIGHT) -->
+  <div class="slide bg-light" data-slide="12" data-theme="light">
+    <div class="slide-content" style="padding-top: 3.5%;">
+      <div class="animate-fade-up">
+        <div class="slide-label on-light">NEXT STEPS</div>
+        <h2 class="slide-title md on-light">What's done. What David does this week.</h2>
+      </div>
+      <div class="two-col" style="margin-top:18px; align-items:start;">
+        <div class="animate-fade-up">
+          <div class="col-header done">Done</div>
+          <div class="checklist-col">
+            <div class="checklist-item">
+              <div class="check-green"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="checklist-item-text">714 salons discovered, 390 uploaded to Instantly</span>
+            </div>
+            <div class="checklist-item">
+              <div class="check-green"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="checklist-item-text">6 email sequences refined (voice + stats + SalonCentric)</span>
+            </div>
+            <div class="checklist-item">
+              <div class="check-green"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="checklist-item-text">2,750-word blog article drafted</span>
+            </div>
+            <div class="checklist-item">
+              <div class="check-green"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="checklist-item-text">Post-sample protocol documented (Day 0-35)</span>
+            </div>
+            <div class="checklist-item">
+              <div class="check-green"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="checklist-item-text">4 LinkedIn posts drafted</span>
+            </div>
+            <div class="checklist-item">
+              <div class="check-green"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="checklist-item-text">3 referral templates ready</span>
+            </div>
+            <div class="checklist-item">
+              <div class="check-green"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="checklist-item-text">Keyword research (12 keywords scored)</span>
+            </div>
+            <div class="checklist-item">
+              <div class="check-green"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="checklist-item-text">Expert review integrated (10 recommendations)</span>
+            </div>
+            <div class="checklist-item">
+              <div class="check-green"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="checklist-item-text">Command Center Section 23 built</span>
+            </div>
+          </div>
+        </div>
+        <div class="animate-fade-up" style="animation-delay:180ms;">
+          <div class="col-header todo">This Week</div>
+          <div class="checklist-col">
+            <div class="checklist-item">
+              <div class="check-amber"></div>
+              <span class="checklist-item-text">Add Seq K email copy to Instantly, activate campaign</span>
+            </div>
+            <div class="checklist-item">
+              <div class="check-amber"></div>
+              <span class="checklist-item-text">Send referral ask to 10-15 top salon partners (30 min)</span>
+            </div>
+            <div class="checklist-item">
+              <div class="check-amber"></div>
+              <span class="checklist-item-text">Publish blog article to Shopify</span>
+            </div>
+            <div class="checklist-item">
+              <div class="check-amber"></div>
+              <span class="checklist-item-text">Post 2 LinkedIn pieces</span>
+            </div>
+            <div class="checklist-item">
+              <div class="check-amber"></div>
+              <span class="checklist-item-text">Call every positive email reply within 4 hours</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end #deck -->
+
+<div id="slide-counter">1 / 12</div>
+
+<button class="nav-btn prev" onclick="prevSlide()" aria-label="Previous slide">
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+    <path d="M12 5L7 10L12 15" stroke="rgba(255,255,255,0.55)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+<button class="nav-btn next" onclick="nextSlide()" aria-label="Next slide">
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+    <path d="M8 5L13 10L8 15" stroke="rgba(255,255,255,0.55)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+
+<script>
+  const TOTAL = 12;
+  let current = 1;
+  const chartsInit = {};
+
+  function goTo(n) {
+    const prev = document.querySelector('.slide.active');
+    if (prev) prev.classList.remove('active');
+
+    current = Math.max(1, Math.min(n, TOTAL));
+    const next = document.querySelector('.slide[data-slide="' + current + '"]');
+    if (!next) return;
+
+    next.classList.add('active');
+    const theme = next.dataset.theme;
+
+    document.getElementById('progress-bar').style.width = ((current / TOTAL) * 100) + '%';
+
+    const counter = document.getElementById('slide-counter');
+    counter.textContent = current + ' / ' + TOTAL;
+    counter.className = (theme === 'dark') ? '' : 'on-light';
+
+    const navStroke = (theme === 'dark') ? 'rgba(255,255,255,0.5)' : 'rgba(16,43,38,0.4)';
+    document.querySelectorAll('.nav-btn svg path').forEach(p => p.setAttribute('stroke', navStroke));
+
+    if (current === 3 && !chartsInit[3])  { initFunnelChart();   chartsInit[3]  = true; }
+    if (current === 11 && !chartsInit[11]) { initChannelChart(); chartsInit[11] = true; }
+  }
+
+  function nextSlide() { goTo(current + 1); }
+  function prevSlide() { goTo(current - 1); }
+
+  document.addEventListener('keydown', e => {
+    if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); nextSlide(); }
+    if (['ArrowLeft','ArrowUp'].includes(e.key))         { e.preventDefault(); prevSlide(); }
+  });
+
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend',   e => {
+    const dx = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(dx) > 48) { dx > 0 ? nextSlide() : prevSlide(); }
+  }, { passive: true });
+
+  document.getElementById('deck').addEventListener('click', e => {
+    const pct = e.clientX / window.innerWidth;
+    if (pct > 0.55) nextSlide();
+    else if (pct < 0.45) prevSlide();
+  });
+
+  function initFunnelChart() {
+    const ctx = document.getElementById('funnelChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [
+          'KM Locator Scraped (65 zips)',
+          'Google Places Enriched',
+          'Dedup + Exclusion Filtered',
+          'Hunter.io Email Verified (96.2%)',
+          'Uploaded to Instantly'
+        ],
+        datasets: [{
+          data: [714, 625, 416, 390, 390],
+          backgroundColor: [
+            'rgba(212,165,116,0.92)',
+            'rgba(212,165,116,0.75)',
+            'rgba(212,165,116,0.58)',
+            'rgba(74,140,107,0.82)',
+            'rgba(74,140,107,0.92)'
+          ],
+          borderColor: 'transparent',
+          borderRadius: 3,
+          barThickness: 22
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 800, easing: 'easeOutQuart' },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#102B26',
+            titleColor: '#f4efe9',
+            bodyColor: '#D4A574',
+            callbacks: { label: ctx => '  ' + ctx.raw.toLocaleString() + ' salons' }
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: 'rgba(16,43,38,0.06)' },
+            ticks: { font: { family: 'DM Sans', size: 11 }, color: '#4a5c56', callback: v => v.toLocaleString() }
+          },
+          y: {
+            grid: { display: false },
+            ticks: { font: { family: 'DM Sans', size: 11.5 }, color: '#102B26' }
+          }
+        }
+      }
+    });
+  }
+
+  function initChannelChart() {
+    const ctx = document.getElementById('channelChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Cold Email', 'Referrals', 'Events'],
+        datasets: [{
+          data: [4, 4, 3],
+          backgroundColor: ['#D4A574', '#7d8471', 'rgba(244,239,233,0.7)'],
+          borderColor: ['#c49060', '#6a7461', '#d4cfc6'],
+          borderWidth: 2,
+          hoverOffset: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 900, easing: 'easeOutQuart' },
+        cutout: '66%',
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              font: { family: 'DM Sans', size: 12 },
+              color: 'rgba(244,239,233,0.65)',
+              padding: 14,
+              usePointStyle: true,
+              pointStyleWidth: 10
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(16,43,38,0.9)',
+            titleColor: '#f4efe9',
+            bodyColor: '#D4A574',
+            callbacks: { label: ctx => '  ' + ctx.label + ': ' + ctx.raw + ' orders' }
+          }
+        }
+      }
+    });
+  }
+
+  // Init
+  goTo(1);
+</script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

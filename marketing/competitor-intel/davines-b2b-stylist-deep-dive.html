@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Davines B2B-to-Stylist Deep Dive - AWARE Hair</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://use.typekit.net">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<style>
+:root {
+  --teal: #102B26; --cream: #f4efe9; --surface: #faf8f5; --gold: #D4A574; --sage: #7d8471;
+  --gold-muted: #c9a67a;
+  --teal-06: rgba(16, 43, 38, 0.06); --teal-08: rgba(16, 43, 38, 0.08); --teal-12: rgba(16, 43, 38, 0.12);
+  --teal-20: rgba(16, 43, 38, 0.20); --teal-40: rgba(16, 43, 38, 0.40); --teal-60: rgba(16, 43, 38, 0.60);
+  --red: #8b2635; --red-bg: #fde8ea;
+  --green: #2d6a4f; --green-bg: #e8f5e9;
+  --amber: #9a6d00; --amber-bg: #fef3d0;
+  --blue: #1a5276; --blue-bg: #e8f0f8;
+  --heading: 'orpheus-pro', Georgia, 'Times New Roman', serif;
+  --body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius: 6px;
+  --transition: 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--body); background: var(--cream); color: var(--teal); line-height: 1.65; font-size: 15px; -webkit-font-smoothing: antialiased; }
+
+h1, h2, h3 { font-family: var(--heading); font-weight: 400; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1.1; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.2; margin-top: 56px; margin-bottom: 8px; padding-top: 40px; border-top: 1px solid var(--teal-12); }
+h3 { font-size: 1.15rem; line-height: 1.3; margin-top: 32px; margin-bottom: 12px; }
+h4 { font-family: var(--body); font-weight: 600; font-size: 14px; margin-top: 20px; margin-bottom: 8px; }
+p { margin-bottom: 14px; }
+.label { font-family: var(--body); font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); }
+.section-num { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--sage); display: block; margin-bottom: 4px; font-family: var(--body); font-weight: 600; }
+.gold-divider { width: 64px; height: 1px; background: var(--gold); opacity: 0.4; margin: 20px 0; }
+.container { max-width: 960px; margin: 0 auto; padding: 0 32px; }
+section { padding: 64px 0; }
+
+.cover { background: var(--teal); color: var(--cream); min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 48px 80px; position: relative; overflow: hidden; }
+.cover::before { content: ''; position: absolute; top: -30%; right: -15%; width: 650px; height: 650px; border-radius: 50%; border: 1px solid rgba(212, 165, 116, 0.08); }
+.cover::after { content: ''; position: absolute; bottom: -20%; left: -10%; width: 500px; height: 500px; border-radius: 50%; border: 1px solid rgba(212, 165, 116, 0.05); }
+.cover .inner { max-width: 960px; margin: 0 auto; width: 100%; }
+.cover .label { color: var(--gold); margin-bottom: 32px; }
+.cover h1 { margin-bottom: 28px; max-width: 720px; }
+.cover h1 em { font-style: italic; color: var(--gold); }
+.cover-desc { font-size: 15px; color: rgba(244,239,233,0.65); max-width: 660px; line-height: 1.65; margin-top: 8px; }
+.cover-meta { display: flex; gap: 40px; margin-top: 28px; font-size: 13px; color: rgba(244,239,233,0.5); flex-wrap: wrap; }
+.cover-meta strong { color: rgba(244,239,233,0.75); font-weight: 500; }
+.cover-nav { position: absolute; top: 40px; right: 48px; }
+.cover-nav .logo-text { font-family: var(--heading); font-size: 18px; color: var(--cream); letter-spacing: 0.08em; }
+
+.stats-row { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat-card { flex: 1; min-width: 140px; padding: 20px; background: var(--surface); border: 1px solid var(--teal-12); border-radius: var(--radius); text-align: center; }
+.stat-card .stat-value { font-family: var(--heading); font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.1; margin-bottom: 4px; }
+.stat-card .stat-label { font-size: 11px; color: var(--teal-40); font-weight: 500; letter-spacing: 0.3px; }
+.stat-card.highlight { border-color: var(--gold); border-width: 1.5px; }
+.stat-card.highlight .stat-value { color: var(--gold-muted); }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0; }
+th { text-align: left; font-weight: 600; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--sage); padding: 10px 16px; border-bottom: 2px solid var(--teal-12); }
+td { padding: 12px 16px; border-bottom: 1px solid var(--teal-06); line-height: 1.5; vertical-align: top; }
+tr:hover td { background: rgba(212, 165, 116, 0.04); }
+
+.tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; }
+.tag-high { background: var(--green-bg); color: var(--green); }
+.tag-med { background: var(--amber-bg); color: var(--amber); }
+.tag-low { background: var(--teal-06); color: var(--teal-40); }
+.tag-new { background: var(--blue-bg); color: var(--blue); }
+.tag-winner { background: var(--gold); color: white; }
+.tag-verified { background: var(--green-bg); color: var(--green); }
+.tag-unverified { background: var(--amber-bg); color: var(--amber); }
+.tag-estimated { background: var(--teal-06); color: var(--teal-60); }
+
+.insight-box { margin: 28px 0; padding: 24px 28px; background: var(--surface); border: 1px solid var(--teal-12); border-left: 3px solid var(--gold); border-radius: var(--radius); }
+.insight-box .insight-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+.insight-box p { font-size: 13px; color: var(--teal-60); line-height: 1.6; margin-bottom: 10px; }
+.insight-box p:last-child { margin-bottom: 0; }
+.insight-box strong { color: var(--teal); }
+
+.aware-box { margin: 28px 0; padding: 24px 28px; background: rgba(45, 106, 79, 0.04); border: 1px solid rgba(45, 106, 79, 0.12); border-left: 3px solid var(--green); border-radius: var(--radius); }
+.aware-box .aware-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+.aware-box ul { list-style: none; padding: 0; }
+.aware-box li { font-size: 13px; color: var(--teal); line-height: 1.6; padding: 6px 0; padding-left: 16px; position: relative; }
+.aware-box li::before { content: ''; position: absolute; left: 0; top: 14px; width: 6px; height: 6px; border-radius: 50%; background: var(--green); opacity: 0.4; }
+
+.contrast-box { margin: 28px 0; padding: 24px 28px; background: rgba(139, 38, 53, 0.04); border: 1px solid rgba(139, 38, 53, 0.12); border-left: 3px solid var(--red); border-radius: var(--radius); }
+.contrast-box .contrast-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--red); margin-bottom: 10px; }
+
+.pull-quote { font-family: var(--heading); font-size: clamp(1.2rem, 2.5vw, 1.65rem); line-height: 1.45; color: var(--teal); margin: 32px 0; padding-left: 28px; border-left: 2px solid var(--gold); }
+.pull-quote em { font-style: italic; color: var(--gold-muted); }
+
+.unknown-box { margin: 28px 0; padding: 24px 28px; background: var(--teal-06); border: 1px solid var(--teal-12); border-radius: var(--radius); }
+.unknown-box .unknown-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal-40); margin-bottom: 12px; }
+.unknown-box li { font-size: 13px; color: var(--teal-60); line-height: 1.6; margin-bottom: 6px; list-style-position: inside; }
+
+.toc { columns: 2; column-gap: 32px; margin-top: 24px; }
+.toc-item { display: block; padding: 8px 0; border-bottom: 1px solid var(--teal-06); break-inside: avoid; text-decoration: none; color: var(--teal); transition: color var(--transition); }
+.toc-item:hover { color: var(--gold); }
+.toc-num { font-family: var(--heading); font-size: 18px; color: var(--gold); margin-right: 10px; }
+.toc-name { font-size: 14px; font-weight: 500; }
+
+.ad-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin: 24px 0; }
+.ad-card { background: white; border: 1px solid var(--teal-12); border-radius: var(--radius); overflow: hidden; transition: border-color var(--transition), box-shadow var(--transition); }
+.ad-card:hover { border-color: var(--gold); box-shadow: 0 4px 20px rgba(16, 43, 38, 0.08); }
+.ad-card img { width: 100%; height: auto; display: block; border-bottom: 1px solid var(--teal-12); }
+.ad-card figcaption { padding: 14px 16px; }
+.ad-card .ad-angle-name { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.ad-card .ad-copy { font-size: 12px; color: var(--teal-60); line-height: 1.5; font-style: italic; margin-bottom: 10px; }
+
+.full-screenshot { margin: 24px 0; border: 1px solid var(--teal-12); border-radius: var(--radius); overflow: hidden; }
+.full-screenshot img { width: 100%; height: auto; display: block; }
+.full-screenshot .screenshot-caption { padding: 10px 16px; font-size: 11px; color: var(--teal-40); background: var(--teal-06); border-top: 1px solid var(--teal-12); }
+
+.matrix-table td:nth-child(2),
+.matrix-table td:nth-child(3),
+.matrix-table td:nth-child(4),
+.matrix-table td:nth-child(5) { text-align: center; }
+
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+.compare-card { padding: 24px; background: var(--surface); border: 1px solid var(--teal-12); border-radius: var(--radius); }
+.compare-card h4 { margin-top: 0; margin-bottom: 12px; }
+
+.three-way { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; margin: 24px 0; border: 1px solid var(--teal-12); border-radius: var(--radius); overflow: hidden; }
+.three-way > div { padding: 22px; }
+.three-way > div:not(:last-child) { border-right: 1px solid var(--teal-12); }
+.three-way > div:nth-child(1) { background: var(--surface); }
+.three-way > div:nth-child(2) { background: rgba(45, 106, 79, 0.04); }
+.three-way > div:nth-child(3) { background: rgba(212, 165, 116, 0.06); }
+.three-way h4 { margin-top: 0; font-size: 13px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--sage); }
+
+.sources { font-size: 12px; color: var(--teal-60); line-height: 1.7; }
+.sources ol { padding-left: 20px; }
+.sources li { margin-bottom: 8px; }
+.sources a { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--teal-12); }
+.sources a:hover { border-color: var(--gold); }
+
+.figure-meta-line { font-size: 12px; color: var(--teal-40); margin-top: -8px; }
+.figure-meta-line a { color: var(--gold); text-decoration: none; font-weight: 600; border-bottom: 1px solid transparent; transition: border-color var(--transition); }
+.figure-meta-line a:hover { border-color: var(--gold); }
+
+@media (max-width: 768px) {
+  .cover { padding: 0 24px 56px; }
+  .container { padding: 0 20px; }
+  section { padding: 48px 0; }
+  .stats-row { flex-direction: column; }
+  .stat-card { min-width: auto; }
+  .compare-grid, .three-way { grid-template-columns: 1fr; }
+  .three-way > div:not(:last-child) { border-right: none; border-bottom: 1px solid var(--teal-12); }
+  .toc { columns: 1; }
+  .cover-meta { gap: 20px; }
+  .ad-gallery { grid-template-columns: 1fr; }
+  table { font-size: 12px; }
+  td, th { padding: 8px 10px; }
+}
+@media print {
+  .cover { min-height: auto; padding: 40px 24px; }
+  section { padding: 32px 0; page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="cover-nav"><span class="logo-text">AWARE</span></div>
+  <div class="inner">
+    <p class="label">Competitive Intelligence - B2B Deep Dive No. 3</p>
+    <div style="width: 64px; height: 1px; background: var(--gold); opacity: 0.4; margin: 20px 0;"></div>
+    <h1>Davines: <em>The Cultural Institution</em> Model</h1>
+    <p class="cover-desc">
+      The Italian B Corp haircare brand runs the third structurally distinct B2B model in our category: paid VIDEO ads that sell brand values rather than offers, the largest and most sophisticated pro Instagram of any competitor (51K verified, run as a brand magazine), a fully gated knowledge platform at davinespro.com, and a global flagship event (World Wide Hair Tour Valencia, October 2026) with named educators across continents. Where Innersense sells the trial and K18 sells the certification, Davines sells <em>the shared worldview</em>.
+    </p>
+    <div class="cover-meta">
+      <span><strong>Live Data</strong> &ensp;April 21, 2026</span>
+      <span><strong>Sources</strong> &ensp;Meta Ad Library, davinespro.com, @davinespro IG (via Xpoz), us.davines.com</span>
+      <span><strong>Prior Deep Dives</strong> &ensp;Innersense, K18 (cross-referenced)</span>
+      <span><strong>Prepared for</strong> &ensp;David Zhao</span>
+    </div>
+  </div>
+</section>
+
+<!-- THESIS -->
+<section>
+  <div class="container">
+    <span class="section-num">01 &mdash; The Thesis</span>
+    <p class="label">Why Davines Matters</p>
+    <h2 style="border-top: none; padding-top: 0; margin-top: 8px;">The Third Model</h2>
+    <div class="gold-divider"></div>
+
+    <div class="pull-quote">
+      Innersense pays for stylist trial. K18 pays for consumer demand. Davines pays for <em>shared meaning</em>. Their B2B paid ads do not sell a free kit, a certification, or a service. They run silent video portraits of named hairdressers in salon environments overlaid with phrases like <em>"eco-designing our products"</em> and <em>"doing our best for the world."</em> The ad is the brand essay.
+    </div>
+
+    <p>
+      After two prior deep-dives in this series, a useful lens is emerging. Each B2B-capable brand in our category appears to optimize for a single dominant outcome from paid media. Innersense optimizes for stylist conversion (FREE TRIAL KIT acquisition). K18 optimizes for consumer demand (DTC volume that pulls salons to stock). Davines optimizes for brand affinity in the professional community (long-form video content with named educators, sustainability narratives, and event invitations).
+    </p>
+
+    <p>
+      Concretely: Davines runs roughly <strong>12 active Meta ads</strong> from its "Davines Color" advertiser page on April 21, 2026. Of those, approximately half are 30-72 second BRAND VIDEO ads with the unifying tagline <em>"Doing our best for the world, creating good life for all through beauty, ethics, &amp; sustainability."</em> The other half launch a single product line ("The Present Time" demi-permanent color). Both halves drive to davines.com (consumer) and direct salons to "ask your distributor for details." None of the ads make an offer. None ask for an application or a trial. The relationship work is being done somewhere else entirely - at the verified 51K-follower @davinespro Instagram, at the gated davinespro.com knowledge platform, and at the annual World Wide Hair Tour event in Valencia.
+    </p>
+
+    <div class="stats-row">
+      <div class="stat-card highlight">
+        <div class="stat-value">51K</div>
+        <div class="stat-label">@davinespro IG followers (verified)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">~12</div>
+        <div class="stat-label">Active Davines Color B2B ads</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">B Corp</div>
+        <div class="stat-label">Certified since 2016</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">Valencia</div>
+        <div class="stat-label">World Wide Hair Tour 2026 (Oct 4-6)</div>
+      </div>
+    </div>
+
+    <h3>Table of Contents</h3>
+    <div class="toc">
+      <a class="toc-item" href="#findings"><span class="toc-num">01</span><span class="toc-name">Five Key Findings</span></a>
+      <a class="toc-item" href="#paid-channel"><span class="toc-num">02</span><span class="toc-name">The Brand-Affinity Paid Model</span></a>
+      <a class="toc-item" href="#pro-platform"><span class="toc-num">03</span><span class="toc-name">davinespro.com - The Gated Platform</span></a>
+      <a class="toc-item" href="#wwht"><span class="toc-num">04</span><span class="toc-name">The World Wide Hair Tour</span></a>
+      <a class="toc-item" href="#magazine-ig"><span class="toc-num">05</span><span class="toc-name">@davinespro as a Brand Magazine</span></a>
+      <a class="toc-item" href="#creative-collective"><span class="toc-num">06</span><span class="toc-name">The Creative Collective</span></a>
+      <a class="toc-item" href="#three-way"><span class="toc-num">07</span><span class="toc-name">Three Models Side by Side</span></a>
+      <a class="toc-item" href="#transferability"><span class="toc-num">08</span><span class="toc-name">Transferability Matrix for AWARE</span></a>
+      <a class="toc-item" href="#priority-actions"><span class="toc-num">09</span><span class="toc-name">Priority Action Items</span></a>
+      <a class="toc-item" href="#unknowns"><span class="toc-num">10</span><span class="toc-name">What We Still Don't Know</span></a>
+      <a class="toc-item" href="#sources"><span class="toc-num">11</span><span class="toc-name">Sources &amp; Methodology</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- FIVE FINDINGS -->
+<section id="findings">
+  <div class="container">
+    <span class="section-num">02 &mdash; Key Findings</span>
+    <h2>Five Findings That Matter Most</h2>
+    <div class="gold-divider"></div>
+
+    <div class="insight-box">
+      <div class="insight-title">Finding 01 &middot; Davines runs paid B2B brand-essay video, not offer ads</div>
+      <p>The most-repeated active creative on the Davines Color advertiser page (~6 of ~12 ad slots) is a 30-72 second video carrying the line <em>"Doing our best for the world, creating good life for all through beauty, ethics, &amp; sustainability."</em> The CTA is "Learn More" to davines.com. There is no offer, no kit request, no certification application, no profit calculator. The conversion event the ad asks for is <strong>watching the video</strong>. This is the only B2B brand in our 3-deep-dive series that runs paid media with no transactional ask. <span class="tag tag-verified">VERIFIED via Meta Ad Library 2026-04-21</span></p>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-title">Finding 02 &middot; @davinespro is the largest and only verified pro IG in the category</div>
+      <p><strong>51,178 followers, 1,566 posts, blue checkmark</strong>. Compare to Innersense's @innersensepro (15K, not verified) and K18's @k18hairpro (5.5K, not verified). Davines runs the pro account as a flagship brand surface, not a satellite. The bio reads <em>"We believe in the harmony of purpose and wonder. Embracing culture &amp; sustainability for salon-chosen haircare. 🌿 #Bcorp since 2016 #DavinesForAGoodLife"</em> - opens with a value proposition, not a product callout.</p>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-title">Finding 03 &middot; davinespro.com is fully gated; no public pro content</div>
+      <p>Unlike Innersense (soft modal that lets cold visitors continue) and K18 (open access with email capture popup), <strong>davinespro.com requires a salon account login to see anything beyond the marketing landing page.</strong> The hero says <em>"Welcome to DavinesPRO! Davines refreshed virtual space for the learning and growth of salons and hairstylists."</em> Primary CTA is "Sign in." This is the most gated of the three pro platforms - signaling that Davines treats pro content as a privilege of the relationship, not a hook for acquisition.</p>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-title">Finding 04 &middot; The World Wide Hair Tour is the annual flagship - Valencia October 2026</div>
+      <p>The single most-referenced theme across the @davinespro feed in the last 60 days is <strong>WWHT 2026 in Valencia, Spain (October 4-6)</strong>. Multiple posts feature named educators (James Abu-Ulba of @method_education, Birte Klintworth + Adriano D'Astolto from @radio__education, Tom Connell as Davines Hair Art Director) telling the story of their participation. A US distributor (Bassett Salon Solutions) runs its own Meta ad selling tickets via a discount code <em>WWHTBASSETT</em>. The event functions as the annual community moment for the Davines stylist network - direct counterpart to Innersense's Founders Summit.</p>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-title">Finding 05 &middot; The Creative Collective decentralizes artistry to named hairdressers</div>
+      <p>Multiple posts feature looks credited to named hairdressers under <strong>#DavinesCreativeCollective</strong>: <em>"WHISPERING GLOW Created By @winsonkow"</em>, <em>"THE POWER OF QUIET STRENGTH Created by @dangeroustete"</em>, <em>"SIMPLICITY x AGE OF VIBRANT Created by @xizhesting"</em>, <em>"Motion in the Moment Created by @Zoe_ong #DavinesCreativeCollective Asia"</em>, <em>"@henrytsehk"</em>. This is K18's stylist-led model and Innersense's named-educator model combined: hairdressers create their own named looks, Davines amplifies under a unifying program brand. Names verified from caption credits [VERIFIED via @davinespro April 2026].</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP DIVE 1: BRAND-AFFINITY PAID MODEL -->
+<section id="paid-channel">
+  <div class="container">
+    <span class="section-num">Deep Dive 01</span>
+    <h2>The Brand-Affinity Paid Model</h2>
+    <div class="gold-divider"></div>
+
+    <p>
+      A keyword search of the Meta Ad Library for "davinespro.com" on April 21, 2026 returns ~7 results. But viewing the Davines Color advertiser page directly reveals <strong>~12 active ads</strong>. The keyword search undercounts because most Davines B2B ads do not mention davinespro.com in their copy or destination - they drive to davines.com with an editorial pitch that doesn't need to name a destination.
+    </p>
+
+    <div class="full-screenshot">
+      <img src="davines-ads/davines-color-advertiser-page.png" alt="Davines Color advertiser page on Meta Ad Library showing approximately 12 active ads in two clusters: brand-mission video ads and Present Time color line launch" loading="lazy">
+      <div class="screenshot-caption">Davines Color advertiser page &middot; April 21, 2026 &middot; ~12 active ads in two clusters: brand-mission video and "The Present Time" color launch</div>
+    </div>
+
+    <h3>Cluster 1: The Brand-Mission Video Series (~6 ads)</h3>
+
+    <p>Three video ad concepts running with two creative versions each. All three carry the same headline copy: <em>"Doing our best for the world, creating good life for all through beauty, ethics, &amp; sustainability."</em> Destination: davines.com. CTA: Learn more. Platform: Instagram (single-platform placement is a tell - they're targeting the audience that already follows beauty content).</p>
+
+    <h4 style="margin-top: 32px;">Brand Mission Video 1 &middot; "Eco-Designing Our Products" &middot; 30-second &middot; Started Apr 8, 2026</h4>
+
+    <div class="ad-gallery">
+      <figure class="ad-card">
+        <img src="davines-ads/ad-davines-brand-mission-1-hook.png" alt="Brand mission video 1 hook frame at 0:02" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">HOOK &middot; 0:02</div>
+          <div class="ad-copy">Opening title card / brand sequence</div>
+        </figcaption>
+      </figure>
+      <figure class="ad-card">
+        <img src="davines-ads/ad-davines-brand-mission-1-mid.png" alt="MOMO shampoo bar product packshot with hand-drawn squiggle illustration and eco-designing our products text overlay" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">MID &middot; 0:15</div>
+          <div class="ad-copy">MOMO solid shampoo bar packshot with hand-drawn squiggle illustration and "eco-designing our products" text overlay - the sustainability proof point is a literal solid-bar product shown in artisanal hand-illustrated context</div>
+        </figcaption>
+      </figure>
+      <figure class="ad-card">
+        <img src="davines-ads/ad-davines-brand-mission-1-cta.png" alt="Brand mission video 1 CTA frame at 0:28" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">CTA &middot; 0:28</div>
+          <div class="ad-copy">Closing brand frame</div>
+        </figcaption>
+      </figure>
+    </div>
+
+    <p class="figure-meta-line">
+      <strong>Copy</strong>: "Doing our best for the world, creating good life for all through beauty, ethics, &amp; sustainability." &middot;
+      <strong>Destination</strong>: DAVINES.COM &middot;
+      <strong>CTA</strong>: Learn more &middot;
+      <a href="https://www.facebook.com/ads/library/?id=1997204064523010" target="_blank" rel="noopener">View in Ad Library &#8599;</a>
+      &middot; 13 days active &middot; Started Apr 8, 2026 &middot; 2 creative versions
+    </p>
+
+    <h4 style="margin-top: 40px;">Brand Mission Video 2 &middot; "Stylist Portrait" &middot; 72-second long-form &middot; Started Apr 9, 2026</h4>
+
+    <div class="ad-gallery">
+      <figure class="ad-card">
+        <img src="davines-ads/ad-davines-brand-mission-2-hook.png" alt="Long-form brand video hook frame" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">HOOK &middot; 0:05</div>
+          <div class="ad-copy">Opening visual</div>
+        </figcaption>
+      </figure>
+      <figure class="ad-card">
+        <img src="davines-ads/ad-davines-brand-mission-2-mid.png" alt="Mid frame: close-up portrait of a stylist with long brunette hair, tattoos, septum nose ring, layered necklaces in salon environment" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">MID &middot; 0:36</div>
+          <div class="ad-copy">Close portrait of a named stylist (long brunette hair, tattoos, septum ring, layered necklaces) in a salon environment - the person, not the product, is the subject</div>
+        </figcaption>
+      </figure>
+      <figure class="ad-card">
+        <img src="davines-ads/ad-davines-brand-mission-2-cta.png" alt="Long-form video CTA frame" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">CTA &middot; 1:07</div>
+          <div class="ad-copy">Final brand sign-off</div>
+        </figcaption>
+      </figure>
+    </div>
+
+    <p class="figure-meta-line">
+      <strong>Copy</strong>: Same as Video 1 - <em>"Doing our best for the world..."</em> &middot;
+      <strong>Format note</strong>: 72-second long-form video, the longest single-creative duration we've seen in any B2B paid ad in our category &middot;
+      <a href="https://www.facebook.com/ads/library/?id=934104459531358" target="_blank" rel="noopener">View in Ad Library &#8599;</a>
+    </p>
+
+    <h3>Cluster 2: "The Present Time" Color Launch (~6 ads)</h3>
+
+    <p>Six ads focused on the recently launched <strong>"The Present Time"</strong> demi-permanent ammonia-free color line. All carry near-identical copy:</p>
+
+    <div class="pull-quote">
+      "Introducing four warm, earthy tones in <em>The Present Time</em>, Davines' ammonia-free alkaline demi-permanent colour line. Created to enrich your salon's colour offer with simplicity, elegance, and intention. Now available to order, ask your distributor for details!"
+    </div>
+
+    <div class="full-screenshot">
+      <img src="davines-ads/ad-davines-present-time-library.png" alt="The Present Time launch ad showing four new nuances one timeless vision tagline, Davines bottle still life image, Learn More CTA" loading="lazy">
+      <div class="screenshot-caption">"The Present Time" launch ad in Meta Ad Library &middot; <a href="https://www.facebook.com/ads/library/?id=1307244254661860" target="_blank" rel="noopener">ad #1307244254661860 &#8599;</a> &middot; 5 ads use this creative &middot; image format (still life, no video)</div>
+    </div>
+
+    <p>The image is a <strong>tabletop still life</strong>: an orange Davines bottle on a textured surface, with the editorial caption <em>"Four new nuances, one timeless vision. Explore the range!"</em> - photographic restraint that evokes a niche fragrance launch more than a salon supply ad.</p>
+
+    <h3>Cluster 3: Distributor-Run Event Amplification (1 ad)</h3>
+
+    <p>One additional ad in the keyword search appears to be from a US distributor (Bassett Salon Solutions) selling tickets to Davines' annual World Wide Hair Tour:</p>
+
+    <div class="ad-gallery">
+      <figure class="ad-card">
+        <img src="davines-ads/ad-davines-bassett-wwht-hook.png" alt="World Wide Hair Tour Valencia 2026 event flyer hook frame" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">HOOK &middot; 0:00</div>
+          <div class="ad-copy">Opening editorial frame</div>
+        </figcaption>
+      </figure>
+      <figure class="ad-card">
+        <img src="davines-ads/ad-davines-bassett-wwht-mid.png" alt="Valencia World Wide Hair Tour 2026 editorial flyer with bold red and orange typography over black and white cityscape image" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">MID &middot; 0:04</div>
+          <div class="ad-copy">"WORLD WIDE HAIR TOUR / VALENCIA / DON'T... THE..." editorial poster overlaid on b&amp;w cityscape - Davines runs its events with magazine-grade visual identity</div>
+        </figcaption>
+      </figure>
+      <figure class="ad-card">
+        <img src="davines-ads/ad-davines-bassett-wwht-cta.png" alt="Bassett WWHT ad CTA frame at 0:07" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">CTA &middot; 0:07</div>
+          <div class="ad-copy">Sign-up frame, Eventbrite destination</div>
+        </figcaption>
+      </figure>
+    </div>
+
+    <p class="figure-meta-line">
+      <strong>Advertiser</strong>: Bassett Salon Solutions (US distributor, NOT Davines-direct) &middot;
+      <strong>Copy</strong>: "Join us for @davinespro World Wide Hair Tour to celebrate beauty, and culture. 🎯 This year, we travel to Valencia: a vibrant city where tradition and freedom blend into a unique energy. 🎫 GET TICKETS at our linktree in bio, use code WWHTBASSETT" &middot;
+      <strong>Destination</strong>: eventbrite.com &middot;
+      <strong>CTA</strong>: Sign up &middot;
+      <a href="https://www.facebook.com/ads/library/?id=2109717042903733" target="_blank" rel="noopener">View in Ad Library &#8599;</a>
+    </p>
+
+    <div class="insight-box">
+      <div class="insight-title">The structural elegance of distributor-run event amplification</div>
+      <p>Davines has Bassett Salon Solutions selling Davines event tickets to Bassett's salon network using a discount code (<em>WWHTBASSETT</em>) that lets Davines attribute revenue back to Bassett. This is a <strong>three-way value exchange</strong>: Davines gets paid event registrations, Bassett gets attribution credit and goodwill with the Davines salon community, and the salon attendee gets a discount. Davines never pays for this ad - the distributor does. Compare to K18, where distributors run product ads featuring K18; Davines extends the same model to events.</p>
+    </div>
+
+    <div class="aware-box">
+      <div class="aware-title">What this means for AWARE</div>
+      <ul>
+        <li>Brand-essay video ads at AWARE's stage are unrealistic - we don't have the brand equity yet to convert "watch a 72-second video about our worldview" into measurable salon acquisition. This is a model for after PMF + retention is solid.</li>
+        <li>The "ask your distributor for details" CTA is a tactic worth borrowing for any AWARE B2B ad we run later: it routes interest into a relationship conversation rather than a self-serve flow, which suits the high-touch nature of professional sales.</li>
+        <li>If we ever land a distribution partnership (Sweis, others), letting them run their own ads for AWARE (with discount codes attributed to the partner) is a near-zero-cost channel that builds the partner relationship simultaneously with sales pipeline.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP DIVE 2: GATED PRO PLATFORM -->
+<section id="pro-platform">
+  <div class="container">
+    <span class="section-num">Deep Dive 02</span>
+    <h2>davinespro.com - The Gated Knowledge Platform</h2>
+    <div class="gold-divider"></div>
+
+    <p>davinespro.com is a separate domain (matching the K18 pattern of breaking pro from consumer) but its access posture is the most restrictive of the three brands analyzed:</p>
+
+    <table>
+      <thead>
+        <tr><th>Brand</th><th>Pro destination</th><th>Access posture</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Innersense</td>
+          <td>innersensepro.com (301 to /pages/education)</td>
+          <td><strong>Soft modal</strong>: "Sign in if you have a salon account" / "No, continue" - cold visitors flow through</td>
+        </tr>
+        <tr>
+          <td>K18</td>
+          <td>k18hairpro.com</td>
+          <td><strong>Open access</strong> with email capture popup ("unlock exclusive content")</td>
+        </tr>
+        <tr>
+          <td>Davines</td>
+          <td>davinespro.com</td>
+          <td><strong>Hard gate</strong>: "Sign in" to see anything beyond marketing landing page</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>The DavinesPro hub structure</h3>
+
+    <p>From the public landing page [VERIFIED via WebFetch April 21, 2026]:</p>
+
+    <ul style="padding-left: 20px; margin-bottom: 20px;">
+      <li style="margin-bottom: 8px;"><strong>About Us</strong>: story, values, expertise, "For a Good Life"</li>
+      <li style="margin-bottom: 8px;"><strong>Professional Hub</strong> (the gated content):
+        <ul style="padding-left: 20px; margin-top: 4px;">
+          <li>Education: colour, care, styling, other courses, <strong>Talent Green House</strong></li>
+          <li>Events: <strong>World Wide Hair Tour</strong>, <strong>The Unexpected Event</strong></li>
+          <li>Collections</li>
+          <li>Artists</li>
+        </ul>
+      </li>
+      <li style="margin-bottom: 8px;"><strong>Become a Davines Salon</strong>: footer link to the wholesale relationship flow</li>
+    </ul>
+
+    <h3>Two named programs worth flagging</h3>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <h4>Talent Green House</h4>
+        <p style="font-size:13px; color: var(--teal-60);">Listed in the public nav but content fully gated. Likely an early-career educator development program (the "green house" metaphor implies cultivating talent before maturity). Worth investigating in a follow-up scan if AWARE wants to model an early-stage educator pipeline.</p>
+      </div>
+      <div class="compare-card">
+        <h4>The Unexpected Event</h4>
+        <p style="font-size:13px; color: var(--teal-60);">A second named event distinct from World Wide Hair Tour. Format and frequency unconfirmed - could be a smaller regional series, a salon visit format, or an experimental gathering. Worth confirming what positions Davines fills with TWO branded annual event series.</p>
+      </div>
+    </div>
+
+    <h3>Sustainability credentials displayed front and center</h3>
+
+    <p>The pro landing page surfaces two credibility badges immediately: <strong>Certified B Corporation</strong> (since 2016, per @davinespro bio) and <strong>1% For The Planet</strong>. These aren't decoration - for the mission-aligned salon owner persona Davines is recruiting, B Corp status is a primary proof point that the brand's marketing claims are externally verified.</p>
+
+    <div class="insight-box">
+      <div class="insight-title">The hard-gate signal</div>
+      <p>A fully gated pro site is a <strong>signal of selectivity</strong>. By making salons sign in to see anything, Davines tells stylists: this content is a privilege of the relationship; we don't compete for your attention with public content. This works ONLY if the brand has enough demand-side pressure that stylists will create accounts to see what's behind the wall. Davines does, after 20+ years in the European pro market. AWARE does not (yet). For us, the K18 open-access + email capture model is more applicable than Davines' hard gate.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP DIVE 3: WORLD WIDE HAIR TOUR -->
+<section id="wwht">
+  <div class="container">
+    <span class="section-num">Deep Dive 03</span>
+    <h2>The World Wide Hair Tour</h2>
+    <div class="gold-divider"></div>
+
+    <p>The single most-referenced theme in the @davinespro feed in the last 60 days is <strong>World Wide Hair Tour 2026</strong>, happening in <strong>Valencia, Spain on October 4-6, 2026</strong>. Multiple posts feature artist stories, distributor-led ticket amplification, and a recurring hashtag set: <code>#WWHT26 #DavinesValencia</code>.</p>
+
+    <h3>Named educators featured in WWHT promotional content</h3>
+
+    <table>
+      <thead>
+        <tr><th>Educator</th><th>Salon / Education brand</th><th>Geo</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>James Abu-Ulba</td><td>@method_education / @the.linea.experience</td><td>(established 2012, 25+ years with Davines)</td></tr>
+        <tr><td>Birte Klintworth + Adriano D'Astolto</td><td>@radio__education / @radiohairsalon</td><td>London (established 2010)</td></tr>
+        <tr><td>Tom Connell (@tommconnell)</td><td>Davines Hair Art Director</td><td>Davines staff</td></tr>
+      </tbody>
+    </table>
+
+    <p>All names verified from @davinespro caption credits, March-April 2026 [VERIFIED]. The pattern: Davines features named partner educators with their <strong>independent education brands</strong> (Method Education, Radio Education, Linea Experience) and amplifies them through the brand's channel. The educators retain their identity; Davines benefits from association.</p>
+
+    <h3>The educator quote pattern</h3>
+
+    <div class="pull-quote">
+      "What if the hair could listen to what we were saying or to what our environment is saying? What would it say?" &mdash; James Abu-Ulba [VERIFIED via @davinespro Mar 2026 video caption]
+    </div>
+
+    <p>The promotional posts are not "buy your ticket" posts - they are <strong>artist-perspective videos</strong> where each educator articulates their own philosophy. The CTA is implied: come see this person speak in Valencia. This is the inverse of Innersense's class-focused promotion ("RSVP for this Curl Academy") and K18's certification framing ("get certified"). Davines is selling the privilege of being in the room with named artists.</p>
+
+    <h3>Distributor-led ticket sales (Bassett pattern, see Deep Dive 01)</h3>
+
+    <p>US distributors run their own paid ads for WWHT ticket sales using attribution discount codes. This makes the event a <strong>partnership-revenue engine</strong>, not a pure cost center. Each distributor that promotes WWHT to its salon network books tickets, captures attribution credit, and strengthens its relationship with the Davines pro community.</p>
+
+    <div class="aware-box">
+      <div class="aware-title">What this means for AWARE</div>
+      <ul>
+        <li>The "annual flagship event with named artists" model is the same conclusion the Innersense deep-dive surfaced (Founders Summit). Two of three brands in this series treat an annual physical event as their highest-leverage retention/community asset. Worth taking seriously as a 2027 AWARE goal.</li>
+        <li>The educator-perspective video format is replicable now: short artist-perspective videos with Tina or AWARE partner stylists, asked to articulate their OWN philosophy of scalp care, posted on @aware_pro (when we launch it). Not branded testimonials - personal credos.</li>
+        <li>The distributor-runs-event-promotion model is contingent on having distribution partners. If Sweis or others come on board, ticket sales for any AWARE event should immediately involve their channel.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP DIVE 4: BRAND MAGAZINE IG -->
+<section id="magazine-ig">
+  <div class="container">
+    <span class="section-num">Deep Dive 04</span>
+    <h2>@davinespro as a Brand Magazine</h2>
+    <div class="gold-divider"></div>
+
+    <p>The 30 most recent posts on @davinespro break down into a content mix more like an editorial publication than a brand marketing account:</p>
+
+    <table>
+      <thead>
+        <tr><th>Pillar</th><th>% of recent posts</th><th>Editorial role</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>WWHT artist features</strong></td><td>~17%</td><td>Promote the annual event through participant stories</td></tr>
+        <tr><td><strong>"For a Good Life" brand essays</strong></td><td>~17%</td><td>Pure brand voice, no products - building affinity</td></tr>
+        <tr><td><strong>Color line "The Present Time" looks</strong></td><td>~27%</td><td>Featured looks on named models (Lilly, Julia, Ceci, Julie) with published color formulas</td></tr>
+        <tr><td><strong>Creative Collective named-artist looks</strong></td><td>~17%</td><td>Named hairdressers credited for individual look concepts (Whispering Glow, Power of Quiet Strength, etc.)</td></tr>
+        <tr><td><strong>Tom Connell live sessions</strong></td><td>~7%</td><td>Davines Hair Art Director on live broadcast format</td></tr>
+        <tr><td><strong>Behind-the-chair technique posts</strong></td><td>~10%</td><td>Specific styling technique demonstrations</td></tr>
+        <tr><td><strong>Brand evolution / philosophy</strong></td><td>~7%</td><td>"From Sustainable Beauty to For a Good Life" - explicit brand evolution announcements</td></tr>
+      </tbody>
+    </table>
+
+    <h3>The published color formula pattern</h3>
+
+    <p>Multiple Color line posts include the actual <strong>formula recipe</strong> a stylist could replicate. Example [VERIFIED via @davinespro post id 3854189919371825609]:</p>
+
+    <div class="insight-box">
+      <div class="insight-title">"Look Formula" published in caption</div>
+      <p>Line: <strong>VIEW</strong><br>
+      Nuance: <strong>10,23 + 10,27 + Gloss (5g + 5g + 5g)</strong><br>
+      Activator: <strong>10 Vol. (15g)</strong><br>
+      Natural level: <strong>7 (regrowth), 10 (lengths &amp; ends)</strong></p>
+      <p>This is not aspirational content; it's <strong>directly usable behind-the-chair information</strong>. Davines is teaching stylists how to recreate the look. Most haircare brands hide formulas behind certification gates or class enrollment. Davines puts them in an Instagram caption.</p>
+    </div>
+
+    <h3>Tone register: editorial poetry, not marketing copy</h3>
+
+    <p>Sample captions from 30-post pull [VERIFIED]:</p>
+
+    <ul style="padding-left: 20px; margin-bottom: 20px;">
+      <li style="margin-bottom: 8px;"><em>"Some essential moments, remembered with a few words, rise above the noise of life - they are what we cherish most."</em></li>
+      <li style="margin-bottom: 8px;"><em>"Even tears can give rise to beauty. 'For a Good Life' means beauty that cares - for people, for the planet, for the future."</em></li>
+      <li style="margin-bottom: 8px;"><em>"We believe that a good life is the harmony of purpose and wonder. And that we are all unique with the right to create meaning through good actions that have a positive impact on humanity and Nature."</em></li>
+    </ul>
+
+    <p>This is editorial-magazine voice (think Aesop, Le Labo, Kinfolk magazine) applied to professional haircare. None of the captions sell a product. They invite the reader into a worldview. The intended outcome is felt affinity, which converts to relationship-stickiness over years rather than transactions over weeks.</p>
+
+    <div class="contrast-box">
+      <div class="contrast-title">The voice contrast across three brands</div>
+      <p><strong>Innersense @innersensepro</strong>: warm community voice, named stylists celebrated by name, "Join us for Curl Academy in Baltimore" - relational and event-driven.<br>
+      <strong>K18 @k18hair</strong>: high-energy product launch voice, <em>"IT'S HERE! TripleBright"</em>, sale alerts, "POV: your @sephora cart but it's all K18" - performance and urgency.<br>
+      <strong>Davines @davinespro</strong>: literary/philosophical voice, <em>"the harmony of purpose and wonder"</em>, "Even tears can give rise to beauty" - meaning and slow time.</p>
+      <p>Three brands, three completely different tones, all in the same category. None are wrong - they each match a specific persona of stylist their brand is built to attract. AWARE's voice question: which of these is closest to where Tina's voice and the AWARE brand identity sit? (Probably closest to Davines' editorial register, given AWARE's premium-clinical positioning, with Innersense's relational warmth as the pragmatic floor.)</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP DIVE 5: CREATIVE COLLECTIVE -->
+<section id="creative-collective">
+  <div class="container">
+    <span class="section-num">Deep Dive 05</span>
+    <h2>The #DavinesCreativeCollective</h2>
+    <div class="gold-divider"></div>
+
+    <p>Davines runs a named program called the Creative Collective that credits individual hairdressers for individual artistic looks. Each look has a name, the hairdresser is credited with their handle, and the work is published on @davinespro under the unifying program brand. Recent examples [VERIFIED via @davinespro April 2026 captions]:</p>
+
+    <table>
+      <thead>
+        <tr><th>Look name</th><th>Created by</th><th>Geo qualifier</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>WHISPERING GLOW</td><td>@winsonkow</td><td>(Asia roster, presumed)</td></tr>
+        <tr><td>THE POWER OF QUIET STRENGTH</td><td>@dangeroustete</td><td>celebrating Asian beauty</td></tr>
+        <tr><td>SIMPLICITY x AGE OF VIBRANT</td><td>@xizhesting, #DavinesCreativeCollective</td><td>Asia</td></tr>
+        <tr><td>Motion in the Moment</td><td>@Zoe_ong</td><td>#DavinesCreativeCollective Asia</td></tr>
+        <tr><td>Flowing Mirage</td><td>@henrytsehk</td><td>#DavinesCreativeCollective Asia</td></tr>
+      </tbody>
+    </table>
+
+    <p>All five featured Creative Collective members in this 30-post sample are <strong>Asia-region hairdressers</strong>. This may be a sampling artifact (the regional Davines team may have been most active in this window) or it may indicate a deliberate Asia-region recruitment push.</p>
+
+    <h3>Why this works as a B2B mechanic</h3>
+
+    <div class="insight-box">
+      <div class="insight-title">The Creative Collective is a recruiting funnel disguised as a content program</div>
+      <p>For a hairdresser, being featured under #DavinesCreativeCollective with a named look is portfolio capital. For Davines, each featured hairdresser brings their own audience, their salon, and their styling community into the Davines orbit. The brand provides the platform; the artist provides the work and brings the followers. The economic exchange is asymmetric in Davines' favor at scale: the cost of producing 5+ collective posts is content team time, the value generated is 5+ artist communities engaging with the brand.</p>
+      <p>This is structurally similar to K18's PRO Artist Program (<em>"led by educators with support from K18"</em>) but smaller in scope - Creative Collective is about visual artistry, not curriculum design. K18's program is teaching infrastructure. Davines' Collective is editorial showcase. Both delegate creative authority to named stylists.</p>
+    </div>
+  </div>
+</section>
+
+<!-- THREE-WAY COMPARISON -->
+<section id="three-way">
+  <div class="container">
+    <span class="section-num">Cross-Brand Analysis</span>
+    <h2>Three Models Side by Side</h2>
+    <div class="gold-divider"></div>
+
+    <p>After three deep-dives in this series, the category breaks into three coherent B2B paid models. Below is the side-by-side that makes the choice space visible.</p>
+
+    <div class="three-way">
+      <div>
+        <h4>Innersense (Trial-Conversion)</h4>
+        <p style="font-size:12px;"><strong>~5 active B2B paid ads</strong></p>
+        <p style="font-size:12px; color: var(--teal-60); margin-top: 8px;">FREE TRIAL KIT offer, brand-direct ads, soft-gated education hub at innersensepro.com (redirect), Founders Summit annual event. @innersensepro 15K (not verified).</p>
+        <p style="font-size:12px; color: var(--teal-60); margin-top: 8px;"><strong>Optimizes for</strong>: stylist trial conversion → first wholesale order.</p>
+      </div>
+      <div>
+        <h4>K18 (Demand-Pull)</h4>
+        <p style="font-size:12px;"><strong>0 brand-direct B2B ads &middot; ~4,800 DTC ads</strong></p>
+        <p style="font-size:12px; color: var(--teal-60); margin-top: 8px;">Mass DTC consumer demand creation, 2 #k18partner whitelisted stylist creator ads (driving to DTC), 9-distributor wholesale network, certification + profit calculator funnel. @k18hairpro 5.5K (not verified).</p>
+        <p style="font-size:12px; color: var(--teal-60); margin-top: 8px;"><strong>Optimizes for</strong>: consumer demand that pulls salons to stock.</p>
+      </div>
+      <div>
+        <h4>Davines (Brand-Affinity)</h4>
+        <p style="font-size:12px;"><strong>~12 active B2B brand-affinity ads</strong></p>
+        <p style="font-size:12px; color: var(--teal-60); margin-top: 8px;">30-72sec brand-essay video ads, "ask your distributor" CTA, hard-gated davinespro.com knowledge platform, World Wide Hair Tour annual event with named artists, Creative Collective. @davinespro 51K verified.</p>
+        <p style="font-size:12px; color: var(--teal-60); margin-top: 8px;"><strong>Optimizes for</strong>: shared meaning &amp; long-term professional community membership.</p>
+      </div>
+    </div>
+
+    <h3>The dimension matrix</h3>
+
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Innersense</th>
+          <th>K18</th>
+          <th>Davines</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Active B2B paid ads</td><td>~5</td><td>0 brand-direct</td><td>~12</td></tr>
+        <tr><td>Pro destination</td><td>innersensepro.com (redirect)</td><td>k18hairpro.com (separate)</td><td>davinespro.com (separate, gated)</td></tr>
+        <tr><td>Pro funnel gate</td><td>Soft modal</td><td>Open + email capture</td><td>Hard sign-in gate</td></tr>
+        <tr><td>Pro funnel offer</td><td>Free Trial Kit</td><td>Get Certified + profit calc</td><td>None - knowledge access</td></tr>
+        <tr><td>Pro IG</td><td>@innersensepro 15K</td><td>@k18hairpro 5.5K</td><td>@davinespro 51K verified</td></tr>
+        <tr><td>Pro IG voice</td><td>Warm community</td><td>Product launch energy</td><td>Editorial poetry</td></tr>
+        <tr><td>Annual event</td><td>Founders Summit (Austin)</td><td>(none surfaced)</td><td>World Wide Hair Tour (Valencia 2026)</td></tr>
+        <tr><td>Education program</td><td>In-person + virtual classes, AURIC workshops</td><td>K18 PRO Artist Program (stylist-led)</td><td>Talent Green House + Creative Collective</td></tr>
+        <tr><td>Distribution</td><td>Direct + select wholesale</td><td>9+ named wholesalers + SalonCentric + CosmoProf</td><td>Direct + named distributors (e.g. Bassett)</td></tr>
+        <tr><td>Ad voice register</td><td>Stylist-as-hero outcome</td><td>Consumer urgency / professional crossover</td><td>Brand-philosophy / values storytelling</td></tr>
+        <tr><td>Ownership</td><td>Independent (Greg + Joanne Starkman)</td><td>Acquired by Unilever <span class="tag tag-unverified">UNVERIFIED year</span></td><td>Independent family-owned (Italy, B Corp 2016)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Where AWARE actually fits</h3>
+
+    <div class="aware-box">
+      <div class="aware-title">The honest assessment</div>
+      <ul>
+        <li><strong>K18's model is unreachable</strong> - requires DTC ad spend AWARE doesn't have. Skip for now.</li>
+        <li><strong>Davines' model is aspirational</strong> - requires 20+ years of cultural capital. Useful as a long-horizon north star (especially the editorial voice register, which suits AWARE's premium positioning) but not a 2026 tactical playbook.</li>
+        <li><strong>Innersense's model is replicable now</strong> - direct B2B paid ads with a single offer (free sample kit), driving to a soft-gated partner application page. AWARE's stage matches Innersense's stage closely enough that the Innersense playbook is the executable one for the next 6-12 months.</li>
+        <li><strong>Davines tactics worth stealing in micro</strong>: editorial-poetry voice register on @aware_pro, named-artist credit pattern (when we have enough partner stylists to feature), distributor-runs-event-promotion mechanic when distribution partners come online.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- TRANSFERABILITY MATRIX -->
+<section id="transferability">
+  <div class="container">
+    <span class="section-num">Transferability</span>
+    <h2>Transferability Matrix for AWARE</h2>
+    <div class="gold-divider"></div>
+
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>Davines Tactic</th>
+          <th>Applicability</th>
+          <th>Cost</th>
+          <th>Complexity</th>
+          <th>Impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Editorial-poetry voice on partner-facing IG</strong></td>
+          <td><span class="tag tag-high">High</span></td>
+          <td>Voice/content time</td>
+          <td><span class="tag tag-low">Low</span></td>
+          <td><span class="tag tag-high">High</span></td>
+        </tr>
+        <tr>
+          <td><strong>Named artist credit pattern (#AWARECreativeCollective?)</strong></td>
+          <td><span class="tag tag-high">High</span></td>
+          <td>Content time + partner relationship</td>
+          <td><span class="tag tag-med">Medium</span></td>
+          <td><span class="tag tag-med">Medium</span></td>
+        </tr>
+        <tr>
+          <td><strong>Published "look formula" / treatment protocol posts</strong></td>
+          <td><span class="tag tag-high">High</span></td>
+          <td>Tina's time + content time</td>
+          <td><span class="tag tag-low">Low</span></td>
+          <td><span class="tag tag-high">High</span></td>
+        </tr>
+        <tr>
+          <td><strong>Brand-essay video ads (no offer, just worldview)</strong></td>
+          <td><span class="tag tag-low">Low</span></td>
+          <td>Production cost + paid spend</td>
+          <td><span class="tag tag-high">High</span></td>
+          <td><span class="tag tag-low">Low</span> at our stage</td>
+        </tr>
+        <tr>
+          <td><strong>Hard-gated pro knowledge platform</strong></td>
+          <td><span class="tag tag-low">Low</span></td>
+          <td>Build cost + content cost</td>
+          <td><span class="tag tag-high">High</span></td>
+          <td><span class="tag tag-low">Low</span> until we have demand pressure</td>
+        </tr>
+        <tr>
+          <td><strong>Annual flagship event with named artists</strong></td>
+          <td><span class="tag tag-med">Medium</span></td>
+          <td>$15-40K event + travel</td>
+          <td><span class="tag tag-high">High</span></td>
+          <td><span class="tag tag-high">High</span> (long horizon)</td>
+        </tr>
+        <tr>
+          <td><strong>Distributor-runs-event-promotion mechanic</strong></td>
+          <td><span class="tag tag-med">Medium</span></td>
+          <td>Free (distributor pays)</td>
+          <td><span class="tag tag-low">Low</span></td>
+          <td><span class="tag tag-high">High</span> when distribution exists</td>
+        </tr>
+        <tr>
+          <td><strong>"Ask your distributor" CTA in any AWARE B2B ads</strong></td>
+          <td><span class="tag tag-med">Medium</span></td>
+          <td>Free (copy choice)</td>
+          <td><span class="tag tag-low">Low</span></td>
+          <td><span class="tag tag-med">Medium</span> when distribution exists</td>
+        </tr>
+        <tr>
+          <td><strong>B Corp certification application</strong></td>
+          <td><span class="tag tag-med">Medium</span></td>
+          <td>Application fees + audit time</td>
+          <td><span class="tag tag-high">High</span></td>
+          <td><span class="tag tag-med">Medium</span> (positioning value)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PRIORITY ACTIONS -->
+<section id="priority-actions">
+  <div class="container">
+    <span class="section-num">Actions</span>
+    <h2>Priority Action Items for AWARE</h2>
+    <div class="gold-divider"></div>
+
+    <ol style="padding-left: 24px; font-size: 14px; line-height: 1.7;">
+      <li style="margin-bottom: 14px;">
+        <strong>Adopt the editorial-poetry voice register on @aware_pro from launch.</strong> When we eventually launch the AWARE pro Instagram (action item from the Innersense deep-dive), the voice should sit closer to Davines' literary register than Innersense's relational warmth or K18's product-energy. AWARE's premium-clinical positioning matches Davines' editorial tone better than the alternatives. Concretely: ask Tina to write a single one-paragraph "scalp philosophy" essay; use it as the bio + first three posts. Avoid product feature language for the first month entirely.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Publish actual scalp treatment formulas/protocols on AWARE-owned channels.</strong> Davines publishes color formulas in IG captions because hidden expertise is suspicious; visible expertise is credible. The AWARE equivalent: published service-protocol guides for the salon-room scalp treatment using AWARE products (gua sha sequence, treatment timing, retail conversation script). Tina has this content in her head; we don't write it down. Davines' practice is the prompt to start.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Pilot a named-artist credit pattern with one AWARE partner salon.</strong> Pick one of our 50+ partner salons doing distinctive scalp work. Feature their work on AWARE's channels with the artist credited by name and Instagram handle. Could be #AWAREScalpEditorial, #AWAREProtocolSeries, whatever brand. The structural move is the same as Davines' Creative Collective: partner stylists get portfolio capital, AWARE gets editorial content + relationship deepening. Cost: zero beyond content time.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Save "annual flagship event" as the 2027 strategic question, not a 2026 build.</strong> Both Davines (WWHT in Valencia) and Innersense (Founders Summit in Austin) treat the annual event as their highest-leverage retention/community asset. AWARE's 2027 question: do we host the inaugural AWARE Partner Summit, and if yes, in what city, with what curriculum, with what guest educators. Begin sketching now (a 1-page concept doc), ship in 2027.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Add the "ask your distributor" CTA pattern to any future AWARE B2B paid ads.</strong> Davines uses it because it routes interested salons into a sales conversation rather than self-serve. AWARE doesn't yet have meaningful distribution to redirect to, but if we close Sweis or any other partner, our B2B ad copy should immediately reflect "ask your distributor for details." Until then, our equivalent CTA is "request a sample kit" (the Innersense pattern).
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Investigate B Corp certification eligibility for AWARE.</strong> Davines uses B Corp as the credibility shortcut for sustainability claims (since 2016). AWARE's brand positioning involves clean ingredients and salon-channel ethics that may map to the B Corp framework. The application is significant work but the "B Corp" badge is a one-time investment that pays compounding credibility over years. At minimum, talk to a B Corp consultant about feasibility for AWARE at our current size (B Corp does certify smaller companies).
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Skip Davines' brand-essay video ads as a 2026 tactic.</strong> They work for Davines because Davines has 20+ years of brand equity. They will not work for AWARE because we don't yet have brand recognition that makes a viewer hold a video for 30-72 seconds. Revisit this tactic when AWARE has at minimum 200K combined followers across consumer + pro IG, plus active wholesale revenue at $1M+/year. Until then, every paid ad needs an offer.
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- UNKNOWNS -->
+<section id="unknowns">
+  <div class="container">
+    <span class="section-num">Gaps</span>
+    <h2>What We Still Don't Know</h2>
+    <div class="gold-divider"></div>
+
+    <div class="unknown-box">
+      <div class="unknown-title">Data we cannot access</div>
+      <ul>
+        <li>davinespro.com gated content - what's actually behind the login (Talent Green House curriculum, Unexpected Event details, internal artist roster, education catalog)</li>
+        <li>WWHT Valencia 2026 ticket pricing and registration volume</li>
+        <li>Total Davines salon partner count globally</li>
+        <li>Creative Collective member count and program structure (paid? equity? per-look fee?)</li>
+        <li>Conversion economics: brand-essay video ad CPM/CPC and downstream lead-gen impact</li>
+        <li>Number of US distributors that participate in the WWHT ticket discount-code program (we only confirmed Bassett Salon Solutions)</li>
+      </ul>
+    </div>
+
+    <div class="unknown-box">
+      <div class="unknown-title">Verification gaps in this scan</div>
+      <ul>
+        <li>Davines founder names and family ownership specifics not separately verified during this scan (the @davinespro Feb 2026 evolution post says <em>"Davines is a family-owned company"</em> [VERIFIED via IG] but the family name and founder details were not pursued)</li>
+        <li>"The Unexpected Event" format and frequency unknown</li>
+        <li>Talent Green House program structure and eligibility unknown</li>
+        <li>Did not pull post count from @k18hairpro for direct cadence comparison</li>
+      </ul>
+    </div>
+
+    <div class="unknown-box">
+      <div class="unknown-title">Questions worth investigating</div>
+      <ul>
+        <li>Does Davines run B2B paid ads OUTSIDE the US (where pro market dynamics may differ - the Italian/European core market may have a different ad mix)</li>
+        <li>What % of Davines' US sales flow through which named distributors (Bassett, others)?</li>
+        <li>Has the WWHT format changed over time? (Multi-year analysis would reveal trajectory of brand event investment)</li>
+        <li>How many of @davinespro's 1,566 posts are originally produced vs reposted Creative Collective content vs distributor-shared content? (Gives a real cost model for the editorial program)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SOURCES -->
+<section id="sources">
+  <div class="container">
+    <span class="section-num">Methodology</span>
+    <h2>Sources &amp; Methodology</h2>
+    <div class="gold-divider"></div>
+
+    <h3>Primary sources</h3>
+    <div class="sources">
+      <ol>
+        <li><strong>Meta Ad Library</strong> - April 21, 2026 via Playwright. Two views: keyword search "davinespro.com" (~7 results) and direct view of Davines Color advertiser page (view_all_page_id=1697250176991449, ~12 results). The advertiser-page view reveals the true active count; keyword search undercounts because most ad copy doesn't reference the pro URL. <a href="https://www.facebook.com/ads/library/?active_status=active&amp;ad_type=all&amp;country=US&amp;media_type=all&amp;q=davinespro.com&amp;search_type=keyword_unordered" target="_blank" rel="noopener">Replicate keyword search</a></li>
+        <li><strong>davinespro.com</strong> - WebFetch April 21, 2026 + Playwright navigation. Site requires login for all professional content; only marketing landing page is public.</li>
+        <li><strong>us.davines.com</strong> - WebFetch April 21, 2026. Confirmed pro site URL, "Become a Davines Salon" path, no public distributor list.</li>
+        <li><strong>@davinespro Instagram</strong> - Xpoz getInstagramUser + getInstagramPostsByUser, April 21, 2026. 51,178 followers verified, 1,566 posts. 30 most recent posts pulled for content pillar analysis.</li>
+        <li><strong>@davines Instagram</strong> - Xpoz getInstagramUser confirmed 750 followers, 6 posts (essentially abandoned).</li>
+      </ol>
+    </div>
+
+    <h3>Video frame extraction</h3>
+    <p style="font-size: 13px; color: var(--teal-60);">
+      Same yt-dlp + ffmpeg + pngquant method developed for the Innersense and K18 deep-dives. Of 5 attempted video downloads, 3 succeeded (the 2 brand-mission videos and the Bassett WWHT distributor ad). One failure was an image-only ad (yt-dlp correctly reported "no video formats"); one failure was a yt-dlp extraction error on a multi-version brand-mission ad (workable around by using the alternative version's MP4).
+    </p>
+
+    <h3>Verification labeling</h3>
+    <p style="font-size: 13px; color: var(--teal-60);">Same convention as prior deep-dives: <span class="tag tag-verified">VERIFIED</span> = confirmed at primary source URL during scan, <span class="tag tag-estimated">ESTIMATED</span> = derived from comparables, <span class="tag tag-unverified">UNVERIFIED</span> = cited but not re-confirmed.</p>
+
+    <h3>Known gaps in methodology</h3>
+    <ul style="font-size: 13px; padding-left: 20px;">
+      <li>Did not log in to davinespro.com - all analysis is of public-facing content</li>
+      <li>Did not transcribe audio from the 3 downloaded videos - only visual frames captured</li>
+      <li>Did not cross-reference Davines' regional Instagram accounts (likely @davines.us, @davines.uk, etc.) for full content footprint</li>
+      <li>Did not analyze WWHT participant educators' own social accounts for cross-amplification volume</li>
+      <li>Did not pursue B Corp certification verification through the official B Lab directory</li>
+    </ul>
+
+    <h3>Update cadence recommendation</h3>
+    <p style="font-size: 13px; color: var(--teal-60);">Re-scan @davinespro monthly for Creative Collective additions and educator features. Re-scan Meta Ad Library quarterly - Davines' brand-affinity ads rotate more slowly than Innersense's offer-driven creatives. Capture the WWHT 2026 Valencia event content in October 2026 for the post-event analysis - the recap content will be the highest-signal data on what worked.</p>
+
+    <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--teal-12); font-size: 12px; color: var(--teal-40);">
+      Document generated April 21, 2026 &middot; Prepared for David Zhao &middot; AWARE Hair Control &middot; marketing/competitor-intel/davines-b2b-stylist-deep-dive.html &middot; Phase B No. 2 of 3 (Great Lengths to follow)
+    </div>
+  </div>
+</section>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

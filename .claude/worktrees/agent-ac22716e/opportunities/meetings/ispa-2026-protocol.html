@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Treatment Protocol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #102B26;
+    --cream: #f4efe9;
+    --surface: #faf8f5;
+    --gold: #D4A574;
+    --sage: #7d8471;
+    --sand: #E8E4DC;
+    --charcoal: #2C2C2C;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--forest);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 480px; margin: 0 auto; background: #fff; min-height: 100vh; }
+
+  /* ─── Back Nav ─── */
+  .back-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--forest);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .back-nav a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(244, 239, 233, 0.75);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 8px 8px 0;
+    transition: color 0.2s;
+  }
+
+  .back-nav a:hover { color: var(--gold); }
+
+  .back-nav svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+  }
+
+  .back-nav .page-title {
+    flex: 1;
+    text-align: right;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ─── Hero ─── */
+  .hero {
+    background: var(--forest);
+    color: var(--cream);
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    object-position: center 30%;
+    display: block;
+  }
+
+  .hero-content { padding: 28px 28px 36px; }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 28px;
+    font-weight: 300;
+    line-height: 1.25;
+    margin-bottom: 10px;
+  }
+
+  .hero p {
+    font-size: 13px;
+    color: rgba(244, 239, 233, 0.7);
+    max-width: 340px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ─── Section ─── */
+  .section {
+    padding: 32px 28px;
+    border-bottom: 1px solid var(--sand);
+  }
+
+  .section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .section h2 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 14px;
+    line-height: 1.3;
+  }
+
+  .section p {
+    font-size: 13px;
+    color: var(--charcoal);
+    line-height: 1.65;
+    margin-bottom: 10px;
+  }
+
+  /* ─── Protocol Steps ─── */
+  .protocol-step {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 24px;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .protocol-step:last-child { margin-bottom: 0; }
+
+  /* Connector line between steps */
+  .protocol-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 36px;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, var(--gold), var(--sand));
+  }
+
+  .protocol-step:not(:last-child) {
+    padding-bottom: 24px;
+    margin-bottom: 0;
+  }
+
+  .step-num {
+    width: 36px;
+    height: 36px;
+    background: var(--forest);
+    color: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-body { flex: 1; padding-top: 2px; }
+
+  .step-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+  }
+
+  .step-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--forest);
+  }
+
+  .step-time {
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .step-desc {
+    font-size: 13px;
+    color: var(--charcoal);
+    line-height: 1.6;
+  }
+
+  .step-products {
+    margin-top: 8px;
+    padding: 10px 12px;
+    background: var(--surface);
+    font-size: 11px;
+    color: var(--sage);
+    line-height: 1.5;
+  }
+
+  .step-products strong {
+    color: var(--forest);
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ─── Menu Cards ─── */
+  .menu-card {
+    background: var(--surface);
+    padding: 22px;
+    margin-bottom: 12px;
+    border-left: 3px solid var(--gold);
+  }
+
+  .menu-card.signature { background: var(--forest); color: var(--cream); }
+
+  .menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+  }
+
+  .menu-name {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 19px;
+    font-weight: 500;
+  }
+
+  .menu-price {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  .menu-meta {
+    font-size: 11px;
+    color: var(--sage);
+    margin-bottom: 8px;
+  }
+
+  .menu-card.signature .menu-meta { color: rgba(244, 239, 233, 0.45); }
+
+  .menu-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--charcoal);
+  }
+
+  .menu-card.signature .menu-desc { color: rgba(244, 239, 233, 0.7); }
+
+  /* ─── Talking Points ─── */
+  .talking-point {
+    display: flex;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--sand);
+    align-items: flex-start;
+  }
+
+  .talking-point:last-child { border-bottom: none; }
+
+  .tp-icon {
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .tp-text {
+    font-size: 13px;
+    color: var(--charcoal);
+    line-height: 1.55;
+  }
+
+  .tp-text strong { color: var(--forest); }
+
+  /* ─── Support Badge ─── */
+  .support-card {
+    background: var(--forest);
+    color: var(--cream);
+    padding: 24px;
+    margin-top: 16px;
+  }
+
+  .support-card h3 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    color: var(--cream);
+  }
+
+  .support-item {
+    font-size: 12px;
+    color: rgba(244, 239, 233, 0.65);
+    padding: 5px 0;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .support-item::before {
+    content: '\25C6';
+    color: var(--gold);
+    font-size: 7px;
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+
+  /* ─── CTA ─── */
+  .cta-section {
+    background: var(--forest);
+    padding: 32px 28px;
+    text-align: center;
+  }
+
+  .cta-section h2 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 16px;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--forest);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 14px 36px;
+    transition: all 0.3s ease;
+  }
+
+  .cta-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+  .cta-note {
+    margin-top: 12px;
+    font-size: 11px;
+    color: rgba(244, 239, 233, 0.6);
+  }
+
+  .cta-note a {
+    color: rgba(244, 239, 233, 0.7);
+    text-decoration: none;
+  }
+
+  .cta-note a:hover { color: var(--gold); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; animation-delay: 0ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Back Nav -->
+  <nav class="back-nav" aria-label="Page navigation">
+    <a href="ispa-2026-qr-landing.html">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </a>
+    <span class="page-title">Treatment Protocol</span>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <img class="hero-image" src="https://res.cloudinary.com/dwgtfjod9/image/upload/w_1200,h_600,c_fill,g_center,f_auto,q_auto/v1774413880/aware-hair/product-photos/collection-full-blue.jpg" alt="The AWARE Hair 9·1 Collection" fetchpriority="high">
+    <div class="hero-content">
+      <h1>The AWARE Scalp Ritual</h1>
+      <p>A complete, timed treatment protocol your team can run after a single training session.</p>
+    </div>
+  </div>
+
+  <!-- Step-by-Step Protocol -->
+  <div class="section">
+    <div class="section-label">Step-by-Step Protocol</div>
+    <h2>What Your Therapist Does</h2>
+
+    <div class="protocol-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-header">
+          <span class="step-name">Purifying Cleanse</span>
+          <span class="step-time">10 min</span>
+        </div>
+        <div class="step-desc">Remove environmental buildup, product residue, and excess sebum. Warm water, gentle scalp massage with fingertips in circular motions.</div>
+        <div class="step-products">
+          <strong>Product:</strong> 9·1 Professional Scalp Care Shampoo (pH-balanced, color-safe, sulfate-free)
+        </div>
+      </div>
+    </div>
+
+    <div class="protocol-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-header">
+          <span class="step-name">Nourishing Scalp Mask</span>
+          <span class="step-time">15-20 min</span>
+        </div>
+        <div class="step-desc">Apply Nourishing Conditioner/Mask generously to scalp in sections. Process under warm towel or hooded dryer. Heat helps the AWAREBIO Complex penetrate for deeper barrier repair and microbiome support.</div>
+        <div class="step-products">
+          <strong>Product:</strong> 9·1 Professional Scalp Care Conditioner (hyaluronic acid, microbiome support)
+        </div>
+      </div>
+    </div>
+
+    <div class="protocol-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-header">
+          <span class="step-name">Gua Sha Meridian Massage</span>
+          <span class="step-time">10-15 min</span>
+        </div>
+        <div class="step-desc">Stainless Steel Gua Sha with light-medium pressure along meridian lines. Can be performed on wet or dry hair. Stimulates circulation, relieves tension, promotes product absorption. Pairs beautifully with our upcoming treatment oil and serum. The signature moment of the treatment.</div>
+        <div class="step-products">
+          <strong>Tool:</strong> Stainless Steel Gua Sha
+        </div>
+      </div>
+    </div>
+
+    <div class="protocol-step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-header">
+          <span class="step-name">Seal + Protect</span>
+          <span class="step-time">5 min</span>
+        </div>
+        <div class="step-desc">Apply Leave-In Treatment as a finishing shield. Gel-serum hybrid that seals in moisture, smooths frizz, provides 360-degree environmental defense (heat, UV, pollution), and holds light style memory. Recommended with a blowout. The step clients notice most.</div>
+        <div class="step-products">
+          <strong>Product:</strong> Leave-In Treatment (UV + environmental shield)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menu Examples -->
+  <div class="section">
+    <div class="section-label">For Your Spa Menu</div>
+    <h2>Service Menu Examples</h2>
+
+    <div class="menu-card signature">
+      <div class="menu-header">
+        <span class="menu-name">AWARE Scalp Ritual</span>
+        <span class="menu-price">$125-175</span>
+      </div>
+      <div class="menu-meta">45-60 minutes | Signature treatment</div>
+      <div class="menu-desc">Complete scalp wellness experience: purifying cleanse, nourishing mask processed under heat, stainless steel gua sha meridian massage, and leave-in scalp protection. A standalone signature service or complement to any existing treatment.</div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-header">
+        <span class="menu-name">Gua Sha Meridian Boost</span>
+        <span class="menu-price">$45-75</span>
+      </div>
+      <div class="menu-meta">15 minutes | Add-on to any service</div>
+      <div class="menu-desc">Stainless steel scalp gua sha massage on wet or dry hair that stimulates circulation and relieves tension. Pairs with our upcoming treatment oil and serum. Your signature upsell - clients request it by name after their first experience.</div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-header">
+        <span class="menu-name">Retail Take-Home</span>
+        <span class="menu-price">$75-$170</span>
+      </div>
+      <div class="menu-meta">Discovery Kit to Full Collection</div>
+      <div class="menu-desc">Guests continue the ritual at home with the Sandalwood Gua Sha as their take-home tool. The treatment drives the retail sale. 50% retail margin on all products.</div>
+    </div>
+  </div>
+
+  <!-- Guest Talking Points -->
+  <div class="section">
+    <div class="section-label">Guest Experience</div>
+    <h2>What to Tell Your Clients</h2>
+
+    <div class="talking-point">
+      <div class="tp-icon"></div>
+      <div class="tp-text"><strong>"This treats your scalp like a facial."</strong> Most hair care ignores the scalp entirely. This ritual addresses the skin your hair grows from.</div>
+    </div>
+
+    <div class="talking-point">
+      <div class="tp-icon"></div>
+      <div class="tp-text"><strong>"It's developed by a stylist and trichologist with 40+ years of experience."</strong> Not a celebrity brand or lab experiment - born from decades of real client treatments.</div>
+    </div>
+
+    <div class="talking-point">
+      <div class="tp-icon"></div>
+      <div class="tp-text"><strong>"The gua sha is the signature moment."</strong> Stainless steel tool along meridian lines, works on wet or dry hair. Pairs with our upcoming treatment oil and serum. Clients request it by name after the first time.</div>
+    </div>
+
+    <div class="talking-point">
+      <div class="tp-icon"></div>
+      <div class="tp-text"><strong>"You can continue this at home."</strong> We carry the full ritual so you can maintain results between visits. The Discovery Kit is the perfect starting point.</div>
+    </div>
+
+    <!-- Training Support -->
+    <div class="support-card">
+      <h3>We Train Your Team for Free</h3>
+      <div class="support-item">Complimentary Scalp Specialist Certification (90-180 min, flexible scheduling)</div>
+      <div class="support-item">Printed protocol cards for each treatment room</div>
+      <div class="support-item">Guest talking points and consultation scripts</div>
+      <div class="support-item">Video tutorials for ongoing reference</div>
+      <div class="support-item">Dedicated account manager for questions</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Ready to Learn More?</h2>
+    <a href="mailto:jade@awarehair.com?subject=ISPA%20Attendee%20-%20Getting%20in%20Touch&body=Hi%20Jade%2C%0A%0AI'd%20love%20to%20learn%20more%20about%20AWARE%20Hair.%0A%0AMy%20name%3A%20%0ASpa%2FSalon%3A%20%0A%0AThanks!" class="cta-btn">Get in Touch</a>
+    <div class="cta-note">Jade Wong, Co-Founder &middot; <a href="mailto:jade@awarehair.com">jade@awarehair.com</a> &middot; <a href="tel:+16266889844">(626) 688-9844</a></div>
+  </div>
+
+</div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

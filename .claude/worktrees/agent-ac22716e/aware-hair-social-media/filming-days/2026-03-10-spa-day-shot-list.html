@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Spa Day Shot List - March 10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #102B26;
+    --cream: #f4efe9;
+    --surface: #faf8f5;
+    --gold: #D4A574;
+    --sage: #7d8471;
+    --border: #e0dbd5;
+    --tina: #2d6a5e;
+    --jade: #8b6914;
+    --both: #5c3d6e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--teal);
+    line-height: 1.55;
+    -webkit-text-size-adjust: 100%;
+    padding-bottom: 80px;
+  }
+
+  /* ── Sticky header ── */
+  .top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--teal);
+    color: var(--cream);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 12px rgba(0,0,0,.15);
+  }
+  .top-bar h1 { font-size: 16px; font-weight: 600; letter-spacing: .3px; }
+  .top-bar .meta { font-size: 12px; opacity: .7; }
+
+  /* ── Quick nav pills ── */
+  .nav-strip {
+    position: sticky;
+    top: 48px;
+    z-index: 99;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .nav-strip::-webkit-scrollbar { display: none; }
+  .nav-pill {
+    display: inline-block;
+    padding: 6px 14px;
+    margin-right: 8px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--teal);
+    background: var(--cream);
+    border: 1px solid var(--border);
+    transition: all .2s;
+  }
+  .nav-pill:active, .nav-pill.active {
+    background: var(--teal);
+    color: var(--cream);
+    border-color: var(--teal);
+  }
+  .nav-pill.tips { background: var(--gold); color: #fff; border-color: var(--gold); }
+  .nav-pill.broll { background: var(--sage); color: #fff; border-color: var(--sage); }
+
+  /* ── Section containers ── */
+  .section { padding: 20px 16px; }
+
+  /* ── Tips banner ── */
+  .tips-card {
+    background: linear-gradient(135deg, var(--teal), #1a4a40);
+    color: var(--cream);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 16px;
+  }
+  .tips-card h2 { font-size: 15px; font-weight: 700; margin-bottom: 12px; letter-spacing: .5px; text-transform: uppercase; opacity: .85; }
+  .tips-card ul { list-style: none; padding: 0; }
+  .tips-card li {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .tips-card li:last-child { border-bottom: none; }
+  .tips-card .label {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 6px;
+  }
+  .tips-card .label-tina { background: rgba(255,255,255,.15); }
+  .tips-card .label-jade { background: rgba(212,165,116,.3); }
+
+  /* ── Progress tracker ── */
+  .progress-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin: 16px;
+    padding: 16px 20px;
+  }
+  .progress-bar h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .8px; color: var(--sage); margin-bottom: 10px; }
+  .progress-track {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--gold);
+    border-radius: 3px;
+    transition: width .5s ease;
+  }
+  .progress-text { font-size: 13px; margin-top: 8px; color: var(--sage); }
+
+  /* ── Filming order ── */
+  .order-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin: 0 16px 16px;
+    overflow: hidden;
+  }
+  .order-card h3 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: var(--sage);
+    padding: 14px 20px 0;
+  }
+  .order-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .order-row:last-child { border-bottom: none; }
+  .order-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-right: 12px;
+  }
+  .order-detail { flex: 1; }
+  .order-detail .name { font-weight: 600; font-size: 13px; }
+  .order-detail .setup { font-size: 12px; color: var(--sage); margin-top: 2px; }
+  .order-time {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+
+  /* ── Video cards ── */
+  .video-card {
+    background: #fff;
+    border-radius: 12px;
+    margin: 0 16px 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .video-header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .video-number {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--sage);
+  }
+  .video-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 4px;
+    line-height: 1.3;
+  }
+  .video-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+    letter-spacing: .3px;
+  }
+  .tag-platform { background: #e8f0ee; color: var(--teal); }
+  .tag-time { background: #fdf3e8; color: #8b6914; }
+  .tag-tina { background: #e5f0ed; color: var(--tina); }
+  .tag-jade { background: #fef8ec; color: var(--jade); }
+  .tag-both { background: #f0eaf4; color: var(--both); }
+  .tag-pillar { background: var(--cream); color: var(--sage); border: 1px solid var(--border); }
+
+  .video-body { padding: 0; }
+
+  /* ── Collapsible sections ── */
+  details { border-top: 1px solid var(--border); }
+  details:first-of-type { border-top: none; }
+
+  summary {
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: var(--teal);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  summary::after {
+    content: '+';
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--sage);
+    transition: transform .2s;
+  }
+  details[open] summary::after {
+    content: '-';
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::marker { display: none; content: ''; }
+
+  .detail-content { padding: 0 20px 16px; }
+
+  /* ── Hook callout ── */
+  .hook-box {
+    background: linear-gradient(135deg, var(--teal), #1a4a40);
+    color: var(--cream);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 12px 20px 4px;
+    font-size: 15px;
+    font-style: italic;
+    line-height: 1.5;
+    position: relative;
+  }
+  .hook-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-style: normal;
+    opacity: .6;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* ── Detail content styling ── */
+  .detail-content ol, .detail-content ul {
+    padding-left: 20px;
+    margin: 0;
+  }
+  .detail-content li {
+    font-size: 14px;
+    padding: 5px 0;
+    line-height: 1.5;
+  }
+  .detail-content p {
+    font-size: 14px;
+    margin: 8px 0;
+    line-height: 1.55;
+  }
+
+  /* ── Caption block ── */
+  .caption-block {
+    background: var(--cream);
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-line;
+    border-left: 3px solid var(--gold);
+  }
+  .caption-block .hashtags {
+    color: var(--sage);
+    font-size: 12px;
+    margin-top: 8px;
+  }
+
+  /* ── Checkbox styling ── */
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    gap: 10px;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    accent-color: var(--teal);
+    cursor: pointer;
+  }
+  .check-item.checked label {
+    text-decoration: line-through;
+    opacity: .5;
+  }
+
+  /* ── B-Roll section ── */
+  .broll-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin: 0 16px 20px;
+    padding: 20px;
+  }
+  .broll-section h2 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: var(--sage);
+    margin-bottom: 14px;
+  }
+
+  /* ── Post-filming notes ── */
+  .notes-section {
+    background: linear-gradient(135deg, #fdf3e8, #fef8ec);
+    border: 1px solid var(--gold);
+    border-radius: 12px;
+    margin: 0 16px 20px;
+    padding: 20px;
+  }
+  .notes-section h2 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: var(--jade);
+    margin-bottom: 12px;
+  }
+  .notes-section li {
+    font-size: 14px;
+    padding: 5px 0;
+    line-height: 1.5;
+  }
+
+  /* ── Section dividers ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--sage);
+    padding: 24px 20px 8px;
+  }
+
+  /* ── Checkbox done counter ── */
+  .done-counter {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--teal);
+    color: var(--cream);
+    border-radius: 24px;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    z-index: 100;
+    transition: transform .2s;
+  }
+  .done-counter:active { transform: scale(.95); }
+
+  /* ── Smooth scroll offset for sticky headers ── */
+  [id] { scroll-margin-top: 100px; }
+
+  @media (min-width: 600px) {
+    .video-card, .tips-card, .order-card, .broll-section, .notes-section, .progress-bar {
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .section-label { max-width: 540px; margin-left: auto; margin-right: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Top Bar ── -->
+<div class="top-bar">
+  <h1>Spa Day Shot List</h1>
+  <span class="meta">March 10, 2026</span>
+</div>
+
+<!-- ── Quick Nav ── -->
+<div class="nav-strip">
+  <a href="#tips" class="nav-pill tips">Tips</a>
+  <a href="#order" class="nav-pill">Order</a>
+  <a href="#v1" class="nav-pill">V1</a>
+  <a href="#v2" class="nav-pill">V2</a>
+  <a href="#v3" class="nav-pill">V3</a>
+  <a href="#v4" class="nav-pill">V4</a>
+  <a href="#v5" class="nav-pill">V5</a>
+  <a href="#v6" class="nav-pill">V6</a>
+  <a href="#v7" class="nav-pill">V7</a>
+  <a href="#v8" class="nav-pill">V8</a>
+  <a href="#broll" class="nav-pill broll">B-Roll</a>
+</div>
+
+<!-- ── Progress ── -->
+<div class="progress-bar" id="progress">
+  <h3>Filming Progress</h3>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-text"><span id="doneCount">0</span> of 8 videos filmed</div>
+</div>
+
+<!-- ── Tips ── -->
+<div class="tips-card" id="tips">
+  <h2>Before You Start</h2>
+  <ul>
+    <li>Natural light whenever possible (near windows)</li>
+    <li>Phone on tripod, vertical 9:16 for all Reels/TikTok</li>
+    <li>Film each concept in ONE continuous take, then grab B-roll</li>
+    <li><span class="label label-tina">Tina</span> Speak like you're talking to a client in your chair</li>
+    <li><span class="label label-jade">Jade</span> Speak like you're talking to a friend who just asked about your products</li>
+    <li>Authentic beats polished. Don't worry about being perfect.</li>
+  </ul>
+</div>
+
+<!-- ── Filming Order ── -->
+<div class="order-card" id="order">
+  <h3>Suggested Filming Order</h3>
+  <div class="order-row">
+    <div class="order-num">1</div>
+    <div class="order-detail"><div class="name">V2: Mother-Daughter</div><div class="setup">Chair + mirror, minimal products</div></div>
+    <div class="order-time">10 min</div>
+  </div>
+  <div class="order-row">
+    <div class="order-num">2</div>
+    <div class="order-detail"><div class="name">V7: Ask Tina Q&A</div><div class="setup">Same chair setup, conversational</div></div>
+    <div class="order-time">15 min</div>
+  </div>
+  <div class="order-row">
+    <div class="order-num">3</div>
+    <div class="order-detail"><div class="name">V3: Tina's Authority</div><div class="setup">Tina seated, direct to camera</div></div>
+    <div class="order-time">10 min</div>
+  </div>
+  <div class="order-row">
+    <div class="order-num">4</div>
+    <div class="order-detail"><div class="name">V1: Scalp Facial Demo</div><div class="setup">Treatment station, all products</div></div>
+    <div class="order-time">20 min</div>
+  </div>
+  <div class="order-row">
+    <div class="order-num">5</div>
+    <div class="order-detail"><div class="name">V5: Gua Sha Tutorial</div><div class="setup">Same station, focus on tool</div></div>
+    <div class="order-time">10 min</div>
+  </div>
+  <div class="order-row">
+    <div class="order-num">6</div>
+    <div class="order-detail"><div class="name">V4: 3 Scalp Signals</div><div class="setup">Jade to camera, clean background</div></div>
+    <div class="order-time">5 min</div>
+  </div>
+  <div class="order-row">
+    <div class="order-num">7</div>
+    <div class="order-detail"><div class="name">V6: Why 3 Products</div><div class="setup">Product display, clean background</div></div>
+    <div class="order-time">5 min</div>
+  </div>
+  <div class="order-row">
+    <div class="order-num">8</div>
+    <div class="order-detail"><div class="name">V8: Spring Reset</div><div class="setup">Natural light, product sequence</div></div>
+    <div class="order-time">10 min</div>
+  </div>
+  <div class="order-row" style="background: var(--cream); font-weight: 600;">
+    <div class="order-num" style="background: var(--gold);">T</div>
+    <div class="order-detail"><div class="name">Total (before breaks/retakes)</div></div>
+    <div class="order-time">~85 min</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<div class="section-label">Videos</div>
+
+<!-- ── V1: Scalp Facial ── -->
+<div class="video-card" id="v1">
+  <div class="video-header">
+    <div class="video-number">Video 1</div>
+    <div class="video-title">"The Scalp Facial" Ritual Demo</div>
+    <div class="video-meta">
+      <span class="tag tag-tina">Tina leads</span>
+      <span class="tag tag-platform">IG Reel + TikTok</span>
+      <span class="tag tag-time">30-45 sec</span>
+      <span class="tag tag-pillar">Scalp Science</span>
+    </div>
+  </div>
+  <div class="hook-box">
+    <span class="hook-label">Hook (Tina, to camera)</span>
+    "Most people have never had a scalp treatment in their life. Let me show you what 40 years taught me."
+  </div>
+  <div class="video-body">
+    <details>
+      <summary>Scene Breakdown</summary>
+      <div class="detail-content">
+        <ol>
+          <li>Tina demonstrates scalp treatment on Jade - sectioning hair, applying Shampoo</li>
+          <li>Show the double-cleanse: "First wash lifts, second wash treats"</li>
+          <li>Work in Conditioner as a scalp mask, leave 2-3 min</li>
+          <li>Gua Sha massage on scalp - slow, deliberate strokes</li>
+          <li>Finish with Leave-In application</li>
+        </ol>
+      </div>
+    </details>
+    <details>
+      <summary>B-Roll Shots</summary>
+      <div class="detail-content">
+        <ul>
+          <li>Close-up of product pumped into hands</li>
+          <li>Overhead shot of scalp sectioning</li>
+          <li>Gua Sha gliding across scalp (ASMR-worthy)</li>
+          <li>Water rinsing through hair (if shampoo bowl available)</li>
+          <li>Products lined up on a clean white towel</li>
+        </ul>
+      </div>
+    </details>
+    <details>
+      <summary>Caption Draft</summary>
+      <div class="detail-content">
+        <div class="caption-block">Most people care for their face, neck, hands - everything except the skin on top of their head.
+
+Your scalp is skin. It needs cleansing, exfoliation, moisture, and protection, just like your face.
+
+After 40+ years behind the chair, this is the scalp ritual I recommend to every client: double cleanse to purify, mask to restore, massage to stimulate circulation, and daily protection from UV and pollution.
+
+This isn't a trend. It's basic skin science applied where it matters most.
+<span class="hashtags">#scalpcare #scalphealth #professionalhaircare #scalpenvironment #salonlife</span></div>
+      </div>
+    </details>
+  </div>
+  <label class="check-item" style="padding: 12px 20px; border-top: 1px solid var(--border);">
+    <input type="checkbox" class="video-check" data-video="1"> Filmed
+  </label>
+</div>
+
+<!-- ── V2: Mother-Daughter ── -->
+<div class="video-card" id="v2">
+  <div class="video-header">
+    <div class="video-number">Video 2</div>
+    <div class="video-title">Mother-Daughter Behind the Chair</div>
+    <div class="video-meta">
+      <span class="tag tag-both">Both</span>
+      <span class="tag tag-platform">IG Reel + Facebook</span>
+      <span class="tag tag-time">15-30 sec</span>
+      <span class="tag tag-pillar">Brand & Culture</span>
+    </div>
+  </div>
+  <div class="hook-box">
+    <span class="hook-label">Hook (Jade, voiceover or to camera)</span>
+    "My mom opened her first salon in 1984. Now we're building a brand together."
+  </div>
+  <div class="video-body">
+    <details>
+      <summary>Scene Breakdown</summary>
+      <div class="detail-content">
+        <ol>
+          <li>Jade sits in the chair, Tina stands behind (classic stylist-client position)</li>
+          <li>Tina does something small and caring - adjusts Jade's hair, touches her shoulder</li>
+          <li>They look at each other in the mirror and smile</li>
+          <li>Cut to both of them holding AWARE products together</li>
+        </ol>
+      </div>
+    </details>
+    <details>
+      <summary>B-Roll Shots</summary>
+      <div class="detail-content">
+        <ul>
+          <li>Tina's hands working (close-up, shows experience)</li>
+          <li>Mirror reflection of both of them</li>
+          <li>Candid laughing moment (keep camera rolling between takes)</li>
+          <li>Products on the station counter</li>
+        </ul>
+      </div>
+    </details>
+    <details>
+      <summary>Caption Draft</summary>
+      <div class="detail-content">
+        <div class="caption-block">She didn't just teach me about hair. She taught me what it means to take care of someone.
+
+40 years of building salons, training stylists, and putting her clients first. Now we're channeling all of that into something new.
+
+AWARE started because we believed scalp care deserved the same respect as skincare. And honestly, I couldn't imagine building it with anyone else.
+<span class="hashtags">#scalpcare #familybusiness #professionalhaircare #beautylegacy</span></div>
+      </div>
+    </details>
+  </div>
+  <label class="check-item" style="padding: 12px 20px; border-top: 1px solid var(--border);">
+    <input type="checkbox" class="video-check" data-video="2"> Filmed
+  </label>
+</div>
+
+<!-- ── V3: Tina's Authority ── -->
+<div class="video-card" id="v3">
+  <div class="video-header">
+    <div class="video-number">Video 3</div>
+    <div class="video-title">"Your Stylist Knows" - Tina's Authority</div>
+    <div class="video-meta">
+      <span class="tag tag-tina">Tina leads</span>
+      <span class="tag tag-platform">IG Reel + Facebook</span>
+      <span class="tag tag-time">20-30 sec</span>
+      <span class="tag tag-pillar">Professional Education</span>
+    </div>
+  </div>
+  <div class="hook-box">
+    <span class="hook-label">Hook (Tina, seated, direct to camera)</span>
+    "Something I keep hearing from clients: 'Why is my hair thinning?' Here's what I check first."
+  </div>
+  <div class="video-body">
+    <details>
+      <summary>Talking Points (pick 2-3)</summary>
+      <div class="detail-content">
+        <ul>
+          <li>"I look at the scalp, not the hair. The hair is a symptom."</li>
+          <li>"Is there buildup? Flaking? Redness? That tells me the scalp environment is off."</li>
+          <li>"Most thinning I see isn't genetic. It's environmental - stress, hard water, product buildup."</li>
+          <li>"Once we address the scalp environment, the hair usually responds."</li>
+        </ul>
+      </div>
+    </details>
+    <details>
+      <summary>B-Roll Shots</summary>
+      <div class="detail-content">
+        <ul>
+          <li>Tina examining a scalp (parting hair, looking closely)</li>
+          <li>Her hands sectioning hair with a comb</li>
+          <li>Close-up of her face while concentrating</li>
+          <li>AWARE products in background (subtle, not featured)</li>
+        </ul>
+      </div>
+    </details>
+    <details>
+      <summary>Caption Draft</summary>
+      <div class="detail-content">
+        <div class="caption-block">Something I keep hearing from clients lately: "My hair just isn't what it used to be."
+
+After 40 years, here's what I've learned - the answer is almost never in the hair itself. It's in the scalp.
+
+When I do a consultation, I'm looking at the scalp environment first. Is there buildup? Inflammation? Dryness? These are signs the foundation isn't healthy, and no amount of conditioning will fix that.
+
+The good news: once you address the scalp environment, the hair usually follows.
+<span class="hashtags">#scalpcare #scalphealth #hairthinning #professionalhaircare</span></div>
+      </div>
+    </details>
+  </div>
+  <label class="check-item" style="padding: 12px 20px; border-top: 1px solid var(--border);">
+    <input type="checkbox" class="video-check" data-video="3"> Filmed
+  </label>
+</div>
+
+<!-- ── V4: 3 Things ── -->
+<div class="video-card" id="v4">
+  <div class="video-header">
+    <div class="video-number">Video 4</div>
+    <div class="video-title">"3 Things Your Scalp Is Telling You"</div>
+    <div class="video-meta">
+      <span class="tag tag-jade">Jade leads</span>
+      <span class="tag tag-platform">TikTok + IG Reel</span>
+      <span class="tag tag-time">15-25 sec</span>
+      <span class="tag tag-pillar">Scalp Science</span>
+    </div>
+  </div>
+  <div class="hook-box">
+    <span class="hook-label">Hook (Jade, casual, to camera)</span>
+    "3 things your scalp is trying to tell you right now."
+  </div>
+  <div class="video-body">
+    <details>
+      <summary>Scene Breakdown</summary>
+      <div class="detail-content">
+        <ol>
+          <li>"Flaking doesn't always mean dandruff - it could be product buildup or a dry scalp environment"</li>
+          <li>"An oily scalp with dry ends? Your scalp is overcompensating because it's been stripped"</li>
+          <li>"Itching without visible cause? Could be your water quality"</li>
+          <li>End: "Your scalp is skin. Start treating it that way." (hold eye contact)</li>
+        </ol>
+        <p style="color: var(--sage); font-size: 13px; margin-top: 10px;">Tip: Hold up 3 fingers, then 2, then 1 for text overlay placeholders</p>
+      </div>
+    </details>
+    <details>
+      <summary>B-Roll Shots</summary>
+      <div class="detail-content">
+        <ul>
+          <li>Jade touching her own scalp/hair naturally</li>
+          <li>Close-up of scalp (if comfortable)</li>
+          <li>Products in background on a spa shelf</li>
+        </ul>
+      </div>
+    </details>
+    <details>
+      <summary>Caption Draft</summary>
+      <div class="detail-content">
+        <div class="caption-block">Your scalp sends signals. Most people just haven't learned to read them yet.
+
+Flaking, oiliness, itching - these aren't random. They're your scalp environment telling you something is off.
+
+The fix isn't always a new product. Sometimes it's understanding what's actually happening. Save this for next time your scalp acts up.
+<span class="hashtags">#scalpcare #scalphealth #scalpenvironment #haircaretips</span></div>
+      </div>
+    </details>
+  </div>
+  <label class="check-item" style="padding: 12px 20px; border-top: 1px solid var(--border);">
+    <input type="checkbox" class="video-check" data-video="4"> Filmed
+  </label>
+</div>
+
+<!-- ── V5: Gua Sha ── -->
+<div class="video-card" id="v5">
+  <div class="video-header">
+    <div class="video-number">Video 5</div>
+    <div class="video-title">Gua Sha Scalp Massage Tutorial</div>
+    <div class="video-meta">
+      <span class="tag tag-tina">Tina leads</span>
+      <span class="tag tag-platform">IG Reel + TikTok</span>
+      <span class="tag tag-time">30-45 sec</span>
+      <span class="tag tag-pillar">Education + Product</span>
+    </div>
+  </div>
+  <div class="hook-box">
+    <span class="hook-label">Hook (Tina, holding the Gua Sha)</span>
+    "This is the tool I wish I had 40 years ago."
+  </div>
+  <div class="video-body">
+    <details>
+      <summary>Scene Breakdown</summary>
+      <div class="detail-content">
+        <ol>
+          <li>Tina holds up the AWARE Gua Sha - shows the shape, explains it's designed for the scalp</li>
+          <li>Demonstrates on Jade: "Start at the temples, gentle pressure, move toward the crown"</li>
+          <li>"This stimulates circulation. More blood flow means a healthier scalp environment"</li>
+          <li>"Use it with your Leave-In for the best glide"</li>
+          <li>Show Jade's relaxed reaction</li>
+        </ol>
+      </div>
+    </details>
+    <details>
+      <summary>B-Roll Shots</summary>
+      <div class="detail-content">
+        <ul>
+          <li>ASMR close-up of Gua Sha on scalp (this is the money shot)</li>
+          <li>Jade's relaxed/eyes-closed expression</li>
+          <li>Product and tool laid out together</li>
+          <li>Tina's hands demonstrating the angle and pressure</li>
+        </ul>
+      </div>
+    </details>
+    <details>
+      <summary>Caption Draft</summary>
+      <div class="detail-content">
+        <div class="caption-block">Scalp massage isn't just relaxing. It's functional.
+
+The Gua Sha promotes circulation, releases tension, and helps your scalp environment stay balanced. Think of it as the facial roller equivalent for the skin you never think about.
+
+Pair it with the 9-1 Leave-In for glide and UV protection. Your evening routine just got an upgrade.
+<span class="hashtags">#scalpcare #guasha #scalpmassage #scalphealth #professionalhaircare</span></div>
+      </div>
+    </details>
+  </div>
+  <label class="check-item" style="padding: 12px 20px; border-top: 1px solid var(--border);">
+    <input type="checkbox" class="video-check" data-video="5"> Filmed
+  </label>
+</div>
+
+<!-- ── V6: Why 3 Products ── -->
+<div class="video-card" id="v6">
+  <div class="video-header">
+    <div class="video-number">Video 6</div>
+    <div class="video-title">"Why We Only Have 3 Products"</div>
+    <div class="video-meta">
+      <span class="tag tag-jade">Jade leads</span>
+      <span class="tag tag-platform">IG Reel + TikTok</span>
+      <span class="tag tag-time">20-30 sec</span>
+      <span class="tag tag-pillar">Brand + Education</span>
+    </div>
+  </div>
+  <div class="hook-box">
+    <span class="hook-label">Hook (Jade, holding all 3 bottles)</span>
+    "People ask why we only have 3 products. Here's why that's the point."
+  </div>
+  <div class="video-body">
+    <details>
+      <summary>Talking Points</summary>
+      <div class="detail-content">
+        <ul>
+          <li>"Most brands launch 15 SKUs because more products = more revenue"</li>
+          <li>"We launched 3 because your scalp doesn't need 15 steps"</li>
+          <li>"Shampoo purifies. Conditioner restores. Leave-In protects. That's a complete scalp environment."</li>
+          <li>"Every ingredient across all 3 serves at least one of 9 functions for scalp health"</li>
+          <li>"Simple doesn't mean basic. It means intentional."</li>
+        </ul>
+      </div>
+    </details>
+    <details>
+      <summary>B-Roll Shots</summary>
+      <div class="detail-content">
+        <ul>
+          <li>All 3 products lined up (clean, minimal background)</li>
+          <li>Jade counting on fingers as she lists functions</li>
+          <li>Close-up of each product bottle</li>
+          <li>Products next to overcrowded shelf (if available, or just gesture)</li>
+        </ul>
+      </div>
+    </details>
+    <details>
+      <summary>Caption Draft</summary>
+      <div class="detail-content">
+        <div class="caption-block">3 products. Not because we couldn't make more. Because your scalp doesn't need more.
+
+Every formula addresses 9 functions of scalp health - purifying, moisturizing, protecting, nourishing, stimulating, soothing, balancing, strengthening, and defending.
+
+The beauty industry sells complexity. We think the science points to simplicity.
+<span class="hashtags">#scalpcare #scalphealth #professionalhaircare #minimalbeauty</span></div>
+      </div>
+    </details>
+  </div>
+  <label class="check-item" style="padding: 12px 20px; border-top: 1px solid var(--border);">
+    <input type="checkbox" class="video-check" data-video="6"> Filmed
+  </label>
+</div>
+
+<!-- ── V7: Ask Tina ── -->
+<div class="video-card" id="v7">
+  <div class="video-header">
+    <div class="video-number">Video 7</div>
+    <div class="video-title">Candid "Ask Tina" Q&A</div>
+    <div class="video-meta">
+      <span class="tag tag-both">Both</span>
+      <span class="tag tag-platform">Facebook + IG Stories</span>
+      <span class="tag tag-time">2-5 min raw, cut to 60s</span>
+      <span class="tag tag-pillar">Professional Education</span>
+    </div>
+  </div>
+  <div class="hook-box">
+    <span class="hook-label">Setup</span>
+    Jade asks Tina questions while relaxed at the spa. Conversational, unscripted feel. Film the whole thing - David will cut the best moments later.
+  </div>
+  <div class="video-body">
+    <details open>
+      <summary>Questions for Jade to Ask</summary>
+      <div class="detail-content">
+        <ol>
+          <li>"What's the biggest mistake you see people make with their scalp?"</li>
+          <li>"When should someone actually worry about hair thinning?"</li>
+          <li>"What's changed most about hair care in 40 years?"</li>
+          <li>"What do you wish clients knew before they sat in your chair?"</li>
+          <li>"What's the one thing you do every single day for your own scalp?"</li>
+        </ol>
+        <p style="color: var(--sage); font-size: 13px; margin-top: 10px;">Tip: Don't rush between questions. Let Tina think and respond naturally. The pauses are gold for editing.</p>
+      </div>
+    </details>
+    <details>
+      <summary>B-Roll Shots</summary>
+      <div class="detail-content">
+        <ul>
+          <li>Wide shot of them talking naturally</li>
+          <li>Close-up of Tina's face while answering</li>
+          <li>Jade nodding/reacting</li>
+          <li>Their hands, coffee cups, products on table - lifestyle details</li>
+        </ul>
+      </div>
+    </details>
+    <details>
+      <summary>Caption Draft (for best clip)</summary>
+      <div class="detail-content">
+        <div class="caption-block">I asked my mom the one question she gets most after 40 years behind the chair.
+
+Her answer surprised me. And it might change how you think about your own routine.
+<span class="hashtags">#scalpcare #scalphealth #askastylist #professionalhaircare</span></div>
+      </div>
+    </details>
+  </div>
+  <label class="check-item" style="padding: 12px 20px; border-top: 1px solid var(--border);">
+    <input type="checkbox" class="video-check" data-video="7"> Filmed
+  </label>
+</div>
+
+<!-- ── V8: Spring Reset ── -->
+<div class="video-card" id="v8">
+  <div class="video-header">
+    <div class="video-number">Video 8</div>
+    <div class="video-title">Spring Scalp Reset (Seasonal)</div>
+    <div class="video-meta">
+      <span class="tag tag-jade">Jade leads</span>
+      <span class="tag tag-platform">IG Reel + TikTok</span>
+      <span class="tag tag-time">20-30 sec</span>
+      <span class="tag tag-pillar">Scalp Science</span>
+    </div>
+  </div>
+  <div class="hook-box">
+    <span class="hook-label">Hook (Jade, to camera)</span>
+    "Spring means your scalp environment is about to change. Here's how to prepare."
+  </div>
+  <div class="video-body">
+    <details>
+      <summary>Talking Points</summary>
+      <div class="detail-content">
+        <ul>
+          <li>"Winter dries out your scalp - indoor heating, less humidity, hot showers"</li>
+          <li>"As seasons shift, your scalp needs a reset"</li>
+          <li>"Double cleanse to remove winter buildup" (show Shampoo)</li>
+          <li>"Deep condition to restore moisture" (show Conditioner as mask)</li>
+          <li>"Start UV protection now, not in June" (show Leave-In)</li>
+        </ul>
+      </div>
+    </details>
+    <details>
+      <summary>B-Roll Shots</summary>
+      <div class="detail-content">
+        <ul>
+          <li>Window with natural spring light</li>
+          <li>Product application sequence</li>
+          <li>Jade touching her hair/scalp in natural light</li>
+          <li>Before/after of hair looking refreshed (same angle, different energy)</li>
+        </ul>
+      </div>
+    </details>
+    <details>
+      <summary>Caption Draft</summary>
+      <div class="detail-content">
+        <div class="caption-block">Your skin care routine changes with the seasons. Your scalp routine should too.
+
+Winter leaves behind buildup, dryness, and a stressed scalp environment. Before summer UV hits, now is the time to reset.
+
+Double cleanse. Deep condition. Start protecting. Your scalp will thank you by June.
+<span class="hashtags">#scalpcare #scalphealth #springbeauty #scalpenvironment</span></div>
+      </div>
+    </details>
+  </div>
+  <label class="check-item" style="padding: 12px 20px; border-top: 1px solid var(--border);">
+    <input type="checkbox" class="video-check" data-video="8"> Filmed
+  </label>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+
+<!-- ── B-Roll Grab List ── -->
+<div class="broll-section" id="broll">
+  <h2>B-Roll Grab List (film anytime)</h2>
+  <p style="font-size: 13px; color: var(--sage); margin-bottom: 14px;">Grab these throughout the day. Useful for future edits.</p>
+
+  <label class="check-item"><input type="checkbox"> Tina's hands doing anything (mixing, applying, demonstrating)</label>
+  <label class="check-item"><input type="checkbox"> Products on clean surfaces (white towel, marble, wood)</label>
+  <label class="check-item"><input type="checkbox"> Water running in a shampoo bowl</label>
+  <label class="check-item"><input type="checkbox"> Natural light hitting products or hair</label>
+  <label class="check-item"><input type="checkbox"> Candid moments - laughing, talking, eye contact</label>
+  <label class="check-item"><input type="checkbox"> Close-up of Gua Sha tool</label>
+  <label class="check-item"><input type="checkbox"> Spa environment - towels, candles, clean surfaces</label>
+  <label class="check-item"><input type="checkbox"> Jade looking in mirror, touching hair naturally</label>
+  <label class="check-item"><input type="checkbox"> Both walking through the spa together</label>
+  <label class="check-item"><input type="checkbox"> "Hands in frame" - applying product to scalp, working through hair</label>
+  <label class="check-item"><input type="checkbox"> Tina examining a scalp (parting hair, professional look)</label>
+</div>
+
+<!-- ── Post-Filming Notes ── -->
+<div class="notes-section">
+  <h2>After Filming</h2>
+  <ul style="padding-left: 18px;">
+    <li>David handles caption refinement, hashtags, and scheduling</li>
+    <li><strong>Post first:</strong> V1 (Scalp Facial) and V2 (Mother-Daughter)</li>
+    <li><strong>Content bank:</strong> V7 (Ask Tina) raw footage = 4-5 clips for weeks of content</li>
+    <li>Captions above are starting points - adjust to whatever felt natural on camera</li>
+    <li>Send all raw footage to David via AirDrop or shared album</li>
+  </ul>
+</div>
+
+<!-- ── Floating counter ── -->
+<div class="done-counter" id="doneCounter">0 / 8 done</div>
+
+<script>
+  // Video checkbox tracking with progress bar
+  const checks = document.querySelectorAll('.video-check');
+  const counter = document.getElementById('doneCounter');
+  const progressFill = document.getElementById('progressFill');
+  const doneCount = document.getElementById('doneCount');
+  const STORAGE_KEY = 'aware-spa-day-2026-03-10';
+
+  function loadState() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const state = JSON.parse(saved);
+        checks.forEach(cb => {
+          if (state[cb.dataset.video]) cb.checked = true;
+        });
+      }
+    } catch(e) {}
+  }
+
+  function saveState() {
+    const state = {};
+    checks.forEach(cb => { state[cb.dataset.video] = cb.checked; });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+  }
+
+  function updateCount() {
+    const done = document.querySelectorAll('.video-check:checked').length;
+    counter.textContent = done + ' / 8 done';
+    doneCount.textContent = done;
+    progressFill.style.width = (done / 8 * 100) + '%';
+
+    checks.forEach(cb => {
+      const card = cb.closest('.video-card');
+      if (cb.checked) {
+        card.style.opacity = '0.5';
+        cb.closest('.check-item').classList.add('checked');
+      } else {
+        card.style.opacity = '1';
+        cb.closest('.check-item').classList.remove('checked');
+      }
+    });
+
+    if (done === 8) {
+      counter.textContent = 'All done!';
+      counter.style.background = '#2d6a5e';
+    } else {
+      counter.style.background = 'var(--teal)';
+    }
+
+    saveState();
+  }
+
+  checks.forEach(cb => cb.addEventListener('change', updateCount));
+  loadState();
+  updateCount();
+
+  // B-roll checkbox styling
+  document.querySelectorAll('.broll-section input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', function() {
+      this.closest('.check-item').classList.toggle('checked', this.checked);
+    });
+  });
+</script>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

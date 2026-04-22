@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARE Hair - Carousel Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --cream: #f4efe9;
+      --surface: #faf8f5;
+      --teal: #102B26;
+      --teal-light: #1a3d36;
+      --gold: #D4A574;
+      --gold-light: #e8c99a;
+      --sage: #7d8471;
+      --sage-light: #a8af9e;
+      --border: rgba(16, 43, 38, 0.1);
+      --border-strong: rgba(16, 43, 38, 0.2);
+      --shadow: 0 1px 3px rgba(16, 43, 38, 0.06), 0 4px 16px rgba(16, 43, 38, 0.06);
+      --shadow-hover: 0 2px 8px rgba(16, 43, 38, 0.1), 0 8px 32px rgba(16, 43, 38, 0.1);
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--cream);
+      color: var(--teal);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---- Header ---- */
+    .site-header {
+      background-color: var(--teal);
+      color: var(--cream);
+      padding: 40px 40px 36px;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header-eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .header-title {
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+
+    .header-subtitle {
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(244, 239, 233, 0.55);
+    }
+
+    /* ---- Stats Bar ---- */
+    .stats-bar {
+      background-color: var(--teal-light);
+      border-top: 1px solid rgba(244, 239, 233, 0.08);
+      padding: 16px 40px;
+    }
+
+    .stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      align-items: center;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      padding: 0 28px 0 0;
+      margin-right: 28px;
+      border-right: 1px solid rgba(244, 239, 233, 0.12);
+    }
+
+    .stat-item:last-child {
+      border-right: none;
+      margin-right: 0;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(244, 239, 233, 0.45);
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 300;
+      color: var(--cream);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .stat-value span {
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(244, 239, 233, 0.55);
+      letter-spacing: 0;
+      margin-left: 4px;
+    }
+
+    /* ---- Main Content ---- */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 40px 80px;
+    }
+
+    /* ---- Section divider ---- */
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 16px;
+      margin-top: 48px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-label:first-child {
+      margin-top: 0;
+    }
+
+    /* ---- Carousel Card ---- */
+    .carousel-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.2s ease;
+      overflow: hidden;
+    }
+
+    .carousel-card:hover {
+      box-shadow: var(--shadow-hover);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--teal);
+      line-height: 1.3;
+      margin-bottom: 5px;
+    }
+
+    .card-details {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-date {
+      font-size: 12px;
+      color: var(--sage);
+      font-weight: 400;
+    }
+
+    .card-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--sage-light);
+      flex-shrink: 0;
+    }
+
+    .card-slide-count {
+      font-size: 12px;
+      color: var(--sage);
+    }
+
+    .card-version {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--sage);
+      background: rgba(125, 132, 113, 0.12);
+      padding: 2px 7px;
+      border-radius: 3px;
+      letter-spacing: 0.04em;
+    }
+
+    /* Category tags */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .tag-dtc {
+      background: rgba(212, 165, 116, 0.15);
+      color: #a07840;
+    }
+
+    .tag-b2b {
+      background: rgba(16, 43, 38, 0.08);
+      color: var(--teal);
+    }
+
+    .tag-evergreen {
+      background: rgba(125, 132, 113, 0.15);
+      color: #5a6152;
+    }
+
+    /* ---- Slide Strip ---- */
+    .slide-strip-wrap {
+      padding: 16px 24px 20px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-strong) transparent;
+    }
+
+    .slide-strip-wrap::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .slide-strip-wrap::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .slide-strip-wrap::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: 2px;
+    }
+
+    .slide-strip {
+      display: flex;
+      gap: 12px;
+      scroll-snap-type: x mandatory;
+      width: max-content;
+      padding-bottom: 4px;
+    }
+
+    .slide-thumb {
+      position: relative;
+      flex-shrink: 0;
+      width: 202px;  /* 270px * (1080/1440) - 3:4 ratio → 202×270 */
+      height: 270px;
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      scroll-snap-align: start;
+      background: var(--border);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .slide-thumb:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 43, 38, 0.18);
+    }
+
+    .slide-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .slide-number-badge {
+      position: absolute;
+      bottom: 7px;
+      right: 8px;
+      background: rgba(16, 43, 38, 0.65);
+      color: rgba(244, 239, 233, 0.85);
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 6px;
+      border-radius: 3px;
+      pointer-events: none;
+    }
+
+    .slide-thumb-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--sage);
+    }
+
+    .slide-thumb-placeholder .placeholder-icon {
+      width: 28px;
+      height: 28px;
+      opacity: 0.35;
+    }
+
+    .slide-thumb-placeholder span {
+      font-size: 11px;
+      opacity: 0.5;
+    }
+
+    /* ---- Lightbox ---- */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .lightbox-overlay.active {
+      display: flex;
+    }
+
+    .lightbox-inner {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      max-width: 92vw;
+    }
+
+    .lightbox-img-wrap {
+      position: relative;
+      line-height: 0;
+    }
+
+    .lightbox-img {
+      max-height: 82vh;
+      max-width: 76vw;
+      width: auto;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+    }
+
+    .lightbox-nav {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s ease, border-color 0.15s ease;
+      backdrop-filter: blur(4px);
+    }
+
+    .lightbox-nav:hover {
+      background: rgba(255,255,255,0.14);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    .lightbox-nav:disabled {
+      opacity: 0.25;
+      cursor: default;
+    }
+
+    .lightbox-nav svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .lightbox-footer {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .lightbox-counter {
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.06em;
+    }
+
+    .lightbox-carousel-name {
+      font-size: 12px;
+      color: rgba(212, 165, 116, 0.7);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+    }
+
+    .lightbox-close {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      backdrop-filter: blur(4px);
+      z-index: 1001;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.14);
+    }
+
+    .lightbox-close svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 700px) {
+      .site-header, .stats-bar {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .main {
+        padding: 24px 20px 60px;
+      }
+
+      .stats-inner {
+        gap: 12px;
+      }
+
+      .stat-item {
+        padding-right: 16px;
+        margin-right: 16px;
+      }
+
+      .card-header {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .slide-strip-wrap {
+        padding: 14px 16px 16px;
+      }
+
+      .card-header {
+        padding: 16px 16px 14px;
+      }
+
+      .lightbox-img {
+        max-width: 94vw;
+        max-height: 70vh;
+      }
+
+      .lightbox-nav {
+        width: 36px;
+        height: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <p class="header-eyebrow">Content Review</p>
+      <h1 class="header-title">AWARE Hair - Carousel Dashboard</h1>
+      <p class="header-subtitle">Reviewed March 23, 2026 - Instagram feed assets</p>
+    </div>
+  </header>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <span class="stat-label">Carousels</span>
+        <span class="stat-value">10</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Total Slides</span>
+        <span class="stat-value">62</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">DTC</span>
+        <span class="stat-value">7</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">B2B</span>
+        <span class="stat-value">1</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Evergreen</span>
+        <span class="stat-value">2</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Date Range</span>
+        <span class="stat-value" style="font-size:14px;letter-spacing:0;">Mar 24 <span>to</span> May 19</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <main class="main" id="carousels-root">
+    <!-- Injected by JS -->
+  </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox-overlay" id="lightbox" role="dialog" aria-modal="true" aria-label="Slide viewer">
+    <button class="lightbox-close" id="lb-close" aria-label="Close">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <line x1="2" y1="2" x2="14" y2="14"/><line x1="14" y1="2" x2="2" y2="14"/>
+      </svg>
+    </button>
+    <div class="lightbox-inner">
+      <button class="lightbox-nav" id="lb-prev" aria-label="Previous slide">
+        <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="11 4 6 9 11 14"/>
+        </svg>
+      </button>
+      <div class="lightbox-img-wrap">
+        <img class="lightbox-img" id="lb-img" src="" alt="Carousel slide">
+      </div>
+      <button class="lightbox-nav" id="lb-next" aria-label="Next slide">
+        <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="7 4 12 9 7 14"/>
+        </svg>
+      </button>
+    </div>
+    <div class="lightbox-footer">
+      <span class="lightbox-counter" id="lb-counter"></span>
+      <span class="lightbox-carousel-name" id="lb-name"></span>
+    </div>
+  </div>
+
+  <script>
+    // ---- Data ----
+    const carousels = [
+      {
+        name: "Your Scalp Has a Microbiome",
+        date: "Mon Mar 24",
+        version: "v7",
+        category: "DTC - Scalp Science",
+        path: "output/2026-03-24/scalp-microbiome-monday-v7/feed",
+        slides: 7
+      },
+      {
+        name: "3 Signals You Are Probably Ignoring",
+        date: "Sat Mar 29",
+        version: "v6",
+        category: "DTC - Ad Creative",
+        path: "output/2026-03-24/scalp-signals-saturday-v6/feed",
+        slides: 5
+      },
+      {
+        name: "5 Environmental Factors",
+        date: "Mon Mar 31",
+        version: "v6",
+        category: "DTC - Q2 Launch",
+        path: "output/2026-03-31/environmental-factors-monday-v6/feed",
+        slides: 7
+      },
+      {
+        name: "What Your Stylist Wishes You Knew",
+        date: "Mon Apr 7",
+        version: "v4",
+        category: "DTC - Education",
+        path: "output/2026-04-07/stylist-wishes-monday-v4/feed",
+        slides: 7
+      },
+      {
+        name: "Hard Water vs. Soft Water",
+        date: "Mon Apr 14",
+        version: "v4",
+        category: "DTC - Scalp Report",
+        path: "output/2026-04-14/hard-water-monday-v4/feed",
+        slides: 7
+      },
+      {
+        name: "The Full AWARE Protocol",
+        date: "Mon Apr 28",
+        version: "v4",
+        category: "DTC - Product Education",
+        path: "output/2026-04-28/protocol-monday-v4/feed",
+        slides: 6
+      },
+      {
+        name: "Summer Scalp Prep",
+        date: "Mon May 19",
+        version: "v4",
+        category: "DTC - Seasonal",
+        path: "output/2026-05-19/summer-scalp-monday-v4/feed",
+        slides: 7
+      },
+      {
+        name: "Why Salon-Exclusive",
+        date: "Evergreen",
+        version: "v4",
+        category: "Brand Positioning",
+        path: "output/evergreen/salon-exclusive-v4/feed",
+        slides: 5
+      },
+      {
+        name: "Your Scalp Environment Report",
+        date: "Evergreen",
+        version: "v4",
+        category: "Lead Gen - Scalp Report",
+        path: "output/evergreen/scalp-report-explainer-v4/feed",
+        slides: 5
+      },
+      {
+        name: "Why 50+ Salons Trust AWARE",
+        date: "Thu Mar 27",
+        version: "v3",
+        category: "B2B - LinkedIn",
+        path: "output/2026-03-27/salon-partner-linkedin-v3/feed",
+        slides: 3
+      }
+    ];
+
+    // ---- Category helpers ----
+    function getCategoryType(category) {
+      if (category.startsWith('DTC') || category.startsWith('Lead Gen')) return 'dtc';
+      if (category.startsWith('B2B')) return 'b2b';
+      return 'evergreen';
+    }
+
+    function getCategoryLabel(category) {
+      const parts = category.split(' - ');
+      return parts[0];
+    }
+
+    function getSectionLabel(category) {
+      const type = getCategoryType(category);
+      if (type === 'dtc') return 'DTC - Consumer Content';
+      if (type === 'b2b') return 'B2B - Trade Content';
+      return 'Evergreen - Brand Content';
+    }
+
+    // ---- Build slides for a carousel ----
+    function buildSlides(carousel, carouselIndex) {
+      const slides = [];
+      for (let i = 1; i <= carousel.slides; i++) {
+        const num = String(i).padStart(2, '0');
+        slides.push(`file:///Users/dzhao/Projects/aware-hair-control/aware-hair-social-media/carousel-generator/${carousel.path}/${num}-slide.png`);
+      }
+      return slides;
+    }
+
+    // ---- Render carousels ----
+    function render() {
+      const root = document.getElementById('carousels-root');
+
+      // Group by section type
+      const groups = [
+        { type: 'dtc', label: 'DTC + Lead Gen', items: [] },
+        { type: 'b2b', label: 'B2B + Trade', items: [] },
+        { type: 'evergreen', label: 'Evergreen + Brand', items: [] },
+      ];
+
+      carousels.forEach((c, i) => {
+        const type = getCategoryType(c.category);
+        const group = groups.find(g => g.type === type);
+        if (group) group.items.push({ ...c, globalIndex: i });
+      });
+
+      groups.forEach(group => {
+        if (!group.items.length) return;
+
+        const sectionLabel = document.createElement('h2');
+        sectionLabel.className = 'section-label';
+        sectionLabel.textContent = group.label;
+        root.appendChild(sectionLabel);
+
+        group.items.forEach(carousel => {
+          const card = buildCard(carousel, carousel.globalIndex);
+          root.appendChild(card);
+        });
+      });
+    }
+
+    function buildCard(carousel, carouselIndex) {
+      const type = getCategoryType(carousel.category);
+      const slides = buildSlides(carousel, carouselIndex);
+
+      const card = document.createElement('div');
+      card.className = 'carousel-card';
+      card.dataset.carouselIndex = carouselIndex;
+
+      // Header
+      const header = document.createElement('div');
+      header.className = 'card-header';
+
+      const metaDiv = document.createElement('div');
+      metaDiv.className = 'card-meta';
+
+      const nameEl = document.createElement('h3');
+      nameEl.className = 'card-name';
+      nameEl.textContent = carousel.name;
+
+      const detailsEl = document.createElement('div');
+      detailsEl.className = 'card-details';
+
+      detailsEl.innerHTML = `
+        <span class="card-date">${carousel.date}</span>
+        <span class="card-dot"></span>
+        <span class="card-slide-count">${carousel.slides} slides</span>
+        <span class="card-version">${carousel.version}</span>
+      `;
+
+      metaDiv.appendChild(nameEl);
+      metaDiv.appendChild(detailsEl);
+
+      const tagEl = document.createElement('span');
+      tagEl.className = `tag tag-${type}`;
+      tagEl.textContent = getCategoryLabel(carousel.category);
+
+      header.appendChild(metaDiv);
+      header.appendChild(tagEl);
+      card.appendChild(header);
+
+      // Slide strip
+      const stripWrap = document.createElement('div');
+      stripWrap.className = 'slide-strip-wrap';
+
+      const strip = document.createElement('div');
+      strip.className = 'slide-strip';
+
+      slides.forEach((src, slideIndex) => {
+        const thumb = document.createElement('div');
+        thumb.className = 'slide-thumb';
+        thumb.dataset.carouselIndex = carouselIndex;
+        thumb.dataset.slideIndex = slideIndex;
+        thumb.setAttribute('role', 'button');
+        thumb.setAttribute('tabindex', '0');
+        thumb.setAttribute('aria-label', `View slide ${slideIndex + 1} of ${carousel.name}`);
+
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = `${carousel.name} - Slide ${slideIndex + 1}`;
+        img.loading = 'eager';
+        img.draggable = false;
+
+        // Placeholder shown while loading
+        const placeholder = document.createElement('div');
+        placeholder.className = 'slide-thumb-placeholder';
+        placeholder.innerHTML = `
+          <svg class="placeholder-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="22" height="22" rx="2"/>
+            <circle cx="10" cy="10" r="2.5"/>
+            <path d="M3 19l6-6 4 4 3-3 9 9"/>
+          </svg>
+          <span>Loading...</span>
+        `;
+
+        img.style.display = 'none';
+        img.addEventListener('load', () => {
+          placeholder.style.display = 'none';
+          img.style.display = 'block';
+        });
+        img.addEventListener('error', () => {
+          placeholder.innerHTML = `
+            <svg class="placeholder-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="22" height="22" rx="2"/>
+              <path d="M10 10l8 8M18 10l-8 8"/>
+            </svg>
+            <span>Not found</span>
+          `;
+        });
+
+        const badge = document.createElement('span');
+        badge.className = 'slide-number-badge';
+        badge.textContent = `${slideIndex + 1} / ${carousel.slides}`;
+
+        thumb.appendChild(placeholder);
+        thumb.appendChild(img);
+        thumb.appendChild(badge);
+
+        thumb.addEventListener('click', () => openLightbox(carouselIndex, slideIndex));
+        thumb.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openLightbox(carouselIndex, slideIndex);
+          }
+        });
+
+        strip.appendChild(thumb);
+      });
+
+      stripWrap.appendChild(strip);
+      card.appendChild(stripWrap);
+
+      return card;
+    }
+
+    // ---- Lightbox ----
+    let lbCarouselIndex = 0;
+    let lbSlideIndex = 0;
+
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lb-img');
+    const lbCounter = document.getElementById('lb-counter');
+    const lbName = document.getElementById('lb-name');
+    const lbPrev = document.getElementById('lb-prev');
+    const lbNext = document.getElementById('lb-next');
+    const lbClose = document.getElementById('lb-close');
+
+    function openLightbox(carouselIndex, slideIndex) {
+      lbCarouselIndex = carouselIndex;
+      lbSlideIndex = slideIndex;
+      updateLightbox();
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      lbImg.focus();
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function updateLightbox() {
+      const carousel = carousels[lbCarouselIndex];
+      const slides = buildSlides(carousel, lbCarouselIndex);
+      const src = slides[lbSlideIndex];
+
+      lbImg.src = src;
+      lbImg.alt = `${carousel.name} - Slide ${lbSlideIndex + 1}`;
+      lbCounter.textContent = `${lbSlideIndex + 1} / ${carousel.slides}`;
+      lbName.textContent = carousel.name;
+
+      lbPrev.disabled = lbSlideIndex === 0;
+      lbNext.disabled = lbSlideIndex === carousel.slides - 1;
+    }
+
+    function lbNavigate(delta) {
+      const carousel = carousels[lbCarouselIndex];
+      const newIndex = lbSlideIndex + delta;
+      if (newIndex < 0 || newIndex >= carousel.slides) return;
+      lbSlideIndex = newIndex;
+      updateLightbox();
+    }
+
+    lbPrev.addEventListener('click', () => lbNavigate(-1));
+    lbNext.addEventListener('click', () => lbNavigate(1));
+    lbClose.addEventListener('click', closeLightbox);
+
+    // Close on overlay click (outside image)
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') lbNavigate(-1);
+      if (e.key === 'ArrowRight') lbNavigate(1);
+    });
+
+    // ---- Init ----
+    render();
+  </script>
+
+</body>
+</html>

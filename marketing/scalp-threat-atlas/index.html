@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scalp Threat Atlas: Environmental Hair Damage Risk by City | AWARE Hair</title>
+<meta name="description" content="Explore how UV, water hardness, air quality, and humidity in 50 US cities affect scalp health. See your city's environmental threat score based on AWARE Hair's proprietary data.">
+<link rel="canonical" href="https://www.awarehair.com/pages/scalp-threat-atlas">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Scalp Threat Atlas: Which US Cities Are Worst for Your Hair?">
+<meta property="og:description" content="50 US metros ranked by environmental scalp stress. UV, hard water, air quality, and humidity data - mapped and scored.">
+<meta property="og:url" content="https://www.awarehair.com/pages/scalp-threat-atlas">
+<meta property="og:site_name" content="AWARE Hair">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Scalp Threat Atlas: Which US Cities Are Worst for Your Hair?">
+<meta name="twitter:description" content="50 US metros ranked by environmental scalp stress. See where your city falls.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://use.typekit.net" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" media="print" onload="this.media='all'">
+
+<!-- JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Scalp Threat Atlas - US Metro Environmental Scalp Health Data",
+  "description": "Environmental scalp health risk scores for 50 US metropolitan areas based on UV index, water hardness, air quality, and humidity data.",
+  "creator": { "@type": "Organization", "name": "AWARE Hair", "url": "https://www.awarehair.com" },
+  "datePublished": "2026-04-15",
+  "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+  "variableMeasured": ["UV Index", "Water Hardness (PPM)", "Air Quality Index", "Humidity Percentage", "Environmental Stress Days"]
+}
+</script>
+
+<style>
+/* ============================================ */
+/* RESET & TOKENS                               */
+/* ============================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f4efe9;
+  --surface: #faf8f5;
+  --teal: #102B26;
+  --teal-mid: #2d5a4d;
+  --teal-light: #3d7a6d;
+  --gold: #D4A574;
+  --sage: #7d8471;
+  --sage-light: #c8d4c0;
+  --border: #e4d9ca;
+  --font-head: "orpheuspro", Georgia, serif;
+  --font-body: "DM Sans", -apple-system, sans-serif;
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --threat-severe: #102B26;
+  --threat-high: #2d5a4d;
+  --threat-moderate: #D4A574;
+  --threat-fair: #7d8471;
+  --threat-good: #c8d4c0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--teal);
+  background: var(--bg);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--teal); }
+
+/* Skip to content */
+.skip-link {
+  position: absolute; top: -100px; left: 16px;
+  background: var(--teal); color: var(--bg);
+  padding: 8px 16px; z-index: 1000;
+  font-size: 0.875rem; text-decoration: none;
+}
+.skip-link:focus { top: 16px; }
+
+/* ============================================ */
+/* TYPOGRAPHY                                   */
+/* ============================================ */
+h1, h2, h3 { font-family: var(--font-head); font-weight: 400; line-height: 1.2; }
+h1 { font-size: clamp(2.25rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); margin-bottom: 16px; }
+h3 { font-size: clamp(1.25rem, 2.5vw, 1.5rem); }
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.body-text {
+  font-size: 1rem;
+  color: var(--teal);
+  opacity: 0.75;
+  max-width: 560px;
+  line-height: 1.65;
+}
+
+.section-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ============================================ */
+/* HERO                                         */
+/* ============================================ */
+.hero {
+  padding: 100px 24px 64px;
+  text-align: center;
+  background: var(--bg);
+}
+
+.hero .eyebrow { margin-bottom: 20px; }
+.hero h1 { max-width: 720px; margin: 0 auto 20px; }
+.hero .body-text {
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+
+.hero-stat {
+  text-align: center;
+}
+
+.hero-stat-num {
+  font-family: var(--font-head);
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--teal);
+  display: block;
+}
+
+.hero-stat-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-top: 4px;
+}
+
+/* Diamond divider */
+.diamond-row {
+  text-align: center;
+  padding: 32px 0;
+  color: var(--gold);
+  font-size: 0.625rem;
+  letter-spacing: 0.5em;
+}
+
+/* ============================================ */
+/* MAP SECTION                                  */
+/* ============================================ */
+.map-section {
+  padding: 48px 24px 80px;
+  background: var(--bg);
+}
+
+.map-container {
+  position: relative;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.map-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.map-svg .state-path {
+  stroke: var(--border);
+  stroke-width: 0.5;
+  transition: fill 300ms var(--ease);
+}
+
+.map-svg .metro-dot {
+  cursor: pointer;
+  transition: r 200ms var(--ease), opacity 200ms var(--ease);
+}
+
+.map-svg .metro-dot:hover,
+.map-svg .metro-dot:focus {
+  opacity: 0.85;
+}
+
+.map-svg .metro-touch {
+  fill: transparent;
+  cursor: pointer;
+}
+
+/* Tooltip */
+.map-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--teal);
+  color: var(--bg);
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 200ms var(--ease), transform 200ms var(--ease);
+  z-index: 10;
+  max-width: 240px;
+  box-shadow: 0 4px 12px rgba(16,43,38,0.15);
+}
+
+.map-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.map-tooltip-city {
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-bottom: 4px;
+}
+
+.map-tooltip-badge {
+  display: inline-block;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 2px;
+  margin-bottom: 6px;
+}
+
+.map-tooltip-detail {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+/* Map legend */
+.map-legend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+}
+
+.map-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.map-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(16,43,38,0.15);
+}
+
+/* ============================================ */
+/* RANKINGS                                     */
+/* ============================================ */
+.rankings {
+  padding: 80px 24px;
+  background: var(--surface);
+}
+
+.rankings h2 { text-align: center; margin-bottom: 8px; }
+.rankings .body-text { margin: 0 auto 48px; text-align: center; }
+
+.rankings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+@media (max-width: 700px) {
+  .rankings-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+.rankings-col h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: var(--font-body);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.rank-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(228,217,202,0.5);
+  cursor: pointer;
+  transition: background 200ms var(--ease);
+}
+
+.rank-item:hover { background: rgba(212,165,116,0.06); }
+
+.rank-num {
+  font-family: var(--font-head);
+  font-size: 1.25rem;
+  font-weight: 400;
+  min-width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.rank-info { flex: 1; min-width: 0; }
+
+.rank-city {
+  font-weight: 500;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rank-villain {
+  font-size: 0.6875rem;
+  opacity: 0.6;
+  margin-top: 2px;
+}
+
+.rank-bar-wrap {
+  flex: 0 0 100px;
+  height: 6px;
+  background: rgba(228,217,202,0.5);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.rank-bar {
+  height: 100%;
+  border-radius: 3px;
+  width: 0;
+  transition: width 1200ms var(--ease);
+}
+
+.rank-esd {
+  font-family: var(--font-head);
+  font-size: 0.875rem;
+  min-width: 36px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ============================================ */
+/* CITY CARDS                                   */
+/* ============================================ */
+.cards-section {
+  padding: 80px 24px;
+  background: var(--bg);
+}
+
+.cards-section h2 { text-align: center; margin-bottom: 8px; }
+.cards-section .body-text { margin: 0 auto 32px; text-align: center; }
+
+/* Filters */
+.filter-bar {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.filter-btn {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--teal);
+  cursor: pointer;
+  transition: all 200ms var(--ease);
+}
+
+.filter-btn:hover { border-color: var(--teal); }
+
+.filter-btn.active {
+  background: var(--teal);
+  color: var(--bg);
+  border-color: var(--teal);
+}
+
+/* Sort */
+.sort-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 40px;
+  font-size: 0.75rem;
+}
+
+.sort-bar label {
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  align-self: center;
+  opacity: 0.6;
+}
+
+.sort-select {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--teal);
+  cursor: pointer;
+}
+
+/* Card grid */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .cards-grid { grid-template-columns: 1fr; } }
+
+.city-card {
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  transition: transform 300ms var(--ease), box-shadow 300ms var(--ease);
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.city-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.city-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(16,43,38,0.08);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.card-city {
+  font-family: var(--font-head);
+  font-size: 1.125rem;
+  line-height: 1.3;
+}
+
+.card-state {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  margin-top: 2px;
+}
+
+.card-rank {
+  font-family: var(--font-head);
+  font-size: 0.875rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Threat badge */
+.threat-badge {
+  display: inline-block;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 2px;
+  margin-bottom: 12px;
+}
+
+/* Threat bars */
+.threat-bars { margin-bottom: 16px; }
+
+.threat-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.threat-bar-label {
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  min-width: 60px;
+  opacity: 0.6;
+}
+
+.threat-bar-track {
+  flex: 1;
+  height: 4px;
+  background: rgba(228,217,202,0.5);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.threat-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 800ms var(--ease);
+}
+
+.threat-bar-val {
+  font-size: 0.625rem;
+  font-weight: 500;
+  min-width: 28px;
+  text-align: right;
+  opacity: 0.6;
+}
+
+/* Card footer */
+.card-footer {
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.card-esd {
+  font-family: var(--font-head);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.card-esd-label {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.5;
+  margin-top: 2px;
+}
+
+.card-villain {
+  font-size: 0.75rem;
+  margin-top: 8px;
+  opacity: 0.7;
+}
+
+.card-fact {
+  font-size: 0.75rem;
+  margin-top: 6px;
+  font-style: italic;
+  opacity: 0.6;
+}
+
+.card-source {
+  font-size: 0.5625rem;
+  margin-top: 8px;
+  opacity: 0.4;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ============================================ */
+/* EDUCATION                                    */
+/* ============================================ */
+.education {
+  padding: 80px 24px;
+  background: var(--surface);
+}
+
+.education h2 { text-align: center; margin-bottom: 8px; }
+.education .body-text { margin: 0 auto 48px; text-align: center; }
+
+.edu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+@media (max-width: 600px) { .edu-grid { grid-template-columns: 1fr; } }
+
+.edu-card {
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 32px;
+  border: 1px solid var(--border);
+}
+
+.edu-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 16px;
+}
+
+.edu-card h3 {
+  font-size: 1.125rem;
+  margin-bottom: 10px;
+}
+
+.edu-card p {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  opacity: 0.75;
+}
+
+/* ============================================ */
+/* CTA                                          */
+/* ============================================ */
+.cta-section {
+  padding: 80px 24px;
+  background: var(--bg);
+  text-align: center;
+}
+
+.cta-section h2 { margin-bottom: 12px; }
+.cta-section .body-text { margin: 0 auto 32px; text-align: center; }
+
+.cta-btn {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--teal);
+  padding: 16px 36px;
+  border-radius: 0;
+  text-decoration: none;
+  transition: opacity 300ms var(--ease);
+}
+
+.cta-btn:hover { opacity: 0.85; }
+
+.cta-note {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  margin-top: 16px;
+}
+
+/* ============================================ */
+/* METHODOLOGY                                  */
+/* ============================================ */
+.methodology {
+  padding: 64px 24px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+
+.methodology-inner {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.methodology h2 { font-size: 1.25rem; margin-bottom: 16px; }
+
+.method-toggle {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--teal);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--gold);
+}
+
+.method-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 500ms var(--ease);
+}
+
+.method-content.open { max-height: 1200px; }
+
+.method-content p, .method-content li {
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  opacity: 0.7;
+  margin-bottom: 8px;
+}
+
+.method-content ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.method-content li::before {
+  content: "\2013\00a0";
+  opacity: 0.4;
+}
+
+.method-content h4 {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 20px 0 8px;
+  opacity: 0.5;
+}
+
+/* Footer */
+.atlas-footer {
+  padding: 32px 24px;
+  text-align: center;
+  font-size: 0.6875rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+}
+
+/* ============================================ */
+/* ANIMATIONS                                   */
+/* ============================================ */
+.fade-in {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 600ms var(--ease), transform 600ms var(--ease);
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in, .city-card, .rank-bar {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================ */
+/* PRINT                                        */
+/* ============================================ */
+@media print {
+  body { background: white; font-size: 10pt; }
+  .hero { padding: 40px 20px 20px; }
+  .map-section, .filter-bar, .sort-bar, .cta-section, .map-legend { display: none; }
+  .rankings { padding: 20px; break-inside: avoid; }
+  .rankings-grid { gap: 20px; }
+  .cards-section { padding: 20px; }
+  .cards-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .city-card { opacity: 1; transform: none; padding: 12px; break-inside: avoid; }
+  .education { padding: 20px; break-before: page; }
+  .methodology { padding: 20px; }
+  .method-content { max-height: none; }
+  .atlas-footer { padding: 12px; }
+  .fade-in { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<main id="main">
+
+<!-- ============================================ -->
+<!-- HERO                                         -->
+<!-- ============================================ -->
+<section class="hero" aria-label="Introduction">
+  <p class="eyebrow">Environmental Scalp Health Data</p>
+  <h1>The Scalp Threat Atlas</h1>
+  <p class="body-text">
+    How UV exposure, water hardness, air quality, and humidity in 50 US cities
+    create environmental stress on your scalp and hair, mapped and scored.
+  </p>
+  <div class="hero-stats fade-in">
+    <div class="hero-stat">
+      <span class="hero-stat-num" data-count="50">0</span>
+      <span class="hero-stat-label">Metros Scored</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num" data-count="5">0</span>
+      <span class="hero-stat-label">Threat Factors</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num" data-count="350">0</span>
+      <span class="hero-stat-label">Max Stress Days/Year</span>
+    </div>
+  </div>
+</section>
+
+<div class="diamond-row" aria-hidden="true">&#9670; &#9670; &#9670;</div>
+
+<!-- ============================================ -->
+<!-- MAP                                          -->
+<!-- ============================================ -->
+<section class="map-section fade-in" aria-label="Interactive US Map">
+  <div class="section-wrap">
+    <h2 style="text-align:center; margin-bottom:8px;">Environmental Scalp Stress by Metro</h2>
+    <p class="body-text" style="margin:0 auto 32px; text-align:center;">
+      Hover or tap a city to see its threat profile. Darker dots indicate higher environmental stress.
+    </p>
+    <div class="map-container" role="img" aria-label="Map of the United States showing environmental scalp threat levels for 50 metropolitan areas">
+      <svg class="map-svg" viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" id="atlas-map">
+        <!-- State paths injected by JS -->
+      </svg>
+      <div class="map-tooltip" id="map-tooltip" role="tooltip">
+        <div class="map-tooltip-city" id="tt-city"></div>
+        <div class="map-tooltip-badge" id="tt-badge"></div>
+        <div class="map-tooltip-detail" id="tt-detail"></div>
+      </div>
+    </div>
+    <div class="map-legend" aria-label="Map legend">
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:var(--threat-severe)"></div> Severe</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:var(--threat-high)"></div> High</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:var(--threat-moderate)"></div> Moderate</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:var(--threat-fair)"></div> Fair</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:var(--threat-good)"></div> Good</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- RANKINGS                                     -->
+<!-- ============================================ -->
+<section class="rankings fade-in" id="rankings" aria-label="City Rankings">
+  <h2>Environmental Stress Rankings</h2>
+  <p class="body-text">
+    How 50 US metros compare in total scalp environmental stress, scored on UV, water hardness, air quality, and humidity.
+  </p>
+  <div class="rankings-grid">
+    <div class="rankings-col" id="worst-col">
+      <h3>Highest Environmental Stress</h3>
+    </div>
+    <div class="rankings-col" id="best-col">
+      <h3>Lowest Environmental Stress</h3>
+    </div>
+  </div>
+</section>
+
+<div class="diamond-row" aria-hidden="true">&#9670; &#9670; &#9670;</div>
+
+<!-- ============================================ -->
+<!-- CITY CARDS                                   -->
+<!-- ============================================ -->
+<section class="cards-section fade-in" id="city-cards" aria-label="City Detail Cards">
+  <h2>All 50 Metros</h2>
+  <p class="body-text">Each city's environmental threat profile, broken down by factor.</p>
+
+  <div class="filter-bar" role="group" aria-label="Filter by threat level">
+    <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+    <button class="filter-btn" data-filter="SEVERE" aria-pressed="false">Severe</button>
+    <button class="filter-btn" data-filter="HIGH" aria-pressed="false">High</button>
+    <button class="filter-btn" data-filter="MODERATE" aria-pressed="false">Moderate</button>
+    <button class="filter-btn" data-filter="FAIR" aria-pressed="false">Fair / Good</button>
+  </div>
+
+  <div class="sort-bar">
+    <label for="sort-select">Sort:</label>
+    <select id="sort-select" class="sort-select">
+      <option value="rank">Highest Threat</option>
+      <option value="rank-asc">Lowest Threat</option>
+      <option value="alpha">Alphabetical</option>
+    </select>
+  </div>
+
+  <div class="cards-grid" id="cards-grid"></div>
+</section>
+
+<!-- ============================================ -->
+<!-- EDUCATION                                    -->
+<!-- ============================================ -->
+<section class="education fade-in" aria-label="Understanding Environmental Threats">
+  <h2>What This Means for Your Hair</h2>
+  <p class="body-text">
+    Four environmental factors work together to create scalp stress. Understanding your local threats is the first step toward protecting your hair.
+  </p>
+  <div class="edu-grid">
+    <div class="edu-card">
+      <svg class="edu-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <circle cx="20" cy="20" r="10" stroke="#D4A574" stroke-width="1.5"/>
+        <line x1="20" y1="4" x2="20" y2="10" stroke="#D4A574" stroke-width="1.5"/>
+        <line x1="20" y1="30" x2="20" y2="36" stroke="#D4A574" stroke-width="1.5"/>
+        <line x1="4" y1="20" x2="10" y2="20" stroke="#D4A574" stroke-width="1.5"/>
+        <line x1="30" y1="20" x2="36" y2="20" stroke="#D4A574" stroke-width="1.5"/>
+        <line x1="8.7" y1="8.7" x2="12.9" y2="12.9" stroke="#D4A574" stroke-width="1.5"/>
+        <line x1="27.1" y1="27.1" x2="31.3" y2="31.3" stroke="#D4A574" stroke-width="1.5"/>
+        <line x1="8.7" y1="31.3" x2="12.9" y2="27.1" stroke="#D4A574" stroke-width="1.5"/>
+        <line x1="27.1" y1="12.9" x2="31.3" y2="8.7" stroke="#D4A574" stroke-width="1.5"/>
+      </svg>
+      <h3>UV Exposure</h3>
+      <p>UV radiation penetrates the hair cuticle, breaking down keratin proteins and melanin. This creates free radicals that continue damaging hair long after sun exposure ends, leading to dryness, brittleness, and color fading.</p>
+    </div>
+    <div class="edu-card">
+      <svg class="edu-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <path d="M20 6 C20 6 8 20 8 26 C8 32.6 13.4 38 20 38 C26.6 38 32 32.6 32 26 C32 20 20 6 20 6Z" stroke="#D4A574" stroke-width="1.5" fill="none"/>
+        <path d="M14 28 C14 28 17 25 20 25 C23 25 26 28 26 28" stroke="#D4A574" stroke-width="1" opacity="0.5"/>
+      </svg>
+      <h3>Water Hardness</h3>
+      <p>Calcium and magnesium ions in hard water bond to the hair shaft, creating a rough, scaly coating that blocks moisture and products. With UV exposure, these minerals oxidize and can amplify damage.</p>
+    </div>
+    <div class="edu-card">
+      <svg class="edu-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <circle cx="16" cy="22" r="8" stroke="#D4A574" stroke-width="1.5" fill="none"/>
+        <circle cx="26" cy="18" r="7" stroke="#D4A574" stroke-width="1.5" fill="none"/>
+        <circle cx="22" cy="26" r="6" stroke="#D4A574" stroke-width="1.5" fill="none"/>
+      </svg>
+      <h3>Air Quality</h3>
+      <p>Particulate matter from pollution settles onto the scalp and hair, creating a layer that blocks follicles, triggers inflammation, and attracts more dirt and oil. This leads to excess oil production and scalp irritation.</p>
+    </div>
+    <div class="edu-card">
+      <svg class="edu-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <path d="M6 14 Q14 10 22 14 Q30 18 38 14" stroke="#D4A574" stroke-width="1.5" fill="none"/>
+        <path d="M6 22 Q14 18 22 22 Q30 26 38 22" stroke="#D4A574" stroke-width="1.5" fill="none"/>
+        <path d="M6 30 Q14 26 22 30 Q30 34 38 30" stroke="#D4A574" stroke-width="1.5" fill="none"/>
+      </svg>
+      <h3>Humidity</h3>
+      <p>High humidity causes hair to absorb excess moisture, breaking hydrogen bonds and creating frizz, while also promoting fungal growth. Low humidity strips moisture, making hair brittle and prone to static and breakage.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- CTA                                          -->
+<!-- ============================================ -->
+<section class="cta-section fade-in" aria-label="Get Your Personalized Score">
+  <p class="eyebrow" style="margin-bottom:16px;">Personalized Analysis</p>
+  <h2>Find Your Scalp's Environmental Score</h2>
+  <p class="body-text">Enter your ZIP code for a detailed, personalized scalp environment report tailored to your exact location.</p>
+  <a href="https://www.awarehair.com/pages/scalp-environment-report" class="cta-btn">See Your Score</a>
+  <p class="cta-note">Complimentary. 30 seconds. Personalized to your ZIP code.</p>
+</section>
+
+<!-- ============================================ -->
+<!-- METHODOLOGY                                  -->
+<!-- ============================================ -->
+<section class="methodology" aria-label="Methodology">
+  <div class="methodology-inner">
+    <h2>Methodology</h2>
+    <p style="font-size:0.8125rem; opacity:0.6; margin-bottom:12px;">
+      Scores reflect composite environmental stress from five factors, weighted by their impact on scalp health.
+    </p>
+    <button class="method-toggle" id="method-toggle" aria-expanded="false" aria-controls="method-body">
+      View full methodology
+    </button>
+    <div class="method-content" id="method-body">
+      <h4>Scoring Formula</h4>
+      <p>Overall Percentile = UV (35%) + Water Hardness (30%) + Air Quality (20%) + Humidity (15%). Environmental Stress Days (ESD) are calculated as the sum of all intensity factors multiplied by 125, capped at 350.</p>
+
+      <h4>Threat Level Classification</h4>
+      <ul>
+        <li>Severe: 70th percentile or above</li>
+        <li>High: 50th to 69th percentile</li>
+        <li>Moderate: 30th to 49th percentile</li>
+        <li>Fair: 15th to 29th percentile</li>
+        <li>Good: Below 15th percentile</li>
+      </ul>
+
+      <h4>Data Sources</h4>
+      <ul>
+        <li>UV Index: NOAA Solar Radiation Database, annual averages</li>
+        <li>Water Hardness: USGS National Water Quality Assessment, state-level data (PPM)</li>
+        <li>Air Quality: EPA Air Quality System, annual AQI summaries</li>
+        <li>Humidity: NOAA National Climatic Data Center, annual averages</li>
+        <li>20 metros use comprehensive annual climate data. 30 metros use climate-estimated annual data from known regional patterns.</li>
+      </ul>
+
+      <h4>Limitations</h4>
+      <ul>
+        <li>Water hardness varies within metro areas depending on local water source</li>
+        <li>AQI can fluctuate significantly due to wildfire seasons</li>
+        <li>Individual exposure depends on indoor/outdoor time and personal routine</li>
+        <li>This atlas provides general environmental context, not personal health advice</li>
+      </ul>
+
+      <p style="margin-top:16px;"><strong>Last updated:</strong> April 2026</p>
+    </div>
+  </div>
+</section>
+
+<footer class="atlas-footer">
+  <p>Scalp Threat Atlas by AWARE Hair. Data for educational purposes only. Not medical advice.</p>
+  <p style="margin-top:4px;">awarehair.com</p>
+</footer>
+
+</main>
+
+<!-- ============================================ -->
+<!-- INLINE DATA                                  -->
+<!-- ============================================ -->
+<script id="atlas-data" type="application/json">
+[{"id":"phoenix","n":"Phoenix","s":"AZ","r":"Southwest","lt":33.4484,"ln":-112.074,"ds":"annual_averages","tl":"SEVERE","tc":"#102B26","rk":1,"op":88,"up":96,"wp":70,"ap":98,"hp":92,"esd":346,"ui":0.856,"ai":0.713,"wi":1,"hi":0.2,"ti":0,"pv":"Air Quality","sv":"UV Exposure","hl":"Phoenix's air quality creates persistent environmental scalp stress","kf":"98 days of elevated air quality per year","wpm":223,"uva":7.1,"aqa":95,"hma":33,"tfa":74.7,"sd":{"uv":313,"aqi":260,"w":365,"h":73,"t":0}},{"id":"las_vegas","n":"Las Vegas","s":"NV","r":"Southwest","lt":36.1699,"ln":-115.1398,"ds":"annual_averages","tl":"SEVERE","tc":"#102B26","rk":2,"op":86,"up":80,"wp":84,"ap":88,"hp":100,"esd":338,"ui":0.759,"ai":0.495,"wi":1,"hi":0.45,"ti":0,"pv":"Humidity","sv":"Air Quality","hl":"Las Vegas's humidity creates constant moisture imbalance for scalp health","kf":"Average humidity of 28%","wpm":285,"uva":6.6,"aqa":74,"hma":28,"tfa":70.2,"sd":{"uv":277,"aqi":181,"w":365,"h":164,"t":0}},{"id":"san_diego","n":"San Diego","s":"CA","r":"Southwest","lt":32.7157,"ln":-117.1611,"ds":"annual_averages","tl":"SEVERE","tc":"#102B26","rk":3,"op":83,"up":84,"wp":80,"ap":94,"hp":74,"esd":316,"ui":0.736,"ai":0.592,"wi":1,"hi":0.2,"ti":0,"pv":"Air Quality","sv":"UV Exposure","hl":"San Diego's air quality creates persistent environmental scalp stress","kf":"48 days of elevated air quality per year","wpm":276,"uva":6.7,"aqa":79,"hma":74,"tfa":61.6,"sd":{"uv":269,"aqi":216,"w":365,"h":73,"t":0}},{"id":"miami","n":"Miami","s":"FL","r":"Southeast","lt":25.7617,"ln":-80.1918,"ds":"annual_averages","tl":"SEVERE","tc":"#102B26","rk":4,"op":83,"up":96,"wp":98,"ap":36,"hp":84,"esd":324,"ui":0.9,"ai":0.345,"wi":1,"hi":0.2,"ti":0.15,"pv":"Hard Water","sv":"UV Exposure","hl":"Miami's hard water is the dominant environmental stressor for scalp health","kf":"Water is 6.4x harder than the soft water baseline","wpm":383,"uva":7.1,"aqa":59,"hma":75,"tfa":77.1,"sd":{"uv":329,"aqi":126,"w":365,"h":73,"t":55}},{"id":"tucson","n":"Tucson","s":"AZ","r":"Southwest","lt":32.2226,"ln":-110.9747,"ds":"climate_estimated","tl":"SEVERE","tc":"#102B26","rk":5,"op":77,"up":98,"wp":62,"ap":60,"hp":84,"esd":285,"ui":0.903,"ai":0.424,"wi":0.75,"hi":0.2,"ti":0,"pv":"UV Exposure","sv":"Humidity","hl":"Tucson ranks among the highest UV exposure cities in the country","kf":"163 days per year with very high UV exposure","wpm":175,"uva":7.4,"aqa":64,"hma":35,"tfa":71.2,"sd":{"uv":330,"aqi":155,"w":273,"h":73,"t":0}},{"id":"orlando","n":"Orlando","s":"FL","r":"Southeast","lt":28.5383,"ln":-81.3792,"ds":"climate_estimated","tl":"SEVERE","tc":"#102B26","rk":6,"op":76,"up":90,"wp":96,"ap":10,"hp":92,"esd":315,"ui":0.833,"ai":0.184,"wi":1,"hi":0.5,"ti":0,"pv":"Hard Water","sv":"Humidity","hl":"Orlando's hard water is the dominant environmental stressor for scalp health","kf":"Water is 6.3x harder than the soft water baseline","wpm":379,"uva":7,"aqa":50,"hma":77,"tfa":72.6,"sd":{"uv":304,"aqi":67,"w":365,"h":183,"t":0}},{"id":"albuquerque","n":"Albuquerque","s":"NM","r":"Southwest","lt":35.0844,"ln":-106.6504,"ds":"climate_estimated","tl":"SEVERE","tc":"#102B26","rk":7,"op":71,"up":84,"wp":52,"ap":86,"hp":58,"esd":276,"ui":0.793,"ai":0.465,"wi":0.75,"hi":0.2,"ti":0,"pv":"Air Quality","sv":"UV Exposure","hl":"Albuquerque's air quality creates persistent environmental scalp stress","kf":"17 days of elevated air quality per year","wpm":142,"uva":6.7,"aqa":70,"hma":39,"tfa":59.1,"sd":{"uv":290,"aqi":170,"w":273,"h":73,"t":0}},{"id":"san_antonio","n":"San Antonio","s":"TX","r":"South","lt":29.4241,"ln":-98.4936,"ds":"climate_estimated","tl":"SEVERE","tc":"#102B26","rk":8,"op":70,"up":88,"wp":90,"ap":50,"hp":14,"esd":272,"ui":0.804,"ai":0.372,"wi":1,"hi":0,"ti":0,"pv":"Hard Water","sv":"UV Exposure","hl":"San Antonio's hard water is the dominant environmental stressor for scalp health","kf":"Water is 5.3x harder than the soft water baseline","wpm":315,"uva":6.9,"aqa":62,"hma":64,"tfa":72.3,"sd":{"uv":294,"aqi":136,"w":365,"h":0,"t":0}},{"id":"tampa","n":"Tampa","s":"FL","r":"Southeast","lt":27.9506,"ln":-82.4572,"ds":"climate_estimated","tl":"SEVERE","tc":"#102B26","rk":9,"op":70,"up":96,"wp":66,"ap":26,"hp":74,"esd":306,"ui":0.899,"ai":0.35,"wi":1,"hi":0.2,"ti":0,"pv":"UV Exposure","sv":"Humidity","hl":"Tampa ranks among the highest UV exposure cities in the country","kf":"144 days per year with very high UV exposure","wpm":201,"uva":7.1,"aqa":57,"hma":74,"tfa":73.8,"sd":{"uv":328,"aqi":128,"w":365,"h":73,"t":0}},{"id":"los_angeles","n":"Los Angeles","s":"CA","r":"Southwest","lt":34.0522,"ln":-118.2437,"ds":"annual_averages","tl":"HIGH","tc":"#2d5a4d","rk":10,"op":69,"up":80,"wp":58,"ap":100,"hp":22,"esd":297,"ui":0.723,"ai":0.7,"wi":0.75,"hi":0.2,"ti":0,"pv":"Air Quality","sv":"UV Exposure","hl":"Los Angeles's air quality creates persistent environmental scalp stress","kf":"105 days of elevated air quality per year","wpm":165,"uva":6.6,"aqa":99,"hma":67,"tfa":62.9,"sd":{"uv":264,"aqi":256,"w":273,"h":73,"t":0}},{"id":"houston","n":"Houston","s":"TX","r":"South","lt":29.7604,"ln":-95.3698,"ds":"annual_averages","tl":"HIGH","tc":"#2d5a4d","rk":11,"op":68,"up":80,"wp":28,"ap":96,"hp":84,"esd":249,"ui":0.755,"ai":0.635,"wi":0.4,"hi":0.2,"ti":0,"pv":"Air Quality","sv":"Humidity","hl":"Houston's air quality creates persistent environmental scalp stress","kf":"60 days of elevated air quality per year","wpm":72,"uva":6.6,"aqa":82,"hma":75,"tfa":71.4,"sd":{"uv":276,"aqi":232,"w":146,"h":73,"t":0}},{"id":"new_orleans","n":"New Orleans","s":"LA","r":"South","lt":29.9511,"ln":-90.0715,"ds":"climate_estimated","tl":"HIGH","tc":"#2d5a4d","rk":12,"op":68,"up":86,"wp":64,"ap":30,"hp":84,"esd":293,"ui":0.803,"ai":0.34,"wi":1,"hi":0.2,"ti":0,"pv":"UV Exposure","sv":"Humidity","hl":"New Orleans ranks among the highest UV exposure cities in the country","kf":"130 days per year with very high UV exposure","wpm":184,"uva":6.8,"aqa":58,"hma":75,"tfa":71.6,"sd":{"uv":293,"aqi":124,"w":365,"h":73,"t":0}},{"id":"jacksonville","n":"Jacksonville","s":"FL","r":"Southeast","lt":30.3322,"ln":-81.6557,"ds":"climate_estimated","tl":"HIGH","tc":"#2d5a4d","rk":13,"op":66,"up":74,"wp":74,"ap":22,"hp":92,"esd":318,"ui":0.718,"ai":0.329,"wi":1,"hi":0.5,"ti":0,"pv":"Humidity","sv":"Hard Water","hl":"Jacksonville's humidity creates constant moisture imbalance for scalp health","kf":"Average humidity of 77%","wpm":246,"uva":6.4,"aqa":56,"hma":77,"tfa":70.3,"sd":{"uv":262,"aqi":120,"w":365,"h":183,"t":0}},{"id":"birmingham","n":"Birmingham","s":"AL","r":"Southeast","lt":33.5207,"ln":-86.8025,"ds":"climate_estimated","tl":"HIGH","tc":"#2d5a4d","rk":14,"op":66,"up":68,"wp":60,"ap":76,"hp":58,"esd":265,"ui":0.686,"ai":0.485,"wi":0.75,"hi":0.2,"ti":0,"pv":"Air Quality","sv":"UV Exposure","hl":"Birmingham's air quality creates persistent environmental scalp stress","kf":"13 days of elevated air quality per year","wpm":171,"uva":6.2,"aqa":67,"hma":71,"tfa":64.2,"sd":{"uv":251,"aqi":177,"w":273,"h":73,"t":0}},{"id":"austin","n":"Austin","s":"TX","r":"South","lt":30.2672,"ln":-97.7431,"ds":"annual_averages","tl":"HIGH","tc":"#2d5a4d","rk":15,"op":65,"up":72,"wp":92,"ap":48,"hp":16,"esd":280,"ui":0.675,"ai":0.367,"wi":1,"hi":0.2,"ti":0,"pv":"Hard Water","sv":"UV Exposure","hl":"Austin's hard water is the dominant environmental stressor for scalp health","kf":"Water is 5.4x harder than the soft water baseline","wpm":323,"uva":6.3,"aqa":61,"hma":66,"tfa":71.1,"sd":{"uv":247,"aqi":134,"w":365,"h":73,"t":0}},{"id":"oklahoma_city","n":"Oklahoma City","s":"OK","r":"South","lt":35.4676,"ln":-97.5164,"ds":"climate_estimated","tl":"HIGH","tc":"#2d5a4d","rk":16,"op":63,"up":66,"wp":94,"ap":54,"hp":8,"esd":255,"ui":0.642,"ai":0.399,"wi":1,"hi":0,"ti":0,"pv":"Hard Water","sv":"UV Exposure","hl":"Oklahoma City's hard water is the dominant environmental stressor for scalp health","kf":"Water is 5.5x harder than the soft water baseline","wpm":327,"uva":6,"aqa":63,"hma":62,"tfa":63.4,"sd":{"uv":235,"aqi":146,"w":365,"h":0,"t":0}},{"id":"kansas_city","n":"Kansas City","s":"MO","r":"Midwest","lt":39.0997,"ln":-94.5786,"ds":"climate_estimated","tl":"HIGH","tc":"#2d5a4d","rk":17,"op":62,"up":52,"wp":100,"ap":54,"hp":22,"esd":269,"ui":0.547,"ai":0.409,"wi":1,"hi":0.2,"ti":0,"pv":"Hard Water","sv":"Air Quality","hl":"Kansas City's hard water is the dominant environmental stressor for scalp health","kf":"Water is 6.4x harder than the soft water baseline","wpm":385,"uva":5.5,"aqa":63,"hma":67,"tfa":57.6,"sd":{"uv":200,"aqi":149,"w":365,"h":73,"t":0}},{"id":"dallas","n":"Dallas","s":"TX","r":"South","lt":32.7767,"ln":-96.797,"ds":"annual_averages","tl":"HIGH","tc":"#2d5a4d","rk":18,"op":61,"up":72,"wp":50,"ap":92,"hp":14,"esd":251,"ui":0.704,"ai":0.556,"wi":0.75,"hi":0,"ti":0,"pv":"Air Quality","sv":"UV Exposure","hl":"Dallas's air quality creates persistent environmental scalp stress","kf":"53 days of elevated air quality per year","wpm":140,"uva":6.3,"aqa":77,"hma":64,"tfa":68.6,"sd":{"uv":257,"aqi":203,"w":273,"h":0,"t":0}},{"id":"indianapolis","n":"Indianapolis","s":"IN","r":"Midwest","lt":39.7684,"ln":-86.1581,"ds":"climate_estimated","tl":"HIGH","tc":"#2d5a4d","rk":19,"op":58,"up":36,"wp":86,"ap":72,"hp":34,"esd":269,"ui":0.5,"ai":0.452,"wi":1,"hi":0.2,"ti":0,"pv":"Hard Water","sv":"Air Quality","hl":"Indianapolis's hard water is the dominant environmental stressor for scalp health","kf":"Water is 4.9x harder than the soft water baseline","wpm":292,"uva":5.2,"aqa":66,"hma":69,"tfa":55.6,"sd":{"uv":183,"aqi":165,"w":365,"h":73,"t":0}},{"id":"salt_lake_city","n":"Salt Lake City","s":"UT","r":"Mountain","lt":40.7608,"ln":-111.891,"ds":"annual_averages","tl":"HIGH","tc":"#2d5a4d","rk":20,"op":58,"up":52,"wp":76,"ap":80,"hp":6,"esd":251,"ui":0.597,"ai":0.411,"wi":1,"hi":0,"ti":0,"pv":"Air Quality","sv":"Hard Water","hl":"Salt Lake City's air quality creates persistent environmental scalp stress","kf":"30 days of elevated air quality per year","wpm":265,"uva":5.5,"aqa":68,"hma":50,"tfa":52.5,"sd":{"uv":218,"aqi":150,"w":365,"h":0,"t":0}},{"id":"honolulu","n":"Honolulu","s":"HI","r":"West","lt":21.3069,"ln":-157.8583,"ds":"climate_estimated","tl":"HIGH","tc":"#2d5a4d","rk":21,"op":58,"up":100,"wp":42,"ap":2,"hp":68,"esd":204,"ui":1,"ai":0.031,"wi":0.4,"hi":0.2,"ti":0,"pv":"UV Exposure","sv":"Humidity","hl":"Honolulu ranks among the highest UV exposure cities in the country","kf":"227 days per year with very high UV exposure","wpm":100,"uva":8.5,"aqa":35,"hma":73,"tfa":75,"sd":{"uv":442,"aqi":11,"w":146,"h":73,"t":0}},{"id":"cincinnati","n":"Cincinnati","s":"OH","r":"Midwest","lt":39.1031,"ln":-84.512,"ds":"climate_estimated","tl":"HIGH","tc":"#2d5a4d","rk":22,"op":55,"up":42,"wp":82,"ap":60,"hp":26,"esd":271,"ui":0.512,"ai":0.452,"wi":1,"hi":0.2,"ti":0,"pv":"Hard Water","sv":"Air Quality","hl":"Cincinnati's hard water is the dominant environmental stressor for scalp health","kf":"Water is 4.7x harder than the soft water baseline","wpm":282,"uva":5.3,"aqa":64,"hma":68,"tfa":57,"sd":{"uv":187,"aqi":165,"w":365,"h":73,"t":0}},{"id":"chicago","n":"Chicago","s":"IL","r":"Midwest","lt":41.8781,"ln":-87.6298,"ds":"annual_averages","tl":"HIGH","tc":"#2d5a4d","rk":23,"op":53,"up":24,"wp":56,"ap":82,"hp":74,"esd":235,"ui":0.425,"ai":0.506,"wi":0.75,"hi":0.2,"ti":0,"pv":"Air Quality","sv":"Humidity","hl":"Chicago's air quality creates persistent environmental scalp stress","kf":"29 days of elevated air quality per year","wpm":148,"uva":4.8,"aqa":69,"hma":74,"tfa":52.5,"sd":{"uv":155,"aqi":185,"w":273,"h":73,"t":0}},{"id":"st_louis","n":"St. Louis","s":"MO","r":"Midwest","lt":38.627,"ln":-90.1994,"ds":"climate_estimated","tl":"HIGH","tc":"#2d5a4d","rk":24,"op":51,"up":46,"wp":54,"ap":76,"hp":26,"esd":246,"ui":0.522,"ai":0.496,"wi":0.75,"hi":0.2,"ti":0,"pv":"Air Quality","sv":"Hard Water","hl":"St. Louis's air quality creates persistent environmental scalp stress","kf":"20 days of elevated air quality per year","wpm":144,"uva":5.4,"aqa":67,"hma":68,"tfa":58.4,"sd":{"uv":191,"aqi":181,"w":273,"h":73,"t":0}},{"id":"san_francisco","n":"San Francisco","s":"CA","r":"West","lt":37.7749,"ln":-122.4194,"ds":"annual_averages","tl":"HIGH","tc":"#2d5a4d","rk":25,"op":50,"up":66,"wp":18,"ap":36,"hp":96,"esd":194,"ui":0.671,"ai":0.385,"wi":0,"hi":0.5,"ti":0,"pv":"Humidity","sv":"UV Exposure","hl":"San Francisco's humidity creates constant moisture imbalance for scalp health","kf":"Average humidity of 78%","wpm":47,"uva":6,"aqa":59,"hma":78,"tfa":56.4,"sd":{"uv":245,"aqi":140,"w":0,"h":183,"t":0}},{"id":"denver","n":"Denver","s":"CO","r":"Mountain","lt":39.7392,"ln":-104.9903,"ds":"annual_averages","tl":"MODERATE","tc":"#D4A574","rk":26,"op":49,"up":58,"wp":32,"ap":90,"hp":4,"esd":195,"ui":0.619,"ai":0.542,"wi":0.4,"hi":0,"ti":0,"pv":"Air Quality","sv":"UV Exposure","hl":"Denver's air quality creates persistent environmental scalp stress","kf":"36 days of elevated air quality per year","wpm":85,"uva":5.9,"aqa":75,"hma":54,"tfa":49.7,"sd":{"uv":226,"aqi":198,"w":146,"h":0,"t":0}},{"id":"minneapolis","n":"Minneapolis","s":"MN","r":"Midwest","lt":44.9778,"ln":-93.265,"ds":"annual_averages","tl":"MODERATE","tc":"#D4A574","rk":27,"op":49,"up":18,"wp":88,"ap":48,"hp":46,"esd":242,"ui":0.382,"ai":0.35,"wi":1,"hi":0.2,"ti":0,"pv":"Hard Water","sv":"Air Quality","hl":"Minneapolis's hard water is the dominant environmental stressor for scalp health","kf":"Water is 5.0x harder than the soft water baseline","wpm":300,"uva":4.6,"aqa":61,"hma":70,"tfa":48.5,"sd":{"uv":140,"aqi":128,"w":365,"h":73,"t":0}},{"id":"columbus","n":"Columbus","s":"OH","r":"Midwest","lt":39.9612,"ln":-82.9988,"ds":"climate_estimated","tl":"MODERATE","tc":"#D4A574","rk":28,"op":48,"up":32,"wp":72,"ap":42,"hp":46,"esd":256,"ui":0.467,"ai":0.381,"wi":1,"hi":0.2,"ti":0,"pv":"Hard Water","sv":"Humidity","hl":"Columbus's hard water is the dominant environmental stressor for scalp health","kf":"Water is 3.9x harder than the soft water baseline","wpm":236,"uva":5.1,"aqa":60,"hma":70,"tfa":55.2,"sd":{"uv":171,"aqi":139,"w":365,"h":73,"t":0}},{"id":"atlanta","n":"Atlanta","s":"GA","r":"Southeast","lt":33.749,"ln":-84.388,"ds":"annual_averages","tl":"MODERATE","tc":"#D4A574","rk":29,"op":47,"up":66,"wp":10,"ap":68,"hp":46,"esd":166,"ui":0.663,"ai":0.462,"wi":0,"hi":0.2,"ti":0,"pv":"Air Quality","sv":"UV Exposure","hl":"Atlanta's air quality creates persistent environmental scalp stress","kf":"18 days of elevated air quality per year","wpm":30,"uva":6,"aqa":65,"hma":70,"tfa":63,"sd":{"uv":242,"aqi":169,"w":0,"h":73,"t":0}},{"id":"milwaukee","n":"Milwaukee","s":"WI","r":"Midwest","lt":43.0389,"ln":-87.9065,"ds":"climate_estimated","tl":"MODERATE","tc":"#D4A574","rk":30,"op":47,"up":22,"wp":78,"ap":36,"hp":58,"esd":240,"ui":0.414,"ai":0.307,"wi":1,"hi":0.2,"ti":0,"pv":"Hard Water","sv":"Humidity","hl":"Milwaukee's hard water is the dominant environmental stressor for scalp health","kf":"Water is 4.5x harder than the soft water baseline","wpm":268,"uva":4.7,"aqa":59,"hma":71,"tfa":50.7,"sd":{"uv":151,"aqi":112,"w":365,"h":73,"t":0}},{"id":"louisville","n":"Louisville","s":"KY","r":"South","lt":38.2527,"ln":-85.7585,"ds":"climate_estimated","tl":"MODERATE","tc":"#D4A574","rk":31,"op":47,"up":42,"wp":48,"ap":48,"hp":58,"esd":233,"ui":0.522,"ai":0.391,"wi":0.75,"hi":0.2,"ti":0,"pv":"Humidity","sv":"Hard Water","hl":"Louisville's humidity creates constant moisture imbalance for scalp health","kf":"Average humidity of 71%","wpm":133,"uva":5.3,"aqa":61,"hma":71,"tfa":58.6,"sd":{"uv":191,"aqi":143,"w":273,"h":73,"t":0}},{"id":"sacramento","n":"Sacramento","s":"CA","r":"West","lt":38.5816,"ln":-121.4944,"ds":"climate_estimated","tl":"MODERATE","tc":"#D4A574","rk":32,"op":47,"up":66,"wp":20,"ap":80,"hp":10,"esd":140,"ui":0.684,"ai":0.434,"wi":0,"hi":0,"ti":0,"pv":"Air Quality","sv":"UV Exposure","hl":"Sacramento's air quality creates persistent environmental scalp stress","kf":"25 days of elevated air quality per year","wpm":53,"uva":6,"aqa":68,"hma":63,"tfa":62.2,"sd":{"uv":250,"aqi":158,"w":0,"h":0,"t":0}},{"id":"memphis","n":"Memphis","s":"TN","r":"South","lt":35.1495,"ln":-90.049,"ds":"climate_estimated","tl":"MODERATE","tc":"#D4A574","rk":33,"op":45,"up":56,"wp":14,"ap":60,"hp":58,"esd":152,"ui":0.568,"ai":0.444,"wi":0,"hi":0.2,"ti":0,"pv":"Air Quality","sv":"Humidity","hl":"Memphis's air quality creates persistent environmental scalp stress","kf":"14 days of elevated air quality per year","wpm":39,"uva":5.6,"aqa":64,"hma":71,"tfa":63.7,"sd":{"uv":208,"aqi":162,"w":0,"h":73,"t":0}},{"id":"cleveland","n":"Cleveland","s":"OH","r":"Midwest","lt":41.4993,"ln":-81.6944,"ds":"climate_estimated","tl":"MODERATE","tc":"#D4A574","rk":34,"op":44,"up":22,"wp":68,"ap":16,"hp":86,"esd":274,"ui":0.423,"ai":0.271,"wi":1,"hi":0.5,"ti":0,"pv":"Humidity","sv":"Hard Water","hl":"Cleveland's humidity creates constant moisture imbalance for scalp health","kf":"Average humidity of 76%","wpm":209,"uva":4.7,"aqa":53,"hma":76,"tfa":53,"sd":{"uv":155,"aqi":99,"w":365,"h":183,"t":0}},{"id":"boise","n":"Boise","s":"ID","r":"Mountain","lt":43.615,"ln":-116.2023,"ds":"climate_estimated","tl":"MODERATE","tc":"#D4A574","rk":35,"op":44,"up":36,"wp":44,"ap":86,"hp":4,"esd":164,"ui":0.525,"ai":0.386,"wi":0.4,"hi":0,"ti":0,"pv":"Air Quality","sv":"Hard Water","hl":"Boise's air quality creates persistent environmental scalp stress","kf":"34 days of elevated air quality per year","wpm":113,"uva":5.2,"aqa":70,"hma":54,"tfa":53.5,"sd":{"uv":192,"aqi":141,"w":146,"h":0,"t":0}},{"id":"detroit","n":"Detroit","s":"MI","r":"Midwest","lt":42.3314,"ln":-83.0458,"ds":"climate_estimated","tl":"MODERATE","tc":"#D4A574","rk":36,"op":43,"up":18,"wp":42,"ap":72,"hp":64,"esd":183,"ui":0.384,"ai":0.48,"wi":0.4,"hi":0.2,"ti":0,"pv":"Air Quality","sv":"Humidity","hl":"Detroit's air quality creates persistent environmental scalp stress","kf":"19 days of elevated air quality per year","wpm":100,"uva":4.6,"aqa":66,"hma":72,"tfa":52.4,"sd":{"uv":140,"aqi":175,"w":146,"h":73,"t":0}},{"id":"nashville","n":"Nashville","s":"TN","r":"South","lt":36.1627,"ln":-86.7816,"ds":"annual_averages","tl":"MODERATE","tc":"#D4A574","rk":37,"op":42,"up":46,"wp":36,"ap":26,"hp":64,"esd":186,"ui":0.519,"ai":0.37,"wi":0.4,"hi":0.2,"ti":0,"pv":"Humidity","sv":"UV Exposure","hl":"Nashville's humidity creates constant moisture imbalance for scalp health","kf":"Average humidity of 72%","wpm":97,"uva":5.4,"aqa":57,"hma":72,"tfa":61.3,"sd":{"uv":190,"aqi":135,"w":146,"h":73,"t":0}},{"id":"charlotte","n":"Charlotte","s":"NC","r":"Southeast","lt":35.2271,"ln":-80.8431,"ds":"climate_estimated","tl":"MODERATE","tc":"#D4A574","rk":38,"op":41,"up":56,"wp":26,"ap":42,"hp":34,"esd":190,"ui":0.553,"ai":0.37,"wi":0.4,"hi":0.2,"ti":0,"pv":"UV Exposure","sv":"Air Quality","hl":"Charlotte ranks among the highest UV exposure cities in the country","kf":"70 days per year with very high UV exposure","wpm":66,"uva":5.6,"aqa":60,"hma":69,"tfa":61.8,"sd":{"uv":202,"aqi":135,"w":146,"h":73,"t":0}},{"id":"pittsburgh","n":"Pittsburgh","s":"PA","r":"Northeast","lt":40.4406,"ln":-79.9959,"ds":"climate_estimated","tl":"MODERATE","tc":"#D4A574","rk":39,"op":40,"up":18,"wp":38,"ap":68,"hp":58,"esd":172,"ui":0.368,"ai":0.411,"wi":0.4,"hi":0.2,"ti":0,"pv":"Air Quality","sv":"Humidity","hl":"Pittsburgh's air quality creates persistent environmental scalp stress","kf":"16 days of elevated air quality per year","wpm":98,"uva":4.6,"aqa":65,"hma":71,"tfa":54.2,"sd":{"uv":135,"aqi":150,"w":146,"h":73,"t":0}},{"id":"philadelphia","n":"Philadelphia","s":"PA","r":"Northeast","lt":39.9526,"ln":-75.1652,"ds":"annual_averages","tl":"MODERATE","tc":"#D4A574","rk":40,"op":40,"up":26,"wp":46,"ap":68,"hp":22,"esd":188,"ui":0.444,"ai":0.462,"wi":0.4,"hi":0.2,"ti":0,"pv":"Air Quality","sv":"Hard Water","hl":"Philadelphia's air quality creates persistent environmental scalp stress","kf":"19 days of elevated air quality per year","wpm":118,"uva":5,"aqa":65,"hma":67,"tfa":57.2,"sd":{"uv":162,"aqi":169,"w":146,"h":73,"t":0}},{"id":"washington_dc","n":"Washington, D.C.","s":"DC","r":"Northeast","lt":38.9072,"ln":-77.0369,"ds":"climate_estimated","tl":"MODERATE","tc":"#D4A574","rk":41,"op":35,"up":32,"wp":34,"ap":42,"hp":34,"esd":174,"ui":0.463,"ai":0.33,"wi":0.4,"hi":0.2,"ti":0,"pv":"Air Quality","sv":"Hard Water","hl":"Washington's air quality creates persistent environmental scalp stress","kf":"14 days of elevated air quality per year","wpm":95,"uva":5.1,"aqa":60,"hma":69,"tfa":58.1,"sd":{"uv":169,"aqi":121,"w":146,"h":73,"t":0}},{"id":"raleigh","n":"Raleigh","s":"NC","r":"Southeast","lt":35.7796,"ln":-78.6382,"ds":"climate_estimated","tl":"MODERATE","tc":"#D4A574","rk":42,"op":32,"up":52,"wp":10,"ap":18,"hp":46,"esd":123,"ui":0.504,"ai":0.281,"wi":0,"hi":0.2,"ti":0,"pv":"UV Exposure","sv":"Humidity","hl":"Raleigh ranks among the highest UV exposure cities in the country","kf":"62 days per year with very high UV exposure","wpm":30,"uva":5.5,"aqa":54,"hma":70,"tfa":62.1,"sd":{"uv":184,"aqi":103,"w":0,"h":73,"t":0}},{"id":"baltimore","n":"Baltimore","s":"MD","r":"Northeast","lt":39.2904,"ln":-76.6122,"ds":"climate_estimated","tl":"MODERATE","tc":"#D4A574","rk":43,"op":31,"up":32,"wp":30,"ap":30,"hp":34,"esd":169,"ui":0.473,"ai":0.281,"wi":0.4,"hi":0.2,"ti":0,"pv":"Humidity","sv":"UV Exposure","hl":"Baltimore's humidity creates constant moisture imbalance for scalp health","kf":"Average humidity of 69%","wpm":80,"uva":5.1,"aqa":58,"hma":69,"tfa":57.7,"sd":{"uv":173,"aqi":103,"w":146,"h":73,"t":0}},{"id":"richmond","n":"Richmond","s":"VA","r":"Southeast","lt":37.5407,"ln":-77.436,"ds":"climate_estimated","tl":"MODERATE","tc":"#D4A574","rk":44,"op":31,"up":42,"wp":24,"ap":12,"hp":46,"esd":115,"ui":0.49,"ai":0.233,"wi":0,"hi":0.2,"ti":0,"pv":"Humidity","sv":"UV Exposure","hl":"Richmond's humidity creates constant moisture imbalance for scalp health","kf":"Average humidity of 70%","wpm":58,"uva":5.3,"aqa":51,"hma":70,"tfa":60.3,"sd":{"uv":179,"aqi":85,"w":0,"h":73,"t":0}},{"id":"new_york","n":"New York","s":"NY","r":"Northeast","lt":40.7128,"ln":-74.006,"ds":"annual_averages","tl":"MODERATE","tc":"#D4A574","rk":45,"op":30,"up":18,"wp":12,"ap":68,"hp":46,"esd":124,"ui":0.371,"ai":0.418,"wi":0,"hi":0.2,"ti":0,"pv":"Air Quality","sv":"Humidity","hl":"New York's air quality creates persistent environmental scalp stress","kf":"24 days of elevated air quality per year","wpm":31,"uva":4.6,"aqa":65,"hma":70,"tfa":55.4,"sd":{"uv":136,"aqi":152,"w":0,"h":73,"t":0}},{"id":"anchorage","n":"Anchorage","s":"AK","r":"West","lt":61.2181,"ln":-149.9003,"ds":"climate_estimated","tl":"FAIR","tc":"#7d8471","rk":46,"op":23,"up":2,"wp":22,"ap":4,"hp":98,"esd":103,"ui":0.047,"ai":0.127,"wi":0,"hi":0.5,"ti":0.15,"pv":"Humidity","sv":"Hard Water","hl":"Anchorage's humidity creates constant moisture imbalance for scalp health","kf":"Average humidity of 79%","wpm":56,"uva":2.3,"aqa":36,"hma":79,"tfa":36.6,"sd":{"uv":17,"aqi":46,"w":0,"h":183,"t":55}},{"id":"seattle","n":"Seattle","s":"WA","r":"Northwest","lt":47.6062,"ln":-122.3321,"ds":"annual_averages","tl":"FAIR","tc":"#7d8471","rk":47,"op":21,"up":4,"wp":4,"ap":20,"hp":96,"esd":133,"ui":0.278,"ai":0.286,"wi":0,"hi":0.5,"ti":0,"pv":"Humidity","sv":"Air Quality","hl":"Seattle's humidity creates constant moisture imbalance for scalp health","kf":"Average humidity of 78%","wpm":25,"uva":3.7,"aqa":55,"hma":78,"tfa":52.5,"sd":{"uv":102,"aqi":104,"w":0,"h":183,"t":0}},{"id":"hartford","n":"Hartford","s":"CT","r":"Northeast","lt":41.7658,"ln":-72.6734,"ds":"climate_estimated","tl":"FAIR","tc":"#7d8471","rk":48,"op":20,"up":10,"wp":16,"ap":8,"hp":64,"esd":94,"ui":0.34,"ai":0.209,"wi":0,"hi":0.2,"ti":0,"pv":"Humidity","sv":"Hard Water","hl":"Hartford's humidity creates constant moisture imbalance for scalp health","kf":"Average humidity of 72%","wpm":46,"uva":4.5,"aqa":49,"hma":72,"tfa":52.9,"sd":{"uv":124,"aqi":76,"w":0,"h":73,"t":0}},{"id":"portland","n":"Portland","s":"OR","r":"Northwest","lt":45.5152,"ln":-122.6784,"ds":"annual_averages","tl":"FAIR","tc":"#7d8471","rk":49,"op":19,"up":6,"wp":10,"ap":6,"hp":84,"esd":84,"ui":0.319,"ai":0.153,"wi":0,"hi":0.2,"ti":0,"pv":"Humidity","sv":"Hard Water","hl":"Portland's humidity creates constant moisture imbalance for scalp health","kf":"Average humidity of 75%","wpm":30,"uva":3.9,"aqa":47,"hma":75,"tfa":53.4,"sd":{"uv":117,"aqi":56,"w":0,"h":73,"t":0}},{"id":"boston","n":"Boston","s":"MA","r":"Northeast","lt":42.3601,"ln":-71.0589,"ds":"annual_averages","tl":"FAIR","tc":"#7d8471","rk":50,"op":18,"up":10,"wp":2,"ap":16,"hp":68,"esd":99,"ui":0.353,"ai":0.242,"wi":0,"hi":0.2,"ti":0,"pv":"Humidity","sv":"Air Quality","hl":"Boston's humidity creates constant moisture imbalance for scalp health","kf":"Average humidity of 73%","wpm":16,"uva":4.5,"aqa":53,"hma":73,"tfa":52.3,"sd":{"uv":129,"aqi":88,"w":0,"h":73,"t":0}}]
+</script>
+
+<!-- ============================================ -->
+<!-- APPLICATION JS                               -->
+<!-- ============================================ -->
+<script>
+(function() {
+  'use strict';
+
+  // ============================================
+  // LOAD DATA
+  // ============================================
+  var metros = JSON.parse(document.getElementById('atlas-data').textContent);
+
+  // ============================================
+  // US STATE SVG PATHS (simplified Albers projection)
+  // ============================================
+  // Simplified US state boundaries for the Albers USA projection
+  // Source: Public domain, Natural Earth simplified
+  var statePaths = {
+    AL: "M628,438 L628,480 L624,502 L620,504 L618,498 L612,502 L610,496 L608,438Z",
+    AK: "M120,490 L130,485 L140,488 L148,480 L155,482 L158,490 L165,492 L162,500 L170,505 L175,498 L182,502 L185,510 L178,515 L170,512 L160,518 L148,515 L135,510 L125,505 L118,498Z",
+    AZ: "M185,410 L255,418 L248,468 L238,502 L184,492 L188,448Z",
+    AR: "M560,432 L608,434 L608,476 L604,480 L558,478 L556,448Z",
+    CA: "M108,280 L130,290 L148,320 L162,358 L172,400 L182,440 L184,492 L168,488 L142,468 L118,432 L100,390 L94,350 L96,310Z",
+    CO: "M272,320 L372,328 L368,382 L268,374Z",
+    CT: "M852,208 L876,200 L882,218 L866,228 L852,224Z",
+    DE: "M810,298 L820,288 L826,304 L818,318 L810,310Z",
+    FL: "M622,504 L666,498 L698,502 L722,508 L730,524 L718,548 L698,566 L678,570 L660,558 L648,540 L642,530 L640,518 L638,510 L628,510 L624,504Z",
+    GA: "M648,420 L690,424 L694,430 L698,478 L694,498 L666,498 L622,504 L620,498 L624,476 L636,434Z",
+    HI: "M260,530 L268,525 L278,528 L284,536 L278,542 L268,540 L260,536Z",
+    ID: "M190,168 L228,178 L238,210 L232,248 L218,280 L210,302 L194,290 L178,258 L182,218 L186,188Z",
+    IL: "M572,268 L586,270 L592,290 L596,320 L592,348 L590,380 L584,402 L570,408 L560,398 L556,368 L558,338 L560,300Z",
+    IN: "M600,280 L632,282 L634,340 L630,380 L622,400 L600,398 L592,380 L596,320 L598,290Z",
+    IA: "M480,250 L558,254 L560,290 L558,318 L546,330 L480,326 L470,300 L472,268Z",
+    KS: "M378,340 L480,346 L480,408 L376,402Z",
+    KY: "M598,368 L658,355 L688,348 L698,358 L690,378 L672,390 L648,398 L620,402 L598,398Z",
+    LA: "M560,480 L604,478 L608,498 L618,510 L610,530 L590,535 L568,528 L554,518 L552,498Z",
+    ME: "M872,100 L890,110 L898,130 L894,160 L882,172 L870,168 L862,148 L858,128 L862,110Z",
+    MD: "M760,298 L810,290 L820,298 L818,318 L806,328 L788,320 L770,310Z",
+    MA: "M858,192 L890,184 L898,192 L890,200 L876,200 L858,204Z",
+    MI: "M586,168 L608,172 L624,188 L636,210 L640,240 L632,260 L618,268 L598,264 L586,250 L580,230 L576,210 L578,188Z",
+    MN: "M462,130 L538,134 L542,180 L538,230 L530,252 L480,248 L470,230 L462,192Z",
+    MS: "M590,434 L608,436 L610,496 L608,510 L598,528 L590,535 L580,524 L572,502 L574,470 L582,440Z",
+    MO: "M500,330 L556,334 L560,368 L558,408 L546,418 L520,428 L502,418 L482,408 L480,368Z",
+    MT: "M222,118 L342,130 L338,188 L322,196 L288,194 L258,186 L228,178 L218,158Z",
+    NE: "M350,278 L468,286 L472,326 L380,318 L358,310 L350,298Z",
+    NV: "M148,232 L200,248 L192,310 L186,360 L172,400 L142,392 L128,348 L130,298 L138,260Z",
+    NH: "M862,128 L872,130 L874,165 L868,178 L858,172 L856,148Z",
+    NJ: "M818,240 L828,244 L830,268 L826,290 L816,304 L808,290 L812,262Z",
+    NM: "M240,400 L326,406 L320,478 L310,502 L236,494 L238,444Z",
+    NY: "M758,170 L810,178 L828,190 L838,198 L846,210 L838,228 L818,238 L808,250 L788,248 L770,238 L760,218 L756,198Z",
+    NC: "M652,380 L746,370 L778,378 L792,388 L778,398 L748,406 L708,412 L680,416 L648,418Z",
+    ND: "M350,130 L460,134 L462,192 L458,218 L350,214Z",
+    OH: "M636,268 L678,262 L690,280 L692,318 L688,348 L670,358 L648,362 L634,348 L632,310 L634,280Z",
+    OK: "M376,402 L480,408 L484,422 L490,444 L484,458 L454,458 L418,452 L378,448 L370,438 L372,418Z",
+    OR: "M108,160 L192,178 L190,210 L182,248 L168,260 L138,260 L114,242 L100,218 L96,190Z",
+    PA: "M720,238 L808,232 L816,248 L812,272 L806,288 L760,298 L738,292 L722,268Z",
+    RI: "M876,204 L886,200 L888,212 L880,218 L874,212Z",
+    SC: "M678,416 L708,412 L738,418 L748,432 L738,448 L718,452 L698,448 L688,434Z",
+    SD: "M348,214 L458,218 L460,264 L456,286 L348,278Z",
+    TN: "M590,390 L696,378 L698,396 L690,412 L668,418 L640,422 L608,428 L590,430Z",
+    TX: "M336,420 L378,416 L418,452 L454,458 L484,458 L508,468 L530,478 L558,478 L556,498 L548,520 L530,548 L510,568 L488,578 L464,574 L440,560 L418,544 L400,528 L382,508 L360,498 L340,490 L326,470 L328,440Z",
+    UT: "M210,300 L268,308 L268,374 L256,380 L238,398 L210,390 L198,360Z",
+    VT: "M848,130 L858,132 L862,170 L854,182 L846,170 L844,148Z",
+    VA: "M700,328 L768,310 L792,320 L802,340 L790,358 L778,378 L746,370 L718,362 L698,358Z",
+    WA: "M120,90 L200,102 L208,130 L198,168 L190,172 L142,162 L118,148 L108,128 L112,108Z",
+    WV: "M698,298 L722,290 L738,308 L738,338 L728,358 L710,362 L698,358 L688,340 L690,318Z",
+    WI: "M520,160 L566,164 L578,186 L582,218 L580,250 L558,254 L538,252 L530,230 L520,198Z",
+    WY: "M240,198 L340,206 L338,268 L332,296 L272,290 L248,282 L238,258 L234,228Z"
+  };
+
+  // State water hardness categories for background fills
+  var stateWater = {
+    AL:'M',AK:'VS',AZ:'VH',AR:'H',CA:'H',CO:'H',CT:'SM',DE:'MH',DC:'H',FL:'MH',
+    GA:'SM',HI:'S',ID:'M',IL:'H',IN:'VH',IA:'VH',KS:'VH',KY:'H',LA:'MH',ME:'VS',
+    MD:'M',MA:'SM',MI:'H',MN:'H',MS:'MH',MO:'VH',MT:'MH',NE:'VH',NV:'VH',NH:'VS',
+    NJ:'MH',NM:'VH',NY:'SM',NC:'SM',ND:'VH',OH:'H',OK:'VH',OR:'S',PA:'MH',RI:'S',
+    SC:'S',SD:'VH',TN:'MH',TX:'H',UT:'VH',VT:'VS',VA:'MH',WA:'S',WV:'MH',WI:'H',WY:'MH'
+  };
+
+  var waterFills = {
+    VS: 'rgba(200,212,192,0.25)',
+    S: 'rgba(200,212,192,0.30)',
+    SM: 'rgba(200,212,192,0.35)',
+    M: 'rgba(212,165,116,0.15)',
+    MH: 'rgba(212,165,116,0.22)',
+    H: 'rgba(45,90,77,0.12)',
+    VH: 'rgba(16,43,38,0.12)'
+  };
+
+  // ============================================
+  // ALBERS USA PROJECTION (simplified)
+  // ============================================
+  function projectAlbers(lat, lon) {
+    // Simplified Albers equal-area for the contiguous US
+    // Approximate conversion to SVG coordinates (viewBox 0 0 960 600)
+    var x, y;
+
+    // Handle Alaska
+    if (lat > 50) {
+      x = 150 + (lon + 150) * 0.8;
+      y = 495 + (65 - lat) * 3;
+      return [Math.max(100, Math.min(200, x)), Math.max(480, Math.min(520, y))];
+    }
+
+    // Handle Hawaii
+    if (lat < 25 && lon < -150) {
+      x = 270 + (lon + 157) * 4;
+      y = 535;
+      return [x, y];
+    }
+
+    // Contiguous US
+    var lonRef = -96, latRef = 38;
+    var scale = 12;
+    x = 480 + (lon - lonRef) * scale * Math.cos(latRef * Math.PI / 180);
+    y = 320 - (lat - latRef) * scale * 1.25;
+    return [Math.max(80, Math.min(920, x)), Math.max(60, Math.min(580, y))];
+  }
+
+  // ============================================
+  // RENDER MAP
+  // ============================================
+  function renderMap() {
+    var svg = document.getElementById('atlas-map');
+    var ns = 'http://www.w3.org/2000/svg';
+    var html = '';
+
+    // Draw states
+    for (var st in statePaths) {
+      var fill = waterFills[stateWater[st]] || 'rgba(228,217,202,0.3)';
+      html += '<path class="state-path" d="' + statePaths[st] + '" fill="' + fill + '" data-state="' + st + '"/>';
+    }
+
+    // Draw metro dots
+    for (var i = 0; i < metros.length; i++) {
+      var m = metros[i];
+      var pos = projectAlbers(m.lt, m.ln);
+      var r = m.esd > 300 ? 8 : m.esd > 200 ? 6.5 : 5;
+
+      // Touch target (invisible, larger)
+      html += '<circle class="metro-touch" cx="' + pos[0] + '" cy="' + pos[1] + '" r="22" data-idx="' + i + '" tabindex="0" role="button" aria-label="' + m.n + ', ' + m.s + ' - ' + m.tl + ' threat, ' + m.esd + ' stress days per year"/>';
+
+      // Visible dot
+      html += '<circle class="metro-dot" cx="' + pos[0] + '" cy="' + pos[1] + '" r="' + r + '" fill="' + m.tc + '" stroke="#faf8f5" stroke-width="1.5" data-idx="' + i + '" pointer-events="none"/>';
+    }
+
+    svg.innerHTML = html;
+
+    // Event delegation
+    svg.addEventListener('mouseover', handleMapHover);
+    svg.addEventListener('mouseout', hideTooltip);
+    svg.addEventListener('click', handleMapClick);
+    svg.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleMapClick(e);
+      }
+    });
+    svg.addEventListener('focusin', handleMapHover);
+    svg.addEventListener('focusout', hideTooltip);
+  }
+
+  // ============================================
+  // TOOLTIP
+  // ============================================
+  var tooltip = document.getElementById('map-tooltip');
+  var ttCity = document.getElementById('tt-city');
+  var ttBadge = document.getElementById('tt-badge');
+  var ttDetail = document.getElementById('tt-detail');
+
+  function handleMapHover(e) {
+    var touch = e.target.closest('.metro-touch');
+    if (!touch) return;
+    var idx = parseInt(touch.getAttribute('data-idx'));
+    var m = metros[idx];
+    var pos = projectAlbers(m.lt, m.ln);
+
+    ttCity.textContent = m.n + ', ' + m.s;
+    ttBadge.textContent = m.tl;
+    ttBadge.style.background = m.tc === '#102B26' ? 'rgba(255,255,255,0.15)' : m.tc;
+    ttBadge.style.color = m.tc === '#102B26' || m.tc === '#2d5a4d' ? '#f4efe9' : '#102B26';
+    ttDetail.textContent = m.esd + ' stress days/year - Primary: ' + m.pv;
+
+    var svgRect = document.getElementById('atlas-map').getBoundingClientRect();
+    var scaleX = svgRect.width / 960;
+    var scaleY = svgRect.height / 600;
+    var left = pos[0] * scaleX - 100;
+    var top = pos[1] * scaleY - 80;
+
+    if (left < 0) left = 10;
+    if (left + 220 > svgRect.width) left = svgRect.width - 230;
+    if (top < 0) top = pos[1] * scaleY + 20;
+
+    tooltip.style.left = left + 'px';
+    tooltip.style.top = top + 'px';
+    tooltip.classList.add('visible');
+  }
+
+  function hideTooltip() {
+    tooltip.classList.remove('visible');
+  }
+
+  function handleMapClick(e) {
+    var touch = e.target.closest('.metro-touch');
+    if (!touch) return;
+    var idx = parseInt(touch.getAttribute('data-idx'));
+    var m = metros[idx];
+    var card = document.getElementById('card-' + m.id);
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.style.boxShadow = '0 0 0 2px var(--gold)';
+      setTimeout(function() { card.style.boxShadow = ''; }, 2000);
+    }
+  }
+
+  // ============================================
+  // RANKINGS
+  // ============================================
+  function renderRankings() {
+    var worst = metros.slice(0, 10);
+    var best = metros.slice(-10).reverse();
+
+    var worstCol = document.getElementById('worst-col');
+    var bestCol = document.getElementById('best-col');
+
+    function renderRankItem(m, container, type) {
+      var div = document.createElement('div');
+      div.className = 'rank-item';
+      div.setAttribute('role', 'button');
+      div.setAttribute('tabindex', '0');
+      div.setAttribute('aria-label', m.n + ', ' + m.s + ' - rank ' + m.rk + ', ' + m.esd + ' stress days');
+
+      var numColor = type === 'worst' ? 'var(--gold)' : 'var(--sage)';
+      var barColor = m.tc;
+      var barWidth = Math.round((m.esd / 350) * 100);
+
+      div.innerHTML =
+        '<span class="rank-num" style="color:' + numColor + '">' + m.rk + '</span>' +
+        '<div class="rank-info"><div class="rank-city">' + m.n + ', ' + m.s + '</div>' +
+        '<div class="rank-villain">Primary: ' + m.pv + '</div></div>' +
+        '<div class="rank-bar-wrap"><div class="rank-bar" style="background:' + barColor + '" data-width="' + barWidth + '"></div></div>' +
+        '<span class="rank-esd">' + m.esd + '</span>';
+
+      div.addEventListener('click', function() {
+        var card = document.getElementById('card-' + m.id);
+        if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+
+      container.appendChild(div);
+    }
+
+    worst.forEach(function(m) { renderRankItem(m, worstCol, 'worst'); });
+    best.forEach(function(m) { renderRankItem(m, bestCol, 'best'); });
+  }
+
+  // ============================================
+  // CITY CARDS
+  // ============================================
+  var currentFilter = 'all';
+  var currentSort = 'rank';
+
+  function getThreatColor(level) {
+    var colors = { SEVERE: '#102B26', HIGH: '#2d5a4d', MODERATE: '#D4A574', FAIR: '#7d8471', GOOD: '#c8d4c0' };
+    return colors[level] || '#7d8471';
+  }
+
+  function getThreatTextColor(level) {
+    return (level === 'SEVERE' || level === 'HIGH') ? '#f4efe9' : '#102B26';
+  }
+
+  function renderCards() {
+    var grid = document.getElementById('cards-grid');
+    grid.innerHTML = '';
+
+    var filtered = metros.filter(function(m) {
+      if (currentFilter === 'all') return true;
+      if (currentFilter === 'FAIR') return m.tl === 'FAIR' || m.tl === 'GOOD';
+      return m.tl === currentFilter;
+    });
+
+    var sorted = filtered.slice();
+    if (currentSort === 'rank-asc') sorted.reverse();
+    else if (currentSort === 'alpha') sorted.sort(function(a, b) { return a.n.localeCompare(b.n); });
+
+    sorted.forEach(function(m, i) {
+      var card = document.createElement('div');
+      card.className = 'city-card';
+      card.id = 'card-' + m.id;
+
+      var badgeBg = getThreatColor(m.tl);
+      var badgeText = getThreatTextColor(m.tl);
+      var rankBg = m.rk <= 10 ? 'rgba(212,165,116,0.15)' : m.rk >= 41 ? 'rgba(200,212,192,0.3)' : 'rgba(228,217,202,0.3)';
+      var rankColor = m.rk <= 10 ? 'var(--gold)' : 'var(--teal)';
+
+      var factors = [
+        { label: 'UV', val: Math.round(m.ui * 100), color: 'var(--teal)' },
+        { label: 'Water', val: Math.round(m.wi * 100), color: 'var(--teal-mid)' },
+        { label: 'AQI', val: Math.round(m.ai * 100), color: 'var(--sage)' },
+        { label: 'Humid.', val: Math.round(m.hi * 100), color: 'var(--gold)' },
+        { label: 'Temp', val: Math.round(m.ti * 100), color: 'var(--sage-light)' }
+      ];
+
+      var barsHtml = factors.map(function(f) {
+        return '<div class="threat-bar-row">' +
+          '<span class="threat-bar-label">' + f.label + '</span>' +
+          '<div class="threat-bar-track"><div class="threat-bar-fill" style="width:' + f.val + '%;background:' + f.color + '"></div></div>' +
+          '<span class="threat-bar-val">' + f.val + '%</span></div>';
+      }).join('');
+
+      card.innerHTML =
+        '<div class="card-header">' +
+          '<div><div class="card-city">' + m.n + '</div><div class="card-state">' + m.s + '</div></div>' +
+          '<div class="card-rank" style="background:' + rankBg + ';color:' + rankColor + '">' + m.rk + '</div>' +
+        '</div>' +
+        '<div class="threat-badge" style="background:' + badgeBg + ';color:' + badgeText + '">' + m.tl + '</div>' +
+        '<div class="threat-bars">' + barsHtml + '</div>' +
+        '<div class="card-footer">' +
+          '<div class="card-esd">' + m.esd + '</div>' +
+          '<div class="card-esd-label">Environmental Stress Days / Year</div>' +
+          '<div class="card-villain">Primary threat: ' + m.pv + '</div>' +
+          '<div class="card-fact">' + m.kf + '</div>' +
+          '<div class="card-source">' + (m.ds === 'annual_averages' ? 'Annual data' : 'Climate estimated') + '</div>' +
+        '</div>';
+
+      grid.appendChild(card);
+
+      // Stagger card entrance
+      setTimeout(function() { card.classList.add('visible'); }, 40 * Math.min(i, 15));
+    });
+  }
+
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(function(b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      currentFilter = btn.getAttribute('data-filter');
+      renderCards();
+    });
+  });
+
+  // Sort select
+  document.getElementById('sort-select').addEventListener('change', function() {
+    currentSort = this.value;
+    renderCards();
+  });
+
+  // ============================================
+  // METHODOLOGY TOGGLE
+  // ============================================
+  document.getElementById('method-toggle').addEventListener('click', function() {
+    var body = document.getElementById('method-body');
+    var isOpen = body.classList.contains('open');
+    body.classList.toggle('open');
+    this.setAttribute('aria-expanded', !isOpen);
+    this.textContent = isOpen ? 'View full methodology' : 'Hide methodology';
+  });
+
+  // ============================================
+  // SCROLL ANIMATIONS
+  // ============================================
+  function initAnimations() {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+
+          // Animate rank bars
+          var bars = entry.target.querySelectorAll('.rank-bar[data-width]');
+          bars.forEach(function(bar, i) {
+            setTimeout(function() {
+              bar.style.width = bar.getAttribute('data-width') + '%';
+            }, i * 80);
+          });
+
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(function(el) {
+      observer.observe(el);
+    });
+  }
+
+  // ============================================
+  // COUNTER ANIMATION
+  // ============================================
+  function animateCounters() {
+    var counters = document.querySelectorAll('[data-count]');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var el = entry.target;
+          var target = parseInt(el.getAttribute('data-count'));
+          var start = 0;
+          var duration = 1800;
+          var startTime = null;
+
+          function step(timestamp) {
+            if (!startTime) startTime = timestamp;
+            var progress = Math.min((timestamp - startTime) / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(start + (target - start) * eased);
+            if (progress < 1) requestAnimationFrame(step);
+          }
+
+          requestAnimationFrame(step);
+          observer.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    counters.forEach(function(c) { observer.observe(c); });
+  }
+
+  // ============================================
+  // INIT
+  // ============================================
+  renderMap();
+  renderRankings();
+  renderCards();
+  initAnimations();
+  animateCounters();
+
+})();
+</script>
+
+</body>
+</html>

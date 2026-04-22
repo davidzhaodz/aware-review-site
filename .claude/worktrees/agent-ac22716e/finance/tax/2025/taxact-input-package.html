@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaxAct Input Package - TY2025 Sprint</title>
+<link rel="preconnect" href="https://use.typekit.net">
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:        #1a2e29;
+  --ink-2:      #3a5a54;
+  --ink-3:      #6a8a84;
+  --parchment:  #f4efe9;
+  --surface:    #faf8f5;
+  --paper:      #ffffff;
+  --crease:     rgba(26,46,41,.12);
+  --fold:       rgba(26,46,41,.06);
+  --gold:       #D4A574;
+  --gold-bg:    rgba(212,165,116,.08);
+  --safe:       #1a6640;
+  --safe-bg:    rgba(26,102,64,.07);
+  --safe-border:rgba(26,102,64,.20);
+  --warn:       #92400e;
+  --warn-bg:    rgba(146,64,14,.07);
+  --warn-border:rgba(146,64,14,.20);
+  --flag:       #7c3aed;
+  --flag-bg:    rgba(124,58,237,.06);
+  --flag-border:rgba(124,58,237,.18);
+  --danger:     #991b1b;
+  --danger-bg:  rgba(153,27,27,.06);
+  --mono:       'DM Mono', 'Courier New', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--parchment);
+  color: var(--ink);
+  line-height: 1.55;
+  font-size: 13px;
+}
+
+/* ---- PRINT BANNER ---- */
+.print-banner {
+  background: var(--ink);
+  color: var(--parchment);
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .5px;
+}
+.print-banner span { color: var(--gold); }
+
+/* ---- SHELL ---- */
+.shell { max-width: 960px; margin: 0 auto; padding: 32px 24px 80px; }
+
+/* ---- MASTHEAD ---- */
+.masthead { margin-bottom: 28px; }
+.masthead .eyebrow {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.5px; color: var(--ink-3); margin-bottom: 6px;
+}
+.masthead h1 {
+  font-family: 'orpheus-pro', Georgia, serif;
+  font-size: 28px; font-weight: 400; line-height: 1.2;
+  color: var(--ink);
+}
+.masthead .sub {
+  margin-top: 6px; font-size: 12px; color: var(--ink-2);
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.masthead .sub span { display: flex; align-items: center; gap: 5px; }
+.masthead .sub .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--ink-3); }
+
+/* ---- LEGEND ---- */
+.legend {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 24px; padding: 12px 16px;
+  background: var(--paper); border: 1px solid var(--crease); border-radius: 6px;
+}
+.legend-item { display: flex; align-items: center; gap: 7px; font-size: 11px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.legend-dot.green  { background: var(--safe-bg); border: 1px solid var(--safe-border); }
+.legend-dot.amber  { background: var(--warn-bg); border: 1px solid var(--warn-border); }
+.legend-dot.purple { background: var(--flag-bg); border: 1px solid var(--flag-border); }
+
+/* ---- HOW-TO CALLOUT ---- */
+.howto {
+  padding: 14px 18px; border-radius: 6px;
+  background: var(--safe-bg); border: 1px solid var(--safe-border);
+  color: var(--safe); font-size: 12px; line-height: 1.7;
+  margin-bottom: 28px;
+}
+.howto strong { font-weight: 700; }
+
+/* ---- SECTION HEADING ---- */
+.section-heading {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.5px; color: var(--ink-3);
+  margin: 32px 0 12px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--crease);
+}
+
+/* ---- CARD ---- */
+.card {
+  background: var(--paper);
+  border: 1px solid var(--crease);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.card-head {
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--fold);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.card-head h2 {
+  font-family: 'orpheus-pro', Georgia, serif;
+  font-size: 15px; font-weight: 400; color: var(--ink);
+}
+.card-head .num {
+  font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+  white-space: nowrap;
+}
+.badge {
+  font-size: 10px; padding: 2px 9px; border-radius: 10px;
+  font-weight: 700; letter-spacing: .3px; white-space: nowrap;
+}
+.badge-safe   { background: var(--safe-bg); color: var(--safe); border: 1px solid var(--safe-border); }
+.badge-warn   { background: var(--warn-bg); color: var(--warn); border: 1px solid var(--warn-border); }
+.badge-flag   { background: var(--flag-bg); color: var(--flag); border: 1px solid var(--flag-border); }
+.card-body { padding: 18px; }
+
+/* ---- TABLES ---- */
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th {
+  text-align: left; padding: 7px 10px;
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .6px; color: var(--ink-3);
+  background: var(--surface); border-bottom: 1px solid var(--crease);
+}
+th.r, td.r { text-align: right; }
+td { padding: 7px 10px; border-bottom: 1px solid var(--fold); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+.mono  { font-family: var(--mono); font-size: 11px; }
+.em    { font-weight: 600; }
+.neg   { color: var(--danger); }
+.pos   { color: var(--safe); }
+.dim   { color: var(--ink-3); }
+.small { font-size: 11px; }
+
+/* ---- ROW HIGHLIGHTS ---- */
+.row-green  { background: var(--safe-bg); }
+.row-amber  { background: var(--warn-bg); }
+.row-purple { background: var(--flag-bg); }
+.row-total  { background: var(--surface); border-top: 1.5px solid var(--crease) !important; }
+.row-total td { font-weight: 600; border-bottom: none; }
+.row-divider td { border-bottom: 1.5px solid var(--crease) !important; }
+
+/* ---- INLINE CALLOUTS ---- */
+.note {
+  font-size: 11px; padding: 10px 14px; border-radius: 4px;
+  margin-top: 12px; line-height: 1.65;
+  color: var(--ink-2);
+  background: var(--surface);
+}
+.note-safe   { background: var(--safe-bg);  color: var(--safe);  border-left: 3px solid var(--safe); }
+.note-warn   { background: var(--warn-bg);  color: var(--warn);  border-left: 3px solid var(--warn); }
+.note-flag   { background: var(--flag-bg);  color: var(--flag);  border-left: 3px solid var(--flag); }
+.note-danger { background: var(--danger-bg); color: var(--danger); border-left: 3px solid var(--danger); }
+.note strong { font-weight: 700; }
+
+/* ---- FLAG BOX ---- */
+.flag-box {
+  background: var(--flag-bg); border: 1px solid var(--flag-border);
+  border-radius: 6px; padding: 14px 16px; margin-top: 12px;
+}
+.flag-box .flag-title {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .8px; color: var(--flag); margin-bottom: 8px;
+}
+.flag-box ul { padding-left: 16px; }
+.flag-box li { font-size: 12px; color: var(--ink-2); margin-bottom: 5px; line-height: 1.6; }
+.flag-box li:last-child { margin-bottom: 0; }
+.flag-box li strong { color: var(--flag); font-weight: 700; }
+
+/* ---- PARTNER GRID ---- */
+.partner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+  margin-top: 4px;
+}
+.partner-card {
+  border: 1px solid var(--crease); border-radius: 5px;
+  padding: 10px 12px; background: var(--surface);
+}
+.partner-card .p-name { font-weight: 600; font-size: 12px; margin-bottom: 3px; }
+.partner-card .p-type-gp { color: var(--safe); font-size: 10px; font-weight: 700; text-transform: uppercase; }
+.partner-card .p-type-lp { color: var(--ink-3); font-size: 10px; font-weight: 700; text-transform: uppercase; }
+.partner-card .p-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-2); margin-top: 3px; }
+.partner-card .p-val { font-family: var(--mono); font-size: 11px; }
+.partner-card .p-note { font-size: 10px; color: var(--ink-3); margin-top: 5px; border-top: 1px solid var(--fold); padding-top: 5px; }
+
+/* ---- CHECKLIST ---- */
+.checklist { list-style: none; }
+.checklist li {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 0; border-bottom: 1px solid var(--fold);
+  font-size: 12px;
+}
+.checklist li:last-child { border-bottom: none; }
+.chk-box {
+  width: 16px; height: 16px; min-width: 16px;
+  border: 1.5px solid var(--crease); border-radius: 3px;
+  margin-top: 1px; background: var(--paper);
+}
+.checklist .chk-label { flex: 1; line-height: 1.5; }
+.checklist .chk-ref { font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+
+/* ---- DECISIONS TABLE ---- */
+.decisions li {
+  padding: 10px 0; border-bottom: 1px solid var(--fold);
+  font-size: 12px; line-height: 1.6;
+}
+.decisions li:last-child { border-bottom: none; }
+.decision-q { font-weight: 600; color: var(--ink); }
+.decision-context { color: var(--ink-2); margin-top: 3px; }
+.decision-options { margin-top: 5px; padding-left: 12px; color: var(--ink-2); }
+
+/* ---- TWO-COL ---- */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 680px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ---- PRINT ---- */
+@media print {
+  @page { margin: 18mm 14mm; }
+  .print-banner { display: none; }
+  body { background: #fff; font-size: 11px; }
+  .shell { padding: 12px; max-width: 100%; }
+  .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+  .partner-grid { grid-template-columns: repeat(3, 1fr); }
+  .two-col { grid-template-columns: 1fr 1fr; }
+  .section-heading { margin-top: 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="print-banner">
+  PRINT THIS &mdash; Use side-by-side with TaxAct &mdash;
+  <span>AWARE Hair, LLC &mdash; TY2025 Sprint Reference</span>
+</div>
+
+<div class="shell">
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="eyebrow">Partnership Return &middot; Form 1065</div>
+  <h1>TaxAct Input Package<br>TY2025 Sprint</h1>
+  <div class="sub">
+    <span>AWARE Hair, LLC</span>
+    <span class="dot"></span>
+    <span>EIN 99-1705231</span>
+    <span class="dot"></span>
+    <span>Data: QBO LIVE [2026-03-14, Accrual]</span>
+    <span class="dot"></span>
+    <span>12 Partners</span>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <strong style="font-size:11px;color:var(--ink-2);align-self:center;">Color key:</strong>
+  <div class="legend-item"><div class="legend-dot green"></div> Enter this exact number</div>
+  <div class="legend-item"><div class="legend-dot amber"></div> Verify before entering / estimate</div>
+  <div class="legend-item"><div class="legend-dot purple"></div> Decision needed - flag for David</div>
+</div>
+
+<!-- HOW TO USE -->
+<div class="howto">
+  <strong>TY2024 return is already imported into TaxAct.</strong> All 12 partners, depreciation schedules, amortization schedules, and beginning balance sheet values carry forward automatically. You do NOT re-enter those. Your job in this sprint:
+  <br>(1) Verify the carry-forward amounts match the TY2024 filed return values listed in Section 1.
+  <br>(2) Enter TY2025 income, COGS, deductions, and ending balance sheet numbers from Sections 2-7.
+  <br>(3) Resolve the flagged decisions in Section 10 before e-filing.
+  <br>TaxAct auto-calculates: Form 4562 depreciation/amortization, K-1 allocations, Schedule K, and M-1 partially.
+</div>
+
+
+<!-- ========================================
+     SECTION 1: WHAT TAXACT ALREADY HAS
+     ======================================== -->
+<div class="section-heading">Section 1 - What TaxAct Already Has (from TY2024 Import) - VERIFY, Do Not Re-enter</div>
+
+<div class="card">
+  <div class="card-head">
+    <h2>TY2024 Carry-Forward Values to Verify</h2>
+    <span class="badge badge-warn">Verify these match exactly</span>
+  </div>
+  <div class="card-body">
+    <div class="two-col">
+      <div>
+        <table>
+          <tr><th colspan="2">Form 1065 Page 1 - TY2024 Filed</th></tr>
+          <tr><td>Ordinary business income</td><td class="r mono neg">($95,387)</td></tr>
+          <tr><td>Total income (gross profit)</td><td class="r mono">$28,674</td></tr>
+          <tr><td>Total deductions</td><td class="r mono">$105,122</td></tr>
+          <tr><td>Guaranteed payments</td><td class="r mono">$28,674</td></tr>
+          <tr class="row-green"><td class="em">Schedule L Line 21 - Partners' Capital (beginning TY2025)</td><td class="r mono em">$199,055</td></tr>
+          <tr class="row-green"><td class="em">Schedule L Total Assets (beginning TY2025)</td><td class="r mono em">$256,424</td></tr>
+          <tr class="row-green"><td class="em">M-2 ending capital (TY2024)</td><td class="r mono em">$204,613</td></tr>
+        </table>
+      </div>
+      <div>
+        <table>
+          <tr><th colspan="2">Form 4562 - Carry-Forward Basis</th></tr>
+          <tr><td>TY2024 depreciation</td><td class="r mono">$659</td></tr>
+          <tr><td>&nbsp;&nbsp;5-yr MACRS (furniture)</td><td class="r mono dim">$285</td></tr>
+          <tr><td>&nbsp;&nbsp;7-yr MACRS (equipment)</td><td class="r mono dim">$146</td></tr>
+          <tr><td>&nbsp;&nbsp;15-yr MACRS (warehouse)</td><td class="r mono dim">$228</td></tr>
+          <tr><td>TY2024 amortization</td><td class="r mono">$2,861</td></tr>
+          <tr><td>&nbsp;&nbsp;Startup costs</td><td class="r mono dim">$739</td></tr>
+          <tr><td>&nbsp;&nbsp;Additional amortizable</td><td class="r mono dim">$2,122</td></tr>
+          <tr><td class="em">Accum. depr. end of TY2024</td><td class="r mono em">$455</td></tr>
+          <tr><td class="em">Accum. amort. end of TY2024</td><td class="r mono em">$2,862</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="note note-warn" style="margin-top:14px;">
+      <strong>M-2 vs L-21 variance:</strong> TY2024 M-2 ending was $204,613 but Schedule L Line 21 was $199,055 - a $5,558 gap. TaxAct will have imported one of these as the beginning capital. Check which one TaxAct used for TY2025 beginning balance before proceeding.
+    </div>
+    <div class="note">
+      <strong>12 partners imported:</strong> Tina Mui, Segal Family Trust, Jade Wong, Harlan Irvine, Qing Zhao, Paul Wong, Gigi Chow, Joe Pachorek, KP Phung, Alice Rossiter, Patty Waggoner, Ingrid Marone. Verify each SSN/EIN is showing correctly in TaxAct - see Section 9 for full details.
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================
+     SECTION 2: INCOME - Form 1065 Page 1
+     ======================================== -->
+<div class="section-heading">Section 2 - Form 1065 Page 1 - Income (Lines 1a-8) - Enter These</div>
+
+<div class="card">
+  <div class="card-head">
+    <h2>Income - Lines 1a through 8</h2>
+    <span class="badge badge-safe">QBO P&amp;L [2026-03-14]</span>
+  </div>
+  <div class="card-body">
+    <table>
+      <tr>
+        <th style="width:60px">Line</th>
+        <th>Description</th>
+        <th class="r" style="width:110px">Amount</th>
+        <th>QBO Source Account(s)</th>
+      </tr>
+      <tr class="row-green">
+        <td class="mono em">1a</td>
+        <td class="em">Gross receipts or sales</td>
+        <td class="r mono em">$156,807.51</td>
+        <td class="small">B2B Sales $87,220.00 + B2C $65,685.53 + Spa Sante $3,646.98 + Shipping $317.23 + Services see note</td>
+      </tr>
+      <tr class="row-amber">
+        <td class="mono">1a alt</td>
+        <td>Services (if TaxAct asks separately)</td>
+        <td class="r mono">$4,255.00</td>
+        <td class="small">QBO "Services" - may go Line 1a or Line 7; TaxAct will prompt - see flag below</td>
+      </tr>
+      <tr class="row-green">
+        <td class="mono em">1b</td>
+        <td class="em">Returns and allowances</td>
+        <td class="r mono em">$65,733.26</td>
+        <td class="small">Sales Returns &amp; Allowances (A2X returns + Shopify refunds)</td>
+      </tr>
+      <tr>
+        <td class="mono">3</td>
+        <td>Balance (1a - 1b) - calculated by TaxAct</td>
+        <td class="r mono">$91,074.25</td>
+        <td class="small dim">Auto-calculated</td>
+      </tr>
+      <tr class="row-green">
+        <td class="mono em">4</td>
+        <td class="em">Cost of goods sold (from Schedule A)</td>
+        <td class="r mono em">$22,633.33</td>
+        <td class="small">COGS-B2C (A2X corrected costs) - see Section 3</td>
+      </tr>
+      <tr>
+        <td class="mono">5</td>
+        <td>Gross profit (3 - 4) - calculated</td>
+        <td class="r mono pos">$68,440.92</td>
+        <td class="small dim">Auto-calculated (~75% gross margin)</td>
+      </tr>
+      <tr class="row-amber">
+        <td class="mono">7</td>
+        <td>Other income</td>
+        <td class="r mono">$4,255.00</td>
+        <td class="small">Services income - if not included in Line 1a above. Enter one or the other, not both.</td>
+      </tr>
+      <tr>
+        <td class="mono">8</td>
+        <td>Total income - calculated</td>
+        <td class="r mono pos">$72,695.92</td>
+        <td class="small dim">Matches QBO Gross Profit $72,758 (minor rounding from categorization)</td>
+      </tr>
+    </table>
+
+    <div class="flag-box">
+      <div class="flag-title">Decision Required - Services $4,255</div>
+      <ul>
+        <li><strong>Option A (preferred):</strong> Include Services in Line 1a as part of gross receipts ($156,807 + $4,255 = $161,062.51), keep Line 7 = $0. This treats services as part of ordinary business sales.</li>
+        <li><strong>Option B:</strong> Exclude Services from Line 1a, put $4,255 on Line 7 as "Other income." More accurate if these are consulting/advisory fees distinct from product sales.</li>
+        <li>TY2024 had $181 "Other income" on a similar line. Check how TaxAct categorized it in the imported return to stay consistent.</li>
+      </ul>
+    </div>
+
+    <div class="note note-safe" style="margin-top:10px;">
+      <strong>Other income - where it goes (Schedule K, not Page 1):</strong> Credit card rewards $1,479.32 - Box 11 other income. Interest earned $155.47 - Box 5 interest income. Currency rounding -$32.18 - likely immaterial/absorbed. Vehicle expenses (parking $55.75 + gas $174.61 = $230.36) - goes on deductions, not income.
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================
+     SECTION 3: SCHEDULE A - COGS
+     ======================================== -->
+<div class="section-heading">Section 3 - Form 1125-A (Schedule A) - Cost of Goods Sold - Critical</div>
+
+<div class="card">
+  <div class="card-head">
+    <h2>Cost of Goods Sold</h2>
+    <span class="badge badge-safe">RESOLVED - QBO verified 2026-03-14</span>
+  </div>
+  <div class="card-body">
+    <table>
+      <tr>
+        <th style="width:60px">Line</th>
+        <th>Description</th>
+        <th class="r" style="width:120px">Amount</th>
+        <th>Notes</th>
+      </tr>
+      <tr class="row-green">
+        <td class="mono em">1</td>
+        <td class="em">Inventory at beginning of year</td>
+        <td class="r mono em">$82,362</td>
+        <td class="small">TY2024 ending inventory - carries forward from import. VERIFY TaxAct shows this.</td>
+      </tr>
+      <tr class="row-green">
+        <td class="mono em">2</td>
+        <td class="em">Purchases</td>
+        <td class="r mono em">$40,410</td>
+        <td class="small">Ingredients $15,403 + Packaging $7,931 + Finished Goods $17,076 (Temu, Seyed Hossein Zo mfg, supplies)</td>
+      </tr>
+      <tr><td class="mono">3</td><td>Cost of labor</td><td class="r mono">$0</td><td class="small">No manufacturing labor (Seyed Hossein Zo is contract mfg, in Line 2)</td></tr>
+      <tr class="row-green"><td class="mono">5</td><td>Other costs</td><td class="r mono">$162</td><td class="small">Inbound freight (FedEx $161.88). TY2024 had $4,997 here.</td></tr>
+      <tr class="row-green"><td class="mono">6</td><td>Total (1+2+3+5)</td><td class="r mono em">$122,934</td><td class="small">Calculated</td></tr>
+      <tr class="row-green">
+        <td class="mono em">7</td>
+        <td class="em">Ending inventory</td>
+        <td class="r mono em">$100,301</td>
+        <td class="small">= $122,934 - $22,633. Feeds to Schedule L Line 3. QBO book shows $105,290 ($4,989 gap = TY2024 CPA adj carryover).</td>
+      </tr>
+      <tr class="row-green">
+        <td class="mono em">8</td>
+        <td class="em">Cost of goods sold (6 - 7)</td>
+        <td class="r mono em">$22,633</td>
+        <td class="small">A2X corrected costs. 186 JEs. COGS ratio: 23.7% of net revenue.</td>
+      </tr>
+      <tr>
+        <td class="mono">9a</td>
+        <td>Inventory method</td>
+        <td class="r mono">Cost</td>
+        <td class="small">Same as TY2024 - Cost method, not LIFO</td>
+      </tr>
+      <tr><td class="mono">9b</td><td>LIFO election?</td><td class="r mono">No</td><td class="small">Match TY2024</td></tr>
+      <tr><td class="mono">9c</td><td>Writedown to lower of cost/market?</td><td class="r mono">No</td><td class="small">Match TY2024</td></tr>
+    </table>
+
+    <div class="flag-box" style="margin-top:14px;">
+      <div class="flag-title">Inventory Flow Verification (from QBO account transactions)</div>
+      <ul>
+        <li><strong>Finished Goods:</strong> 219 txns, $17,076 in (purchases + reclassifications), $22,633 out (A2X COGS). Balance: $44,537.</li>
+        <li><strong>Raw Materials (Ingredients):</strong> 12 txns, $15,403 in (Lotioncrafter, Symrise). No outflow. Balance: $26,287.</li>
+        <li><strong>Raw Materials (Packaging):</strong> 17 txns, $7,931 in (Alibaba, Temu, print shops). No outflow. Balance: $29,307.</li>
+        <li><strong>Freight-Inbound:</strong> 1 txn, $162 in (FedEx). Balance: $5,159.</li>
+        <li><strong>QBO total:</strong> $105,290 across 4 accounts. Tax basis: $100,301 ($4,989 gap = TY2024 CPA adjustment carryover).</li>
+        <li><strong>Sanity check:</strong> $82K starting + $41K purchased - $23K sold = $100K remaining. Consistent with growth-phase inventory buildup.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================
+     SECTION 4: DEDUCTIONS - Form 1065 Page 1
+     ======================================== -->
+<div class="section-heading">Section 4 - Form 1065 Page 1 - Deductions (Lines 9-22) - Enter These</div>
+
+<div class="card">
+  <div class="card-head">
+    <h2>Deductions - Lines 9 through 22</h2>
+    <span class="badge badge-safe">QBO P&amp;L [2026-03-14]</span>
+  </div>
+  <div class="card-body">
+    <table>
+      <tr>
+        <th style="width:60px">Line</th>
+        <th>Description</th>
+        <th class="r" style="width:110px">Amount</th>
+        <th>QBO Source / Notes</th>
+      </tr>
+      <tr><td class="mono">9</td><td>Salaries and wages</td><td class="r mono">$0</td><td class="small">No W-2 employees</td></tr>
+      <tr class="row-purple">
+        <td class="mono">10</td>
+        <td>Guaranteed payments to partners</td>
+        <td class="r mono">$0</td>
+        <td class="small">TY2024 had $28,674. Verify TY2025: did Tina/Jade receive guaranteed payments? Check QBO for "Guaranteed Payments" account entries.</td>
+      </tr>
+      <tr><td class="mono">11</td><td>Repairs and maintenance</td><td class="r mono">$0</td><td class="small">None identified in QBO</td></tr>
+      <tr><td class="mono">12</td><td>Bad debts</td><td class="r mono">$0</td><td class="small">N/A</td></tr>
+      <tr class="row-green"><td class="mono em">13</td><td class="em">Rent</td><td class="r mono em">$32,100.00</td><td class="small">QBO: Rent account - $32,100.00 (Holly St studio)</td></tr>
+      <tr class="row-green"><td class="mono em">14</td><td class="em">Taxes and licenses</td><td class="r mono em">$4,694.13</td><td class="small">QBO: Taxes paid account - $4,694.13</td></tr>
+      <tr class="row-green"><td class="mono em">15</td><td class="em">Interest</td><td class="r mono em">$1,482.72</td><td class="small">QBO: Interest Expense $1,482.56 + CC Interest $0.16</td></tr>
+      <tr class="row-amber">
+        <td class="mono">16a</td>
+        <td>Depreciation (from Form 4562)</td>
+        <td class="r mono">AUTO</td>
+        <td class="small">TaxAct calculates from 4562 carry-forward. TY2024 was $659. TY2025 will be different - check TaxAct's 4562 for calculated amount before accepting.</td>
+      </tr>
+      <tr class="row-amber">
+        <td class="mono">16c</td>
+        <td>Amortization (from Form 4562)</td>
+        <td class="r mono">AUTO</td>
+        <td class="small">TaxAct calculates. TY2024 was $2,861. Should be similar or same for TY2025 depending on amortization period end dates.</td>
+      </tr>
+      <tr><td class="mono">17</td><td>Depletion</td><td class="r mono">$0</td><td class="small">N/A</td></tr>
+      <tr><td class="mono">18</td><td>Retirement plans</td><td class="r mono">$0</td><td class="small">N/A</td></tr>
+      <tr><td class="mono">19</td><td>Employee benefit programs</td><td class="r mono">$0</td><td class="small">Health insurance goes to Schedule K Line 13e, not here</td></tr>
+      <tr class="row-green">
+        <td class="mono em">20</td>
+        <td class="em">Other deductions (attach statement)</td>
+        <td class="r mono em">See detail below</td>
+        <td class="small">Enter each category on TaxAct's "other deductions" statement</td>
+      </tr>
+      <tr class="row-total">
+        <td class="mono em">22</td>
+        <td class="em">Total deductions</td>
+        <td class="r mono em">~$108,800+</td>
+        <td class="small">Auto-calculated once all lines entered + 4562 amounts populated</td>
+      </tr>
+    </table>
+
+    <div class="section-heading" style="margin-top:20px;">Line 20 - Other Deductions Itemized Statement</div>
+    <div class="note note-warn">Enter each line below as a separate item on TaxAct's "Other Deductions" statement. Labels should match the descriptions used here for the attached statement.</div>
+
+    <table style="margin-top:12px;">
+      <tr>
+        <th>Category (use this label in TaxAct)</th>
+        <th class="r">Amount</th>
+        <th>QBO Account(s)</th>
+        <th>Tax Treatment</th>
+      </tr>
+      <tr class="row-green"><td class="em">Utilities and telephone</td><td class="r mono em">$19,028.64</td><td class="small">Utilities $13,900.00 + Phone $5,128.64</td><td class="small">Fully deductible</td></tr>
+      <tr class="row-green"><td class="em">Vehicle lease</td><td class="r mono em">$13,617.34</td><td class="small">Vehicle Lease account</td><td class="small">Fully deductible (lease payments)</td></tr>
+      <tr class="row-green"><td class="em">Contract labor</td><td class="r mono em">$8,052.50</td><td class="small">Contract labor (Qing Zhao 1099 x4 payments)</td><td class="small">Deductible; verify 1099 issued</td></tr>
+      <tr class="row-green"><td class="em">Software and subscriptions</td><td class="r mono em">$7,624.75</td><td class="small">Software &amp; Apps account</td><td class="small">Fully deductible SaaS</td></tr>
+      <tr class="row-purple">
+        <td class="em">Health insurance premiums</td>
+        <td class="r mono em">$6,222.37</td>
+        <td class="small">Health insurance &amp; accident plans</td>
+        <td class="small">Goes to Schedule K Line 13e (partner-level), not Line 20. Do NOT double-count here.</td>
+      </tr>
+      <tr class="row-green"><td class="em">Travel - airfare</td><td class="r mono em">$2,008.82</td><td class="small">Airfare account</td><td class="small">Fully deductible business travel</td></tr>
+      <tr class="row-green"><td class="em">Travel - hotels and lodging</td><td class="r mono em">$1,522.49</td><td class="small">Hotels account</td><td class="small">Fully deductible</td></tr>
+      <tr class="row-green"><td class="em">Travel - other</td><td class="r mono em">$234.97</td><td class="small">Travel account</td><td class="small">Fully deductible</td></tr>
+      <tr class="row-green"><td class="em">Advertising and marketing</td><td class="r mono em">$2,822.04</td><td class="small">Marketing &amp; Advertising account</td><td class="small">Fully deductible</td></tr>
+      <tr class="row-green"><td class="em">Merchant processing fees</td><td class="r mono em">$2,672.23</td><td class="small">Merchant Processing Fees account</td><td class="small">Fully deductible</td></tr>
+      <tr class="row-green"><td class="em">Office and administrative</td><td class="r mono em">$1,828.47</td><td class="small">Office/Admin account</td><td class="small">Fully deductible</td></tr>
+      <tr class="row-green"><td class="em">Outbound shipping and fulfillment</td><td class="r mono em">$1,188.79</td><td class="small">Outbound Shipping account</td><td class="small">Fully deductible</td></tr>
+      <tr class="row-green"><td class="em">Education and training</td><td class="r mono em">$954.30</td><td class="small">Education and Training account</td><td class="small">Fully deductible</td></tr>
+      <tr class="row-amber">
+        <td class="em">Meals and entertainment (50% - enter FULL)</td>
+        <td class="r mono em">$830.81</td>
+        <td class="small">Meals $637.37 + Meals with clients $193.44</td>
+        <td class="small">Enter FULL amount; TaxAct applies 50% limit automatically. $415 will be nondeductible (flows to K-1 Box 18c).</td>
+      </tr>
+      <tr class="row-green"><td class="em">Commissions and fees</td><td class="r mono em">$559.22</td><td class="small">Commissions &amp; fees account</td><td class="small">Fully deductible</td></tr>
+      <tr class="row-green"><td class="em">Dues and memberships</td><td class="r mono em">$548.50</td><td class="small">General business $26.50 + Memberships $522.00</td><td class="small">Fully deductible</td></tr>
+      <tr class="row-green"><td class="em">Bank service charges</td><td class="r mono em">$404.69</td><td class="small">Bank Service Charges account</td><td class="small">Fully deductible</td></tr>
+      <tr class="row-green"><td class="em">Business insurance</td><td class="r mono em">$325.00</td><td class="small">Insurance account</td><td class="small">Fully deductible</td></tr>
+      <tr class="row-green"><td class="em">Research and development</td><td class="r mono em">$198.46</td><td class="small">R&amp;D expense account</td><td class="small">Deductible (or capitalize per IRC 174 if applicable)</td></tr>
+      <tr class="row-green"><td class="em">Vehicle expenses (gas and parking)</td><td class="r mono em">$230.36</td><td class="small">Parking $55.75 + Gas $174.61</td><td class="small">Deductible vehicle operating costs</td></tr>
+      <tr class="row-green"><td class="em">Management fees</td><td class="r mono em">$48.04</td><td class="small">Management Fees (Global-E)</td><td class="small">Fully deductible</td></tr>
+      <tr class="row-total">
+        <td class="em">Total Line 20 (ex. health insurance)</td>
+        <td class="r mono em">$62,900.42</td>
+        <td class="small" colspan="2">Health insurance $6,222 excluded here - it goes to Schedule K Line 13e separately</td>
+      </tr>
+      <tr class="row-total">
+        <td class="em">Total Line 20 (if health ins. included)</td>
+        <td class="r mono em">$69,122.79</td>
+        <td class="small" colspan="2">Include if TaxAct puts K Line 13e items through Line 20 first - check your TaxAct version</td>
+      </tr>
+    </table>
+
+    <div class="note note-warn" style="margin-top:12px;">
+      <strong>Interest Payable $2,218.91 on balance sheet:</strong> QBO shows Interest Payable as a liability but only $1,482.72 was expensed in 2025. The gap ($736) may be accrued but unpaid interest. Accrual basis: expense when accrued. Verify if this $736 should be added to Line 15 interest expense. If it relates to a prior period, it should not be double-counted.
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================
+     SECTION 5: SCHEDULE K
+     ======================================== -->
+<div class="section-heading">Section 5 - Schedule K - Separately Stated Items</div>
+
+<div class="card">
+  <div class="card-head">
+    <h2>Schedule K - Partner-Level Items</h2>
+    <span class="badge badge-safe">TaxAct auto-allocates to K-1s</span>
+  </div>
+  <div class="card-body">
+    <table>
+      <tr>
+        <th style="width:60px">K Line</th>
+        <th>Description</th>
+        <th class="r" style="width:110px">Amount</th>
+        <th>Source / Notes</th>
+      </tr>
+      <tr class="row-amber">
+        <td class="mono">1</td>
+        <td>Ordinary business income (loss)</td>
+        <td class="r mono neg">TaxAct calculates</td>
+        <td class="small">Auto-calculated from Page 1. Check that this matches expected net loss.</td>
+      </tr>
+      <tr><td class="mono">2</td><td>Net rental real estate income</td><td class="r mono">$0</td><td class="small">N/A</td></tr>
+      <tr><td class="mono">3</td><td>Other net rental income</td><td class="r mono">$0</td><td class="small">N/A</td></tr>
+      <tr class="row-purple">
+        <td class="mono">4</td>
+        <td>Guaranteed payments to partners</td>
+        <td class="r mono">$0</td>
+        <td class="small">IF Tina/Jade had guaranteed payments in 2025, enter here. TY2024 was $28,674. Verify.</td>
+      </tr>
+      <tr class="row-green"><td class="mono">5</td><td>Interest income</td><td class="r mono em">$155.47</td><td class="small">QBO: Interest earned account</td></tr>
+      <tr><td class="mono">6a-6c</td><td>Dividend income</td><td class="r mono">$0</td><td class="small">N/A</td></tr>
+      <tr><td class="mono">7</td><td>Royalties</td><td class="r mono">$0</td><td class="small">N/A</td></tr>
+      <tr><td class="mono">8-9c</td><td>Capital gains/losses</td><td class="r mono">$0</td><td class="small">N/A</td></tr>
+      <tr><td class="mono">10</td><td>Net IRC 1231 gain (loss)</td><td class="r mono">$0</td><td class="small">N/A - no asset disposals</td></tr>
+      <tr class="row-green">
+        <td class="mono em">11</td>
+        <td class="em">Other income - credit card rewards</td>
+        <td class="r mono em">$1,479.32</td>
+        <td class="small">QBO: Credit card rewards account - Box 11 "other income" on K-1</td>
+      </tr>
+      <tr><td class="mono">12</td><td>IRC 179 deduction</td><td class="r mono">$0</td><td class="small">TY2024 didn't use - verify TaxAct 4562 for TY2025</td></tr>
+      <tr class="row-green">
+        <td class="mono em">13e</td>
+        <td class="em">Deductions - partner health insurance</td>
+        <td class="r mono em">$6,222.37</td>
+        <td class="small">Health insurance &amp; accident plans. Flows to each K-1 Box 13 Code E. Partners deduct on personal returns.</td>
+      </tr>
+      <tr class="row-amber">
+        <td class="mono">14a</td>
+        <td>Net earnings from self-employment</td>
+        <td class="r mono">AUTO</td>
+        <td class="small">TaxAct calculates for GPs (Tina 71.46%, Jade 6.80%) only. LPs not subject to SE tax.</td>
+      </tr>
+      <tr class="row-green">
+        <td class="mono em">18c</td>
+        <td class="em">Nondeductible expenses - meals 50%</td>
+        <td class="r mono em">$415.41</td>
+        <td class="small">50% of total meals $830.81 = $415.41. Flows to K-1 Box 18 Code C. Allocated to partners.</td>
+      </tr>
+      <tr><td class="mono">19a</td><td>Distributions - cash</td><td class="r mono">$0</td><td class="small">Verify no distributions were made in 2025</td></tr>
+    </table>
+
+    <div class="note note-safe" style="margin-top:12px;">
+      <strong>How K-1s work:</strong> TaxAct takes each Schedule K item and multiplies by each partner's profit/loss % to generate their individual K-1. For ordinary loss, all 12 partners get their allocable share. For GP items (health insurance, SE income), only Tina and Jade get those boxes populated.
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================
+     SECTION 6: SCHEDULE L - BALANCE SHEET
+     ======================================== -->
+<div class="section-heading">Section 6 - Schedule L - Balance Sheet (Ending 12/31/2025) - Enter These</div>
+
+<div class="card">
+  <div class="card-head">
+    <h2>Schedule L - Balance Sheet</h2>
+    <span class="badge badge-safe">QBO Balance Sheet [12/31/2025, Accrual]</span>
+  </div>
+  <div class="card-body">
+    <div class="note note-warn" style="margin-bottom:14px;">
+      Beginning column (1/1/2025) is auto-populated from TY2024 import. VERIFY these match TY2024 filed Schedule L before entering ending values.
+    </div>
+
+    <table>
+      <tr>
+        <th style="width:60px">L Line</th>
+        <th>Description</th>
+        <th class="r" style="width:110px">Beginning (auto)</th>
+        <th class="r" style="width:110px">Ending (enter)</th>
+        <th>QBO Account(s) - 12/31/2025</th>
+      </tr>
+
+      <!-- ASSETS -->
+      <tr><td colspan="5" style="background:var(--surface);padding:6px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--ink-3);">ASSETS</td></tr>
+
+      <tr class="row-green">
+        <td class="mono em">1</td>
+        <td class="em">Cash and cash equivalents</td>
+        <td class="r mono dim">$40,338</td>
+        <td class="r mono em">$46,542.21</td>
+        <td class="small">Checking $6,670.23 + PayPal $1,704.46 + QB Checking -$59.44 + Sales Tax $1,547.94 + Shopify Balance $36,679.02</td>
+      </tr>
+      <tr class="row-green">
+        <td class="mono em">2a</td>
+        <td class="em">Trade notes and accounts receivable</td>
+        <td class="r mono dim">$2,803</td>
+        <td class="r mono em">$11,629.44</td>
+        <td class="small">QBO: Accounts Receivable</td>
+      </tr>
+      <tr><td class="mono">2b</td><td>Less: allowance for bad debts</td><td class="r mono dim">$0</td><td class="r mono">$0</td><td class="small">No allowance established</td></tr>
+      <tr><td class="mono">3</td><td>Inventories</td><td class="r mono dim">$82,362</td><td class="r mono em">$100,301</td><td class="small">= Schedule A Line 7 ending inventory. Tax basis ($82,362 + $40,572 purchases - $22,633 COGS). QBO book: $105,290.</td></tr>
+      <tr><td class="mono">4</td><td>U.S. government obligations</td><td class="r mono dim">$0</td><td class="r mono">$0</td><td class="small">N/A</td></tr>
+      <tr><td class="mono">5</td><td>Tax-exempt securities</td><td class="r mono dim">$0</td><td class="r mono">$0</td><td class="small">N/A</td></tr>
+      <tr class="row-green">
+        <td class="mono em">6</td>
+        <td class="em">Other current assets</td>
+        <td class="r mono dim">$4,997</td>
+        <td class="r mono em">$142,593.83</td>
+        <td class="small">Due from Infinity $6,581 + Freight-Inbound $5,159 + Prepaid Lab $8,085 + Prepaid Rent $18,000 + R&amp;D Asset $3,750 + Shopify clearings net $886 + QBO remaining other current assets</td>
+      </tr>
+      <tr class="row-amber">
+        <td class="mono">7a</td>
+        <td>Loans to partners</td>
+        <td class="r mono dim">$6,581</td>
+        <td class="r mono">$6,581.00</td>
+        <td class="small">Due from Infinity - this is Infinity Beauty LLC (Tina's entity). May alternatively stay in Line 6 other current assets. Check how TY2024 treated it.</td>
+      </tr>
+      <tr class="row-green">
+        <td class="mono em">9a</td>
+        <td class="em">Buildings and other depreciable assets</td>
+        <td class="r mono dim">$22,262</td>
+        <td class="r mono em">$33,606.22</td>
+        <td class="small">Furniture $1,367.06 + Office Equip $2,623.21 + Warehouse $18,272.19 + Capitalized Software $11,799.00 = $34,061.46 (gross, pre-depreciation note: QBO fixed assets total)</td>
+      </tr>
+      <tr class="row-green">
+        <td class="mono em">9b</td>
+        <td class="em">Less: accumulated depreciation</td>
+        <td class="r mono neg dim">($455)</td>
+        <td class="r mono neg em">($455.24)</td>
+        <td class="small">QBO: Accum Depr Furniture -$113.03 + Office Equip -$189.94 + Warehouse -$152.27. Note: TaxAct 4562 may show different amount - use TaxAct's calculated figure.</td>
+      </tr>
+      <tr class="row-amber">
+        <td class="mono">10</td>
+        <td>Land (net of any amortization)</td>
+        <td class="r mono dim">$0</td>
+        <td class="r mono">$0</td>
+        <td class="small">N/A</td>
+      </tr>
+      <tr class="row-green">
+        <td class="mono em">12a</td>
+        <td class="em">Intangible assets</td>
+        <td class="r mono dim">$74,072</td>
+        <td class="r mono em">$58,527.09</td>
+        <td class="small">Design &amp; Packaging Dev $10,250 + GTM Consulting $15,000 + Startup Legal $33,277.09 = $58,527.09 (gross intangibles)</td>
+      </tr>
+      <tr class="row-green">
+        <td class="mono em">12b</td>
+        <td class="em">Less: accumulated amortization</td>
+        <td class="r mono neg dim">($2,862)</td>
+        <td class="r mono neg em">($2,861.60)</td>
+        <td class="small">QBO: Accum Amort Software -$1,311 + R&amp;D -$250 + Startup -$1,300.60. TaxAct's 4562 will update this - use TaxAct's figure.</td>
+      </tr>
+      <tr class="row-green">
+        <td class="mono em">13</td>
+        <td class="em">Other assets</td>
+        <td class="r mono dim">$27,050</td>
+        <td class="r mono em">$0</td>
+        <td class="small">Check if TY2024 had other assets not in QBO. If no other assets, enter $0. QBO's "other assets" are now mapped to Lines 6, 9a, 12a above.</td>
+      </tr>
+      <tr class="row-total">
+        <td class="mono em">14</td>
+        <td class="em">Total assets</td>
+        <td class="r mono dim em">$256,424</td>
+        <td class="r mono em">$290,037.19</td>
+        <td class="small">Must equal QBO Total Assets. MUST equal Line 22.</td>
+      </tr>
+
+      <!-- LIABILITIES -->
+      <tr><td colspan="5" style="background:var(--surface);padding:6px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--ink-3);">LIABILITIES AND PARTNERS' CAPITAL</td></tr>
+
+      <tr class="row-amber">
+        <td class="mono">15</td>
+        <td>Accounts payable</td>
+        <td class="r mono dim">$1,331</td>
+        <td class="r mono">$0</td>
+        <td class="small">Verify QBO A/P balance at 12/31/2025. QBO balance sheet doesn't show a separate A/P line - confirm with QBO A/P aging report.</td>
+      </tr>
+      <tr><td class="mono">16</td><td>Mortgages, notes payable (&lt;1yr)</td><td class="r mono dim">$0</td><td class="r mono">$0</td><td class="small">The Jade loan $5,503 is short-term - see Line 17</td></tr>
+      <tr class="row-green">
+        <td class="mono em">17</td>
+        <td class="em">Other current liabilities</td>
+        <td class="r mono dim">$1,058</td>
+        <td class="r mono em">$14,852.79</td>
+        <td class="small">CCs $6,947.24 + Duties -$118.78 + Interest Payable $2,218.91 + Jade Loan ST $5,503.47 + Marketplace Tax -$7.31 + Sales Tax Payable $7,256.50 + Duties Payable (net) = $14,852.79</td>
+      </tr>
+      <tr><td class="mono">18</td><td>All nonrecourse loans</td><td class="r mono dim">$0</td><td class="r mono">$0</td><td class="small">Partnership-level nonrecourse loans only</td></tr>
+      <tr class="row-green">
+        <td class="mono em">19a</td>
+        <td class="em">Loan from partners (recourse)</td>
+        <td class="r mono dim">$54,980</td>
+        <td class="r mono em">$54,980.00</td>
+        <td class="small">Note Payable Harlan $9,980 + Note Payable Patty $25,000 + Note Payable Paul $20,000 = $54,980</td>
+      </tr>
+      <tr><td class="mono">20</td><td>Other liabilities</td><td class="r mono dim">$0</td><td class="r mono">$0</td><td class="small">Sales Tax Payable CA $7,256 already included in Line 17</td></tr>
+      <tr class="row-purple">
+        <td class="mono em">21</td>
+        <td class="em">Partners' capital accounts</td>
+        <td class="r mono dim em">$199,055</td>
+        <td class="r mono em" style="color:var(--flag);">= M-2 Line 9</td>
+        <td class="small">CRITICAL: This MUST equal M-2 Schedule ending capital AND the sum of all 12 K-1 ending capital accounts. QBO equity section shows $213,257 - will differ from tax basis. Use M-2 calculated figure.</td>
+      </tr>
+      <tr class="row-total">
+        <td class="mono em">22</td>
+        <td class="em">Total liabilities + capital</td>
+        <td class="r mono dim em">$256,424</td>
+        <td class="r mono em">$290,037.19</td>
+        <td class="small">MUST equal Line 14. QBO: Liabilities $76,780 + Equity $213,257 = $290,037.</td>
+      </tr>
+    </table>
+
+    <div class="note note-warn" style="margin-top:14px;">
+      <strong>Inventory reconciliation gap:</strong> Schedule L Line 7 must match Schedule A Line 8 (ending tax inventory). QBO shows $100,131 in inventory accounts. Tax-basis ending inventory will be $82,362 + Purchases - $22,633. If this differs from QBO book value, the gap is a book-tax difference that reconciles through M-1.
+    </div>
+
+    <div class="note" style="margin-top:10px;">
+      <strong>Schedule L Line 6 - Other Current Assets detail:</strong> This aggregates many QBO accounts. If TaxAct provides sub-lines, break out: Prepaid expenses ($26,085 = Lab $8,085 + Rent $18,000), Other receivables ($6,581 Due from Infinity), R&amp;D Asset $3,750, Shopify clearing $886, Freight-Inbound $5,159 (if not in inventory).
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================
+     SECTION 7: SCHEDULE M-1
+     ======================================== -->
+<div class="section-heading">Section 7 - Schedule M-1 - Book-to-Tax Reconciliation</div>
+
+<div class="card">
+  <div class="card-head">
+    <h2>Schedule M-1</h2>
+    <span class="badge badge-safe">TaxAct partially auto-fills</span>
+  </div>
+  <div class="card-body">
+    <table>
+      <tr>
+        <th style="width:60px">M-1 Line</th>
+        <th>Description</th>
+        <th class="r" style="width:110px">TY2024 (filed)</th>
+        <th class="r" style="width:110px">TY2025</th>
+        <th>Notes</th>
+      </tr>
+      <tr class="row-green">
+        <td class="mono em">1</td>
+        <td class="em">Net income (loss) per books</td>
+        <td class="r mono neg dim">($96,548)</td>
+        <td class="r mono neg em">($34,838.88)</td>
+        <td class="small">QBO Net Income - accrual basis. This is the starting point.</td>
+      </tr>
+      <tr class="row-amber">
+        <td class="mono">2</td>
+        <td>Income on return not on books</td>
+        <td class="r mono dim">$0</td>
+        <td class="r mono">$0</td>
+        <td class="small">Typically $0 for this entity type</td>
+      </tr>
+      <tr class="row-amber">
+        <td class="mono">3</td>
+        <td>Guaranteed payments (deducted on return, not on books)</td>
+        <td class="r mono dim">$24,000</td>
+        <td class="r mono">$0</td>
+        <td class="small">If TY2025 had GP, enter here. See flag - verify with QBO.</td>
+      </tr>
+      <tr><td class="mono">4</td><td>Expenses on books not on return</td><td class="r mono dim">$0</td><td class="r mono">$0</td><td class="small">Verify - any book expenses that are not deductible for tax?</td></tr>
+      <tr class="row-green">
+        <td class="mono em">5</td>
+        <td class="em">Meals 50% disallowance</td>
+        <td class="r mono dim">$1,161</td>
+        <td class="r mono em">$415.41</td>
+        <td class="small">50% of $830.81 = $415.41. TaxAct auto-populates from Line 20 meals entry.</td>
+      </tr>
+      <tr><td class="mono">6</td><td>Income on books not on return</td><td class="r mono dim">$0</td><td class="r mono">$0</td><td class="small">Verify - any book income that is not taxable?</td></tr>
+      <tr><td class="mono">7</td><td>Deductions on return not charged to books</td><td class="r mono dim">$0</td><td class="r mono">$0</td><td class="small">Depreciation/amortization differences if any</td></tr>
+      <tr class="row-total">
+        <td class="mono em">8</td>
+        <td class="em">Income (loss) per return</td>
+        <td class="r mono neg dim em">($71,387)</td>
+        <td class="r mono neg em">~($34,423)</td>
+        <td class="small">Must equal Schedule K Line 1. TaxAct calculates this.</td>
+      </tr>
+    </table>
+
+    <div class="note">
+      <strong>TY2024 M-1 had a large reconciling item:</strong> Book loss -$96,548 but return loss -$71,387, a $25,161 difference mostly from $24,000 GP + $1,161 meals. TY2025 should have a much smaller difference ($415 meals only if no GP).
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================
+     SECTION 8: SCHEDULE M-2
+     ======================================== -->
+<div class="section-heading">Section 8 - Schedule M-2 - Analysis of Partners' Capital</div>
+
+<div class="card">
+  <div class="card-head">
+    <h2>Schedule M-2</h2>
+    <span class="badge badge-flag">Contributions TY2025 - verify</span>
+  </div>
+  <div class="card-body">
+    <table>
+      <tr>
+        <th style="width:60px">M-2 Line</th>
+        <th>Description</th>
+        <th class="r" style="width:110px">TY2024 (filed)</th>
+        <th class="r" style="width:110px">TY2025</th>
+        <th>Notes</th>
+      </tr>
+      <tr class="row-amber">
+        <td class="mono em">1</td>
+        <td class="em">Balance at beginning of year</td>
+        <td class="r mono dim">$0</td>
+        <td class="r mono em">$204,613</td>
+        <td class="small">TY2024 M-2 ending. Note: TaxAct may have imported $199,055 (L-21) instead. CHECK which TaxAct imported and reconcile.</td>
+      </tr>
+      <tr class="row-purple">
+        <td class="mono em">2</td>
+        <td class="em">Capital contributed during year</td>
+        <td class="r mono dim">$300,000</td>
+        <td class="r mono em">$50,000</td>
+        <td class="small">Mark Segal wired $50,000 on 9/19/2025 (QBO Deposit #1322). QBO equity now shows $400,000 total ($350K prior + $50K new). This is the only TY2025 contribution.</td>
+      </tr>
+      <tr class="row-green">
+        <td class="mono em">3a</td>
+        <td class="em">Net income per return</td>
+        <td class="r mono neg dim">($71,387)</td>
+        <td class="r mono neg em">~($34,423)</td>
+        <td class="small">From Schedule K Line 1 - TaxAct auto-populates</td>
+      </tr>
+      <tr><td class="mono">3b</td><td>Other increases</td><td class="r mono dim">$0</td><td class="r mono">$0</td><td class="small">N/A</td></tr>
+      <tr><td class="mono">4</td><td>Distributions of money</td><td class="r mono dim">$0</td><td class="r mono">$0</td><td class="small">Verify no cash distributions in 2025</td></tr>
+      <tr class="row-purple">
+        <td class="mono">5</td>
+        <td>Other decreases (GP deductions)</td>
+        <td class="r mono dim">($24,000)</td>
+        <td class="r mono" style="color:var(--flag);">$0 or verify</td>
+        <td class="small">TY2024 had GP drawn down capital. If no GP in TY2025, enter $0. Health insurance flows differently.</td>
+      </tr>
+      <tr class="row-total">
+        <td class="mono em">9</td>
+        <td class="em">Balance at end of year</td>
+        <td class="r mono dim em">$204,613</td>
+        <td class="r mono em" style="color:var(--flag);">= L-21</td>
+        <td class="small">MUST equal Schedule L Line 21 and sum of all 12 K-1 ending capital accounts. TaxAct calculates - verify it ties.</td>
+      </tr>
+    </table>
+
+    <div class="flag-box" style="margin-top:14px;">
+      <div class="flag-title">M-2 Beginning Balance Ambiguity</div>
+      <ul>
+        <li><strong>TY2024 M-2 ending was $204,613</strong> but Schedule L Line 21 was $199,055 - a $5,558 gap.</li>
+        <li>TaxAct will have used one of these as the TY2025 beginning. Check what TaxAct shows for M-2 Line 1 and L beginning values before entering anything else.</li>
+        <li>If TaxAct imported $199,055: the $5,558 gap from TY2024 needs to be resolved as a prior-year adjustment or the M-2 Line 1 needs to be manually corrected to $204,613.</li>
+        <li>This is a known variance from TY2024 - don't ignore it or it will compound into TY2025.</li>
+      </ul>
+    </div>
+
+    <div class="flag-box" style="margin-top:10px;">
+      <div class="flag-title">TY2025 Capital Contributions - What to Check</div>
+      <ul>
+        <li><strong>Mark Segal contributed $50,000:</strong> Wire transfer 9/19/2025 (QBO Deposit #1322). Only TY2025 contribution. M-2 Line 2 = $50,000.</li>
+        <li><strong>Jade's loan $5,503 (Loan Payable Short-Term):</strong> This is debt, not equity contribution. Do not include on M-2 Line 2.</li>
+        <li><strong>Estimated M-2 ending:</strong> $204,613 + $50,000 - $34,423 (net loss per return) = ~$220,190. Subject to final income calculation.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================
+     SECTION 9: PARTNER DETAILS
+     ======================================== -->
+<div class="section-heading">Section 9 - All 12 Partners - Verify in TaxAct K-1 Section</div>
+
+<div class="card">
+  <div class="card-head">
+    <h2>Partner Details - Imported from TY2024 Return</h2>
+    <span class="badge badge-warn">Verify each partner's data in TaxAct</span>
+  </div>
+  <div class="card-body">
+    <div class="note note-safe" style="margin-bottom:14px;">
+      All 12 partners imported from TY2024. Verify each: SSN/EIN correct, profit/loss %, capital %, beginning capital account = TY2024 ending. Ownership percentages must total exactly 100%.
+    </div>
+
+    <div class="partner-grid">
+
+      <!-- Tina Mui -->
+      <div class="partner-card" style="border-color:var(--safe-border);">
+        <div class="p-name">Tina Mui</div>
+        <div class="p-type-gp">General Partner</div>
+        <div class="p-row"><span>SSN</span><span class="p-val">549-92-8764</span></div>
+        <div class="p-row"><span>Profit/Loss %</span><span class="p-val">71.46%</span></div>
+        <div class="p-row"><span>Capital %</span><span class="p-val">—</span></div>
+        <div class="p-row"><span>TY2024 ending cap</span><span class="p-val neg">($76,517)</span></div>
+        <div class="p-note">Through Infinity Beauty LLC EIN 92-1209105 (disregarded entity). GP subject to SE tax. Had $28,068 guaranteed payments TY2024.</div>
+      </div>
+
+      <!-- Jade Wong -->
+      <div class="partner-card" style="border-color:var(--safe-border);">
+        <div class="p-name">Jade Wong</div>
+        <div class="p-type-gp">General Partner</div>
+        <div class="p-row"><span>SSN</span><span class="p-val">621-06-1199</span></div>
+        <div class="p-row"><span>Profit/Loss %</span><span class="p-val">6.80%</span></div>
+        <div class="p-row"><span>Capital %</span><span class="p-val">25%</span></div>
+        <div class="p-row"><span>TY2024 ending cap</span><span class="p-val">$70,304</span></div>
+        <div class="p-note">Contributed $75,000. GP $606 TY2024. Has $5,503 short-term loan to partnership (shown as liability). GP subject to SE tax.</div>
+      </div>
+
+      <!-- Harlan Irvine -->
+      <div class="partner-card">
+        <div class="p-name">Harlan Irvine</div>
+        <div class="p-type-lp">Limited Partner</div>
+        <div class="p-row"><span>SSN</span><span class="p-val">560-88-7267</span></div>
+        <div class="p-row"><span>Profit/Loss %</span><span class="p-val">2.80%</span></div>
+        <div class="p-row"><span>Capital %</span><span class="p-val">33.33%</span></div>
+        <div class="p-row"><span>TY2024 ending cap</span><span class="p-val">$98,212</span></div>
+        <div class="p-note">Contributed $100,000. Recourse debt: $9,980 (Note Payable Harlan on balance sheet).</div>
+      </div>
+
+      <!-- Paul Wong -->
+      <div class="partner-card">
+        <div class="p-name">Paul Wong</div>
+        <div class="p-type-lp">Limited Partner</div>
+        <div class="p-row"><span>SSN</span><span class="p-val">571-75-8369</span></div>
+        <div class="p-row"><span>Profit/Loss %</span><span class="p-val">6.20%</span></div>
+        <div class="p-row"><span>Capital %</span><span class="p-val">16.67%</span></div>
+        <div class="p-row"><span>TY2024 ending cap</span><span class="p-val">$45,679</span></div>
+        <div class="p-note">Contributed $50,000. Recourse debt: $20,000 (Note Payable Paul on balance sheet).</div>
+      </div>
+
+      <!-- Segal Family Trust -->
+      <div class="partner-card">
+        <div class="p-name">Segal Family Trust</div>
+        <div class="p-type-lp">Limited Partner (Trust)</div>
+        <div class="p-row"><span>EIN</span><span class="p-val">55-4234702</span></div>
+        <div class="p-row"><span>Profit/Loss %</span><span class="p-val">0.90%</span></div>
+        <div class="p-row"><span>Capital %</span><span class="p-val">25%</span></div>
+        <div class="p-row"><span>TY2024 ending cap</span><span class="p-val">$74,677</span></div>
+        <div class="p-note">Trust entity - uses EIN not SSN. Contributed $75,000. K-1 goes to trust not individual.</div>
+      </div>
+
+      <!-- Gigi Chow -->
+      <div class="partner-card">
+        <div class="p-name">Gigi Chow</div>
+        <div class="p-type-lp">Limited Partner</div>
+        <div class="p-row"><span>SSN</span><span class="p-val">549-92-8766</span></div>
+        <div class="p-row"><span>Profit/Loss %</span><span class="p-val">5.00%</span></div>
+        <div class="p-row"><span>Capital %</span><span class="p-val">—</span></div>
+        <div class="p-row"><span>TY2024 ending cap</span><span class="p-val neg">($3,569)</span></div>
+        <div class="p-note">Verify current address in TaxAct matches filed return.</div>
+      </div>
+
+      <!-- Qing Zhao -->
+      <div class="partner-card">
+        <div class="p-name">Qing Zhao</div>
+        <div class="p-type-lp">Limited Partner</div>
+        <div class="p-row"><span>SSN</span><span class="p-val">751-21-4818</span></div>
+        <div class="p-row"><span>Profit/Loss %</span><span class="p-val">2.00%</span></div>
+        <div class="p-row"><span>Capital %</span><span class="p-val">—</span></div>
+        <div class="p-row"><span>TY2024 ending cap</span><span class="p-val neg">($718)</span></div>
+        <div class="p-note">Address: 2032 Saleroso Dr, Rowland Heights CA 91748. Also receives 1099 as contract laborer - separate from K-1.</div>
+      </div>
+
+      <!-- KP Phung -->
+      <div class="partner-card">
+        <div class="p-name">KP Phung</div>
+        <div class="p-type-lp">Limited Partner</div>
+        <div class="p-row"><span>SSN</span><span class="p-val">537-76-6726</span></div>
+        <div class="p-row"><span>Profit/Loss %</span><span class="p-val">2.00%</span></div>
+        <div class="p-row"><span>Capital %</span><span class="p-val">—</span></div>
+        <div class="p-row"><span>TY2024 ending cap</span><span class="p-val neg">($1,428)</span></div>
+        <div class="p-note">Address: 1765 East Bayshore Rd #212, Palo Alto CA 94303.</div>
+      </div>
+
+      <!-- Alice Rossiter -->
+      <div class="partner-card">
+        <div class="p-name">Alice Rossiter</div>
+        <div class="p-type-lp">Limited Partner</div>
+        <div class="p-row"><span>SSN</span><span class="p-val">558-45-7554</span></div>
+        <div class="p-row"><span>Profit/Loss %</span><span class="p-val">1.20%</span></div>
+        <div class="p-row"><span>Capital %</span><span class="p-val">—</span></div>
+        <div class="p-row"><span>TY2024 ending cap</span><span class="p-val neg">($856)</span></div>
+        <div class="p-note">Address: 1617 Fairdale Ave, Duarte CA 91010.</div>
+      </div>
+
+      <!-- Ingrid Marone -->
+      <div class="partner-card">
+        <div class="p-name">Ingrid Marone</div>
+        <div class="p-type-lp">Limited Partner</div>
+        <div class="p-row"><span>SSN</span><span class="p-val">548-61-7073</span></div>
+        <div class="p-row"><span>Profit/Loss %</span><span class="p-val">1.20%</span></div>
+        <div class="p-row"><span>Capital %</span><span class="p-val">—</span></div>
+        <div class="p-row"><span>TY2024 ending cap</span><span class="p-val neg">($857)</span></div>
+        <div class="p-note">Address: 2794 Mountain View Ave, Los Angeles CA 90071.</div>
+      </div>
+
+      <!-- Patty Waggoner -->
+      <div class="partner-card">
+        <div class="p-name">Patty Waggoner</div>
+        <div class="p-type-lp">Limited Partner</div>
+        <div class="p-row"><span>SSN</span><span class="p-val">565-70-2566</span></div>
+        <div class="p-row"><span>Profit/Loss %</span><span class="p-val">0.30%</span></div>
+        <div class="p-row"><span>Capital %</span><span class="p-val">—</span></div>
+        <div class="p-row"><span>TY2024 ending cap</span><span class="p-val neg">($214)</span></div>
+        <div class="p-note">Address: 3905 Chapman Ct, Altadena CA 91001. Recourse debt: $25,000 (Note Payable Patty on balance sheet).</div>
+      </div>
+
+      <!-- Joe Pachorek -->
+      <div class="partner-card">
+        <div class="p-name">Joe Pachorek</div>
+        <div class="p-type-lp">Limited Partner</div>
+        <div class="p-row"><span>SSN</span><span class="p-val">565-31-5312</span></div>
+        <div class="p-row"><span>Profit/Loss %</span><span class="p-val">0.14%</span></div>
+        <div class="p-row"><span>Capital %</span><span class="p-val">—</span></div>
+        <div class="p-row"><span>TY2024 ending cap</span><span class="p-val neg">($100)</span></div>
+        <div class="p-note">Address: 630 S Raymond Suite 320, Pasadena CA 91105.</div>
+      </div>
+
+    </div>
+
+    <div class="note" style="margin-top:16px;">
+      <strong>Ownership verification:</strong> 71.46 + 6.80 + 2.80 + 6.20 + 0.90 + 5.00 + 2.00 + 2.00 + 1.20 + 1.20 + 0.30 + 0.14 = <strong>100.00%</strong>. Confirmed.
+    </div>
+    <div class="note note-warn" style="margin-top:8px;">
+      <strong>Recourse debt allocation:</strong> TY2024 K-1s showed Harlan recourse $9,980, Paul recourse $20,000, Patty recourse $25,000 at Box 20. These correspond to the three notes payable on the balance sheet. Verify these amounts haven't changed for TY2025 (check QBO Note Payable balances - all still show the same amounts).
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================
+     SECTION 10: PRE-FILE CHECKLIST
+     ======================================== -->
+<div class="section-heading">Section 10 - Pre-File Verification Checklist</div>
+
+<div class="card">
+  <div class="card-head">
+    <h2>12-Point Pre-File Checklist</h2>
+    <span class="badge badge-warn">Complete all before e-filing</span>
+  </div>
+  <div class="card-body">
+    <ul class="checklist">
+      <li>
+        <div class="chk-box"></div>
+        <div>
+          <div class="chk-label"><strong>Schedule L Line 14 = Line 22.</strong> Total Assets must equal Total Liabilities + Partners' Capital. Both should = $290,037.19.</div>
+          <div class="chk-ref">QBO Total Assets $290,037 / Total L+E $290,037 - confirmed in QBO.</div>
+        </div>
+      </li>
+      <li>
+        <div class="chk-box"></div>
+        <div>
+          <div class="chk-label"><strong>M-2 ending capital = Schedule L Line 21 = Sum of all 12 K-1 ending capital accounts.</strong> This three-way tie is the most common cause of IRS notices on partnership returns.</div>
+          <div class="chk-ref">Check each K-1 ending capital, add them up, compare to M-2 Line 9 and L-21.</div>
+        </div>
+      </li>
+      <li>
+        <div class="chk-box"></div>
+        <div>
+          <div class="chk-label"><strong>Schedule A (COGS) Line 9 matches Form 1065 Page 1 Line 4.</strong> Both must show $22,633.33.</div>
+          <div class="chk-ref">TaxAct should auto-link these - confirm they match.</div>
+        </div>
+      </li>
+      <li>
+        <div class="chk-box"></div>
+        <div>
+          <div class="chk-label"><strong>Schedule K Line 1 matches M-1 Line 8 and M-2 Line 3a.</strong> The ordinary income/loss figure must be consistent across all three schedules.</div>
+          <div class="chk-ref">TaxAct links these but verify - this is the most common multi-schedule error.</div>
+        </div>
+      </li>
+      <li>
+        <div class="chk-box"></div>
+        <div>
+          <div class="chk-label"><strong>All 12 K-1 profit/loss percentages total exactly 100.00%.</strong></div>
+          <div class="chk-ref">Sum: 71.46 + 6.80 + 2.80 + 6.20 + 0.90 + 5.00 + 2.00 + 2.00 + 1.20 + 1.20 + 0.30 + 0.14 = 100.00%.</div>
+        </div>
+      </li>
+      <li>
+        <div class="chk-box"></div>
+        <div>
+          <div class="chk-label"><strong>All 12 partner SSNs/EINs are correct and match filed TY2024 return.</strong> IRS rejects e-filed returns with SSN mismatches.</div>
+          <div class="chk-ref">Cross-reference with TY2024 K-1s. Segal Family Trust uses EIN 55-4234702.</div>
+        </div>
+      </li>
+      <li>
+        <div class="chk-box"></div>
+        <div>
+          <div class="chk-label"><strong>Beginning balance sheet values match TY2024 filed Schedule L ending values.</strong></div>
+          <div class="chk-ref">Compare TaxAct's auto-populated beginning column against TY2024 return. Key: Cash $40,338, Total Assets $256,424, Partners' Capital $199,055.</div>
+        </div>
+      </li>
+      <li>
+        <div class="chk-box"></div>
+        <div>
+          <div class="chk-label"><strong>TaxAct Form 4562 depreciation and amortization amounts are calculated (not manually overridden).</strong></div>
+          <div class="chk-ref">Review 4562 - confirm it shows TY2025 year depreciation for each asset class. Prior year assets continue MACRS. No new asset additions expected unless capital equipment was purchased.</div>
+        </div>
+      </li>
+      <li>
+        <div class="chk-box"></div>
+        <div>
+          <div class="chk-label"><strong>Schedule K Line 13e health insurance = $6,222.37.</strong> This flows to each GP's K-1.</div>
+          <div class="chk-ref">Only GPs (Tina and Jade) get this deduction on their K-1. Verify it's not also on Line 20 (would be double-counting).</div>
+        </div>
+      </li>
+      <li>
+        <div class="chk-box"></div>
+        <div>
+          <div class="chk-label"><strong>Schedule K Line 18c nondeductible meals = $415.41.</strong></div>
+          <div class="chk-ref">Should auto-populate when meals entered on Line 20 deductions. Verify TaxAct applied 50% correctly.</div>
+        </div>
+      </li>
+      <li>
+        <div class="chk-box"></div>
+        <div>
+          <div class="chk-label"><strong>No TaxAct red errors remain before e-file submission.</strong></div>
+          <div class="chk-ref">Run TaxAct's built-in error check. Address every red error. Yellow warnings: review but not all require changes.</div>
+        </div>
+      </li>
+      <li>
+        <div class="chk-box"></div>
+        <div>
+          <div class="chk-label"><strong>CA Form 568 data is consistent with federal 1065.</strong> CA gross receipts, LLC fee (should be $0 - under $250K threshold), and CA depreciation adjustments verified.</div>
+          <div class="chk-ref">CA doesn't conform to bonus depreciation. If TaxAct took any bonus depr federally, CA would add it back. Verify TaxAct's 568 adjustments.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ========================================
+     SECTION 11: KEY DECISIONS AND FLAGS
+     ======================================== -->
+<div class="section-heading">Section 11 - Decisions Required Before Filing</div>
+
+<div class="card">
+  <div class="card-head">
+    <h2>5 Open Questions - David Decides</h2>
+    <span class="badge badge-flag">Cannot file until resolved</span>
+  </div>
+  <div class="card-body">
+    <ol class="decisions" style="padding-left:0;list-style:none;">
+
+      <li>
+        <div class="decision-q">1. Inventory purchases for Schedule A Line 2 - what amount?</div>
+        <div class="decision-context">Beginning inventory $82,362 (from TY2024). COGS $22,633 (from A2X/QBO). Ending inventory = $82,362 + Purchases - $22,633. This determines both the Schedule A filing and Schedule L Line 7.</div>
+        <div class="decision-options">
+          - Run QBO "Purchases by Vendor" filtered to inventory accounts for calendar 2025<br>
+          - Also check: Freight-Inbound $5,159 - is this part of landed inventory cost or expense?<br>
+          - Answer from QBO will determine both Line 2 and Line 8 of Schedule A
+        </div>
+      </li>
+
+      <li>
+        <div class="decision-q">2. Guaranteed payments in TY2025 - zero or some amount?</div>
+        <div class="decision-context">TY2024 had $28,674 in GP ($28,068 Tina + $606 Jade). If Tina/Jade received any fixed compensation or draws in 2025, those may be GP. QBO doesn't show a "Guaranteed Payments" expense account in the P&amp;L provided.</div>
+        <div class="decision-options">
+          - Check QBO for any payments to Tina's Infinity Beauty LLC that aren't in the P&amp;L above<br>
+          - Check operating agreement for any GP provisions<br>
+          - If $0 GP: Line 10 = $0, Line 4 on M-1 = $0, K-1 Box 4 = $0 for all partners
+        </div>
+      </li>
+
+      <li>
+        <div class="decision-q">3. Capital contributions in TY2025 - zero or something?</div>
+        <div class="decision-context">QBO equity shows $350,000 total partner investments - same as TY2024 ending. No new partner investments are visible in the QBO data provided. Jade's $5,503 is debt (loan payable), not equity.</div>
+        <div class="decision-options">
+          - If $0 new contributions: M-2 Line 2 = $0<br>
+          - M-2 ending capital = $204,613 - ~$34,423 = ~$170,190<br>
+          - Verify with David: were any new partner investments made or agreed to in 2025?
+        </div>
+      </li>
+
+      <li>
+        <div class="decision-q">4. Services $4,255 - Line 1a (gross receipts) or Line 7 (other income)?</div>
+        <div class="decision-context">QBO has a "Services" income account with $4,255. This is functionally advisory/consulting services distinct from product sales. TY2024 had $181 in other income. Treatment affects gross margin presentation but not net income.</div>
+        <div class="decision-options">
+          - Option A: Line 1a (gross receipts) - simpler, treats all revenue as business income<br>
+          - Option B: Line 7 (other income) - more accurate if these are distinct service fees<br>
+          - Check TY2024 return to see how services were categorized for consistency
+        </div>
+      </li>
+
+      <li>
+        <div class="decision-q">5. Schedule L beginning balance - $199,055 or $204,613?</div>
+        <div class="decision-context">TY2024 had a $5,558 variance: M-2 ending capital $204,613 vs Schedule L Line 21 Partners' Capital $199,055. TaxAct imported one of these as the TY2025 beginning balance. The right answer is to use what TaxAct's imported return shows and understand the source of the gap.</div>
+        <div class="decision-options">
+          - Open TaxAct, go to Schedule L and M-2, note what the beginning balance shows<br>
+          - If $199,055 (L-21): investigate what caused the $5,558 difference in TY2024<br>
+          - The gap may be from a TY2024 book-tax difference in the 1125-A COGS calculation<br>
+          - Resolution affects all partner beginning capital accounts on their K-1s
+        </div>
+      </li>
+
+    </ol>
+  </div>
+</div>
+
+
+<!-- ========================================
+     FOOTER
+     ======================================== -->
+<div class="note" style="margin-top:24px;font-size:11px;line-height:1.8;">
+  <strong>Data sources:</strong> QBO LIVE [2026-03-14, Accrual basis] - all P&amp;L and balance sheet figures.
+  TY2024 carry-forward figures from PDF of filed return [verified].
+  Partner details from filed TY2024 K-1s [verified].
+  <br>
+  <strong>No QBO journal entries will be posted</strong> - all figures from QBO reports as-is (accrual basis).
+  TaxAct auto-calculates depreciation/amortization, K-1 allocations, Schedule K, and M-1 book-tax items.
+  <br>
+  <strong>Do not file without resolving</strong> the 5 flagged decisions in Section 11.
+  CA Form 568 and federal 1065 must both be e-filed; TaxAct handles both in one submission.
+  <br>
+  <strong>E-file deadline:</strong> March 15, 2026 (or September 15, 2026 with extension).
+  CA $800 franchise tax for TY2026 due April 15, 2026 - pay separately at ftb.ca.gov.
+</div>
+
+</div><!-- /shell -->
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

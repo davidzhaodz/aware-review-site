@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - End User Preview (What People See)</title>
+<style>
+  :root {
+    --wiki-blue: #3366cc;
+    --wiki-link: #0645ad;
+    --wiki-visited: #0b0080;
+    --wiki-border: #a2a9b1;
+    --wiki-bg: #f8f9fa;
+    --wiki-header-bg: #eaecf0;
+    --google-blue: #1a0dab;
+    --google-gray: #4d5156;
+    --google-light: #70757a;
+    --google-url: #202124;
+    --google-green: #188038;
+    --google-border: #dadce0;
+    --aware-teal: #102B26;
+    --aware-cream: #f4efe9;
+    --aware-gold: #D4A574;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #202124;
+    background: #f5f5f5;
+    line-height: 1.6;
+  }
+
+  /* Review Banner */
+  .review-banner {
+    background: var(--aware-teal);
+    color: white;
+    padding: 16px 24px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .review-banner strong { color: var(--aware-gold); font-size: 16px; }
+  .review-banner .status {
+    background: var(--aware-gold);
+    color: var(--aware-teal);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  /* Section Tabs */
+  .section-nav {
+    background: white;
+    border-bottom: 1px solid #ddd;
+    padding: 0 24px;
+    display: flex;
+    gap: 0;
+    position: sticky;
+    top: 52px;
+    z-index: 99;
+  }
+  .section-tab {
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .section-tab:hover { color: #333; }
+  .section-tab.active {
+    color: var(--aware-teal);
+    border-bottom-color: var(--aware-teal);
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+  .section-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #999;
+    font-weight: 600;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+  }
+
+  /* ============================================ */
+  /* GOOGLE KNOWLEDGE PANEL                       */
+  /* ============================================ */
+
+  .google-section { margin-bottom: 48px; }
+
+  .google-search-bar {
+    background: white;
+    border-radius: 24px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 1px 6px rgba(32,33,36,0.12);
+    margin-bottom: 24px;
+    max-width: 600px;
+  }
+  .google-search-bar .g-icon { color: #4285f4; font-size: 20px; }
+  .google-search-bar input {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    flex: 1;
+    font-family: inherit;
+    color: #202124;
+  }
+
+  .google-results {
+    display: grid;
+    grid-template-columns: 1fr 370px;
+    gap: 32px;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .google-results { grid-template-columns: 1fr; }
+  }
+
+  /* Left: organic results */
+  .organic-results { }
+
+  .organic-result {
+    margin-bottom: 24px;
+  }
+  .organic-result .url-line {
+    font-size: 12px;
+    color: var(--google-url);
+    margin-bottom: 2px;
+  }
+  .organic-result .url-line .domain {
+    font-size: 14px;
+  }
+  .organic-result .url-line .breadcrumb {
+    color: var(--google-light);
+  }
+  .organic-result .title {
+    font-size: 20px;
+    color: var(--google-blue);
+    text-decoration: none;
+    line-height: 1.3;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .organic-result .title:hover { text-decoration: underline; }
+  .organic-result .snippet {
+    font-size: 14px;
+    color: var(--google-gray);
+    line-height: 1.58;
+  }
+  .organic-result .snippet em { font-style: normal; font-weight: 600; }
+
+  /* Right: Knowledge Panel */
+  .knowledge-panel {
+    background: white;
+    border: 1px solid var(--google-border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .kp-header {
+    padding: 20px 20px 0;
+  }
+  .kp-header h2 {
+    font-size: 24px;
+    font-weight: 400;
+    color: #202124;
+    margin-bottom: 2px;
+  }
+  .kp-header .kp-subtitle {
+    font-size: 14px;
+    color: var(--google-light);
+    margin-bottom: 12px;
+  }
+
+  .kp-description {
+    padding: 0 20px;
+    font-size: 14px;
+    color: var(--google-gray);
+    line-height: 1.58;
+    margin-bottom: 16px;
+  }
+  .kp-description a { color: var(--google-blue); text-decoration: none; }
+
+  .kp-facts {
+    padding: 0 20px 16px;
+    border-bottom: 1px solid #ebebeb;
+  }
+  .kp-fact {
+    display: flex;
+    padding: 6px 0;
+    font-size: 14px;
+  }
+  .kp-fact-label {
+    color: var(--google-light);
+    min-width: 110px;
+    flex-shrink: 0;
+  }
+  .kp-fact-value {
+    color: #202124;
+  }
+  .kp-fact-value a { color: var(--google-blue); text-decoration: none; }
+
+  .kp-profiles {
+    padding: 16px 20px;
+    border-bottom: 1px solid #ebebeb;
+  }
+  .kp-profiles-label {
+    font-size: 14px;
+    color: var(--google-light);
+    margin-bottom: 10px;
+  }
+  .kp-profile-icons {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .kp-profile-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+  }
+  .kp-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+  .kp-tt { background: #000; }
+  .kp-fb { background: #1877f2; }
+  .kp-yt { background: #ff0000; }
+  .kp-li { background: #0a66c2; }
+
+  .kp-website {
+    padding: 16px 20px;
+    border-bottom: 1px solid #ebebeb;
+  }
+  .kp-website a {
+    color: var(--google-blue);
+    text-decoration: none;
+    font-size: 14px;
+  }
+  .kp-website-label {
+    font-size: 12px;
+    color: var(--google-light);
+  }
+
+  .kp-source {
+    padding: 12px 20px;
+    font-size: 12px;
+    color: var(--google-light);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .kp-source img { width: 16px; height: 16px; border-radius: 50%; }
+
+  /* ============================================ */
+  /* WIKIDATA PAGE VIEW                           */
+  /* ============================================ */
+
+  .wikidata-section { margin-bottom: 48px; }
+
+  .wd-page {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 900px;
+  }
+
+  .wd-topbar {
+    background: #339966;
+    padding: 8px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: white;
+  }
+  .wd-topbar a { color: white; text-decoration: none; margin-left: 12px; }
+
+  .wd-header {
+    padding: 16px 20px 0;
+    border-bottom: 1px solid #eee;
+  }
+  .wd-header h1 {
+    font-size: 24px;
+    font-weight: 400;
+    font-family: 'Linux Libertine', Georgia, serif;
+    margin-bottom: 2px;
+  }
+  .wd-header .wd-qid {
+    font-size: 13px;
+    color: #72777d;
+    font-family: monospace;
+  }
+  .wd-header .wd-desc {
+    font-size: 14px;
+    color: #54595d;
+    font-style: italic;
+    margin: 4px 0;
+  }
+  .wd-header .wd-aliases {
+    font-size: 12px;
+    color: #72777d;
+    margin-bottom: 12px;
+  }
+
+  .wd-statements { padding: 12px 20px 20px; }
+
+  .wd-stmt {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 8px 0;
+    font-size: 13px;
+  }
+  .wd-stmt:last-child { border-bottom: none; }
+
+  .wd-prop {
+    color: var(--wiki-link);
+    font-weight: 500;
+  }
+  .wd-val a { color: var(--wiki-link); text-decoration: none; }
+  .wd-val a:hover { text-decoration: underline; }
+  .wd-val .wd-ref-count {
+    font-size: 10px;
+    background: #d5fdf4;
+    color: #14866d;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 4px;
+    font-weight: 600;
+  }
+  .wd-val .wd-multi { display: block; margin-top: 3px; }
+  .wd-val .wd-ext { color: #36c; font-size: 12px; }
+
+  .wd-section-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #999;
+    padding: 12px 0 4px;
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 4px;
+    grid-column: 1 / -1;
+  }
+
+  /* ============================================ */
+  /* WIKIPEDIA ARTICLE                            */
+  /* ============================================ */
+
+  .wikipedia-section { margin-bottom: 48px; }
+
+  .wp-page {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 900px;
+  }
+
+  .wp-topbar {
+    background: white;
+    border-bottom: 2px solid #eaecf0;
+    padding: 8px 20px;
+    display: flex;
+    gap: 24px;
+    font-size: 13px;
+  }
+  .wp-topbar a { color: var(--wiki-link); text-decoration: none; }
+  .wp-topbar a:first-child { font-weight: 600; color: #202122; border-bottom: 2px solid #36c; padding-bottom: 6px; margin-bottom: -10px; }
+
+  .wp-body {
+    padding: 20px 24px;
+    font-family: 'Linux Libertine', Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .wp-body h1 {
+    font-size: 28px;
+    font-weight: 400;
+    border-bottom: 1px solid var(--wiki-border);
+    padding-bottom: 4px;
+    margin-bottom: 16px;
+  }
+
+  .wp-infobox {
+    float: right;
+    width: 280px;
+    margin: 0 0 16px 20px;
+    border: 1px solid var(--wiki-border);
+    background: var(--wiki-bg);
+    font-size: 13px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  .wp-infobox-title {
+    background: var(--wiki-header-bg);
+    text-align: center;
+    padding: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Linux Libertine', Georgia, serif;
+  }
+  .wp-infobox-row {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .wp-infobox-row:last-child { border-bottom: none; }
+  .wp-infobox-label {
+    padding: 5px 8px;
+    font-weight: 600;
+    font-size: 12px;
+    background: rgba(0,0,0,0.02);
+    vertical-align: top;
+  }
+  .wp-infobox-value {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+  .wp-infobox-value a { color: var(--wiki-link); text-decoration: none; }
+
+  .wp-body p { margin-bottom: 14px; }
+  .wp-body a { color: var(--wiki-link); text-decoration: none; }
+  .wp-body a:hover { text-decoration: underline; }
+
+  .wp-body sup {
+    font-size: 10px;
+    color: var(--wiki-link);
+    cursor: pointer;
+  }
+
+  .wp-body h2 {
+    font-size: 22px;
+    font-weight: 400;
+    border-bottom: 1px solid var(--wiki-border);
+    padding-bottom: 2px;
+    margin: 20px 0 10px;
+  }
+
+  .wp-refs {
+    font-size: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    border-top: 1px solid var(--wiki-border);
+    margin-top: 24px;
+    padding-top: 12px;
+  }
+  .wp-refs h2 { font-size: 18px; }
+  .wp-refs ol { padding-left: 24px; }
+  .wp-refs li {
+    margin-bottom: 6px;
+    color: #555;
+    line-height: 1.5;
+  }
+  .wp-refs a { color: var(--wiki-link); text-decoration: none; word-break: break-all; }
+
+  .wp-categories {
+    font-size: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+    margin-top: 16px;
+    color: #555;
+  }
+  .wp-categories a { color: var(--wiki-link); text-decoration: none; margin-right: 8px; }
+
+  /* Future badge */
+  .future-badge {
+    display: inline-block;
+    background: #fff3cd;
+    color: #856404;
+    font-size: 11px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 600;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .now-badge {
+    display: inline-block;
+    background: #d4edda;
+    color: #155724;
+    font-size: 11px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 600;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* Annotation Callouts */
+  .annotation {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #fff8e1;
+    border-left: 4px solid var(--aware-gold);
+    padding: 12px 16px;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.5;
+    border-radius: 0 6px 6px 0;
+  }
+  .annotation strong { color: var(--aware-teal); }
+</style>
+</head>
+<body>
+
+<!-- Review Banner -->
+<div class="review-banner">
+  <div>
+    <strong>End User Preview - What the Public Will See</strong><br>
+    Shows how Wikidata entry renders across Google, Wikidata, and (future) Wikipedia
+  </div>
+  <div class="status">PREVIEW ONLY</div>
+</div>
+
+<!-- Section Nav -->
+<div class="section-nav">
+  <div class="section-tab active" onclick="show('google')">Google Knowledge Panel</div>
+  <div class="section-tab" onclick="show('wikidata')">Wikidata Page</div>
+  <div class="section-tab" onclick="show('wikipedia')">Wikipedia Article (Future)</div>
+</div>
+
+<div class="container">
+
+<!-- ============================================ -->
+<!-- SECTION 1: GOOGLE KNOWLEDGE PANEL            -->
+<!-- ============================================ -->
+
+<div id="google" class="google-section">
+  <div class="section-label">What appears when someone Googles "AWARE Hair" <span class="now-badge">Creating Now</span></div>
+
+  <div class="annotation">
+    <strong>This is the #1 reason we're creating the Wikidata entry.</strong> Google's Knowledge Panel pulls directly from Wikidata. Currently, Googling "AWARE Hair" shows no Knowledge Panel. After the Wikidata entry is live, Google will display this panel within 2-4 weeks. AI search engines (ChatGPT, Perplexity) also use this data to correctly identify the brand.
+  </div>
+
+  <!-- Fake Google Search Bar -->
+  <div class="google-search-bar">
+    <span class="g-icon">G</span>
+    <input type="text" value="AWARE Hair" readonly>
+  </div>
+
+  <div class="google-results">
+    <!-- Left: Organic Results -->
+    <div class="organic-results">
+      <div class="organic-result">
+        <div class="url-line">
+          <span class="domain">awarehair.com</span>
+        </div>
+        <a class="title" href="#">AWARE Hair - Professional Scalp Care</a>
+        <div class="snippet"><em>AWARE Hair</em> is a professional-exclusive <em>scalp care brand</em> formulated with the proprietary AWAREBIO Complex for optimal <em>scalp</em> microbiome health. Shop the 9-1 Professional Collection.</div>
+      </div>
+
+      <div class="organic-result">
+        <div class="url-line">
+          <span class="domain">newbeauty.com</span>
+          <span class="breadcrumb"> > cosmoprof-miami-2026-recap</span>
+        </div>
+        <a class="title" href="#">10 Standout Brands We Loved at Cosmoprof Miami 2026</a>
+        <div class="snippet"><em>AWARE Hair</em> is a professional, scalp-first hair-care brand that blends natural-first ingredients with clinically proven bioactives... Their 9.1 Professional Shampoo is packed with <em>hyaluronic acid</em>...</div>
+      </div>
+
+      <div class="organic-result">
+        <div class="url-line">
+          <span class="domain">newyou.com</span>
+          <span class="breadcrumb"> > game-changing-beauty-brands</span>
+        </div>
+        <a class="title" href="#">The 12 Most Game-Changing Beauty Brands at Cosmoprof 2026</a>
+        <div class="snippet"><em>Aware Hair</em> brought a heartfelt story to Cosmoprof. Founded by a mother searching for solutions to her daughter's hair loss, the brand focuses on gentle, clean ingredients...</div>
+      </div>
+
+      <div class="organic-result">
+        <div class="url-line">
+          <span class="domain">instagram.com</span>
+          <span class="breadcrumb"> > awarehaircare</span>
+        </div>
+        <a class="title" href="#">AWARE Hair (@awarehaircare) - Instagram</a>
+        <div class="snippet">Professional-exclusive scalp care. Patent-pending AWAREBIO Complex. Trichologist-developed. Salon-exclusive. awarehair.com</div>
+      </div>
+    </div>
+
+    <!-- Right: Knowledge Panel -->
+    <div class="knowledge-panel">
+      <div class="kp-header">
+        <h2>AWARE Hair</h2>
+        <div class="kp-subtitle">American beauty brand</div>
+      </div>
+
+      <div class="kp-description">
+        AWARE Hair is a trichologist-founded, mother-daughter owned scalp wellness brand headquartered in Los Angeles, California. Founded in 2025 by Tina Mui and her daughter Jade Wong, the brand produces salon-exclusive scalp care products formulated with the proprietary AWAREBIO Complex.
+        <a href="#">Wikipedia</a>
+      </div>
+
+      <div class="kp-facts">
+        <div class="kp-fact">
+          <div class="kp-fact-label">Founded</div>
+          <div class="kp-fact-value">2025</div>
+        </div>
+        <div class="kp-fact">
+          <div class="kp-fact-label">Founder</div>
+          <div class="kp-fact-value"><a href="#">Tina Mui</a></div>
+        </div>
+        <div class="kp-fact">
+          <div class="kp-fact-label">Headquarters</div>
+          <div class="kp-fact-value">Los Angeles, California</div>
+        </div>
+        <div class="kp-fact">
+          <div class="kp-fact-label">Industry</div>
+          <div class="kp-fact-value">Cosmetics</div>
+        </div>
+        <div class="kp-fact">
+          <div class="kp-fact-label">Products</div>
+          <div class="kp-fact-value">Shampoo, Hair conditioner</div>
+        </div>
+      </div>
+
+      <div class="kp-profiles">
+        <div class="kp-profiles-label">Profiles</div>
+        <div class="kp-profile-icons">
+          <a href="#" class="kp-profile-icon kp-ig" title="Instagram">IG</a>
+          <a href="#" class="kp-profile-icon kp-tt" title="TikTok">TT</a>
+          <a href="#" class="kp-profile-icon kp-fb" title="Facebook">FB</a>
+          <a href="#" class="kp-profile-icon kp-yt" title="YouTube">YT</a>
+          <a href="#" class="kp-profile-icon kp-li" title="LinkedIn">LI</a>
+        </div>
+      </div>
+
+      <div class="kp-website">
+        <div class="kp-website-label">Official site</div>
+        <a href="https://awarehair.com">awarehair.com</a>
+      </div>
+
+      <div class="kp-source">
+        <span style="font-size: 14px;">W</span> Data from: Wikidata
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 2: WIKIDATA PAGE VIEW                -->
+<!-- ============================================ -->
+
+<div id="wikidata" class="wikidata-section">
+  <div class="section-label">Wikidata item page as seen by the public <span class="now-badge">Creating Now</span></div>
+
+  <div class="annotation">
+    <strong>This is what appears at wikidata.org/wiki/Q[ID].</strong> It's a structured data page, not a prose article. Humans rarely visit this directly, but it's what AI systems, search engines, and knowledge graph tools read. Every property is machine-readable.
+  </div>
+
+  <div class="wd-page">
+    <div class="wd-topbar">
+      <span>wikidata.org</span>
+      <span>
+        <a href="#">Item</a>
+        <a href="#">Discussion</a>
+        <a href="#">History</a>
+      </span>
+    </div>
+
+    <div class="wd-header">
+      <h1>AWARE Hair</h1>
+      <div class="wd-qid">Q12345678</div>
+      <div class="wd-desc">American professional-exclusive scalp care brand</div>
+      <div class="wd-aliases">Also known as: AWARE Hair Care, AWARE, AWARE Hair LLC</div>
+    </div>
+
+    <div class="wd-statements">
+
+      <div class="wd-section-label">Statements</div>
+
+      <div class="wd-stmt">
+        <div class="wd-prop">instance of</div>
+        <div class="wd-val">
+          <a href="#">brand</a> <span class="wd-ref-count">2 references</span>
+          <span class="wd-multi"><a href="#">business</a> <span class="wd-ref-count">1 reference</span></span>
+        </div>
+      </div>
+
+      <div class="wd-stmt">
+        <div class="wd-prop">country</div>
+        <div class="wd-val"><a href="#">United States of America</a> <span class="wd-ref-count">2 references</span></div>
+      </div>
+
+      <div class="wd-stmt">
+        <div class="wd-prop">inception</div>
+        <div class="wd-val">2025 <span class="wd-ref-count">1 reference</span></div>
+      </div>
+
+      <div class="wd-stmt">
+        <div class="wd-prop">headquarters location</div>
+        <div class="wd-val"><a href="#">Los Angeles</a> <span class="wd-ref-count">2 references</span></div>
+      </div>
+
+      <div class="wd-stmt">
+        <div class="wd-prop">industry</div>
+        <div class="wd-val"><a href="#">cosmetics industry</a> <span class="wd-ref-count">1 reference</span></div>
+      </div>
+
+      <div class="wd-stmt">
+        <div class="wd-prop">official website</div>
+        <div class="wd-val"><span class="wd-ext">https://awarehair.com</span> <span class="wd-ref-count">1 reference</span></div>
+      </div>
+
+      <div class="wd-stmt">
+        <div class="wd-prop">founded by</div>
+        <div class="wd-val"><a href="#">Tina Mui</a> <span class="wd-ref-count">1 reference</span></div>
+      </div>
+
+      <div class="wd-stmt">
+        <div class="wd-prop">product or material produced</div>
+        <div class="wd-val">
+          <a href="#">shampoo</a> <span class="wd-ref-count">1 reference</span>
+          <span class="wd-multi"><a href="#">hair conditioner</a> <span class="wd-ref-count">1 reference</span></span>
+        </div>
+      </div>
+
+      <div class="wd-section-label">Identifiers</div>
+
+      <div class="wd-stmt">
+        <div class="wd-prop">Instagram username</div>
+        <div class="wd-val"><span class="wd-ext">awarehaircare</span></div>
+      </div>
+
+      <div class="wd-stmt">
+        <div class="wd-prop">TikTok username</div>
+        <div class="wd-val"><span class="wd-ext">awarehaircare</span></div>
+      </div>
+
+      <div class="wd-stmt">
+        <div class="wd-prop">Facebook ID</div>
+        <div class="wd-val"><span class="wd-ext">awarehaircare</span></div>
+      </div>
+
+      <div class="wd-stmt">
+        <div class="wd-prop">YouTube channel ID</div>
+        <div class="wd-val"><span class="wd-ext">@awarehaircare</span></div>
+      </div>
+
+      <div class="wd-stmt">
+        <div class="wd-prop">LinkedIn organization ID</div>
+        <div class="wd-val"><span class="wd-ext">aware-hair</span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 3: WIKIPEDIA ARTICLE (FUTURE)        -->
+<!-- ============================================ -->
+
+<div id="wikipedia" class="wikipedia-section">
+  <div class="section-label">Potential Wikipedia article <span class="future-badge">Future Goal - Not Creating Now</span></div>
+
+  <div class="annotation">
+    <strong>This is NOT being created now.</strong> Wikipedia requires "significant coverage in multiple independent reliable sources" for notability. AWARE currently has 3 verified mentions. With 2-3 more brand-focused press features (which HERALD is targeting), a Wikipedia article becomes viable. This preview shows what it would look like.
+  </div>
+
+  <div class="wp-page">
+    <div class="wp-topbar">
+      <a href="#">Article</a>
+      <a href="#">Talk</a>
+      <a href="#">Read</a>
+      <a href="#">View source</a>
+      <a href="#">View history</a>
+    </div>
+
+    <div class="wp-body">
+      <h1>AWARE Hair</h1>
+
+      <div class="wp-infobox">
+        <div class="wp-infobox-title">AWARE Hair</div>
+        <div class="wp-infobox-row">
+          <div class="wp-infobox-label">Type</div>
+          <div class="wp-infobox-value"><a href="#">Private</a></div>
+        </div>
+        <div class="wp-infobox-row">
+          <div class="wp-infobox-label">Industry</div>
+          <div class="wp-infobox-value"><a href="#">Cosmetics</a>, <a href="#">Hair care</a></div>
+        </div>
+        <div class="wp-infobox-row">
+          <div class="wp-infobox-label">Founded</div>
+          <div class="wp-infobox-value">2025</div>
+        </div>
+        <div class="wp-infobox-row">
+          <div class="wp-infobox-label">Founder</div>
+          <div class="wp-infobox-value">Tina Mui</div>
+        </div>
+        <div class="wp-infobox-row">
+          <div class="wp-infobox-label">Headquarters</div>
+          <div class="wp-infobox-value"><a href="#">Los Angeles</a>, California, U.S.</div>
+        </div>
+        <div class="wp-infobox-row">
+          <div class="wp-infobox-label">Products</div>
+          <div class="wp-infobox-value"><a href="#">Shampoo</a>, <a href="#">Hair conditioner</a>, Scalp treatments</div>
+        </div>
+        <div class="wp-infobox-row">
+          <div class="wp-infobox-label">Website</div>
+          <div class="wp-infobox-value"><a href="#">awarehair.com</a></div>
+        </div>
+      </div>
+
+      <p><strong>AWARE Hair</strong> is an American trichologist-founded, mother-daughter owned <a href="#">scalp wellness</a> brand headquartered in <a href="#">Los Angeles</a>, California. Founded in 2025 by <a href="#">trichologist</a> Tina Mui and her daughter Jade Wong, the company produces salon-exclusive scalp care products formulated with its proprietary AWAREBIO Complex, a proprietary formulation combining <a href="#">Tahitian microalgae</a>, dual-weight <a href="#">hyaluronic acid</a>, organic green tea extract, and organic turmeric.<sup>[1]</sup></p>
+
+      <p>The brand positions itself as "scalp care as wellness" - a daily ritual rather than a reactive treatment - and operates exclusively through licensed salon professionals, declining distribution through mass retail channels such as <a href="#">Amazon</a>, <a href="#">Sephora</a>, or <a href="#">Ulta Beauty</a>.<sup>[2]</sup> As of 2026, AWARE Hair is dermatologist-tested, partners with over 50 salons across the United States, and maintains a 96% B2B repurchase rate.<sup>[1]</sup></p>
+
+      <h2>History</h2>
+
+      <p>AWARE Hair was founded in 2025 by Tina Mui, a licensed <a href="#">cosmetologist</a> and certified trichologist with over 40 years of salon experience. Mui had previously established over 15 luxury spas and salons in California and Hawaii, and created the TEA Organic Hair Care line, which was featured as an editor's favorite in <em><a href="#">Allure</a></em>.<sup>[2]</sup></p>
+
+      <p>The brand launched its product line in August 2025 with the 9-1 Professional Collection, a system of scalp care products designed for salon use. The "9-1" designation refers to the nine haircare benefits delivered by each formula.<sup>[1]</sup></p>
+
+      <p>In January 2025, during the <a href="#">January 2025 Southern California wildfires</a>, AWARE Hair coordinated with the Stylists of Los Angeles collective to create an interactive map of over 60 salons across the Los Angeles area offering free services to wildfire evacuees and first responders.<sup>[3]</sup></p>
+
+      <p>In February 2026, AWARE Hair was featured at <a href="#">Cosmoprof</a> Miami, where it was selected by <em>NewBeauty</em> as one of "10 Standout Brands" and by <em>NewYou</em> as one of "12 Most Game-Changing Beauty Brands."<sup>[1]</sup><sup>[2]</sup></p>
+
+      <h2>Products</h2>
+
+      <p>AWARE Hair's 9-1 Professional Collection is a streamlined scalp ritual delivering nine essential functions for scalp and hair health in every bottle. The products are powered by the AWAREBIO Complex, a proprietary formulation that pairs sustainably sourced botanicals with clinically proven bioactives to support the scalp barrier, balance the microbiome, and defend against environmental and oxidative stress. Key ingredients include dual-weight hyaluronic acid, Tahitian microalgae extract, organic green tea extract, and organic <a href="#">turmeric</a>.<sup>[1]</sup></p>
+
+      <p>All products are dermatologist-tested, non-medicated, sulfate-free, paraben-free, phthalate-free, vegan, and cruelty-free, with 100% natural fragrance and formulated to <a href="#">EU cosmetics regulation</a> standards. Each formula is crafted in small batches in the USA.<sup>[2]</sup></p>
+
+      <h2>References</h2>
+
+      <div class="wp-refs">
+        <ol>
+          <li><sup>a b c d</sup> Dooley, Danielle Fontana (February 2, 2026). <a href="https://www.newbeauty.com/cosmoprof-miami-2026-recap/">"10 Standout Brands We Loved at Cosmoprof Miami 2026"</a>. <em>NewBeauty</em>.</li>
+          <li><sup>a b c</sup> <a href="https://www.newyou.com/the-12-most-game-changing-beauty-brands-we-discovered-at-cosmoprof-miami-2026/">"The 12 Most Game-Changing Beauty Brands We Discovered at Cosmoprof Miami 2026"</a>. <em>NewYou</em>. February 11, 2026.</li>
+          <li>Moratto, Anne (January 13, 2025). <a href="https://www.modernsalon.com/1092913/be-the-helpers-how-to-support-those-impacted-by-the-los-angeles-county-fires">"Be the Helpers: How to Support Those Impacted by the Los Angeles County Fires"</a>. <em>Modern Salon</em>.</li>
+        </ol>
+      </div>
+
+      <div class="wp-categories">
+        <strong>Categories:</strong>
+        <a href="#">American brands</a>
+        <a href="#">Cosmetics companies of the United States</a>
+        <a href="#">Hair care brands</a>
+        <a href="#">Companies based in Los Angeles</a>
+        <a href="#">Companies established in 2025</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  // Simple tab switching
+  function show(section) {
+    document.querySelectorAll('.google-section, .wikidata-section, .wikipedia-section').forEach(el => {
+      el.style.display = 'none';
+    });
+    document.getElementById(section).style.display = 'block';
+    document.querySelectorAll('.section-tab').forEach(tab => tab.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+</script>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

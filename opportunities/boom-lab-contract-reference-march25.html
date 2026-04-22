@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contract Reference Dossier - Boom Lab Inc</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #2D4739;
+    --forest-deep: #1E3228;
+    --sage: #7A8F7D;
+    --cream: #F8F6F1;
+    --sand: #E8E4DC;
+    --charcoal: #2C2C2C;
+    --warm-gray: #6B6B6B;
+    --gold: #B8956E;
+    --gold-light: #C9A882;
+    --white: #FFFFFF;
+    --green-soft: #4A8C6B;
+    --green-bg: #F2F8F5;
+    --red-soft: #C45B4A;
+    --red-bg: #FDF5F4;
+    --amber-soft: #B8860B;
+    --amber-bg: #FFFBF0;
+    --blue-soft: #4A7CB8;
+    --blue-bg: #F0F5FC;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--charcoal);
+    background: var(--sand);
+  }
+
+  .page-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--white);
+    min-height: 100vh;
+    box-shadow: 0 0 40px rgba(0,0,0,0.08);
+  }
+
+  /* Header */
+  .doc-header {
+    background: var(--forest-deep);
+    padding: 48px 48px 40px;
+    border-bottom: 3px solid var(--gold);
+    position: relative;
+  }
+
+  .doc-header .confidential-badge {
+    display: inline-block;
+    font-family: 'EB Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 4px 14px;
+    margin-bottom: 24px;
+  }
+
+  .doc-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 36px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .doc-header .subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+
+  .doc-header .meta-line {
+    font-family: 'EB Garamond', serif;
+    font-size: 13px;
+    color: var(--sage);
+    letter-spacing: 0.5px;
+  }
+
+  /* Section Label */
+  .section-label {
+    font-family: 'EB Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  /* Section Headings */
+  .content-body h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 26px;
+    color: var(--forest-deep);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--sand);
+  }
+
+  .content-body h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--forest);
+    margin-top: 28px;
+    margin-bottom: 12px;
+  }
+
+  .content-body h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--charcoal);
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  /* Content Body */
+  .content-body {
+    padding: 40px 48px 60px;
+  }
+
+  .content-body p {
+    margin-bottom: 14px;
+  }
+
+  .content-body strong {
+    font-weight: 600;
+    color: var(--forest-deep);
+  }
+
+  /* Table of Contents */
+  .toc {
+    background: var(--cream);
+    border: 1px solid var(--sand);
+    padding: 28px 32px;
+    margin-bottom: 40px;
+  }
+
+  .toc-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--forest-deep);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--sand);
+  }
+
+  .toc ol {
+    list-style: none;
+    counter-reset: toc-counter;
+    padding: 0;
+  }
+
+  .toc li {
+    counter-increment: toc-counter;
+    margin-bottom: 8px;
+  }
+
+  .toc li::before {
+    content: counter(toc-counter, decimal-leading-zero) ".";
+    font-family: 'EB Garamond', serif;
+    font-size: 13px;
+    color: var(--gold);
+    margin-right: 10px;
+    font-weight: 600;
+  }
+
+  .toc a {
+    font-family: 'EB Garamond', serif;
+    font-size: 15px;
+    color: var(--forest);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .toc a:hover {
+    border-bottom-color: var(--gold);
+    color: var(--forest-deep);
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    font-size: 14px;
+  }
+
+  thead th {
+    font-family: 'EB Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--warm-gray);
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--sand);
+    background: var(--cream);
+  }
+
+  tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--sand);
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 2px solid var(--sand);
+  }
+
+  tbody tr:hover {
+    background: var(--cream);
+  }
+
+  .total-row td {
+    font-weight: 600;
+    color: var(--forest-deep);
+    border-top: 2px solid var(--forest);
+    border-bottom: 2px solid var(--forest);
+    background: var(--cream);
+  }
+
+  .highlight-cell {
+    font-weight: 600;
+    color: var(--forest-deep);
+  }
+
+  .negative {
+    color: var(--red-soft);
+  }
+
+  .positive {
+    color: var(--green-soft);
+  }
+
+  .shortage-badge {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: var(--red-bg);
+    color: var(--red-soft);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
+  .complete-badge {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: var(--green-bg);
+    color: var(--green-soft);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
+  .over-badge {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: var(--blue-bg);
+    color: var(--blue-soft);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
+  /* Callout Boxes */
+  .callout {
+    padding: 20px 24px;
+    margin: 20px 0;
+    border-left: 4px solid;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .callout-green {
+    border-left-color: var(--green-soft);
+    background: var(--green-bg);
+  }
+
+  .callout-red {
+    border-left-color: var(--red-soft);
+    background: var(--red-bg);
+  }
+
+  .callout-amber {
+    border-left-color: var(--amber-soft);
+    background: var(--amber-bg);
+  }
+
+  .callout-blue {
+    border-left-color: var(--blue-soft);
+    background: var(--blue-bg);
+  }
+
+  .callout-gold {
+    border-left-color: var(--gold);
+    background: var(--cream);
+  }
+
+  .callout p {
+    margin-bottom: 8px;
+  }
+
+  .callout p:last-child {
+    margin-bottom: 0;
+  }
+
+  .callout strong {
+    color: inherit;
+  }
+
+  .callout-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+    margin: 20px 0 28px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 12px 0 16px 20px;
+    border-bottom: 1px solid var(--sand);
+  }
+
+  .timeline-item:last-child {
+    border-bottom: none;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -36px;
+    top: 16px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--white);
+    box-shadow: 0 0 0 2px var(--gold);
+  }
+
+  .timeline-item.today::before {
+    background: var(--green-soft);
+    box-shadow: 0 0 0 2px var(--green-soft);
+    width: 12px;
+    height: 12px;
+    left: -37px;
+    top: 15px;
+  }
+
+  .timeline-date {
+    font-family: 'EB Garamond', serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .timeline-event {
+    font-size: 15px;
+    color: var(--charcoal);
+    line-height: 1.6;
+  }
+
+  .today-label {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--green-soft);
+    color: var(--white);
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-left: 8px;
+    vertical-align: middle;
+    font-weight: 600;
+  }
+
+  /* Details / Summary (Collapsible Sections) */
+  details {
+    margin-bottom: 32px;
+    border: 1px solid var(--sand);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  details[open] {
+    border-color: var(--gold-light);
+  }
+
+  summary {
+    cursor: pointer;
+    padding: 18px 24px;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--forest-deep);
+    border-bottom: 1px solid var(--sand);
+    background: var(--cream);
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    letter-spacing: 1px;
+    transition: background 0.2s;
+  }
+
+  summary:hover {
+    background: var(--sand);
+  }
+
+  details[open] summary {
+    border-bottom-color: var(--gold-light);
+  }
+
+  summary::marker,
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary::before {
+    content: '\25B6';
+    font-size: 10px;
+    color: var(--gold);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  details[open] > summary::before {
+    transform: rotate(90deg);
+  }
+
+  .summary-label {
+    font-family: 'EB Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 400;
+    margin-right: 8px;
+  }
+
+  .details-content {
+    padding: 24px;
+  }
+
+  /* Section Divider */
+  .section-divider {
+    height: 1px;
+    background: var(--sand);
+    margin: 40px 0;
+  }
+
+  /* Clause Quote */
+  .clause-quote {
+    background: var(--cream);
+    border-left: 3px solid var(--sage);
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-style: italic;
+    color: var(--warm-gray);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .clause-relevance {
+    font-style: normal;
+    font-size: 13px;
+    color: var(--forest);
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--sand);
+  }
+
+  /* Correspondence Row Styling */
+  .corr-type {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* Big Number */
+  .big-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--forest-deep);
+    letter-spacing: 1px;
+  }
+
+  /* Inline list */
+  .content-body ul, .content-body ol {
+    padding-left: 24px;
+    margin-bottom: 14px;
+  }
+
+  .content-body li {
+    margin-bottom: 6px;
+  }
+
+  /* Footer */
+  .doc-footer {
+    background: var(--cream);
+    border-top: 1px solid var(--sand);
+    padding: 24px 48px;
+    text-align: center;
+  }
+
+  .doc-footer p {
+    font-size: 12px;
+    color: var(--warm-gray);
+    letter-spacing: 0.5px;
+  }
+
+  /* Print Styles */
+  @media print {
+    body {
+      background: white;
+    }
+
+    .page-container {
+      box-shadow: none;
+      max-width: 100%;
+    }
+
+    .doc-header {
+      padding: 32px 32px 28px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .content-body {
+      padding: 24px 32px 40px;
+    }
+
+    details {
+      border: none;
+    }
+
+    details[open] {
+      border: none;
+    }
+
+    summary {
+      background: none;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--sand);
+      font-size: 16px;
+    }
+
+    summary::before {
+      display: none;
+    }
+
+    details {
+      break-inside: avoid;
+    }
+
+    .details-content {
+      padding: 16px 0;
+    }
+
+    details:not([open]) {
+      display: block;
+    }
+
+    details:not([open]) > .details-content {
+      display: block;
+    }
+
+    .toc {
+      break-after: page;
+    }
+
+    table {
+      break-inside: avoid;
+    }
+
+    .callout {
+      break-inside: avoid;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .timeline-item {
+      break-inside: avoid;
+    }
+
+    .doc-footer {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-container">
+
+  <!-- Header -->
+  <header class="doc-header">
+    <div class="confidential-badge">Confidential - Internal Use Only</div>
+    <h1>Contract Reference Dossier</h1>
+    <p class="subtitle">Boom Lab Inc - Complete History &amp; Calculations</p>
+    <p class="meta-line">March 25, 2026 &nbsp;|&nbsp; Prepared for renegotiation meeting</p>
+  </header>
+
+  <!-- Content -->
+  <div class="content-body">
+
+    <!-- Table of Contents -->
+    <nav class="toc">
+      <div class="toc-title">Table of Contents</div>
+      <ol>
+        <li><a href="#timeline">Relationship Timeline</a></li>
+        <li><a href="#contract-summary">Original Contract Summary</a></li>
+        <li><a href="#payment-history">Payment History</a></li>
+        <li><a href="#production-history">Production History</a></li>
+        <li><a href="#price-increase">Price Increase Analysis</a></li>
+        <li><a href="#credit-calc">Credit Calculation</a></li>
+        <li><a href="#fragrance">Fragrance Cost Analysis</a></li>
+        <li><a href="#projections">New Contract Projections</a></li>
+        <li><a href="#clauses">Contract Clause Reference</a></li>
+        <li><a href="#correspondence">Correspondence Log</a></li>
+        <li><a href="#open-items">Open Items &amp; Risk Factors</a></li>
+      </ol>
+    </nav>
+
+    <!-- ============================================ -->
+    <!-- SECTION 1: RELATIONSHIP TIMELINE             -->
+    <!-- ============================================ -->
+    <section id="timeline">
+      <span class="section-label">Section 01</span>
+      <h2>Relationship Timeline</h2>
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <span class="timeline-date">July 22, 2024</span>
+          <span class="timeline-event">Original Manufacturing Agreement signed. AWARE Hair LLC (Tina Mui, CEO) and Boom Lab Inc (Seyed Hossein Zoie, CEO/Founder). 30,000 retail units across 3 SKUs. Total value: $92,400.</span>
+        </div>
+
+        <div class="timeline-item">
+          <span class="timeline-date">July 2024</span>
+          <span class="timeline-event">Initial 30% deposit paid: $27,720.00</span>
+        </div>
+
+        <div class="timeline-item">
+          <span class="timeline-date">October 2024</span>
+          <span class="timeline-event">Addendum signed. Restructured payment schedule - moved first installment forward to help Boom Lab's cash flow. Payment: $8,085.00</span>
+        </div>
+
+        <div class="timeline-item">
+          <span class="timeline-date">Early 2025</span>
+          <span class="timeline-event">Second addendum payment after Run 1 delivery: $8,085.00</span>
+        </div>
+
+        <div class="timeline-item">
+          <span class="timeline-date">2025 (exact date TBD)</span>
+          <span class="timeline-event">Run 1 delivered: 7,400 units (2,100 shampoo - 400 short, 2,500 conditioner, 2,800 leave-in)</span>
+        </div>
+
+        <div class="timeline-item">
+          <span class="timeline-date">August 9, 2025</span>
+          <span class="timeline-event">OnScent fragrance invoice #4232047 (Pacific Air NF, $73.46/lb) - establishes fragrance cost baseline</span>
+        </div>
+
+        <div class="timeline-item">
+          <span class="timeline-date">Early March 2026</span>
+          <span class="timeline-event">Boom Lab requests 13-18% price increase on all three retail SKUs</span>
+        </div>
+
+        <div class="timeline-item">
+          <span class="timeline-date">March 8, 2026</span>
+          <span class="timeline-event">AWARE prepares full price increase analysis with 5 negotiation scenarios</span>
+        </div>
+
+        <div class="timeline-item">
+          <span class="timeline-date">March 9, 2026</span>
+          <span class="timeline-event">Counter-proposal drafted: split the difference (~8% increase)</span>
+        </div>
+
+        <div class="timeline-item">
+          <span class="timeline-date">March 11, 2026</span>
+          <span class="timeline-event">Teamwork/Labayk facility meeting. NDA reviewed. Contract review identified Teamwork attempting to replace Boom Lab as manufacturer.</span>
+        </div>
+
+        <div class="timeline-item">
+          <span class="timeline-date">March 12, 2026</span>
+          <span class="timeline-event">AWARE responds to Run 2 PI #31220261SHZ with 6 corrections (quantities, 400 shortage, fragrance, deposit %, payment terms, leave-in missing)</span>
+        </div>
+
+        <div class="timeline-item">
+          <span class="timeline-date">March 22, 2026</span>
+          <span class="timeline-event">AWARE sends fragrance cost response citing Section 2.3 of signed agreement</span>
+        </div>
+
+        <div class="timeline-item">
+          <span class="timeline-date">March 23, 2026</span>
+          <span class="timeline-event">David speaks with Boom Lab by phone - covers price increase and fragrance</span>
+        </div>
+
+        <div class="timeline-item today">
+          <span class="timeline-date">March 25, 2026 <span class="today-label">Today</span></span>
+          <span class="timeline-event">Renegotiation meeting - armed with this dossier</span>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 2: ORIGINAL CONTRACT SUMMARY         -->
+    <!-- ============================================ -->
+    <section id="contract-summary">
+      <details open>
+        <summary>
+          <span class="summary-label">Section 02</span>
+          Original Contract Summary
+        </summary>
+        <div class="details-content">
+
+          <p>Key terms extracted from the signed Manufacturing Agreement dated July 22, 2024.</p>
+
+          <h3>Parties</h3>
+          <table>
+            <thead>
+              <tr><th>Party</th><th>Entity</th><th>Address</th><th>Representative</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Company</td>
+                <td>AWARE Hair LLC</td>
+                <td>153 E Holly Street, Pasadena, CA 91103</td>
+                <td>Tina Mui, CEO</td>
+              </tr>
+              <tr>
+                <td>Manufacturer</td>
+                <td>Boom Lab Inc (Corp# C4285797)</td>
+                <td>6460 Coyote St, Chino Hills, CA 91709</td>
+                <td>Seyed Hossein Zoie, CEO/Founder</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Products (Section 1.1)</h3>
+          <table>
+            <thead>
+              <tr><th>Product</th><th>Units</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Shampoo 300ML</td><td>10,000</td></tr>
+              <tr><td>Conditioner 300ML</td><td>10,000</td></tr>
+              <tr><td>Leave-In 250ML</td><td>10,000</td></tr>
+              <tr><td>Bulk Shampoo gallon</td><td>30</td></tr>
+              <tr><td>Bulk Conditioner gallon</td><td>30</td></tr>
+              <tr><td>Bulk Leave-In gallon</td><td>15</td></tr>
+              <tr><td>Empty gallon with pump</td><td>75</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Original Pricing (Section 5.1)</h3>
+          <table>
+            <thead>
+              <tr><th>Product</th><th>Per Unit</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Shampoo 300ML</td><td>$3.26</td></tr>
+              <tr><td>Conditioner 300ML</td><td>$2.76</td></tr>
+              <tr><td>Leave-In 250ML</td><td>$3.22</td></tr>
+              <tr><td>Bulk Shampoo gallon</td><td>$40.35</td></tr>
+              <tr><td>Bulk Conditioner gallon</td><td>$33.35</td></tr>
+              <tr><td>Bulk Leave-In gallon</td><td>$40.35</td></tr>
+              <tr><td>Empty gallon with pump</td><td>$6.90</td></tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-gold">
+            <p><strong>Total Retail Contract Value:</strong> <span class="big-number">$92,400.00</span></p>
+            <p>30,000 retail units across 3 SKUs</p>
+          </div>
+
+          <h3>Payment Structure (Section 5.2)</h3>
+          <ul>
+            <li><strong>Initial:</strong> 30% deposit ($27,720) + 50% bulk ($1,667) upfront before first run</li>
+            <li><strong>Remaining 70% retail</strong> ($64,680) in 3 equal installments of $21,560 each</li>
+            <li>Each installment split: $10,780 before production + $10,780 after delivery</li>
+          </ul>
+
+          <h3>Materials (Section 2.3)</h3>
+          <p>Manufacturer responsible for ALL materials except two actives (SO-Resisthyal-25 and SymHair Force 1631) for the first 10,000 bottles. After 10,000, manufacturer sources everything.</p>
+
+          <h3>Other Key Terms</h3>
+          <table>
+            <thead>
+              <tr><th>Clause</th><th>Term</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Term (Section 6.1)</td><td>1 year from effective date, renewable by mutual written agreement</td></tr>
+              <tr><td>Lab Fee Credit (Section 5.3)</td><td>$3,500 paid to Adonis Inc. kept as credit toward future product development</td></tr>
+              <tr><td>Delivery (Section 4.3)</td><td>FOB. Company picks up from factory for initial run.</td></tr>
+              <tr><td>Late Delivery (Section 4.6)</td><td>1% liquidated damages per day of delay, up to 50% of invoice value</td></tr>
+            </tbody>
+          </table>
+
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 3: PAYMENT HISTORY                   -->
+    <!-- ============================================ -->
+    <section id="payment-history">
+      <details>
+        <summary>
+          <span class="summary-label">Section 03</span>
+          Payment History
+        </summary>
+        <div class="details-content">
+
+          <h3>Detailed Payment Ledger</h3>
+
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Running Total</th>
+                <th>Contract %</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>July 2024</td>
+                <td>30% deposit per Section 5.2 (covers first 2,500 per SKU + bulk)</td>
+                <td>$27,720.00</td>
+                <td>$27,720.00</td>
+                <td>30.0%</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Oct 2024</td>
+                <td>Addendum - accelerated installment (pre-production)</td>
+                <td>$8,085.00</td>
+                <td>$35,805.00</td>
+                <td>38.7%</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Early 2025</td>
+                <td>Addendum - accelerated installment (post-delivery)</td>
+                <td>$8,085.00</td>
+                <td>$43,890.00</td>
+                <td>47.5%</td>
+              </tr>
+              <tr class="total-row">
+                <td></td>
+                <td></td>
+                <td>Total Cash Paid</td>
+                <td>$43,890.00</td>
+                <td></td>
+                <td>47.5%</td>
+              </tr>
+              <tr style="color: var(--warm-gray); font-style: italic;">
+                <td>4</td>
+                <td>July 2024</td>
+                <td>Lab fee credit (Sec 5.3, Adonis Inc.) - R&amp;D credit only, not applicable to production</td>
+                <td>$3,500.00</td>
+                <td>-</td>
+                <td>-</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-red">
+            <div class="callout-title">Key Observation: Payment Imbalance</div>
+            <p>AWARE has paid 47.5% of the original $92,400 contract value but received only 24.7% of contracted units. This represents a significant payment imbalance in Boom Lab's favor. (The $3,500 lab fee credit is reserved for R&amp;D/formulation development and is not included in production calculations.)</p>
+          </div>
+
+          <h3>Effective Cost Per Unit Received</h3>
+          <table>
+            <thead>
+              <tr><th>Calculation Basis</th><th>Formula</th><th>Effective Per-Unit Cost</th><th>vs Contracted Avg ($3.08)</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cash only</td>
+                <td>$43,890 / 7,400 units</td>
+                <td class="highlight-cell">$5.93 per unit</td>
+                <td class="negative">1.93x contracted rate</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 4: PRODUCTION HISTORY                -->
+    <!-- ============================================ -->
+    <section id="production-history">
+      <details>
+        <summary>
+          <span class="summary-label">Section 04</span>
+          Production History
+        </summary>
+        <div class="details-content">
+
+          <h3>Run 1 Delivery</h3>
+
+          <table>
+            <thead>
+              <tr><th>SKU</th><th>Ordered</th><th>Received</th><th>Shortage</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Shampoo 300ML</td>
+                <td>2,500</td>
+                <td>2,100</td>
+                <td class="negative">400</td>
+                <td><span class="shortage-badge">Shortage - unpaid units owed</span></td>
+              </tr>
+              <tr>
+                <td>Conditioner 300ML</td>
+                <td>2,500</td>
+                <td>2,500</td>
+                <td>0</td>
+                <td><span class="complete-badge">Complete</span></td>
+              </tr>
+              <tr>
+                <td>Leave-In 250ML</td>
+                <td>2,500</td>
+                <td>2,800</td>
+                <td class="positive">-300 (over)</td>
+                <td><span class="over-badge">Over-delivered</span></td>
+              </tr>
+              <tr class="total-row">
+                <td>Total</td>
+                <td>7,500</td>
+                <td>7,400</td>
+                <td>100 net</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-red">
+            <p><strong>400 shampoo units remain undelivered</strong> despite being paid for. AWARE has raised this in every communication since discovery.</p>
+          </div>
+
+          <h3>Remaining Under Original Contract (Before Renegotiation)</h3>
+
+          <table>
+            <thead>
+              <tr><th>SKU</th><th>Contracted</th><th>Received</th><th>Remaining</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Shampoo</td>
+                <td>10,000</td>
+                <td>2,100</td>
+                <td class="highlight-cell">7,900</td>
+                <td>Including 400 owed</td>
+              </tr>
+              <tr>
+                <td>Conditioner</td>
+                <td>10,000</td>
+                <td>2,500</td>
+                <td class="highlight-cell">7,500</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Leave-In</td>
+                <td>10,000</td>
+                <td>2,800</td>
+                <td class="highlight-cell">7,200</td>
+                <td></td>
+              </tr>
+              <tr class="total-row">
+                <td>Total</td>
+                <td>30,000</td>
+                <td>7,400</td>
+                <td>22,600</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 5: PRICE INCREASE ANALYSIS           -->
+    <!-- ============================================ -->
+    <section id="price-increase">
+      <details>
+        <summary>
+          <span class="summary-label">Section 05</span>
+          Price Increase Analysis
+        </summary>
+        <div class="details-content">
+
+          <h3>Boom Lab's Proposed Increases</h3>
+
+          <table>
+            <thead>
+              <tr><th>SKU</th><th>Original</th><th>Proposed</th><th>$ Increase</th><th>% Increase</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Shampoo 300ML</td>
+                <td>$3.26</td>
+                <td>$3.85</td>
+                <td class="negative">+$0.59</td>
+                <td class="negative">+18.1%</td>
+              </tr>
+              <tr>
+                <td>Conditioner 300ML</td>
+                <td>$2.76</td>
+                <td>$3.25</td>
+                <td class="negative">+$0.49</td>
+                <td class="negative">+17.8%</td>
+              </tr>
+              <tr>
+                <td>Leave-In 250ML</td>
+                <td>$3.22</td>
+                <td>$3.65</td>
+                <td class="negative">+$0.43</td>
+                <td class="negative">+13.4%</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-blue">
+            <p><strong>Weighted Average Increase:</strong> ~16.3%</p>
+          </div>
+
+          <h3>Impact on 15,000 New Units</h3>
+
+          <table>
+            <thead>
+              <tr><th>SKU (Units)</th><th>At Original Price</th><th>At New Price</th><th>Additional Cost</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Shampoo (5,000)</td>
+                <td>$16,300</td>
+                <td>$19,250</td>
+                <td class="negative">+$2,950</td>
+              </tr>
+              <tr>
+                <td>Conditioner (5,000)</td>
+                <td>$13,800</td>
+                <td>$16,250</td>
+                <td class="negative">+$2,450</td>
+              </tr>
+              <tr>
+                <td>Leave-In (5,000)</td>
+                <td>$16,100</td>
+                <td>$18,250</td>
+                <td class="negative">+$2,150</td>
+              </tr>
+              <tr class="total-row">
+                <td>Total</td>
+                <td>$46,200</td>
+                <td>$53,750</td>
+                <td>+$7,550</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>AWARE's Previous Counter (Not Accepted)</h3>
+
+          <table>
+            <thead>
+              <tr><th>SKU</th><th>Proposed Split</th><th>% Increase</th><th>Savings vs Full</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Shampoo</td>
+                <td>$3.56</td>
+                <td>~9.2%</td>
+                <td>$1,450</td>
+              </tr>
+              <tr>
+                <td>Conditioner</td>
+                <td>$3.01</td>
+                <td>~9.1%</td>
+                <td>$1,200</td>
+              </tr>
+              <tr>
+                <td>Leave-In</td>
+                <td>$3.44</td>
+                <td>~6.8%</td>
+                <td>$1,050</td>
+              </tr>
+              <tr class="total-row">
+                <td>Total savings</td>
+                <td></td>
+                <td></td>
+                <td>$3,700</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-gold">
+            <p><strong>Decision: Accept full proposed prices</strong> to preserve relationship and move forward.</p>
+          </div>
+
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 6: CREDIT CALCULATION                -->
+    <!-- ============================================ -->
+    <section id="credit-calc">
+      <details open>
+        <summary>
+          <span class="summary-label">Section 06</span>
+          Credit Calculation
+        </summary>
+        <div class="details-content">
+
+          <div class="callout callout-green">
+            <div class="callout-title">Critical Negotiation Math</div>
+            <p>Two calculation bases presented below. Method A is AWARE's position and the legally stronger argument.</p>
+          </div>
+
+          <h3>Method A - AWARE's Position (Original Contract Prices)</h3>
+          <p>Run 1 units were produced and delivered under the original contract pricing. The new prices were not yet agreed, so goods should be valued at original rates.</p>
+
+          <table>
+            <thead>
+              <tr><th>Step</th><th>Calculation</th><th>Amount</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total cash paid to Boom Lab</td>
+                <td>$27,720 + $8,085 + $8,085</td>
+                <td class="highlight-cell">$43,890.00</td>
+              </tr>
+              <tr class="total-row">
+                <td>Total production credits</td>
+                <td></td>
+                <td>$43,890.00</td>
+              </tr>
+              <tr>
+                <td>Less: Shampoo received</td>
+                <td>2,100 x $3.26</td>
+                <td class="negative">-$6,846.00</td>
+              </tr>
+              <tr>
+                <td>Less: Conditioner received</td>
+                <td>2,500 x $2.76</td>
+                <td class="negative">-$6,900.00</td>
+              </tr>
+              <tr>
+                <td>Less: Leave-In received</td>
+                <td>2,800 x $3.22</td>
+                <td class="negative">-$9,016.00</td>
+              </tr>
+              <tr class="total-row">
+                <td>Total goods received value</td>
+                <td></td>
+                <td>-$22,762.00</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-green" style="text-align: center;">
+            <p style="margin-bottom: 4px;"><strong>NET CREDIT BALANCE (Method A)</strong></p>
+            <span class="big-number">$21,128.00</span>
+          </div>
+
+          <div class="callout callout-gold">
+            <p><strong>Note:</strong> The $3,500 lab fee credit (Section 5.3) is reserved for future R&amp;D and formulation development. It is not included in the production credit calculation.</p>
+          </div>
+
+          <h3>Method B - Boom Lab May Argue (New Prices)</h3>
+          <p>If Boom Lab argues goods should be valued at the new prices retroactively:</p>
+
+          <table>
+            <thead>
+              <tr><th>Step</th><th>Calculation</th><th>Amount</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total production credits</td>
+                <td>Same as above</td>
+                <td class="highlight-cell">$43,890.00</td>
+              </tr>
+              <tr>
+                <td>Less: Shampoo received</td>
+                <td>2,100 x $3.85</td>
+                <td class="negative">-$8,085.00</td>
+              </tr>
+              <tr>
+                <td>Less: Conditioner received</td>
+                <td>2,500 x $3.25</td>
+                <td class="negative">-$8,125.00</td>
+              </tr>
+              <tr>
+                <td>Less: Leave-In received</td>
+                <td>2,800 x $3.65</td>
+                <td class="negative">-$10,220.00</td>
+              </tr>
+              <tr class="total-row">
+                <td>Total goods received value</td>
+                <td></td>
+                <td>-$26,430.00</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-blue" style="text-align: center;">
+            <p style="margin-bottom: 4px;"><strong>NET CREDIT BALANCE (Method B)</strong></p>
+            <span class="big-number">$17,460.00</span>
+          </div>
+
+          <div class="callout callout-amber">
+            <p><strong>Difference between methods: $3,668</strong></p>
+          </div>
+
+          <h3>AWARE's Argument for Method A</h3>
+          <ol>
+            <li>Run 1 was produced and delivered under the original contract, before any price renegotiation</li>
+            <li>The signed agreement (Section 13.3) is the entire agreement - no retroactive price changes</li>
+            <li>New prices apply to new production only</li>
+            <li>Section 5.4 requires mutual agreement for price changes - these were not mutually agreed at time of Run 1</li>
+          </ol>
+
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 7: FRAGRANCE COST ANALYSIS           -->
+    <!-- ============================================ -->
+    <section id="fragrance">
+      <details>
+        <summary>
+          <span class="summary-label">Section 07</span>
+          Fragrance Cost Analysis
+        </summary>
+        <div class="details-content">
+
+          <h3>Background</h3>
+          <table>
+            <thead>
+              <tr><th>Parameter</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Fragrance</td><td>OnScent Pacific Air NF (natural fragrance)</td></tr>
+              <tr><td>Cost</td><td>$73.46/lb (Invoice #4232047, August 9, 2025)</td></tr>
+              <tr><td>Usage rate</td><td>1% of total batch volume</td></tr>
+              <tr><td>Original contract (Section 2.3)</td><td>Manufacturer responsible for all materials except two actives</td></tr>
+              <tr><td>Concession</td><td>AWARE now agrees to pay fragrance going forward</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Per-Run Fragrance Estimate</h3>
+
+          <h4>For 5,000 units at 300ml (Shampoo or Conditioner)</h4>
+          <table>
+            <thead>
+              <tr><th>Step</th><th>Calculation</th><th>Result</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Total volume</td><td>5,000 x 300ml</td><td>1,500 liters</td></tr>
+              <tr><td>Fragrance at 1%</td><td>1,500L x 0.01</td><td>15 liters</td></tr>
+              <tr><td>Weight (approx 1 g/ml)</td><td>~15 kg</td><td>~33.1 lbs</td></tr>
+              <tr><td>Cost</td><td>33.1 x $73.46</td><td>~$2,431</td></tr>
+            </tbody>
+          </table>
+
+          <h4>For 5,000 units at 250ml (Leave-In)</h4>
+          <table>
+            <thead>
+              <tr><th>Step</th><th>Calculation</th><th>Result</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Total volume</td><td>5,000 x 250ml</td><td>1,250 liters</td></tr>
+              <tr><td>Fragrance at 1%</td><td>1,250L x 0.01</td><td>12.5 liters</td></tr>
+              <tr><td>Weight</td><td>~12.5 kg</td><td>~27.6 lbs</td></tr>
+              <tr><td>Cost</td><td>27.6 x $73.46</td><td>~$2,027</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Total Fragrance for 15,000 Units</h3>
+          <table>
+            <thead>
+              <tr><th>SKU</th><th>Units</th><th>Volume</th><th>Fragrance</th><th>Est. Cost</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Shampoo 300ML</td>
+                <td>5,000</td>
+                <td>1,500L</td>
+                <td>33.1 lbs</td>
+                <td>$2,431</td>
+              </tr>
+              <tr>
+                <td>Conditioner 300ML</td>
+                <td>5,000</td>
+                <td>1,500L</td>
+                <td>33.1 lbs</td>
+                <td>$2,431</td>
+              </tr>
+              <tr>
+                <td>Leave-In 250ML</td>
+                <td>5,000</td>
+                <td>1,250L</td>
+                <td>27.6 lbs</td>
+                <td>$2,027</td>
+              </tr>
+              <tr class="total-row">
+                <td>Total</td>
+                <td>15,000</td>
+                <td>4,250L</td>
+                <td>93.8 lbs</td>
+                <td>~$6,889</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Actual cost depends on production run grouping and exact batch volumes. Estimate rounded to ~$7,000-7,500 for planning.</p>
+
+          <div class="callout callout-amber">
+            <div class="callout-title">Value of Concession</div>
+            <p>Under the original contract, fragrance was Boom Lab's cost. By accepting this, AWARE is giving up ~$7,000 in contractual protection. This should be explicitly acknowledged as a significant concession during the negotiation.</p>
+          </div>
+
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 8: NEW CONTRACT PROJECTIONS          -->
+    <!-- ============================================ -->
+    <section id="projections">
+      <details>
+        <summary>
+          <span class="summary-label">Section 08</span>
+          New Contract Projections
+        </summary>
+        <div class="details-content">
+
+          <h3>Base Case: Full 15,000 Units with Credit at Method A</h3>
+
+          <table>
+            <thead>
+              <tr><th>Line Item</th><th>Amount</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Shampoo 5,000 x $3.85</td><td>$19,250.00</td></tr>
+              <tr><td>Conditioner 5,000 x $3.25</td><td>$16,250.00</td></tr>
+              <tr><td>Leave-In 5,000 x $3.65</td><td>$18,250.00</td></tr>
+              <tr class="total-row"><td>Production subtotal</td><td>$53,750.00</td></tr>
+              <tr><td>Fragrance (estimated)</td><td>~$7,000.00</td></tr>
+              <tr class="total-row"><td>Total new contract value</td><td>~$60,750.00</td></tr>
+              <tr><td>Less: Credit balance (Method A)</td><td class="positive">-$21,128.00</td></tr>
+              <tr class="total-row"><td>Net remaining obligation</td><td>~$39,622.00</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Payment Schedule Scenario (2 Production Runs)</h3>
+
+          <table>
+            <thead>
+              <tr><th>Run</th><th>SKUs</th><th>Units</th><th>Production Cost</th><th>Fragrance Est.</th><th>Total</th><th>Credit Applied</th><th>Net Due</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Run 2 (Q2)</td>
+                <td>All 3</td>
+                <td>2,500 each + 400 SH owed</td>
+                <td>$26,875</td>
+                <td>~$3,438</td>
+                <td>~$30,313</td>
+                <td class="positive">$21,128</td>
+                <td>~$9,185</td>
+              </tr>
+              <tr>
+                <td>Run 3 (Q4)</td>
+                <td>All 3</td>
+                <td>2,500 each</td>
+                <td>$26,875</td>
+                <td>~$3,438</td>
+                <td>~$30,313</td>
+                <td>$0</td>
+                <td>~$30,313</td>
+              </tr>
+              <tr class="total-row">
+                <td>Total</td>
+                <td></td>
+                <td>15,000 + 400</td>
+                <td>$53,750</td>
+                <td>~$6,876</td>
+                <td>~$60,626</td>
+                <td>$21,128</td>
+                <td>~$39,498</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Full credit applied to Run 2 (simplest approach). Run 3 paid at full cost. 400 shampoo units in Run 2 at no additional charge.</p>
+
+          <h4>Run 2 Production Cost Breakdown</h4>
+          <p>2,500 x $3.85 + 2,500 x $3.25 + 2,500 x $3.65 = $9,625 + $8,125 + $9,125 = $26,875</p>
+
+          <h4>Fragrance Per Run Estimate (All 3 SKUs at 2,500 Each)</h4>
+          <ul>
+            <li>Shampoo: 2,500 x 300ml = 750L, 1% = 7.5L ~ 16.5 lbs x $73.46 = ~$1,212</li>
+            <li>Conditioner: 2,500 x 300ml = 750L, 1% = 7.5L ~ 16.5 lbs x $73.46 = ~$1,212</li>
+            <li>Leave-In: 2,500 x 250ml = 625L, 1% = 6.25L ~ 13.8 lbs x $73.46 = ~$1,014</li>
+            <li>Per run total: ~$3,438</li>
+          </ul>
+
+          <h3>Alternative: Credit at Method B</h3>
+
+          <table>
+            <thead>
+              <tr><th></th><th>Amount</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Net remaining obligation</td><td class="highlight-cell">~$43,290.00</td></tr>
+              <tr><td>Difference from Method A</td><td class="negative">+$3,668.00</td></tr>
+            </tbody>
+          </table>
+
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 9: CONTRACT CLAUSE REFERENCE         -->
+    <!-- ============================================ -->
+    <section id="clauses">
+      <details>
+        <summary>
+          <span class="summary-label">Section 09</span>
+          Contract Clause Reference
+        </summary>
+        <div class="details-content">
+
+          <p>Every relevant clause from the Original Agreement, quoted with context and relevance to the current negotiation.</p>
+
+          <h3>Section 2.3 - Materials and Ingredients</h3>
+          <div class="clause-quote">
+            "Manufacturer shall be responsible for procuring all materials and ingredients necessary to manufacture the Products, except for active ingredients (SO-Resisthyal-25 and SymHair Force 1631) for the first 10,000 bottles, which will be provided by the Company."
+            <div class="clause-relevance"><strong>Relevance:</strong> Establishes fragrance as manufacturer's responsibility under original terms. AWARE is conceding this point going forward.</div>
+          </div>
+
+          <h3>Section 5.1 - Price</h3>
+          <div class="clause-quote">
+            Lists original per-unit prices for all products.
+            <div class="clause-relevance"><strong>Relevance:</strong> These are the baseline prices being replaced by the new pricing.</div>
+          </div>
+
+          <h3>Section 5.2 - Payment Terms</h3>
+          <div class="clause-quote">
+            "Initial Payment: 30% of the total invoice price for retail-sized products ($27,720.00) and 50% of the total invoice price for bulk-sized products ($1,667) will be paid upfront before the initial production run."
+            <div class="clause-relevance"><strong>Relevance:</strong> Establishes the deposit structure and installment schedule.</div>
+          </div>
+
+          <h3>Section 5.3 - Lab Fee Credit</h3>
+          <div class="clause-quote">
+            "The $3500 lab fee paid to the former lab (Adonis Inc.) shall be kept as a credit towards future development of new products or formulas."
+            <div class="clause-relevance"><strong>Relevance:</strong> This credit is for R&amp;D/formulation development only, not production costs. Not included in the production credit calculation.</div>
+          </div>
+
+          <h3>Section 5.4 - Price Adjustments</h3>
+          <div class="clause-quote">
+            "Manufacturer agrees that any price adjustments for future orders shall be subject to mutual agreement. Company expects price decreases for increased order volumes and long-term commitments."
+            <div class="clause-relevance"><strong>Relevance:</strong> Price changes require mutual agreement - Boom Lab cannot unilaterally increase prices. Contract explicitly anticipates DECREASES with volume.</div>
+          </div>
+
+          <h3>Section 6.1 - Term</h3>
+          <div class="clause-quote">
+            "This Agreement shall commence on the Effective Date and continue for an initial term of one (1) year."
+            <div class="clause-relevance"><strong>Relevance:</strong> Original 1-year term expired ~July 22, 2025. Both parties continued in good faith. The Amendment (Article 9) formally renews and extends through March 25, 2027 or completion of all production, whichever is later.</div>
+          </div>
+
+          <h3>Section 13.3 - Entire Agreement</h3>
+          <div class="clause-quote">
+            "This Agreement, including all exhibits and attachments hereto, constitutes the entire agreement between the parties with respect to the subject matter hereof and supersedes all prior and contemporaneous agreements, understandings, and representations, whether oral or written."
+            <div class="clause-relevance"><strong>Relevance:</strong> The signed agreement supersedes any prior PIs, emails, or verbal agreements.</div>
+          </div>
+
+          <h3>Section 13.4 - Amendments</h3>
+          <div class="clause-quote">
+            "This Agreement may be amended or modified only by a written agreement signed by both parties."
+            <div class="clause-relevance"><strong>Relevance:</strong> Any changes (including price increases) must be in writing and signed.</div>
+          </div>
+
+          <h3>Section 4.6 - Penalties for Delayed Delivery</h3>
+          <div class="clause-quote">
+            "If Manufacturer fails to deliver the Products within the agreed lead time, Manufacturer shall pay Company liquidated damages in the amount of 1% of the invoice value for each day of delay, up to a maximum of 50% of the total invoice value."
+            <div class="clause-relevance"><strong>Relevance:</strong> AWARE has not enforced late delivery penalties but could. This is unused leverage.</div>
+          </div>
+
+          <h3>Section 11.2 - Liability Cap</h3>
+          <div class="clause-quote">
+            "The total cumulative liability of the Manufacturer arising out of or in connection with this Agreement shall not be capped and shall cover all costs, damages, and losses incurred by the Company due to the Manufacturer's breach, negligence, or misconduct."
+            <div class="clause-relevance"><strong>Relevance:</strong> Manufacturer liability is UNCAPPED - unusual and favorable to AWARE.</div>
+          </div>
+
+          <h3>Section 12 - Force Majeure</h3>
+          <div class="clause-quote">
+            Permits delay or termination only. Does NOT permit price changes.
+            <div class="clause-relevance"><strong>Relevance:</strong> Rising material costs are not force majeure and do not entitle Boom Lab to unilateral price increases.</div>
+          </div>
+
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 10: CORRESPONDENCE LOG               -->
+    <!-- ============================================ -->
+    <section id="correspondence">
+      <details>
+        <summary>
+          <span class="summary-label">Section 10</span>
+          Correspondence Log
+        </summary>
+        <div class="details-content">
+
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Type</th><th>From</th><th>To</th><th>Subject</th><th>Key Points</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>~Mar 8, 2026</td>
+                <td><span class="corr-type">Analysis</span></td>
+                <td>Internal</td>
+                <td>Internal</td>
+                <td>Price increase analysis</td>
+                <td>5 scenarios analyzed. Recommended split-the-difference (~8%). Total impact: +$11,325 at full acceptance.</td>
+              </tr>
+              <tr>
+                <td>~Mar 9, 2026</td>
+                <td><span class="corr-type">Email draft</span></td>
+                <td>David</td>
+                <td>Seyed</td>
+                <td>Counter-proposal</td>
+                <td>Proposed midpoint prices: SH $3.56, CO $3.01, LI $3.44. Addressed 400 shampoo shortage.</td>
+              </tr>
+              <tr>
+                <td>~Mar 9, 2026</td>
+                <td><span class="corr-type">Letter</span></td>
+                <td>David</td>
+                <td>Seyed</td>
+                <td>Formal response</td>
+                <td>Same counter-proposal in formal letter format with contract references.</td>
+              </tr>
+              <tr>
+                <td>Mar 12, 2026</td>
+                <td><span class="corr-type">Email</span></td>
+                <td>David</td>
+                <td>Seyed</td>
+                <td>RE: PI #31220261SHZ</td>
+                <td>Accepted new prices ($3.85/$3.25) but flagged 6 corrections: quantities (2,500 not 3,750), 400 shortage, fragrance deduction (-$2,623), deposit rate (40.8% not 30%), payment terms per addendum, leave-in missing.</td>
+              </tr>
+              <tr>
+                <td>Mar 22, 2026</td>
+                <td><span class="corr-type">Email</span></td>
+                <td>David</td>
+                <td>Seyed</td>
+                <td>RE: Production Discussion</td>
+                <td>Asserted Section 2.3 for fragrance. Section 13.3 supersedes prior docs. Reminded about 400 units. Proposed formalizing per-run agreement.</td>
+              </tr>
+              <tr>
+                <td>Mar 23, 2026</td>
+                <td><span class="corr-type">Phone</span></td>
+                <td>David</td>
+                <td>Boom Lab</td>
+                <td>Price + fragrance discussion</td>
+                <td>Phone conversation. Awaiting their response.</td>
+              </tr>
+              <tr style="background: var(--green-bg);">
+                <td>Mar 25, 2026</td>
+                <td><span class="corr-type">Meeting</span></td>
+                <td>Both</td>
+                <td>Both</td>
+                <td>Renegotiation</td>
+                <td><strong>TODAY - armed with this dossier</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 11: OPEN ITEMS & RISK FACTORS        -->
+    <!-- ============================================ -->
+    <section id="open-items">
+      <details open>
+        <summary>
+          <span class="summary-label">Section 11</span>
+          Open Items &amp; Risk Factors
+        </summary>
+        <div class="details-content">
+
+          <div class="callout callout-amber">
+            <div class="callout-title">Open Items Requiring Resolution</div>
+
+            <p><strong>1. 400 Shampoo Units</strong><br>
+            Raised in every communication. Non-negotiable. Must be fulfilled.</p>
+
+            <p><strong>2. Lab Fee Credit (R&amp;D Only)</strong><br>
+            $3,500 from Section 5.3, reserved for future R&amp;D and formulation development. Not applicable to production credit calculations. Confirm with Boom Lab when this can be applied to new product development.</p>
+
+            <p><strong>3. Teamwork/Labayk Situation</strong><br>
+            Seyed now works at Teamwork. Facility NDA signed March 11. The Teamwork contract proposal was rejected (it attempted to replace Boom Lab). Contract remains with Boom Lab Inc.</p>
+
+            <p><strong>4. Bulk Products</strong><br>
+            Original contract included bulk gallons (30 SH + 30 CO + 15 LI gallons + 75 empty gallons with pumps). Status unclear - not addressed in recent negotiations.</p>
+
+            <p><strong>5. Active Ingredients</strong><br>
+            First 10,000 bottles, AWARE provides SO-Resisthyal-25 and SymHair Force 1631. After 10,000, Boom Lab sources. With 7,400 received, ~2,600 more units before this threshold.</p>
+
+            <p><strong>6. Formula Ownership / IP</strong><br>
+            Already transferred via separate agreement (not part of this negotiation).</p>
+          </div>
+
+          <h3>Risk Factors</h3>
+
+          <div class="callout callout-red">
+            <p><strong>1. Single-source dependency</strong><br>
+            Boom Lab is sole manufacturer. No backup CM qualified. Alternative contact: Nick at Kanic Labs (nick@kaniclabs.com) from Instagram DMs.</p>
+
+            <p><strong>2. Seyed's dual role</strong><br>
+            CEO of Boom Lab but now employed by Teamwork/Labayk. Potential conflict of interest.</p>
+
+            <p><strong>3. Payment imbalance leverage cuts both ways</strong><br>
+            AWARE has significant prepayment leverage, but Boom Lab holds inventory/production capability.</p>
+
+            <p><strong>4. Contract term expired (addressed)</strong><br>
+            Original 1-year term lapsed ~July 2025. The Amendment (Article 9) formally renews through March 25, 2027 or production completion. Both parties have operated in good faith during the gap period.</p>
+
+            <p><strong>5. Fragrance cost escalation</strong><br>
+            At $73.46/lb (Aug 2025), costs may have increased. No cap in proposed terms.</p>
+          </div>
+
+        </div>
+      </details>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="doc-footer">
+    <p>AWARE Hair LLC - Confidential Internal Document - March 25, 2026</p>
+    <p>This dossier is for internal negotiation preparation only. Do not share with Boom Lab.</p>
+  </footer>
+
+</div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

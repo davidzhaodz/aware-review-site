@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Social + Ads Operations</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--t:#102B26;--bg:#f4efe9;--sf:#faf8f5;--go:#D4A574;--sa:#7d8471;--bd:rgba(16,43,38,.12);--gr:#2d6a4f;--gbg:#e8f5e9;--am:#9a6d00;--abg:#fef3d0;--rd:#8b2635;--rbg:#fde8ea;--mu:rgba(16,43,38,.52);--grbg:#f1f0ee}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--t);line-height:1.5;font-size:14px}
+.hdr{background:var(--t);color:#f4efe9;padding:24px 36px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.hdr h1{font-family:Georgia,serif;font-size:20px;font-weight:600;margin-bottom:2px}
+.hdr .sub{font-size:12px;color:rgba(244,239,233,.55)}
+.hdr .ts{font-size:11px;color:rgba(244,239,233,.38);white-space:nowrap;margin-top:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:24px 20px 48px}
+/* Today banner */
+.today{background:var(--sf);border:1px solid var(--bd);border-left:3px solid var(--go);border-radius:6px;padding:18px 22px;margin-bottom:14px}
+.today .tlabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--go);margin-bottom:10px}
+.tposts{display:flex;flex-wrap:wrap;gap:10px}
+.tcard{background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:12px 15px;flex:1;min-width:210px;max-width:320px}
+.tcard .pr{display:flex;gap:6px;align-items:center;margin-bottom:5px}
+.pb{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:2px 7px;border-radius:3px}
+.pb.ig{background:#fde8ea;color:#8b2635}.pb.tt{background:#e8f5f0;color:#1a6644}.pb.li{background:#dce8f5;color:#1a4a7a}
+.fb{font-size:11px;color:var(--mu);background:var(--grbg);padding:2px 6px;border-radius:3px}
+.tcard .pil{font-size:12px;color:var(--sa);font-weight:500;margin-bottom:4px}
+.tcard .cp{font-size:12px;color:var(--mu);line-height:1.4;margin-bottom:5px}
+.tcard .ht{font-size:11px;color:var(--mu);margin-bottom:5px}
+.as{font-size:11px;font-weight:600}.as.r{color:var(--gr)}.as.p{color:var(--am)}
+.trest{color:var(--mu);font-size:13px;padding:4px 0}
+/* Collapsible */
+details{background:var(--sf);border:1px solid var(--bd);border-radius:6px;margin-bottom:10px;overflow:hidden}
+summary{padding:13px 18px;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;user-select:none}
+summary::-webkit-details-marker{display:none}
+.stitle{font-family:Georgia,serif;font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+.smeta{font-size:12px;color:var(--mu);font-family:'DM Sans',sans-serif}
+.sarrow{color:var(--mu);font-size:11px;flex-shrink:0;transition:transform .2s}
+details[open] .sarrow{transform:rotate(180deg)}
+.sbody{padding:4px 18px 18px;border-top:1px solid var(--bd)}
+/* Badge */
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+.badge.gr{background:var(--gbg);color:var(--gr)}.badge.am{background:var(--abg);color:var(--am)}
+.badge.rd{background:var(--rbg);color:var(--rd)}.badge.gy{background:var(--grbg);color:#6b7280}
+.badge.go{background:#fdf0e4;color:#8a5a20}
+/* Table */
+.dt{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
+.dt th{text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--mu);padding:7px 10px;border-bottom:1px solid var(--bd)}
+.dt td{padding:9px 10px;border-bottom:1px solid var(--bd);vertical-align:middle}
+.dt tr:last-child td{border-bottom:none}
+.dt tr.tday td{background:rgba(212,165,116,.07)}
+/* Pipeline */
+.pflow{display:flex;align-items:stretch;margin-top:12px;overflow-x:auto}
+.pstage{flex:1;min-width:130px;background:var(--bg);border:1px solid var(--bd);border-right:none;padding:12px 14px}
+.pstage:first-child{border-radius:6px 0 0 6px}.pstage:last-child{border-right:1px solid var(--bd);border-radius:0 6px 6px 0}
+.pstage .sl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--mu);margin-bottom:4px}
+.pstage .st{font-size:13px;font-weight:600;margin-bottom:3px}
+.pstage .sd{font-size:12px;color:var(--mu);line-height:1.35}
+.parr{width:18px;display:flex;align-items:center;justify-content:center;color:var(--go);font-size:14px;flex-shrink:0;background:var(--bg);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+/* Boost grid */
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:12px}
+.bcard{background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:12px 14px}
+.bcard .bn{font-weight:600;font-size:13px;margin-bottom:5px}
+.bmeta{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:7px}
+.bmeta span{font-size:11px;color:var(--mu);background:var(--grbg);padding:2px 6px;border-radius:3px}
+.bft{display:flex;align-items:center;justify-content:space-between;margin-top:7px;padding-top:7px;border-top:1px solid var(--bd)}
+.ar{font-size:11px;font-weight:600}.ar.y{color:var(--gr)}.ar.n{color:var(--am)}
+/* Budget */
+.bgrid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:12px}
+.bmo{background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:12px 14px}
+.bmo.act{border-color:var(--go);border-width:1.5px}
+.bmo .ml{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--mu);margin-bottom:3px}
+.bmo .amt{font-family:Georgia,serif;font-size:20px;font-weight:600;margin-bottom:3px}
+.bmo .cond{font-size:11px;color:var(--mu);line-height:1.35}
+.kill{margin-top:12px;padding:10px 14px;background:var(--rbg);border:1px solid rgba(139,38,53,.18);border-radius:6px;font-size:12px;color:var(--rd)}
+/* Checklist */
+.cl{list-style:none;margin-top:12px}
+.cl li{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.cl li:last-child{border-bottom:none}
+.cn{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+.cn.p{background:var(--grbg);color:#6b7280;border:1px solid var(--bd)}.cn.b{background:var(--rbg);color:var(--rd);border:1px solid var(--rd)}
+.ct .lb{font-weight:500}.ct .dt2{font-size:12px;color:var(--mu);margin-top:1px}
+.ctm{margin-left:auto;font-size:12px;color:var(--mu);white-space:nowrap;margin-top:2px}
+/* Progress */
+.prog-wrap{background:rgba(16,43,38,.08);border-radius:4px;height:5px;overflow:hidden;margin-top:4px}
+.prog-fill{height:100%;border-radius:4px;background:var(--gr)}
+/* Stats */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:12px}
+.sc{background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:12px;text-align:center}
+.sc .sv{font-family:Georgia,serif;font-size:24px;font-weight:600;line-height:1;margin-bottom:3px}
+.sc .sk{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px}
+/* File links */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;margin-top:12px}
+.fl{display:flex;align-items:flex-start;gap:9px;background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:10px 13px}
+.fl .fi{font-size:14px;flex-shrink:0;margin-top:1px}
+.fl .fn{font-weight:600;font-size:13px;margin-bottom:2px}
+.fl .fp{font-family:'SF Mono','Fira Code',monospace;font-size:10px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.footer{text-align:center;padding:18px;font-size:11px;color:var(--mu);border-top:1px solid var(--bd);margin-top:8px}
+@media(max-width:680px){
+  .hdr{padding:18px 14px;flex-direction:column;gap:6px}.hdr .ts{text-align:left}
+  .wrap{padding:14px 10px 36px}
+  .tposts{flex-direction:column}
+  .pflow{flex-direction:column}.pstage{border-right:1px solid var(--bd);border-bottom:none;border-radius:0}
+  .pstage:first-child{border-radius:6px 6px 0 0}.pstage:last-child{border-bottom:1px solid var(--bd);border-radius:0 0 6px 6px}
+  .parr{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <h1>Social + Ads Operations</h1>
+    <div class="sub">AWARE Hair - Content Schedule, Paid Ads Pipeline, Automation Status</div>
+  </div>
+  <div class="ts">Updated: 2026-03-23</div>
+</div>
+
+<div class="wrap">
+
+<!-- TODAY - always visible -->
+<div class="today">
+  <div class="tlabel" id="today-label">Today's Content</div>
+  <div class="tposts" id="today-posts"></div>
+</div>
+
+<!-- 1. Weekly Schedule -->
+<details open>
+  <summary>
+    <span class="stitle">This Week's Schedule</span>
+    <span class="smeta">Week of Mar 24-29, 2026</span>
+    <span class="sarrow">&#9660;</span>
+  </summary>
+  <div class="sbody">
+    <table class="dt" id="wtable">
+      <thead><tr><th>Day</th><th>Platform</th><th>Format</th><th>Audience</th><th>Pillar</th><th>Assets</th><th>Boost?</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr data-day="1"><td><strong>Mon 3/24</strong></td><td><span class="pb ig">Instagram</span></td><td>Carousel</td><td>Stylists</td><td>Education</td><td><span class="as r">&#10003; Ready</span></td><td><span class="badge am">Candidate</span></td><td><span class="badge am">Pending</span></td></tr>
+        <tr data-day="1"><td></td><td><span class="pb li">LinkedIn</span></td><td>PDF Carousel</td><td>B2B Buyers</td><td>Authority</td><td><span class="as r">&#10003; Ready</span></td><td><span class="badge gy">No</span></td><td><span class="badge am">Pending</span></td></tr>
+        <tr data-day="2"><td><strong>Tue 3/25</strong></td><td><span class="pb ig">Instagram</span></td><td>Stories</td><td>Warm</td><td>BTS</td><td><span class="as p">&#9679; Create</span></td><td><span class="badge gy">No</span></td><td><span class="badge gy">Optional</span></td></tr>
+        <tr data-day="3"><td><strong>Wed 3/26</strong></td><td><span class="pb ig">Instagram</span></td><td>Reel</td><td>DTC/Stylist</td><td>Problem/Solution</td><td><span class="as p">&#9679; Needed</span></td><td><span class="badge am">Candidate</span></td><td><span class="badge gy">Pending</span></td></tr>
+        <tr data-day="3"><td></td><td><span class="pb tt">TikTok</span></td><td>Crosspost</td><td>DTC</td><td>Problem/Solution</td><td><span class="as p">&#9679; Needed</span></td><td><span class="badge gy">No</span></td><td><span class="badge gy">Pending</span></td></tr>
+        <tr data-day="4"><td><strong>Thu 3/27</strong></td><td colspan="7" style="color:var(--mu);font-style:italic">Rest - engage in comments + DMs</td></tr>
+        <tr data-day="5"><td><strong>Fri 3/28</strong></td><td colspan="7" style="color:var(--mu);font-style:italic">Rest - stories optional</td></tr>
+        <tr data-day="6"><td><strong>Sat 3/29</strong></td><td><span class="pb tt">TikTok</span></td><td>Reel</td><td>DTC consumer</td><td>Social proof</td><td><span class="as p">&#9679; Needed</span></td><td><span class="badge am">Candidate</span></td><td><span class="badge gy">Pending</span></td></tr>
+        <tr data-day="6"><td></td><td><span class="pb ig">Instagram</span></td><td>Crosspost</td><td>DTC consumer</td><td>Social proof</td><td><span class="as p">&#9679; Needed</span></td><td><span class="badge am">Candidate</span></td><td><span class="badge gy">Pending</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</details>
+
+<!-- 2. Content Pipeline -->
+<details>
+  <summary>
+    <span class="stitle">Content Pipeline</span>
+    <span class="smeta">Organic to paid promotion flow</span>
+    <span class="sarrow">&#9660;</span>
+  </summary>
+  <div class="sbody">
+    <div class="pflow">
+      <div class="pstage"><div class="sl">Stage 1</div><div class="st">Organic Post</div><div class="sd">Published on schedule to IG / TikTok / LinkedIn</div><div style="margin-top:7px"><span class="badge gr">Active</span></div></div>
+      <div class="parr">&#8250;</div>
+      <div class="pstage"><div class="sl">Stage 2</div><div class="st">Winner Detection</div><div class="sd">Engagement &gt; 2x average at 48h. N8N checks daily.</div><div style="margin-top:7px"><span class="badge am">Not deployed</span></div></div>
+      <div class="parr">&#8250;</div>
+      <div class="pstage"><div class="sl">Stage 3</div><div class="st">Boost ($5-10/day)</div><div class="sd">Same creative, same audience, 3-5 day window</div><div style="margin-top:7px"><span class="badge am">Pending setup</span></div></div>
+      <div class="parr">&#8250;</div>
+      <div class="pstage"><div class="sl">Stage 4</div><div class="st">Dedicated Ad</div><div class="sd">$15-25/day structured campaign if boost CPA &lt; $8</div><div style="margin-top:7px"><span class="badge gy">Future</span></div></div>
+    </div>
+  </div>
+</details>
+
+<!-- 3. Boost Candidates -->
+<details>
+  <summary>
+    <span class="stitle">Boost Candidates</span>
+    <span class="smeta">3 posts ready for promotion</span>
+    <span class="sarrow">&#9660;</span>
+  </summary>
+  <div class="sbody">
+    <div class="bgrid">
+      <div class="bcard">
+        <div class="bn">Scalp Types Educational Carousel</div>
+        <div class="bmeta"><span>4 slides</span><span>Instagram</span><span>Stylists + DTC</span></div>
+        <div style="font-size:12px;color:var(--mu);line-height:1.4">Clean scalp condition data visualization with AWARE solution mapping. High save/share signal expected.</div>
+        <div class="bft"><span class="ar y">&#10003; Ad format ready</span><span class="badge am">Candidate</span></div>
+      </div>
+      <div class="bcard">
+        <div class="bn">Scalp Report Lead Gen Carousel</div>
+        <div class="bmeta"><span>6 slides</span><span>Instagram</span><span>DTC consumer</span></div>
+        <div style="font-size:12px;color:var(--mu);line-height:1.4">Problem-agitation-solution format leading to Scalp Report signup. Best email capture CTA.</div>
+        <div class="bft"><span class="ar y">&#10003; Ad format ready</span><span class="badge am">Candidate</span></div>
+      </div>
+      <div class="bcard">
+        <div class="bn">B2B Salon ROI Proof Carousel</div>
+        <div class="bmeta"><span>5 slides</span><span>LinkedIn</span><span>Salon owners</span></div>
+        <div style="font-size:12px;color:var(--mu);line-height:1.4">Retail revenue per client + 96% reorder rate. Designed for LinkedIn lead gen format.</div>
+        <div class="bft"><span class="ar n">&#9679; Needs ad copy</span><span class="badge gy">In progress</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<!-- 4. Meta Ads Setup Checklist -->
+<details>
+  <summary>
+    <span class="stitle">Meta Ads Setup Checklist</span>
+    <span class="smeta">0 / 7 complete</span>
+    <span class="sarrow">&#9660;</span>
+  </summary>
+  <div class="sbody">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;margin-bottom:4px">
+      <span style="font-size:13px;font-weight:500">Setup progress</span>
+      <span style="font-size:13px;font-weight:700;color:var(--gr)">0 / 7</span>
+    </div>
+    <div class="prog-wrap"><div class="prog-fill" style="width:0%"></div></div>
+    <ul class="cl">
+      <li><div class="cn p">1</div><div class="ct"><div class="lb">Meta Developer App + System User Token</div><div class="dt2">Create app in Business Manager, generate non-expiring token with ads_management scope</div></div><span class="ctm">45 min</span></li>
+      <li><div class="cn b">!</div><div class="ct"><div class="lb">Share credentials with Claude</div><div class="dt2">Add token + ad account ID to credentials file. Blocked on step 1.</div></div><span class="ctm">5 min</span></li>
+      <li><div class="cn p">3</div><div class="ct"><div class="lb">Meta Pixel verification</div><div class="dt2">Confirm pixel fires on homepage, product, Scalp Report, checkout pages</div></div><span class="ctm">30 min</span></li>
+      <li><div class="cn p">4</div><div class="ct"><div class="lb">Add Lead event to Scalp Report</div><div class="dt2">Fire Lead pixel event on form submission for email capture tracking</div></div><span class="ctm">15 min</span></li>
+      <li><div class="cn p">5</div><div class="ct"><div class="lb">Upload customer exclusion CSVs</div><div class="dt2">Export Shopify customers + Klaviyo subscribers as exclusion audiences</div></div><span class="ctm">30 min</span></li>
+      <li><div class="cn p">6</div><div class="ct"><div class="lb">Review boost candidates with Claude</div><div class="dt2">Run /ads-workspace to finalize first 2 boost campaigns with targeting + copy</div></div><span class="ctm">15 min</span></li>
+      <li><div class="cn p">7</div><div class="ct"><div class="lb">Activate campaigns</div><div class="dt2">Go live April 1 at $5-10/day per post. Review at 48h, 7 days, 14 days.</div></div><span class="ctm">10 min</span></li>
+    </ul>
+  </div>
+</details>
+
+<!-- 5. Budget Tracker -->
+<details>
+  <summary>
+    <span class="stitle">Paid Ads Budget Tracker</span>
+    <span class="smeta">April pilot - scaling path</span>
+    <span class="sarrow">&#9660;</span>
+  </summary>
+  <div class="sbody">
+    <div class="bgrid2">
+      <div class="bmo act"><div class="ml">April 2026</div><div class="amt">$500</div><div class="cond">Pilot. Pre-launch setup in progress.</div><div style="margin-top:7px"><span class="badge am">Pre-launch</span></div></div>
+      <div class="bmo"><div class="ml">May 2026</div><div class="amt">$750-1K</div><div class="cond">If April CPA &lt; $8 for 2 weeks</div><div style="margin-top:7px"><span class="badge gy">Conditional</span></div></div>
+      <div class="bmo"><div class="ml">June 2026</div><div class="amt">$1K-1.5K</div><div class="cond">If May shows positive contribution margin</div><div style="margin-top:7px"><span class="badge gy">Conditional</span></div></div>
+      <div class="bmo"><div class="ml">July 2026</div><div class="amt">$1.5K-2.5K</div><div class="cond">If June ROAS &gt; 2x across campaigns</div><div style="margin-top:7px"><span class="badge gy">Conditional</span></div></div>
+    </div>
+    <div class="kill"><strong>Kill threshold:</strong> CPA &gt; $15 for 2 consecutive weeks - pause all paid and reassess creative + audience</div>
+  </div>
+</details>
+
+<!-- 6. N8N Automation -->
+<details>
+  <summary>
+    <span class="stitle">N8N Automation Status</span>
+    <span class="smeta">7 workflows - 0 deployed</span>
+    <span class="sarrow">&#9660;</span>
+  </summary>
+  <div class="sbody">
+    <table class="dt">
+      <thead><tr><th>Workflow</th><th>Purpose</th><th>Trigger</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Social Winner Detector</strong></td><td>Flag posts &gt;2x avg engagement at 48h</td><td>Cron daily 9am</td><td><span class="badge am">Template ready</span></td></tr>
+        <tr><td><strong>Email Capture Tracker</strong></td><td>Track Scalp Report signups vs posting</td><td>Webhook on submit</td><td><span class="badge am">Template ready</span></td></tr>
+        <tr><td><strong>Content Calendar Reminder</strong></td><td>Push notification 2h before post time</td><td>Cron day-of</td><td><span class="badge am">Template ready</span></td></tr>
+        <tr><td><strong>Budget Pacing Alert</strong></td><td>Warn if daily spend &gt; 110% of budget</td><td>Meta Ads webhook</td><td><span class="badge am">Template ready</span></td></tr>
+        <tr><td><strong>Fatigue Detection</strong></td><td>Flag ads with frequency &gt; 4.0</td><td>Cron twice weekly</td><td><span class="badge am">Template ready</span></td></tr>
+        <tr><td><strong>Weekly Performance Report</strong></td><td>Meta + Klaviyo metrics digest email</td><td>Cron Mon 8am</td><td><span class="badge am">Template ready</span></td></tr>
+        <tr><td><strong>Anomaly Detection</strong></td><td>Alert on CPA or CTR swings &gt; 30%</td><td>Cron daily</td><td><span class="badge am">Template ready</span></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;font-size:12px;color:var(--mu)">All workflows blocked on Meta Ads MCP setup (checklist item 2). Deploy after credentials are in place.</div>
+  </div>
+</details>
+
+<!-- 7. Creative Stats -->
+<details>
+  <summary>
+    <span class="stitle">Creative Production Stats</span>
+    <span class="smeta">Carousel generator output</span>
+    <span class="sarrow">&#9660;</span>
+  </summary>
+  <div class="sbody">
+    <div class="sgrid">
+      <div class="sc"><div class="sv">3</div><div class="sk">Design Families</div></div>
+      <div class="sc"><div class="sv">10</div><div class="sk">Slide Types</div></div>
+      <div class="sc"><div class="sv">3</div><div class="sk">Carousels this week</div></div>
+      <div class="sc"><div class="sv">42</div><div class="sk">PNGs this week</div></div>
+      <div class="sc"><div class="sv">3</div><div class="sk">LinkedIn PDFs</div></div>
+      <div class="sc"><div class="sv">4</div><div class="sk">Carousels next week</div></div>
+    </div>
+    <div style="margin-top:12px;padding:10px 14px;background:var(--bg);border:1px solid var(--bd);border-radius:6px;font-size:12px;color:var(--mu)">
+      <strong style="color:var(--t)">Slide types:</strong> Original (6) - Cover, Problem, Data, Solution, Proof, CTA &nbsp;+&nbsp; Ad Types (4) - Lead Gen, B2B Authority, Before/After, Testimonial Frame<br>
+      <strong style="color:var(--t)">Next week:</strong> 4 carousels, 12 slides, 34 PNGs - batch output in weekly-batches/
+    </div>
+  </div>
+</details>
+
+<!-- Ad Loop System -->
+<details>
+  <summary>
+    <span class="stitle">Ad Loop System <span class="badge go">NEW</span></span>
+    <span class="smeta">Automated competitor intel + creative pipeline</span>
+    <span class="sarrow">&#9660;</span>
+  </summary>
+  <div class="sbody">
+    <div class="sgrid">
+      <div class="sc"><div class="sv">7</div><div class="sk">Competitors Tracked</div></div>
+      <div class="sc"><div class="sv">0</div><div class="sk">Scans Completed</div></div>
+      <div class="sc"><div class="sv">8</div><div class="sk">Pipeline Steps</div></div>
+      <div class="sc"><div class="sv">~$5/mo</div><div class="sk">Tooling Cost</div></div>
+    </div>
+    <table class="dt" style="margin-top:14px">
+      <thead><tr><th>Component</th><th>Status</th><th>File</th></tr></thead>
+      <tbody>
+        <tr><td>AD-INTEL Engine</td><td><span class="badge gr">Built</span></td><td><code>engines/ad-intel-engine.mjs</code></td></tr>
+        <tr><td>Creative Pipeline</td><td><span class="badge gr">Built</span></td><td><code>/ad-generate</code> command</td></tr>
+        <tr><td>Campaign Builder</td><td><span class="badge gr">Built</span></td><td><code>pipeline/campaign-builder.mjs</code></td></tr>
+        <tr><td>N8N Feedback Loop</td><td><span class="badge am">Needs Deploy</span></td><td><code>n8n-workflows/performance-feedback-loop.json</code></td></tr>
+        <tr><td>Meta Ads MCP</td><td><span class="badge rd">Needs Credentials</span></td><td>David: ~45 min setup</td></tr>
+        <tr><td>Competitor Scan Data</td><td><span class="badge am">First Scan Pending</span></td><td>Run <code>/ad-library-scan</code></td></tr>
+        <tr><td>MARKETER Integration</td><td><span class="badge gr">Active</span></td><td>Thu sessions read ad-intel data</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:12px;padding:10px 14px;background:var(--bg);border:1px solid var(--bd);border-radius:6px;font-size:12px;color:var(--mu)">
+      <strong style="color:var(--t)">Loop flow:</strong> AD-INTEL engine (weekly) -> MARKETER analysis (Thu) -> /ad-generate (creative) -> Gemini Imagen (shots) -> campaign-builder (Meta payloads) -> n8n (performance monitoring) -> signal bus -> MARKETER (loops back)<br>
+      <strong style="color:var(--t)">Architecture doc:</strong> <code>marketing/paid-ads/AD-LOOP-ARCHITECTURE.md</code>
+    </div>
+  </div>
+</details>
+
+<!-- 8. Key Files -->
+<details>
+  <summary>
+    <span class="stitle">Key Files Quick Access</span>
+    <span class="smeta">Content + Ads file index</span>
+    <span class="sarrow">&#9660;</span>
+  </summary>
+  <div class="sbody">
+    <div class="fgrid">
+      <div class="fl"><div class="fi">&#128197;</div><div><div class="fn">Publish Queue (this week)</div><div class="fp">aware-hair-social-media/captions/weekly-publish-queue-2026-03-24.md</div></div></div>
+      <div class="fl"><div class="fi">&#128196;</div><div><div class="fn">Content Plan - This Week</div><div class="fp">aware-hair-social-media/captions/content-plan-2026-03-24.md</div></div></div>
+      <div class="fl"><div class="fi">&#128196;</div><div><div class="fn">Content Plan - Next Week</div><div class="fp">aware-hair-social-media/captions/content-plan-2026-03-31.md</div></div></div>
+      <div class="fl"><div class="fi">&#128200;</div><div><div class="fn">Q2 Content Calendar</div><div class="fp">marketing/Q2-2026-CONTENT-CALENDAR.md</div></div></div>
+      <div class="fl"><div class="fi">&#127944;</div><div><div class="fn">Paid Ads Skill</div><div class="fp">skills/paid-ads/skill.md</div></div></div>
+      <div class="fl"><div class="fi">&#9989;</div><div><div class="fn">Meta Ads Setup Checklist</div><div class="fp">marketing/paid-ads/pipeline/SETUP-CHECKLIST.md</div></div></div>
+      <div class="fl"><div class="fi">&#128196;</div><div><div class="fn">Q2 Boost Brief</div><div class="fp">marketing/paid-ads/briefs/q2-2026-content-boost-brief.md</div></div></div>
+      <div class="fl"><div class="fi">&#9881;</div><div><div class="fn">N8N Workflow Templates</div><div class="fp">marketing/paid-ads/pipeline/n8n-workflows/</div></div></div>
+      <div class="fl"><div class="fi">&#128252;</div><div><div class="fn">Carousel Generator</div><div class="fp">aware-hair-social-media/carousel-generator/</div></div></div>
+    </div>
+  </div>
+</details>
+
+</div>
+
+<div class="footer">AWARE Hair - Social + Ads Operations Dashboard - 2026-03-23</div>
+
+<script>
+const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const today=new Date();
+const dn=today.getDay();
+
+const schedule={
+  1:[
+    {plat:'Instagram',pc:'ig',fmt:'Carousel',pil:'Education',cap:'Your scalp is an ecosystem, not just a surface. Three signs it\'s out of balance - and what actually helps...',ht:'#scalphealth #haircare #awarehair',rdy:true},
+    {plat:'LinkedIn',pc:'li',fmt:'PDF Carousel',pil:'Authority / B2B',cap:'Most salon retail fails within 90 days. Here\'s the data on why - and what the 7% with sustained retail revenue do differently...',ht:'LinkedIn organic - no hashtags',rdy:true}
+  ],
+  3:[
+    {plat:'Instagram',pc:'ig',fmt:'Reel',pil:'Problem / Solution',cap:'If your dandruff shampoo stopped working, this is probably why. The thing nobody tells you about scalp inflammation...',ht:'#scalpcare #dandruff #hairloss #awarehair',rdy:false},
+    {plat:'TikTok',pc:'tt',fmt:'Reel crosspost',pil:'Problem / Solution',cap:'Same video - TikTok caption optimized for discovery.',ht:'#scalpcare #haircare #hairtok',rdy:false}
+  ],
+  6:[
+    {plat:'TikTok',pc:'tt',fmt:'Reel',pil:'Social Proof',cap:'She came in for a blowout and left with a whole scalp protocol. Three weeks later...',ht:'#hairtransformation #scalptreatment #awarehair',rdy:false},
+    {plat:'Instagram',pc:'ig',fmt:'Reel crosspost',pil:'Social Proof',cap:'She came in for a blowout and left with a whole scalp protocol. Three weeks later...',ht:'#scalptransformation #awarehair',rdy:false}
+  ]
+};
+
+const restMsg={0:'Sunday - no post scheduled.',2:'Tuesday - stories only or rest. Engage in comments.',4:'Thursday - rest day. Respond to DMs and comments.',5:'Friday - rest day. Stories optional.'};
+
+document.getElementById('today-label').textContent=DAYS[dn]+"'s Content";
+const tp=document.getElementById('today-posts');
+
+if(schedule[dn]){
+  schedule[dn].forEach(p=>{
+    const d=document.createElement('div');
+    d.className='tcard';
+    d.innerHTML=`<div class="pr"><span class="pb ${p.pc}">${p.plat}</span><span class="fb">${p.fmt}</span></div><div class="pil">${p.pil}</div><div class="cp">"${p.cap}"</div><div class="ht">${p.ht}</div><span class="as ${p.rdy?'r':'p'}">${p.rdy?'&#10003; Assets ready':'&#9679; Assets needed'}</span>`;
+    tp.appendChild(d);
+  });
+}else if(restMsg[dn]){
+  const d=document.createElement('div');
+  d.className='trest';d.textContent=restMsg[dn];tp.appendChild(d);
+}
+
+// Highlight today's rows in weekly table
+document.querySelectorAll('#wtable tbody tr[data-day]').forEach(r=>{
+  if(parseInt(r.dataset.day)===dn)r.classList.add('tday');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARE Hair - Distribution Partnership Overview for SSG</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <!-- AWARE Hair product data: source of truth is line sheets per internal protocol -->
+  <!-- Competitor data sources noted inline. All verified April 2026. -->
+  <!-- Design system: brand-deck-design skill (DM Sans only, #0D1F1A, #F5F1EC, 50/50 splits) -->
+  <style>
+    :root {
+      --dark-teal: #0D1F1A;
+      --cream: #F5F1EC;
+      --off-white: #FAF8F5;
+      --near-black: #1A1A1A;
+      --body: #333333;
+      --secondary: #666666;
+      --border: #E8E5DF;
+      --white: #FFFFFF;
+      --green: #2D6B3F;
+      --red: #9e3a30;
+      --gold: #B8956E;
+    }
+
+    @page { size: letter landscape; margin: 0; }
+
+    @media print {
+      html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; margin: 0 !important; padding: 0 !important; }
+      .page { page-break-after: always; margin: 0 !important; box-shadow: none; height: 100vh; }
+      .page:last-child { page-break-after: auto; }
+      .no-print { display: none !important; }
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #d5d1cc;
+      color: var(--body);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Page Shell */
+    .page {
+      width: 11in;
+      height: 8.5in;
+      margin: 20px auto;
+      background: var(--white);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Bar (all pages) */
+    .top-bar {
+      background: var(--dark-teal);
+      padding: 10px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .top-bar-logo {
+      font-size: 10pt; font-weight: 700; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--white);
+    }
+    .top-bar-title {
+      font-size: 9pt; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--white); text-align: right;
+    }
+    .top-bar-sub {
+      font-size: 6.5pt; letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(255,255,255,0.4); margin-top: 1px; text-align: right;
+    }
+
+    /* Footer (all pages) */
+    .footer {
+      padding: 6px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 6.5pt; color: var(--secondary); letter-spacing: 0.5px;
+      border-top: 1px solid var(--border); flex-shrink: 0;
+    }
+    .footer-logo { font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--near-black); }
+    .footer-links { display: flex; gap: 14px; }
+    .footer-links a { color: var(--body); text-decoration: none; }
+
+    /* 50/50 Split (core layout) */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      flex-grow: 1;
+      min-height: 0;
+    }
+    .split-photo {
+      background-size: cover;
+      background-position: center;
+      min-height: 0;
+    }
+    .split-content {
+      padding: 40px 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Typography */
+    h2 {
+      font-size: 20pt; font-weight: 700; letter-spacing: 0.5px;
+      text-transform: uppercase; color: var(--near-black);
+      line-height: 1.2; margin-bottom: 16px;
+    }
+    h3 {
+      font-size: 10pt; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--near-black); margin-bottom: 10px;
+    }
+    p {
+      font-size: 11pt; line-height: 1.7; color: var(--body); margin-bottom: 12px;
+    }
+    .small { font-size: 9pt; line-height: 1.6; color: var(--secondary); }
+
+    /* Product Row (horizontal, larger images) */
+    .product-row {
+      display: flex;
+      gap: 24px;
+      align-items: flex-end;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .product-item { text-align: center; }
+    .product-item img { height: 140px; width: auto; display: block; margin: 0 auto 6px; }
+    .product-item .name {
+      font-size: 8pt; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.8px; color: var(--near-black);
+    }
+    .product-item .price {
+      font-size: 8pt; color: var(--secondary); margin-top: 2px;
+    }
+
+    /* Stat Strip */
+    .stat-strip {
+      display: flex; gap: 32px; margin: 16px 0;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-size: 28pt; font-weight: 700; color: var(--near-black); line-height: 1;
+    }
+    .stat-label {
+      font-size: 7pt; color: var(--secondary); text-transform: uppercase;
+      letter-spacing: 0.8px; margin-top: 4px;
+    }
+
+    /* Badges */
+    .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+    .badge {
+      font-size: 6.5pt; font-weight: 700; letter-spacing: 0.8px;
+      text-transform: uppercase; padding: 3px 8px;
+      border: 1px solid var(--border); color: var(--body); background: var(--white);
+    }
+
+    /* Callout Bar */
+    .callout {
+      background: var(--dark-teal); color: var(--white);
+      padding: 12px 48px; text-align: center; flex-shrink: 0;
+    }
+    .callout em { font-size: 10pt; line-height: 1.5; }
+    .callout strong { color: var(--gold); }
+    .callout .attr {
+      font-size: 6.5pt; opacity: 0.45; letter-spacing: 1.5px;
+      text-transform: uppercase; margin-top: 3px;
+    }
+
+    /* Divider Page */
+    .divider-page {
+      background: var(--dark-teal);
+      display: flex; align-items: center; justify-content: center;
+      flex-grow: 1;
+    }
+    .divider-page h2 {
+      color: var(--white); font-size: 22pt; letter-spacing: 3px;
+    }
+
+    /* Comparison - Simplified */
+    .comp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      margin: 12px 0;
+    }
+    .comp-card {
+      background: var(--white);
+      padding: 16px 18px;
+    }
+    .comp-card.highlight {
+      background: var(--off-white);
+      border-top: 3px solid var(--dark-teal);
+    }
+    .comp-card .brand {
+      font-size: 10pt; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.8px; color: var(--near-black); margin-bottom: 2px;
+    }
+    .comp-card .focus {
+      font-size: 7.5pt; color: var(--secondary); text-transform: uppercase;
+      letter-spacing: 0.6px; margin-bottom: 10px;
+    }
+    .comp-card .detail {
+      font-size: 8.5pt; line-height: 1.5; color: var(--body); margin-bottom: 4px;
+    }
+    .comp-card .detail strong { color: var(--near-black); }
+
+    /* Check / X */
+    .check { color: var(--green); font-weight: 700; }
+    .x-mark { color: var(--red); font-weight: 700; }
+    .partial { color: var(--gold); font-weight: 700; }
+
+    /* Next Steps */
+    .steps { counter-reset: steps; }
+    .step {
+      counter-increment: steps;
+      display: flex; gap: 14px; align-items: flex-start;
+      margin-bottom: 18px;
+    }
+    .step-num {
+      width: 32px; height: 32px; min-width: 32px;
+      background: var(--dark-teal); color: var(--white);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 12pt; font-weight: 700;
+    }
+    .step h4 {
+      font-size: 9pt; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.6px; color: var(--near-black); margin-bottom: 2px;
+    }
+    .step p { font-size: 9pt; color: var(--secondary); line-height: 1.5; margin: 0; }
+
+    /* Value Props */
+    .value-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+      margin: 12px 0;
+    }
+    .value-item h4 {
+      font-size: 8pt; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.6px; color: var(--near-black); margin-bottom: 3px;
+    }
+    .value-item p { font-size: 9pt; color: var(--secondary); line-height: 1.5; margin: 0; }
+
+    /* Print Button */
+    .print-btn {
+      position: fixed; top: 16px; right: 16px;
+      background: var(--dark-teal); color: var(--white); border: none;
+      padding: 8px 20px; font-family: 'DM Sans', sans-serif;
+      font-size: 9pt; font-weight: 600; cursor: pointer; z-index: 100;
+    }
+  </style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">Print / Save PDF</button>
+
+<!-- ============================================ -->
+<!-- PAGE 1: BRAND OVERVIEW (Photo Left | Content Right) -->
+<!-- ============================================ -->
+<div class="page">
+  <div class="top-bar">
+    <div class="top-bar-logo">AWARE Hair</div>
+    <div>
+      <div class="top-bar-title">Distribution Partnership</div>
+      <div class="top-bar-sub">Prepared for Salon Service Group</div>
+    </div>
+  </div>
+
+  <div class="split">
+    <!-- LEFT: Hero Product Photo -->
+    <div class="split-photo" style="background-image: url('https://res.cloudinary.com/dwgtfjod9/image/upload/w_1200,q_auto/aware-hair/product-photos/collection-full-blue.jpg');"></div>
+
+    <!-- RIGHT: Brand Story -->
+    <div class="split-content" style="background: var(--cream);">
+      <h2>Born in the Salon, Built for Professionals</h2>
+      <p>Created by <strong>Tina Mui</strong>, a Master Stylist and Trichologist with 40+ years behind the chair, alongside her daughter <strong>Jade Wong</strong>. Every formula features the patent-pending AWAREBIO Complex - a proprietary blend of plant-based actives for long-term scalp wellness.</p>
+      <p>AWARE is purpose-built for the professional channel. Not sold on Amazon, Ulta, Sephora, or any mass retailer. Distribution is controlled to protect salon margins.</p>
+
+      <div class="stat-strip">
+        <div class="stat">
+          <div class="stat-num">96%</div>
+          <div class="stat-label">B2B Repurchase</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Salon Partners</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">18M+</div>
+          <div class="stat-label">Organic Views</div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <div class="badge">Patent-Pending</div>
+        <div class="badge">Made in USA</div>
+        <div class="badge">MoCRA Compliant</div>
+        <div class="badge">GMP Certified</div>
+        <div class="badge">Vegan + Clean</div>
+        <div class="badge">Professional-Exclusive</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <em>"By far the best curly product I have ever used. It's an <strong>easy yes</strong> when it's just a small boutique assortment."</em>
+    <div class="attr">Olivia Fishburn, DSC - Nashville, Salon Service Group</div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-logo">AWARE Hair</span>
+    <div class="footer-links">
+      <span>awarehair.com</span>
+      <span>@awarehaircare</span>
+      <a href="mailto:david@awarehair.com">david@awarehair.com</a>
+      <span>(626) 688-9844</span>
+    </div>
+    <span>01</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PAGE 2: THE COLLECTION (Content Left | Photo Right) -->
+<!-- ============================================ -->
+<div class="page">
+  <div class="top-bar">
+    <div class="top-bar-logo">AWARE Hair</div>
+    <div>
+      <div class="top-bar-title">The Collection</div>
+      <div class="top-bar-sub">3 Core SKUs - Minimal Shelf Footprint</div>
+    </div>
+  </div>
+
+  <div class="split">
+    <!-- LEFT: Products -->
+    <div class="split-content" style="background: var(--white); text-align: center;">
+      <div class="product-row">
+        <div class="product-item">
+          <img src="https://res.cloudinary.com/dwgtfjod9/image/upload/w_400,q_auto/aware-hair/product-photos/shampoo-cutout.webp" alt="Shampoo">
+          <div class="name">Shampoo</div>
+          <div class="price">300 mL | Retail $55 | Salon $27.50</div>
+        </div>
+        <div class="product-item">
+          <img src="https://res.cloudinary.com/dwgtfjod9/image/upload/w_400,q_auto/aware-hair/product-photos/conditioner-cutout.webp" alt="Conditioner">
+          <div class="name">Conditioner</div>
+          <div class="price">300 mL | Retail $55 | Salon $27.50</div>
+        </div>
+        <div class="product-item">
+          <img src="https://res.cloudinary.com/dwgtfjod9/image/upload/w_400,q_auto/aware-hair/product-photos/leave-in-cutout.webp" alt="Leave-In">
+          <div class="name">Leave-In</div>
+          <div class="price">250 mL | Retail $60 | Salon $30</div>
+        </div>
+      </div>
+      <p class="small" style="max-width: 380px; margin: 8px auto 0; text-align: center;">A tight, curated assortment designed for easy salon integration. Complements existing color, repair, and styling lines without competing on a single SKU.</p>
+    </div>
+
+    <!-- RIGHT: Lifestyle/Salon Photo -->
+    <div class="split-photo" style="background-image: url('https://res.cloudinary.com/dwgtfjod9/image/upload/w_1200,q_auto/aware-hair/product-photos/collection-blue.jpg');"></div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-logo">AWARE Hair</span>
+    <div class="footer-links">
+      <span>awarehair.com</span>
+      <span>@awarehaircare</span>
+      <a href="mailto:david@awarehair.com">david@awarehair.com</a>
+      <span>(626) 688-9844</span>
+    </div>
+    <span>02</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PAGE 3: DIVIDER - PORTFOLIO FIT              -->
+<!-- ============================================ -->
+<div class="page">
+  <div class="top-bar">
+    <div class="top-bar-logo">AWARE Hair</div>
+    <div><div class="top-bar-title">&nbsp;</div></div>
+  </div>
+  <div class="divider-page">
+    <h2>Portfolio Fit</h2>
+  </div>
+  <div class="footer" style="border-top: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.3);">
+    <span class="footer-logo" style="color: rgba(255,255,255,0.3);">AWARE Hair</span>
+    <div></div>
+    <span>03</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PAGE 4: SCALP CATEGORY COMPARISON            -->
+<!-- ============================================ -->
+<!-- Sources: Zenagen - zenagen.com, pro.zenagen.com, amazon.com (B01LXV5SWY) -->
+<!-- Sources: Calecim - calecimpro.com, calecimprofessional.com -->
+<!-- Sources: Milbon - global.milbon.com, milbon-usa.com -->
+<div class="page">
+  <div class="top-bar">
+    <div class="top-bar-logo">AWARE Hair</div>
+    <div>
+      <div class="top-bar-title">Scalp Category in SSG's Portfolio</div>
+      <div class="top-bar-sub">AWARE fills the daily wellness gap</div>
+    </div>
+  </div>
+
+  <div class="split" style="flex-grow: 1;">
+    <!-- LEFT: Comparison Cards -->
+    <div class="split-content" style="padding: 28px 36px; justify-content: flex-start; background: var(--cream);">
+      <h3>Current SSG Scalp Brands</h3>
+      <div class="comp-grid" style="grid-template-columns: 1fr;">
+        <div class="comp-card">
+          <div class="brand">Zenagen</div>
+          <div class="focus">Hair Loss Treatment</div>
+          <div class="detail"><strong>Category:</strong> DHT-blocking, thinning prevention</div>
+          <div class="detail"><strong>Use:</strong> 3x/week treatment, $16-$36 retail</div>
+          <div class="detail"><strong>Amazon:</strong> <span class="x-mark">Listed</span> (undercuts salon pricing)</div>
+        </div>
+        <div class="comp-card">
+          <div class="brand">Calecim</div>
+          <div class="focus">Clinical Stem Cell Therapy</div>
+          <div class="detail"><strong>Category:</strong> Growth factor revival, follicle reactivation</div>
+          <div class="detail"><strong>Use:</strong> 6-week course via derma stamp, $150-$360</div>
+          <div class="detail"><strong>Channel:</strong> <span class="check">Pro-exclusive</span> (clinic/aesthetics)</div>
+        </div>
+        <div class="comp-card">
+          <div class="brand">Milbon</div>
+          <div class="focus">Professional Head Spa</div>
+          <div class="detail"><strong>Category:</strong> In-salon scalp treatment service</div>
+          <div class="detail"><strong>Use:</strong> Salon service + homecare, $16-$38 retail</div>
+          <div class="detail"><strong>Amazon:</strong> <span class="partial">Gray market</span> (official policy prohibits)</div>
+        </div>
+      </div>
+      <p class="small" style="margin-top: 8px;">None of these occupy <strong>daily scalp wellness</strong> - the everyday ritual between treatments. That's AWARE's position.</p>
+    </div>
+
+    <!-- RIGHT: AWARE's Position -->
+    <div class="split-content" style="padding: 28px 36px; justify-content: flex-start;">
+      <div class="comp-card highlight" style="margin-bottom: 16px;">
+        <div class="brand">AWARE Hair</div>
+        <div class="focus">Daily Scalp Wellness</div>
+        <div class="detail"><strong>Category:</strong> Prevention, maintenance, daily hydration</div>
+        <div class="detail"><strong>Use:</strong> Daily home ritual (shampoo, condition, style)</div>
+        <div class="detail"><strong>Price:</strong> $55-$60 retail | $27.50-$30 salon</div>
+        <div class="detail"><strong>Amazon:</strong> <span class="check">Never</span> (will not sell on Amazon or mass)</div>
+        <div class="detail"><strong>Patent:</strong> <span class="check">AWAREBIO Complex</span> (patent-pending)</div>
+        <div class="detail"><strong>Shelf:</strong> 3 SKUs, minimal footprint, zero overlap</div>
+      </div>
+
+      <h3>Key Differentiators</h3>
+      <div class="detail" style="font-size: 9pt; line-height: 1.6; color: var(--body); margin-bottom: 6px;"><span class="check">&#10003;</span> Only daily scalp care system in SSG's portfolio</div>
+      <div class="detail" style="font-size: 9pt; line-height: 1.6; color: var(--body); margin-bottom: 6px;"><span class="check">&#10003;</span> 100% professional-exclusive, never discounted online</div>
+      <div class="detail" style="font-size: 9pt; line-height: 1.6; color: var(--body); margin-bottom: 6px;"><span class="check">&#10003;</span> Trichologist-formulated with patent-pending actives</div>
+      <div class="detail" style="font-size: 9pt; line-height: 1.6; color: var(--body); margin-bottom: 6px;"><span class="check">&#10003;</span> Clean, vegan, 100% natural fragrance</div>
+      <div class="detail" style="font-size: 9pt; line-height: 1.6; color: var(--body); margin-bottom: 6px;"><span class="check">&#10003;</span> Education + activation programs for DSCs</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <em>AWARE completes SSG's scalp offering: <strong>daily care</strong> that works alongside existing treatment brands, without competing on a single SKU.</em>
+  </div>
+
+  <div class="footer">
+    <span class="footer-logo">AWARE Hair</span>
+    <div class="footer-links">
+      <span>awarehair.com</span>
+      <span>@awarehaircare</span>
+      <a href="mailto:david@awarehair.com">david@awarehair.com</a>
+      <span>(626) 688-9844</span>
+    </div>
+    <span>04</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PAGE 5: STRATEGIC PARTNERSHIP (Photo Left | Content Right) -->
+<!-- ============================================ -->
+<div class="page">
+  <div class="top-bar">
+    <div class="top-bar-logo">AWARE Hair</div>
+    <div>
+      <div class="top-bar-title">More Than a Product Line</div>
+      <div class="top-bar-sub">A Scalp Wellness Partner</div>
+    </div>
+  </div>
+
+  <div class="split">
+    <!-- LEFT: Founder Photo -->
+    <div class="split-photo" style="background-image: url('assets/images/people/tina_jade_salon.png'); background-position: center top;"></div>
+
+    <!-- RIGHT: Value + Next Steps -->
+    <div class="split-content" style="padding: 32px 40px; justify-content: flex-start;">
+      <h2 style="font-size: 16pt;">What We Bring Beyond Product</h2>
+
+      <div class="value-row">
+        <div class="value-item">
+          <h4>Head Spa Launch Kit</h4>
+          <p>Turnkey "add head spa to your salon" program with treatment protocols, pricing templates, and client education.</p>
+        </div>
+        <div class="value-item">
+          <h4>Scalp Report Lead Gen</h4>
+          <p>Proprietary digital tool that drives foot traffic to salons through personalized scalp assessments.</p>
+        </div>
+      </div>
+      <div class="value-row">
+        <div class="value-item">
+          <h4>Trichology Education</h4>
+          <p>Scalp analysis workshops, gua sha certification, and staff training from a 40-year trichologist.</p>
+        </div>
+        <div class="value-item">
+          <h4>Activation Toolkit</h4>
+          <p>In-salon pop-ups, scalp imaging demos, social assets, and personalized gua sha engravings.</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <h3>Suggested Next Steps</h3>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <h4>Introductory Call</h4>
+              <p>Understand SSG's priorities for new brand evaluation.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <h4>Product Experience</h4>
+              <p>Sample kit for SSG leadership to try firsthand.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <h4>Pilot Territory</h4>
+              <p>Prove sell-through in one market, build the playbook.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-logo">AWARE Hair</span>
+    <div class="footer-links">
+      <span>awarehair.com</span>
+      <span>@awarehaircare</span>
+      <a href="mailto:david@awarehair.com">david@awarehair.com</a>
+      <span>(626) 688-9844</span>
+    </div>
+    <span>05</span>
+  </div>
+</div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

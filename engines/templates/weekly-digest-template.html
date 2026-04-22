@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARE Weekly Digest - {{WEEK_RANGE}}</title>
+  <style>
+    @import url("https://use.typekit.net/tmh4fvg.css");
+    @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap");
+
+    /* =============================================
+       AWARE HAIR DESIGN TOKENS
+       Background : #f4efe9  (cream)
+       Surface    : #faf8f5  (off-white)
+       Text       : #102B26  (deep teal)
+       Gold       : #D4A574
+       Sage       : #7d8471
+       Red alert  : #c0392b
+       Amber alert: #d4a017
+       Green      : #27ae60
+       Card radius: 6px
+       Max width  : 800px
+    ============================================= */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #f4efe9;
+      color: #102B26;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---- Print / PDF ---- */
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 24px;
+      }
+      .page-wrap {
+        padding: 0;
+      }
+      .card {
+        break-inside: avoid;
+        box-shadow: none !important;
+        border: 1px solid #d0cac3 !important;
+      }
+      .header {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+
+    /* ---- Layout ---- */
+    .page-wrap {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 24px 64px;
+    }
+
+    /* ---- Header ---- */
+    .header {
+      background: #102B26;
+      color: #f4efe9;
+      padding: 40px 32px 36px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 90% 10%, rgba(212,165,116,0.10) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .header-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #D4A574;
+      margin-bottom: 10px;
+    }
+
+    .header h1 {
+      font-family: 'orpheus-pro', Georgia, serif;
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .header-meta {
+      font-size: 13px;
+      color: #a8b09e;
+      margin-top: 6px;
+    }
+
+    .header-meta strong {
+      color: #D4A574;
+    }
+
+    /* ---- Stale banner ---- */
+    .stale-banner {
+      background: rgba(212, 160, 23, 0.12);
+      border: 1px solid rgba(212, 160, 23, 0.30);
+      border-radius: 4px;
+      padding: 8px 14px;
+      font-size: 12px;
+      color: #7a5c00;
+      margin-top: 12px;
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* ---- Section spacing ---- */
+    .section {
+      margin-top: 32px;
+    }
+
+    /* ---- Section heading ---- */
+    .section-heading {
+      display: table;
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 14px;
+    }
+
+    .section-heading-inner {
+      display: table-row;
+    }
+
+    .section-num {
+      display: table-cell;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: #D4A574;
+      padding-right: 10px;
+      vertical-align: middle;
+      white-space: nowrap;
+      width: 28px;
+    }
+
+    .section-title {
+      display: table-cell;
+      font-family: 'orpheus-pro', Georgia, serif;
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: -0.2px;
+      color: #102B26;
+      border-bottom: 2px solid #D4A574;
+      padding-bottom: 8px;
+      vertical-align: middle;
+    }
+
+    /* ---- Card ---- */
+    .card {
+      background: #faf8f5;
+      border: 1px solid #e8e2da;
+      border-radius: 6px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(16,43,38,0.06);
+    }
+
+    .card + .card {
+      margin-top: 12px;
+    }
+
+    /* Gold-bordered action card */
+    .card-action {
+      background: #faf8f5;
+      border: 1px solid #e8e2da;
+      border-top: 3px solid #D4A574;
+      border-radius: 0 0 6px 6px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(16,43,38,0.06);
+    }
+
+    /* ---- Action Items ---- */
+    .action-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #ede7df;
+    }
+
+    .action-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .action-item:first-child {
+      padding-top: 0;
+    }
+
+    /* Use table layout for email compat */
+    .action-row {
+      display: table;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .action-rank-cell {
+      display: table-cell;
+      width: 32px;
+      vertical-align: top;
+      padding-top: 2px;
+    }
+
+    .action-rank {
+      font-family: 'orpheus-pro', Georgia, serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: #D4A574;
+    }
+
+    .action-body-cell {
+      display: table-cell;
+      vertical-align: top;
+      padding-left: 4px;
+    }
+
+    .action-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #102B26;
+      margin-bottom: 3px;
+    }
+
+    .action-why {
+      font-size: 13px;
+      color: #5a6b5e;
+      margin-bottom: 5px;
+    }
+
+    .action-footer {
+      font-size: 11px;
+      color: #7d8471;
+    }
+
+    /* Urgency left-border via padding trick (works in email) */
+    .urgency-high .action-body-cell {
+      border-left: 3px solid #c0392b;
+      padding-left: 10px;
+    }
+
+    .urgency-medium .action-body-cell {
+      border-left: 3px solid #d4a017;
+      padding-left: 10px;
+    }
+
+    .urgency-low .action-body-cell {
+      border-left: 3px solid #27ae60;
+      padding-left: 10px;
+    }
+
+    /* ---- Badges / Tags ---- */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 100px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .badge-red    { background: rgba(192,57,43,0.10);  color: #c0392b; }
+    .badge-amber  { background: rgba(212,160,23,0.12); color: #7a5c00; }
+    .badge-green  { background: rgba(39,174,96,0.10);  color: #1a7a40; }
+    .badge-sage   { background: rgba(125,132,113,0.12); color: #5c6350; }
+    .badge-gold   { background: rgba(212,165,116,0.15); color: #7a5000; }
+    .badge-teal   { background: rgba(16,43,38,0.08);   color: #102B26; }
+
+    .tag-source {
+      display: inline-block;
+      font-size: 10px;
+      font-family: 'DM Mono', monospace;
+      padding: 1px 7px;
+      border-radius: 3px;
+      background: #ede7df;
+      color: #7d8471;
+    }
+
+    .tag-stale {
+      display: inline-block;
+      font-size: 10px;
+      font-family: 'DM Mono', monospace;
+      padding: 1px 7px;
+      border-radius: 3px;
+      background: rgba(212,160,23,0.15);
+      color: #7a5c00;
+    }
+
+    .tag-missing {
+      display: inline-block;
+      font-size: 10px;
+      font-family: 'DM Mono', monospace;
+      padding: 1px 7px;
+      border-radius: 3px;
+      background: rgba(192,57,43,0.10);
+      color: #c0392b;
+    }
+
+    /* ---- Tables ---- */
+    /* Use plain table layout for broad email compat */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .data-table thead th {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #7d8471;
+      font-weight: 500;
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 2px solid #D4A574;
+      background: #faf8f5;
+      white-space: nowrap;
+    }
+
+    .data-table thead th.r {
+      text-align: right;
+    }
+
+    .data-table tbody td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #ede7df;
+      vertical-align: top;
+      color: #102B26;
+    }
+
+    .data-table tbody td.r {
+      text-align: right;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+    }
+
+    .data-table tbody td.muted {
+      color: #7d8471;
+      font-size: 12px;
+    }
+
+    .data-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* ---- Metrics strip (Financial Health) ---- */
+    .metrics-row {
+      display: table;
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 12px 0;
+      margin: 0 -12px;
+    }
+
+    .metric-cell {
+      display: table-cell;
+      width: 33.33%;
+      background: #ffffff;
+      border: 1px solid #e8e2da;
+      border-radius: 6px;
+      padding: 16px 18px;
+      text-align: center;
+      vertical-align: top;
+    }
+
+    .metric-value {
+      font-family: 'orpheus-pro', Georgia, serif;
+      font-size: 26px;
+      font-weight: 400;
+      color: #102B26;
+      line-height: 1.1;
+    }
+
+    .metric-value.up   { color: #27ae60; }
+    .metric-value.down { color: #c0392b; }
+    .metric-value.gold { color: #D4A574; }
+
+    .metric-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #7d8471;
+      margin-top: 5px;
+    }
+
+    .metric-delta {
+      font-size: 11px;
+      color: #7d8471;
+      margin-top: 3px;
+    }
+
+    /* ---- Inventory bar ---- */
+    .inv-bar-wrap {
+      margin-top: 4px;
+    }
+
+    .inv-bar {
+      height: 6px;
+      border-radius: 3px;
+      background: #e8e2da;
+      overflow: hidden;
+    }
+
+    .inv-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+    }
+
+    .inv-ok    { background: #27ae60; }
+    .inv-warn  { background: #d4a017; }
+    .inv-crit  { background: #c0392b; }
+
+    /* ---- Status dot ---- */
+    .dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+
+    .dot-green  { background: #27ae60; }
+    .dot-amber  { background: #d4a017; }
+    .dot-red    { background: #c0392b; }
+    .dot-sage   { background: #a8b09e; }
+
+    /* ---- Section note / source ---- */
+    .section-note {
+      font-size: 11px;
+      color: #7d8471;
+      margin-top: 12px;
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* ---- Empty state ---- */
+    .empty-state {
+      font-size: 13px;
+      color: #7d8471;
+      font-style: italic;
+      padding: 16px 0 4px;
+    }
+
+    /* ---- Gap notice ---- */
+    .gap-notice {
+      background: rgba(212,160,23,0.08);
+      border: 1px solid rgba(212,160,23,0.25);
+      border-radius: 4px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #7a5c00;
+      margin-top: 8px;
+    }
+
+    /* ---- Queued tasks box ---- */
+    .queued-box {
+      background: rgba(16,43,38,0.04);
+      border: 1px solid rgba(16,43,38,0.10);
+      border-radius: 4px;
+      padding: 14px 18px;
+      margin-top: 16px;
+      font-size: 13px;
+    }
+
+    .queued-box strong {
+      color: #D4A574;
+    }
+
+    .queued-box ul {
+      margin: 8px 0 0 16px;
+    }
+
+    .queued-box li {
+      margin-bottom: 4px;
+      color: #5a6b5e;
+    }
+
+    /* ---- On-demand activity ---- */
+    .agent-row td:first-child {
+      font-weight: 600;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+    }
+
+    /* ---- Footer ---- */
+    .footer {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid #e8e2da;
+      text-align: center;
+    }
+
+    .footer p {
+      font-size: 11px;
+      color: #a8b09e;
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* ---- Divider ---- */
+    .divider {
+      height: 1px;
+      background: #e8e2da;
+      margin: 20px 0;
+    }
+
+    /* ---- Award deadline row ---- */
+    .deadline-urgent td:first-child {
+      color: #c0392b;
+      font-weight: 600;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 600px) {
+      .page-wrap {
+        padding: 20px 16px 40px;
+      }
+      .header {
+        padding: 28px 20px 24px;
+      }
+      .header h1 {
+        font-size: 22px;
+      }
+      .metrics-row {
+        display: block;
+      }
+      .metric-cell {
+        display: block;
+        width: 100%;
+        margin-bottom: 8px;
+      }
+      .data-table {
+        font-size: 12px;
+      }
+      .data-table thead th {
+        font-size: 9px;
+        padding: 6px 8px;
+      }
+      .data-table tbody td {
+        padding: 8px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- ============================================================
+       HEADER
+  ============================================================ -->
+  <div class="header">
+    <div class="header-eyebrow">AWARE Hair / Intelligence Digest</div>
+    <h1>Weekly Digest</h1>
+    <div class="header-meta">
+      <strong>{{WEEK_RANGE}}</strong> &nbsp;|&nbsp; Prepared by CHIEF &nbsp;|&nbsp; {{GENERATED_DATE}}
+    </div>
+    <!-- Example rendered value:
+    <div class="header-meta">
+      <strong>March 31 - April 6, 2026</strong> &nbsp;|&nbsp; Prepared by CHIEF &nbsp;|&nbsp; Monday, April 7, 2026 at 08:04
+    </div>
+    -->
+  </div>
+  <!-- /header -->
+
+
+  <!-- ============================================================
+       SECTION 1 - ACTION ITEMS
+       Template marker: {{ACTION_ITEMS}}
+       Max 10 items. Ranked by revenue impact.
+       Each item: what / why / urgency / source.
+  ============================================================ -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-heading-inner">
+        <span class="section-num">01</span>
+        <span class="section-title">Action Items</span>
+      </div>
+    </div>
+
+    <div class="card-action">
+
+      <!-- URGENCY: high = red left-border, medium = amber, low = green -->
+      <!-- EXAMPLE ITEMS - CHIEF replaces this block with {{ACTION_ITEMS}} -->
+
+      <div class="action-item urgency-high">
+        <div class="action-row">
+          <div class="action-rank-cell"><span class="action-rank">1</span></div>
+          <div class="action-body-cell">
+            <div class="action-title">Contact Salon 23 - Mirror Image Studios - overdue reorder</div>
+            <div class="action-why">Account at 38 days since last order; projected stockout in 4 days. Risk to 96% B2B repurchase rate.</div>
+            <div class="action-footer">
+              <span class="badge badge-red">HIGH</span>
+              &nbsp;
+              <span class="tag-source">B2B-HEALTH / 2026-04-06</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-item urgency-high">
+        <div class="action-row">
+          <div class="action-rank-cell"><span class="action-rank">2</span></div>
+          <div class="action-body-cell">
+            <div class="action-title">Submit CEW Indie Beauty Award entry - deadline April 14</div>
+            <div class="action-why">7 days remaining. Entry fee $250, shampoo category. Draft at awards/cew/indie-hair-entry.md is 80% complete.</div>
+            <div class="action-footer">
+              <span class="badge badge-red">HIGH</span>
+              &nbsp;
+              <span class="tag-source">HERALD / 2026-04-04</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-item urgency-medium">
+        <div class="action-row">
+          <div class="action-rank-cell"><span class="action-rank">3</span></div>
+          <div class="action-body-cell">
+            <div class="action-title">Reply to Noah Wilson at SBP - distribution terms follow-up</div>
+            <div class="action-why">Thread open 5 days with no response. Distribution window for Q3 onboarding closes end of April.</div>
+            <div class="action-footer">
+              <span class="badge badge-amber">MEDIUM</span>
+              &nbsp;
+              <span class="tag-source">POSTMASTER / 2026-04-07</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-item urgency-medium">
+        <div class="action-row">
+          <div class="action-rank-cell"><span class="action-rank">4</span></div>
+          <div class="action-body-cell">
+            <div class="action-title">Place reorder for 91-S-10 Shampoo - 18 days of stock remaining</div>
+            <div class="action-why">At current B2B velocity, stock runs out May 1. Boom Lab lead time is 14-16 business days.</div>
+            <div class="action-footer">
+              <span class="badge badge-amber">MEDIUM</span>
+              &nbsp;
+              <span class="tag-source">CAPACITY / 2026-04-07</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-item urgency-low">
+        <div class="action-row">
+          <div class="action-rank-cell"><span class="action-rank">5</span></div>
+          <div class="action-body-cell">
+            <div class="action-title">Review CLOSER draft outreach to 3 new salon targets in Nashville</div>
+            <div class="action-why">Olivia Fishburn warm intro batch - personalized sequences ready for David's approval before sending.</div>
+            <div class="action-footer">
+              <span class="badge badge-green">LOW</span>
+              &nbsp;
+              <span class="tag-source">CLOSER / 2026-04-07</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Placeholder marker for CHIEF to replace above with actual data -->
+      <!-- {{ACTION_ITEMS}} -->
+
+    </div>
+  </div>
+  <!-- /section 1 -->
+
+
+  <!-- ============================================================
+       SECTION 2 - SALES PIPELINE
+       Template marker: {{SALES_PIPELINE}}
+       Source: CLOSER brief (today). RED accounts first, then AMBER.
+  ============================================================ -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-heading-inner">
+        <span class="section-num">02</span>
+        <span class="section-title">Sales Pipeline</span>
+      </div>
+    </div>
+
+    <div class="card">
+
+      <!-- Stats summary row -->
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Active Accounts</th>
+            <th>RED</th>
+            <th>AMBER</th>
+            <th>Healthy</th>
+            <th>Referral Program</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <!-- {{PIPELINE_SUMMARY_ROW}} -->
+            <td>52</td>
+            <td><span class="badge badge-red">3</span></td>
+            <td><span class="badge badge-amber">7</span></td>
+            <td><span class="badge badge-green">42</span></td>
+            <td><span class="badge badge-sage">Active - 9 enrolled</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="divider"></div>
+
+      <!-- At-risk accounts -->
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Salon</th>
+            <th>Status</th>
+            <th>Last Order</th>
+            <th>Days Since</th>
+            <th>Action Needed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- {{AT_RISK_ACCOUNTS}} -->
+          <!-- RED accounts first -->
+          <tr>
+            <td><strong>Mirror Image Studios</strong></td>
+            <td><span class="badge badge-red">RED</span></td>
+            <td class="muted">Feb 27, 2026</td>
+            <td class="r">38</td>
+            <td>Call today - at projected stockout</td>
+          </tr>
+          <tr>
+            <td><strong>Elm & Iris Salon</strong></td>
+            <td><span class="badge badge-red">RED</span></td>
+            <td class="muted">Mar 1, 2026</td>
+            <td class="r">36</td>
+            <td>Email drafted - awaiting David approval</td>
+          </tr>
+          <tr>
+            <td><strong>Goldleaf Studio</strong></td>
+            <td><span class="badge badge-red">RED</span></td>
+            <td class="muted">Mar 5, 2026</td>
+            <td class="r">32</td>
+            <td>Send reorder nudge email</td>
+          </tr>
+          <!-- AMBER accounts -->
+          <tr>
+            <td><strong>Canopy Hair</strong></td>
+            <td><span class="badge badge-amber">AMBER</span></td>
+            <td class="muted">Mar 15, 2026</td>
+            <td class="r">22</td>
+            <td>Schedule check-in call</td>
+          </tr>
+          <tr>
+            <td><strong>The Curl Studio</strong></td>
+            <td><span class="badge badge-amber">AMBER</span></td>
+            <td class="muted">Mar 17, 2026</td>
+            <td class="r">20</td>
+            <td>Send educational content (scalp report)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="divider"></div>
+
+      <!-- Outreach targets -->
+      <p style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">Outreach Targets This Week</p>
+      <!-- {{OUTREACH_TARGETS}} -->
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Salon</th>
+            <th>City</th>
+            <th>Source</th>
+            <th>Stage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Roots Nashville</strong></td>
+            <td class="muted">Nashville, TN</td>
+            <td class="muted">Olivia Fishburn warm intro</td>
+            <td><span class="badge badge-teal">Sequence ready</span></td>
+          </tr>
+          <tr>
+            <td><strong>Studio 12 East</strong></td>
+            <td class="muted">Nashville, TN</td>
+            <td class="muted">Olivia Fishburn warm intro</td>
+            <td><span class="badge badge-teal">Sequence ready</span></td>
+          </tr>
+          <tr>
+            <td><strong>Botanica Hair Lab</strong></td>
+            <td class="muted">Nashville, TN</td>
+            <td class="muted">Olivia Fishburn warm intro</td>
+            <td><span class="badge badge-teal">Sequence ready</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="section-note">Source: CLOSER / {{CLOSER_DATE}} &nbsp;<span class="tag-source">{{CLOSER_FRESHNESS}}</span></p>
+    </div>
+  </div>
+  <!-- /section 2 -->
+
+
+  <!-- ============================================================
+       SECTION 3 - FINANCIAL HEALTH
+       Template marker: {{FINANCIAL_HEALTH}}
+       Source: STRATEGIST (prior Wednesday). ALWAYS show source date.
+  ============================================================ -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-heading-inner">
+        <span class="section-num">03</span>
+        <span class="section-title">Financial Health</span>
+      </div>
+    </div>
+
+    <div class="card">
+
+      <!-- Metrics strip - 3 cells using table for email compat -->
+      <!-- {{FINANCIAL_METRICS}} -->
+      <table style="width: 100%; border-collapse: separate; border-spacing: 10px 0; margin: 0 -10px 16px;">
+        <tr>
+          <td style="width: 33.33%; background: #ffffff; border: 1px solid #e8e2da; border-radius: 6px; padding: 16px 18px; text-align: center; vertical-align: top;">
+            <div class="metric-value up">$21,400</div>
+            <div class="metric-label">Revenue MTD</div>
+            <div class="metric-delta">+18% vs last month</div>
+          </td>
+          <td style="width: 33.33%; background: #ffffff; border: 1px solid #e8e2da; border-radius: 6px; padding: 16px 18px; text-align: center; vertical-align: top;">
+            <div class="metric-value">87%</div>
+            <div class="metric-label">B2B Share</div>
+            <div class="metric-delta">3 accounts = 54% rev</div>
+          </td>
+          <td style="width: 33.33%; background: #ffffff; border: 1px solid #e8e2da; border-radius: 6px; padding: 16px 18px; text-align: center; vertical-align: top;">
+            <div class="metric-value gold">96%</div>
+            <div class="metric-label">90-Day Repurchase</div>
+            <div class="metric-delta">Cohort: Feb-Mar 2026</div>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Concentration risk -->
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Account</th>
+            <th class="r">6-Mo Revenue</th>
+            <th class="r">Revenue Share</th>
+            <th>Risk Level</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- {{CONCENTRATION_RISK}} -->
+          <tr>
+            <td><strong>The Drybar Group (6 units)</strong></td>
+            <td class="r">$14,200</td>
+            <td class="r">22%</td>
+            <td><span class="badge badge-amber">WATCH</span></td>
+          </tr>
+          <tr>
+            <td><strong>Spa Sante - Tina Mui</strong></td>
+            <td class="r">$11,800</td>
+            <td class="muted r">18%</td>
+            <td><span class="badge badge-green">HEALTHY</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mirror Image Studios</strong></td>
+            <td class="r">$9,100</td>
+            <td class="muted r">14%</td>
+            <td><span class="badge badge-red">AT RISK</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Cohort watch note -->
+      <!-- {{COHORT_NOTE}} -->
+      <p style="font-size: 12px; color: #7d8471; margin-top: 12px;">
+        Cohort watch: 4 accounts from the Jan 2026 onboarding cohort have not reordered (expected by Day 45). SENTINEL tracking.
+      </p>
+
+      <!-- Data age warning - STRATEGIST data is 5-6 days old by Monday -->
+      <p class="section-note">
+        Source: STRATEGIST / {{STRATEGIST_DATE}}
+        &nbsp;<span class="tag-stale">{{STRATEGIST_AGE}}</span>
+        &nbsp; - Data is 5-6 days old. Treat revenue figures as directional.
+      </p>
+
+    </div>
+  </div>
+  <!-- /section 3 -->
+
+
+  <!-- ============================================================
+       SECTION 4 - SUPPLY CHAIN
+       Template marker: {{SUPPLY_CHAIN}}
+       Sources: capacity engine, b2b-health engine.
+  ============================================================ -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-heading-inner">
+        <span class="section-num">04</span>
+        <span class="section-title">Supply Chain</span>
+      </div>
+    </div>
+
+    <div class="card">
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>Product</th>
+            <th class="r">Units On Hand</th>
+            <th class="r">Days of Stock</th>
+            <th>Reorder Status</th>
+            <th>Projected Stockout</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- {{INVENTORY_TABLE}} -->
+          <tr>
+            <td><span style="font-family: 'DM Mono', monospace; font-size: 11px;">91-S-10</span></td>
+            <td>Professional Shampoo 10oz</td>
+            <td class="r">216</td>
+            <td class="r"><strong style="color: #d4a017;">18</strong></td>
+            <td><span class="badge badge-amber">REORDER NOW</span></td>
+            <td class="muted">May 1, 2026</td>
+          </tr>
+          <tr>
+            <td><span style="font-family: 'DM Mono', monospace; font-size: 11px;">91-C-10</span></td>
+            <td>Scalp Mask (Conditioner) 10oz</td>
+            <td class="r">184</td>
+            <td class="r">24</td>
+            <td><span class="badge badge-green">OK</span></td>
+            <td class="muted">May 7, 2026</td>
+          </tr>
+          <tr>
+            <td><span style="font-family: 'DM Mono', monospace; font-size: 11px;">91-L-8</span></td>
+            <td>Leave-In Treatment 8oz</td>
+            <td class="r">312</td>
+            <td class="r">41</td>
+            <td><span class="badge badge-green">OK</span></td>
+            <td class="muted">Jun 1, 2026</td>
+          </tr>
+          <tr>
+            <td><span style="font-family: 'DM Mono', monospace; font-size: 11px;">91-GS-W</span></td>
+            <td>Gua Sha - Walnut Wood</td>
+            <td class="r">88</td>
+            <td class="r">62</td>
+            <td><span class="badge badge-green">OK</span></td>
+            <td class="muted">Jun 18, 2026</td>
+          </tr>
+          <tr>
+            <td><span style="font-family: 'DM Mono', monospace; font-size: 11px;">91-DK-3</span></td>
+            <td>Discovery Kit (seasonal)</td>
+            <td class="r">44</td>
+            <td class="r">-</td>
+            <td><span class="badge badge-sage">SEASONAL - SUPPRESSED</span></td>
+            <td class="muted">n/a</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Active POs -->
+      <!-- {{ACTIVE_POS}} -->
+      <p style="font-size: 12px; color: #5a6b5e; margin-top: 14px;">
+        <strong>Active POs:</strong> None. Boom Lab lead time 14-16 business days. Place 91-S-10 order by April 10 to maintain buffer stock.
+      </p>
+
+      <p class="section-note">Sources: CAPACITY / {{CAPACITY_DATE}} &nbsp;&bull;&nbsp; B2B-HEALTH / {{B2B_HEALTH_DATE}}</p>
+
+    </div>
+  </div>
+  <!-- /section 4 -->
+
+
+  <!-- ============================================================
+       SECTION 5 - EMAIL THREADS
+       Template marker: {{EMAIL_THREADS}}
+       Source: POSTMASTER brief (today).
+       Threads where David owes a reply, sorted by wait time.
+  ============================================================ -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-heading-inner">
+        <span class="section-num">05</span>
+        <span class="section-title">Email Threads</span>
+      </div>
+    </div>
+
+    <div class="card">
+
+      <!-- Threads needing response -->
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Thread / Subject</th>
+            <th>From</th>
+            <th>Waiting Since</th>
+            <th>Days</th>
+            <th>Priority</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- {{EMAIL_THREADS_TABLE}} -->
+          <tr>
+            <td><strong>SBP distribution agreement - Q3 terms</strong></td>
+            <td class="muted">Noah Wilson</td>
+            <td class="muted">Apr 2, 2026</td>
+            <td class="r">5</td>
+            <td><span class="badge badge-red">URGENT</span></td>
+          </tr>
+          <tr>
+            <td><strong>Re: IPSY original collab - unit count confirm</strong></td>
+            <td class="muted">IPSY Partnerships</td>
+            <td class="muted">Apr 1, 2026</td>
+            <td class="r">6</td>
+            <td><span class="badge badge-red">URGENT</span></td>
+          </tr>
+          <tr>
+            <td><strong>MariLynne consulting - NDA review</strong></td>
+            <td class="muted">MariLynne Cosmillo</td>
+            <td class="muted">Mar 31, 2026</td>
+            <td class="r">7</td>
+            <td><span class="badge badge-amber">FOLLOW UP</span></td>
+          </tr>
+          <tr>
+            <td><strong>Boom Lab - pricing valid through Sep 2027</strong></td>
+            <td class="muted">Boom Lab Ops</td>
+            <td class="muted">Mar 28, 2026</td>
+            <td class="r">10</td>
+            <td><span class="badge badge-sage">FYI - No reply needed</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Stale drafts -->
+      <!-- {{STALE_DRAFTS}} -->
+      <div style="margin-top: 14px;">
+        <p style="font-size: 12px; font-weight: 600; color: #102B26; margin-bottom: 6px;">Stale Drafts (&gt;7 days, not sent)</p>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Draft Subject</th>
+              <th>To</th>
+              <th>Created</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Follow-up: AWARE scalp care for your salon</strong></td>
+              <td class="muted">3 Nashville prospects</td>
+              <td class="muted">Mar 29, 2026</td>
+              <td><span class="badge badge-amber">REVIEW &amp; SEND</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="section-note">Source: POSTMASTER / {{POSTMASTER_DATE}}</p>
+
+    </div>
+  </div>
+  <!-- /section 5 -->
+
+
+  <!-- ============================================================
+       SECTION 6 - INFRASTRUCTURE
+       Template marker: {{INFRASTRUCTURE}}
+       Source: OPTIMIZER brief (Sunday night).
+       Engine status, success rates, failing components.
+  ============================================================ -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-heading-inner">
+        <span class="section-num">06</span>
+        <span class="section-title">Infrastructure</span>
+      </div>
+    </div>
+
+    <div class="card">
+
+      <!-- Overall health summary -->
+      <!-- {{INFRA_SUMMARY}} -->
+      <table style="width: 100%; border-collapse: separate; border-spacing: 10px 0; margin: 0 -10px 16px;">
+        <tr>
+          <td style="width: 33.33%; background: #ffffff; border: 1px solid #e8e2da; border-radius: 6px; padding: 14px 16px; text-align: center;">
+            <div class="metric-value up">8/9</div>
+            <div class="metric-label">Engines Healthy</div>
+          </td>
+          <td style="width: 33.33%; background: #ffffff; border: 1px solid #e8e2da; border-radius: 6px; padding: 14px 16px; text-align: center;">
+            <div class="metric-value">94%</div>
+            <div class="metric-label">7-Day Success Rate</div>
+          </td>
+          <td style="width: 33.33%; background: #ffffff; border: 1px solid #e8e2da; border-radius: 6px; padding: 14px 16px; text-align: center;">
+            <div class="metric-value down">1</div>
+            <div class="metric-label">Failing Components</div>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Engine status table -->
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Engine</th>
+            <th>Schedule</th>
+            <th>Last Run</th>
+            <th>Status</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- {{ENGINE_STATUS_TABLE}} -->
+          <tr>
+            <td><span style="font-family: 'DM Mono', monospace; font-size: 11px;">b2b-health</span></td>
+            <td class="muted">Daily 06:50</td>
+            <td class="muted">Apr 7, 06:50</td>
+            <td><span class="dot dot-green"></span>OK</td>
+            <td class="muted">3 RED signals emitted</td>
+          </tr>
+          <tr>
+            <td><span style="font-family: 'DM Mono', monospace; font-size: 11px;">capacity</span></td>
+            <td class="muted">Daily 06:45</td>
+            <td class="muted">Apr 7, 06:45</td>
+            <td><span class="dot dot-green"></span>OK</td>
+            <td class="muted">1 AMBER signal: 91-S-10</td>
+          </tr>
+          <tr>
+            <td><span style="font-family: 'DM Mono', monospace; font-size: 11px;">competitor</span></td>
+            <td class="muted">Nightly 02:00</td>
+            <td class="muted">Apr 7, 02:00</td>
+            <td><span class="dot dot-green"></span>OK</td>
+            <td class="muted">No material changes</td>
+          </tr>
+          <tr>
+            <td><span style="font-family: 'DM Mono', monospace; font-size: 11px;">clarity</span></td>
+            <td class="muted">Daily 07:00</td>
+            <td class="muted">Apr 7, 07:00</td>
+            <td><span class="dot dot-green"></span>OK</td>
+            <td class="muted">Quickback 11.8%, scroll 54%</td>
+          </tr>
+          <tr>
+            <td><span style="font-family: 'DM Mono', monospace; font-size: 11px;">beacon</span></td>
+            <td class="muted">Saturday 08:00</td>
+            <td class="muted">Apr 5, 08:03</td>
+            <td><span class="dot dot-green"></span>OK</td>
+            <td class="muted">Weekly digest emitted</td>
+          </tr>
+          <tr>
+            <td><span style="font-family: 'DM Mono', monospace; font-size: 11px;">auditor</span></td>
+            <td class="muted">Friday 16:30</td>
+            <td class="muted">Apr 4, 16:30</td>
+            <td><span class="dot dot-green"></span>OK</td>
+            <td class="muted">Tax deadline flagged: Apr 15</td>
+          </tr>
+          <tr>
+            <td><span style="font-family: 'DM Mono', monospace; font-size: 11px;">seo</span></td>
+            <td class="muted">Daily 06:45</td>
+            <td class="muted">Apr 7, 06:45</td>
+            <td><span class="dot dot-green"></span>OK</td>
+            <td class="muted">2 new keyword opportunities</td>
+          </tr>
+          <tr>
+            <td><span style="font-family: 'DM Mono', monospace; font-size: 11px;">ad-intel</span></td>
+            <td class="muted">Sunday 03:00</td>
+            <td class="muted">Apr 6, 03:00</td>
+            <td><span class="dot dot-green"></span>OK</td>
+            <td class="muted">No new competitor ads</td>
+          </tr>
+          <tr style="background: rgba(192,57,43,0.04);">
+            <td><span style="font-family: 'DM Mono', monospace; font-size: 11px;">postmaster</span></td>
+            <td class="muted">Weekdays 06:30</td>
+            <td class="muted">Apr 4, 06:30</td>
+            <td><span class="dot dot-red"></span><strong style="color: #c0392b;">STALE</strong></td>
+            <td style="color: #c0392b; font-size: 12px;">No run in 3 days - check LaunchD plist</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="section-note">Source: OPTIMIZER / {{OPTIMIZER_DATE}} &nbsp;<span class="tag-stale">{{OPTIMIZER_AGE}}</span></p>
+
+    </div>
+  </div>
+  <!-- /section 6 -->
+
+
+  <!-- ============================================================
+       SECTION 7 - COMPETITIVE / PR
+       Template marker: {{COMPETITIVE_PR}}
+       Sources: competitor engine + HERALD (if available).
+       Material changes only. Award deadlines within 30 days.
+  ============================================================ -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-heading-inner">
+        <span class="section-num">07</span>
+        <span class="section-title">Competitive / PR</span>
+      </div>
+    </div>
+
+    <div class="card">
+
+      <!-- Competitive changes -->
+      <p style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">Competitive Changes This Week</p>
+      <!-- {{COMPETITIVE_CHANGES}} -->
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Brand</th>
+            <th>Change</th>
+            <th>Materiality</th>
+            <th>Detected</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Innersense</strong></td>
+            <td>New "Scalp Therapy" bundle at $48 retail - positioned against clinical claims</td>
+            <td><span class="badge badge-amber">MEDIUM</span></td>
+            <td class="muted">Apr 5, 2026</td>
+          </tr>
+          <tr>
+            <td><strong>Act + Acre</strong></td>
+            <td>No material changes detected this week</td>
+            <td><span class="badge badge-green">NONE</span></td>
+            <td class="muted">Apr 7, 2026</td>
+          </tr>
+          <tr>
+            <td><strong>Prose</strong></td>
+            <td>No material changes detected this week</td>
+            <td><span class="badge badge-green">NONE</span></td>
+            <td class="muted">Apr 7, 2026</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="divider"></div>
+
+      <!-- Award deadlines -->
+      <p style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">Award Deadlines (next 30 days)</p>
+      <!-- {{AWARD_DEADLINES}} -->
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Award</th>
+            <th>Category</th>
+            <th>Deadline</th>
+            <th>Days Left</th>
+            <th>Status</th>
+            <th>Fee</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="deadline-urgent">
+            <td><strong>CEW Indie Beauty</strong></td>
+            <td class="muted">Indie Hair</td>
+            <td class="muted">Apr 14, 2026</td>
+            <td class="r"><strong style="color: #c0392b;">7</strong></td>
+            <td><span class="badge badge-amber">80% READY</span></td>
+            <td class="muted r">$250</td>
+          </tr>
+          <tr>
+            <td><strong>SHAPE Beauty Awards</strong></td>
+            <td class="muted">Scalp Care</td>
+            <td class="muted">Apr 28, 2026</td>
+            <td class="r">21</td>
+            <td><span class="badge badge-sage">IN PREP</span></td>
+            <td class="muted r">$0</td>
+          </tr>
+          <tr>
+            <td><strong>Beacon Award</strong></td>
+            <td class="muted">Emerging Brand</td>
+            <td class="muted">May 5, 2026</td>
+            <td class="r">28</td>
+            <td><span class="badge badge-sage">DRAFT STARTED</span></td>
+            <td class="muted r">$195</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="section-note">Sources: COMPETITOR ENGINE / {{COMPETITOR_DATE}} &nbsp;&bull;&nbsp; HERALD / {{HERALD_DATE}}</p>
+
+    </div>
+  </div>
+  <!-- /section 7 -->
+
+
+  <!-- ============================================================
+       SECTION 8 - ON-DEMAND ACTIVITY
+       Template marker: {{AGENT_ACTIVITY}}
+       Agents that ran this week + tasks queued by CHIEF this run.
+  ============================================================ -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-heading-inner">
+        <span class="section-num">08</span>
+        <span class="section-title">On-Demand Activity</span>
+      </div>
+    </div>
+
+    <div class="card">
+
+      <!-- Agent run log -->
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Agent</th>
+            <th>Role</th>
+            <th>Runs This Week</th>
+            <th>Last Run</th>
+            <th>Key Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- {{AGENT_RUN_LOG}} -->
+          <tr class="agent-row">
+            <td>CLOSER</td>
+            <td class="muted">Sales Lead</td>
+            <td class="r">5</td>
+            <td class="muted">Apr 7, 07:02</td>
+            <td class="muted">3 Nashville outreach drafts</td>
+          </tr>
+          <tr class="agent-row">
+            <td>HERALD</td>
+            <td class="muted">PR &amp; Awards</td>
+            <td class="r">2</td>
+            <td class="muted">Apr 4, 10:15</td>
+            <td class="muted">CEW entry 80% complete</td>
+          </tr>
+          <tr class="agent-row">
+            <td>STRATEGIST</td>
+            <td class="muted">Growth Analyst</td>
+            <td class="r">1</td>
+            <td class="muted">Apr 2, 10:00</td>
+            <td class="muted">Q2 growth brief + B2B concentration analysis</td>
+          </tr>
+          <tr class="agent-row">
+            <td>POSTMASTER</td>
+            <td class="muted">Email Triage</td>
+            <td class="r">3</td>
+            <td class="muted">Apr 4, 06:30</td>
+            <td class="muted">4 threads flagged for reply</td>
+          </tr>
+          <tr class="agent-row">
+            <td>MARKETER</td>
+            <td class="muted">Marketing Director</td>
+            <td class="r">2</td>
+            <td class="muted">Apr 3, 08:05</td>
+            <td class="muted">Q2 content calendar draft</td>
+          </tr>
+          <tr class="agent-row">
+            <td>OPTIMIZER</td>
+            <td class="muted">System Health</td>
+            <td class="r">1</td>
+            <td class="muted">Apr 6, 23:00</td>
+            <td class="muted">POSTMASTER stale flag, 8/9 engines healthy</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Tasks queued by CHIEF this run -->
+      <!-- {{QUEUED_TASKS}} -->
+      <div class="queued-box">
+        <strong>Tasks queued this run (to task-queue.yaml):</strong>
+        <ul>
+          <li>HERALD - CEW entry finalization (deadline Apr 14). Input: awards/cew/indie-hair-entry.md</li>
+          <li>STEWARD - 3 RED account personalized outreach batch. Input: ~/.config/aware-hair/briefs/2026-04-07/b2b-health.md</li>
+        </ul>
+      </div>
+
+      <p class="section-note">Sources: agent logs in .claude/agents/logs/ &nbsp;&bull;&nbsp; task-queue at assistant/state/task-queue.yaml</p>
+
+    </div>
+  </div>
+  <!-- /section 8 -->
+
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <div class="footer">
+    <p>Generated {{GENERATED_TIMESTAMP}} by CHIEF agent &nbsp;&bull;&nbsp; Full briefs at ~/.config/aware-hair/briefs/{{BRIEF_DATE}}/</p>
+    <p style="margin-top: 4px;">This digest is read-only. To act on items, reply to the accompanying Gmail draft or open the linked files.</p>
+  </div>
+
+</div>
+<!-- /page-wrap -->
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

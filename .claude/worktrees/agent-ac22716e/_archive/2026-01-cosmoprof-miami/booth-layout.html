@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARE Hair - Booth Layout Plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2D4739;
+      --sage: #7A8F7D;
+      --cream: #F8F6F1;
+      --sand: #E8E4DC;
+      --charcoal: #2C2C2C;
+      --warm-gray: #6B6B6B;
+      --gold: #B8956E;
+    }
+
+    @page { size: letter; margin: 0.5in; }
+    @media print {
+      html, body { width: 8.5in; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .no-print { display: none !important; }
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      color: var(--charcoal);
+      background: #e0e0e0;
+      padding: 20px;
+    }
+
+    .page {
+      width: 8.5in;
+      min-height: 11in;
+      margin: 0 auto;
+      background: white;
+      padding: 0.5in;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--forest);
+    }
+
+    .header .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--forest);
+    }
+
+    .header-right {
+      text-align: right;
+      font-size: 10px;
+      color: var(--warm-gray);
+    }
+
+    .header-right strong { color: var(--charcoal); }
+
+    .booth-diagram {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto 20px;
+      border: 2px solid var(--charcoal);
+      aspect-ratio: 1;
+      position: relative;
+      background: white;
+    }
+
+    .booth-label {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 9px;
+      color: var(--warm-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .aisle-label {
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--forest);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .booth-zone {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 9px;
+      line-height: 1.3;
+      border: 1px dashed var(--sage);
+    }
+
+    .zone-banner {
+      top: 0; left: 0; right: 0;
+      height: 12%;
+      background: var(--forest);
+      color: white;
+      font-weight: 600;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      border: none;
+    }
+
+    .zone-table {
+      top: 15%;
+      left: 5%;
+      width: 55%;
+      height: 35%;
+      background: var(--cream);
+    }
+
+    .zone-display {
+      top: 15%;
+      right: 5%;
+      width: 35%;
+      height: 35%;
+      background: rgba(45, 71, 57, 0.08);
+      border-color: var(--forest);
+    }
+
+    .zone-materials {
+      top: 55%;
+      left: 5%;
+      width: 25%;
+      height: 25%;
+      background: rgba(184, 149, 110, 0.1);
+      border-color: var(--gold);
+    }
+
+    .zone-samples {
+      top: 55%;
+      left: 35%;
+      width: 25%;
+      height: 25%;
+      background: rgba(122, 143, 125, 0.1);
+      border-color: var(--sage);
+    }
+
+    .zone-demo {
+      top: 55%;
+      right: 5%;
+      width: 30%;
+      height: 25%;
+      background: rgba(45, 71, 57, 0.05);
+    }
+
+    .zone-qr {
+      bottom: 5%;
+      right: 5%;
+      width: 20%;
+      height: 12%;
+      background: white;
+      border: 1px solid var(--charcoal);
+      font-size: 8px;
+    }
+
+    .zone-person {
+      bottom: 5%;
+      left: 30%;
+      width: 40%;
+      height: 12%;
+      border: none;
+      font-size: 8px;
+      color: var(--warm-gray);
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .legend-swatch {
+      width: 16px;
+      height: 16px;
+      border: 1px dashed var(--sage);
+      flex-shrink: 0;
+    }
+
+    .legend-swatch.banner { background: var(--forest); border: none; }
+    .legend-swatch.table { background: var(--cream); }
+    .legend-swatch.display { background: rgba(45, 71, 57, 0.08); border-color: var(--forest); }
+    .legend-swatch.materials { background: rgba(184, 149, 110, 0.1); border-color: var(--gold); }
+    .legend-swatch.samples { background: rgba(122, 143, 125, 0.1); border-color: var(--sage); }
+
+    .legend-text {
+      font-size: 10px;
+      color: var(--charcoal);
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--forest);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--sand);
+    }
+
+    .layout-notes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .note-card {
+      border: 1px solid var(--sand);
+      padding: 12px 14px;
+    }
+
+    .note-card .note-title {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 6px;
+    }
+
+    .note-card ul {
+      list-style: none;
+      font-size: 10px;
+      color: var(--warm-gray);
+      line-height: 1.6;
+    }
+
+    .flow-section {
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--sand);
+    }
+
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .flow-step {
+      text-align: center;
+      padding: 8px 6px;
+      background: var(--cream);
+      position: relative;
+    }
+
+    .flow-step::after {
+      content: '';
+      position: absolute;
+      right: -6px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-left: 5px solid var(--sage);
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+    }
+
+    .flow-step:last-child::after { display: none; }
+
+    .flow-step .step-num {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--forest);
+      margin-bottom: 2px;
+    }
+
+    .flow-step .step-text {
+      font-size: 9px;
+      color: var(--charcoal);
+      line-height: 1.3;
+    }
+
+    .print-btn {
+      position: fixed; bottom: 20px; right: 20px;
+      background: var(--forest); color: white; border: none;
+      padding: 12px 24px; font-family: 'DM Sans', sans-serif;
+      font-size: 12px; font-weight: 500; cursor: pointer; z-index: 100;
+    }
+    .print-btn:hover { background: #3D5A4A; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div class="logo">AWARE</div>
+      <div class="header-right">
+        <strong>Booth Layout Plan</strong><br>
+        Beauty Vanities #BV 2630 | ~6x6 ft estimated
+      </div>
+    </div>
+
+    <div class="booth-diagram">
+      <div class="booth-label">Back Wall</div>
+      <div class="aisle-label">Aisle (visitor approach)</div>
+
+      <div class="booth-zone zone-banner">AWARE - Professional Scalp Care (Banner/Backdrop)</div>
+      <div class="booth-zone zone-table">Main Table<br><br>Seated meetings<br>Order forms<br>iPad deck</div>
+      <div class="booth-zone zone-display">Product<br>Display<br><br>Counter unit<br>+ risers</div>
+      <div class="booth-zone zone-materials">Printed<br>Materials<br><br>Decks,<br>one-pagers</div>
+      <div class="booth-zone zone-samples">Sample<br>Kits<br><br>Grab + go<br>sachets</div>
+      <div class="booth-zone zone-demo">Demo<br>Area<br><br>Testers,<br>mirror</div>
+      <div class="booth-zone zone-qr">QR Code<br>Standee</div>
+      <div class="booth-zone zone-person">Team standing position (greet visitors)</div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-swatch banner"></div><div class="legend-text">Banner / backdrop</div></div>
+      <div class="legend-item"><div class="legend-swatch table"></div><div class="legend-text">Meeting table</div></div>
+      <div class="legend-item"><div class="legend-swatch display"></div><div class="legend-text">Product display</div></div>
+      <div class="legend-item"><div class="legend-swatch materials"></div><div class="legend-text">Print materials</div></div>
+      <div class="legend-item"><div class="legend-swatch samples"></div><div class="legend-text">Sample station</div></div>
+    </div>
+
+    <div class="section-title">Zone Details</div>
+    <div class="layout-notes">
+      <div class="note-card">
+        <div class="note-title">Product Display (right side)</div>
+        <ul>
+          <li>- Counter unit at eye level on riser</li>
+          <li>- Full-size line front and center</li>
+          <li>- Travel sizes at lower level</li>
+          <li>- Testers open with pump dispensers</li>
+          <li>- Backbar liters behind if space allows</li>
+        </ul>
+      </div>
+      <div class="note-card">
+        <div class="note-title">Meeting Table (left side)</div>
+        <ul>
+          <li>- 2 chairs (buyer + rep)</li>
+          <li>- iPad loaded with full digital deck</li>
+          <li>- Stack of order forms + pens</li>
+          <li>- Business card holder</li>
+          <li>- Clipboard with lead capture sheets</li>
+        </ul>
+      </div>
+      <div class="note-card">
+        <div class="note-title">Print Materials Station</div>
+        <ul>
+          <li>- Distributor decks (separate stack)</li>
+          <li>- Retail brand books (separate stack)</li>
+          <li>- Salon one-pagers (highest quantity)</li>
+          <li>- Show special sheets (visible, front)</li>
+          <li>- Keep organized, restock each morning</li>
+        </ul>
+      </div>
+      <div class="note-card">
+        <div class="note-title">Traffic Flow Strategy</div>
+        <ul>
+          <li>- Stand at front of booth, not behind table</li>
+          <li>- Samples visible from aisle (draws people in)</li>
+          <li>- QR code standee catches passersby</li>
+          <li>- Demo area for curious visitors (quick scalp feel)</li>
+          <li>- Meeting table for serious conversations</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flow-section">
+      <div class="section-title">Visitor Flow (ideal path)</div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-num">1</div>
+          <div class="step-text">Greet at<br>aisle edge</div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">2</div>
+          <div class="step-text">Hand sample<br>+ pitch card</div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">3</div>
+          <div class="step-text">Demo at<br>product display</div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">4</div>
+          <div class="step-text">Sit for<br>meeting/order</div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">5</div>
+          <div class="step-text">Capture lead<br>+ give materials</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="print-btn no-print" onclick="window.print()">Print / Save PDF</button>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

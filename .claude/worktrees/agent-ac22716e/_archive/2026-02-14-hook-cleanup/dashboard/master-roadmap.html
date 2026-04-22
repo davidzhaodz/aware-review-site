@@ -1,0 +1,2213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Master Roadmap</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111;
+    --surface-2: #1a1a1a;
+    --surface-3: #222;
+    --border: #2a2a2a;
+    --border-hover: #444;
+    --text: #e8e8e8;
+    --text-muted: #999;
+    --text-dim: #666;
+    --accent: #c8a97e;
+    --accent-dim: rgba(200,169,126,0.12);
+
+    --done: #2ea043;
+    --done-bg: rgba(46,160,67,0.15);
+    --progress: #d29922;
+    --progress-bg: rgba(210,153,34,0.15);
+    --queued: #8b949e;
+    --queued-bg: rgba(139,148,158,0.1);
+
+    --c-b2b: #4a9eff;
+    --c-dtc: #a855f7;
+    --c-mkt: #f97316;
+    --c-fin: #22c55e;
+    --c-prod: #ec4899;
+    --c-cert: #06b6d4;
+    --c-ops: #8b5cf6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ── Top bar ── */
+  .topbar {
+    height: 48px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 16px;
+    background: var(--bg);
+    z-index: 200;
+    position: relative;
+  }
+
+  .topbar h1 { font-size: 14px; font-weight: 600; letter-spacing: -0.3px; }
+  .topbar .sep { width: 1px; height: 20px; background: var(--border); }
+
+  .topbar .stats {
+    display: flex; gap: 14px; font-size: 12px; color: var(--text-muted);
+  }
+  .topbar .stats b { color: var(--text); font-weight: 600; }
+
+  .topbar .filters {
+    display: flex; gap: 4px; margin-left: auto;
+  }
+
+  .fbtn {
+    padding: 4px 12px; border-radius: 14px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-dim); font-size: 11px;
+    cursor: pointer; font-family: inherit; transition: all 0.15s;
+  }
+  .fbtn:hover { border-color: var(--border-hover); color: var(--text-muted); }
+  .fbtn.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+  .search-input {
+    padding: 4px 12px; border-radius: 14px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text); font-size: 11px;
+    width: 180px; font-family: inherit; outline: none;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-dim); }
+
+  /* ── Dashboard links dropdown ── */
+  .dash-dropdown {
+    position: relative;
+  }
+  .dash-dropdown .dash-toggle {
+    padding: 4px 10px; border-radius: 14px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-dim); font-size: 11px;
+    cursor: pointer; font-family: inherit; transition: all 0.15s;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .dash-dropdown .dash-toggle:hover { border-color: var(--border-hover); color: var(--text-muted); }
+  .dash-dropdown .dash-toggle svg { width: 12px; height: 12px; }
+
+  .dash-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 260px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 6px;
+    z-index: 500;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  }
+  .dash-menu.open { display: block; }
+
+  .dash-menu-group {
+    padding: 6px 10px 2px;
+    font-size: 9px; font-weight: 600; letter-spacing: 0.8px;
+    text-transform: uppercase; color: var(--text-dim);
+  }
+
+  .dash-menu a {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 10px; border-radius: 6px;
+    color: var(--text-muted); text-decoration: none;
+    font-size: 12px; transition: all 0.12s;
+  }
+  .dash-menu a:hover {
+    background: var(--surface-3); color: var(--text);
+  }
+  .dash-menu a .dash-dot {
+    width: 6px; height: 6px; border-radius: 3px; flex-shrink: 0;
+  }
+  .dash-menu a .dash-label { flex: 1; }
+  .dash-menu a .dash-arrow {
+    font-size: 10px; color: var(--text-dim); opacity: 0;
+    transition: opacity 0.12s;
+  }
+  .dash-menu a:hover .dash-arrow { opacity: 1; }
+
+  /* ── Canvas area ── */
+  .canvas-wrap {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 48px);
+    overflow: hidden;
+  }
+
+  .canvas {
+    position: absolute;
+    transform-origin: 0 0;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+  }
+
+  /* ── SVG lines layer ── */
+  .lines-layer {
+    position: absolute;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .lines-layer line {
+    stroke: var(--border);
+    stroke-width: 1.5;
+    opacity: 0.5;
+  }
+
+  .lines-layer line.active {
+    stroke: var(--accent);
+    opacity: 0.8;
+    stroke-width: 2;
+  }
+
+  /* ── Root node ── */
+  .root-node {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: 70px;
+    background: radial-gradient(circle at 40% 35%, #2a2218, #141414);
+    border: 2px solid var(--accent);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s;
+    box-shadow: 0 0 40px rgba(200,169,126,0.08);
+  }
+
+  .root-node:hover {
+    box-shadow: 0 0 50px rgba(200,169,126,0.15);
+    transform: scale(1.03);
+  }
+
+  .root-label {
+    font-size: 14px; font-weight: 700; color: var(--accent);
+    letter-spacing: 1px;
+  }
+
+  .root-sub {
+    font-size: 10px; color: var(--text-muted); margin-top: 2px;
+  }
+
+  .root-stat {
+    font-size: 18px; font-weight: 700; color: var(--text); margin-top: 6px;
+  }
+
+  .root-stat-label {
+    font-size: 9px; color: var(--text-dim); text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Category node ── */
+  .cat-node {
+    position: absolute;
+    width: 180px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.25s;
+  }
+
+  .cat-node:hover {
+    border-color: var(--border-hover);
+    transform: scale(1.04);
+    z-index: 15;
+  }
+
+  .cat-node.expanded {
+    border-color: var(--border-hover);
+    z-index: 20;
+  }
+
+  .cat-top {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+  }
+
+  .cat-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  .cat-title {
+    font-size: 12px; font-weight: 600; letter-spacing: -0.2px;
+  }
+
+  .cat-count {
+    font-size: 10px; color: var(--text-dim); margin-left: auto;
+  }
+
+  .cat-bar {
+    height: 4px; background: var(--surface-3); border-radius: 2px;
+    overflow: hidden; margin-bottom: 8px;
+  }
+
+  .cat-bar-inner {
+    display: flex; height: 100%;
+  }
+
+  .cat-bar-done { background: var(--done); }
+  .cat-bar-progress { background: var(--progress); }
+  .cat-bar-queued { background: var(--queued); opacity: 0.3; }
+
+  .cat-stats {
+    display: flex; gap: 10px; font-size: 10px; color: var(--text-muted);
+  }
+
+  .cat-stat { display: flex; align-items: center; gap: 3px; }
+
+  .cat-stat-dot { width: 5px; height: 5px; border-radius: 50%; }
+
+  /* ── Item nodes ── */
+  .items-ring {
+    position: absolute;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .items-ring.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .item-node {
+    position: absolute;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    width: 230px;
+    cursor: default;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 5;
+  }
+
+  .item-node:hover {
+    border-color: var(--border-hover);
+    z-index: 25;
+    transform: scale(1.06);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+
+  .item-node:hover .item-expand { max-height: 60px; opacity: 1; margin-top: 6px; }
+
+  /* ── Status-based node styling ── */
+  .item-node.status-done {
+    opacity: 0.5;
+    border-color: rgba(46,160,67,0.2);
+  }
+  .item-node.status-done:hover { opacity: 0.85; }
+  .item-node.status-done .item-name { text-decoration: line-through; text-decoration-color: var(--text-dim); }
+
+  .item-node.status-active {
+    border-color: rgba(210,153,34,0.35);
+    box-shadow: 0 0 12px rgba(210,153,34,0.08);
+  }
+  .item-node.status-active:hover {
+    border-color: rgba(210,153,34,0.6);
+    box-shadow: 0 4px 20px rgba(210,153,34,0.15);
+  }
+
+  .item-node.status-queued {
+    border-color: var(--border);
+  }
+
+  .item-node.hidden { display: none; }
+
+  .item-top {
+    display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px;
+  }
+
+  .item-name {
+    font-size: 11.5px; font-weight: 500; line-height: 1.3; flex: 1;
+    letter-spacing: -0.1px;
+  }
+
+  .item-badge {
+    font-size: 8px; font-weight: 600; padding: 2px 7px; border-radius: 8px;
+    text-transform: uppercase; letter-spacing: 0.4px; flex-shrink: 0;
+    white-space: nowrap; cursor: pointer; transition: all 0.15s;
+    user-select: none;
+  }
+  .item-badge:hover { filter: brightness(1.3); transform: scale(1.08); }
+  .item-badge:active { transform: scale(0.95); }
+
+  .item-badge.done { background: var(--done-bg); color: var(--done); }
+  .item-badge.in_progress { background: var(--progress-bg); color: var(--progress); }
+  .item-badge.not_started { background: var(--queued-bg); color: var(--queued); }
+
+  .item-desc {
+    font-size: 10px; color: var(--text-dim); line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; overflow: hidden;
+  }
+
+  /* ── Hover-expand: shows file path + full desc ── */
+  .item-expand {
+    max-height: 0; opacity: 0; overflow: hidden;
+    transition: all 0.2s ease;
+  }
+  .item-expand-desc {
+    font-size: 10px; color: var(--text-muted); line-height: 1.4; margin-bottom: 4px;
+  }
+  .item-expand-file {
+    font-size: 9px; color: var(--text-dim);
+    font-family: 'SF Mono', monospace; opacity: 0.7;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .item-file {
+    font-size: 9px; color: var(--text-dim); margin-top: 4px;
+    font-family: 'SF Mono', monospace; opacity: 0.6;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    display: none; /* hidden by default, shown in expand */
+  }
+
+  .item-source {
+    width: 4px; height: 4px; border-radius: 50%; position: absolute;
+    top: 10px; right: 10px; opacity: 0.5;
+  }
+
+  /* ── Sub-group nodes (middle ring) ── */
+  .subgroup-node {
+    position: absolute;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 8px 12px;
+    width: 130px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
+    text-align: center;
+  }
+
+  .subgroup-node:hover {
+    border-color: var(--border-hover);
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    z-index: 20;
+  }
+
+  .subgroup-node.expanded {
+    border-color: var(--accent);
+    box-shadow: 0 0 18px rgba(200,169,126,0.15);
+    z-index: 20;
+  }
+
+  .subgroup-label {
+    font-size: 12px; font-weight: 600; letter-spacing: -0.2px;
+    margin-bottom: 4px; color: var(--text);
+  }
+
+  .subgroup-count {
+    font-size: 10px; color: var(--text-dim);
+  }
+
+  .subgroup-bar {
+    height: 3px; border-radius: 2px; background: var(--surface-3);
+    margin-top: 6px; overflow: hidden;
+  }
+
+  .subgroup-bar-inner { display: flex; height: 100%; }
+  .subgroup-bar-done { background: var(--done); }
+  .subgroup-bar-progress { background: var(--progress); }
+  .subgroup-bar-queued { background: var(--queued); }
+
+  /* ── Detail panel ── */
+  .detail-panel {
+    position: fixed;
+    right: -420px;
+    top: 48px;
+    width: 400px;
+    height: calc(100vh - 48px);
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    z-index: 300;
+    transition: right 0.3s ease;
+    overflow-y: auto;
+    padding: 24px;
+  }
+
+  .detail-panel.open { right: 0; }
+
+  .detail-close {
+    position: absolute; top: 16px; right: 16px;
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 1px solid var(--border); background: var(--surface-2);
+    color: var(--text-muted); cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .detail-close:hover { border-color: var(--border-hover); color: var(--text); }
+
+  .detail-cat-title {
+    font-size: 18px; font-weight: 700; margin-bottom: 4px;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .detail-cat-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  .detail-summary {
+    font-size: 12px; color: var(--text-muted); margin-bottom: 20px;
+    padding-bottom: 16px; border-bottom: 1px solid var(--border);
+  }
+
+  .detail-section-title {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.8px; color: var(--text-dim); margin: 16px 0 8px;
+  }
+
+  .detail-item {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    transition: border-color 0.15s;
+  }
+
+  .detail-item:hover { border-color: var(--border-hover); }
+
+  .detail-item-top {
+    display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px;
+  }
+
+  .detail-item-name { font-size: 12px; font-weight: 500; flex: 1; }
+
+  .detail-item-desc {
+    font-size: 11px; color: var(--text-muted); line-height: 1.4;
+  }
+
+  .detail-item-file {
+    font-size: 10px; color: var(--text-dim); margin-top: 4px;
+    font-family: 'SF Mono', monospace; opacity: 0.6;
+  }
+
+  /* ── Legend ── */
+  .legend-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    height: 32px; background: var(--bg); border-top: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 20px;
+    gap: 16px; font-size: 10px; color: var(--text-dim); z-index: 100;
+  }
+
+  .legend-bar .leg { display: flex; align-items: center; gap: 4px; }
+  .legend-bar .ldot { width: 6px; height: 6px; border-radius: 50%; }
+
+  .legend-bar .tip { margin-left: auto; font-style: italic; }
+
+  /* ── Zoom controls ── */
+  .zoom-controls {
+    position: fixed; bottom: 44px; right: 16px; z-index: 100;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+
+  .zoom-btn {
+    width: 32px; height: 32px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--surface);
+    color: var(--text-muted); cursor: pointer; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: inherit; transition: all 0.15s;
+  }
+
+  .zoom-btn:hover { border-color: var(--border-hover); color: var(--text); }
+
+  /* ── Back button ── */
+  .back-btn {
+    position: fixed; bottom: 44px; left: 16px; z-index: 100;
+    padding: 6px 14px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--surface);
+    color: var(--text-muted); cursor: pointer; font-size: 11px;
+    font-family: inherit; transition: all 0.15s;
+    display: none;
+  }
+
+  .back-btn:hover { border-color: var(--border-hover); color: var(--text); }
+  .back-btn.visible { display: block; }
+
+  /* ── Priorities toggle button ── */
+  .prio-toggle {
+    padding: 4px 12px; border-radius: 14px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-dim); font-size: 11px;
+    cursor: pointer; font-family: inherit; transition: all 0.15s;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .prio-toggle:hover { border-color: var(--border-hover); color: var(--text-muted); }
+  .prio-toggle.has-items { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+  .prio-toggle .prio-count {
+    background: var(--accent); color: #000; font-size: 9px; font-weight: 700;
+    width: 16px; height: 16px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center;
+  }
+
+  /* ── Priorities panel (left side) ── */
+  .prio-panel {
+    position: fixed;
+    left: -380px;
+    top: 48px;
+    width: 360px;
+    height: calc(100vh - 80px);
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    z-index: 300;
+    transition: left 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .prio-panel.open { left: 0; }
+
+  .prio-header {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .prio-header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+  .prio-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .prio-title-star { color: var(--accent); }
+  .prio-subtitle { font-size: 11px; color: var(--text-dim); }
+  .prio-close {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 1px solid var(--border); background: var(--surface-2);
+    color: var(--text-muted); cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .prio-close:hover { border-color: var(--border-hover); color: var(--text); }
+
+  .prio-list {
+    flex: 1; overflow-y: auto; padding: 12px;
+  }
+
+  .prio-empty {
+    text-align: center; padding: 40px 20px;
+    color: var(--text-dim); font-size: 12px; line-height: 1.6;
+  }
+  .prio-empty-icon { font-size: 28px; margin-bottom: 8px; opacity: 0.4; }
+
+  /* ── Priority card (draggable) ── */
+  .prio-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    cursor: grab;
+    transition: all 0.15s;
+    position: relative;
+    user-select: none;
+  }
+  .prio-card:hover { border-color: var(--border-hover); }
+  .prio-card.dragging { opacity: 0.4; border-style: dashed; }
+  .prio-card.drag-over { border-color: var(--accent); border-top-width: 2px; }
+
+  .prio-card-rank {
+    position: absolute; left: -1px; top: -1px;
+    width: 20px; height: 20px; border-radius: 10px 0 8px 0;
+    background: var(--surface-3); border: 1px solid var(--border);
+    font-size: 9px; font-weight: 700; color: var(--text-muted);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .prio-card-top { display: flex; align-items: flex-start; gap: 6px; margin-left: 16px; }
+  .prio-card-name { font-size: 12px; font-weight: 500; flex: 1; line-height: 1.3; }
+  .prio-card-cat {
+    font-size: 8px; font-weight: 600; padding: 1px 6px; border-radius: 8px;
+    text-transform: uppercase; letter-spacing: 0.4px; flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .prio-card-desc {
+    font-size: 10px; color: var(--text-dim); margin-top: 4px; margin-left: 16px;
+    line-height: 1.35;
+  }
+  .prio-card-remove {
+    position: absolute; top: 8px; right: 8px;
+    width: 18px; height: 18px; border-radius: 50%;
+    border: none; background: transparent;
+    color: var(--text-dim); cursor: pointer; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.15s;
+  }
+  .prio-card:hover .prio-card-remove { opacity: 1; }
+  .prio-card-remove:hover { color: #e55; }
+
+  .prio-card-handle {
+    position: absolute; right: 8px; bottom: 8px;
+    font-size: 10px; color: var(--text-dim); opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .prio-card:hover .prio-card-handle { opacity: 0.5; }
+
+  /* ── Star button on item nodes ── */
+  .item-star {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--text-dim); cursor: pointer; font-size: 11px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.15s;
+  }
+  .item-star:hover { border-color: var(--accent); color: var(--accent); }
+  .item-star.starred { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+
+  /* ── Star button in detail panel ── */
+  .detail-item-star {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--text-dim); cursor: pointer; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.15s;
+  }
+  .detail-item-star:hover { border-color: var(--accent); color: var(--accent); }
+  .detail-item-star.starred { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+
+  /* ── Editing styles ── */
+  .edit-field {
+    background: var(--surface-3);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: inherit;
+    padding: 4px 8px;
+    outline: none;
+    width: 100%;
+    resize: none;
+    box-shadow: 0 0 0 2px rgba(200,169,126,0.15);
+  }
+  .edit-field:focus { border-color: var(--accent); }
+  .edit-field-name { font-size: 12px; font-weight: 500; }
+  .edit-field-desc { font-size: 11px; line-height: 1.4; min-height: 40px; }
+
+  .detail-item-name[data-editable] { cursor: text; border-radius: 3px; padding: 1px 4px; margin: -1px -4px; transition: background 0.15s; }
+  .detail-item-name[data-editable]:hover { background: var(--surface-3); }
+  .detail-item-desc[data-editable] { cursor: text; border-radius: 3px; padding: 1px 4px; margin: -1px -4px; transition: background 0.15s; }
+  .detail-item-desc[data-editable]:hover { background: var(--surface-3); }
+
+  .status-cycle {
+    cursor: pointer; user-select: none; transition: all 0.15s;
+  }
+  .status-cycle:hover { opacity: 0.8; transform: scale(1.08); }
+  .status-cycle:active { transform: scale(0.95); }
+
+  .detail-item-actions {
+    display: flex; gap: 4px; align-items: center; flex-shrink: 0;
+  }
+
+  .item-delete-btn {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 1px solid transparent; background: transparent;
+    color: var(--text-dim); cursor: pointer; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.15s; opacity: 0;
+  }
+  .detail-item:hover .item-delete-btn { opacity: 0.6; }
+  .item-delete-btn:hover { opacity: 1 !important; color: #e55; border-color: #e5555540; background: #e5551a; }
+
+  .add-task-btn {
+    width: 100%; padding: 10px;
+    border: 1px dashed var(--border); border-radius: 8px;
+    background: transparent; color: var(--text-dim);
+    font-size: 11px; font-family: inherit;
+    cursor: pointer; transition: all 0.15s;
+    margin-top: 8px; display: flex; align-items: center;
+    justify-content: center; gap: 6px;
+  }
+  .add-task-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+
+  .add-task-form {
+    background: var(--surface-2); border: 1px solid var(--accent);
+    border-radius: 8px; padding: 12px; margin-top: 8px;
+    box-shadow: 0 0 0 2px rgba(200,169,126,0.1);
+  }
+  .add-task-form label {
+    display: block; font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    color: var(--text-dim); margin-bottom: 4px; margin-top: 10px;
+  }
+  .add-task-form label:first-child { margin-top: 0; }
+  .add-task-form input, .add-task-form textarea, .add-task-form select {
+    width: 100%; padding: 6px 8px;
+    background: var(--surface-3); border: 1px solid var(--border);
+    border-radius: 4px; color: var(--text); font-family: inherit;
+    font-size: 12px; outline: none;
+  }
+  .add-task-form input:focus, .add-task-form textarea:focus, .add-task-form select:focus {
+    border-color: var(--accent);
+  }
+  .add-task-form textarea { resize: vertical; min-height: 50px; line-height: 1.4; }
+  .add-task-form select { cursor: pointer; }
+  .add-task-form option { background: var(--surface-2); }
+  .add-task-actions {
+    display: flex; gap: 6px; margin-top: 12px; justify-content: flex-end;
+  }
+  .add-task-actions button {
+    padding: 5px 14px; border-radius: 6px; font-size: 11px;
+    font-family: inherit; cursor: pointer; transition: all 0.15s;
+  }
+  .btn-save {
+    background: var(--accent); border: 1px solid var(--accent);
+    color: #000; font-weight: 600;
+  }
+  .btn-save:hover { filter: brightness(1.1); }
+  .btn-cancel {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  .btn-cancel:hover { border-color: var(--border-hover); color: var(--text); }
+
+  /* ── Data management buttons ── */
+  .data-actions {
+    display: flex; gap: 4px; align-items: center;
+  }
+  .data-btn {
+    padding: 4px 10px; border-radius: 14px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-dim); font-size: 10px;
+    cursor: pointer; font-family: inherit; transition: all 0.15s;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .data-btn:hover { border-color: var(--border-hover); color: var(--text-muted); }
+  .data-btn.has-edits { border-color: var(--progress); color: var(--progress); }
+  .data-btn svg { width: 12px; height: 12px; }
+
+  .toast {
+    position: fixed; bottom: 48px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 16px; font-size: 11px;
+    color: var(--text); z-index: 9999; opacity: 0;
+    transition: all 0.25s ease; pointer-events: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.success { border-color: var(--done); }
+  .toast.warning { border-color: var(--progress); }
+
+  /* ── Confirm dialog ── */
+  .confirm-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+    z-index: 9998; display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(2px); opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .confirm-overlay.visible { opacity: 1; pointer-events: auto; }
+  .confirm-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px; max-width: 360px; width: 90%;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+    transform: scale(0.95); transition: transform 0.2s;
+  }
+  .confirm-overlay.visible .confirm-box { transform: scale(1); }
+  .confirm-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+  .confirm-msg { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px; }
+  .confirm-actions { display: flex; gap: 8px; justify-content: flex-end; }
+  .confirm-actions button { padding: 6px 16px; border-radius: 6px; font-size: 11px; font-family: inherit; cursor: pointer; }
+  .confirm-danger { background: #e55; border: 1px solid #e55; color: #fff; font-weight: 600; }
+  .confirm-danger:hover { filter: brightness(1.1); }
+
+  /* ── Edit indicator dot ── */
+  .edit-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--progress); display: inline-block;
+    margin-left: 4px; vertical-align: middle;
+    animation: pulse-dot 2s ease infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>AWARE Hair - Master Roadmap</h1>
+  <div class="sep"></div>
+  <div class="stats" id="stats"></div>
+  <div class="data-actions">
+    <button class="data-btn" id="btn-export" onclick="exportData()" title="Export roadmap data as JSON">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      Export
+    </button>
+    <button class="data-btn" id="btn-import" onclick="document.getElementById('import-file').click()" title="Import roadmap data from JSON">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+      Import
+    </button>
+    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+    <button class="data-btn" id="btn-reset" onclick="confirmResetData()" title="Reset all edits to defaults">Reset</button>
+  </div>
+  <div class="sep"></div>
+  <div class="dash-dropdown" id="dash-dropdown">
+    <button class="dash-toggle" onclick="toggleDashMenu(event)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboards
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:10px;height:10px"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <div class="dash-menu" id="dash-menu"></div>
+  </div>
+  <div class="sep"></div>
+  <button class="prio-toggle" id="prio-toggle" onclick="togglePrioPanel()">
+    <span>&#9733; Priorities</span>
+    <span class="prio-count" id="prio-count" style="display:none">0</span>
+  </button>
+  <div class="filters">
+    <button class="fbtn active" data-f="all">All</button>
+    <button class="fbtn" data-f="not_started">Queued</button>
+    <button class="fbtn" data-f="in_progress">Active</button>
+    <button class="fbtn" data-f="done">Done</button>
+    <div class="sep" style="margin:0 4px"></div>
+    <input type="text" class="search-input" id="search" placeholder="Search...">
+  </div>
+</div>
+
+<div class="canvas-wrap" id="wrap">
+  <svg class="lines-layer" id="lines"></svg>
+  <div class="canvas" id="canvas"></div>
+</div>
+
+<div class="detail-panel" id="detail">
+  <button class="detail-close" id="detail-close">&times;</button>
+  <div id="detail-content"></div>
+</div>
+
+<div class="prio-panel" id="prio-panel">
+  <div class="prio-header">
+    <div class="prio-header-top">
+      <div class="prio-title"><span class="prio-title-star">&#9733;</span> Top Priorities</div>
+      <button class="prio-close" onclick="togglePrioPanel()">&times;</button>
+    </div>
+    <div class="prio-subtitle">Drag to reorder - Click star on any initiative to add</div>
+  </div>
+  <div class="prio-list" id="prio-list"></div>
+</div>
+
+<button class="back-btn" id="back-btn">&#8592; Overview</button>
+
+<div class="zoom-controls">
+  <button class="zoom-btn" id="zoom-in">+</button>
+  <button class="zoom-btn" id="zoom-out">&minus;</button>
+  <button class="zoom-btn" id="zoom-fit" style="font-size:11px">Fit</button>
+</div>
+
+<div class="legend-bar">
+  <div class="leg"><div class="ldot" style="background:var(--done)"></div> Done</div>
+  <div class="leg"><div class="ldot" style="background:var(--progress)"></div> Active</div>
+  <div class="leg"><div class="ldot" style="background:var(--queued)"></div> Queued</div>
+  <div class="leg" style="margin-left:12px"><div class="ldot" style="background:var(--accent)"></div> Repo</div>
+  <div class="leg"><div class="ldot" style="background:#fff"></div> Notion</div>
+  <span class="tip">Click to edit tasks in detail panel - Tab/Enter to save - Esc to cancel</span>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-title" id="confirm-title"></div>
+    <div class="confirm-msg" id="confirm-msg"></div>
+    <div class="confirm-actions">
+      <button class="btn-cancel" onclick="closeConfirm()">Cancel</button>
+      <button class="confirm-danger" id="confirm-action" onclick="">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── DEFAULT DATA (loaded from shared roadmap-data.json, inline fallback) ───
+let DEFAULT_DATA = [
+  { id:'b2b', title:'Sales B2B', color:'var(--c-b2b)', hex:'#4a9eff', items:[
+    {n:'SoCal Salon Outreach 2026',s:'in_progress',d:'Cold email to 136 SoCal salons via decision-tree sequences',f:'sales/cold-email/SOCAL-SALON-OUTREACH-2026.md',src:'repo'},
+    {n:'Distributor 8-Week Sprint',s:'in_progress',d:'23 distributors across US/Canada - warm + cold outreach',f:'opportunities/distributors/8-WEEK-DISTRIBUTOR-PLAN.md',src:'repo'},
+    {n:'AWARE Advocates Program',s:'in_progress',d:'Behavior-based advocacy: Advocate/Ambassador/Educator tiers',f:'sales/stylist-outreach/AMBASSADOR-PROGRAM.md',src:'repo'},
+    {n:'Testimonial Collection',s:'in_progress',d:'Systematic salon testimonials via 5-email sequence',f:'sales/testimonials/',src:'repo'},
+    {n:'Customer Success Playbook',s:'in_progress',d:'Post-sale lifecycle: onboarding, retention, upsell',f:'sales/CUSTOMER-SUCCESS-PLAYBOOK.md',src:'repo'},
+    {n:'Individual Salon Follow-ups',s:'in_progress',d:'Active follow-ups: Maja HeadSpa, TOMA, Flawless',f:'sales/outreach/',src:'repo'},
+    {n:'Partner Referral Program',s:'done',d:'3-tier referral: Bronze/Silver/Gold, 25 to 100+ partners',f:'sales/PARTNER-REFERRAL-PROGRAM.md',src:'repo'},
+    {n:'Cosmoprof Miami 2026',s:'done',d:'Trade show: 30+ qualified leads, distributor meetings',f:'opportunities/trade-shows/COSMOPROF-BATTLE-PLAN.md',src:'repo'},
+    {n:'Salon Sales Framework',s:'done',d:'Full B2B framework: ICP, sequences, objection handling',f:'skills/salon-sales/skill.md',src:'repo'},
+    {n:'Distributor Research (23)',s:'done',d:'Fit scoring, territory mapping, contact directories',f:'opportunities/distributors/US-DISTRIBUTOR-TARGETS-2026.md',src:'repo'},
+    {n:'Distributor Templates',s:'done',d:'7 email template sets incl. Cosmoprof follow-ups',f:'opportunities/distributors/outreach-templates/',src:'repo'},
+    {n:'Partner Loyalty Tiers',s:'done',d:'Pro/Partner/Ambassador tiers with wholesale pricing',f:'sales/PROGRAMS-OVERVIEW.md',src:'repo'},
+    {n:'Cold Email Architecture',s:'done',d:'Reference sequences, copywriting rules, anti-patterns',f:'sales/cold-email/email-sequences.md',src:'repo'},
+    {n:'Q1 Inbound Launch Checklist',s:'done',d:'5 parallel salon acquisition workstreams consolidated',f:'sales/Q1-2026-INBOUND-SALON-LAUNCH-CHECKLIST.md',src:'repo'},
+    {n:'Finalize Salon Strategy',s:'not_started',d:'Consolidate overall salon acquisition strategy',f:'',src:'notion'},
+    {n:'Create Salon Leads List',s:'not_started',d:'Build comprehensive prospect database',f:'',src:'notion'},
+    {n:'Free Backbar Trial',s:'not_started',d:'Free backbar trial for prospective salon partners',f:'',src:'notion'},
+    {n:'Scalp Camera Package',s:'not_started',d:'Bundle scalp camera and service into offering',f:'',src:'notion'},
+    {n:'AI Salon Class',s:'not_started',d:'AI-powered class for salon owners',f:'',src:'notion'},
+    {n:'Salon Scalp Class',s:'not_started',d:'Hands-on scalp health curriculum',f:'',src:'notion'},
+    {n:'Existing Salon Offer',s:'not_started',d:'Special promotion for current partners',f:'',src:'notion'},
+    {n:'Salon Locator',s:'not_started',d:'Store/salon locator for website',f:'',src:'notion'},
+    {n:'Ambassador Pitch Deck',s:'not_started',d:'Sales deck for partner recruitment',f:'',src:'notion'},
+    {n:'DM Stylist Influencers',s:'not_started',d:'Direct outreach to stylist influencers',f:'',src:'notion'},
+    {n:'Partnerships (Vera Hair)',s:'not_started',d:'Partnership opportunities with Vera Hair',f:'',src:'notion'},
+    {n:'Post Ambassadors on Social',s:'not_started',d:'Feature ambassadors on social channels',f:'',src:'notion'},
+    {n:'Retarget Warm Leads',s:'not_started',d:'Re-engage Cosmoprof and outreach leads',f:'',src:'notion'},
+    {n:'Contact Priority Salons',s:'not_started',d:'Sachi, Lauren, Rocco, Milena, Benjamin',f:'',src:'notion'},
+  ]},
+  { id:'dtc', title:'Sales DTC', color:'var(--c-dtc)', hex:'#a855f7', items:[
+    {n:'Scalp Environment Report',s:'in_progress',d:'Personalized report: ZIP + UV/pollen/air/water data, 5-email sequence',f:'scalp-environment-report/initiatives/01-scalp-report-system/',src:'repo'},
+    {n:'Welcome Series',s:'in_progress',d:'5-email onboarding: story, how-to, check-in, second purchase',f:'sales/b2c-automation/welcome-series.md',src:'repo'},
+    {n:'Abandoned Cart Flow',s:'in_progress',d:'3-email recovery: social proof + discounted nudge',f:'sales/b2c-automation/abandoned-cart-flow.md',src:'repo'},
+    {n:'Replenishment Reminders',s:'in_progress',d:'Product-timed emails: Shampoo Day 42, Leave-in Day 28',f:'sales/b2c-automation/replenishment-flow.md',src:'repo'},
+    {n:'Review Request Flow',s:'in_progress',d:'Post-purchase review request with $15 credit',f:'emails/flows/retention/01-review-request.html',src:'repo'},
+    {n:'Referral Program Flow',s:'in_progress',d:'$15 credit referrer/referee for viral growth',f:'emails/flows/referral/01-referral-program.html',src:'repo'},
+    {n:'Winback Campaign',s:'in_progress',d:'2-email sequence for 90+ day inactive customers',f:'emails/flows/retention/02-winback-reminder.html',src:'repo'},
+    {n:'Shipment Tracking',s:'in_progress',d:'3-email fulfillment: confirmed, out, delivered',f:'emails/flows/shipping/01-shipment-confirmed.html',src:'repo'},
+    {n:'Post-Purchase Education',s:'in_progress',d:'Welcome, How to Use, Results Timeline',f:'emails/flows/post-purchase/01-welcome.html',src:'repo'},
+    {n:'Referred Client Welcome',s:'in_progress',d:'Special welcome for referral-acquired customers',f:'emails/flows/referral/02-referred-client.html',src:'repo'},
+    {n:'Deploy Scalp Report Flows',s:'not_started',d:'Deploy scalp report emails into Klaviyo',f:'',src:'notion'},
+    {n:'Update Email Flows',s:'not_started',d:'Review and update all consumer automations',f:'',src:'notion'},
+    {n:'Email Strategy Plan',s:'not_started',d:'Consolidate DTC email strategy',f:'',src:'notion'},
+  ]},
+  { id:'mkt', title:'Marketing', color:'var(--c-mkt)', hex:'#f97316', items:[
+    {n:'Reddit / Social Listening',s:'in_progress',d:'F5Bot + n8n workflows + Google Sheets tracking',f:'social-listening/SETUP-GUIDE.md',src:'repo'},
+    {n:'DTC Facebook Strategy',s:'in_progress',d:'Paid + organic targeting affluent 60+ women',f:'aware-hair-social-media/FACEBOOK-STRATEGY-2026.md',src:'repo'},
+    {n:'B2B Facebook Strategy',s:'in_progress',d:'Salon owner targeting: organic + paid acquisition',f:'aware-hair-social-media/FACEBOOK-B2B-SALON-STRATEGY-2026.md',src:'repo'},
+    {n:'Technical SEO Audit',s:'in_progress',d:'7 issues found, 4-week implementation plan',f:'marketing/seo-paid-search/TECHNICAL-SEO-AUDIT.md',src:'repo'},
+    {n:'Social Media Infrastructure',s:'in_progress',d:'Multi-platform: IG, FB, LinkedIn, TikTok',f:'aware-hair-social-media/README.md',src:'repo'},
+    {n:'Brand Voice Guidelines',s:'done',d:'Full framework: tone, formulas, platform rules',f:'skills/content-voice/skill.md',src:'repo'},
+    {n:'Keywords Config',s:'in_progress',d:'Tier-based brand/intent/category keyword tracking',f:'social-listening/keywords-config.json',src:'repo'},
+    {n:'Social Media Planning',s:'not_started',d:'Content calendar and planning',f:'',src:'notion'},
+    {n:'Influencer Gifting',s:'not_started',d:'Product gifting program design',f:'',src:'notion'},
+    {n:'SEO Strategy',s:'not_started',d:'Full SEO strategy beyond technical',f:'',src:'notion'},
+    {n:'Brand Photoshoot',s:'not_started',d:'Professional photography session',f:'',src:'notion'},
+    {n:'Onboard SixOne',s:'not_started',d:'Agency onboarding for brand support',f:'',src:'notion'},
+  ]},
+  { id:'fin', title:'Finance', color:'var(--c-fin)', hex:'#22c55e', items:[
+    {n:'Investor Targeting',s:'in_progress',d:'42 targets (Tier A/B), operator angels, outreach',f:'opportunities/investors/INVESTOR-TARGETS-2026.md',src:'repo'},
+    {n:'Financial Model',s:'in_progress',d:'Scenario analysis, $1-3M seed raise model',f:'finance/FINANCIAL-MODEL-FRAMEWORK.md',src:'repo'},
+    {n:'Strategic Analysis 2026',s:'in_progress',d:'Market positioning, competitive landscape, roadmap',f:'strategy-meeting/2026-STRATEGIC-ANALYSIS.md',src:'repo'},
+    {n:'Investor Dashboard',s:'in_progress',d:'Pipeline tracking, outreach, deal progress',f:'opportunities/investors/investor-dashboard.html',src:'repo'},
+    {n:'Q4 Sales Tax Filed',s:'done',d:'CA Q4 2025 filed Feb 1 - $799 remitted',f:'finance/tax/2025/q4-2025-sales-tax-filed.md',src:'repo'},
+    {n:'Finance Ops Foundation',s:'in_progress',d:'Processes, deadlines, guardrails',f:'finance/README.md',src:'repo'},
+    {n:'Investor Tier List',s:'not_started',d:'Finalize + prioritize outreach list',f:'',src:'notion'},
+    {n:'Accelerators List',s:'not_started',d:'Target accelerator programs',f:'',src:'notion'},
+    {n:'Investors Recap',s:'not_started',d:'Update for existing investors',f:'',src:'notion'},
+    {n:'Investor Update',s:'not_started',d:'Draft investor communication',f:'',src:'notion'},
+    {n:'Financial Dataroom',s:'not_started',d:'Assemble due diligence room',f:'',src:'notion'},
+    {n:'Taxes / 1099 / K1',s:'not_started',d:'Annual filings: 1099-NEC, K-1',f:'',src:'notion'},
+    {n:'Close 2025 YE',s:'not_started',d:'Finalize 2025 books',f:'',src:'notion'},
+    {n:'Financial Dashboard',s:'not_started',d:'Monthly P&L, cash position, metrics',f:'.claude/commands/finance-dashboard.md',src:'repo'},
+    {n:'Cash Flow Forecast',s:'not_started',d:'Rolling 12-month projection',f:'.claude/commands/cash-forecast.md',src:'repo'},
+  ]},
+  { id:'prod', title:'Product Dev', color:'var(--c-prod)', hex:'#ec4899', items:[
+    {n:'Scalp Care Positioning',s:'done',d:'$14.7B market analysis and brand positioning',f:'scalp-care-positioning.md',src:'repo'},
+    {n:'ResistHyal Research',s:'done',d:'7-in-1 hyaluronic acid complex (Givaudan)',f:'resources/resisthyal-leaflet.pdf',src:'repo'},
+    {n:'SymHair Force Specs',s:'done',d:'Clinical efficacy data and technical specs',f:'resources/',src:'repo'},
+    {n:'Pricing & Packages',s:'done',d:'Wholesale pricing and salon configurations',f:'skills/salon-sales/references/pricing.md',src:'repo'},
+    {n:'Serum Development',s:'not_started',d:'New SKU: serum formulation',f:'',src:'notion'},
+    {n:'Oil Mask Development',s:'not_started',d:'New SKU: oil mask formulation',f:'',src:'notion'},
+    {n:'Formula Upgrades',s:'not_started',d:'Improve existing formulations',f:'',src:'notion'},
+    {n:'Renew Patent-Pending',s:'not_started',d:'Renew patent status',f:'',src:'notion'},
+    {n:'Clinical Trial Firms',s:'not_started',d:'Research testing firms',f:'',src:'notion'},
+    {n:'110 Gal Shampoo Run',s:'not_started',d:'Production with Teamwork Packaging',f:'',src:'notion'},
+    {n:'Teamwork Contract',s:'not_started',d:'Finalize manufacturing agreement',f:'',src:'notion'},
+    {n:'Gua Sha Variations',s:'not_started',d:'Additional gua sha products',f:'',src:'notion'},
+  ]},
+  { id:'cert', title:'Certifications', color:'var(--c-cert)', hex:'#06b6d4', items:[
+    {n:'Certification Strategy',s:'in_progress',d:'5-phase: cruelty-free, vegan, clean beauty, sustainability',f:'sales/certification-program/THIRD-PARTY-CERTIFICATION-STRATEGY.md',src:'repo'},
+    {n:'Phase 1 (Leaping Bunny/PETA)',s:'in_progress',d:'Quick-win certifications + supplier declarations',f:'sales/certification-program/PHASE-1-APPLICATION-CHECKLIST.md',src:'repo'},
+    {n:'Stylist Cert Program',s:'in_progress',d:'Free Tier 1 + Paid Tier 2 ($99) on Thinkific',f:'sales/certification-program/README.md',src:'repo'},
+    {n:'Tier 1 Curriculum',s:'in_progress',d:'45-min, 5 modules, 16 quiz questions',f:'sales/certification-program/TIER-1-CURRICULUM.md',src:'repo'},
+    {n:'Tier 2 Curriculum',s:'in_progress',d:'2-3hr advanced ($99) - Q2 2026 launch',f:'sales/certification-program/TIER-2-CURRICULUM-OUTLINE.md',src:'repo'},
+    {n:'Animal Testing Policy',s:'done',d:'Formal no-testing policy document',f:'sales/certification-program/AWARE-ANIMAL-TESTING-POLICY.md',src:'repo'},
+    {n:'MoCRA / FDA Compliance',s:'done',d:'Registration, facility, adverse events',f:'_archive/2026-01-cosmoprof-miami/COMPLIANCE-CREDENTIALS.md',src:'repo'},
+    {n:'Product Liability Insurance',s:'done',d:'$1M/$3M coverage + GMP certification',f:'_archive/2026-01-cosmoprof-miami/COMPLIANCE-SUMMARY.md',src:'repo'},
+    {n:'Manufacturing IP Agreement',s:'done',d:'Ocean Blue/Teamwork - IP ownership secured',f:'legal/contracts/manufacturing/',src:'repo'},
+    {n:'Start Certifications',s:'not_started',d:'Begin formal application process',f:'',src:'notion'},
+  ]},
+  { id:'ops', title:'Ops & Tech', color:'var(--c-ops)', hex:'#8b5cf6', items:[
+    {n:'N8N Chief of Staff',s:'in_progress',d:'AI assistant: 3x daily check-ins, agent coordination',f:'assistant/N8N-ACTIVATION-READY.md',src:'repo'},
+    {n:'AI Multi-Agent Team',s:'in_progress',d:'BDR, social/competitive intel, customer success',f:'assistant/agents/AI-TEAM-ARCHITECTURE.md',src:'repo'},
+    {n:'Social Listening Automation',s:'in_progress',d:'6 n8n workflows: Reddit, Twitter, YouTube, etc.',f:'social-listening/README.md',src:'repo'},
+    {n:'Theme SEO/AEO',s:'in_progress',d:'Schema, canonical URLs, AI crawler access',f:'aware-hair-shopify-theme/',src:'repo'},
+    {n:'Theme Performance',s:'in_progress',d:'CSS/JS reduction, image optimization',f:'aware-hair-shopify-theme/PERFORMANCE-PLAN.md',src:'repo'},
+    {n:'Klaviyo Flow Library',s:'in_progress',d:'13 HTML templates for B2B + DTC flows',f:'klaviyo-flows/',src:'repo'},
+    {n:'Notion Task Sync',s:'in_progress',d:'Auto-fetch tasks from Notion on session start',f:'.claude/hooks/notion-sync.sh',src:'repo'},
+    {n:'Executive Assistant',s:'in_progress',d:'Unified: commands + n8n + AI team',f:'assistant/EXECUTIVE-ASSISTANT-SYSTEM.md',src:'repo'},
+    {n:'Claude Dashboard',s:'done',d:'Real-time task monitoring + notifications',f:'.claude/dashboard/index.html',src:'repo'},
+    {n:'Hooks Suite (12)',s:'done',d:'Auto-format, validator, guard, notifications',f:'.claude/hooks/',src:'repo'},
+    {n:'Commands Suite (25+)',s:'done',d:'/aware-email, /seo-audit, /handoff, etc.',f:'.claude/commands/',src:'repo'},
+    {n:'SEO Audit System',s:'done',d:'Automated theme audit for SEO/AEO',f:'.claude/commands/seo-audit.md',src:'repo'},
+    {n:'Email Design System',s:'done',d:'Premium Klaviyo templates + brand tokens',f:'.claude/commands/aware-email.md',src:'repo'},
+    {n:'Points System',s:'done',d:'Loyalty points activated on Shopify',f:'',src:'notion'},
+    {n:'Pro Portal Revamp',s:'done',d:'B2B portal redesign completed',f:'',src:'notion'},
+    {n:'Home Page Revamp',s:'done',d:'Homepage redesign completed',f:'',src:'notion'},
+    {n:'Affiliate System',s:'not_started',d:'Affiliate/referral tracking for partners',f:'',src:'notion'},
+    {n:'Remaining Pages Revamp',s:'not_started',d:'Product, collection, about pages',f:'',src:'notion'},
+    {n:'Content Intelligence',s:'not_started',d:'Podcast/YouTube transcript analysis',f:'social-listening/CONTENT-INTELLIGENCE-ENGINE.md',src:'repo'},
+  ]},
+];
+
+// ─── PERSISTENCE LAYER ────────────────────────────
+// DATA is mutable - loaded from localStorage if edits exist, else from DEFAULT_DATA
+const STORAGE_KEY = 'aware-roadmap-data';
+
+function deepClone(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+function loadData() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    try { return JSON.parse(saved); } catch(e) { /* fall through */ }
+  }
+  return deepClone(DEFAULT_DATA);
+}
+
+function saveData() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(DATA));
+  updateEditIndicator();
+}
+
+function hasEdits() {
+  return localStorage.getItem(STORAGE_KEY) !== null;
+}
+
+function updateEditIndicator() {
+  const resetBtn = document.getElementById('btn-reset');
+  const exportBtn = document.getElementById('btn-export');
+  if (hasEdits()) {
+    resetBtn.classList.add('has-edits');
+    exportBtn.classList.add('has-edits');
+  } else {
+    resetBtn.classList.remove('has-edits');
+    exportBtn.classList.remove('has-edits');
+  }
+}
+
+let DATA = loadData();
+
+// Try to load fresh data from shared JSON (keeps inline fallback if fetch fails)
+fetch('roadmap-data.json?t=' + Date.now()).then(r => r.ok ? r.json() : null).then(json => {
+  if (!json) return;
+  DEFAULT_DATA = json;
+  // Only update DATA if user has no local edits
+  if (!hasEdits()) {
+    DATA = deepClone(DEFAULT_DATA);
+    if (typeof render === 'function') render();
+  }
+}).catch(() => {});
+
+// ─── TOAST / CONFIRM HELPERS ──────────────────────
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast visible' + (type ? ' ' + type : '');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.className = 'toast', 2200);
+}
+
+function showConfirm(title, msg, actionLabel, onConfirm) {
+  const overlay = document.getElementById('confirm-overlay');
+  document.getElementById('confirm-title').textContent = title;
+  document.getElementById('confirm-msg').textContent = msg;
+  const btn = document.getElementById('confirm-action');
+  btn.textContent = actionLabel;
+  btn.onclick = () => { closeConfirm(); onConfirm(); };
+  overlay.classList.add('visible');
+}
+
+function closeConfirm() {
+  document.getElementById('confirm-overlay').classList.remove('visible');
+}
+
+// Close confirm on overlay click
+document.getElementById('confirm-overlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeConfirm();
+});
+
+// ─── LAYOUT ENGINE ────────────────────────────────
+const CX = 2400, CY = 1600;
+const ROOT_X = CX / 2, ROOT_Y = CY / 2;
+const CAT_RADIUS = 320;
+const SUBGROUP_RADIUS = 240;
+const SUB_ITEM_RADIUS_BASE = 180;
+const ITEM_RADIUS = 260; // fallback for flat fan (small categories)
+
+let currentFilter = 'all';
+let searchTerm = '';
+let expandedCat = null;
+let expandedSubgroup = null; // { catId, groupLabel }
+let scale = 1, tx = 0, ty = 0;
+let isPanning = false, panStartX = 0, panStartY = 0, panTxStart = 0, panTyStart = 0;
+let addFormOpen = null; // catId if add form is open
+
+const canvas = document.getElementById('canvas');
+const linesSvg = document.getElementById('lines');
+const wrap = document.getElementById('wrap');
+
+// Category positions in a circle around root
+function catPositions() {
+  const n = DATA.length;
+  return DATA.map((cat, i) => {
+    const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
+    return {
+      ...cat,
+      x: ROOT_X + Math.cos(angle) * CAT_RADIUS,
+      y: ROOT_Y + Math.sin(angle) * CAT_RADIUS,
+      angle,
+    };
+  });
+}
+
+// ─── AUTO-GROUPING (Keyword Frequency Clustering) ──
+const STOP_WORDS = new Set([
+  'the','and','for','with','from','into','that','this','have','will',
+  'all','via','are','was','been','has','its','our','new','per','also',
+  'more','than','full','based','across','using','each','about'
+]);
+
+function autoGroup(items) {
+  if (items.length <= 6) return null; // too few to sub-group
+  // Tokenize: extract words from name + description
+  const itemTokens = items.map(item => {
+    const text = (item.n + ' ' + item.d).toLowerCase();
+    const words = text.match(/[a-z]{4,}/g) || [];
+    // Basic stemming: strip trailing 's' for plurals
+    return words
+      .map(w => w.endsWith('s') && w.length > 5 ? w.slice(0, -1) : w)
+      .filter(w => !STOP_WORDS.has(w));
+  });
+
+  // Count word frequency across items (how many items contain this word)
+  const freq = {};
+  itemTokens.forEach((tokens, i) => {
+    const unique = new Set(tokens);
+    unique.forEach(w => {
+      if (!freq[w]) freq[w] = { count: 0, items: [] };
+      freq[w].count++;
+      freq[w].items.push(i);
+    });
+  });
+
+  // Sort keywords by frequency (must appear in 2+ items)
+  const candidates = Object.entries(freq)
+    .filter(([w, d]) => d.count >= 2)
+    .sort((a, b) => b[1].count - a[1].count);
+
+  // Greedy assignment: top keywords claim items first
+  const assigned = new Set();
+  const groups = [];
+  const MAX_GROUPS = 5;
+
+  // Label prettifier
+  const prettify = (w) => w.charAt(0).toUpperCase() + w.slice(1);
+
+  for (const [word, data] of candidates) {
+    if (groups.length >= MAX_GROUPS) break;
+    const unassigned = data.items.filter(i => !assigned.has(i));
+    if (unassigned.length < 2) continue; // need at least 2 items per group
+    const group = { label: prettify(word), indices: unassigned };
+    groups.push(group);
+    unassigned.forEach(i => assigned.add(i));
+  }
+
+  // Remainder goes to "Other"
+  const remaining = items.map((_, i) => i).filter(i => !assigned.has(i));
+  if (remaining.length > 0) {
+    groups.push({ label: 'Other', indices: remaining });
+  }
+
+  // If we only got 1 group (+ Other), grouping isn't useful
+  if (groups.length <= 1) return null;
+
+  return groups.map(g => ({
+    label: g.label,
+    items: g.indices.map(i => items[i]),
+    count: g.indices.length,
+  }));
+}
+
+// Cached grouping (recomputed on render)
+let groupCache = {};
+
+function getGroups(cat) {
+  const items = filterItems(cat.items);
+  const key = cat.id + ':' + items.length + ':' + currentFilter + ':' + searchTerm;
+  if (groupCache[key]) return groupCache[key];
+  const result = autoGroup(items);
+  groupCache[key] = result;
+  return result;
+}
+
+// Item positions around a category
+function itemPositions(cat, cx, cy) {
+  const items = filterItems(cat.items);
+  const n = items.length;
+  if (n === 0) return [];
+  // Sort: active first (prominent), queued second, done last (muted)
+  const statusPriority = { in_progress: 0, not_started: 1, done: 2 };
+  const sorted = [...items].sort((a, b) => (statusPriority[a.s] || 0) - (statusPriority[b.s] || 0));
+  const startAngle = cat.angle - Math.PI * 0.4;
+  const endAngle = cat.angle + Math.PI * 0.4;
+  const spread = n > 1 ? (endAngle - startAngle) / (n - 1) : 0;
+  return sorted.map((item, i) => {
+    const a = n > 1 ? startAngle + i * spread : cat.angle;
+    return {
+      ...item,
+      x: cx + Math.cos(a) * ITEM_RADIUS,
+      y: cy + Math.sin(a) * ITEM_RADIUS,
+    };
+  });
+}
+
+function filterItems(items) {
+  return items.filter(it => {
+    const statusOk = currentFilter === 'all' || it.s === currentFilter;
+    const searchOk = !searchTerm || it.n.toLowerCase().includes(searchTerm) || it.d.toLowerCase().includes(searchTerm);
+    return statusOk && searchOk;
+  });
+}
+
+function countByStatus(items) {
+  const filtered = filterItems(items);
+  return {
+    total: filtered.length,
+    done: filtered.filter(i => i.s === 'done').length,
+    progress: filtered.filter(i => i.s === 'in_progress').length,
+    queued: filtered.filter(i => i.s === 'not_started').length,
+  };
+}
+
+// ─── RENDER ───────────────────────────────────────
+function render() {
+  canvas.innerHTML = '';
+  linesSvg.innerHTML = '';
+  linesSvg.setAttribute('width', CX);
+  linesSvg.setAttribute('height', CY);
+  canvas.style.width = CX + 'px';
+  canvas.style.height = CY + 'px';
+
+  const cats = catPositions();
+
+  // Total stats
+  let tAll = 0, tDone = 0, tProg = 0, tQ = 0;
+  cats.forEach(c => {
+    const s = countByStatus(c.items);
+    tAll += s.total; tDone += s.done; tProg += s.progress; tQ += s.queued;
+  });
+
+  document.getElementById('stats').innerHTML =
+    `<b>${tAll}</b> initiatives &middot; <span style="color:var(--done)"><b>${tDone}</b> done</span> &middot; <span style="color:var(--progress)"><b>${tProg}</b> active</span> &middot; <span style="color:var(--queued)"><b>${tQ}</b> queued</span>`;
+
+  // Root node
+  const root = document.createElement('div');
+  root.className = 'root-node';
+  root.style.left = (ROOT_X - 70) + 'px';
+  root.style.top = (ROOT_Y - 70) + 'px';
+  root.innerHTML = `
+    <div class="root-label">AWARE</div>
+    <div class="root-sub">Master Plan</div>
+    <div class="root-stat">${tAll}</div>
+    <div class="root-stat-label">Initiatives</div>
+  `;
+  root.onclick = () => collapseAll();
+  canvas.appendChild(root);
+
+  // Category nodes + lines
+  cats.forEach(cat => {
+    const s = countByStatus(cat.items);
+    const total = cat.items.length;
+    const donePct = total > 0 ? (s.done / total * 100) : 0;
+    const progPct = total > 0 ? (s.progress / total * 100) : 0;
+    const queuePct = 100 - donePct - progPct;
+
+    // Line from root to category
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', ROOT_X);
+    line.setAttribute('y1', ROOT_Y);
+    line.setAttribute('x2', cat.x);
+    line.setAttribute('y2', cat.y);
+    line.id = 'line-' + cat.id;
+    if (expandedCat === cat.id) line.classList.add('active');
+    linesSvg.appendChild(line);
+
+    // Category node
+    const node = document.createElement('div');
+    node.className = 'cat-node' + (expandedCat === cat.id ? ' expanded' : '');
+    node.style.left = (cat.x - 90) + 'px';
+    node.style.top = (cat.y - 45) + 'px';
+    if (expandedCat === cat.id) {
+      node.style.borderColor = cat.hex;
+      node.style.boxShadow = `0 0 20px ${cat.hex}22`;
+    }
+    node.innerHTML = `
+      <div class="cat-top">
+        <div class="cat-dot" style="background:${cat.color}"></div>
+        <span class="cat-title">${cat.title}</span>
+        <span class="cat-count">${s.total}</span>
+      </div>
+      <div class="cat-bar">
+        <div class="cat-bar-inner">
+          <div class="cat-bar-done" style="width:${donePct}%"></div>
+          <div class="cat-bar-progress" style="width:${progPct}%"></div>
+          <div class="cat-bar-queued" style="width:${queuePct}%"></div>
+        </div>
+      </div>
+      <div class="cat-stats">
+        <span class="cat-stat"><span class="cat-stat-dot" style="background:var(--done)"></span>${s.done}</span>
+        <span class="cat-stat"><span class="cat-stat-dot" style="background:var(--progress)"></span>${s.progress}</span>
+        <span class="cat-stat"><span class="cat-stat-dot" style="background:var(--queued)"></span>${s.queued}</span>
+      </div>
+    `;
+    node.onclick = (e) => { e.stopPropagation(); toggleCat(cat.id); };
+    canvas.appendChild(node);
+
+    // Expanded: show sub-groups or flat items
+    if (expandedCat === cat.id) {
+      const groups = getGroups(cat);
+      const ring = document.createElement('div');
+      ring.className = 'items-ring visible';
+
+      if (groups) {
+        // ─── 3-TIER: Sub-group nodes in middle ring ───
+        const totalItems = groups.reduce((s, g) => s + g.count, 0);
+        const arcSpan = Math.PI * (groups.length > 4 ? 1.2 : 0.85);
+        const startA = cat.angle - arcSpan / 2;
+        let angleOffset = 0;
+
+        groups.forEach((group, gi) => {
+          // Proportional angular allocation
+          const proportion = group.count / totalItems;
+          const groupAngle = startA + angleOffset + (proportion * arcSpan) / 2;
+          angleOffset += proportion * arcSpan;
+
+          const gx = cat.x + Math.cos(groupAngle) * SUBGROUP_RADIUS;
+          const gy = cat.y + Math.sin(groupAngle) * SUBGROUP_RADIUS;
+
+          // Line from category to sub-group
+          const gline = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          gline.setAttribute('x1', cat.x);
+          gline.setAttribute('y1', cat.y);
+          gline.setAttribute('x2', gx);
+          gline.setAttribute('y2', gy);
+          gline.style.stroke = cat.hex;
+          gline.style.opacity = '0.25';
+          gline.style.strokeWidth = '1.5';
+          linesSvg.appendChild(gline);
+
+          const isExpanded = expandedSubgroup &&
+            expandedSubgroup.catId === cat.id &&
+            expandedSubgroup.groupLabel === group.label;
+
+          // Sub-group status breakdown
+          const gDone = group.items.filter(i => i.s === 'done').length;
+          const gProg = group.items.filter(i => i.s === 'in_progress').length;
+          const gQueued = group.count - gDone - gProg;
+          const gDonePct = (gDone / group.count * 100);
+          const gProgPct = (gProg / group.count * 100);
+
+          // Sub-group node
+          const gel = document.createElement('div');
+          gel.className = 'subgroup-node' + (isExpanded ? ' expanded' : '');
+          gel.style.left = (gx - 65) + 'px';
+          gel.style.top = (gy - 28) + 'px';
+          gel.style.borderColor = isExpanded ? cat.hex : '';
+          if (isExpanded) gel.style.boxShadow = `0 0 18px ${cat.hex}22`;
+          gel.innerHTML = `
+            <div class="subgroup-label">${group.label}</div>
+            <div class="subgroup-count">${group.count} items</div>
+            <div class="subgroup-bar">
+              <div class="subgroup-bar-inner">
+                <div class="subgroup-bar-done" style="width:${gDonePct}%"></div>
+                <div class="subgroup-bar-progress" style="width:${gProgPct}%"></div>
+                <div class="subgroup-bar-queued" style="width:${100 - gDonePct - gProgPct}%"></div>
+              </div>
+            </div>
+          `;
+          gel.onclick = (e) => { e.stopPropagation(); toggleSubgroup(cat.id, group.label); };
+          ring.appendChild(gel);
+
+          // ─── Expanded sub-group: fan items out from sub-group center ───
+          if (isExpanded) {
+            const statusPriority = { in_progress: 0, not_started: 1, done: 2 };
+            const sorted = [...group.items].sort((a, b) =>
+              (statusPriority[a.s] || 0) - (statusPriority[b.s] || 0));
+            const n = sorted.length;
+            const subItemRadius = Math.max(SUB_ITEM_RADIUS_BASE, n * 28);
+            const itemArc = Math.min(Math.PI * 1.4, n * 0.28);
+            const itemStartA = groupAngle - itemArc / 2;
+            const itemSpread = n > 1 ? itemArc / (n - 1) : 0;
+
+            sorted.forEach((item, ii) => {
+              const ia = n > 1 ? itemStartA + ii * itemSpread : groupAngle;
+              const ix = gx + Math.cos(ia) * subItemRadius;
+              const iy = gy + Math.sin(ia) * subItemRadius;
+
+              // Line from sub-group to item
+              const iline = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+              iline.setAttribute('x1', gx);
+              iline.setAttribute('y1', gy);
+              iline.setAttribute('x2', ix);
+              iline.setAttribute('y2', iy);
+              iline.style.stroke = cat.hex;
+              iline.style.opacity = item.s === 'done' ? '0.1' : item.s === 'in_progress' ? '0.4' : '0.2';
+              iline.style.strokeWidth = item.s === 'in_progress' ? '1.5' : '1';
+              linesSvg.appendChild(iline);
+
+              const realIdx = cat.items.findIndex(ci => ci.n === item.n && ci.d === item.d);
+              const starred = isPriority(cat.id, realIdx);
+              const statusClass = item.s === 'done' ? 'status-done' : item.s === 'in_progress' ? 'status-active' : 'status-queued';
+              const statusLabel = item.s === 'in_progress' ? 'active' : item.s === 'not_started' ? 'queued' : 'done';
+              const truncDesc = item.d.length > 60 ? item.d.substring(0, 58) + '...' : item.d;
+
+              const el = document.createElement('div');
+              el.className = 'item-node ' + statusClass;
+              el.style.left = (ix - 115) + 'px';
+              el.style.top = (iy - 34) + 'px';
+              el.innerHTML = `
+                <div class="item-source" style="background:${item.src === 'repo' ? 'var(--accent)' : '#fff'}"></div>
+                <div class="item-top">
+                  <span class="item-name">${item.n}</span>
+                  <button class="item-star ${starred ? 'starred' : ''}" onclick="event.stopPropagation();togglePriority('${cat.id}',${realIdx})" title="${starred ? 'Remove from priorities' : 'Add to priorities'}">&#9733;</button>
+                  <span class="item-badge status-cycle ${item.s}" onclick="event.stopPropagation();cycleStatus('${cat.id}',${realIdx})" title="Click to cycle status">${statusLabel}</span>
+                </div>
+                <div class="item-desc">${truncDesc}</div>
+                <div class="item-expand">
+                  ${item.d.length > 60 ? `<div class="item-expand-desc">${item.d}</div>` : ''}
+                  ${item.f ? `<div class="item-expand-file">${item.f}</div>` : ''}
+                </div>
+              `;
+              el.onclick = (e) => e.stopPropagation();
+              ring.appendChild(el);
+            });
+          }
+        });
+      } else {
+        // ─── FLAT FAN: Small categories (<=6 items) ───
+        const items = itemPositions(cat, cat.x, cat.y);
+        items.forEach(item => {
+          const iline = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          iline.setAttribute('x1', cat.x);
+          iline.setAttribute('y1', cat.y);
+          iline.setAttribute('x2', item.x);
+          iline.setAttribute('y2', item.y);
+          iline.style.stroke = cat.hex;
+          iline.style.opacity = item.s === 'done' ? '0.1' : item.s === 'in_progress' ? '0.4' : '0.2';
+          iline.style.strokeWidth = item.s === 'in_progress' ? '1.5' : '1';
+          linesSvg.appendChild(iline);
+
+          const realIdx = cat.items.findIndex(ci => ci.n === item.n && ci.d === item.d);
+          const starred = isPriority(cat.id, realIdx);
+          const statusClass = item.s === 'done' ? 'status-done' : item.s === 'in_progress' ? 'status-active' : 'status-queued';
+          const statusLabel = item.s === 'in_progress' ? 'active' : item.s === 'not_started' ? 'queued' : 'done';
+          const truncDesc = item.d.length > 60 ? item.d.substring(0, 58) + '...' : item.d;
+
+          const el = document.createElement('div');
+          el.className = 'item-node ' + statusClass;
+          el.style.left = (item.x - 115) + 'px';
+          el.style.top = (item.y - 34) + 'px';
+          el.innerHTML = `
+            <div class="item-source" style="background:${item.src === 'repo' ? 'var(--accent)' : '#fff'}"></div>
+            <div class="item-top">
+              <span class="item-name">${item.n}</span>
+              <button class="item-star ${starred ? 'starred' : ''}" onclick="event.stopPropagation();togglePriority('${cat.id}',${realIdx})" title="${starred ? 'Remove from priorities' : 'Add to priorities'}">&#9733;</button>
+              <span class="item-badge status-cycle ${item.s}" onclick="event.stopPropagation();cycleStatus('${cat.id}',${realIdx})" title="Click to cycle status">${statusLabel}</span>
+            </div>
+            <div class="item-desc">${truncDesc}</div>
+            <div class="item-expand">
+              ${item.d.length > 60 ? `<div class="item-expand-desc">${item.d}</div>` : ''}
+              ${item.f ? `<div class="item-expand-file">${item.f}</div>` : ''}
+            </div>
+          `;
+          el.onclick = (e) => e.stopPropagation();
+          ring.appendChild(el);
+        });
+      }
+
+      canvas.appendChild(ring);
+    }
+  });
+}
+
+// ─── INTERACTIONS ─────────────────────────────────
+function toggleCat(id) {
+  if (expandedCat === id) {
+    expandedCat = null;
+    expandedSubgroup = null;
+    document.getElementById('back-btn').classList.remove('visible');
+    closeDetail();
+  } else {
+    expandedCat = id;
+    expandedSubgroup = null;
+    document.getElementById('back-btn').classList.add('visible');
+    openDetail(id);
+  }
+  groupCache = {};
+  render();
+  if (expandedCat) {
+    const cat = catPositions().find(c => c.id === id);
+    panTo(cat.x, cat.y, 0.7);
+  }
+}
+
+function toggleSubgroup(catId, groupLabel) {
+  if (expandedSubgroup && expandedSubgroup.catId === catId && expandedSubgroup.groupLabel === groupLabel) {
+    expandedSubgroup = null;
+  } else {
+    expandedSubgroup = { catId, groupLabel };
+  }
+  render();
+  // Pan to sub-group center for better view
+  if (expandedSubgroup) {
+    const cat = catPositions().find(c => c.id === catId);
+    if (cat) panTo(cat.x, cat.y, 0.55);
+  }
+}
+
+function collapseAll() {
+  // Contextual: collapse sub-group first, then category
+  if (expandedSubgroup) {
+    expandedSubgroup = null;
+    render();
+    if (expandedCat) {
+      const cat = catPositions().find(c => c.id === expandedCat);
+      if (cat) panTo(cat.x, cat.y, 0.7);
+    }
+    return;
+  }
+  expandedCat = null;
+  expandedSubgroup = null;
+  document.getElementById('back-btn').classList.remove('visible');
+  closeDetail();
+  render();
+  fitView();
+}
+
+function openDetail(id) {
+  const cat = DATA.find(c => c.id === id);
+  if (!cat) return;
+  const items = filterItems(cat.items);
+  const byStatus = { in_progress: [], not_started: [], done: [] };
+  items.forEach(it => {
+    it._realIdx = cat.items.findIndex(ci => ci.n === it.n && ci.d === it.d);
+    byStatus[it.s].push(it);
+  });
+
+  const panel = document.getElementById('detail');
+  const content = document.getElementById('detail-content');
+
+  content.innerHTML = `
+    <div class="detail-cat-title">
+      <div class="detail-cat-dot" style="background:${cat.color}"></div>
+      ${cat.title}
+    </div>
+    <div class="detail-summary">${items.length} initiatives - ${byStatus.done.length} done, ${byStatus.in_progress.length} active, ${byStatus.not_started.length} queued</div>
+    ${byStatus.in_progress.length ? `<div class="detail-section-title" style="color:var(--progress)">Active (${byStatus.in_progress.length})</div>` + byStatus.in_progress.map(it => renderDetailItem(it, id)).join('') : ''}
+    ${byStatus.not_started.length ? `<div class="detail-section-title" style="color:var(--queued)">Queued (${byStatus.not_started.length})</div>` + byStatus.not_started.map(it => renderDetailItem(it, id)).join('') : ''}
+    ${byStatus.done.length ? `<div class="detail-section-title" style="color:var(--done)">Done (${byStatus.done.length})</div>` + byStatus.done.map(it => renderDetailItem(it, id)).join('') : ''}
+    <div id="add-task-area">${renderAddTaskButton(id)}</div>
+  `;
+  panel.classList.add('open');
+}
+
+function renderDetailItem(it, catId) {
+  const starred = isPriority(catId, it._realIdx);
+  const statusLabel = it.s === 'in_progress' ? 'active' : it.s === 'not_started' ? 'queued' : 'done';
+  return `
+    <div class="detail-item" data-cat="${catId}" data-idx="${it._realIdx}">
+      <div class="detail-item-top">
+        <span class="detail-item-name" data-editable data-field="n" data-cat="${catId}" data-idx="${it._realIdx}" onclick="startEdit(this)">${it.n}</span>
+        <div class="detail-item-actions">
+          <button class="item-delete-btn" onclick="confirmDeleteTask('${catId}',${it._realIdx})" title="Delete task">&#215;</button>
+          <button class="detail-item-star ${starred ? 'starred' : ''}" onclick="togglePriority('${catId}',${it._realIdx})" title="${starred ? 'Remove from priorities' : 'Add to priorities'}">&#9733;</button>
+          <span class="item-badge ${it.s} status-cycle" style="font-size:9px" onclick="cycleStatus('${catId}',${it._realIdx})" title="Click to change status">${statusLabel}</span>
+        </div>
+      </div>
+      <div class="detail-item-desc" data-editable data-field="d" data-cat="${catId}" data-idx="${it._realIdx}" onclick="startEdit(this)">${it.d}</div>
+      ${it.f ? `<div class="detail-item-file">${it.f}</div>` : ''}
+    </div>
+  `;
+}
+
+// ─── INLINE EDITING ───────────────────────────────
+function startEdit(el) {
+  if (el.querySelector('.edit-field')) return; // already editing
+  const field = el.dataset.field;
+  const catId = el.dataset.cat;
+  const idx = parseInt(el.dataset.idx);
+  const cat = DATA.find(c => c.id === catId);
+  if (!cat || !cat.items[idx]) return;
+
+  const currentValue = cat.items[idx][field];
+  const isMultiline = field === 'd';
+
+  const input = document.createElement(isMultiline ? 'textarea' : 'input');
+  input.className = 'edit-field' + (isMultiline ? ' edit-field-desc' : ' edit-field-name');
+  input.value = currentValue;
+
+  const originalHTML = el.innerHTML;
+  el.innerHTML = '';
+  el.appendChild(input);
+  input.focus();
+  input.select();
+
+  function saveEdit() {
+    const newValue = input.value.trim();
+    if (newValue && newValue !== currentValue) {
+      cat.items[idx][field] = newValue;
+      saveData();
+      showToast('Updated ' + (field === 'n' ? 'name' : 'description'), 'success');
+    }
+    el.innerHTML = newValue || currentValue;
+    render();
+    // Re-open detail to refresh
+    setTimeout(() => openDetail(catId), 10);
+  }
+
+  function cancelEdit() {
+    el.innerHTML = originalHTML;
+  }
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); saveEdit(); }
+    if (e.key === 'Escape') { cancelEdit(); }
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      saveEdit();
+      // Focus next editable field
+      const allEditables = document.querySelectorAll('[data-editable]');
+      const arr = Array.from(allEditables);
+      const currentIndex = arr.indexOf(el);
+      const next = arr[currentIndex + 1];
+      if (next) setTimeout(() => next.click(), 50);
+    }
+  });
+
+  input.addEventListener('blur', () => {
+    // Small delay to allow keydown to fire first
+    setTimeout(() => {
+      if (el.querySelector('.edit-field')) saveEdit();
+    }, 100);
+  });
+}
+
+// ─── STATUS CYCLING ───────────────────────────────
+const STATUS_ORDER = ['not_started', 'in_progress', 'done'];
+
+function cycleStatus(catId, idx) {
+  const cat = DATA.find(c => c.id === catId);
+  if (!cat || !cat.items[idx]) return;
+  const current = cat.items[idx].s;
+  const nextIdx = (STATUS_ORDER.indexOf(current) + 1) % STATUS_ORDER.length;
+  cat.items[idx].s = STATUS_ORDER[nextIdx];
+  saveData();
+  const labels = { not_started: 'Queued', in_progress: 'Active', done: 'Done' };
+  showToast('Status changed to ' + labels[STATUS_ORDER[nextIdx]], 'success');
+  render();
+  setTimeout(() => openDetail(catId), 10);
+}
+
+// ─── ADD TASK ─────────────────────────────────────
+function renderAddTaskButton(catId) {
+  if (addFormOpen === catId) return renderAddTaskForm(catId);
+  return '<button class="add-task-btn" onclick="openAddForm(\'' + catId + '\')">+ Add initiative</button>';
+}
+
+function renderAddTaskForm(catId) {
+  return `<div class="add-task-form">
+    <label>Name</label>
+    <input type="text" id="new-task-name" placeholder="Initiative name..." autofocus>
+    <label>Description</label>
+    <textarea id="new-task-desc" placeholder="Brief description..."></textarea>
+    <label>Status</label>
+    <select id="new-task-status">
+      <option value="not_started">Queued</option>
+      <option value="in_progress">Active</option>
+      <option value="done">Done</option>
+    </select>
+    <div class="add-task-actions">
+      <button class="btn-cancel" onclick="closeAddForm('${catId}')">Cancel</button>
+      <button class="btn-save" onclick="addTask('${catId}')">Add</button>
+    </div>
+  </div>`;
+}
+
+function openAddForm(catId) {
+  addFormOpen = catId;
+  const area = document.getElementById('add-task-area');
+  if (area) {
+    area.innerHTML = renderAddTaskForm(catId);
+    setTimeout(() => {
+      const nameInput = document.getElementById('new-task-name');
+      if (nameInput) nameInput.focus();
+    }, 50);
+  }
+}
+
+function closeAddForm(catId) {
+  addFormOpen = null;
+  const area = document.getElementById('add-task-area');
+  if (area) area.innerHTML = renderAddTaskButton(catId);
+}
+
+function addTask(catId) {
+  const name = document.getElementById('new-task-name').value.trim();
+  const desc = document.getElementById('new-task-desc').value.trim();
+  const status = document.getElementById('new-task-status').value;
+  if (!name) {
+    document.getElementById('new-task-name').style.borderColor = '#e55';
+    return;
+  }
+  const cat = DATA.find(c => c.id === catId);
+  if (!cat) return;
+
+  cat.items.push({ n: name, s: status, d: desc || 'No description', f: '', src: 'local' });
+  saveData();
+  addFormOpen = null;
+  showToast('Added: ' + name, 'success');
+  render();
+  setTimeout(() => openDetail(catId), 10);
+}
+
+// ─── DELETE TASK ───────────────────────────────────
+function confirmDeleteTask(catId, idx) {
+  const cat = DATA.find(c => c.id === catId);
+  if (!cat || !cat.items[idx]) return;
+  const item = cat.items[idx];
+  showConfirm(
+    'Delete initiative?',
+    'Remove "' + item.n + '" from ' + cat.title + '. This can be undone by resetting to defaults (if it was an original item) or by importing a backup.',
+    'Delete',
+    () => deleteTask(catId, idx)
+  );
+}
+
+function deleteTask(catId, idx) {
+  const cat = DATA.find(c => c.id === catId);
+  if (!cat || !cat.items[idx]) return;
+  const name = cat.items[idx].n;
+
+  // Remove from priorities if starred
+  priorities = priorities.filter(p => !(p.catId === catId && p.itemIdx === idx));
+  // Adjust priority indices that reference items after the deleted one
+  priorities = priorities.map(p => {
+    if (p.catId === catId && p.itemIdx > idx) {
+      return { catId: p.catId, itemIdx: p.itemIdx - 1 };
+    }
+    return p;
+  });
+  savePriorities();
+
+  cat.items.splice(idx, 1);
+  saveData();
+  showToast('Deleted: ' + name, 'warning');
+  render();
+  setTimeout(() => openDetail(catId), 10);
+}
+
+// ─── EXPORT / IMPORT / RESET ──────────────────────
+function exportData() {
+  const exportObj = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    priorities: priorities,
+    categories: DATA,
+  };
+  const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'aware-roadmap-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Roadmap exported', 'success');
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (imported.categories && Array.isArray(imported.categories)) {
+        showConfirm(
+          'Import roadmap data?',
+          'This will replace all current data with the imported file. ' + imported.categories.length + ' categories found. Your current data will be overwritten.',
+          'Import',
+          () => {
+            DATA.length = 0;
+            imported.categories.forEach(c => DATA.push(c));
+            saveData();
+            if (imported.priorities) {
+              priorities = imported.priorities;
+              savePriorities();
+            }
+            showToast('Imported successfully', 'success');
+            expandedCat = null;
+            expandedSubgroup = null;
+            groupCache = {};
+            closeDetail();
+            render();
+            fitView();
+          }
+        );
+      } else {
+        showToast('Invalid file format', 'warning');
+      }
+    } catch(err) {
+      showToast('Failed to parse JSON', 'warning');
+    }
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+function confirmResetData() {
+  if (!hasEdits()) {
+    showToast('No edits to reset', '');
+    return;
+  }
+  showConfirm(
+    'Reset all edits?',
+    'This will discard all your changes (edits, new tasks, deletions) and restore the original default data. Priorities will be kept.',
+    'Reset',
+    () => {
+      localStorage.removeItem(STORAGE_KEY);
+      DATA.length = 0;
+      deepClone(DEFAULT_DATA).forEach(c => DATA.push(c));
+      updateEditIndicator();
+      showToast('Reset to defaults', 'success');
+      expandedCat = null;
+      expandedSubgroup = null;
+      groupCache = {};
+      closeDetail();
+      render();
+      fitView();
+    }
+  );
+}
+
+function closeDetail() {
+  document.getElementById('detail').classList.remove('open');
+}
+
+document.getElementById('detail-close').onclick = closeDetail;
+document.getElementById('back-btn').onclick = collapseAll;
+
+// ─── FILTERS ──────────────────────────────────────
+document.querySelectorAll('.fbtn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.f;
+    groupCache = {};
+    expandedSubgroup = null;
+    render();
+  });
+});
+
+document.getElementById('search').addEventListener('input', (e) => {
+  searchTerm = e.target.value.toLowerCase().trim();
+  groupCache = {};
+  expandedSubgroup = null;
+  render();
+});
+
+// ─── PAN & ZOOM ───────────────────────────────────
+function applyTransform() {
+  canvas.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+  linesSvg.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+  linesSvg.style.transformOrigin = '0 0';
+}
+
+function panTo(cx, cy, s) {
+  const ww = wrap.clientWidth;
+  const wh = wrap.clientHeight - 32;
+  scale = s;
+  tx = ww / 2 - cx * scale;
+  ty = wh / 2 - cy * scale;
+  applyTransform();
+}
+
+function fitView() {
+  const ww = wrap.clientWidth;
+  const wh = wrap.clientHeight - 32;
+  scale = Math.min(ww / CX, wh / CY) * 0.9;
+  tx = (ww - CX * scale) / 2;
+  ty = (wh - CY * scale) / 2;
+  applyTransform();
+}
+
+// Mouse pan
+wrap.addEventListener('mousedown', (e) => {
+  if (e.target.closest('.cat-node, .item-node, .subgroup-node, .root-node, .fbtn, .search-input, .prio-panel, .prio-toggle, .item-star, .detail-item-star, .data-btn, .data-actions, .edit-field, .add-task-form, .add-task-btn, .item-delete-btn, .status-cycle, .confirm-overlay')) return;
+  isPanning = true;
+  panStartX = e.clientX;
+  panStartY = e.clientY;
+  panTxStart = tx;
+  panTyStart = ty;
+  wrap.style.cursor = 'grabbing';
+  canvas.style.transition = 'none';
+  linesSvg.style.transition = 'none';
+});
+
+window.addEventListener('mousemove', (e) => {
+  if (!isPanning) return;
+  tx = panTxStart + (e.clientX - panStartX);
+  ty = panTyStart + (e.clientY - panStartY);
+  applyTransform();
+});
+
+window.addEventListener('mouseup', () => {
+  isPanning = false;
+  wrap.style.cursor = 'default';
+  canvas.style.transition = 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+  linesSvg.style.transition = 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+});
+
+// Scroll zoom
+wrap.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const rect = wrap.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const oldScale = scale;
+  const delta = e.deltaY > 0 ? 0.9 : 1.1;
+  scale = Math.max(0.15, Math.min(3, scale * delta));
+
+  // Zoom toward mouse
+  tx = mx - (mx - tx) * (scale / oldScale);
+  ty = my - (my - ty) * (scale / oldScale);
+  canvas.style.transition = 'none';
+  linesSvg.style.transition = 'none';
+  applyTransform();
+  requestAnimationFrame(() => {
+    canvas.style.transition = 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+    linesSvg.style.transition = 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+  });
+}, { passive: false });
+
+// Zoom buttons
+document.getElementById('zoom-in').onclick = () => {
+  scale = Math.min(3, scale * 1.25);
+  const ww = wrap.clientWidth / 2;
+  const wh = wrap.clientHeight / 2;
+  tx = ww - (ww - tx) * 1.25;
+  ty = wh - (wh - ty) * 1.25;
+  applyTransform();
+};
+document.getElementById('zoom-out').onclick = () => {
+  scale = Math.max(0.15, scale * 0.8);
+  const ww = wrap.clientWidth / 2;
+  const wh = wrap.clientHeight / 2;
+  tx = ww - (ww - tx) * 0.8;
+  ty = wh - (wh - ty) * 0.8;
+  applyTransform();
+};
+document.getElementById('zoom-fit').onclick = fitView;
+
+// ─── PRIORITIES SYSTEM ─────────────────────────
+// Each priority stored as { catId: string, itemIdx: number }
+let priorities = JSON.parse(localStorage.getItem('aware-prio') || '[]');
+let prioPanelOpen = false;
+
+function savePriorities() {
+  localStorage.setItem('aware-prio', JSON.stringify(priorities));
+  updatePrioUI();
+}
+
+function isPriority(catId, itemIdx) {
+  return priorities.some(p => p.catId === catId && p.itemIdx === itemIdx);
+}
+
+function togglePriority(catId, itemIdx) {
+  const idx = priorities.findIndex(p => p.catId === catId && p.itemIdx === itemIdx);
+  if (idx >= 0) {
+    priorities.splice(idx, 1);
+  } else {
+    if (priorities.length >= 10) {
+      const toggle = document.getElementById('prio-toggle');
+      toggle.style.borderColor = '#e55';
+      toggle.style.color = '#e55';
+      setTimeout(() => { toggle.style.borderColor = ''; toggle.style.color = ''; }, 600);
+      return;
+    }
+    priorities.push({ catId, itemIdx });
+    if (!prioPanelOpen) togglePrioPanel();
+  }
+  savePriorities();
+  render();
+}
+
+function removePriority(catId, itemIdx) {
+  priorities = priorities.filter(p => !(p.catId === catId && p.itemIdx === itemIdx));
+  savePriorities();
+  render();
+}
+
+function toggleDashMenu(e) {
+  e.stopPropagation();
+  const menu = document.getElementById('dash-menu');
+  menu.classList.toggle('open');
+}
+document.addEventListener('click', (e) => {
+  const dd = document.getElementById('dash-dropdown');
+  if (dd && !dd.contains(e.target)) {
+    document.getElementById('dash-menu').classList.remove('open');
+  }
+});
+
+// Load dashboard links from dashboards.json
+const DASHBOARD_LINKS = [
+  { group: 'Sales', name: 'Salon Outreach', path: '../../sales/cold-email/outreach-dashboard.html', color: 'b2b' },
+  { group: 'Sales', name: 'Certification Program', path: '../../sales/certification-program/certification-dashboard.html', color: 'b2b' },
+  { group: 'Sales', name: 'Miami Salon Research', path: '../../opportunities/miami-salon-research/salon-dashboard.html', color: 'b2b' },
+  { group: 'Distribution', name: 'Distributor Targets', path: '../../opportunities/distributors/distributor-dashboard.html', color: 'fin' },
+  { group: 'Distribution', name: 'Distributor Sprint', path: '../../opportunities/distributors/distributor-sprint-dashboard.html', color: 'fin' },
+  { group: 'Marketing', name: 'Social Media', path: '../../aware-hair-social-media/social-dashboard.html', color: 'mkt' },
+  { group: 'Marketing', name: 'Facebook Overview', path: '../../aware-hair-social-media/facebook-dashboard.html', color: 'mkt' },
+  { group: 'Marketing', name: 'Facebook B2B Strategy', path: '../../aware-hair-social-media/facebook-b2b-strategy.html', color: 'mkt' },
+  { group: 'Marketing', name: 'Facebook Consumer Strategy', path: '../../aware-hair-social-media/facebook-strategy-2026.html', color: 'mkt' },
+  { group: 'Marketing', name: 'Email Flows', path: 'email-flows.html', color: 'mkt' },
+  { group: 'Investors', name: 'Investor Pipeline', path: '../../opportunities/investors/investor-dashboard.html', color: 'prod' },
+  { group: 'Operations', name: 'Main Dashboard', path: 'index.html', color: 'ops' },
+];
+
+(function loadDashboardLinks() {
+  function renderMenu(items) {
+    const menu = document.getElementById('dash-menu');
+    menu.innerHTML = '';
+    let lastGroup = '';
+    items.forEach(d => {
+      if (d.group !== lastGroup) {
+        const g = document.createElement('div');
+        g.className = 'dash-menu-group';
+        g.textContent = d.group;
+        menu.appendChild(g);
+        lastGroup = d.group;
+      }
+      const a = document.createElement('a');
+      a.href = d.path;
+      a.target = '_blank';
+      a.innerHTML = `<span class="dash-dot" style="background:var(--c-${d.color})"></span>`
+        + `<span class="dash-label">${d.name}</span>`
+        + `<span class="dash-arrow">&nearr;</span>`;
+      menu.appendChild(a);
+    });
+  }
+  // Try external JSON first (allows edits without touching HTML), fall back to inline
+  fetch('dashboards.json')
+    .then(r => { if (!r.ok) throw 0; return r.json(); })
+    .then(items => renderMenu(items))
+    .catch(() => renderMenu(DASHBOARD_LINKS));
+})();
+
+function togglePrioPanel() {
+  prioPanelOpen = !prioPanelOpen;
+  document.getElementById('prio-panel').classList.toggle('open', prioPanelOpen);
+  updatePrioUI();
+}
+
+function updatePrioUI() {
+  const countEl = document.getElementById('prio-count');
+  const toggleEl = document.getElementById('prio-toggle');
+  const listEl = document.getElementById('prio-list');
+
+  if (priorities.length > 0) {
+    countEl.style.display = 'flex';
+    countEl.textContent = priorities.length;
+    toggleEl.classList.add('has-items');
+  } else {
+    countEl.style.display = 'none';
+    toggleEl.classList.remove('has-items');
+  }
+
+  if (priorities.length === 0) {
+    listEl.innerHTML = '<div class="prio-empty"><div class="prio-empty-icon">&#9733;</div><div>No priorities set yet.</div><div style="margin-top:6px">Click the star on any initiative<br>in the tree or detail panel to add it.</div></div>';
+    return;
+  }
+
+  listEl.innerHTML = priorities.map((p, i) => {
+    const cat = DATA.find(c => c.id === p.catId);
+    if (!cat || !cat.items[p.itemIdx]) return '';
+    const item = cat.items[p.itemIdx];
+    return '<div class="prio-card" draggable="true" data-prio-idx="' + i + '" ondragstart="prioDragStart(event,' + i + ')" ondragover="prioDragOver(event,' + i + ')" ondragleave="prioDragLeave(event)" ondrop="prioDrop(event,' + i + ')" ondragend="prioDragEnd(event)">'
+      + '<div class="prio-card-rank">' + (i + 1) + '</div>'
+      + '<button class="prio-card-remove" onclick="removePriority(\'' + p.catId + '\',' + p.itemIdx + ')" title="Remove">&times;</button>'
+      + '<div class="prio-card-top"><span class="prio-card-name">' + item.n + '</span><span class="prio-card-cat" style="background:' + cat.hex + '22;color:' + cat.hex + '">' + cat.title + '</span></div>'
+      + '<div class="prio-card-desc">' + item.d + '</div>'
+      + '<div class="prio-card-handle">&#8942;&#8942;</div>'
+      + '</div>';
+  }).join('');
+}
+
+let prioDragIdx = null;
+
+function prioDragStart(e, idx) {
+  prioDragIdx = idx;
+  e.dataTransfer.effectAllowed = 'move';
+  setTimeout(() => e.target.classList.add('dragging'), 0);
+}
+
+function prioDragOver(e, idx) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.prio-card').forEach(c => c.classList.remove('drag-over'));
+  if (idx !== prioDragIdx) e.currentTarget.classList.add('drag-over');
+}
+
+function prioDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+
+function prioDrop(e, targetIdx) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (prioDragIdx === null || prioDragIdx === targetIdx) return;
+  const item = priorities.splice(prioDragIdx, 1)[0];
+  priorities.splice(targetIdx, 0, item);
+  prioDragIdx = null;
+  savePriorities();
+}
+
+function prioDragEnd(e) {
+  prioDragIdx = null;
+  document.querySelectorAll('.prio-card').forEach(c => {
+    c.classList.remove('dragging', 'drag-over');
+  });
+}
+
+// ─── KEYBOARD SHORTCUTS ───────────────────────────
+document.addEventListener('keydown', (e) => {
+  // Escape closes panels and confirms
+  if (e.key === 'Escape') {
+    if (document.getElementById('confirm-overlay').classList.contains('visible')) {
+      closeConfirm();
+    } else if (addFormOpen) {
+      closeAddForm(addFormOpen);
+    } else if (document.getElementById('detail').classList.contains('open')) {
+      closeDetail();
+    }
+  }
+  // Cmd/Ctrl+E to export
+  if ((e.metaKey || e.ctrlKey) && e.key === 'e' && !e.target.closest('.edit-field, input, textarea')) {
+    e.preventDefault();
+    exportData();
+  }
+});
+
+// ─── INIT ─────────────────────────────────────────
+render();
+fitView();
+updatePrioUI();
+updateEditIndicator();
+</script>
+</body>
+</html>

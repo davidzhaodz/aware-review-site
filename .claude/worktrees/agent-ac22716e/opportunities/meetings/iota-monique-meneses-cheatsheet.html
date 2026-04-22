@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iota - Monique Meneses Coffee Chat Cheat Sheet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2D4739;
+      --forest-deep: #1E3228;
+      --sage: #7A8F7D;
+      --cream: #F8F6F1;
+      --sand: #E8E4DC;
+      --charcoal: #2C2C2C;
+      --warm-gray: #6B6B6B;
+      --gold: #B8956E;
+      --gold-light: #C9A882;
+      --white: #FFFFFF;
+      --mist: #D5DDD8;
+      --divider: #D4CFC6;
+      --green-soft: #4A8C6B;
+      --green-bg: #F2F8F5;
+      --red-soft: #C45B4A;
+      --red-bg: #FDF5F4;
+      --amber-soft: #B8860B;
+      --amber-bg: #FFFBF0;
+      --purple-soft: #7B68AE;
+      --purple-bg: #F6F4FB;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      background: var(--sand);
+      color: var(--charcoal);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 920px;
+      margin: 0 auto;
+      background: var(--white);
+    }
+
+    /* ============ HEADER ============ */
+
+    .header {
+      background: var(--forest-deep);
+      padding: 36px 48px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -40px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(184,149,110,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 40%, transparent 100%);
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      font-size: 26px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--cream);
+    }
+
+    .header .meeting-info {
+      font-size: 14px;
+      color: var(--sage);
+      margin-top: 4px;
+    }
+
+    .header .meeting-info strong {
+      color: var(--gold-light);
+      font-weight: 500;
+    }
+
+    .header .goal-line {
+      margin-top: 14px;
+      font-size: 15px;
+      color: var(--cream);
+      opacity: 0.85;
+      max-width: 620px;
+      line-height: 1.5;
+    }
+
+    .header-right {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .header-badge {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(184,149,110,0.4);
+      padding: 4px 14px;
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    .header-right .context-note {
+      font-size: 12.5px;
+      color: var(--sage);
+      margin-top: 8px;
+      max-width: 200px;
+      text-align: right;
+      line-height: 1.5;
+    }
+
+    /* ============ NAV STRIP ============ */
+
+    .nav-strip {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--divider);
+      background: var(--cream);
+      overflow-x: auto;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-strip a {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      text-decoration: none;
+      padding: 12px 16px;
+      white-space: nowrap;
+      border-right: 1px solid var(--divider);
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-strip a:hover {
+      color: var(--forest);
+      background: var(--white);
+    }
+
+    /* ============ CONTENT ============ */
+
+    .content {
+      padding: 0 48px 56px;
+    }
+
+    .section {
+      padding-top: 36px;
+    }
+
+    .section-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--divider);
+    }
+
+    /* ============ PERSON CARD ============ */
+
+    .person-card-full {
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .person-card-full .top-bar {
+      background: var(--cream);
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .person-name-lg {
+      font-weight: 600;
+      font-size: 20px;
+      color: var(--forest);
+    }
+
+    .person-title-lg {
+      font-size: 13.5px;
+      color: var(--warm-gray);
+      margin-top: 2px;
+    }
+
+    .person-details {
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .detail-block h4 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .detail-block p, .detail-block ul {
+      font-size: 14px;
+      color: var(--charcoal);
+      line-height: 1.6;
+    }
+
+    .detail-block ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .detail-block li {
+      padding: 3px 0;
+      border-bottom: 1px solid #F2F0EC;
+    }
+
+    .detail-block li:last-child { border-bottom: none; }
+
+    .detail-wide {
+      grid-column: 1 / -1;
+    }
+
+    /* ============ SNAPSHOT GRID ============ */
+
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--divider);
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .snap-cell {
+      background: var(--white);
+      padding: 16px 18px;
+      text-align: center;
+    }
+
+    .snap-cell .stat {
+      font-size: 22px;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      color: var(--forest);
+      line-height: 1.1;
+    }
+
+    .snap-cell .stat-label {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      margin-top: 4px;
+    }
+
+    .snap-cell .stat-note {
+      font-size: 12px;
+      color: var(--warm-gray);
+      margin-top: 2px;
+    }
+
+    /* ============ TIMELINE ============ */
+
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--gold) 0%, var(--divider) 100%);
+    }
+
+    .tl-item {
+      position: relative;
+      padding: 0 0 20px 24px;
+    }
+
+    .tl-item:last-child { padding-bottom: 0; }
+
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 8px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid var(--white);
+      box-shadow: 0 0 0 2px var(--gold);
+    }
+
+    .tl-item.milestone::before {
+      width: 12px;
+      height: 12px;
+      background: var(--forest);
+      box-shadow: 0 0 0 2px var(--forest);
+    }
+
+    .tl-date {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .tl-text {
+      font-size: 14px;
+      color: var(--charcoal);
+      margin-top: 2px;
+      line-height: 1.5;
+    }
+
+    .tl-text strong {
+      color: var(--forest-deep);
+    }
+
+    /* ============ PARALLELS TABLE ============ */
+
+    .parallels-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .parallels-table thead th {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      font-weight: 500;
+      padding: 0 12px 12px 0;
+      text-align: left;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .parallels-table thead th:first-child {
+      width: 22%;
+    }
+
+    .parallels-table thead th.aware-col {
+      background: rgba(45,71,57,0.04);
+      color: var(--forest);
+      font-weight: 600;
+      padding-left: 12px;
+    }
+
+    .parallels-table thead th.iota-col {
+      color: var(--purple-soft);
+      font-weight: 600;
+    }
+
+    .parallels-table tbody td {
+      padding: 10px 12px 10px 0;
+      border-bottom: 1px solid #EDEBE6;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .parallels-table tbody td:first-child {
+      font-weight: 600;
+      color: var(--warm-gray);
+      font-size: 13px;
+    }
+
+    .parallels-table tbody td.aware-col {
+      background: rgba(45,71,57,0.04);
+      padding-left: 12px;
+      color: var(--forest-deep);
+    }
+
+    .parallels-table tbody td.iota-col {
+      color: var(--charcoal);
+    }
+
+    .parallels-table tbody td.iota-today-col {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    /* ============ QUESTION THEMES ============ */
+
+    .q-theme {
+      margin-bottom: 24px;
+    }
+
+    .q-theme-header {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--forest);
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .q-theme-header .theme-num {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      background: var(--forest-deep);
+      color: var(--cream);
+      border-radius: 50%;
+      text-align: center;
+      line-height: 22px;
+      font-size: 11px;
+      margin-right: 8px;
+      font-family: 'EB Garamond', Georgia, serif;
+    }
+
+    .questions-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .questions-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid #F2F0EC;
+      font-size: 15px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .questions-list li:last-child { border-bottom: none; }
+
+    .q-priority {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 2px;
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .q-must {
+      background: var(--forest-deep);
+      color: var(--cream);
+    }
+
+    .q-should {
+      background: var(--cream);
+      color: var(--warm-gray);
+      border: 1px solid var(--divider);
+    }
+
+    .q-bonus {
+      background: var(--amber-bg);
+      color: var(--amber-soft);
+      border: 1px solid rgba(184,134,11,0.2);
+    }
+
+    .q-subtext {
+      font-size: 12.5px;
+      color: var(--warm-gray);
+      font-style: italic;
+      margin-top: 2px;
+    }
+
+    /* ============ CONVERSATION STARTERS ============ */
+
+    .opener-card {
+      border-left: 3px solid var(--gold);
+      padding: 14px 20px;
+      margin-bottom: 12px;
+      background: linear-gradient(90deg, rgba(184,149,110,0.04) 0%, transparent 40%);
+      border-radius: 0 3px 3px 0;
+    }
+
+    .opener-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .opener-text {
+      font-size: 15.5px;
+      line-height: 1.6;
+      color: var(--charcoal);
+    }
+
+    .opener-text strong {
+      color: var(--forest-deep);
+    }
+
+    /* ============ AWARE REFERENCE ============ */
+
+    .ref-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .ref-card {
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      padding: 16px 20px;
+    }
+
+    .ref-card h4 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .ref-card p, .ref-card ul {
+      font-size: 14px;
+      color: var(--charcoal);
+    }
+
+    .ref-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .ref-card li {
+      padding: 3px 0;
+      border-bottom: 1px solid #F2F0EC;
+    }
+
+    .ref-card li:last-child { border-bottom: none; }
+
+    .ref-wide {
+      grid-column: 1 / -1;
+    }
+
+    /* ============ FOLLOW-UP ============ */
+
+    .followup-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--divider);
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .followup-card {
+      background: var(--white);
+      padding: 20px;
+    }
+
+    .followup-card h4 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .followup-card.collab h4 { color: var(--green-soft); }
+    .followup-card.connection h4 { color: var(--gold); }
+    .followup-card.learn h4 { color: var(--purple-soft); }
+
+    .followup-card p {
+      font-size: 13.5px;
+      line-height: 1.6;
+    }
+
+    .followup-card strong {
+      color: var(--forest-deep);
+    }
+
+    /* ============ CALLOUT ============ */
+
+    .callout {
+      padding: 14px 18px;
+      border-radius: 3px;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: 14px;
+    }
+
+    .callout-green {
+      background: var(--green-bg);
+      border-left: 3px solid var(--green-soft);
+    }
+
+    .callout-amber {
+      background: var(--amber-bg);
+      border-left: 3px solid var(--amber-soft);
+    }
+
+    .callout-purple {
+      background: var(--purple-bg);
+      border-left: 3px solid var(--purple-soft);
+    }
+
+    .callout strong {
+      color: var(--forest-deep);
+    }
+
+    /* ============ RESPONSIVE ============ */
+
+    @media (max-width: 920px) {
+      .page { max-width: 100%; }
+      .header, .content { padding-left: 24px; padding-right: 24px; }
+      .snapshot-grid { grid-template-columns: 1fr 1fr; }
+      .person-details { grid-template-columns: 1fr; }
+      .ref-grid { grid-template-columns: 1fr; }
+      .followup-grid { grid-template-columns: 1fr; }
+      .parallels-table { font-size: 12.5px; }
+    }
+
+    @media print {
+      .nav-strip { position: static; }
+      body { background: white; }
+      .page { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ======== HEADER ======== -->
+  <div class="header">
+    <div class="header-row">
+      <div>
+        <h1>Iota - Monique Meneses</h1>
+        <div class="meeting-info">Coffee Chat - <strong>Learning Conversation</strong></div>
+        <div class="goal-line">Learn from Monique's journey scaling a bootstrapped, science-backed beauty brand from zero to $8-10M. Understand what worked, what didn't, and what she'd do differently - with an eye toward what AWARE can learn from Iota's playbook.</div>
+      </div>
+      <div class="header-right">
+        <div class="header-badge">Informal Chat</div>
+        <div class="context-note">Not a sales meeting. Listen more than you talk.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== NAV ======== -->
+  <div class="nav-strip">
+    <a href="#monique">Monique</a>
+    <a href="#snapshot">Iota Snapshot</a>
+    <a href="#timeline">Timeline</a>
+    <a href="#parallels">Parallels</a>
+    <a href="#questions">Questions</a>
+    <a href="#starters">Openers</a>
+    <a href="#aware-ref">AWARE Ref</a>
+    <a href="#followup">Follow-Up</a>
+  </div>
+
+  <div class="content">
+
+    <!-- ======== 1. ABOUT MONIQUE ======== -->
+    <div class="section" id="monique">
+      <div class="section-label">About Monique Meneses</div>
+      <div class="person-card-full">
+        <div class="top-bar">
+          <div class="person-name-lg">Monique Meneses</div>
+          <div class="person-title-lg">Co-Founder & Co-CEO, Iota Body Care</div>
+        </div>
+        <div class="person-details">
+          <div class="detail-block">
+            <h4>Background</h4>
+            <ul>
+              <li><strong>Brown University</strong> graduate</li>
+              <li><strong>Executive Editor, Allure & allure.com</strong> (10+ years beauty editorial)</li>
+              <li>Beauty editor career gave her deep media/editor network</li>
+              <li>BeautyMatter NEXT50 2025 honoree</li>
+            </ul>
+          </div>
+          <div class="detail-block">
+            <h4>Personal Story</h4>
+            <p>Half Korean, quarter Filipina, quarter Portuguese. After facing infertility struggles and a pancreas tumor diagnosis, she realized how little she knew about what she was putting on her body. Couldn't find bodycare that met the same ingredient standards as her skincare. Co-founded Iota with her husband <strong>Ray Kim</strong>. Their daughter Genevieve has been involved from the start.</p>
+          </div>
+          <div class="detail-block">
+            <h4>Superpower</h4>
+            <p><strong>10+ years as beauty editor = built-in PR network.</strong> Knows every editor, journalist, and influencer in beauty media. This is likely why Iota has racked up 24 awards - she knew exactly how to position products for editorial recognition.</p>
+          </div>
+          <div class="detail-block">
+            <h4>Co-Founder: Ray Kim</h4>
+            <p>Her husband and co-CEO. Background as an advisor and investor in consumer, media, and technology sectors. Together they run Iota as a husband-wife team - <strong>lean, bootstrapped, no outside investors.</strong></p>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout-green" style="margin-top: 14px;">
+        <strong>Rapport note:</strong> Monique's origin story (health scare leading to product creation) parallels Tina's trichology-driven approach. Both brands were born from personal experience, not market analysis. She'll understand the founder journey.
+      </div>
+    </div>
+
+    <!-- ======== 2. IOTA SNAPSHOT ======== -->
+    <div class="section" id="snapshot">
+      <div class="section-label">Iota at a Glance</div>
+      <div class="snapshot-grid">
+        <div class="snap-cell">
+          <div class="stat">Oct 2022</div>
+          <div class="stat-label">Founded</div>
+        </div>
+        <div class="snap-cell">
+          <div class="stat">$8-10M</div>
+          <div class="stat-label">Projected 2025 Rev</div>
+          <div class="stat-note">[AI-GENERATED estimate]</div>
+        </div>
+        <div class="snap-cell">
+          <div class="stat">24x</div>
+          <div class="stat-label">Award-Winning</div>
+          <div class="stat-note">Per @iotabody Instagram bio</div>
+        </div>
+        <div class="snap-cell">
+          <div class="stat">$0</div>
+          <div class="stat-label">VC Funding</div>
+          <div class="stat-note">100% Bootstrapped</div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
+        <div class="ref-card">
+          <h4>Retail Partners</h4>
+          <ul>
+            <li><strong>Nordstrom</strong> - major department store</li>
+            <li><strong>Credo Beauty</strong> - clean beauty authority</li>
+            <li><strong>Anthropologie</strong> - lifestyle retail</li>
+            <li><strong>Free People</strong> - wellness/lifestyle</li>
+            <li>+ DTC via iotabody.com</li>
+            <li>50-100 projected offline points (2025)</li>
+          </ul>
+        </div>
+        <div class="ref-card">
+          <h4>Product Line</h4>
+          <ul>
+            <li>"Nutritional Bodycare" positioning</li>
+            <li>Body washes, lotions, serums, lip balm</li>
+            <li>$14-48 price range</li>
+            <li>Scientific Advisory Board (Brown, Harvard)</li>
+            <li>Patent-pending delivery system</li>
+            <li>Clean, vegan, cruelty-free</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
+        <div class="ref-card">
+          <h4>Social & Press</h4>
+          <ul>
+            <li>Featured: Fashionista, Hypebae, BeautyMatter</li>
+            <li>Kara Goldin Show podcast guest</li>
+            <li>Female Founder World podcast feature</li>
+            <li>NEXT50 by BeautyMatter (2025)</li>
+            <li>Content-first strategy (UGC + editorial)</li>
+          </ul>
+        </div>
+        <div class="ref-card">
+          <h4>Differentiators</h4>
+          <ul>
+            <li><strong>Category creation</strong> - "nutritional bodycare" didn't exist</li>
+            <li>Husband-wife founding team</li>
+            <li>Clinical studies backing claims</li>
+            <li>Advisory board with academic researchers</li>
+            <li>Premium clean positioning in crowded bodycare</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="font-size: 11.5px; color: var(--warm-gray); margin-top: 10px; font-style: italic;">
+        Sources: Iota website, @iotabody Instagram, Female Founder World podcast, BeautyMatter, Beauty Independent, LinkedIn. Revenue figure is [AI-GENERATED] estimate based on retail footprint and growth trajectory. Award count (24x) per brand's Instagram bio. Retail partners verified via Instagram bio (Nordstrom, Credo) and press coverage (Anthropologie, Free People).
+      </div>
+    </div>
+
+    <!-- ======== 3. GROWTH TIMELINE ======== -->
+    <div class="section" id="timeline">
+      <div class="section-label">Iota Growth Timeline</div>
+      <div class="timeline">
+        <div class="tl-item milestone">
+          <div class="tl-date">Oct 2022</div>
+          <div class="tl-text"><strong>Launch.</strong> DTC-only via iotabodycare.com. 4 initial SKUs. Monique leverages editorial network for immediate press coverage.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Early 2023</div>
+          <div class="tl-text">First press wins - beauty editors who knew Monique from Allure years cover the brand. <strong>Won first batch of beauty awards.</strong></div>
+        </div>
+        <div class="tl-item milestone">
+          <div class="tl-date">Mid 2023</div>
+          <div class="tl-text"><strong>Credo Beauty pickup.</strong> First major retail partner - validates clean ingredient story.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Late 2023</div>
+          <div class="tl-text">Social media momentum building. Growing TikTok and Instagram presence driving DTC traffic and awareness. [UNVERIFIED - specific viral metrics not confirmed]</div>
+        </div>
+        <div class="tl-item milestone">
+          <div class="tl-date">2024</div>
+          <div class="tl-text"><strong>Retail expansion: Nordstrom, Anthropologie, Free People.</strong> Awards accumulating - total reaches 24x per brand claims. Scientific Advisory Board with Brown/Harvard researchers formalized.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Early 2025</div>
+          <div class="tl-text">Monique named to <strong>BeautyMatter NEXT50</strong> (2025 honoree). Brand hits ~2.5 years old with $8-10M projected annual revenue [AI-GENERATED estimate].</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2025</div>
+          <div class="tl-text">Expanding product line. Continued retail growth. Still <strong>bootstrapped, no VC.</strong> Husband-wife team with contractors.</div>
+        </div>
+      </div>
+      <div style="font-size: 11.5px; color: var(--warm-gray); margin-top: 12px; font-style: italic;">
+        Timeline compiled from press coverage, interviews, and award announcements. Exact dates for some milestones are approximate.
+      </div>
+    </div>
+
+    <!-- ======== 4. PARALLELS TO AWARE ======== -->
+    <div class="section" id="parallels">
+      <div class="section-label">Parallels to AWARE Hair</div>
+      <div class="callout callout-purple" style="margin-top: 0; margin-bottom: 16px;">
+        <strong>Why this matters:</strong> Iota is roughly 2-2.5 years ahead of AWARE on a similar trajectory. Understanding their path helps David ask specific, relevant questions - not generic startup advice.
+      </div>
+      <table class="parallels-table">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th class="aware-col">AWARE (Now)</th>
+            <th class="iota-col">Iota (at ~6-12 mo)</th>
+            <th class="iota-col">Iota (Now, ~2.5 yr)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Revenue</td>
+            <td class="aware-col">~$125K (6mo) [APPROXIMATE]</td>
+            <td class="iota-col">Est. sub-$1M</td>
+            <td class="iota-today-col">$8-10M projected [AI-GENERATED]</td>
+          </tr>
+          <tr>
+            <td>Funding</td>
+            <td class="aware-col">Bootstrapped</td>
+            <td class="iota-col">Bootstrapped</td>
+            <td class="iota-today-col">Still bootstrapped</td>
+          </tr>
+          <tr>
+            <td>Team</td>
+            <td class="aware-col">David + Tina + contractors</td>
+            <td class="iota-col">Monique + Ray Kim (husband-wife)</td>
+            <td class="iota-today-col">Core team + contractors</td>
+          </tr>
+          <tr>
+            <td>Category</td>
+            <td class="aware-col">Scalp wellness (new category)</td>
+            <td class="iota-col">Nutritional bodycare (new category)</td>
+            <td class="iota-today-col">Category now validated</td>
+          </tr>
+          <tr>
+            <td>Science</td>
+            <td class="aware-col">Patent-pending, trichologist-developed</td>
+            <td class="iota-col">Advisory board forming</td>
+            <td class="iota-today-col">Brown/Harvard advisors, clinical studies</td>
+          </tr>
+          <tr>
+            <td>Distribution</td>
+            <td class="aware-col">50+ salons (B2B-first)</td>
+            <td class="iota-col">DTC-only</td>
+            <td class="iota-today-col">Credo, Nordstrom, Anthropologie, FP</td>
+          </tr>
+          <tr>
+            <td>PR/Awards</td>
+            <td class="aware-col">LA Times, Beauty Independent</td>
+            <td class="iota-col">Early editorial wins</td>
+            <td class="iota-today-col">24 awards, Allure Best of Beauty</td>
+          </tr>
+          <tr>
+            <td>Social</td>
+            <td class="aware-col">Growing organic presence</td>
+            <td class="iota-col">Building IG community</td>
+            <td class="iota-today-col">179K IG followers, active TikTok</td>
+          </tr>
+          <tr>
+            <td>Positioning</td>
+            <td class="aware-col">Professional-exclusive, premium</td>
+            <td class="iota-col">Premium clean bodycare</td>
+            <td class="iota-today-col">Premium clean bodycare</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout callout-amber" style="margin-top: 14px;">
+        <strong>Key difference:</strong> Monique had a massive editorial network from Allure. AWARE doesn't have that built-in PR advantage - so her insights on awards/press strategy are especially valuable to understand (was it purely relationships, or is there a replicable playbook?).
+      </div>
+    </div>
+
+    <!-- ======== 5. QUESTIONS TO ASK ======== -->
+    <div class="section" id="questions">
+      <div class="section-label">Questions to Ask</div>
+
+      <!-- Theme 1: Early Days -->
+      <div class="q-theme">
+        <div class="q-theme-header"><span class="theme-num">1</span> Early Days & Bootstrapping</div>
+        <ul class="questions-list">
+          <li>
+            <span class="q-priority q-must">Must</span>
+            <div>"You launched in Oct 2022 with no outside funding. What were the hardest decisions in those first 6-12 months about where to spend vs. where to save?"
+              <div class="q-subtext">AWARE is at this exact stage. Understanding capital allocation early on.</div>
+            </div>
+          </li>
+          <li>
+            <span class="q-priority q-must">Must</span>
+            <div>"How did you and Ray divide responsibilities early on? What did you handle yourselves vs. outsource?"
+              <div class="q-subtext">David + Tina have a similar co-founder dynamic.</div>
+            </div>
+          </li>
+          <li>
+            <span class="q-priority q-should">Should</span>
+            <div>"At what revenue point did bootstrapping start feeling sustainable vs. scary? Was there a moment it clicked?"</div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Theme 2: PR & Awards -->
+      <div class="q-theme">
+        <div class="q-theme-header"><span class="theme-num">2</span> PR, Awards & Editorial</div>
+        <ul class="questions-list">
+          <li>
+            <span class="q-priority q-must">Must</span>
+            <div>"You've won 24 awards - which is extraordinary for a brand this young. How much of that was your editorial network vs. a deliberate awards submission strategy?"
+              <div class="q-subtext">Trying to understand if there's a replicable playbook beyond her Allure connections.</div>
+            </div>
+          </li>
+          <li>
+            <span class="q-priority q-must">Must</span>
+            <div>"For a brand without editorial connections, what would you recommend as the best path to getting press and award consideration?"</div>
+          </li>
+          <li>
+            <span class="q-priority q-should">Should</span>
+            <div>"Did the awards drive meaningful revenue, or was it more about credibility and retail conversations?"</div>
+          </li>
+          <li>
+            <span class="q-priority q-bonus">Bonus</span>
+            <div>"Did you hire a PR agency or handle it in-house? If agency, who and at what stage?"</div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Theme 3: Retail Strategy -->
+      <div class="q-theme">
+        <div class="q-theme-header"><span class="theme-num">3</span> Retail Strategy</div>
+        <ul class="questions-list">
+          <li>
+            <span class="q-priority q-must">Must</span>
+            <div>"How did the Credo partnership come about? Did they find you, or did you pitch them? What made them say yes?"
+              <div class="q-subtext">Understanding how a bootstrapped brand lands its first major retail partner.</div>
+            </div>
+          </li>
+          <li>
+            <span class="q-priority q-must">Must</span>
+            <div>"How do you decide which retailers to pursue vs. pass on? You're in Credo and Nordstrom but not Sephora or Ulta - is that deliberate?"</div>
+          </li>
+          <li>
+            <span class="q-priority q-should">Should</span>
+            <div>"What surprised you most about the retail side of the business? Things you didn't anticipate?"</div>
+          </li>
+          <li>
+            <span class="q-priority q-should">Should</span>
+            <div>"AWARE is B2B-first (salons). Any thoughts on whether that's a harder or easier path to retail than going DTC-first like you did?"</div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Theme 4: Team & Operations -->
+      <div class="q-theme">
+        <div class="q-theme-header"><span class="theme-num">4</span> Team & Operations</div>
+        <ul class="questions-list">
+          <li>
+            <span class="q-priority q-should">Should</span>
+            <div>"You've stayed lean - husband-wife core team. What was the first role you hired or contracted for, and when did you know you needed it?"</div>
+          </li>
+          <li>
+            <span class="q-priority q-should">Should</span>
+            <div>"The scientific advisory board with Brown and Harvard researchers is impressive. How did you recruit them, and what do they actually do day-to-day?"
+              <div class="q-subtext">AWARE has Tina's trichology expertise but could benefit from a formal advisory board.</div>
+            </div>
+          </li>
+          <li>
+            <span class="q-priority q-bonus">Bonus</span>
+            <div>"How do you manage manufacturing and supply chain as a small team? Any hard lessons?"</div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Theme 5: Marketing & Social -->
+      <div class="q-theme">
+        <div class="q-theme-header"><span class="theme-num">5</span> Marketing & Social</div>
+        <ul class="questions-list">
+          <li>
+            <span class="q-priority q-must">Must</span>
+            <div>"I've seen Iota get a lot of social traction - has there been a specific viral moment or piece of content that really moved the needle? Was it planned or organic?"
+              <div class="q-subtext">Understanding if viral social is a strategy or just lightning in a bottle.</div>
+            </div>
+          </li>
+          <li>
+            <span class="q-priority q-should">Should</span>
+            <div>"How do you think about paid vs. organic marketing? At what stage did you start spending on ads, if at all?"</div>
+          </li>
+          <li>
+            <span class="q-priority q-should">Should</span>
+            <div>"What content approach has worked best for building community - educational, lifestyle, UGC, influencer?"</div>
+          </li>
+          <li>
+            <span class="q-priority q-bonus">Bonus</span>
+            <div>"You created a new category - 'nutritional bodycare.' How did you get people to understand a category that didn't exist?"
+              <div class="q-subtext">AWARE faces the same challenge with 'scalp wellness.'</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Theme 6: Revenue & Growth -->
+      <div class="q-theme">
+        <div class="q-theme-header"><span class="theme-num">6</span> Revenue & Growth</div>
+        <ul class="questions-list">
+          <li>
+            <span class="q-priority q-must">Must</span>
+            <div>"What were the biggest revenue milestones - the moments where growth really accelerated? Was it a specific retail deal, viral moment, or something else?"</div>
+          </li>
+          <li>
+            <span class="q-priority q-should">Should</span>
+            <div>"How does your revenue split between DTC and retail? Has that ratio changed as you've grown?"</div>
+          </li>
+          <li>
+            <span class="q-priority q-bonus">Bonus</span>
+            <div>"Any thoughts on when (or whether) to take outside investment? Have you been approached by VCs?"</div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Theme 7: Mistakes & Lessons -->
+      <div class="q-theme">
+        <div class="q-theme-header"><span class="theme-num">7</span> Mistakes & Lessons</div>
+        <ul class="questions-list">
+          <li>
+            <span class="q-priority q-must">Must</span>
+            <div>"If you could go back to where AWARE is now - about 6-8 months in, bootstrapped, building traction - what would you do differently?"
+              <div class="q-subtext">The most valuable question. Specific enough to get a real answer.</div>
+            </div>
+          </li>
+          <li>
+            <span class="q-priority q-should">Should</span>
+            <div>"What's been the biggest surprise - positive or negative - about building a beauty brand?"</div>
+          </li>
+          <li>
+            <span class="q-priority q-bonus">Bonus</span>
+            <div>"Is there anything you spent money on early that turned out to be a waste? Or something you wish you'd invested in sooner?"</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ======== 6. CONVERSATION STARTERS ======== -->
+    <div class="section" id="starters">
+      <div class="section-label">Conversation Starters & Rapport</div>
+
+      <div class="opener-card">
+        <div class="opener-label">Opening Line</div>
+        <div class="opener-text">"I've been following Iota since you launched - <strong>the 'nutritional bodycare' positioning</strong> really resonated with me because we're trying to do something similar with scalp wellness. Creating a category that doesn't quite exist yet."</div>
+      </div>
+
+      <div class="opener-card">
+        <div class="opener-label">Shared Experience - Bootstrapping</div>
+        <div class="opener-text">"We're also bootstrapped and building with a lean team. My co-founder Tina is a trichologist with 40+ years of experience - <strong>similar to your husband-wife dynamic</strong> where you each bring very different strengths."</div>
+      </div>
+
+      <div class="opener-card">
+        <div class="opener-label">Genuine Compliment</div>
+        <div class="opener-text">"<strong>24 awards in two years, bootstrapped, no VC</strong> - that's the part that really stood out to me. Everyone talks about raising money as the first step. You proved it doesn't have to be."</div>
+      </div>
+
+      <div class="opener-card">
+        <div class="opener-label">If She Asks About AWARE</div>
+        <div class="opener-text">"We're a professional-exclusive scalp care line developed by a trichologist. About 6 months in, 50+ salon partners, <strong>96% B2B repurchase rate.</strong> We started with salons because that's where Tina practiced for decades - but we're thinking about what comes next."
+          <div class="q-subtext" style="margin-top: 6px;">Keep it brief. This is about learning from her, not pitching.</div>
+        </div>
+      </div>
+
+      <div class="opener-card">
+        <div class="opener-label">Connecting Point - Science</div>
+        <div class="opener-text">"I noticed you have a scientific advisory board with Brown and Harvard researchers. <strong>We have a patent-pending formulation</strong> - I'm curious how you approached the science validation side."</div>
+      </div>
+
+      <div class="callout callout-amber">
+        <strong>Tone reminder:</strong> This is a casual learning conversation. Don't rapid-fire questions. Let it flow naturally. If she's enthusiastic about a topic, follow her energy - you can skip lower-priority questions. The best insights come from unstructured conversation, not an interrogation.
+      </div>
+    </div>
+
+    <!-- ======== 7. AWARE QUICK REFERENCE ======== -->
+    <div class="section" id="aware-ref">
+      <div class="section-label">AWARE Quick Reference (If Asked)</div>
+      <div style="padding: 10px 16px; background: var(--cream); border-left: 3px solid var(--gold); border-radius: 3px; font-size: 13px; margin-bottom: 16px;">
+        Only share if she asks. Keep it concise - this conversation is about learning from her, not selling AWARE.
+      </div>
+      <div class="ref-grid">
+        <div class="ref-card">
+          <h4>The Basics</h4>
+          <ul>
+            <li><strong>What:</strong> Professional-exclusive scalp care</li>
+            <li><strong>Founded by:</strong> Tina (trichologist, 40+ yrs) + David</li>
+            <li><strong>Products:</strong> Shampoo, Conditioner, Leave-In ($55-60)</li>
+            <li><strong>Stage:</strong> ~6 months in [APPROXIMATE]</li>
+            <li><strong>Channel:</strong> B2B salons, expanding DTC</li>
+          </ul>
+        </div>
+        <div class="ref-card">
+          <h4>Key Numbers</h4>
+          <ul>
+            <li><strong>Revenue:</strong> ~$125K (6mo) [APPROXIMATE]</li>
+            <li><strong>Salons:</strong> 50+ partners [APPROXIMATE]</li>
+            <li><strong>Repurchase:</strong> 96% B2B [APPROXIMATE]</li>
+            <li><strong>Returns:</strong> Zero to date [APPROXIMATE]</li>
+            <li><strong>Funding:</strong> Bootstrapped</li>
+          </ul>
+        </div>
+        <div class="ref-card">
+          <h4>Differentiators</h4>
+          <ul>
+            <li>Only 100% scalp-dedicated brand</li>
+            <li>Patent-pending AwareBio Complex</li>
+            <li>Developed by practicing trichologist</li>
+            <li>Never on Amazon, MAP enforced</li>
+            <li>Professional-exclusive distribution</li>
+          </ul>
+        </div>
+        <div class="ref-card">
+          <h4>Press & Validation</h4>
+          <ul>
+            <li>LA Times, Beauty Independent</li>
+            <li>NewBeauty coverage</li>
+            <li>Organic social traction growing</li>
+            <li>B2B referral-driven growth</li>
+          </ul>
+        </div>
+      </div>
+      <div style="font-size: 11.5px; color: var(--warm-gray); margin-top: 10px; font-style: italic;">
+        All metrics labeled [APPROXIMATE] from CLAUDE.md context - not verified from live data sources. Verify before sharing externally.
+      </div>
+    </div>
+
+    <!-- ======== 8. FOLLOW-UP IDEAS ======== -->
+    <div class="section" id="followup">
+      <div class="section-label">Follow-Up Ideas</div>
+      <div class="followup-grid">
+        <div class="followup-card collab">
+          <h4>Potential Collaboration</h4>
+          <p>"<strong>Scalp + body = complete wellness routine.</strong> If the conversation goes well, there might be a natural co-marketing opportunity - Iota for body, AWARE for scalp. Complementary, not competitive. A joint 'skin wellness' positioning."</p>
+        </div>
+        <div class="followup-card connection">
+          <h4>Introductions</h4>
+          <p>"She likely knows <strong>Credo buyers, Nordstrom contacts, beauty editors, and PR firms.</strong> Don't ask in the first meeting - but if a real relationship develops, these connections could be invaluable. Earn them by being genuinely helpful first."</p>
+        </div>
+        <div class="followup-card learn">
+          <h4>Ongoing Relationship</h4>
+          <p>"Offer to be a <strong>sounding board for her too</strong> - founders at similar stages but different categories can help each other think through challenges. Keep the relationship reciprocal. Follow up with a specific insight or resource she'd find valuable."</p>
+        </div>
+      </div>
+
+      <div class="callout callout-green" style="margin-top: 16px;">
+        <strong>After the chat:</strong> Send a thank-you note within 24 hours. Reference something specific she said - not generic. If she mentioned a challenge, send a resource that helps. If she recommended something, follow up on it and let her know. Build the relationship before asking for anything.
+      </div>
+
+      <div style="margin-top: 16px; padding: 18px 24px; background: var(--forest-deep); border-radius: 3px; color: var(--cream); font-size: 14px; line-height: 1.65;">
+        <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px;">Remember</div>
+        <strong style="color: var(--gold-light);">Listen 70%, talk 30%.</strong> You're here to learn, not to impress. The best coffee chats feel like a conversation between two founders who genuinely understand each other's journey. Be curious, be specific, and be grateful for her time.
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

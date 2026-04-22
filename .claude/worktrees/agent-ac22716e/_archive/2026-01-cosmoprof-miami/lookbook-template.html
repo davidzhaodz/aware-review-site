@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARE Hair - Lookbook Template</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+  <!--
+  =====================================================================
+  AWARE HAIR - LOOKBOOK MASTER TEMPLATE
+  =====================================================================
+
+  Design System for luxury spa-menu inspired print lookbook.
+  Use this file as the source of truth for all brand collateral pages.
+
+  Principles:
+  1. Confident type - 14px+ body, 36-52px headings
+  2. Editorial pacing - fewer elements, more impact
+  3. Asymmetric layouts - offset grids, intentional imbalance
+  4. Organic warmth - grain texture, warm palette, rounded rhythm
+  5. Spa-menu hierarchy - treatment name + description + detail
+
+  Last updated: January 2026
+  =====================================================================
+  -->
+
+  <style>
+    /* =================================================================
+       DESIGN TOKENS
+       ================================================================= */
+    :root {
+      /* Palette */
+      --forest: #2D4739;
+      --forest-deep: #1E3329;
+      --sage: #7A8F7D;
+      --sage-light: #A8B8AB;
+      --cream: #F8F5F0;
+      --cream-warm: #F3EDE5;
+      --sand: #E6DFD5;
+      --sand-dark: #C9BFB2;
+      --charcoal: #2A2A2A;
+      --warm-gray: #5C5C5C;
+      --warm-gray-light: #8A8A8A;
+      --gold: #B8956E;
+      --gold-muted: #C4A882;
+
+      /* Typography scale (golden ratio influenced) */
+      --type-xs: 11px;
+      --type-sm: 13px;
+      --type-base: 14.5px;
+      --type-md: 16px;
+      --type-lg: 20px;
+      --type-xl: 28px;
+      --type-2xl: 36px;
+      --type-3xl: 48px;
+      --type-display: 56px;
+
+      /* Spacing (golden ratio: each step ~1.618x previous) */
+      --space-1: 6px;
+      --space-2: 10px;
+      --space-3: 16px;
+      --space-4: 26px;
+      --space-5: 42px;
+      --space-6: 68px;
+      --space-7: 110px;
+
+      /* Line heights */
+      --leading-tight: 1.15;
+      --leading-snug: 1.25;
+      --leading-normal: 1.5;
+      --leading-relaxed: 1.7;
+
+      /* Transitions */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration-fast: 150ms;
+      --duration-normal: 300ms;
+    }
+
+    /* =================================================================
+       PRINT SETUP
+       ================================================================= */
+    @page { size: letter; margin: 0; }
+
+    @media print {
+      html, body { width: 8.5in; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page { page-break-after: always; box-shadow: none !important; }
+      .page:last-child { page-break-after: avoid; }
+      .no-print { display: none !important; }
+      .grain-overlay::before { display: none; } /* Remove grain for print */
+    }
+
+    /* =================================================================
+       BASE STYLES
+       ================================================================= */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: #b8b8b8;
+      color: var(--charcoal);
+      line-height: var(--leading-normal);
+      font-size: var(--type-base);
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: 8.5in;
+      height: 11in;
+      margin: 24px auto;
+      background: var(--cream);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.15);
+    }
+
+    /* Subtle grain texture overlay */
+    .grain-overlay {
+      position: relative;
+    }
+
+    .grain-overlay::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: 1;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 128px 128px;
+      mix-blend-mode: multiply;
+    }
+
+    /* =================================================================
+       TYPOGRAPHY
+       ================================================================= */
+    .heading-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-display);
+      font-weight: 300;
+      line-height: var(--leading-tight);
+      letter-spacing: -0.02em;
+      color: var(--forest-deep);
+    }
+
+    .heading-1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-3xl);
+      font-weight: 300;
+      line-height: var(--leading-tight);
+      letter-spacing: -0.015em;
+      color: var(--forest-deep);
+    }
+
+    .heading-2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-2xl);
+      font-weight: 300;
+      line-height: var(--leading-snug);
+      color: var(--forest-deep);
+    }
+
+    .heading-3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-xl);
+      font-weight: 400;
+      line-height: var(--leading-snug);
+      color: var(--forest);
+    }
+
+    .heading-4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-lg);
+      font-weight: 400;
+      line-height: var(--leading-snug);
+      color: var(--forest);
+    }
+
+    .body-lg {
+      font-size: var(--type-md);
+      line-height: var(--leading-relaxed);
+      color: var(--warm-gray);
+      font-weight: 300;
+    }
+
+    .body {
+      font-size: var(--type-base);
+      line-height: var(--leading-relaxed);
+      color: var(--warm-gray);
+    }
+
+    .body-sm {
+      font-size: var(--type-sm);
+      line-height: var(--leading-normal);
+      color: var(--warm-gray);
+    }
+
+    .eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: var(--type-xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sage);
+    }
+
+    .accent-italic {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    /* =================================================================
+       PAGE LAYOUTS
+       ================================================================= */
+
+    /* --- Standard page with generous margins --- */
+    .page-standard {
+      padding: 0.7in 0.75in;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* --- Wide margin editorial --- */
+    .page-editorial {
+      padding: 0.9in 1in;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* --- Full bleed with content overlay --- */
+    .page-bleed {
+      height: 100%;
+      position: relative;
+    }
+
+    /* --- Split layout (asymmetric) --- */
+    .page-split {
+      height: 100%;
+      display: grid;
+      grid-template-columns: 5fr 4fr;
+    }
+
+    .page-split-reverse {
+      grid-template-columns: 4fr 5fr;
+    }
+
+    /* =================================================================
+       HEADER & FOOTER
+       ================================================================= */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: var(--space-6);
+    }
+
+    .page-header .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-lg);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: var(--forest);
+    }
+
+    .page-header .page-num {
+      font-size: var(--type-xs);
+      letter-spacing: 0.15em;
+      color: var(--sage);
+    }
+
+    .page-footer {
+      margin-top: auto;
+      padding-top: var(--space-4);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--type-xs);
+      color: var(--warm-gray-light);
+    }
+
+    /* =================================================================
+       SECTION ELEMENTS
+       ================================================================= */
+
+    /* Gold accent line */
+    .accent-line {
+      width: 40px;
+      height: 2px;
+      background: var(--gold);
+      margin: var(--space-4) 0;
+    }
+
+    .accent-line-short {
+      width: 24px;
+      height: 1.5px;
+      background: var(--gold-muted);
+      margin: var(--space-3) 0;
+    }
+
+    /* Divider */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--sand);
+      margin: var(--space-5) 0;
+    }
+
+    /* =================================================================
+       TREATMENT / SPA MENU PATTERN
+       ================================================================= */
+    .treatment-list {
+      list-style: none;
+    }
+
+    .treatment-item {
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--sand);
+    }
+
+    .treatment-item:last-child {
+      border-bottom: none;
+    }
+
+    .treatment-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-lg);
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: var(--space-1);
+    }
+
+    .treatment-desc {
+      font-size: var(--type-base);
+      line-height: var(--leading-relaxed);
+      color: var(--warm-gray);
+      max-width: 48ch;
+      margin-bottom: var(--space-2);
+    }
+
+    .treatment-meta {
+      font-size: var(--type-sm);
+      color: var(--sage);
+      display: flex;
+      gap: var(--space-3);
+    }
+
+    .treatment-meta .price {
+      font-weight: 500;
+      color: var(--forest);
+    }
+
+    /* =================================================================
+       STAT / METRIC DISPLAYS
+       ================================================================= */
+
+    /* Large hero stat */
+    .stat-hero {
+      text-align: center;
+      padding: var(--space-5) var(--space-4);
+    }
+
+    .stat-hero .value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-display);
+      font-weight: 300;
+      color: var(--forest);
+      line-height: 1;
+      margin-bottom: var(--space-2);
+    }
+
+    .stat-hero .label {
+      font-size: var(--type-sm);
+      color: var(--warm-gray);
+      letter-spacing: 0.04em;
+    }
+
+    /* Stat row (3 across) */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--sand);
+      margin: var(--space-5) 0;
+    }
+
+    .stat-item {
+      background: var(--cream);
+      padding: var(--space-5) var(--space-4);
+      text-align: center;
+    }
+
+    .stat-item .value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-2xl);
+      font-weight: 300;
+      color: var(--forest);
+      line-height: 1;
+      margin-bottom: var(--space-2);
+    }
+
+    .stat-item .label {
+      font-size: var(--type-sm);
+      color: var(--warm-gray);
+      line-height: var(--leading-normal);
+    }
+
+    /* Stat with accent border */
+    .stat-accent {
+      border-top: 2px solid var(--gold);
+      padding-top: var(--space-4);
+    }
+
+    /* =================================================================
+       CARDS
+       ================================================================= */
+
+    /* Product card */
+    .product-card {
+      text-align: center;
+      padding: var(--space-5) var(--space-4);
+    }
+
+    .product-card img {
+      width: 100px;
+      height: 160px;
+      object-fit: contain;
+      margin-bottom: var(--space-4);
+    }
+
+    .product-card .name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-lg);
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: var(--space-1);
+    }
+
+    .product-card .price {
+      font-size: var(--type-md);
+      font-weight: 500;
+      color: var(--forest);
+      margin-bottom: var(--space-3);
+    }
+
+    .product-card .desc {
+      font-size: var(--type-sm);
+      color: var(--warm-gray);
+      line-height: var(--leading-relaxed);
+      max-width: 22ch;
+      margin: 0 auto;
+    }
+
+    /* Editorial card - offset, with image */
+    .editorial-card {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      gap: var(--space-5);
+      align-items: center;
+    }
+
+    .editorial-card-reverse {
+      grid-template-columns: 3fr 2fr;
+    }
+
+    .editorial-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Quote card */
+    .quote-block {
+      padding: var(--space-5) var(--space-4);
+      padding-left: var(--space-5);
+      border-left: 2px solid var(--gold);
+      margin: var(--space-5) 0;
+    }
+
+    .quote-block .quote-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-xl);
+      font-weight: 300;
+      font-style: italic;
+      line-height: var(--leading-snug);
+      color: var(--charcoal);
+      margin-bottom: var(--space-3);
+    }
+
+    .quote-block .quote-attr {
+      font-family: 'DM Sans', sans-serif;
+      font-size: var(--type-sm);
+      color: var(--sage);
+      font-style: normal;
+    }
+
+    /* Testimonial - minimal */
+    .testimonial-minimal {
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--sand);
+    }
+
+    .testimonial-minimal .quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-md);
+      font-style: italic;
+      color: var(--charcoal);
+      line-height: var(--leading-normal);
+      margin-bottom: var(--space-2);
+    }
+
+    .testimonial-minimal .attr {
+      font-size: var(--type-xs);
+      color: var(--warm-gray-light);
+    }
+
+    /* =================================================================
+       TABLES - EDITORIAL STYLE
+       ================================================================= */
+    .table-editorial {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--type-sm);
+      margin: var(--space-4) 0;
+    }
+
+    .table-editorial th {
+      text-align: left;
+      font-size: var(--type-xs);
+      font-weight: 500;
+      color: var(--sage);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: var(--space-3) var(--space-2);
+      border-bottom: 2px solid var(--forest);
+    }
+
+    .table-editorial td {
+      padding: var(--space-3) var(--space-2);
+      border-bottom: 1px solid var(--sand);
+      color: var(--charcoal);
+      line-height: var(--leading-normal);
+    }
+
+    .table-editorial tr:last-child td {
+      border-bottom: none;
+    }
+
+    .table-editorial .highlight {
+      font-weight: 500;
+      color: var(--forest);
+    }
+
+    /* =================================================================
+       DARK SECTIONS
+       ================================================================= */
+    .section-dark {
+      background: var(--forest-deep);
+      color: var(--cream);
+      padding: var(--space-6);
+    }
+
+    .section-dark .heading-1,
+    .section-dark .heading-2,
+    .section-dark .heading-3 {
+      color: var(--cream);
+    }
+
+    .section-dark .body,
+    .section-dark .body-lg {
+      color: rgba(248, 245, 240, 0.75);
+    }
+
+    .section-dark .eyebrow {
+      color: var(--gold-muted);
+    }
+
+    .section-dark .accent-line {
+      background: var(--gold);
+    }
+
+    /* =================================================================
+       COVER PATTERNS
+       ================================================================= */
+
+    /* Cover: Split with editorial typography */
+    .cover-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 100%;
+    }
+
+    .cover-content {
+      background: var(--forest-deep);
+      color: var(--cream);
+      padding: 0.8in 0.6in;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .cover-content .logo {
+      position: absolute;
+      top: 0.6in;
+      left: 0.6in;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-xl);
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--cream);
+    }
+
+    .cover-content .title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-3xl);
+      font-weight: 300;
+      line-height: var(--leading-tight);
+      color: var(--cream);
+      margin-bottom: var(--space-4);
+    }
+
+    .cover-content .subtitle {
+      font-size: var(--type-base);
+      color: rgba(248, 245, 240, 0.65);
+      font-weight: 300;
+      line-height: var(--leading-relaxed);
+      max-width: 28ch;
+    }
+
+    .cover-content .cover-stats {
+      position: absolute;
+      bottom: 0.6in;
+      left: 0.6in;
+      right: 0.6in;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-3);
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding-top: var(--space-4);
+    }
+
+    .cover-content .cover-stat .value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-xl);
+      font-weight: 300;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: var(--space-1);
+    }
+
+    .cover-content .cover-stat .label {
+      font-size: var(--type-xs);
+      color: rgba(248,245,240,0.5);
+      line-height: var(--leading-normal);
+    }
+
+    .cover-image {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Cover: Full bleed with type overlay */
+    .cover-bleed {
+      height: 100%;
+      position: relative;
+    }
+
+    .cover-bleed img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cover-bleed .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(30,51,41,0.3) 0%, rgba(30,51,41,0.8) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0.8in;
+      color: var(--cream);
+    }
+
+    /* =================================================================
+       FEATURE BLOCKS
+       ================================================================= */
+
+    /* Benefit list - spa menu style */
+    .benefit-list {
+      list-style: none;
+    }
+
+    .benefit-list li {
+      padding: var(--space-3) 0;
+      padding-left: var(--space-4);
+      border-bottom: 1px solid var(--sand);
+      position: relative;
+      font-size: var(--type-base);
+      line-height: var(--leading-normal);
+      color: var(--charcoal);
+    }
+
+    .benefit-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 12px;
+      height: 1px;
+      background: var(--gold);
+      transform: translateY(-50%);
+    }
+
+    .benefit-list li:last-child {
+      border-bottom: none;
+    }
+
+    /* Feature grid - 2 across, generous spacing */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-5);
+      margin: var(--space-5) 0;
+    }
+
+    .feature-item .feature-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-lg);
+      font-weight: 400;
+      color: var(--forest);
+      margin-bottom: var(--space-2);
+    }
+
+    .feature-item .feature-desc {
+      font-size: var(--type-sm);
+      color: var(--warm-gray);
+      line-height: var(--leading-relaxed);
+    }
+
+    /* =================================================================
+       BADGES & TAGS
+       ================================================================= */
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin: var(--space-4) 0;
+    }
+
+    .badge {
+      font-size: var(--type-xs);
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: var(--space-1) var(--space-3);
+      background: var(--forest);
+      color: var(--cream);
+    }
+
+    .badge-outline {
+      background: transparent;
+      border: 1px solid var(--sage-light);
+      color: var(--forest);
+    }
+
+    /* =================================================================
+       UTILITY CLASSES
+       ================================================================= */
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+
+    .mt-1 { margin-top: var(--space-1); }
+    .mt-2 { margin-top: var(--space-2); }
+    .mt-3 { margin-top: var(--space-3); }
+    .mt-4 { margin-top: var(--space-4); }
+    .mt-5 { margin-top: var(--space-5); }
+    .mt-6 { margin-top: var(--space-6); }
+
+    .mb-1 { margin-bottom: var(--space-1); }
+    .mb-2 { margin-bottom: var(--space-2); }
+    .mb-3 { margin-bottom: var(--space-3); }
+    .mb-4 { margin-bottom: var(--space-4); }
+    .mb-5 { margin-bottom: var(--space-5); }
+
+    .max-width-narrow { max-width: 45ch; }
+    .max-width-medium { max-width: 55ch; }
+
+    /* Asymmetric offset - push content right */
+    .offset-right {
+      margin-left: 1.2in;
+    }
+
+    /* Asymmetric offset - push content left on wider pages */
+    .offset-left {
+      margin-right: 1.5in;
+    }
+
+    /* Flow utility - consistent vertical rhythm */
+    .flow > * + * {
+      margin-top: var(--space-4);
+    }
+
+    .flow-tight > * + * {
+      margin-top: var(--space-3);
+    }
+
+    .flow-loose > * + * {
+      margin-top: var(--space-5);
+    }
+
+    /* =================================================================
+       PRINT BUTTON
+       ================================================================= */
+    .print-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--forest);
+      color: var(--cream);
+      border: none;
+      padding: 14px 28px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      z-index: 100;
+      transition: background var(--duration-normal) var(--ease-out);
+    }
+
+    .print-btn:hover {
+      background: var(--forest-deep);
+    }
+
+    /* =================================================================
+       PAGE LABEL (for template reference)
+       ================================================================= */
+    .page-label {
+      position: absolute;
+      top: -28px;
+      left: 0;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: #888;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =====================================================================
+       EXAMPLE 1: COVER - SPLIT LAYOUT
+       ===================================================================== -->
+  <div class="page grain-overlay" style="position: relative;">
+    <span class="page-label no-print">Cover: Split Layout</span>
+    <div class="cover-split">
+      <div class="cover-content">
+        <div class="logo">AWARE</div>
+
+        <div style="margin-bottom: var(--space-5);">
+          <p class="eyebrow" style="color: var(--gold-muted); margin-bottom: var(--space-3);">Professional Scalp Care</p>
+          <h1 class="title">Natural-First,<br>Clinical Results</h1>
+          <div class="accent-line" style="margin: var(--space-4) 0;"></div>
+          <p class="subtitle">The salon-exclusive scalp care system built by a master trichologist. Clean formulation, proven efficacy, zero returns.</p>
+        </div>
+
+        <div class="cover-stats">
+          <div class="cover-stat">
+            <div class="value">96%</div>
+            <div class="label">B2B repurchase</div>
+          </div>
+          <div class="cover-stat">
+            <div class="value">35+</div>
+            <div class="label">Salon partners</div>
+          </div>
+          <div class="cover-stat">
+            <div class="value">$125K</div>
+            <div class="label">6-month revenue</div>
+          </div>
+        </div>
+      </div>
+      <div class="cover-image">
+        <img src="images/collection-hero.jpg" alt="AWARE Hair collection">
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =====================================================================
+       EXAMPLE 2: EDITORIAL TEXT PAGE
+       ===================================================================== -->
+  <div class="page grain-overlay">
+    <span class="page-label no-print">Editorial: Brand Story</span>
+    <div class="page-editorial">
+      <header class="page-header">
+        <div class="logo">AWARE</div>
+        <div class="page-num">02</div>
+      </header>
+
+      <div class="flow-loose" style="flex: 1;">
+        <div>
+          <p class="eyebrow mb-3">The Story</p>
+          <h2 class="heading-1">Built Behind<br>the Chair</h2>
+          <div class="accent-line"></div>
+        </div>
+
+        <div class="offset-right" style="margin-left: 0.8in;">
+          <p class="body-lg max-width-medium">After 40 years as a master trichologist and founding over a dozen salons, Tina Mui saw the same problem every day: clients with scalp issues that no product could solve.</p>
+        </div>
+
+        <div class="offset-right" style="margin-left: 0.8in;">
+          <p class="body max-width-medium">Hard water. Pollution. UV damage. The modern environment attacks the scalp in ways traditional haircare was never designed to address. AWARE was born because Tina needed it for her own clients.</p>
+        </div>
+
+        <div class="quote-block" style="margin-left: 0.5in;">
+          <p class="quote-text">"I built AWARE because after four decades, I still couldn't find a product I fully trusted for my clients' scalps."</p>
+          <p class="quote-attr">Tina Mui, Founder & Master Trichologist</p>
+        </div>
+      </div>
+
+      <footer class="page-footer">
+        <span>AWARE Hair</span>
+        <span>awarehair.com</span>
+      </footer>
+    </div>
+  </div>
+
+
+  <!-- =====================================================================
+       EXAMPLE 3: PRODUCT SHOWCASE
+       ===================================================================== -->
+  <div class="page grain-overlay">
+    <span class="page-label no-print">Product: The Line</span>
+    <div class="page-standard">
+      <header class="page-header">
+        <div class="logo">AWARE</div>
+        <div class="page-num">03</div>
+      </header>
+
+      <div style="flex: 1;">
+        <p class="eyebrow mb-3">The 9.1 Professional Series</p>
+        <h2 class="heading-2">Three Products.<br>Nine Functions.</h2>
+        <div class="accent-line"></div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); margin-top: var(--space-5);">
+          <div class="product-card">
+            <img src="images/shampoo-cutout.webp" alt="9.1 Shampoo">
+            <div class="name">Professional Shampoo</div>
+            <div class="price">$55</div>
+            <div class="desc">Deep scalp cleanse with environmental protection shield</div>
+          </div>
+          <div class="product-card">
+            <img src="images/conditioner-cutout.webp" alt="9.1 Conditioner">
+            <div class="name">Professional Conditioner</div>
+            <div class="price">$55</div>
+            <div class="desc">Scalp-to-tip conditioning without buildup</div>
+          </div>
+          <div class="product-card">
+            <img src="images/leave-in-cutout.webp" alt="9.1 Leave-In">
+            <div class="name">Leave-In Styling</div>
+            <div class="price">$60</div>
+            <div class="desc">All-day UV, thermal, and humidity protection</div>
+          </div>
+        </div>
+
+        <div class="badge-row" style="justify-content: center; margin-top: var(--space-5);">
+          <span class="badge">Sulfate-Free</span>
+          <span class="badge">Silicone-Free</span>
+          <span class="badge">Vegan</span>
+          <span class="badge">Cruelty-Free</span>
+          <span class="badge">Made in USA</span>
+        </div>
+      </div>
+
+      <footer class="page-footer">
+        <span>AWARE Hair</span>
+        <span>Patent-pending formulation</span>
+      </footer>
+    </div>
+  </div>
+
+
+  <!-- =====================================================================
+       EXAMPLE 4: SPA MENU / TREATMENT STYLE
+       ===================================================================== -->
+  <div class="page grain-overlay">
+    <span class="page-label no-print">Treatment: Science</span>
+    <div class="page-editorial">
+      <header class="page-header">
+        <div class="logo">AWARE</div>
+        <div class="page-num">04</div>
+      </header>
+
+      <div style="flex: 1;">
+        <p class="eyebrow mb-3">Clinical Actives</p>
+        <h2 class="heading-2">The Science</h2>
+        <div class="accent-line"></div>
+
+        <ul class="treatment-list mt-5">
+          <li class="treatment-item">
+            <div class="treatment-name">ResistHyal</div>
+            <div class="treatment-desc">Dual-weight hyaluronic acid that penetrates the scalp barrier. Forms a breathable moisture shield without clogging follicles.</div>
+            <div class="treatment-meta">
+              <span>Givaudan</span>
+              <span class="price">189x hydration vs. placebo</span>
+            </div>
+          </li>
+          <li class="treatment-item">
+            <div class="treatment-name">SymHair Force 1631</div>
+            <div class="treatment-desc">Tahitian microalgae extract that strengthens the hair cortex and feeds the scalp microbiome with targeted prebiotics.</div>
+            <div class="treatment-meta">
+              <span>Symrise</span>
+              <span class="price">82% less breakage in 4 weeks</span>
+            </div>
+          </li>
+          <li class="treatment-item">
+            <div class="treatment-name">Baicapil Complex</div>
+            <div class="treatment-desc">Three-plant peptide complex clinically shown to increase hair density and support the anagen growth phase.</div>
+            <div class="treatment-meta">
+              <span>Provital</span>
+              <span class="price">Visible density at 8 weeks</span>
+            </div>
+          </li>
+          <li class="treatment-item">
+            <div class="treatment-name">Australian Botanicals</div>
+            <div class="treatment-desc">Proprietary blend of native Australian extracts for anti-inflammatory scalp soothing. Calms irritation, reduces flaking.</div>
+            <div class="treatment-meta">
+              <span>Proprietary</span>
+              <span class="price">92% reduced irritation</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <footer class="page-footer">
+        <span>AWARE Hair</span>
+        <span>Clinical data from supplier studies</span>
+      </footer>
+    </div>
+  </div>
+
+
+  <!-- =====================================================================
+       EXAMPLE 5: STATS / DATA PAGE
+       ===================================================================== -->
+  <div class="page grain-overlay">
+    <span class="page-label no-print">Data: Market Opportunity</span>
+    <div class="page-standard">
+      <header class="page-header">
+        <div class="logo">AWARE</div>
+        <div class="page-num">05</div>
+      </header>
+
+      <div style="flex: 1;">
+        <p class="eyebrow mb-3">The Opportunity</p>
+        <h2 class="heading-2">Scalp Care is the<br>Fastest-Growing Category</h2>
+        <div class="accent-line"></div>
+
+        <div class="stat-row">
+          <div class="stat-item">
+            <div class="value">$14.7B</div>
+            <div class="label">Global scalp<br>care market</div>
+          </div>
+          <div class="stat-item">
+            <div class="value">7.1%</div>
+            <div class="label">CAGR through<br>2032</div>
+          </div>
+          <div class="stat-item">
+            <div class="value">+107%</div>
+            <div class="label">YoY TikTok growth<br>in scalp care</div>
+          </div>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-item">
+            <div class="feature-title">Search Demand</div>
+            <div class="feature-desc">504% year-over-year increase in scalp care queries. "Scalp treatment" is among the fastest-growing beauty search terms nationally.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-title">Head Spa Movement</div>
+            <div class="feature-desc">Salon scalp services up 88% YoY. Consumers booking $70-250 treatments, driving take-home product demand.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-title">Clean Expectation</div>
+            <div class="feature-desc">35%+ of professional purchases driven by clean formulation. Sulfate-free and silicone-free are table stakes.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-title">The White Space</div>
+            <div class="feature-desc">No dominant professional-exclusive, clean-formulation scalp care brand exists. AWARE owns this position.</div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="page-footer">
+        <span>AWARE Hair</span>
+        <span>Sources: BeautyMatter, Verified Market Reports</span>
+      </footer>
+    </div>
+  </div>
+
+
+  <!-- =====================================================================
+       EXAMPLE 6: TABLE / SELL SHEET PAGE
+       ===================================================================== -->
+  <div class="page grain-overlay">
+    <span class="page-label no-print">Data: Pricing & Terms</span>
+    <div class="page-standard">
+      <header class="page-header">
+        <div class="logo">AWARE</div>
+        <div class="page-num">06</div>
+      </header>
+
+      <div style="flex: 1;">
+        <p class="eyebrow mb-3">Partner Economics</p>
+        <h2 class="heading-2">Premium Margins,<br>Simple Terms</h2>
+        <div class="accent-line"></div>
+
+        <div class="stat-row" style="grid-template-columns: repeat(4, 1fr); margin-bottom: var(--space-5);">
+          <div class="stat-item">
+            <div class="value" style="font-size: var(--type-xl);">50%</div>
+            <div class="label">Retail margin</div>
+          </div>
+          <div class="stat-item">
+            <div class="value" style="font-size: var(--type-xl);">96%</div>
+            <div class="label">Repurchase rate</div>
+          </div>
+          <div class="stat-item">
+            <div class="value" style="font-size: var(--type-xl);">0</div>
+            <div class="label">Product returns</div>
+          </div>
+          <div class="stat-item">
+            <div class="value" style="font-size: var(--type-xl);">28d</div>
+            <div class="label">Reorder cycle</div>
+          </div>
+        </div>
+
+        <table class="table-editorial">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Size</th>
+              <th>Wholesale</th>
+              <th>Retail (MAP)</th>
+              <th>Case Pack</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="highlight">Shampoo</td>
+              <td>300ml</td>
+              <td>$27.50</td>
+              <td>$55</td>
+              <td>6 units</td>
+            </tr>
+            <tr>
+              <td class="highlight">Conditioner</td>
+              <td>300ml</td>
+              <td>$27.50</td>
+              <td>$55</td>
+              <td>6 units</td>
+            </tr>
+            <tr>
+              <td class="highlight">Leave-In</td>
+              <td>250ml</td>
+              <td>$30.00</td>
+              <td>$60</td>
+              <td>6 units</td>
+            </tr>
+            <tr>
+              <td>Shampoo (Travel)</td>
+              <td>100ml</td>
+              <td>$13.75</td>
+              <td>$27.50</td>
+              <td>12 units</td>
+            </tr>
+            <tr>
+              <td>Conditioner (Travel)</td>
+              <td>100ml</td>
+              <td>$13.75</td>
+              <td>$27.50</td>
+              <td>12 units</td>
+            </tr>
+            <tr>
+              <td>Leave-In (Travel)</td>
+              <td>50ml</td>
+              <td>$15.00</td>
+              <td>$30</td>
+              <td>12 units</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="body-sm mt-4" style="color: var(--warm-gray-light);">MAP pricing strictly enforced. No Amazon or unauthorized resellers. Free freight on orders $500+.</p>
+      </div>
+
+      <footer class="page-footer">
+        <span>AWARE Hair</span>
+        <span>Pricing for authorized partners</span>
+      </footer>
+    </div>
+  </div>
+
+
+  <!-- =====================================================================
+       EXAMPLE 7: DARK SECTION PAGE
+       ===================================================================== -->
+  <div class="page">
+    <span class="page-label no-print">Dark: CTA Page</span>
+    <div class="section-dark" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 1.2in;">
+
+      <p class="eyebrow mb-4">Next Steps</p>
+      <h2 class="heading-1" style="color: var(--cream); margin-bottom: var(--space-4);">We're not looking<br>for shelf space.</h2>
+      <h2 class="heading-3" style="color: var(--gold-muted); margin-bottom: var(--space-6);">We're looking for a partner.</h2>
+
+      <div class="accent-line" style="margin: 0 auto var(--space-6);"></div>
+
+      <ul class="benefit-list" style="text-align: left; width: 100%; max-width: 4.5in; border-top: 1px solid rgba(255,255,255,0.1);">
+        <li style="color: rgba(248,245,240,0.85); border-color: rgba(255,255,255,0.08);">Sample kit to your team this week</li>
+        <li style="color: rgba(248,245,240,0.85); border-color: rgba(255,255,255,0.08);">Terms discussion with buying team</li>
+        <li style="color: rgba(248,245,240,0.85); border-color: rgba(255,255,255,0.08);">Pilot territory, 90-day test, full credit guarantee</li>
+        <li style="color: rgba(248,245,240,0.85); border-color: rgba(255,255,255,0.08);">Review results, expand together</li>
+      </ul>
+
+      <div style="margin-top: var(--space-6); color: rgba(248,245,240,0.5); font-size: var(--type-sm);">
+        David Zhao | david@awarehair.com | (626) 688-9844 | awarehair.com
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =====================================================================
+       EXAMPLE 8: TESTIMONIALS + RESULTS
+       ===================================================================== -->
+  <div class="page grain-overlay">
+    <span class="page-label no-print">Social Proof: Results</span>
+    <div class="page-editorial">
+      <header class="page-header">
+        <div class="logo">AWARE</div>
+        <div class="page-num">08</div>
+      </header>
+
+      <div style="flex: 1;">
+        <p class="eyebrow mb-3">Proven Results</p>
+        <h2 class="heading-2">What Professionals<br>Are Saying</h2>
+        <div class="accent-line"></div>
+
+        <div style="margin-top: var(--space-5);">
+          <div class="testimonial-minimal">
+            <p class="quote">"My clients with scalp sensitivity finally have a product I can confidently recommend. The results are visible within the first few uses."</p>
+            <p class="attr">Licensed Trichologist, Los Angeles</p>
+          </div>
+          <div class="testimonial-minimal">
+            <p class="quote">"We added AWARE to our backbar 6 months ago. Clients now request the scalp treatment by name. It's become our second-highest revenue service."</p>
+            <p class="attr">Salon Owner, 3-location group, Southern California</p>
+          </div>
+          <div class="testimonial-minimal">
+            <p class="quote">"Zero returns in 8 months. That never happens with a new brand. My stylists love recommending it because it actually works."</p>
+            <p class="attr">Salon Owner, Chicago</p>
+          </div>
+        </div>
+
+        <div class="stat-row" style="margin-top: var(--space-5); grid-template-columns: 1fr 1fr 1fr 1fr;">
+          <div class="stat-item stat-accent">
+            <div class="value" style="font-size: var(--type-xl);">18M+</div>
+            <div class="label">Organic views</div>
+          </div>
+          <div class="stat-item stat-accent">
+            <div class="value" style="font-size: var(--type-xl);">4.8/5</div>
+            <div class="label">Average rating</div>
+          </div>
+          <div class="stat-item stat-accent">
+            <div class="value" style="font-size: var(--type-xl);">99%</div>
+            <div class="label">Would recommend</div>
+          </div>
+          <div class="stat-item stat-accent">
+            <div class="value" style="font-size: var(--type-xl);">0</div>
+            <div class="label">Returns to date</div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="page-footer">
+        <span>AWARE Hair</span>
+        <span>Testimonials from verified partners</span>
+      </footer>
+    </div>
+  </div>
+
+
+  <button class="print-btn no-print" onclick="window.print()">Print / Save PDF</button>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

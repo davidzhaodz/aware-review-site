@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MDS Dinner Prep</title>
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #102B26;
+    --cream: #f4efe9;
+    --surface: #faf8f5;
+    --gold: #D4A574;
+    --sage: #7d8471;
+    --text: #102B26;
+    --text-muted: rgba(16,43,38,0.55);
+    --border: rgba(16,43,38,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Sticky top bar */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--teal);
+    color: var(--cream);
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8125rem;
+    letter-spacing: 0.04em;
+    box-shadow: 0 2px 20px rgba(16,43,38,0.15);
+  }
+
+  .topbar-time {
+    font-weight: 500;
+  }
+
+  .topbar-venue {
+    opacity: 0.7;
+    font-weight: 300;
+  }
+
+  /* Header */
+  .header {
+    padding: 48px 24px 40px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-label {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-family: 'orpheus-pro', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--teal);
+    margin-bottom: 12px;
+  }
+
+  .header-sub {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    max-width: 320px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  /* Logistics strip */
+  .logistics {
+    background: var(--teal);
+    color: var(--cream);
+    padding: 24px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .logistics-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .logistics-label {
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+
+  .logistics-value {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .logistics-value small {
+    display: block;
+    font-weight: 300;
+    font-size: 0.8125rem;
+    opacity: 0.7;
+    margin-top: 2px;
+  }
+
+  .logistics-full {
+    grid-column: 1 / -1;
+    padding-top: 16px;
+    border-top: 1px solid rgba(244,239,233,0.12);
+  }
+
+  .logistics-full .logistics-value {
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.5;
+    opacity: 0.85;
+  }
+
+  /* Sections */
+  .content {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 0 80px;
+  }
+
+  .section {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-header {
+    padding: 28px 24px 12px;
+  }
+
+  .section-number {
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: 'orpheus-pro', serif;
+    font-size: 1.375rem;
+    font-weight: 400;
+    color: var(--teal);
+    line-height: 1.25;
+  }
+
+  .section-body {
+    padding: 0 24px 28px;
+  }
+
+  /* Callout / quote card */
+  .callout {
+    background: var(--surface);
+    border-left: 3px solid var(--gold);
+    padding: 20px 20px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .callout p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .callout .callout-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-style: normal;
+    margin-bottom: 8px;
+  }
+
+  .callout-note {
+    font-style: normal !important;
+    font-size: 0.8125rem !important;
+    color: var(--text-muted) !important;
+    margin-top: 12px !important;
+  }
+
+  /* Person cards */
+  .person-card {
+    background: var(--surface);
+    border-radius: 6px;
+    padding: 20px;
+    margin: 12px 0;
+  }
+
+  .person-name {
+    font-family: 'orpheus-pro', serif;
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: var(--teal);
+    margin-bottom: 2px;
+  }
+
+  .person-role {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .person-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .person-card li {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--text);
+    padding: 4px 0;
+    padding-left: 16px;
+    position: relative;
+    opacity: 0.8;
+  }
+
+  .person-card li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* Talking points */
+  .talk-point {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .talk-point:last-child {
+    border-bottom: none;
+  }
+
+  .talk-point-num {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: var(--teal);
+    color: var(--cream);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 24px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .talk-point-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+
+  .talk-point-line {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--teal);
+    font-style: italic;
+    margin-bottom: 6px;
+    opacity: 0.85;
+  }
+
+  .talk-point-why {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* Questions list */
+  .question-item {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .question-item:last-child { border-bottom: none; }
+
+  .question-text {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--teal);
+    line-height: 1.45;
+    margin-bottom: 4px;
+  }
+
+  .question-why {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+
+  /* Cheat sheet table */
+  .cheat-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+
+  .cheat-row:last-child { border-bottom: none; }
+
+  .cheat-topic {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding-top: 2px;
+  }
+
+  .cheat-detail {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--text);
+    opacity: 0.8;
+  }
+
+  /* Do / Don't */
+  .do-dont {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .do-col, .dont-col {
+    padding: 16px;
+    border-radius: 6px;
+  }
+
+  .do-col { background: rgba(16,43,38,0.04); }
+  .dont-col { background: rgba(212,165,116,0.08); }
+
+  .do-col-label, .dont-col-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .do-col-label { color: var(--teal); }
+  .dont-col-label { color: #9a6e42; }
+
+  .do-col li, .dont-col li {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--text);
+    opacity: 0.75;
+    margin-bottom: 6px;
+    list-style: none;
+    padding-left: 14px;
+    position: relative;
+  }
+
+  .do-col li::before {
+    content: '+';
+    position: absolute;
+    left: 0;
+    font-weight: 600;
+    color: var(--teal);
+  }
+
+  .dont-col li::before {
+    content: '-';
+    position: absolute;
+    left: 0;
+    font-weight: 600;
+    color: #9a6e42;
+  }
+
+  /* Divider */
+  .divider {
+    text-align: center;
+    padding: 24px 0;
+    color: var(--gold);
+    font-size: 0.6875rem;
+    letter-spacing: 0.5em;
+  }
+
+  /* Follow up */
+  .followup {
+    background: var(--teal);
+    color: var(--cream);
+    margin: 0 24px;
+    border-radius: 6px;
+    padding: 24px 20px;
+  }
+
+  .followup-title {
+    font-family: 'orpheus-pro', serif;
+    font-size: 1.125rem;
+    font-weight: 400;
+    margin-bottom: 12px;
+  }
+
+  .followup li {
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    opacity: 0.8;
+    margin-bottom: 8px;
+    list-style: none;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .followup li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 6px;
+    height: 6px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+  }
+
+  /* Alert banner */
+  .alert-banner {
+    background: rgba(212,165,116,0.12);
+    border: 1px solid rgba(212,165,116,0.25);
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 4px;
+  }
+
+  .alert-banner-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #9a6e42;
+    margin-bottom: 6px;
+  }
+
+  .alert-banner p {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--teal);
+  }
+
+  p { font-size: 0.875rem; line-height: 1.6; color: var(--text); opacity: 0.8; }
+  strong { opacity: 1; }
+
+  /* Deep read sections */
+  .deep-divider {
+    text-align: center;
+    padding: 40px 24px 16px;
+  }
+
+  .deep-divider-line {
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 16px;
+  }
+
+  .deep-divider-label {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  details {
+    border-bottom: 1px solid var(--border);
+  }
+
+  details summary {
+    padding: 24px 24px;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  details summary::-webkit-details-marker { display: none; }
+
+  details summary::after {
+    content: '+';
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 300;
+    color: var(--gold);
+    transition: transform 200ms ease;
+    flex-shrink: 0;
+    margin-left: 16px;
+  }
+
+  details[open] summary::after {
+    content: '-';
+  }
+
+  .deep-summary-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .deep-summary-number {
+    font-size: 0.5625rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .deep-summary-title {
+    font-family: 'orpheus-pro', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--teal);
+    line-height: 1.3;
+  }
+
+  .deep-summary-sub {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .deep-body {
+    padding: 0 24px 32px;
+  }
+
+  .deep-body p {
+    margin-bottom: 12px;
+  }
+
+  .deep-body h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 28px 0 12px;
+  }
+
+  .deep-body h3:first-child {
+    margin-top: 0;
+  }
+
+  .deep-body ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 12px;
+  }
+
+  .deep-body li {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--text);
+    opacity: 0.8;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  .deep-body li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  .deep-quote {
+    font-style: italic;
+    border-left: 2px solid var(--gold);
+    padding-left: 16px;
+    margin: 16px 0;
+    opacity: 0.85;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border-radius: 4px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'orpheus-pro', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--teal);
+    line-height: 1.2;
+  }
+
+  .stat-label {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 2px;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+
+  .tag-verified {
+    background: rgba(16,43,38,0.08);
+    color: var(--teal);
+  }
+
+  .tag-unverified {
+    background: rgba(212,165,116,0.15);
+    color: #9a6e42;
+  }
+
+  .brand-card {
+    background: var(--surface);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 12px 0;
+  }
+
+  .brand-name {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+
+  .brand-detail {
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: var(--text);
+    opacity: 0.75;
+  }
+
+  .fee-stack {
+    background: var(--teal);
+    color: var(--cream);
+    border-radius: 6px;
+    padding: 20px;
+    margin: 16px 0;
+  }
+
+  .fee-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(244,239,233,0.1);
+    font-size: 0.8125rem;
+  }
+
+  .fee-row:last-child { border-bottom: none; }
+
+  .fee-label { opacity: 0.7; }
+  .fee-value { font-weight: 500; }
+
+  .aware-angle {
+    background: rgba(212,165,116,0.08);
+    border: 1px solid rgba(212,165,116,0.2);
+    border-radius: 6px;
+    padding: 20px;
+    margin: 16px 0;
+  }
+
+  .aware-angle-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .sources {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .sources-label {
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .sources a {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 2px 0;
+    word-break: break-all;
+  }
+
+  .sources a:hover { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<!-- Sticky bar -->
+<div class="topbar">
+  <span class="topbar-time">5:00 - 8:00 PM</span>
+  <span class="topbar-venue">Momed, Atwater Village</span>
+</div>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-label">Tonight, April 15</div>
+  <h1>MDS Founder Dinner</h1>
+  <p class="header-sub">Invite-only dinner during TikTok Summit 2026. Seven-figure ecom founders. Operators only.</p>
+</div>
+
+<!-- Logistics strip -->
+<div class="logistics">
+  <div class="logistics-item">
+    <span class="logistics-label">Leave By</span>
+    <span class="logistics-value">3:45 PM<small>60-75 min at rush hour</small></span>
+  </div>
+  <div class="logistics-item">
+    <span class="logistics-label">Venue</span>
+    <span class="logistics-value">Momed<small>3245 Casitas Ave, LA 90039</small></span>
+  </div>
+  <div class="logistics-item">
+    <span class="logistics-label">Parking</span>
+    <span class="logistics-value">Easy<small>Lot out front + two lots south of entrance</small></span>
+  </div>
+  <div class="logistics-item">
+    <span class="logistics-label">Cuisine</span>
+    <span class="logistics-value">Mediterranean<small>Shareable plates, $50-80/pp</small></span>
+  </div>
+  <div class="logistics-full">
+    <span class="logistics-label">Route</span>
+    <div class="logistics-value">SR-60 W to US-101 N to I-5 N, exit Glendale/Los Feliz. Run Waze live.</div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- Section 1: The Room -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">01</div>
+      <div class="section-title">The Room</div>
+    </div>
+    <div class="section-body">
+      <p><strong>Million Dollar Sellers</strong> is a vetted peer community for ecom founders doing $1M-$500M+ annually. 750+ members, $14B+ combined revenue. Amazon-heavy but expanding aggressively into TikTok Shop and DTC.</p>
+
+      <div class="alert-banner" style="margin-top: 16px;">
+        <div class="alert-banner-label">Tonight's headline</div>
+        <p>Eugene Khayman (co-host) organized an <strong>Amazon ad boycott happening today</strong>. Amazon announced it would auto-deduct ad costs from seller proceeds. ~150 MDS members committed. Amazon has since paused the policy. This is the #1 topic in the room.</p>
+      </div>
+
+      <p style="margin-top: 16px;">Entry bar: $1M+ TTM, founder/CEO only. $7,497/year. No consultants. These people value peer intel and operator honesty over posturing.</p>
+    </div>
+  </div>
+
+  <!-- Section 2: Know the Hosts -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">02</div>
+      <div class="section-title">Know the Hosts</div>
+    </div>
+    <div class="section-body">
+      <div class="person-card">
+        <div class="person-name">Eugene Khayman</div>
+        <div class="person-role">Co-Founder / COO, MDS</div>
+        <ul>
+          <li>Started selling on Amazon at 14, first brand was Eparé (kitchen accessories)</li>
+          <li>Co-founded MDS with Ian Sells (CEO) and Franky Farina (CMO)</li>
+          <li>Led today's Amazon ad boycott as a negotiating lever</li>
+          <li>Still runs ecom brands but focuses mainly on MDS community</li>
+        </ul>
+      </div>
+
+      <div class="person-card">
+        <div class="person-name">James Young</div>
+        <div class="person-role">Co-Host (role unverified)</div>
+        <ul>
+          <li>Not listed on MDS leadership page - likely senior member or chapter leader</li>
+          <li>Treat as a vetted high-volume seller with MDS standing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Your Intro -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">03</div>
+      <div class="section-title">Your 30-Second Intro</div>
+    </div>
+    <div class="section-body">
+      <div class="callout">
+        <div class="callout-label">When someone asks "what do you do"</div>
+        <p>"I run AWARE Hair - professional scalp care. We're salon-exclusive right now, 50-plus salons, strong repurchase. The interesting part is we built the B2B channel first instead of burning cash on Meta, so our unit economics actually work. Now we're starting to seed TikTok and DTC, and scalp care is blowing up as a category."</p>
+        <p class="callout-note"><strong>Why this works:</strong> "Unit economics actually work" is their language. B2B-first is novel to DTC operators. Beauty is TikTok Shop's #1 category. You don't need to lead with revenue.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: Talking Points -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">04</div>
+      <div class="section-title">Talking Points</div>
+    </div>
+    <div class="section-body">
+
+      <div class="talk-point">
+        <div class="talk-point-num">1</div>
+        <div class="talk-point-title">The Amazon Boycott</div>
+        <div class="talk-point-line">"I saw Eugene organized the ad payment boycott today - how's the response been?"</div>
+        <div class="talk-point-why">Shows you did your homework. Opens into platform dependency, margin pressure, diversification. Most timely possible topic.</div>
+      </div>
+
+      <div class="talk-point">
+        <div class="talk-point-num">2</div>
+        <div class="talk-point-title">B2B as a Moat</div>
+        <div class="talk-point-line">"Most people I've talked to went DTC-first and are fighting CAC. We went the opposite direction - salon channel first, relationship-based. Now DTC is gravy, not survival."</div>
+        <div class="talk-point-why">Genuinely novel to Amazon/DTC operators. They'll have questions.</div>
+      </div>
+
+      <div class="talk-point">
+        <div class="talk-point-num">3</div>
+        <div class="talk-point-title">TikTok Shop for Beauty</div>
+        <div class="talk-point-line">"Beauty is the #1 category on TikTok Shop. The affiliate-first model seems like the move. Anyone here doing it at scale?"</div>
+        <div class="talk-point-why">Positions you as informed but learning. Lets operators share.</div>
+      </div>
+
+      <div class="talk-point">
+        <div class="talk-point-num">4</div>
+        <div class="talk-point-title">Tariffs + Domestic Manufacturing</div>
+        <div class="talk-point-line">"How are you all handling the tariff situation? We manufacture domestically, which is looking like a better call every month."</div>
+        <div class="talk-point-why">China-sourced brands are eating 15-45% increases. Domestic manufacturing is a real edge right now.</div>
+      </div>
+
+      <div class="talk-point">
+        <div class="talk-point-num">5</div>
+        <div class="talk-point-title">Platform Dependency</div>
+        <div class="talk-point-line">"I keep hearing TikTok Shop is just the new Meta dependency problem. Where are you landing on that?"</div>
+        <div class="talk-point-why">Provocative, relevant, gets people talking. Good for when conversation lulls.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Section 5: Smart Questions -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">05</div>
+      <div class="section-title">Questions to Ask</div>
+    </div>
+    <div class="section-body">
+
+      <div class="question-item">
+        <div class="question-text">"What's your channel mix look like now vs. a year ago?"</div>
+        <div class="question-why">Gets founders talking about their business. Shows you think in channels.</div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text">"If you were launching a premium beauty brand into TikTok Shop today, where would you start?"</div>
+        <div class="question-why">Directly useful for you, flatters their expertise.</div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text">"What surprised you most about TikTok Shop vs. Amazon?"</div>
+        <div class="question-why">Opens real talk about platform differences.</div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text">"Who's doing the best creator/affiliate programs in beauty right now?"</div>
+        <div class="question-why">Gets names and examples you can study later.</div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text">"How do you think about the balance between wholesale and DTC?"</div>
+        <div class="question-why">Most won't have a hybrid model, which makes your story interesting.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Section 6: Cheat Sheet -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">06</div>
+      <div class="section-title">Quick Reference</div>
+    </div>
+    <div class="section-body">
+
+      <div class="cheat-row">
+        <div class="cheat-topic">Amazon</div>
+        <div class="cheat-detail">Ad payment policy sparked boycott. Cash flow squeeze. Sellers diversifying hard.</div>
+      </div>
+
+      <div class="cheat-row">
+        <div class="cheat-topic">TikTok</div>
+        <div class="cheat-detail">US divestiture completed Jan 2026 (Oracle/Silver Lake). Brands rushing back in.</div>
+      </div>
+
+      <div class="cheat-row">
+        <div class="cheat-topic">CAC Crisis</div>
+        <div class="cheat-detail">Up 25-40% across Meta/Google. "Renting customers" model is broken. Retention is the counter-move.</div>
+      </div>
+
+      <div class="cheat-row">
+        <div class="cheat-topic">Tariffs</div>
+        <div class="cheat-detail">15-45% cost increases for China-sourced brands. Domestic manufacturing is a competitive edge.</div>
+      </div>
+
+      <div class="cheat-row">
+        <div class="cheat-topic">Beauty</div>
+        <div class="cheat-detail">Top TikTok Shop category at 22.5% GMV. Affiliate-first playbook. Tarte reportedly $40M+ via creators.</div>
+      </div>
+
+      <div class="cheat-row">
+        <div class="cheat-topic">Hot Tool</div>
+        <div class="cheat-detail">GMV Max - TikTok's auto-optimization ad tool. Everyone's testing it.</div>
+      </div>
+
+      <div class="cheat-row">
+        <div class="cheat-topic">MDS</div>
+        <div class="cheat-detail">$1M+ TTM required, 750 members, $7,497/yr. Founders: Ian Sells (CEO), Eugene Khayman (COO), Franky Farina (CMO).</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Section 7: Do / Don't -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">07</div>
+      <div class="section-title">Rules of Engagement</div>
+    </div>
+    <div class="section-body">
+      <div class="do-dont">
+        <div class="do-col">
+          <div class="do-col-label">Do</div>
+          <ul>
+            <li>Ask more than you tell</li>
+            <li>Be direct about where you are</li>
+            <li>Collect contacts</li>
+            <li>Lead with channel strategy</li>
+            <li>Stay in your lane: scalp, beauty, B2B</li>
+          </ul>
+        </div>
+        <div class="dont-col">
+          <div class="dont-col-label">Don't</div>
+          <ul>
+            <li>Lead with revenue numbers</li>
+            <li>Pitch like a sales meeting</li>
+            <li>Fake Amazon expertise</li>
+            <li>Pretend to be an MDS member</li>
+            <li>Overdrink at cocktails</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top: 20px;">
+        <div class="callout-label">If they ask about MDS membership</div>
+        <p>"Not yet, but this is exactly the kind of room I want to be in."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider">&#9670; &#9670; &#9670;</div>
+
+  <!-- Follow-up -->
+  <div class="followup">
+    <div class="followup-title">After Dinner</div>
+    <ul>
+      <li>Swap Instagrams and collect business cards</li>
+      <li>Send a short follow-up within 24 hours to anyone worth staying connected to</li>
+      <li>Write down specifics on TikTok Shop partnerships or creator programs anyone mentions</li>
+      <li>If MDS membership comes up and you're interested, ask about the application process</li>
+    </ul>
+  </div>
+
+  </div>
+
+  <!-- Deep Read Divider -->
+  <div class="deep-divider">
+    <span class="deep-divider-line"></span>
+    <span class="deep-divider-label">Deep Read</span>
+  </div>
+
+  <!-- Deep 1: Eugene + The Boycott -->
+  <details>
+    <summary>
+      <div class="deep-summary-inner">
+        <span class="deep-summary-number">Deep Read 01</span>
+        <span class="deep-summary-title">Eugene Khayman + The Amazon Boycott</span>
+        <span class="deep-summary-sub">Full backstory on your co-host and today's biggest story</span>
+      </div>
+    </summary>
+    <div class="deep-body">
+      <h3>Origin Story</h3>
+      <p>Eugene took a semester off college to attend the Canton Fair in China. First year on Amazon (circa 2012-2013), he moved $150K in pepper grinders - buying at $5, selling at $50, 80% margin. He credits early Amazon's lack of competition for those economics. <span class="tag tag-verified">verified</span></p>
+
+      <p><strong>Eparé</strong> (his brand, founded 2012) - kitchen accessories and lifestyle goods: spring mills, wine aerators, baking mats, glassware. The name comes from "preparation, easy, European." Hurricane Sandy wiped out his inventory early on. He rebuilt, expanded through trade shows and retail, hit 7-figure annual revenue. But the brand eventually declined as competition intensified - which is what pushed him deeper into MDS.</p>
+
+      <p>He also runs at least one other brand, <strong>Fitryo</strong>, though Eparé is his primary identity. He's a limited partner in his ecom brands now - MDS is his main job.</p>
+
+      <h3>Personality</h3>
+      <p>High energy, community-first, self-deprecating about his own brand struggles. He describes MDS events as "like a family reunion where you're actually excited to see everybody." He's an organizer by instinct - when Amazon made sellers angry, he was the one calling members and building a coalition, not just posting about it.</p>
+
+      <div class="deep-quote">
+        <p>"For a long time, we were a very Amazon-focused community, and we've been trying to break away from that overall stigma and just be a general community for e-commerce founders. People coming into the group have a wider understanding of e-commerce. Amazon is just a part of their business, rather than their whole business, and I think that aligns with the future."</p>
+      </div>
+
+      <p>He's specifically likened TikTok Shop to early Amazon - a rare window before the channel gets crowded and expensive.</p>
+
+      <h3>The Boycott - Full Story</h3>
+      <p><strong>What Amazon changed:</strong> Starting April 15, Amazon would eliminate credit cards as a payment method for ad spend. Instead, ad costs would auto-deduct from seller proceeds. Sellers currently run ads on credit cards to earn 2-4% cash back and preserve operating capital. Forced deduction means the money that should fund next month's inventory gets pulled for ads. Amazon simultaneously rolled out a fuel surcharge and increased fulfillment fees. <span class="tag tag-verified">verified</span></p>
+
+      <p>A poll of 100+ MDS founders found the majority would lose over <strong>$100K in available cash</strong> from the combined changes, and nearly 27% projected losses exceeding $250K.</p>
+
+      <p><strong>Eugene's role:</strong> He organized the boycott from inside MDS, building the coalition to ~150 committed participants plus unaffiliated sellers. His stated goal: "This is going to show them that sellers can unite against these changes."</p>
+
+      <p><strong>Amazon's response:</strong> On April 14 - yesterday, the day before the boycott - Amazon announced it was <strong>deferring the payment change until August 1, 2026</strong>. Their exact language: "Based on feedback we heard, we're deferring this change until August 1, 2026 to give this group of advertisers more time to prepare." <span class="tag tag-verified">verified</span></p>
+
+      <div class="aware-angle">
+        <div class="aware-angle-label">Conversation angles</div>
+        <p style="opacity: 1;"><strong>Ask Eugene what it felt like when Amazon deferred yesterday</strong> - was it the boycott that worked, or was the organizing itself the point regardless? He will have strong opinions.</p>
+        <p style="margin-top: 8px; opacity: 1;"><strong>The August 1 question:</strong> The deferral bought four months. Does MDS plan to keep the coalition warm? This is a real strategic question he hasn't resolved yet.</p>
+        <p style="margin-top: 8px; opacity: 1;"><strong>The Eparé connection:</strong> His whole trajectory is about being burned by over-reliance on one channel. That's not abstract for him - it's personal history.</p>
+      </div>
+
+      <h3>Other MDS Leaders</h3>
+      <p><strong>Ian Sells</strong> (CEO) - San Diego, building ecom businesses since 2004. Sold an Amazon brand, ran a consulting operation managing $30M+ in sales. Created MDS as a Facebook group, grew it to the current organization. Also co-founded JoinBrands.com, RebateKey, and Pixelfy.me - serial platform builder. <span class="tag tag-verified">verified</span></p>
+      <p><strong>Franky Farina</strong> (CMO) - 20+ years in ecommerce. Focus is marketing and community growth. Co-equal senior partner alongside Eugene under Ian's leadership. <span class="tag tag-verified">verified</span></p>
+
+      <div class="sources">
+        <div class="sources-label">Sources</div>
+        <a>Modern Retail - Amazon ad boycott (modernretail.co)</a>
+        <a>Modern Retail - Amazon hits pause (modernretail.co)</a>
+        <a>Yahoo Finance - Inside Million Dollar Sellers</a>
+        <a>MDS About page (milliondollarsellers.com/about)</a>
+        <a>Eugene Khayman LinkedIn</a>
+        <a>Eparé About page (epare.com/pages/about)</a>
+      </div>
+    </div>
+  </details>
+
+  <!-- Deep 2: MDS Culture -->
+  <details>
+    <summary>
+      <div class="deep-summary-inner">
+        <span class="deep-summary-number">Deep Read 02</span>
+        <span class="deep-summary-title">MDS Community Culture</span>
+        <span class="deep-summary-sub">How they evaluate newcomers and what they actually value</span>
+      </div>
+    </summary>
+    <div class="deep-body">
+      <h3>The Ethos</h3>
+      <p>"Give more, get more" - stated explicitly as the founding value and enforced as a membership norm. Passive members who don't contribute get cut. 92% of members own and operate their business - no consultants, no info-marketers. This is a hard wall. <span class="tag tag-verified">verified</span></p>
+
+      <h3>Vetting + Pecking Order</h3>
+      <p>Getting in requires application, interview, and revenue proof. Two membership tiers:</p>
+      <ul>
+        <li><strong>Amazon track:</strong> $1M+ TTM Amazon revenue</li>
+        <li><strong>Omni-channel:</strong> $1M TTM website revenue + $350K Amazon</li>
+      </ul>
+      <p>The screening is real. Within the community, the implicit pecking order tracks revenue tier (7-figure, 8-figure, 9-figure) and longevity. Founding-era members like Eugene carry more weight than revenue alone would suggest.</p>
+
+      <h3>How They Evaluate Newcomers</h3>
+      <p>The first question (often unspoken) is: <strong>"Are you a giver or a taker?"</strong></p>
+      <p>Coming in with specific tactical contributions - a tool you use, a supplier relationship, a channel that's working - is the fastest way to earn credibility. Coming in to extract leads or pitch services is the fastest way to get iced out.</p>
+
+      <div class="aware-angle">
+        <div class="aware-angle-label">Your move</div>
+        <p style="opacity: 1;">You have something most of this room doesn't: a working B2B channel with real repurchase economics. That's a tactical contribution, not a pitch. Frame it as "here's what's working for us" and you're a giver by default.</p>
+      </div>
+
+      <h3>Events Infrastructure</h3>
+      <p>200+ events per year across 18+ global chapters, plus the flagship <strong>MDS Inspire</strong> conference. Inspire 2026 ran March 9-11 at the Wynn in Las Vegas - "the largest gathering of 7-9 figure Amazon, TikTok, and DTC founders," 500+ brands. Events include ski trips, yacht weeks, factory tours. The dinner format tonight is a core part of chapter-level programming. <span class="tag tag-verified">verified</span></p>
+
+      <h3>Recent Strategic Shift</h3>
+      <p>MDS launched a formal DTC membership tier and redesigned its positioning from "Amazon mastermind" to "vetted ecom founder community across Amazon, TikTok Shop, DTC, and retail." TikTok Shop is explicitly listed alongside Amazon in all current marketing. The community now has dedicated TikTok and Shopify channels alongside the Amazon channel.</p>
+
+      <h3>Podcasts That Set the Agenda</h3>
+      <p>If someone at dinner listens to podcasts, these are the ones:</p>
+      <ul>
+        <li><strong>"Marketing Operators"</strong> - ecom marketing tactics</li>
+        <li><strong>"9 Operators"</strong> - brand-building deep dives</li>
+        <li><strong>"DTC Podcast"</strong> (Common Thread Collective)</li>
+        <li><strong>"My Amazon Guy"</strong> (Steven Pope) - Amazon-specific</li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- Deep 3: TikTok Shop Beauty Playbook -->
+  <details>
+    <summary>
+      <div class="deep-summary-inner">
+        <span class="deep-summary-number">Deep Read 03</span>
+        <span class="deep-summary-title">TikTok Shop Beauty Playbook</span>
+        <span class="deep-summary-sub">Case studies, affiliate economics, and the numbers that matter</span>
+      </div>
+    </summary>
+    <div class="deep-body">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-number">$2.5B</div>
+          <div class="stat-label">Beauty GMV, H1 2025</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">22.5%</div>
+          <div class="stat-label">Share of total platform</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">88%</div>
+          <div class="stat-label">Revenue via affiliates</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">30K+</div>
+          <div class="stat-label">Beauty brands active</div>
+        </div>
+      </div>
+
+      <h3>Tarte Cosmetics - The Benchmark</h3>
+      <div class="brand-card">
+        <div class="brand-name">Tarte Cosmetics <span class="tag tag-verified">verified</span></div>
+        <div class="brand-detail">
+          <strong>$105.88M</strong> total TikTok Shop revenue as of early 2025. 3.2M units sold across 175 SKUs. 22,300+ creator affiliates. 102,000+ videos created. Nov-Dec 2024 alone: $26.88M. Best single live session: $750K in one day. Best product: Face Tape Foundation at $224K/week. <strong>88% of revenue came from affiliates, not brand content.</strong>
+        </div>
+      </div>
+
+      <div class="brand-card">
+        <div class="brand-name">CeraVe <span class="tag tag-verified">verified</span></div>
+        <div class="brand-detail">
+          Used TikTok Shop as a product launch platform for three new SKUs. GMV up 55.5% YoY. Key insight: top-performing creators had fewer than 100K followers - content quality beat reach.
+        </div>
+      </div>
+
+      <div class="brand-card">
+        <div class="brand-name">e.l.f. Cosmetics <span class="tag tag-verified">verified</span></div>
+        <div class="brand-detail">
+          Achieved 30% ad awareness among TikTok beauty spenders vs. 7% among general population. One of the earliest and most aggressive affiliate-first operators.
+        </div>
+      </div>
+
+      <h3>Scalp Care on TikTok</h3>
+      <p>Scalp health is the dominant hair trend of 2026. The "scalp is skin" narrative is mainstream - consumers now apply the same multi-step logic to scalp as to face. Hair loss treatments up 85% YoY in content. <span class="tag tag-verified">verified</span></p>
+      <p>Products breaking through: <strong>Mielle Rosemary Mint Oil</strong> (clearest TikTok-to-retail story in scalp care), <strong>Nature Spell Rosemary Oil</strong> (on TikTok's "brands to watch"), <strong>Pattern Scalp Serum</strong> (Tracee Ellis Ross).</p>
+      <p>Formats that convert: before-and-after scalp footage (even microscope shots), ingredient explainers, "day 30 update" format. The "Hair Twin" principle - consumers convert when they see results on someone with their exact hair type. Science-backed content (microbiome, barrier, sebum) outperforms generic tutorials.</p>
+
+      <div class="aware-angle">
+        <div class="aware-angle-label">AWARE's TikTok edge</div>
+        <p style="opacity: 1;">You have professional stylists and a trichologist who can be credible creators. Microscope scalp footage is exactly what your Scalp Environment Report already produces. The "science-backed content wins" finding plays directly to your positioning.</p>
+      </div>
+
+      <h3>The Affiliate Model - How It Works</h3>
+      <p><strong>Two modes:</strong></p>
+      <ul>
+        <li><strong>Open Collaboration:</strong> Any eligible creator picks your product, you set baseline commission</li>
+        <li><strong>Targeted Collaboration:</strong> You invite specific creators, rates are negotiable and higher</li>
+      </ul>
+      <p>100,000+ US creators currently enrolled. <span class="tag tag-verified">verified</span></p>
+
+      <p><strong>Beauty commission benchmarks:</strong></p>
+      <ul>
+        <li>Entry: 8-10%</li>
+        <li>Standard: 12-15%</li>
+        <li>Competitive: 18-20%</li>
+        <li>Top creator / targeted: 20-30%+</li>
+        <li>Tarte ran 15-20% across their affiliate base</li>
+      </ul>
+
+      <p><strong>Ramp-up timeline:</strong> 60-90 days from launch to meaningful velocity. Days 1-30: seeding, send product, get first 50-100 videos live. Days 30-60: identify which creators and formats convert. Past 90: the network compounds. <span class="tag tag-unverified">unverified</span></p>
+
+      <p><strong>The entry-level playbook:</strong> Open Collaboration seeding - send free product to 200-500 micro-creators (under 20K followers), let them post organically, identify top 10-15%, move them to Targeted Collaboration with higher rates.</p>
+
+      <h3>GMV Max - The Hot Tool</h3>
+      <p>TikTok's automated campaign type specifically for TikTok Shop. Not a standard ad product - a channel optimization tool. <span class="tag tag-verified">verified</span></p>
+      <ul>
+        <li>Takes all your approved creative (including authorized affiliate videos) and auto-allocates budget across feed, search, Shop Tab, and Pangle</li>
+        <li>Attributes ALL orders from promoted products - including organic and affiliate-driven - to the dashboard</li>
+        <li>You set a budget and target ROAS, the system optimizes</li>
+      </ul>
+      <p><strong>The key insight:</strong> When you run GMV Max with "Affiliate post" as your video source, the algorithm serves your best affiliate content as paid ads to new audiences. You're amplifying creator-native content with paid budget. Polished brand ads consistently underperform - GMV Max will deprioritize them in favor of converting affiliate UGC.</p>
+      <p><strong>Prerequisite:</strong> Brands with 50+ active affiliate videos see the most benefit. Launching GMV Max before you have affiliate velocity is essentially running paid against nothing.</p>
+
+      <h3>Ulta + Sally Beauty on TikTok Shop</h3>
+      <p>Both launched in March 2026 - very recent: <span class="tag tag-verified">verified</span></p>
+      <ul>
+        <li><strong>Sally Beauty</strong> (March 10): 1,000+ products, ships from Sally's own DCs via FedEx</li>
+        <li><strong>Ulta Beauty</strong> (March 17): 15+ brands, 25+ exclusive bundles, "only-at-Ulta" positioning</li>
+      </ul>
+
+      <div class="aware-angle">
+        <div class="aware-angle-label">Why this matters for you</div>
+        <p style="opacity: 1;">Both retailers launching signals institutional legitimacy. It also means professional products are appearing on TikTok Shop through retail intermediaries. Your salon-exclusive differentiation on TikTok isn't distribution exclusivity (that's eroding) - it's <strong>creator credibility</strong>. Stylists and trichologists as affiliates carry authority that a Sally Beauty affiliate does not.</p>
+      </div>
+
+      <div class="sources">
+        <div class="sources-label">Sources</div>
+        <a>BeautyMatter - TikTok Shop Is Beauty's Fastest-Growing Channel</a>
+        <a>tramicheck.com - Tarte Cosmetics TikTok Shop Case Study</a>
+        <a>Modern Retail - Sales from major brands nearly doubled in 2025</a>
+        <a>Fortune - Ulta Beauty Joins TikTok Shop</a>
+        <a>PR Newswire - Sally Beauty TikTok Shop Launch</a>
+        <a>ShortFormNation - Affiliate Commission Rates 2026</a>
+        <a>TikTok Ads Help - About Product GMV Max</a>
+        <a>Beauty Independent - Haircare In/Out 2026</a>
+      </div>
+    </div>
+  </details>
+
+  <!-- Deep 4: Amazon Seller Economics -->
+  <details>
+    <summary>
+      <div class="deep-summary-inner">
+        <span class="deep-summary-number">Deep Read 04</span>
+        <span class="deep-summary-title">Amazon Seller Economics 2026</span>
+        <span class="deep-summary-sub">The fee stack, the anger, and why they're all diversifying</span>
+      </div>
+    </summary>
+    <div class="deep-body">
+      <h3>The Fee Stack</h3>
+      <div class="fee-stack">
+        <div class="fee-row">
+          <span class="fee-label">Referral fees</span>
+          <span class="fee-value">8-15% of sale price</span>
+        </div>
+        <div class="fee-row">
+          <span class="fee-label">FBA fulfillment</span>
+          <span class="fee-value">$3.22-$10+ per unit</span>
+        </div>
+        <div class="fee-row">
+          <span class="fee-label">Storage fees</span>
+          <span class="fee-value">Variable, seasonal surge</span>
+        </div>
+        <div class="fee-row">
+          <span class="fee-label">Fuel surcharge (NEW Apr 17)</span>
+          <span class="fee-value">3.5% on all FBA fees</span>
+        </div>
+        <div class="fee-row">
+          <span class="fee-label">SIPP packaging fee</span>
+          <span class="fee-value">$2.07/unit avg if not enrolled</span>
+        </div>
+        <div class="fee-row">
+          <span class="fee-label">Inbound placement fees</span>
+          <span class="fee-value">Per unit, varies by size</span>
+        </div>
+        <div class="fee-row" style="border-top: 1px solid rgba(244,239,233,0.2); margin-top: 4px; padding-top: 12px;">
+          <span class="fee-label">Total before advertising</span>
+          <span class="fee-value">28-32% of revenue</span>
+        </div>
+        <div class="fee-row">
+          <span class="fee-label">Advertising (TACoS)</span>
+          <span class="fee-value">10-25% of revenue</span>
+        </div>
+        <div class="fee-row" style="border-top: 1px solid rgba(244,239,233,0.3); margin-top: 4px; padding-top: 12px;">
+          <span class="fee-label" style="opacity: 1; font-weight: 500;">Total cost of selling</span>
+          <span class="fee-value">35-45% of revenue</span>
+        </div>
+      </div>
+
+      <p><strong>What $1M on Amazon actually looks like:</strong> After fees and advertising, a seller doing $1M nets $550-650K in product margin - before COGS, returns, and overhead. For commodity goods with 40-50% gross margins, the math barely works. For premium goods with 60-70% margins, it's viable but tight. <span class="tag tag-verified">verified</span></p>
+
+      <h3>What's Making Sellers Angry</h3>
+      <ul>
+        <li>Jan 2026: FBA prep and labeling services eliminated - all units must arrive pre-labeled</li>
+        <li>The ad payment policy change (today's boycott)</li>
+        <li>3.5% fuel surcharge on top of existing fulfillment fees (starts April 17)</li>
+        <li>Each year brings a new fee category with a new acronym</li>
+        <li>A poll of 100+ MDS founders: majority would lose $100K+ in available cash from combined changes</li>
+      </ul>
+
+      <h3>Amazon to TikTok Migration</h3>
+      <p>TikTok Shop hit $33.8B global GMV in 2025, projected $50B in 2026. <span class="tag tag-unverified">unverified</span></p>
+      <p>The honest reality: most Amazon sellers who try TikTok Shop fail within 90 days. The core mistake is treating it like "another Amazon channel." Your 10,000-review Amazon listing means nothing on TikTok if no one is making videos about it.</p>
+
+      <p><strong>Where Amazon instincts go wrong on TikTok:</strong></p>
+      <ul>
+        <li><strong>Reviews don't transfer</strong> - social proof is creator-driven, not review-driven</li>
+        <li><strong>SEO instincts are wrong</strong> - discovery is algorithmic and content-driven</li>
+        <li><strong>Polished content underperforms</strong> - studio photography loses to raw creator demos</li>
+        <li><strong>Content velocity</strong> - Amazon listings sit and convert for years; TikTok rewards freshness</li>
+        <li><strong>Returns run 5-8% higher</strong> - TikTok buyers are more impulse-driven</li>
+      </ul>
+
+      <p><strong>Strategic framing:</strong> TikTok creates cultural demand, Amazon captures it. Many sophisticated operators treat them as sequential - go viral on TikTok, harvest on Amazon. The platforms are complementary, not competitive.</p>
+
+      <p><strong>FBT warning:</strong> As of Feb 25, 2026, TikTok ended independent seller shipping and pushed all US sellers into centralized FBT (Fulfilled by TikTok). Some sellers report fulfillment issues. <span class="tag tag-verified">verified</span></p>
+
+      <div class="sources">
+        <div class="sources-label">Sources</div>
+        <a>Amazon Seller Central - 2026 Fee Changes</a>
+        <a>AMZ Prep - Amazon FBA Fees Breakdown</a>
+        <a>Brandwoven - Amazon 2026 Fees Breakdown</a>
+        <a>Modern Retail - TikTok Shop sellers pulling back (FBT)</a>
+      </div>
+    </div>
+  </details>
+
+  <!-- Deep 5: CAC + Tariffs + Profitability -->
+  <details>
+    <summary>
+      <div class="deep-summary-inner">
+        <span class="deep-summary-number">Deep Read 05</span>
+        <span class="deep-summary-title">The Ecom Macro Picture</span>
+        <span class="deep-summary-sub">CAC crisis, tariffs, profitability shift - what the room is dealing with</span>
+      </div>
+    </summary>
+    <div class="deep-body">
+      <h3>The CAC Crisis - Numbers</h3>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-number">+20%</div>
+          <div class="stat-label">Meta CPMs in 2025</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">$9.46</div>
+          <div class="stat-label">Instagram CPM, Q2 2025</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">+21%</div>
+          <div class="stat-label">Cost per lead YoY</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">$130-156</div>
+          <div class="stat-label">Median DTC CAC</div>
+        </div>
+      </div>
+
+      <p><strong>What's driving it:</strong> More advertisers competing on a platform with reduced targeting granularity (privacy restrictions gutted behavioral micro-targeting). Creative quality is now the primary differentiator - brands running 20+ new ad creatives monthly reportedly achieve 65% higher ROAS. <span class="tag tag-verified">verified</span></p>
+
+      <p><strong>Is email/SMS a replacement?</strong> No - it's a retention tool, not an acquisition replacement. Email flows generate ~41% of total email revenue from just 5.3% of sends. Adding SMS to abandoned cart lifts recovery to 38%. But email doesn't solve the acquisition problem - it improves LTV on customers you already paid to acquire. The pitch that "email replaces paid social" is wrong. The accurate version: owned channels improve the economics of paid social by making each acquired customer worth more. <span class="tag tag-verified">verified</span></p>
+
+      <h3>Tariffs</h3>
+      <p>The Trump administration's tariff escalation raised the US weighted-average tariff from ~2% to over 20% since April 2025. China-origin goods face the highest exposure. The de minimis exemption ($800 duty-free threshold that powered Shein and Temu) ended August 29, 2025. Parcel volume under $800 entering the US fell 54% afterward. <span class="tag tag-verified">verified</span></p>
+
+      <p><strong>Impact on DTC brands:</strong> Apparel, electronics, beauty, and home goods sourcing from China. Everlane publicly calculated an $11 cost increase per cashmere sweater at 25% tariffs. Brands with thin margins and no pricing power have no good options.</p>
+
+      <p><strong>Responses:</strong> Mexico nearshoring is the most common pivot - labor costs 20-30% cheaper than China. Most operators are eating margin while scrambling to diversify. There is no clean solution.</p>
+
+      <div class="aware-angle">
+        <div class="aware-angle-label">Your positioning advantage</div>
+        <p style="opacity: 1;">You manufacture domestically (Boom Lab). In a room where everyone is sweating tariffs on China-sourced goods, "we manufacture in the US" is a genuine competitive advantage worth mentioning casually - not as a pitch, but when tariffs come up naturally.</p>
+      </div>
+
+      <h3>The Profitability Shift</h3>
+      <p>The narrative has flipped completely from "growth at all costs" to "profitable from day one." Brands that raised venture capital to subsidize CAC in 2021-2022 are either dead or restructuring.</p>
+
+      <p><strong>DTC benchmarks:</strong></p>
+      <ul>
+        <li>Gross margin: 50-65% average, beauty/personal care 60-70% <span class="tag tag-verified">verified</span></li>
+        <li>After marketing (20-35%), fulfillment, overhead: median net profit 3-10% <span class="tag tag-unverified">unverified</span></li>
+        <li>Mid-market ($10-50M) "dead zone": ~7-8% EBITDA <span class="tag tag-unverified">unverified</span></li>
+      </ul>
+
+      <p><strong>Why your B2B-first model is interesting to this crowd:</strong> The standard DTC path (pay $130+ CAC, hope LTV pays out over 18 months) is the consensus problem everyone is trying to solve. B2B gross margins are lower (40-50% wholesale vs. 60-70% DTC), but the economics are predictable, there is no CAC, and repurchase happens without ad spend. The trade-off is scale ceiling. Worth naming if it comes up - it runs counter to the instinct in this community.</p>
+
+      <h3>Names You Might Hear</h3>
+      <ul>
+        <li><strong>Ezra Firestone</strong> - founder of BOOM! by Cindy Joseph (beauty), acquired Navage, runs Smart Marketer. One of the most-referenced DTC educators. <span class="tag tag-verified">verified</span></li>
+        <li><strong>Brandon Young</strong> - Amazon seller educator, MDS community figure <span class="tag tag-verified">verified</span></li>
+        <li><strong>Oliver Brocato</strong> - founder of Tabs Chocolate, known for viral TikTok-first brand building <span class="tag tag-verified">verified</span></li>
+      </ul>
+
+      <div class="sources">
+        <div class="sources-label">Sources</div>
+        <a>ATTN Agency - Tariff Impacts on DTC Supply Chains 2026</a>
+        <a>CNN Business - De Minimis Exemption End</a>
+        <a>AdAmigo - Meta Ads CPM Benchmarks 2026</a>
+        <a>Coinis - Why Meta Ads Are More Expensive in 2026</a>
+        <a>Klaviyo - 2026 Email & SMS Strategy</a>
+        <a>Supply Chain Brain - Tariff Rate Analysis</a>
+      </div>
+    </div>
+  </details>
+
+  <!-- Deep 6: AWARE-Specific TikTok Opportunity -->
+  <details>
+    <summary>
+      <div class="deep-summary-inner">
+        <span class="deep-summary-number">Deep Read 06</span>
+        <span class="deep-summary-title">AWARE's TikTok Opportunity</span>
+        <span class="deep-summary-sub">How everything above connects to your brand specifically</span>
+      </div>
+    </summary>
+    <div class="deep-body">
+      <p>You don't need to share any of this at dinner - this is for your own thinking. But if conversation turns to "so what's your TikTok play?", here's where the dots connect.</p>
+
+      <h3>Why Scalp Care Fits TikTok</h3>
+      <ul>
+        <li>Beauty is the #1 TikTok Shop category ($2.5B GMV in H1 2025)</li>
+        <li>"Scalp is skin" is the dominant hair narrative of 2026</li>
+        <li>Hair loss content up 85% YoY - your exact category</li>
+        <li>Science-backed content outperforms generic tutorials - that's your positioning</li>
+        <li>Before-and-after scalp footage converts well - you already produce microscope imagery via the Scalp Report</li>
+      </ul>
+
+      <h3>Your Unfair Advantages</h3>
+      <ul>
+        <li><strong>Professional credibility:</strong> Tina is a Licensed Trichologist with 40+ years. That's real authority in a sea of influencer claims.</li>
+        <li><strong>Salon network as creator pipeline:</strong> 50+ stylists who actually use the product professionally. Each one is a potential micro-creator with built-in authenticity.</li>
+        <li><strong>Domestic manufacturing:</strong> No tariff exposure. Faster iteration on product.</li>
+        <li><strong>B2B economics as a safety net:</strong> You don't need TikTok to survive. You can experiment without desperation. Most brands rushing to TikTok Shop are doing it because their Meta CAC is breaking them.</li>
+        <li><strong>Scalp Report as content engine:</strong> The personalized analysis tool produces exactly the kind of educational, science-backed content that outperforms on TikTok.</li>
+      </ul>
+
+      <h3>What You'd Need to Start</h3>
+      <ul>
+        <li>TikTok Shop storefront (straightforward setup)</li>
+        <li>Open Collaboration turned on with 15-20% baseline commission</li>
+        <li>Product seeding to 100-200 micro-creators in hair/scalp space</li>
+        <li>3-5 stylist partners willing to create content (even simple "this is what I use on clients" format)</li>
+        <li>60-90 days of patience before meaningful velocity</li>
+      </ul>
+
+      <h3>What to Listen For Tonight</h3>
+      <p>If anyone at dinner has direct TikTok Shop experience in beauty, these are the questions that matter most for you:</p>
+      <ul>
+        <li>How did you recruit your first 100 affiliate creators?</li>
+        <li>What commission rate actually moves the needle vs. just attracting low-effort posts?</li>
+        <li>How do you handle returns and chargebacks on impulse purchases?</li>
+        <li>Is GMV Max worth it at your scale, or only once you have critical mass?</li>
+        <li>What's your actual ROAS on TikTok Shop vs. Meta?</li>
+      </ul>
+
+      <p style="margin-top: 20px;"><strong>Bottom line:</strong> You don't need to commit to anything tonight. But if someone offers to make an intro to a TikTok Shop beauty operator or a creator agency, say yes. That's the highest-value connection from this dinner.</p>
+    </div>
+  </details>
+
+  <div style="padding: 40px 24px; text-align: center;">
+    <p style="font-size: 0.75rem; color: var(--text-muted); opacity: 0.5;">Researched April 15, 2026. Claims labeled [VERIFIED] or [UNVERIFIED].</p>
+  </div>
+
+</div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

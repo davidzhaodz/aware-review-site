@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Discovery Audit | AWARE Hair</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f4efe9;
+      --cream-dark: #e8e0d5;
+      --forest: #102b26;
+      --teal: #113035;
+      --sage: #8a9a8e;
+      --coral: #c17f59;
+      --red-subtle: #8b3a3a;
+      --gold: #b8956e;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--cream);
+      color: var(--forest);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    /* Announcement Bar */
+    .announcement {
+      background: var(--forest);
+      color: var(--cream);
+      padding: 10px 20px;
+      text-align: center;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+
+    .announcement a {
+      color: var(--gold);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background: var(--cream);
+      border-bottom: 1px solid rgba(16, 43, 38, 0.1);
+    }
+
+    .logo {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: var(--forest);
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      gap: 40px;
+    }
+
+    nav a {
+      color: var(--forest);
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Hero Section - Emotional Lead */
+    .hero {
+      padding: 80px 60px 60px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--forest);
+      color: var(--cream);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+    }
+
+    .hero-eyebrow .dot {
+      width: 6px;
+      height: 6px;
+      background: #4ade80;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 5vw, 64px);
+      max-width: 800px;
+      margin-bottom: 24px;
+      color: var(--forest);
+    }
+
+    .hero h1 .highlight {
+      color: var(--coral);
+      font-style: italic;
+    }
+
+    .hero h1 .number {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+    }
+
+    .hero-subhead {
+      font-size: 20px;
+      color: var(--forest);
+      opacity: 0.8;
+      max-width: 600px;
+      margin-bottom: 50px;
+      line-height: 1.7;
+    }
+
+    /* Two Column Hero Layout */
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .hero-left {
+      padding-top: 20px;
+    }
+
+    /* The Form Card */
+    .form-card {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 4px 40px rgba(16, 43, 38, 0.08);
+      border: 1px solid rgba(16, 43, 38, 0.06);
+    }
+
+    .form-card h3 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .form-card .form-subhead {
+      font-size: 14px;
+      color: var(--sage);
+      margin-bottom: 28px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--forest);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid rgba(16, 43, 38, 0.15);
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: var(--cream);
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--forest);
+      box-shadow: 0 0 0 3px rgba(16, 43, 38, 0.08);
+    }
+
+    .form-group input::placeholder {
+      color: var(--sage);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px 24px;
+      background: var(--forest);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 8px;
+    }
+
+    .submit-btn:hover {
+      background: var(--teal);
+    }
+
+    .submit-btn:active {
+      transform: scale(0.99);
+    }
+
+    .form-trust {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(16, 43, 38, 0.08);
+    }
+
+    .form-trust span {
+      font-size: 12px;
+      color: var(--sage);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-trust svg {
+      width: 14px;
+      height: 14px;
+      opacity: 0.6;
+    }
+
+    /* Social Proof Bar */
+    .social-proof {
+      background: var(--forest);
+      color: var(--cream);
+      padding: 40px 60px;
+    }
+
+    .social-proof-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    .proof-stat {
+      text-align: center;
+    }
+
+    .proof-stat .number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      font-weight: 500;
+      display: block;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .proof-stat .label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.7;
+    }
+
+    .proof-divider {
+      width: 1px;
+      height: 50px;
+      background: rgba(244, 239, 233, 0.2);
+    }
+
+    .proof-quote {
+      flex: 1;
+      max-width: 500px;
+      padding-left: 40px;
+      border-left: 1px solid rgba(244, 239, 233, 0.2);
+    }
+
+    .proof-quote blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-style: italic;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .proof-quote cite {
+      font-style: normal;
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    /* Problem Section */
+    .problem-section {
+      padding: 100px 60px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .problem-section h2 {
+      font-size: 40px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .problem-section .section-subhead {
+      text-align: center;
+      font-size: 18px;
+      color: var(--sage);
+      max-width: 600px;
+      margin: 0 auto 60px;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+
+    .problem-card {
+      background: white;
+      border-radius: 16px;
+      padding: 36px;
+      border: 1px solid rgba(16, 43, 38, 0.06);
+    }
+
+    .problem-card .icon {
+      width: 48px;
+      height: 48px;
+      background: var(--cream);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .problem-card h4 {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    .problem-card p {
+      font-size: 15px;
+      color: var(--sage);
+      line-height: 1.6;
+    }
+
+    /* Score Preview Section */
+    .preview-section {
+      background: var(--forest);
+      color: var(--cream);
+      padding: 100px 60px;
+    }
+
+    .preview-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .preview-content h2 {
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+
+    .preview-content p {
+      font-size: 17px;
+      opacity: 0.8;
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+
+    .preview-list {
+      list-style: none;
+    }
+
+    .preview-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+      font-size: 15px;
+    }
+
+    .preview-list .check {
+      width: 24px;
+      height: 24px;
+      background: rgba(244, 239, 233, 0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .preview-list .check svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    /* Score Mockup */
+    .score-mockup {
+      background: var(--cream);
+      border-radius: 20px;
+      padding: 40px;
+      color: var(--forest);
+    }
+
+    .score-mockup-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(16, 43, 38, 0.1);
+    }
+
+    .score-mockup-header .salon-avatar {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--sage) 0%, var(--forest) 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cream);
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    /* Hero Image */
+    .hero-image {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 45%;
+      height: 100%;
+      background: url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80') center/cover;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Problem card images */
+    .problem-card-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    /* Opportunity section image */
+    .opportunity-image {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 16px;
+      margin: 40px auto 0;
+      display: block;
+    }
+
+    /* Testimonial avatar */
+    .testimonial-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 12px;
+      border: 2px solid rgba(244, 239, 233, 0.3);
+    }
+
+    .proof-quote {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .proof-quote-content {
+      flex: 1;
+    }
+
+    .score-mockup-header .salon-info h4 {
+      font-size: 18px;
+      margin-bottom: 2px;
+    }
+
+    .score-mockup-header .salon-info span {
+      font-size: 13px;
+      color: var(--sage);
+    }
+
+    .score-circle-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .score-circle {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: conic-gradient(var(--coral) 0deg 194deg, var(--cream-dark) 194deg 360deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      position: relative;
+    }
+
+    .score-circle::before {
+      content: '';
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      background: var(--cream);
+      border-radius: 50%;
+    }
+
+    .score-circle .score-value {
+      position: relative;
+      z-index: 1;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 600;
+    }
+
+    .score-tier {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .score-breakdown {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .breakdown-item {
+      background: white;
+      padding: 16px;
+      border-radius: 10px;
+    }
+
+    .breakdown-item .label {
+      font-size: 12px;
+      color: var(--sage);
+      margin-bottom: 4px;
+    }
+
+    .breakdown-item .bar-container {
+      height: 6px;
+      background: var(--cream-dark);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+
+    .breakdown-item .bar {
+      height: 100%;
+      background: var(--forest);
+      border-radius: 3px;
+    }
+
+    .breakdown-item .value {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* How It Works */
+    .how-section {
+      padding: 100px 60px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .how-section h2 {
+      font-size: 40px;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step::after {
+      content: '';
+      position: absolute;
+      top: 40px;
+      right: -20px;
+      width: 40px;
+      height: 2px;
+      background: var(--cream-dark);
+    }
+
+    .step:last-child::after {
+      display: none;
+    }
+
+    .step-number {
+      width: 80px;
+      height: 80px;
+      background: var(--cream-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 500;
+      color: var(--forest);
+    }
+
+    .step h4 {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    .step p {
+      font-size: 15px;
+      color: var(--sage);
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    .step-time {
+      display: inline-block;
+      margin-top: 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--coral);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Opportunity Section */
+    .opportunity-section {
+      background: linear-gradient(135deg, var(--cream-dark) 0%, var(--cream) 100%);
+      padding: 100px 60px;
+    }
+
+    .opportunity-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .opportunity-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--forest);
+      color: var(--cream);
+      padding: 10px 20px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+    }
+
+    .opportunity-section h2 {
+      font-size: 44px;
+      margin-bottom: 20px;
+    }
+
+    .opportunity-section h2 em {
+      font-style: italic;
+      color: var(--coral);
+    }
+
+    .opportunity-section > .opportunity-inner > p {
+      font-size: 18px;
+      color: var(--forest);
+      opacity: 0.8;
+      max-width: 700px;
+      margin: 0 auto 50px;
+      line-height: 1.7;
+    }
+
+    .opportunity-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 50px;
+    }
+
+    .opp-stat {
+      background: white;
+      padding: 30px 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(16, 43, 38, 0.06);
+    }
+
+    .opp-stat .value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 500;
+      color: var(--forest);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .opp-stat .label {
+      font-size: 13px;
+      color: var(--sage);
+    }
+
+    .opp-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--forest);
+      color: white;
+      padding: 18px 36px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .opp-cta:hover {
+      background: var(--teal);
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      padding: 100px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .faq-section h2 {
+      font-size: 40px;
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid rgba(16, 43, 38, 0.1);
+      padding: 28px 0;
+    }
+
+    .faq-item:first-of-type {
+      border-top: 1px solid rgba(16, 43, 38, 0.1);
+    }
+
+    .faq-question {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-question::after {
+      content: '+';
+      font-size: 24px;
+      font-weight: 300;
+      color: var(--sage);
+    }
+
+    .faq-answer {
+      font-size: 15px;
+      color: var(--sage);
+      line-height: 1.7;
+      max-width: 700px;
+    }
+
+    /* Final CTA */
+    .final-cta {
+      background: var(--forest);
+      color: var(--cream);
+      padding: 100px 60px;
+      text-align: center;
+    }
+
+    .final-cta h2 {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .final-cta p {
+      font-size: 18px;
+      opacity: 0.8;
+      margin-bottom: 40px;
+    }
+
+    .final-form {
+      max-width: 500px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .final-form input {
+      padding: 16px 20px;
+      border: 1px solid rgba(244, 239, 233, 0.2);
+      border-radius: 8px;
+      background: rgba(244, 239, 233, 0.1);
+      color: white;
+      font-size: 15px;
+      font-family: inherit;
+    }
+
+    .final-form input::placeholder {
+      color: rgba(244, 239, 233, 0.5);
+    }
+
+    .final-form input:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: rgba(244, 239, 233, 0.15);
+    }
+
+    .final-form button {
+      padding: 18px 24px;
+      background: var(--cream);
+      color: var(--forest);
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .final-form button:hover {
+      background: white;
+    }
+
+    .final-trust {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 30px;
+      font-size: 13px;
+      opacity: 0.6;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--cream);
+      padding: 40px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(16, 43, 38, 0.08);
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--sage);
+    }
+
+    footer nav {
+      display: flex;
+      gap: 30px;
+    }
+
+    footer nav a {
+      font-size: 13px;
+      color: var(--sage);
+      text-decoration: none;
+    }
+
+    footer nav a:hover {
+      color: var(--forest);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+        gap: 50px;
+      }
+
+      .form-card {
+        max-width: 500px;
+      }
+
+      .preview-inner {
+        grid-template-columns: 1fr;
+        gap: 50px;
+      }
+
+      .score-mockup {
+        max-width: 400px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header, .hero, .problem-section, .preview-section, .how-section, .opportunity-section, .faq-section, .final-cta, footer {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .hero h1 {
+        font-size: 36px;
+      }
+
+      .problem-grid, .steps, .opportunity-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .social-proof-inner {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .proof-quote {
+        padding-left: 0;
+        border-left: none;
+        padding-top: 30px;
+        border-top: 1px solid rgba(244, 239, 233, 0.2);
+      }
+
+      .proof-divider {
+        display: none;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Announcement Bar -->
+  <div class="announcement">
+    <span>Free for salon professionals — <a href="#audit-form">Get your AI visibility score in 60 seconds</a></span>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <a href="https://awarehair.com" class="logo">AWARE</a>
+    <nav>
+      <a href="https://awarehair.com/collections/all">Shop</a>
+      <a href="https://awarehair.com/pages/about-us">Our Story</a>
+      <a href="https://awarehair.com/pages/registration">Pro Portal</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section - Emotional Lead -->
+  <section class="hero">
+    <div class="hero-image"></div>
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="dot"></span>
+          <span>1,247 salons audited this month</span>
+        </div>
+
+        <h1>You're Invisible to <span class="number">35+</span> <span class="highlight">Clients Every Month</span></h1>
+
+        <p class="hero-subhead">When clients ask AI for "best salons near me," you don't appear. Find out why—and how to fix it—in 60 seconds.</p>
+      </div>
+
+      <div class="form-card" id="audit-form">
+        <h3>Get Your Free Score</h3>
+        <p class="form-subhead">See exactly where you stand with AI assistants</p>
+
+        <form>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Salon Name</label>
+              <input type="text" placeholder="e.g., Studio 27 Salon" required>
+            </div>
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" placeholder="e.g., Beverly Hills, CA" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="Where should we send your report?" required>
+          </div>
+
+          <button type="submit" class="submit-btn">Discover My Score →</button>
+        </form>
+
+        <div class="form-trust">
+          <span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            No credit card
+          </span>
+          <span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+            60-second analysis
+          </span>
+          <span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <path d="M22 4 12 14.01l-3-3"/>
+            </svg>
+            Instant results
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof Bar -->
+  <section class="social-proof">
+    <div class="social-proof-inner">
+      <div class="proof-stat">
+        <span class="number">4.9</span>
+        <span class="label">Avg Rating</span>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-stat">
+        <span class="number">12k+</span>
+        <span class="label">Salons Audited</span>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-stat">
+        <span class="number">73%</span>
+        <span class="label">Improved Score</span>
+      </div>
+      <div class="proof-quote">
+        <img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=100&h=100&fit=crop&crop=face" alt="Maria K." class="testimonial-avatar">
+        <div class="proof-quote-content">
+          <blockquote>"I had no idea I was invisible to AI. After fixing what this audit showed me, I got 12 new clients in the first month."</blockquote>
+          <cite>— Maria K., Salon Owner, Los Angeles</cite>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem Section -->
+  <section class="problem-section">
+    <h2>The Discovery Shift is Already Here</h2>
+    <p class="section-subhead">AI is changing how clients find salons. Most salon owners have no idea they're being left behind.</p>
+
+    <div class="problem-grid">
+      <div class="problem-card">
+        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=200&fit=crop" alt="Person using phone" class="problem-card-img">
+        <h4>40% of Under-35s</h4>
+        <p>Now ask AI assistants for local service recommendations instead of Googling. That number doubles by 2026.</p>
+      </div>
+
+      <div class="problem-card">
+        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=200&fit=crop" alt="AI assistant" class="problem-card-img">
+        <h4>AI Picks 3 Winners</h4>
+        <p>When someone asks "best salon near me," AI recommends 3 options. Everyone else is invisible—no matter their reviews.</p>
+      </div>
+
+      <div class="problem-card">
+        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=200&fit=crop" alt="Salon interior" class="problem-card-img">
+        <h4>Different Rules</h4>
+        <p>Great Yelp reviews don't guarantee AI visibility. The signals AI looks for are completely different—and most salons are missing them.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Score Preview Section -->
+  <section class="preview-section">
+    <div class="preview-inner">
+      <div class="preview-content">
+        <h2>See Exactly Where You Stand</h2>
+        <p>Your free AI Discovery Audit reveals your salon's visibility across the signals that matter to AI assistants—and shows you exactly what to fix.</p>
+
+        <ul class="preview-list">
+          <li>
+            <span class="check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path d="M20 6 9 17l-5-5"/>
+              </svg>
+            </span>
+            <span><strong>Your AI Score (0-100)</strong> — How likely AI is to recommend you</span>
+          </li>
+          <li>
+            <span class="check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path d="M20 6 9 17l-5-5"/>
+              </svg>
+            </span>
+            <span><strong>Category Breakdown</strong> — Google Business, Reviews, Digital Footprint, AI Signals</span>
+          </li>
+          <li>
+            <span class="check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path d="M20 6 9 17l-5-5"/>
+              </svg>
+            </span>
+            <span><strong>Invisible Client Count</strong> — How many clients you're missing each month</span>
+          </li>
+          <li>
+            <span class="check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path d="M20 6 9 17l-5-5"/>
+              </svg>
+            </span>
+            <span><strong>Priority Action Plan</strong> — The 3 fixes that will have the biggest impact</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="score-mockup">
+        <div class="score-mockup-header">
+          <div class="salon-avatar">YS</div>
+          <div class="salon-info">
+            <h4>Your Salon</h4>
+            <span>Your City, ST</span>
+          </div>
+        </div>
+
+        <div class="score-circle-container">
+          <div class="score-circle">
+            <span class="score-value">54</span>
+          </div>
+          <span class="score-tier">⚠️ Emerging</span>
+        </div>
+
+        <div class="score-breakdown">
+          <div class="breakdown-item">
+            <div class="label">Google Business</div>
+            <div class="bar-container"><div class="bar" style="width: 72%"></div></div>
+            <div class="value">18/25</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="label">Review Authority</div>
+            <div class="bar-container"><div class="bar" style="width: 52%"></div></div>
+            <div class="value">13/25</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="label">Digital Footprint</div>
+            <div class="bar-container"><div class="bar" style="width: 56%"></div></div>
+            <div class="value">14/25</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="label">AI Signals</div>
+            <div class="bar-container"><div class="bar" style="width: 36%"></div></div>
+            <div class="value">9/25</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-section">
+    <h2>How It Works</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h4>Enter Your Salon</h4>
+        <p>Tell us your salon name and city. That's all we need to start the audit.</p>
+        <span class="step-time">10 seconds</span>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <h4>We Analyze Everything</h4>
+        <p>Our system checks Google, Yelp, your website, social profiles, and AI visibility signals.</p>
+        <span class="step-time">45 seconds</span>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <h4>Get Your Score + Plan</h4>
+        <p>See your score, understand your gaps, and get a prioritized action plan to improve.</p>
+        <span class="step-time">Instant</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Opportunity Section -->
+  <section class="opportunity-section">
+    <div class="opportunity-inner">
+      <span class="opportunity-badge">The Opportunity</span>
+
+      <h2>Salons with <em>Specialty Positioning</em> Win with AI</h2>
+
+      <p>AI assistants favor salons with clear specialties over generalists. Scalp care is the fastest-growing salon service—and the biggest opportunity to stand out.</p>
+
+      <div class="opportunity-stats">
+        <div class="opp-stat">
+          <span class="value">2.3×</span>
+          <span class="label">Higher AI recommendation rate for specialty salons</span>
+        </div>
+        <div class="opp-stat">
+          <span class="value">47%</span>
+          <span class="label">Growth in scalp care searches year over year</span>
+        </div>
+        <div class="opp-stat">
+          <span class="value">$85</span>
+          <span class="label">Average ticket increase for scalp services</span>
+        </div>
+        <div class="opp-stat">
+          <span class="value">3×</span>
+          <span class="label">Client retention rate with specialty positioning</span>
+        </div>
+      </div>
+
+      <a href="#audit-form" class="opp-cta">
+        Get Your Free Audit
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <h2>Common Questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-question">Is this really free?</div>
+      <p class="faq-answer">Yes, completely free. We built this tool to help salon owners understand the AI discovery shift. There's no credit card required and no hidden fees.</p>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">What do you do with my email?</div>
+      <p class="faq-answer">We send you your audit results and a few helpful follow-up tips about improving your AI visibility. You can unsubscribe anytime. We never sell your data.</p>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">How accurate is the audit?</div>
+      <p class="faq-answer">We pull real data from Google, Yelp, and other public sources to calculate your score. While AI recommendation algorithms are proprietary, our scoring is based on the signals we know matter most.</p>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Can I improve my score?</div>
+      <p class="faq-answer">Absolutely. Your audit includes a prioritized action plan with specific steps to improve each category. Most salon owners can significantly improve their score within 30 days.</p>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">What's AWARE's role in this?</div>
+      <p class="faq-answer">AWARE partners with salons to build scalp care expertise—one of the best ways to improve AI visibility through specialty positioning. But this audit is valuable regardless of whether you work with us.</p>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta">
+    <h2>Stop Being Invisible</h2>
+    <p>Get your free AI Discovery Audit and see exactly where you stand.</p>
+
+    <form class="final-form">
+      <input type="text" placeholder="Salon Name" required>
+      <input type="text" placeholder="City or Zip Code" required>
+      <input type="email" placeholder="Email for your report" required>
+      <button type="submit">Get My Free Score →</button>
+    </form>
+
+    <div class="final-trust">
+      <span>🔒 Your data is secure</span>
+      <span>📧 Unsubscribe anytime</span>
+      <span>⏱️ 60-second analysis</span>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2024 AWARE Hair. All rights reserved.</p>
+    <nav>
+      <a href="https://awarehair.com/pages/privacy-policy">Privacy</a>
+      <a href="https://awarehair.com/pages/terms-of-service">Terms</a>
+      <a href="mailto:partners@awarehair.com">Contact</a>
+    </nav>
+  </footer>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

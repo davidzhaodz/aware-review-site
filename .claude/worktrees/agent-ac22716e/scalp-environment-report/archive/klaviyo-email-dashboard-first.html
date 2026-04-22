@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Scalp Environment Report</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;">
+
+  <!-- Preheader -->
+  <div style="display: none; max-height: 0; overflow: hidden;">
+    Your personalized scalp analysis for ZIP {{ person|lookup:'zip_code' }}, {{ person|lookup:'first_name'|default:'there' }}
+  </div>
+
+  <!-- Main Container -->
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f5f5f5;">
+    <tr>
+      <td align="center" style="padding: 30px 15px;">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px; width: 100%; background-color: #ffffff;">
+
+          <!-- ========== HEADER ========== -->
+          <tr>
+            <td align="center" style="padding: 35px 25px 30px; background-color: #F4EFE9; border-bottom: 1px solid #e5e5e5;">
+              <div style="font-size: 9px; letter-spacing: 2px; color: #999; text-transform: uppercase; margin-bottom: 15px;">
+                AWARE HAIR
+              </div>
+              <h1 style="margin: 0 0 10px 0; font-family: Georgia, serif; font-size: 28px; font-weight: 300; color: #1a1a1a; line-height: 1.3;">
+                Your Scalp Environment Report
+              </h1>
+              <p style="margin: 0; font-size: 13px; color: #666;">
+                Hi {{ person|lookup:'first_name'|default:'there' }}, here's your analysis for ZIP {{ person|lookup:'zip_code' }}
+              </p>
+            </td>
+          </tr>
+
+          <!-- ========== RISK BADGE ========== -->
+          <tr>
+            <td align="center" style="padding: 40px 25px; background-color: {{ person|lookup:'risk_color'|default:'#4CAF50' }};">
+              <div style="font-size: 48px; margin-bottom: 12px;">
+                {% if person|lookup:'risk_level' == 'LOW' %}🟢{% elif person|lookup:'risk_level' == 'MODERATE' %}🟡{% else %}🔴{% endif %}
+              </div>
+              <h2 style="margin: 0 0 10px 0; font-family: Georgia, serif; font-size: 24px; font-weight: 400; color: #ffffff;">
+                {{ person|lookup:'risk_badge'|default:'Environmental Assessment' }}
+              </h2>
+              <p style="margin: 0; font-size: 16px; color: #ffffff; opacity: 0.95;">
+                Overall Score: <strong>{{ person|lookup:'total_score'|default:'0' }}/100</strong>
+              </p>
+            </td>
+          </tr>
+
+          <!-- ========== DASHBOARD WITH INLINE INSIGHTS ========== -->
+          <tr>
+            <td style="padding: 35px 25px; background-color: #ffffff;">
+
+              <!-- Section Header -->
+              <h3 style="margin: 0 0 25px 0; font-family: Georgia, serif; font-size: 20px; font-weight: 400; color: #1a1a1a; text-align: center;">
+                Your Environmental Factors
+              </h3>
+
+              <!-- ========== UV INDEX ========== -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #f0f0f0;">
+                <tr>
+                  <td width="50" valign="top" style="padding-right: 15px;">
+                    <div style="font-size: 28px; line-height: 1;">☀️</div>
+                  </td>
+                  <td valign="top">
+                    <!-- Data -->
+                    <div style="margin-bottom: 8px;">
+                      <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #999; margin-bottom: 4px;">
+                        UV Index
+                      </div>
+                      <div style="font-size: 18px; font-weight: 600; color: #1a1a1a;">
+                        {{ person|lookup:'uv_index'|default:'0' }} — {{ person|lookup:'uv_risk'|default:'Low' }}
+                      </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div style="height: 6px; background-color: #f0f0f0; border-radius: 3px; overflow: hidden; margin-bottom: 10px;">
+                      <div style="height: 100%; background-color: {{ person|lookup:'uv_color'|default:'#4CAF50' }}; width: {% widthratio person|lookup:'uv_score' 25 100 %}%;"></div>
+                    </div>
+
+                    <!-- Inline Insight (1-2 sentences) -->
+                    <div style="font-size: 13px; line-height: 1.6; color: #666; font-style: italic;">
+                      {% if person|lookup:'uv_index'|floatformat <= 2.0 %}
+                        Low UV exposure means minimal sun stress on your scalp today. No special protection needed.
+                      {% elif person|lookup:'uv_index'|floatformat <= 5.0 %}
+                        Moderate UV levels — consider a hat if spending extended time outdoors.
+                      {% else %}
+                        High UV exposure. Protect your scalp with a hat or UV-defense products when outdoors.
+                      {% endif %}
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- ========== AIR QUALITY ========== -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #f0f0f0;">
+                <tr>
+                  <td width="50" valign="top" style="padding-right: 15px;">
+                    <div style="font-size: 28px; line-height: 1;">💨</div>
+                  </td>
+                  <td valign="top">
+                    <div style="margin-bottom: 8px;">
+                      <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #999; margin-bottom: 4px;">
+                        Air Quality
+                      </div>
+                      <div style="font-size: 18px; font-weight: 600; color: #1a1a1a;">
+                        {{ person|lookup:'aqi'|default:'0' }} AQI — {{ person|lookup:'aqi_risk'|default:'Good' }}
+                      </div>
+                    </div>
+
+                    <div style="height: 6px; background-color: #f0f0f0; border-radius: 3px; overflow: hidden; margin-bottom: 10px;">
+                      <div style="height: 100%; background-color: {{ person|lookup:'aqi_color'|default:'#4CAF50' }}; width: {% widthratio person|lookup:'aqi_score' 15 100 %}%;"></div>
+                    </div>
+
+                    <div style="font-size: 13px; line-height: 1.6; color: #666; font-style: italic;">
+                      {% if person|lookup:'aqi'|add:0 <= 50 %}
+                        Excellent air quality. Minimal pollution stress on your scalp and hair.
+                      {% elif person|lookup:'aqi'|add:0 <= 100 %}
+                        Moderate pollution — consider a clarifying wash if outdoors frequently.
+                      {% else %}
+                        Poor air quality. Use antioxidant scalp treatments to protect against pollution damage.
+                      {% endif %}
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- ========== WATER HARDNESS ========== -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #f0f0f0;">
+                <tr>
+                  <td width="50" valign="top" style="padding-right: 15px;">
+                    <div style="font-size: 28px; line-height: 1;">🚿</div>
+                  </td>
+                  <td valign="top">
+                    <div style="margin-bottom: 8px;">
+                      <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #999; margin-bottom: 4px;">
+                        Water Hardness
+                      </div>
+                      <div style="font-size: 18px; font-weight: 600; color: #1a1a1a;">
+                        {{ person|lookup:'water_hardness_ppm'|default:'0' }} ppm — {{ person|lookup:'water_risk'|default:'Normal' }}
+                      </div>
+                    </div>
+
+                    <div style="height: 6px; background-color: #f0f0f0; border-radius: 3px; overflow: hidden; margin-bottom: 10px;">
+                      <div style="height: 100%; background-color: {{ person|lookup:'water_color'|default:'#4CAF50' }}; width: {% widthratio person|lookup:'water_score' 12 100 %}%;"></div>
+                    </div>
+
+                    <div style="font-size: 13px; line-height: 1.6; color: #666; font-style: italic;">
+                      {% if person|lookup:'water_hardness_ppm'|add:0 < 120 %}
+                        Soft to moderate water. Your shampoo should lather well with minimal buildup.
+                      {% elif person|lookup:'water_hardness_ppm'|add:0 < 250 %}
+                        Moderately hard water may cause some mineral buildup. Use a clarifying treatment monthly.
+                      {% else %}
+                        Very hard water — your primary concern. Mineral deposits can cause dullness and dryness. Weekly clarifying is essential.
+                      {% endif %}
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- ========== HUMIDITY ========== -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #f0f0f0;">
+                <tr>
+                  <td width="50" valign="top" style="padding-right: 15px;">
+                    <div style="font-size: 28px; line-height: 1;">💧</div>
+                  </td>
+                  <td valign="top">
+                    <div style="margin-bottom: 8px;">
+                      <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #999; margin-bottom: 4px;">
+                        Humidity
+                      </div>
+                      <div style="font-size: 18px; font-weight: 600; color: #1a1a1a;">
+                        {{ person|lookup:'humidity_pct'|default:'0' }}% — {{ person|lookup:'humidity_risk'|default:'Normal' }}
+                      </div>
+                    </div>
+
+                    <div style="height: 6px; background-color: #f0f0f0; border-radius: 3px; overflow: hidden; margin-bottom: 10px;">
+                      <div style="height: 100%; background-color: {{ person|lookup:'humidity_color'|default:'#4CAF50' }}; width: {% widthratio person|lookup:'humidity_score' 22 100 %}%;"></div>
+                    </div>
+
+                    <div style="font-size: 13px; line-height: 1.6; color: #666; font-style: italic;">
+                      {% if person|lookup:'humidity_pct'|add:0 >= 40 and person|lookup:'humidity_pct'|add:0 <= 60 %}
+                        Optimal humidity for scalp health. Balanced moisture environment.
+                      {% elif person|lookup:'humidity_pct'|add:0 < 40 %}
+                        Dry air can dehydrate your scalp. Focus on hydrating treatments and leave-ins.
+                      {% else %}
+                        High humidity may increase frizz. Anti-frizz serums and lighter products recommended.
+                      {% endif %}
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- ========== TEMPERATURE ========== -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #f0f0f0;">
+                <tr>
+                  <td width="50" valign="top" style="padding-right: 15px;">
+                    <div style="font-size: 28px; line-height: 1;">🌡️</div>
+                  </td>
+                  <td valign="top">
+                    <div style="margin-bottom: 8px;">
+                      <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #999; margin-bottom: 4px;">
+                        Temperature
+                      </div>
+                      <div style="font-size: 18px; font-weight: 600; color: #1a1a1a;">
+                        {{ person|lookup:'temperature_f'|default:'0' }}°F — {{ person|lookup:'temperature_risk'|default:'Normal' }}
+                      </div>
+                    </div>
+
+                    <div style="height: 6px; background-color: #f0f0f0; border-radius: 3px; overflow: hidden; margin-bottom: 10px;">
+                      <div style="height: 100%; background-color: {{ person|lookup:'temperature_color'|default:'#4CAF50' }}; width: {% widthratio person|lookup:'temperature_score' 19 100 %}%;"></div>
+                    </div>
+
+                    <div style="font-size: 13px; line-height: 1.6; color: #666; font-style: italic;">
+                      {% if person|lookup:'temperature_f'|add:0 >= 60 and person|lookup:'temperature_f'|add:0 <= 80 %}
+                        Mild temperature — optimal for scalp comfort. No temperature-related stress.
+                      {% elif person|lookup:'temperature_f'|add:0 < 60 %}
+                        Cool weather can reduce oil production. Keep scalp moisturized and avoid over-washing.
+                      {% else %}
+                        Hot conditions may increase oiliness. Consider lighter products and more frequent cleansing.
+                      {% endif %}
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+<!-- ========== OZONE ========== -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td width="50" valign="top" style="padding-right: 15px;">
+                    <div style="font-size: 28px; line-height: 1;">🌫️</div>
+                  </td>
+                  <td valign="top">
+                    <div style="margin-bottom: 8px;">
+                      <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #999; margin-bottom: 4px;">
+                        Ozone Level
+                      </div>
+                      <div style="font-size: 18px; font-weight: 600; color: #1a1a1a;">
+                        {{ person|lookup:'ozone_aqi'|default:'0' }} — {{ person|lookup:'ozone_risk'|default:'Good' }}
+                      </div>
+                    </div>
+
+                    <div style="height: 6px; background-color: #f0f0f0; border-radius: 3px; overflow: hidden; margin-bottom: 10px;">
+                      <div style="height: 100%; background-color: {{ person|lookup:'ozone_color'|default:'#4CAF50' }}; width: {% widthratio person|lookup:'ozone_score' 7 100 %}%;"></div>
+                    </div>
+
+                    <div style="font-size: 13px; line-height: 1.6; color: #666; font-style: italic;">
+                      {% if person|lookup:'ozone_aqi'|add:0 <= 50 %}
+                        Low ozone levels. Minimal oxidative stress on your scalp.
+                      {% else %}
+                        Elevated ozone can irritate sensitive scalps. Antioxidant treatments are beneficial.
+                      {% endif %}
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- ========== PRODUCT RECOMMENDATIONS (SIMPLIFIED) ========== -->
+          <tr>
+            <td style="padding: 35px 25px; background-color: #1a1a1a;">
+              <h3 style="margin: 0 0 20px 0; font-family: Georgia, serif; font-size: 22px; font-weight: 400; color: #F4EFE9; text-align: center;">
+                Your Personalized Routine
+              </h3>
+
+              <!-- Simplified Recommendations -->
+              <div style="font-size: 14px; line-height: 1.8; color: rgba(244, 239, 233, 0.9); margin-bottom: 30px;">
+                {% if person|lookup:'water_hardness_ppm'|add:0 > 250 %}
+                  <strong>Focus on clarifying:</strong> Your very hard water ({{ person|lookup:'water_hardness_ppm' }} ppm) requires weekly clarifying to prevent mineral buildup.
+                {% elif person|lookup:'aqi'|add:0 > 100 %}
+                  <strong>Protect from pollution:</strong> Use antioxidant treatments to shield your scalp from poor air quality.
+                {% elif person|lookup:'uv_index'|floatformat > 5.0 %}
+                  <strong>UV protection:</strong> High sun exposure calls for UV-defense products and protective styling.
+                {% else %}
+                  <strong>Maintain balance:</strong> Your environment is favorable — focus on consistent cleansing and hydration.
+                {% endif %}
+              </div>
+
+              <!-- CTA Button -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td align="center">
+                    <a href="https://www.awarehair.com/collections/all?utm_source=klaviyo&utm_medium=email&utm_campaign=scalp_report"
+                       style="display: inline-block; padding: 16px 40px; background-color: #F4EFE9; color: #1a1a1a; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; border-radius: 3px;">
+                      Shop AWARE Hair
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ========== FOOTER ========== -->
+          <tr>
+            <td align="center" style="padding: 35px 25px; background-color: #ffffff; border-top: 1px solid #e5e5e5;">
+              <p style="margin: 0 0 20px 0; font-size: 13px; line-height: 1.7; color: #666;">
+                Questions? Reply to this email — we're here to help.
+              </p>
+
+              <!-- Social Links -->
+              <div style="margin: 20px 0;">
+                <a href="https://instagram.com/awarehair" style="margin: 0 10px; color: #666; text-decoration: none; font-size: 12px;">Instagram</a>
+                <span style="color: #ddd;">•</span>
+                <a href="https://facebook.com/awarehair" style="margin: 0 10px; color: #666; text-decoration: none; font-size: 12px;">Facebook</a>
+                <span style="color: #ddd;">•</span>
+                <a href="https://tiktok.com/@awarehair" style="margin: 0 10px; color: #666; text-decoration: none; font-size: 12px;">TikTok</a>
+              </div>
+
+              <!-- Brand + Legal -->
+              <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #f0f0f0;">
+                <div style="margin-bottom: 15px;">
+                  <strong style="font-size: 12px; letter-spacing: 1px; color: #1a1a1a;">AWARE HAIR</strong>
+                  <div style="font-size: 11px; color: #999; margin-top: 4px;">Scalp Care Powered by Science</div>
+                </div>
+
+                <p style="margin: 0; font-size: 10px; color: #999; line-height: 1.8;">
+                  <a href="{{ unsubscribe_link }}" style="color: #999; text-decoration: underline;">Unsubscribe</a>
+                  <span style="margin: 0 6px;">|</span>
+                  <a href="https://www.awarehair.com/pages/privacy-policy" style="color: #999; text-decoration: underline;">Privacy</a>
+                  <span style="margin: 0 6px;">|</span>
+                  <a href="https://www.awarehair.com/pages/contact" style="color: #999; text-decoration: underline;">Contact</a>
+                </p>
+              </div>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

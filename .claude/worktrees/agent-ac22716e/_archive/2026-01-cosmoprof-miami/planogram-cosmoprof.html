@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARE Hair - Planogram & Display</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2D4739;
+      --forest-deep: #1E3329;
+      --sage: #7A8F7D;
+      --sage-light: #A8B8AB;
+      --cream: #F8F5F0;
+      --cream-warm: #F3EDE5;
+      --sand: #E6DFD5;
+      --sand-dark: #C9BFB2;
+      --charcoal: #2A2A2A;
+      --warm-gray: #5C5C5C;
+      --warm-gray-light: #8A8A8A;
+      --gold: #B8956E;
+      --gold-muted: #C4A882;
+
+      --type-xs: 11px;
+      --type-sm: 13px;
+      --type-base: 14.5px;
+      --type-md: 16px;
+      --type-lg: 20px;
+      --type-xl: 28px;
+      --type-2xl: 36px;
+
+      --space-1: 6px;
+      --space-2: 10px;
+      --space-3: 16px;
+      --space-4: 26px;
+      --space-5: 42px;
+    }
+
+    @page { size: letter; margin: 0; }
+    @media print {
+      html, body { width: 8.5in; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page { box-shadow: none !important; }
+      .no-print { display: none !important; }
+      .grain::before { display: none; }
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: #b8b8b8;
+      color: var(--charcoal);
+      line-height: 1.5;
+      font-size: var(--type-base);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: 8.5in;
+      height: 11in;
+      margin: 24px auto;
+      background: #ffffff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.15);
+    }
+
+    .grain { position: relative; }
+    .grain::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: 1;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 128px 128px;
+      mix-blend-mode: multiply;
+    }
+
+    .page-standard {
+      padding: 0.7in 0.75in;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      z-index: 2;
+    }
+
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .page-header .logo { height: 16px; width: auto; opacity: 0.85; }
+    .page-header .page-num { font-size: var(--type-xs); letter-spacing: 0.15em; color: var(--sage); }
+    .page-footer { margin-top: auto; padding-top: var(--space-3); display: flex; justify-content: space-between; align-items: center; font-size: var(--type-xs); color: var(--warm-gray-light); }
+
+    .eyebrow { font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sage-light); margin-bottom: var(--space-2); display: flex; align-items: center; gap: 5px; }
+
+    .heading-decorated {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-2xl);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--forest-deep);
+      position: relative;
+      display: inline-block;
+      margin-bottom: var(--space-3);
+      padding-bottom: var(--space-2);
+    }
+    .heading-decorated::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--gold-muted), transparent);
+    }
+
+    .body-sm { font-size: var(--type-sm); line-height: 1.5; color: var(--warm-gray); }
+
+    .page-accented { position: relative; }
+    .page-accented::before,
+    .page-accented::after {
+      content: '';
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      border-color: var(--gold-muted);
+      border-style: solid;
+      opacity: 0.4;
+      z-index: 2;
+    }
+    .page-accented::before { top: 0.5in; right: 0.5in; border-width: 1px 1px 0 0; }
+    .page-accented::after { bottom: 0.5in; left: 0.5in; border-width: 0 0 1px 1px; }
+
+    .deco-number {
+      position: absolute;
+      top: 0.5in;
+      right: 0.6in;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 120px;
+      font-weight: 300;
+      color: var(--sand);
+      opacity: 0.25;
+      line-height: 1;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+
+    .checklist { list-style: none; }
+    .checklist li {
+      padding: 8px 0;
+      padding-left: 28px;
+      border-bottom: 1px solid var(--sand);
+      position: relative;
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--charcoal);
+    }
+    .checklist li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 14px;
+      height: 14px;
+      border: 1.5px solid var(--forest);
+      border-radius: 2px;
+    }
+    .checklist li.checked::before { background: var(--forest); }
+    .checklist li.checked::after {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 13px;
+      width: 8px;
+      height: 5px;
+      border-left: 2px solid white;
+      border-bottom: 2px solid white;
+      transform: rotate(-45deg);
+    }
+    .checklist li:last-child { border-bottom: none; }
+
+    .section-ornament { display: flex; align-items: center; gap: var(--space-3); margin: var(--space-3) 0; }
+    .section-ornament::before, .section-ornament::after { content: ''; height: 1px; flex: 1; background: linear-gradient(90deg, transparent, var(--sand-dark), transparent); }
+    .section-ornament .ornament-icon { width: 8px; height: 8px; border: 1px solid var(--gold-muted); transform: rotate(45deg); flex-shrink: 0; }
+
+    /* Planogram visualization */
+    .planogram-viz {
+      background: var(--cream);
+      border: 1px solid var(--sand);
+      padding: var(--space-4);
+      margin-bottom: var(--space-3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .planogram-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--type-lg);
+      color: var(--forest);
+      margin-bottom: var(--space-3);
+    }
+    .shelf {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      padding: 4px 8px 0;
+      margin-bottom: 0;
+    }
+    .shelf-bar {
+      height: 4px;
+      background: linear-gradient(180deg, #a09080 0%, #8a7a6a 100%);
+      margin-top: 0;
+    }
+    .shelf-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .p-img { display: block; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+
+    .print-btn { position: fixed; bottom: 24px; right: 24px; background: var(--forest); color: var(--cream); border: none; padding: 14px 28px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.04em; cursor: pointer; z-index: 100; }
+    .print-btn:hover { background: var(--forest-deep); }
+  </style>
+</head>
+<body>
+
+  <div class="page grain page-accented">
+    <div class="deco-number">24</div>
+    <div class="page-standard">
+      <header class="page-header">
+        <img class="logo" src="images/aware-logo.png" alt="AWARE">
+        <div class="page-num">24</div>
+      </header>
+
+      <div style="flex: 1; position: relative; z-index: 1;">
+        <p class="eyebrow">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Visual Merchandising
+        </p>
+        <h2 class="heading-decorated">Planogram & Display</h2>
+
+        <p class="body-sm" style="margin-bottom: var(--space-2);">
+          AWARE's streamlined 3-SKU system makes merchandising simple. Premium packaging commands attention without requiring extensive shelf space.
+        </p>
+
+        <!-- Product lineup -->
+        <p class="eyebrow" style="margin-bottom: 6px;">Product Lineup</p>
+        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); background: var(--cream); padding: var(--space-2); border: 1px solid var(--sand); margin-bottom: var(--space-3);">
+          <div style="text-align: center;">
+            <div style="height: 60px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px;">
+              <img src="images/shampoo-tight.png" style="height: 55px; width: auto;" alt="Shampoo">
+            </div>
+            <div style="font-size: 9px; font-weight: 600; color: var(--forest);">Shampoo</div>
+            <div style="font-size: 8px; color: var(--warm-gray);">300ml | $55</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="height: 60px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px;">
+              <img src="images/conditioner-tight.png" style="height: 55px; width: auto;" alt="Conditioner">
+            </div>
+            <div style="font-size: 9px; font-weight: 600; color: var(--forest);">Conditioner</div>
+            <div style="font-size: 8px; color: var(--warm-gray);">300ml | $55</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="height: 60px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px;">
+              <img src="images/leave-in-tight.png" style="height: 45px; width: auto;" alt="Leave-In">
+            </div>
+            <div style="font-size: 9px; font-weight: 600; color: var(--forest);">Leave-In</div>
+            <div style="font-size: 8px; color: var(--warm-gray);">250ml | $60</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="height: 60px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px;">
+              <img src="images/discovery-kit-tight.png" style="height: 45px; width: auto;" alt="Discovery Kit">
+            </div>
+            <div style="font-size: 9px; font-weight: 600; color: var(--forest);">Discovery Kit</div>
+            <div style="font-size: 8px; color: var(--warm-gray);">Travel | $75</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="height: 60px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px;">
+              <img src="images/hairties-tight.png" style="height: 40px; width: auto;" alt="Hair Ties">
+            </div>
+            <div style="font-size: 9px; font-weight: 600; color: var(--forest);">Hair Ties</div>
+            <div style="font-size: 8px; color: var(--warm-gray);">3-pack | $28</div>
+          </div>
+        </div>
+
+        <!-- Planogram options side by side -->
+        <p class="eyebrow" style="margin-bottom: 6px;">Display Options</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);">
+          <!-- Option A: Full Display 24" -->
+          <div class="planogram-viz" style="padding: 10px;">
+            <div style="font-size: 10px; font-weight: 600; color: var(--forest); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; text-align: center;">Option A: 24" Full Display</div>
+            <div class="shelf-row">
+              <div class="shelf" style="padding: 4px 8px 0; gap: 2px;">
+                <img class="p-img" src="images/shampoo-tight.png" style="height: 58px; width: 24px;" alt="S">
+                <img class="p-img" src="images/shampoo-tight.png" style="height: 58px; width: 24px;" alt="S">
+                <img class="p-img" src="images/shampoo-tight.png" style="height: 58px; width: 24px;" alt="S">
+                <img class="p-img" src="images/conditioner-tight.png" style="height: 58px; width: 24px;" alt="C">
+                <img class="p-img" src="images/conditioner-tight.png" style="height: 58px; width: 24px;" alt="C">
+                <img class="p-img" src="images/conditioner-tight.png" style="height: 58px; width: 24px;" alt="C">
+                <img class="p-img" src="images/leave-in-tight.png" style="height: 42px; width: 23px;" alt="L">
+                <img class="p-img" src="images/leave-in-tight.png" style="height: 42px; width: 23px;" alt="L">
+                <img class="p-img" src="images/leave-in-tight.png" style="height: 42px; width: 23px;" alt="L">
+              </div>
+              <div class="shelf-bar" style="width: 240px;"></div>
+            </div>
+            <div class="shelf-row" style="margin-top: 2px;">
+              <div class="shelf" style="padding: 4px 8px 0; gap: 2px;">
+                <img class="p-img" src="images/discovery-kit-tight.png" style="height: 42px; width: 46px;" alt="DK">
+                <img class="p-img" src="images/discovery-kit-tight.png" style="height: 42px; width: 46px;" alt="DK">
+                <img class="p-img" src="images/discovery-kit-tight.png" style="height: 42px; width: 46px;" alt="DK">
+                <img class="p-img" src="images/hairties-tight.png" style="height: 30px; width: 23px;" alt="HT">
+                <img class="p-img" src="images/hairties-tight.png" style="height: 30px; width: 23px;" alt="HT">
+                <img class="p-img" src="images/hairties-tight.png" style="height: 30px; width: 23px;" alt="HT">
+              </div>
+              <div class="shelf-bar" style="width: 240px;"></div>
+            </div>
+            <div style="font-size: 8px; color: var(--warm-gray); text-align: center; margin-top: 8px; line-height: 1.4;">
+              <strong>Row 1:</strong> Shampoo ×3, Conditioner ×3, Leave-In ×3<br>
+              <strong>Row 2:</strong> Discovery Kit ×3, Hair Ties ×3
+            </div>
+          </div>
+
+          <!-- Option B: Compact Display 12" -->
+          <div class="planogram-viz" style="padding: 10px;">
+            <div style="font-size: 10px; font-weight: 600; color: var(--forest); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; text-align: center;">Option B: 12" Compact</div>
+            <div class="shelf-row">
+              <div class="shelf" style="padding: 4px 8px 0; gap: 2px;">
+                <img class="p-img" src="images/shampoo-tight.png" style="height: 58px; width: 24px;" alt="S">
+                <img class="p-img" src="images/conditioner-tight.png" style="height: 58px; width: 24px;" alt="C">
+                <img class="p-img" src="images/leave-in-tight.png" style="height: 42px; width: 23px;" alt="L">
+              </div>
+              <div class="shelf-bar" style="width: 100px;"></div>
+            </div>
+            <div class="shelf-row" style="margin-top: 2px;">
+              <div class="shelf" style="padding: 4px 8px 0; gap: 2px;">
+                <img class="p-img" src="images/discovery-kit-tight.png" style="height: 42px; width: 46px;" alt="DK">
+                <img class="p-img" src="images/hairties-tight.png" style="height: 30px; width: 23px;" alt="HT">
+              </div>
+              <div class="shelf-bar" style="width: 100px;"></div>
+            </div>
+            <div style="font-size: 8px; color: var(--warm-gray); text-align: center; margin-top: 8px; line-height: 1.4;">
+              <strong>Row 1:</strong> Shampoo ×1, Conditioner ×1, Leave-In ×1<br>
+              <strong>Row 2:</strong> Discovery Kit ×1, Hair Ties ×1
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="gap: var(--space-3);">
+          <!-- Shelf Requirements -->
+          <div>
+            <p class="eyebrow" style="margin-bottom: 8px;">Shelf Requirements</p>
+            <div style="background: var(--cream); padding: var(--space-3); border: 1px solid var(--sand);">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px;">
+                <div><strong>Min. Width:</strong></div><div>12 inches</div>
+                <div><strong>Depth:</strong></div><div>6 inches</div>
+                <div><strong>Height:</strong></div><div>10 inches</div>
+                <div><strong>SKUs:</strong></div><div>3 core products</div>
+                <div><strong>Facings:</strong></div><div>2 per SKU recommended</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Display Options -->
+          <div>
+            <p class="eyebrow" style="margin-bottom: 8px;">Included with Orders</p>
+            <div style="background: var(--cream); padding: 10px var(--space-3); border: 1px solid var(--sand);">
+              <div style="font-size: 8px; color: var(--warm-gray); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em;">Merchandising (all orders)</div>
+              <div style="font-size: 10px; color: var(--charcoal); line-height: 1.6; margin-bottom: 8px;">Sample Kit, Kraft Bags, Brochures</div>
+              <div style="font-size: 8px; color: var(--warm-gray); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em;">Display Kit (one-time)</div>
+              <div style="font-size: 10px; color: var(--charcoal); line-height: 1.6;">Wood Stand (15"x7"), Acrylic Easel (8.5"x11"), Shelf Poster (4"x6"), Brochure Easel</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <footer class="page-footer">
+        <span>WWW.AWAREHAIR.COM | @AWAREHAIRCARE</span>
+        <span>Custom planograms available upon request</span>
+      </footer>
+    </div>
+  </div>
+
+  <button class="print-btn no-print" onclick="window.print()">Print / Save PDF</button>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

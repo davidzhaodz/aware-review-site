@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your AI Discovery Score</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f5f5f5;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 12px; overflow: hidden;">
+
+          <!-- Header -->
+          <tr>
+            <td style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 40px; text-align: center;">
+              <div style="font-size: 24px; font-weight: bold; color: #ffffff; letter-spacing: 4px;">AWARE</div>
+              <div style="color: rgba(255,255,255,0.6); margin-top: 8px; font-size: 14px;">AI Discovery Audit</div>
+            </td>
+          </tr>
+
+          <!-- Score Section -->
+          <tr>
+            <td style="padding: 40px; text-align: center;">
+              <h1 style="margin: 0 0 10px 0; color: #1a1a2e; font-size: 24px;">Hi {{ first_name|default:'there' }},</h1>
+              <p style="margin: 0 0 30px 0; color: #666; font-size: 16px;">Thanks for checking your salon's AI visibility.</p>
+
+              <!-- Score Display -->
+              <div style="background: #f8f9fa; border-radius: 12px; padding: 30px; margin-bottom: 30px;">
+                <div style="font-size: 14px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Your AI Discovery Score</div>
+                <div style="font-size: 64px; font-weight: bold; color: #1a1a2e; line-height: 1;">{{ ai_audit_score }}</div>
+                <div style="font-size: 24px; color: #999;">/100</div>
+                <div style="font-size: 24px; font-weight: bold; color: {% if ai_audit_tier == 'At Risk' %}#ef4444{% elif ai_audit_tier == 'Emerging' %}#f97316{% elif ai_audit_tier == 'Visible' %}#eab308{% else %}#22c55e{% endif %}; margin-top: 10px;">"{{ ai_audit_tier }}"</div>
+              </div>
+
+              <p style="color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
+                {% if ai_audit_tier == 'At Risk' %}
+                Your salon is currently at risk of being invisible to AI-driven discovery. But don't worry - this is fixable with the right actions.
+                {% elif ai_audit_tier == 'Emerging' %}
+                You're visible but missing key opportunities for AI recommendations. A few strategic improvements could significantly boost your score.
+                {% elif ai_audit_tier == 'Visible' %}
+                You're doing well! With some targeted optimizations, you could become a top recommendation in your area.
+                {% else %}
+                Excellent work! You're well-positioned for AI-driven client discovery. Let's make sure you stay ahead.
+                {% endif %}
+              </p>
+
+              <!-- Full Report CTA -->
+              <a href="{{ ai_audit_pdf_url }}" style="display: inline-block; background: #e94560; color: #ffffff; padding: 16px 40px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px;">Download Your Full Report</a>
+
+              <p style="color: #999; font-size: 14px; margin-top: 20px;">Your detailed PDF report is attached to this email</p>
+            </td>
+          </tr>
+
+          <!-- Biggest Gap Section -->
+          <tr>
+            <td style="padding: 0 40px 40px 40px;">
+              <div style="background: #fff5f5; border: 2px solid #e94560; border-radius: 12px; padding: 24px;">
+                <h3 style="margin: 0 0 12px 0; color: #e94560; font-size: 18px;">🎯 Your #1 Opportunity</h3>
+                <p style="margin: 0; color: #666; font-size: 16px; line-height: 1.6;">
+                  {% if ai_audit_biggest_gap == 'AI Likelihood' %}
+                  When potential clients ask AI for specialty services like scalp treatments in your area, you don't appear. Salons with clear specialty positioning are 2.3x more likely to be recommended.
+                  {% elif ai_audit_biggest_gap == 'Review Authority' %}
+                  Your Google review count is lower than top competitors. AI assistants heavily weight Google reviews when making recommendations. Boosting your Google reviews could significantly improve your visibility.
+                  {% elif ai_audit_biggest_gap == 'Digital Footprint' %}
+                  Your digital presence has gaps that make it harder for AI to "see" you. Adding native booking and connecting your social profiles could improve your score by 10+ points.
+                  {% else %}
+                  Your Google Business profile is missing key information that AI uses to recommend salons. Completing your services list and posting regularly could significantly improve your visibility.
+                  {% endif %}
+                </p>
+              </div>
+            </td>
+          </tr>
+
+          <!-- What's Next -->
+          <tr>
+            <td style="padding: 0 40px 40px 40px;">
+              <h2 style="margin: 0 0 20px 0; color: #1a1a2e; font-size: 20px;">What's Next?</h2>
+              <p style="color: #666; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+                Over the next two weeks, I'll send you specific tactics to improve each category of your score. Watch your inbox for:
+              </p>
+              <ul style="color: #666; font-size: 16px; line-height: 1.8; margin: 0; padding-left: 20px;">
+                <li>Google Business quick wins you can do today</li>
+                <li>The review strategy that actually works</li>
+                <li>How AI is changing client discovery (and what to do about it)</li>
+                <li>How top salons are getting ahead of this shift</li>
+              </ul>
+            </td>
+          </tr>
+
+          <!-- Strategy Call CTA -->
+          <tr>
+            <td style="padding: 0 40px 40px 40px;">
+              <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; padding: 30px; text-align: center;">
+                <h3 style="margin: 0 0 10px 0; color: #ffffff; font-size: 20px;">Want to discuss your results?</h3>
+                <p style="margin: 0 0 20px 0; color: rgba(255,255,255,0.7); font-size: 14px;">Free 20-minute strategy call with our team</p>
+                <a href="https://calendly.com/aware-hair/strategy" style="display: inline-block; background: #e94560; color: #ffffff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">Book a Strategy Call</a>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background: #f8f9fa; padding: 30px 40px; text-align: center;">
+              <div style="color: #999; font-size: 14px; margin-bottom: 10px;">
+                Questions? Just reply to this email.
+              </div>
+              <div style="color: #1a1a2e; font-weight: bold; font-size: 16px; letter-spacing: 2px;">AWARE</div>
+              <div style="color: #999; font-size: 12px; margin-top: 10px;">
+                awarehair.com | @awarehair
+              </div>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

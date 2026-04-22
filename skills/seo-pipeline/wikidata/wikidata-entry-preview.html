@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Wikidata Entry Preview (Internal Review)</title>
+<style>
+  :root {
+    --wiki-blue: #3366cc;
+    --wiki-bg: #f6f6f6;
+    --wiki-border: #a2a9b1;
+    --wiki-header-bg: #eaecf0;
+    --wiki-text: #202122;
+    --wiki-link: #0645ad;
+    --wiki-ref: #006621;
+    --aware-teal: #102B26;
+    --aware-cream: #f4efe9;
+    --aware-gold: #D4A574;
+    --status-green: #14866d;
+    --status-amber: #b5850b;
+    --status-red: #bf3d2b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Linux Libertine', 'Georgia', 'Times', serif;
+    color: var(--wiki-text);
+    background: #fff;
+    line-height: 1.6;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* Review Banner */
+  .review-banner {
+    background: var(--aware-teal);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .review-banner strong { color: var(--aware-gold); font-size: 16px; }
+  .review-banner .status {
+    background: var(--aware-gold);
+    color: var(--aware-teal);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Tab Navigation */
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--wiki-border);
+    margin-bottom: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 13px;
+  }
+  .tab {
+    padding: 8px 16px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    background: transparent;
+    color: var(--wiki-link);
+  }
+  .tab.active {
+    background: white;
+    border-color: var(--wiki-border);
+    border-bottom: 1px solid white;
+    margin-bottom: -1px;
+    font-weight: 600;
+    color: var(--wiki-text);
+  }
+
+  /* Page Content */
+  .content { padding-top: 16px; }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 400;
+    border-bottom: 1px solid var(--wiki-border);
+    padding-bottom: 4px;
+    margin-bottom: 16px;
+  }
+  h1 .qid {
+    font-size: 14px;
+    color: #72777d;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    margin-left: 8px;
+  }
+
+  .description {
+    font-size: 16px;
+    color: #54595d;
+    font-style: italic;
+    margin-bottom: 4px;
+  }
+  .aliases {
+    font-size: 13px;
+    color: #72777d;
+    margin-bottom: 24px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  /* Two Column Layout */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+  }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+
+  /* Statements Table */
+  h2 {
+    font-size: 20px;
+    font-weight: 400;
+    border-bottom: 1px solid var(--wiki-border);
+    padding-bottom: 4px;
+    margin: 24px 0 12px;
+  }
+  h2:first-of-type { margin-top: 0; }
+
+  .statement-group {
+    margin-bottom: 16px;
+  }
+
+  .statement {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+    font-size: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  .statement:last-child { border-bottom: none; }
+
+  .prop-name {
+    color: var(--wiki-link);
+    font-weight: 500;
+  }
+  .prop-code {
+    font-size: 11px;
+    color: #999;
+    margin-left: 4px;
+  }
+
+  .prop-value a {
+    color: var(--wiki-link);
+    text-decoration: none;
+  }
+  .prop-value a:hover { text-decoration: underline; }
+
+  .prop-value .ref-badge {
+    display: inline-block;
+    background: #e8f4e8;
+    color: var(--wiki-ref);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 6px;
+    font-weight: 600;
+    vertical-align: middle;
+  }
+
+  .prop-value .multi-value {
+    display: block;
+    margin-top: 4px;
+  }
+
+  /* References Section */
+  .references {
+    background: var(--wiki-bg);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin-top: 8px;
+    font-size: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  .references summary {
+    cursor: pointer;
+    color: var(--wiki-ref);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .ref-item {
+    margin-top: 8px;
+    padding: 8px;
+    background: white;
+    border-radius: 3px;
+    border-left: 3px solid var(--wiki-ref);
+  }
+  .ref-item .ref-url {
+    color: var(--wiki-link);
+    word-break: break-all;
+    font-size: 11px;
+  }
+  .ref-item .ref-title { font-weight: 600; }
+  .ref-item .ref-meta { color: #666; font-size: 11px; margin-top: 2px; }
+  .ref-item .ref-quote {
+    font-style: italic;
+    color: #444;
+    margin-top: 4px;
+    padding: 4px 8px;
+    background: #f9f9f9;
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  /* Infobox */
+  .infobox {
+    border: 1px solid var(--wiki-border);
+    background: var(--wiki-bg);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 13px;
+  }
+  .infobox-header {
+    background: var(--aware-teal);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 18px;
+    font-family: 'Linux Libertine', Georgia, serif;
+  }
+  .infobox-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    border-bottom: 1px solid #ddd;
+  }
+  .infobox-row:last-child { border-bottom: none; }
+  .infobox-label {
+    padding: 6px 10px;
+    font-weight: 600;
+    background: rgba(0,0,0,0.03);
+    font-size: 12px;
+  }
+  .infobox-value {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  .infobox-value a { color: var(--wiki-link); text-decoration: none; }
+
+  /* Review Checklist */
+  .checklist {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #fffbe6;
+    border: 1px solid #ffe066;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-top: 32px;
+    font-size: 14px;
+  }
+  .checklist h3 {
+    font-size: 15px;
+    margin-bottom: 12px;
+    color: var(--status-amber);
+    border: none;
+  }
+  .checklist label {
+    display: block;
+    padding: 4px 0;
+    cursor: pointer;
+  }
+  .checklist input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: var(--status-green);
+  }
+
+  /* Linked Entry */
+  .linked-entry {
+    margin-top: 32px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .linked-entry-header {
+    background: #f0f0f0;
+    padding: 8px 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border-bottom: 1px solid #ddd;
+  }
+  .linked-entry-body { padding: 16px; }
+
+  /* Competitor Context */
+  .competitor-context {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f0f7ff;
+    border: 1px solid #b3d4fc;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-top: 24px;
+    font-size: 13px;
+  }
+  .competitor-context h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: var(--wiki-blue);
+    border: none;
+  }
+  .competitor-context table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .competitor-context th {
+    text-align: left;
+    padding: 4px 8px;
+    border-bottom: 1px solid #b3d4fc;
+    font-weight: 600;
+  }
+  .competitor-context td {
+    padding: 4px 8px;
+    border-bottom: 1px solid #e6f0ff;
+  }
+  .competitor-context .yes { color: var(--status-green); font-weight: 600; }
+  .competitor-context .no { color: var(--status-red); }
+</style>
+</head>
+<body>
+
+<!-- Review Banner -->
+<div class="review-banner">
+  <div>
+    <strong>AWARE Hair - Wikidata Entry Preview</strong><br>
+    Internal review draft - March 26, 2026. Review all facts, then approve for Cowork execution.
+  </div>
+  <div class="status">DRAFT - NOT LIVE</div>
+</div>
+
+<!-- Tabs (visual only) -->
+<div class="tabs">
+  <div class="tab active">Wikidata Entry</div>
+  <div class="tab">Tina Mui Entry</div>
+  <div class="tab">References</div>
+  <div class="tab">Competitor Comparison</div>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+
+<h1>AWARE Hair <span class="qid">(Q-ID pending)</span></h1>
+<div class="description">American professional-exclusive scalp care brand</div>
+<div class="aliases">Also known as: AWARE Hair Care | AWARE | AWARE Hair LLC</div>
+
+<div class="layout">
+
+<!-- Left Column: Statements -->
+<div class="statements-col">
+
+<h2>Core Identity (7 statements)</h2>
+<div class="statement-group">
+
+  <div class="statement">
+    <div class="prop-name">instance of <span class="prop-code">P31</span></div>
+    <div class="prop-value">
+      <a href="#">brand</a> (Q431289)
+      <span class="ref-badge">2 refs</span>
+      <span class="multi-value"><a href="#">business</a> (Q4830453) <span class="ref-badge">1 ref</span></span>
+    </div>
+  </div>
+
+  <div class="statement">
+    <div class="prop-name">country <span class="prop-code">P17</span></div>
+    <div class="prop-value"><a href="#">United States of America</a> (Q30) <span class="ref-badge">2 refs</span></div>
+  </div>
+
+  <div class="statement">
+    <div class="prop-name">inception <span class="prop-code">P571</span></div>
+    <div class="prop-value">2023 <span style="color:#999; font-size:11px;">(year precision)</span> <span class="ref-badge">1 ref</span></div>
+  </div>
+
+  <div class="statement">
+    <div class="prop-name">headquarters location <span class="prop-code">P159</span></div>
+    <div class="prop-value"><a href="#">Los Angeles</a> (Q65) <span class="ref-badge">2 refs</span></div>
+  </div>
+
+  <div class="statement">
+    <div class="prop-name">industry <span class="prop-code">P452</span></div>
+    <div class="prop-value"><a href="#">cosmetics industry</a> (Q213930) <span class="ref-badge">1 ref</span></div>
+  </div>
+
+  <div class="statement">
+    <div class="prop-name">official website <span class="prop-code">P856</span></div>
+    <div class="prop-value"><a href="https://awarehair.com">https://awarehair.com</a> <span class="ref-badge">1 ref</span></div>
+  </div>
+
+  <div class="statement">
+    <div class="prop-name">founded by <span class="prop-code">P112</span></div>
+    <div class="prop-value"><a href="#">Tina Mui</a> (Q-ID pending) <span class="ref-badge">1 ref</span></div>
+  </div>
+
+</div>
+
+<h2>Products (2 statements)</h2>
+<div class="statement-group">
+  <div class="statement">
+    <div class="prop-name">products <span class="prop-code">P1056</span></div>
+    <div class="prop-value">
+      <a href="#">shampoo</a> (Q180204) <span class="ref-badge">1 ref</span>
+      <span class="multi-value"><a href="#">hair conditioner</a> (Q1444867) <span class="ref-badge">1 ref</span></span>
+    </div>
+  </div>
+</div>
+
+<h2>Social Media Identifiers (5 statements)</h2>
+<div class="statement-group">
+  <div class="statement">
+    <div class="prop-name">Instagram <span class="prop-code">P2003</span></div>
+    <div class="prop-value"><a href="https://instagram.com/awarehaircare">awarehaircare</a></div>
+  </div>
+  <div class="statement">
+    <div class="prop-name">TikTok <span class="prop-code">P7085</span></div>
+    <div class="prop-value"><a href="https://tiktok.com/@awarehaircare">awarehaircare</a></div>
+  </div>
+  <div class="statement">
+    <div class="prop-name">Facebook <span class="prop-code">P2013</span></div>
+    <div class="prop-value"><a href="https://facebook.com/awarehaircare">awarehaircare</a></div>
+  </div>
+  <div class="statement">
+    <div class="prop-name">YouTube <span class="prop-code">P2397</span></div>
+    <div class="prop-value"><a href="https://youtube.com/@awarehaircare">@awarehaircare</a></div>
+  </div>
+  <div class="statement">
+    <div class="prop-name">LinkedIn <span class="prop-code">P4264</span></div>
+    <div class="prop-value"><a href="https://linkedin.com/company/aware-hair">aware-hair</a></div>
+  </div>
+</div>
+
+<!-- References -->
+<h2>References (3 verified sources)</h2>
+
+<details class="references" open>
+  <summary>Reference 1 - NewBeauty (Primary)</summary>
+  <div class="ref-item">
+    <div class="ref-title">10 Standout Brands We Loved at Cosmoprof Miami 2026</div>
+    <div class="ref-meta">NewBeauty | February 2, 2026 | By Danielle Fontana Dooley</div>
+    <div class="ref-url">https://www.newbeauty.com/cosmoprof-miami-2026-recap/</div>
+    <div class="ref-quote">"AWARE Hair is a professional, scalp-first hair-care brand that blends natural-first ingredients with clinically proven bioactives to restore balance, strength and long-term hair health. Their 9.1 Professional Shampoo is packed with low and high-weight hyaluronic acid, Tahitian microalgae and green tea extract to cleanse while balancing."</div>
+    <div class="ref-meta" style="margin-top:8px;">Used for: instance of, country, inception, HQ, industry, website, products</div>
+  </div>
+</details>
+
+<details class="references" open>
+  <summary>Reference 2 - NewYou</summary>
+  <div class="ref-item">
+    <div class="ref-title">The 12 Most Game-Changing Beauty Brands We Discovered at Cosmoprof Miami 2026</div>
+    <div class="ref-meta">NewYou | February 11, 2026 | Contributor</div>
+    <div class="ref-url">https://www.newyou.com/the-12-most-game-changing-beauty-brands-we-discovered-at-cosmoprof-miami-2026/</div>
+    <div class="ref-quote">"Aware Hair brought a heartfelt story to Cosmoprof. Founded by a mother searching for solutions to her daughter's hair loss, the brand focuses on gentle, clean ingredients meant to nourish the scalp and support healthy hair."</div>
+    <div class="ref-meta" style="margin-top:8px;">Used for: instance of (2nd ref), founded by</div>
+  </div>
+</details>
+
+<details class="references" open>
+  <summary>Reference 3 - Modern Salon</summary>
+  <div class="ref-item">
+    <div class="ref-title">Be the Helpers: How to Support Those Impacted by the Los Angeles County Fires</div>
+    <div class="ref-meta">Modern Salon | January 13, 2025 | By Anne Moratto</div>
+    <div class="ref-url">https://www.modernsalon.com/1092913/be-the-helpers-how-to-support-those-impacted-by-the-los-angeles-county-fires</div>
+    <div class="ref-quote">"At AwareHair.com, they have assembled an interactive map of over 60 salons across Los Angeles offering services during this devastating event."</div>
+    <div class="ref-meta" style="margin-top:8px;">Used for: country (2nd ref), headquarters (2nd ref)</div>
+  </div>
+</details>
+
+</div>
+
+<!-- Right Column: Infobox -->
+<div>
+
+<div class="infobox">
+  <div class="infobox-header">AWARE Hair</div>
+  <div class="infobox-row">
+    <div class="infobox-label">Type</div>
+    <div class="infobox-value">Brand, Business</div>
+  </div>
+  <div class="infobox-row">
+    <div class="infobox-label">Country</div>
+    <div class="infobox-value">United States</div>
+  </div>
+  <div class="infobox-row">
+    <div class="infobox-label">Founded</div>
+    <div class="infobox-value">2023</div>
+  </div>
+  <div class="infobox-row">
+    <div class="infobox-label">Headquarters</div>
+    <div class="infobox-value">Los Angeles, CA</div>
+  </div>
+  <div class="infobox-row">
+    <div class="infobox-label">Founder</div>
+    <div class="infobox-value"><a href="#">Tina Mui</a></div>
+  </div>
+  <div class="infobox-row">
+    <div class="infobox-label">Industry</div>
+    <div class="infobox-value">Cosmetics</div>
+  </div>
+  <div class="infobox-row">
+    <div class="infobox-label">Products</div>
+    <div class="infobox-value">Shampoo, Hair conditioner</div>
+  </div>
+  <div class="infobox-row">
+    <div class="infobox-label">Website</div>
+    <div class="infobox-value"><a href="https://awarehair.com">awarehair.com</a></div>
+  </div>
+  <div class="infobox-row">
+    <div class="infobox-label">Instagram</div>
+    <div class="infobox-value"><a href="https://instagram.com/awarehaircare">@awarehaircare</a></div>
+  </div>
+  <div class="infobox-row">
+    <div class="infobox-label">TikTok</div>
+    <div class="infobox-value"><a href="https://tiktok.com/@awarehaircare">@awarehaircare</a></div>
+  </div>
+  <div class="infobox-row">
+    <div class="infobox-label">Facebook</div>
+    <div class="infobox-value"><a href="https://facebook.com/awarehaircare">awarehaircare</a></div>
+  </div>
+  <div class="infobox-row">
+    <div class="infobox-label">YouTube</div>
+    <div class="infobox-value"><a href="https://youtube.com/@awarehaircare">@awarehaircare</a></div>
+  </div>
+  <div class="infobox-row">
+    <div class="infobox-label">LinkedIn</div>
+    <div class="infobox-value"><a href="https://linkedin.com/company/aware-hair">aware-hair</a></div>
+  </div>
+  <div class="infobox-row">
+    <div class="infobox-label">Total</div>
+    <div class="infobox-value"><strong>15 statements, 3 references</strong></div>
+  </div>
+</div>
+
+<!-- Competitor Context -->
+<div class="competitor-context">
+  <h3>Competitive Landscape on Wikidata</h3>
+  <p style="margin-bottom:8px;">No indie scalp care brand has a Wikidata entry. AWARE would be first.</p>
+  <table>
+    <tr><th>Brand</th><th>Wikidata?</th><th>Properties</th></tr>
+    <tr><td>AWARE Hair</td><td class="yes">CREATING</td><td>15</td></tr>
+    <tr><td>Act+Acre</td><td class="no">None</td><td>-</td></tr>
+    <tr><td>Briogeo</td><td class="no">None</td><td>-</td></tr>
+    <tr><td>Innersense</td><td class="no">None</td><td>-</td></tr>
+    <tr><td>Prose</td><td class="no">None</td><td>-</td></tr>
+    <tr><td>Jupiter</td><td class="no">None</td><td>-</td></tr>
+    <tr><td>Ceremonia</td><td class="no">None</td><td>-</td></tr>
+    <tr><td>Olaplex</td><td class="yes">Exists</td><td>2 (stub)</td></tr>
+    <tr><td>Aveda</td><td class="yes">Exists</td><td>20+</td></tr>
+    <tr><td>Aesop</td><td class="yes">Exists</td><td>28+</td></tr>
+  </table>
+</div>
+
+</div>
+</div>
+
+<!-- Linked Entry: Tina Mui -->
+<div class="linked-entry">
+  <div class="linked-entry-header">Linked Entry: Tina Mui <span style="color:#999; font-weight:400; font-size:12px;">(Q-ID pending - created first)</span></div>
+  <div class="linked-entry-body">
+    <div class="description" style="margin-bottom:12px;">American trichologist and beauty industry entrepreneur, co-founder of AWARE Hair</div>
+    <div class="statement-group">
+      <div class="statement">
+        <div class="prop-name">instance of <span class="prop-code">P31</span></div>
+        <div class="prop-value"><a href="#">human</a> (Q5) <span class="ref-badge">1 ref</span></div>
+      </div>
+      <div class="statement">
+        <div class="prop-name">sex or gender <span class="prop-code">P21</span></div>
+        <div class="prop-value"><a href="#">female</a> (Q6581072) <span class="ref-badge">1 ref</span></div>
+      </div>
+      <div class="statement">
+        <div class="prop-name">occupation <span class="prop-code">P106</span></div>
+        <div class="prop-value"><a href="#">cosmetologist</a> <span class="ref-badge">1 ref</span></div>
+      </div>
+      <div class="statement">
+        <div class="prop-name">country of citizenship <span class="prop-code">P27</span></div>
+        <div class="prop-value"><a href="#">United States of America</a> (Q30) <span class="ref-badge">1 ref</span></div>
+      </div>
+      <div class="statement">
+        <div class="prop-name">notable work <span class="prop-code">P800</span></div>
+        <div class="prop-value"><a href="#">AWARE Hair</a> (Q-ID pending) <span class="ref-badge">1 ref</span></div>
+      </div>
+    </div>
+    <div class="references" style="margin-top:12px;">
+      <div style="font-size:11px; color: var(--wiki-ref); font-weight:600;">REFERENCE</div>
+      <div class="ref-item">
+        <div class="ref-title">The 12 Most Game-Changing Beauty Brands We Discovered at Cosmoprof Miami 2026</div>
+        <div class="ref-meta">NewYou | February 11, 2026</div>
+        <div class="ref-quote">"Founded by a mother searching for solutions to her daughter's hair loss, the brand focuses on gentle, clean ingredients meant to nourish the scalp and support healthy hair."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Review Checklist -->
+<div class="checklist">
+  <h3>Team Review Checklist</h3>
+  <label><input type="checkbox"> Brand name is "AWARE Hair" (not "Aware Hair" or "AWARE HAIR")</label>
+  <label><input type="checkbox"> Description is accurate: "American professional-exclusive scalp care brand"</label>
+  <label><input type="checkbox"> Founding date 2023 is correct (company incorporation, not brand launch Aug 2025)</label>
+  <label><input type="checkbox"> Headquarters "Los Angeles" is correct (not Pasadena or other specific city)</label>
+  <label><input type="checkbox"> Tina Mui description is accurate: "American trichologist and beauty industry entrepreneur"</label>
+  <label><input type="checkbox"> All 3 reference URLs are verified working and mention AWARE by name</label>
+  <label><input type="checkbox"> Social media handles are all correct: @awarehaircare across all platforms</label>
+  <label><input type="checkbox"> LinkedIn slug is correct: aware-hair (not awarehaircare)</label>
+  <label><input type="checkbox"> No claims made that aren't supported by the 3 references</label>
+  <label><input type="checkbox"> No sensitive information included (no street address, no personal details)</label>
+  <label><input type="checkbox"> Approved for Cowork execution</label>
+</div>
+
+<div style="margin-top:24px; padding:16px; background:#f5f5f5; border-radius:6px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size:13px; color:#666;">
+  <strong>Next Steps After Approval:</strong><br>
+  1. Paste <code>skills/seo-aeo/wikidata/COWORK-PASTE-PROMPT.md</code> into Claude Cowork<br>
+  2. Cowork creates both entries (Tina Mui first, then AWARE Hair)<br>
+  3. Cowork screenshots for final verification before publish<br>
+  4. After publish: add Wikidata Q-ID to Organization schema sameAs + llms.txt<br>
+  5. Monitor for Google Knowledge Panel appearance (check weekly for 4 weeks)
+</div>
+
+</div>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teamwork / Labayk - March 11 Cheat Sheet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2D4739;
+      --forest-deep: #1E3228;
+      --sage: #7A8F7D;
+      --cream: #F8F6F1;
+      --sand: #E8E4DC;
+      --charcoal: #2C2C2C;
+      --warm-gray: #6B6B6B;
+      --gold: #B8956E;
+      --gold-light: #C9A882;
+      --white: #FFFFFF;
+      --mist: #D5DDD8;
+      --divider: #D4CFC6;
+      --green-soft: #4A8C6B;
+      --green-bg: #F2F8F5;
+      --red-soft: #C45B4A;
+      --red-bg: #FDF5F4;
+      --amber-soft: #B8860B;
+      --amber-bg: #FFFBF0;
+      --blue-soft: #4A7CB8;
+      --blue-bg: #F0F5FC;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      background: var(--sand);
+      color: var(--charcoal);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 920px;
+      margin: 0 auto;
+      background: var(--white);
+    }
+
+    /* ============ HEADER ============ */
+
+    .header {
+      background: var(--forest-deep);
+      padding: 36px 48px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 40%, transparent 100%);
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .header h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      font-size: 26px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--cream);
+    }
+
+    .header .meeting-info {
+      font-size: 14px;
+      color: var(--sage);
+      margin-top: 4px;
+    }
+
+    .header .meeting-info strong {
+      color: var(--gold-light);
+      font-weight: 500;
+    }
+
+    .header .goal-line {
+      margin-top: 14px;
+      font-size: 15px;
+      color: var(--cream);
+      opacity: 0.85;
+      max-width: 650px;
+      line-height: 1.5;
+    }
+
+    .header-right {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .header-right .label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sage);
+      opacity: 0.7;
+    }
+
+    .header-right .meeting-type {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 14px;
+      color: var(--gold-light);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    /* Status bar */
+    .status-bar {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--divider);
+      background: var(--forest);
+    }
+
+    .status-item {
+      flex: 1;
+      padding: 10px 16px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      color: var(--cream);
+      font-size: 12px;
+    }
+
+    .status-item:last-child { border-right: none; }
+
+    .status-item .status-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sage);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .status-item .status-value {
+      font-weight: 600;
+      color: var(--gold-light);
+    }
+
+    .status-item .status-value.alert {
+      color: var(--red-soft);
+    }
+
+    /* ============ NAV STRIP ============ */
+
+    .nav-strip {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--divider);
+      background: var(--cream);
+      overflow-x: auto;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-strip a {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      text-decoration: none;
+      padding: 12px 16px;
+      white-space: nowrap;
+      border-right: 1px solid var(--divider);
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-strip a:hover {
+      color: var(--forest);
+      background: var(--white);
+    }
+
+    /* ============ CONTENT ============ */
+
+    .content {
+      padding: 0 48px 56px;
+    }
+
+    .section {
+      padding-top: 36px;
+    }
+
+    .section-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--divider);
+    }
+
+    .section-sublabel {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      font-weight: 600;
+      margin-bottom: 12px;
+      margin-top: 24px;
+    }
+
+    /* ============ PEOPLE ============ */
+
+    .people-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--divider);
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .people-grid.three-col {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .person-card {
+      background: var(--white);
+      padding: 18px 20px;
+    }
+
+    .person-name {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--forest);
+    }
+
+    .person-title {
+      font-size: 12.5px;
+      color: var(--warm-gray);
+      margin-top: 2px;
+    }
+
+    .person-note {
+      font-size: 13px;
+      color: var(--charcoal);
+      margin-top: 8px;
+      line-height: 1.45;
+      font-style: italic;
+    }
+
+    .person-tag {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 600;
+    }
+
+    .tag-champion { background: var(--green-bg); color: var(--green-soft); }
+    .tag-decision { background: var(--amber-bg); color: var(--amber-soft); }
+    .tag-caution { background: var(--red-bg); color: var(--red-soft); }
+    .tag-info { background: var(--blue-bg); color: var(--blue-soft); }
+
+    /* ============ ENTITY MAP ============ */
+
+    .entity-map {
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .entity-row {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .entity-row:last-child { border-bottom: none; }
+
+    .entity-label-cell {
+      background: var(--cream);
+      padding: 14px 16px;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+    }
+
+    .entity-content-cell {
+      padding: 14px 16px;
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    .entity-content-cell strong {
+      color: var(--forest);
+    }
+
+    .entity-content-cell .entity-detail {
+      color: var(--warm-gray);
+      font-size: 12.5px;
+      margin-top: 2px;
+    }
+
+    /* ============ COMPARISON TABLE ============ */
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    .compare-table th {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 2px solid var(--divider);
+      font-weight: 600;
+    }
+
+    .compare-table th.col-good { color: var(--green-soft); }
+    .compare-table th.col-bad { color: var(--red-soft); }
+
+    .compare-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--divider);
+      vertical-align: top;
+    }
+
+    .compare-table td.cell-label {
+      font-weight: 600;
+      color: var(--forest);
+      width: 170px;
+    }
+
+    .compare-table td.cell-bad {
+      background: var(--red-bg);
+      color: var(--red-soft);
+    }
+
+    .compare-table td.cell-good {
+      background: var(--green-bg);
+      color: var(--green-soft);
+    }
+
+    /* ============ TWO-COL ============ */
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .col-box {
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      padding: 20px;
+    }
+
+    .col-box h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .col-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .col-box li {
+      font-size: 13.5px;
+      padding: 5px 0;
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.45;
+    }
+
+    .col-box li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .col-box.red-list li::before { background: var(--red-soft); }
+    .col-box.green-list li::before { background: var(--green-soft); }
+    .col-box.amber-list li::before { background: var(--amber-soft); }
+
+    /* ============ REBUTTAL TABLE ============ */
+
+    .rebuttal-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    .rebuttal-table th {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 10px 14px;
+      border-bottom: 2px solid var(--divider);
+      text-align: left;
+    }
+
+    .rebuttal-table th:first-child { color: var(--red-soft); }
+    .rebuttal-table th:last-child { color: var(--green-soft); }
+
+    .rebuttal-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--divider);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .rebuttal-table td:first-child {
+      color: var(--warm-gray);
+      font-style: italic;
+      width: 40%;
+    }
+
+    .rebuttal-table td:last-child {
+      color: var(--charcoal);
+    }
+
+    /* ============ SCRIPT BOX ============ */
+
+    .script-box {
+      background: var(--cream);
+      border-left: 3px solid var(--gold);
+      padding: 16px 20px;
+      margin: 12px 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--charcoal);
+      font-style: italic;
+    }
+
+    .script-box .script-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      font-style: normal;
+      margin-bottom: 6px;
+    }
+
+    .script-box.caution {
+      border-left-color: var(--red-soft);
+      background: var(--red-bg);
+    }
+
+    .script-box.caution .script-label {
+      color: var(--red-soft);
+    }
+
+    .script-box.success {
+      border-left-color: var(--green-soft);
+      background: var(--green-bg);
+    }
+
+    .script-box.success .script-label {
+      color: var(--green-soft);
+    }
+
+    /* ============ INFO CARDS ============ */
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--divider);
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .info-grid.three-col {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .info-card {
+      background: var(--white);
+      padding: 16px 20px;
+    }
+
+    .info-card .info-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      font-weight: 600;
+    }
+
+    .info-card .info-value {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--forest);
+      margin-top: 4px;
+    }
+
+    .info-card .info-value.alert { color: var(--red-soft); }
+    .info-card .info-value.good { color: var(--green-soft); }
+    .info-card .info-value.amber { color: var(--amber-soft); }
+
+    .info-card .info-detail {
+      font-size: 12.5px;
+      color: var(--warm-gray);
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    /* ============ FLOW SEQUENCE ============ */
+
+    .flow-sequence {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .flow-step {
+      flex: 1;
+      padding: 16px 18px;
+      position: relative;
+      border-right: 1px solid var(--divider);
+    }
+
+    .flow-step:last-child { border-right: none; }
+
+    .flow-step .flow-num {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .flow-step .flow-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--forest);
+      margin-bottom: 4px;
+    }
+
+    .flow-step .flow-detail {
+      font-size: 12.5px;
+      color: var(--warm-gray);
+      line-height: 1.4;
+    }
+
+    .flow-step::after {
+      content: '';
+      position: absolute;
+      right: -7px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      border-top: 1px solid var(--divider);
+      border-right: 1px solid var(--divider);
+      background: var(--white);
+      transform: translateY(-50%) rotate(45deg);
+      z-index: 1;
+    }
+
+    .flow-step:last-child::after { display: none; }
+
+    /* ============ CALLOUT ============ */
+
+    .callout {
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      padding: 18px 20px;
+      margin-top: 16px;
+    }
+
+    .callout.callout-red {
+      border-color: var(--red-soft);
+      background: var(--red-bg);
+    }
+
+    .callout.callout-green {
+      border-color: var(--green-soft);
+      background: var(--green-bg);
+    }
+
+    .callout.callout-amber {
+      border-color: var(--amber-soft);
+      background: var(--amber-bg);
+    }
+
+    .callout .callout-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .callout.callout-red .callout-title { color: var(--red-soft); }
+    .callout.callout-green .callout-title { color: var(--green-soft); }
+    .callout.callout-amber .callout-title { color: var(--amber-soft); }
+
+    .callout .callout-body {
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    /* ============ PRINT ============ */
+
+    @media print {
+      body { background: white; }
+      .page { box-shadow: none; }
+      .nav-strip { display: none; }
+      .section { break-inside: avoid; }
+      .content { padding: 0 36px 36px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-row">
+        <div>
+          <h1>AWARE &times; Teamwork / Labayk</h1>
+          <div class="meeting-info">
+            Contract Negotiation &mdash; <strong>March 11, 2026</strong> &mdash; In Person
+          </div>
+          <div class="goal-line">
+            Sign a narrowly-scoped NDA/confidentiality agreement. Preserve the Boom Labs manufacturing relationship. Keep the door open for a future Teamwork manufacturing contract.
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="label">Meeting Type</div>
+          <div class="meeting-type">Negotiation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATUS BAR -->
+    <div class="status-bar">
+      <div class="status-item">
+        <span class="status-label">Their Ask</span>
+        <span class="status-value alert">Take Over Mfg</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Our Goal</span>
+        <span class="status-value">NDA Only</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Boom Labs Status</span>
+        <span class="status-value">Active Contract</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Concession</span>
+        <span class="status-value">Future Mfg Contract</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Key Risk</span>
+        <span class="status-value alert">Facility Access</span>
+      </div>
+    </div>
+
+    <!-- NAV -->
+    <div class="nav-strip">
+      <a href="#situation">Situation</a>
+      <a href="#people">People</a>
+      <a href="#entities">Entity Map</a>
+      <a href="#contract">Contract Issues</a>
+      <a href="#redlines">Red Lines</a>
+      <a href="#rebuttals">Rebuttals</a>
+      <a href="#concession">Concession</a>
+      <a href="#flow">Meeting Flow</a>
+      <a href="#scripts">Key Lines</a>
+    </div>
+
+    <div class="content">
+
+      <!-- SITUATION -->
+      <div class="section" id="situation">
+        <div class="section-label">Situation Overview</div>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">What Happened</div>
+            <div class="info-value amber">Seyed Joined Teamwork</div>
+            <div class="info-detail">Our chemist Seyed Hossein Zoie was independent when we signed with Boom Labs. He's now a Teamwork/Labayk employee. Teamwork wants to absorb the entire manufacturing relationship.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">What We Need</div>
+            <div class="info-value good">Facility NDA</div>
+            <div class="info-detail">A simple confidentiality agreement covering Teamwork employees who encounter our formulas. Not a manufacturing agreement. Boom Labs contract stays primary.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PEOPLE -->
+      <div class="section" id="people">
+        <div class="section-label">Key People</div>
+        <div class="people-grid">
+          <div class="person-card">
+            <div class="person-name">Hyder Razavi</div>
+            <div class="person-title">Owner, Ocean Blue Inc. / Teamwork / Labayk</div>
+            <div class="person-note">Controls both entities. Signs for both Teamwork Packaging and Labayk. Wants to consolidate the AWARE relationship under his companies.</div>
+            <span class="person-tag tag-decision">Decision Maker</span>
+          </div>
+          <div class="person-card">
+            <div class="person-name">Seyed Hossein Zoie</div>
+            <div class="person-title">Chemist / CEO of Boom Lab Inc.</div>
+            <div class="person-note">Developed our formulas. Signed the Boom Labs contract as CEO. Now employed by Teamwork/Labayk. Has privately indicated Teamwork wants to own the relationship.</div>
+            <span class="person-tag tag-caution">Dual Role - Handle Carefully</span>
+          </div>
+        </div>
+        <div class="people-grid" style="margin-top: -1px; border-top: none;">
+          <div class="person-card">
+            <div class="person-name">Tina Mui</div>
+            <div class="person-title">CEO, AWARE Hair LLC</div>
+            <div class="person-note">Signs for AWARE. Needs to hold firm on NDA scope. Has authority to offer the future contract concession.</div>
+            <span class="person-tag tag-champion">Our Lead</span>
+          </div>
+          <div class="person-card">
+            <div class="person-name">David Zhao</div>
+            <div class="person-title">Co-Founder, AWARE Hair LLC</div>
+            <div class="person-note">Manages operations and contracts. Has detailed knowledge of all agreements. Support role in negotiation.</div>
+            <span class="person-tag tag-info">Support / Detail</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENTITY MAP -->
+      <div class="section" id="entities">
+        <div class="section-label">Entity Relationship Map</div>
+        <div class="entity-map">
+          <div class="entity-row">
+            <div class="entity-label-cell">Boom Lab Inc.</div>
+            <div class="entity-content-cell">
+              <strong>Our contract manufacturer.</strong> Signed agreement July 22, 2024 (+ Oct 2024 addendum).
+              <div class="entity-detail">Seyed is CEO. CA Corp #C4285797. 6460 Coyote St, Chino Hills, CA 91709. Contract covers 10,000 units per SKU across 3 products + bulk.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Ocean Blue Inc.</div>
+            <div class="entity-content-cell">
+              <strong>Parent company.</strong> d/b/a Teamwork Packaging. Owned by Hyder Razavi.
+              <div class="entity-detail">Packaging and filling operations. The physical facility where production happens.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">NextGen313</div>
+            <div class="entity-content-cell">
+              <strong>Hyder's other entity.</strong> d/b/a Labayk. Also owned by Hyder Razavi.
+              <div class="entity-detail">Formulation laboratory work. Where Seyed does the actual chemistry.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Seyed H. Zoie</div>
+            <div class="entity-content-cell">
+              <strong>Individual with dual obligations.</strong>
+              <div class="entity-detail">CEO of Boom Lab Inc. (our counterparty). Employee of Teamwork/Labayk (Hyder's companies). Developed AWARE formulas. Key person who bridges both relationships.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-amber" style="margin-top: 16px;">
+          <div class="callout-title">Legal Question for Attorney</div>
+          <div class="callout-body">Does Seyed still have authority to act as CEO of Boom Lab Inc.? His employment with Teamwork may create conflicts. The Boom Labs agreement says "Manufacturer may not assign this Agreement without AWARE's prior written consent" (Section 13.2 of V2 / similar in original). We have NOT consented to any transfer.</div>
+        </div>
+      </div>
+
+      <!-- CONTRACT COMPARISON -->
+      <div class="section" id="contract">
+        <div class="section-label">Contract Comparison</div>
+
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Element</th>
+              <th class="col-bad">Their V2 Draft</th>
+              <th class="col-good">Our NDA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="cell-label">Document Type</td>
+              <td class="cell-bad">Contract Manufacturing Agreement (25 pages)</td>
+              <td class="cell-good">Facility Confidentiality & NDA (5 pages)</td>
+            </tr>
+            <tr>
+              <td class="cell-label">Defined Role</td>
+              <td class="cell-bad">"Manufacturer" - gives them full mfg authority</td>
+              <td class="cell-good">"Facility Operator" - limited to NDA scope</td>
+            </tr>
+            <tr>
+              <td class="cell-label">Manufacturing Services</td>
+              <td class="cell-bad">Full formulation, filling, packaging scope</td>
+              <td class="cell-good">Explicitly excluded (Sec 1.2)</td>
+            </tr>
+            <tr>
+              <td class="cell-label">Purchase Orders</td>
+              <td class="cell-bad">AWARE issues POs to Teamwork</td>
+              <td class="cell-good">Explicitly excluded (Sec 1.3)</td>
+            </tr>
+            <tr>
+              <td class="cell-label">Quality Control</td>
+              <td class="cell-bad">Full QC/testing sections (duplicates Boom Labs)</td>
+              <td class="cell-good">Not included - governed by Boom Labs agreement</td>
+            </tr>
+            <tr>
+              <td class="cell-label">Formulas Included</td>
+              <td class="cell-bad">Full shampoo formula with % and process steps</td>
+              <td class="cell-good">No formulas - general reference only</td>
+            </tr>
+            <tr>
+              <td class="cell-label">Insurance</td>
+              <td class="cell-bad">$2M manufacturer-grade requirements</td>
+              <td class="cell-good">Not required - Boom Labs carries mfg insurance</td>
+            </tr>
+            <tr>
+              <td class="cell-label">Boom Labs Relationship</td>
+              <td class="cell-bad">Not mentioned. "Entire Agreement" clause could supersede it</td>
+              <td class="cell-good">Explicitly preserved (Sec 1.2, 4.3, 10.2)</td>
+            </tr>
+            <tr>
+              <td class="cell-label">Term</td>
+              <td class="cell-bad">1-year auto-renew, 60-day notice</td>
+              <td class="cell-good">Tied to manufacturing activity at facility, 30-day termination</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RED LINES -->
+      <div class="section" id="redlines">
+        <div class="section-label">Red Lines vs. Flexibility</div>
+        <div class="two-col">
+          <div class="col-box red-list">
+            <h2>Non-Negotiable</h2>
+            <ul>
+              <li>Boom Labs agreement remains primary and controlling</li>
+              <li>Teamwork agreement scoped to NDA/confidentiality ONLY</li>
+              <li>No actual formulas or specs in the Teamwork agreement</li>
+              <li>No purchase order or manufacturing services provisions</li>
+              <li>AWARE retains right to choose its manufacturing partner</li>
+              <li>No "Entire Agreement" clause that could override Boom Labs</li>
+              <li>We do not consent to assignment of the Boom Labs contract</li>
+            </ul>
+          </div>
+          <div class="col-box green-list">
+            <h2>Open to Discussion</h2>
+            <ul>
+              <li>Timeline for future Teamwork manufacturing contract</li>
+              <li>Specific NDA terms (duration, scope of coverage)</li>
+              <li>Indemnification language protecting Teamwork from liability</li>
+              <li>Non-compete scope (how broad the derivative formula ban is)</li>
+              <li>Insurance requirements Teamwork already carries</li>
+              <li>Preliminary discussion of future manufacturing pricing</li>
+              <li>Competing projects notification scope</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- REBUTTALS -->
+      <div class="section" id="rebuttals">
+        <div class="section-label">Their Arguments & Our Responses</div>
+
+        <table class="rebuttal-table">
+          <thead>
+            <tr>
+              <th>They'll Say</th>
+              <th>Our Response</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>"Seyed works for us now, so the manufacturing relationship should be with us."</td>
+              <td><strong>Seyed's employment doesn't change our contract.</strong> Our agreement is with Boom Lab Inc. as an entity. We respect his choice to join Teamwork, but that's exactly why we need a separate NDA - to protect everyone.</td>
+            </tr>
+            <tr>
+              <td>"We can offer better terms, more capacity, streamlined operations."</td>
+              <td><strong>Great - let's explore that for future runs.</strong> Right now the priority is the confidentiality framework. Once Boom Labs commitments are complete, we sit down on manufacturing terms.</td>
+            </tr>
+            <tr>
+              <td>"The V2 just formalizes what's already happening on the ground."</td>
+              <td><strong>If manufacturing happens at your facility, that's why we need the NDA.</strong> But the manufacturing agreement itself stays with the entity we contracted with. Two separate relationships.</td>
+            </tr>
+            <tr>
+              <td>"Boom Labs is just Seyed - we're the real operation."</td>
+              <td><strong>We understand the practical dynamics.</strong> Legally, our contract is with Boom Lab Inc. We need to maintain that structure. The NDA protects the information flowing through your facility and team.</td>
+            </tr>
+            <tr>
+              <td>"We need a manufacturing agreement for our own liability and compliance."</td>
+              <td><strong>A confidentiality agreement can include appropriate liability protections.</strong> We can work on indemnification language. But it should be scoped to confidentiality, not manufacturing services.</td>
+            </tr>
+            <tr>
+              <td>"We're taking over Boom Labs' operations."</td>
+              <td><strong>Any assignment requires our written consent per the contract.</strong> We haven't consented. Let's focus on the NDA, which benefits everyone right now.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- CONCESSION STRATEGY -->
+      <div class="section" id="concession">
+        <div class="section-label">Concession Strategy</div>
+
+        <div class="info-grid three-col">
+          <div class="info-card">
+            <div class="info-label">When to Play</div>
+            <div class="info-value amber">After Pushback</div>
+            <div class="info-detail">Only after firmly establishing NDA-only scope AND they push back wanting a manufacturing relationship.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">The Offer</div>
+            <div class="info-value good">Future Mfg Contract</div>
+            <div class="info-detail">After current Boom Labs commitments are fulfilled, we negotiate a direct manufacturing agreement with Teamwork.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Conditions</div>
+            <div class="info-value">NDA Signed First</div>
+            <div class="info-detail">NDA must be signed and in good standing. Current Boom Labs production must be completed. Terms negotiated in good faith.</div>
+          </div>
+        </div>
+
+        <div class="script-box success" style="margin-top: 16px;">
+          <div class="script-label">The Concession Script</div>
+          "We understand where you're coming from. You've built the infrastructure, you employ Seyed, and you want a direct relationship. That makes sense. Here's what we propose: let's get this confidentiality agreement signed now to protect everyone. Then, once our current production commitments with Boom Labs are fulfilled, we sit down and negotiate a manufacturing agreement directly with Teamwork. We're committed to that conversation."
+        </div>
+
+        <div class="callout callout-red" style="margin-top: 16px;">
+          <div class="callout-title">Do NOT Promise</div>
+          <div class="callout-body">
+            Specific pricing or volume for the future contract. A specific transition date. Exclusivity with Teamwork. That future terms will mirror Boom Labs terms. Anything that implies Boom Labs contract is voided.
+          </div>
+        </div>
+      </div>
+
+      <!-- MEETING FLOW -->
+      <div class="section" id="flow">
+        <div class="section-label">Recommended Meeting Flow</div>
+
+        <div class="flow-sequence">
+          <div class="flow-step">
+            <div class="flow-num">Phase 1</div>
+            <div class="flow-title">Appreciate</div>
+            <div class="flow-detail">Value the facility, the team, the production quality. We want to continue working together.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">Phase 2</div>
+            <div class="flow-title">Redirect</div>
+            <div class="flow-detail">V2 is thorough but overscoped. Structured as a manufacturing agreement, not the NDA we need.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">Phase 3</div>
+            <div class="flow-title">Clarify</div>
+            <div class="flow-detail">Our mfg contract is with Boom Labs. What we need with Teamwork is confidentiality protection.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">Phase 4</div>
+            <div class="flow-title">Propose</div>
+            <div class="flow-detail">Present our Facility NDA as the right-sized document. Discuss terms.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">Phase 5</div>
+            <div class="flow-title">Concede</div>
+            <div class="flow-detail">If they push back: future mfg contract after Boom Labs is complete.</div>
+          </div>
+        </div>
+
+        <div class="section-sublabel">Opening Script</div>
+        <div class="script-box">
+          <div class="script-label">Tina Opens</div>
+          "Thanks for meeting with us. We value the Teamwork and Labayk team - the production quality has been excellent and we want to continue working together. We're here because we want to formalize confidentiality protections, which is good for everyone."
+        </div>
+
+        <div class="section-sublabel">Transition to Redirect</div>
+        <div class="script-box">
+          <div class="script-label">David Pivots</div>
+          "We reviewed the V2 draft. The IP protections are well-crafted. However, the document is structured as a full manufacturing agreement - purchase orders, quality control, testing, insurance, and our actual formula specifications. That's beyond what we need here. Our manufacturing contract is with Boom Lab Inc. What we need with Teamwork is a confidentiality agreement."
+        </div>
+      </div>
+
+      <!-- KEY SCRIPTS -->
+      <div class="section" id="scripts">
+        <div class="section-label">Key Lines</div>
+
+        <div class="script-box">
+          <div class="script-label">Core Position</div>
+          "Our manufacturing contract is with Boom Labs. That's a signed, active agreement. What we need with Teamwork is a complementary confidentiality agreement that protects our IP when your employees encounter our proprietary information. It's not a replacement - it's an addition."
+        </div>
+
+        <div class="script-box">
+          <div class="script-label">On the V2 Scope</div>
+          "We'd like to work together on a focused confidentiality agreement. We don't need manufacturing services terms, purchase order provisions, or quality control sections in this document - those are covered by our existing manufacturing arrangement."
+        </div>
+
+        <div class="script-box">
+          <div class="script-label">On Formulas in the Document</div>
+          "We can't include our actual formula specifications in a confidentiality agreement. The formulas were disclosed under our Boom Labs contract. This agreement should define what's confidential without documenting the secrets themselves."
+        </div>
+
+        <div class="script-box caution">
+          <div class="script-label">If They Threaten Facility Access</div>
+          "We understand you have leverage as the facility. But Boom Labs has contractual obligations to deliver, and we have remedies under that agreement. We'd prefer to work together collaboratively. That's why we're here."
+        </div>
+
+        <div class="script-box caution">
+          <div class="script-label">If They Claim Boom Labs Is Being Absorbed</div>
+          "Any transfer or assignment of our Boom Labs agreement requires our written consent. We haven't given that consent. If there's a change in Boom Labs' corporate structure, that's a conversation we need to have directly with Boom Labs."
+        </div>
+
+        <div class="script-box success">
+          <div class="script-label">Closing / Next Steps</div>
+          "Let's agree on the confidentiality framework today. We'll share our proposed NDA for your review. Once that's signed and our current Boom Labs commitments are complete, we're committed to sitting down and discussing a direct manufacturing relationship with Teamwork. We see that as a natural next step."
+        </div>
+      </div>
+
+      <!-- RISK ASSESSMENT -->
+      <div class="section">
+        <div class="section-label">Risk Assessment</div>
+        <div class="info-grid three-col">
+          <div class="info-card">
+            <div class="info-label">Low Risk</div>
+            <div class="info-value good">They Refuse NDA</div>
+            <div class="info-detail">Boom Labs agreement still protects IP. Teamwork employees are indirectly bound through Boom Labs' obligation to control third parties.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Medium Risk</div>
+            <div class="info-value amber">Pressure Through Seyed</div>
+            <div class="info-detail">Teamwork pressures Seyed to push for the mfg agreement. Maintain direct communication with Seyed. Remind him of Boom Labs obligations.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">High Risk</div>
+            <div class="info-value alert">Block Facility Access</div>
+            <div class="info-detail">Teamwork blocks Boom Labs from using their facility. Would breach Boom Labs' delivery obligations. Concession card (future contract) is best prevention.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRE-MEETING CHECKLIST -->
+      <div class="section">
+        <div class="section-label">Pre-Meeting Checklist</div>
+        <div class="entity-map">
+          <div class="entity-row">
+            <div class="entity-label-cell">Bring</div>
+            <div class="entity-content-cell">
+              <strong>Our Facility NDA draft</strong> (printed or on device to share)
+              <div class="entity-detail">Do NOT bring the Boom Labs signed agreement. Know what it says but don't share it.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Know</div>
+            <div class="entity-content-cell">
+              <strong>Remaining Boom Labs production status</strong>
+              <div class="entity-detail">How many units left under the contract? When is expected completion? This informs the "future contract" timeline.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Decide</div>
+            <div class="entity-content-cell">
+              <strong>Walk-away point</strong>
+              <div class="entity-detail">If they insist on the full manufacturing agreement and refuse the NDA, are you prepared to delay? The answer should be yes - time is on your side.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Align</div>
+            <div class="entity-content-cell">
+              <strong>Tina and David roles</strong>
+              <div class="entity-detail">Tina: lead voice, relationship, concession authority. David: contract details, rebuttals, note-taking.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /page -->
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

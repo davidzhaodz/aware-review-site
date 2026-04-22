@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair TY2025 - TaxAct Entry Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0d14;
+  --bg2: #10131c;
+  --card: #161923;
+  --card-border: #232738;
+  --card-hover: #1c2030;
+  --text: #e2e4ea;
+  --text-dim: #7c7f8e;
+  --text-muted: #52556a;
+  --accent: #6366f1;
+  --accent-light: #818cf8;
+  --accent-glow: rgba(99,102,241,0.12);
+  --accent-border: rgba(99,102,241,0.3);
+  --red: #f43f5e;
+  --red-dim: rgba(244,63,94,0.1);
+  --red-border: rgba(244,63,94,0.25);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245,158,11,0.1);
+  --amber-border: rgba(245,158,11,0.25);
+  --green: #10b981;
+  --green-dim: rgba(16,185,129,0.1);
+  --green-border: rgba(16,185,129,0.25);
+  --blue: #3b82f6;
+  --blue-dim: rgba(59,130,246,0.1);
+  --cyan: #06b6d4;
+  --cyan-dim: rgba(6,182,212,0.1);
+  --font: 'DM Sans', -apple-system, system-ui, sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', monospace;
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.55; min-height:100vh; }
+.container { max-width:1100px; margin:0 auto; padding:20px 24px 60px; }
+
+/* ─── HEADER ─── */
+.hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.hdr h1 { font-size:18px; font-weight:800; letter-spacing:-0.5px; }
+.hdr h1 em { font-style:normal; color:var(--accent); }
+.hdr-right { text-align:right; }
+.hdr-right .filed { font-size:11px; color:var(--text-muted); }
+.progress-bar { height:6px; background:rgba(255,255,255,0.05); border-radius:3px; margin-top:16px; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--green)); border-radius:3px; transition:width .3s; }
+.progress-label { display:flex; justify-content:space-between; font-size:11px; color:var(--text-dim); margin-top:4px; font-weight:600; }
+
+/* ─── TABS ─── */
+.tabs { display:flex; gap:2px; background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius); padding:3px; margin-bottom:20px; overflow-x:auto; flex-wrap:wrap; }
+.tab { padding:7px 14px; border-radius:var(--radius-sm); font-size:11px; font-weight:600; color:var(--text-dim); cursor:pointer; white-space:nowrap; border:none; background:none; font-family:var(--font); letter-spacing:0.3px; transition:all .12s; }
+.tab:hover { color:var(--text); background:rgba(255,255,255,0.04); }
+.tab.active { background:var(--accent-glow); color:var(--accent-light); border:1px solid var(--accent-border); }
+.panel { display:none; }
+.panel.active { display:block; }
+
+/* ─── SECTION ─── */
+.sec { margin-bottom:24px; }
+.sec-hdr { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid var(--card-border); display:flex; align-items:center; gap:8px; }
+.sec-hdr .badge { font-size:10px; padding:2px 8px; border-radius:10px; font-weight:700; }
+.badge-green { background:var(--green-dim); color:var(--green); }
+.badge-amber { background:var(--amber-dim); color:var(--amber); }
+.badge-red { background:var(--red-dim); color:var(--red); }
+.badge-blue { background:var(--blue-dim); color:var(--blue); }
+
+/* ─── ENTRY ROW ─── */
+.entry { display:grid; grid-template-columns:42px 1fr 130px 160px; gap:0; border-bottom:1px solid rgba(255,255,255,0.03); align-items:start; }
+.entry:hover { background:rgba(255,255,255,0.015); }
+.entry.subtotal { background:rgba(99,102,241,0.04); border-bottom:2px solid var(--accent-border); }
+.entry.subtotal .e-val { color:var(--accent-light); font-weight:700; }
+.entry.warn { border-left:3px solid var(--amber); }
+.entry.critical { border-left:3px solid var(--red); }
+.e-chk { padding:10px 8px; display:flex; align-items:center; justify-content:center; }
+.chk { width:18px; height:18px; border-radius:4px; border:1.5px solid var(--card-border); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:11px; transition:all .12s; flex-shrink:0; }
+.chk.done { background:var(--green); border-color:var(--green); color:#fff; }
+.chk:hover:not(.done) { border-color:var(--accent); }
+.e-desc { padding:8px 10px; font-size:12.5px; line-height:1.5; }
+.e-line { font-weight:600; color:var(--text); }
+.e-note { font-size:11px; color:var(--text-dim); margin-top:2px; line-height:1.4; }
+.e-note .src { color:var(--accent-light); font-weight:500; }
+.e-note .warn-text { color:var(--amber); }
+.e-note .crit-text { color:var(--red); }
+.e-val { padding:8px 10px; font-family:var(--mono); font-size:13px; text-align:right; font-weight:600; white-space:nowrap; }
+.e-val.neg { color:var(--red); }
+.e-val.pos { color:var(--green); }
+.e-src { padding:8px 10px; font-size:10px; color:var(--text-muted); text-align:right; line-height:1.4; }
+
+/* ─── PARTNER TABLE ─── */
+.p-scroll { overflow-x:auto; }
+.p-table { width:100%; border-collapse:collapse; font-size:11px; min-width:1000px; }
+.p-table th { padding:6px 8px; background:rgba(255,255,255,0.03); color:var(--text-dim); font-size:9px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:1px solid var(--card-border); font-weight:700; text-align:left; white-space:nowrap; }
+.p-table td { padding:6px 8px; border-bottom:1px solid rgba(255,255,255,0.025); vertical-align:top; }
+.p-table tr:hover { background:rgba(255,255,255,0.02); }
+.p-table .name { font-weight:600; white-space:nowrap; }
+.p-table .num { font-family:var(--mono); font-size:10px; text-align:right; }
+.p-table .tag { font-size:8px; font-weight:700; padding:1px 5px; border-radius:3px; text-transform:uppercase; }
+.tag-gp { background:var(--accent-glow); color:var(--accent-light); }
+.tag-lp { background:rgba(255,255,255,0.04); color:var(--text-muted); }
+
+/* ─── CALLOUT ─── */
+.callout { padding:12px 16px; border-radius:var(--radius-sm); margin-bottom:12px; font-size:12px; line-height:1.6; }
+.callout-red { background:var(--red-dim); border:1px solid var(--red-border); color:var(--red); }
+.callout-amber { background:var(--amber-dim); border:1px solid var(--amber-border); color:var(--amber); }
+.callout-green { background:var(--green-dim); border:1px solid var(--green-border); color:var(--green); }
+.callout-blue { background:var(--blue-dim); border:1px solid rgba(59,130,246,0.25); color:var(--blue); }
+.callout strong { font-weight:700; }
+
+/* ─── CARD ─── */
+.card { background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius); padding:16px 18px; margin-bottom:12px; }
+.card h3 { font-size:13px; font-weight:700; margin-bottom:10px; }
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:800px) {
+  .entry { grid-template-columns:36px 1fr 100px; }
+  .e-src { display:none; }
+}
+
+/* ─── PRINT ─── */
+@media print {
+  body { background:#fff; color:#111; font-size:10px; }
+  .tabs,.hdr-right,.chk,.progress-bar,.progress-label { display:none; }
+  .entry { border-bottom:1px solid #ddd; }
+  .e-val { color:#111!important; }
+  .e-val.neg { color:#c00!important; }
+  .card { border-color:#ccc; break-inside:avoid; }
+  .callout { break-inside:avoid; }
+  .panel { display:block!important; page-break-before:always; }
+  .panel:first-child { page-break-before:auto; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ═══ HEADER ═══ -->
+<div class="hdr">
+  <div>
+    <h1><em>AWARE Hair LLC</em> TaxAct Entry Guide</h1>
+    <div style="font-size:11px;color:var(--text-dim);margin-top:4px;">TY2025 | Form 1065 + CA 568 + 12 K-1s | Filing March 16, 2026</div>
+  </div>
+  <div class="hdr-right">
+    <div style="font-size:11px;color:var(--text-muted);">EIN: 99-1705231 | Accrual | NAICS 424990</div>
+  </div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+<div class="progress-label"><span id="prog-text">0 / 0 entered</span><span id="prog-pct">0%</span></div>
+
+<!-- ═══ TABS ═══ -->
+<div class="tabs">
+  <button class="tab active" data-tab="entity">1. Entity Info</button>
+  <button class="tab" data-tab="income">2. Income</button>
+  <button class="tab" data-tab="deductions">3. Deductions</button>
+  <button class="tab" data-tab="cogs">4. COGS (1125-A)</button>
+  <button class="tab" data-tab="depreciation">5. Depr & Amort</button>
+  <button class="tab" data-tab="schedules">6. Schedules K/L/M</button>
+  <button class="tab" data-tab="partners">7. Partners & K-1s</button>
+  <button class="tab" data-tab="california">8. CA Form 568</button>
+  <button class="tab" data-tab="review">9. Final Review</button>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- TAB 1: ENTITY INFO                          -->
+<!-- ════════════════════════════════════════════ -->
+<div class="panel active" id="p-entity">
+<div class="sec">
+  <div class="sec-hdr">Entity Information <span class="badge badge-blue">TaxAct Step 1</span></div>
+
+  <div class="callout callout-blue"><strong>TaxAct tip:</strong> If importing from TY2024, most entity fields auto-populate. Verify each one - do not skip.</div>
+
+  <div class="card">
+  <h3>Form 1065 Header</h3>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Business name</div></div><div class="e-val">AWARE Hair LLC</div><div class="e-src">Per TY2024</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">EIN</div></div><div class="e-val">99-1705231</div><div class="e-src">Per TY2024</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Address</div></div><div class="e-val">153 E Holly St, Pasadena CA 91103</div><div class="e-src">Per TY2024</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Business code (NAICS)</div></div><div class="e-val">424990</div><div class="e-src">Other Misc Nondurable</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Date business started</div></div><div class="e-val">01/01/2024</div><div class="e-src">Per TY2024</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Box G - Entity type</div><div class="e-note">Check: Domestic limited liability company (1c)</div></div><div class="e-val">LLC (1c)</div><div class="e-src">Per TY2024</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Box H(1) - Accounting method</div></div><div class="e-val">Accrual (H2)</div><div class="e-src">Per TY2024 Box H</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Box I - Number of K-1s</div></div><div class="e-val">12</div><div class="e-src">12 partners</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">IRS Center</div></div><div class="e-val">Ogden, UT 84201</div><div class="e-src">Per TY2024</div></div>
+  </div>
+
+  <div class="card">
+  <h3>Partnership Representative (Schedule B)</h3>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">PR Name</div></div><div class="e-val">Tina Mui</div><div class="e-src">Per TY2024</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">PR Address</div></div><div class="e-val">2032 Saleroso Dr, Rowland Hts CA 91748</div><div class="e-src">Per TY2024</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">PR Phone</div></div><div class="e-val">(626) 991-1508</div><div class="e-src">Per TY2024</div></div>
+  </div>
+
+  <div class="card">
+  <h3>Schedule B - Key Questions</h3>
+  <div class="callout callout-red"><strong>BBA Elect-Out (Q33):</strong> Answer YES. Complete Schedule B-2 with all 12 partners. Tina's K-1 must use her SSN (549-XX-XXXX), NOT Infinity Beauty LLC EIN.</div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Q1c - Entity type</div></div><div class="e-val">Domestic LLC (X)</div><div class="e-src"></div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Q2a - Entity owns 50%+?</div><div class="e-note">No entity owns 50%+. Tina is individual.</div></div><div class="e-val">No</div><div class="e-src"></div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Q2b - Individual owns 50%+?</div><div class="e-note">Yes - Tina Mui at 70.26%. Attach Schedule B-1.</div></div><div class="e-val">Yes</div><div class="e-src">Schedule B-1</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Q4 - Small partnership exemption?</div><div class="e-note">All 4 conditions met: receipts &lt;$250K, assets &lt;$1M, K-1s timely, no M-3.</div></div><div class="e-val">Yes</div><div class="e-src">Receipts $92K, Assets $260K</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Q14 - Foreign partners?</div></div><div class="e-val">No</div><div class="e-src">All CA residents</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Q16a - Payments requiring 1099?</div></div><div class="e-val">Yes</div><div class="e-src">Contract labor $8K+</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Q16b - Did you file 1099s?</div></div><div class="e-val">Yes</div><div class="e-src">1099-NEC filed</div></div>
+  <div class="entry critical"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Q33 - BBA Elect-Out?</div><div class="e-note"><span class="crit-text">MUST answer YES. Complete Schedule B-2 with all 12 partners.</span></div></div><div class="e-val" style="color:var(--green)">YES</div><div class="e-src">IRC 6221(b)</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- TAB 2: INCOME                               -->
+<!-- ════════════════════════════════════════════ -->
+<div class="panel" id="p-income">
+<div class="sec">
+  <div class="sec-hdr">Form 1065 Page 1 - Income (Lines 1-8) <span class="badge badge-green">From QBO/Shopify</span></div>
+
+  <div class="card">
+  <h3>Revenue</h3>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 1a - Gross receipts or sales</div><div class="e-note">Total gross revenue ALL channels. B2B wholesale + DTC Shopify. Do NOT net discounts.</div></div><div class="e-val">$157,161</div><div class="e-src">Shopify gross</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 1b - Returns and allowances</div><div class="e-note">Shopify refunds + salon return credits + wholesale discounts</div></div><div class="e-val">$65,314</div><div class="e-src">QBO: Discounts $58,805 + Returns $6,928 = $65,733. Verify exact split.</div></div>
+  <div class="entry subtotal"><div class="e-chk"></div><div class="e-desc"><div class="e-line">Line 1c - Balance (1a - 1b)</div></div><div class="e-val">$91,847</div><div class="e-src">Net revenue</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 2 - Cost of goods sold</div><div class="e-note">From Form 1125-A Line 8. See COGS tab for detail.</div></div><div class="e-val">$30,718</div><div class="e-src">1125-A</div></div>
+  <div class="entry subtotal"><div class="e-chk"></div><div class="e-desc"><div class="e-line">Line 3 - Gross profit (1c - 2)</div></div><div class="e-val">$61,129</div><div class="e-src">66.5% gross margin</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Lines 4-6 - Other income</div><div class="e-note">No other partnerships, no farm, no Form 4797</div></div><div class="e-val">$0</div><div class="e-src"></div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 7 - Other income (attach statement)</div><div class="e-note">Shipping income $317 + Credit card rewards $1,479 + Interest earned $155 = $1,951. <span class="warn-text">Note: CC rewards may be tax-free (rebate doctrine). TY2024 included $55 CC rewards. Interest should be separately stated on K Line 5 (change from TY2024).</span></div></div><div class="e-val">$1,951</div><div class="e-src">QBO Other Income</div></div>
+  <div class="entry subtotal"><div class="e-chk"></div><div class="e-desc"><div class="e-line">Line 8 - Total income</div></div><div class="e-val">$63,080</div><div class="e-src">Lines 3-7</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- TAB 3: DEDUCTIONS                           -->
+<!-- ════════════════════════════════════════════ -->
+<div class="panel" id="p-deductions">
+<div class="sec">
+  <div class="sec-hdr">Form 1065 Page 1 - Deductions (Lines 9-22) <span class="badge badge-green">From QBO</span></div>
+
+  <div class="callout callout-red"><strong>Health Insurance Warning:</strong> The $6,222 health insurance is in QBO as Employee Benefits. Do NOT enter it on Line 19. It goes ONLY in Guaranteed Payments (Line 10) and K-1 Box 13 Code M.</div>
+
+  <div class="card">
+  <h3>Deductions</h3>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 9 - Salaries and wages</div><div class="e-note">W-2 employees only. No W-2 employees in TY2025.</div></div><div class="e-val">$0</div><div class="e-src">QBO Payroll</div></div>
+
+  <div class="entry critical"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 10 - Guaranteed payments to partners</div><div class="e-note"><span class="crit-text">$24,048 management + $6,222 health insurance = $30,270 total.</span> Per TY2024 precedent: Line 4a (services) = $24,048 ONLY. Health insurance included in 4c total but NOT 4a.</div></div><div class="e-val">$30,270</div><div class="e-src">QBO: Mgmt $24,048 + Health $6,222</div></div>
+
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 11 - Repairs and maintenance</div></div><div class="e-val">$0</div><div class="e-src">QBO</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 12 - Bad debts</div></div><div class="e-val">$0</div><div class="e-src">Accrual basis - verify</div></div>
+
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 13 - Rent</div><div class="e-note">Warehouse rent. TY2024 was $42,000 (included mgmt fee). TY2025 is net.</div></div><div class="e-val">$26,100</div><div class="e-src">QBO Rent</div></div>
+
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 14 - Taxes and licenses</div><div class="e-note">2x $800 CA franchise tax payments.</div></div><div class="e-val">$1,600</div><div class="e-src">QBO Taxes Paid</div></div>
+
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 15 - Interest</div><div class="e-note">Partner loan interest: 12 monthly JEs at $184.18 = $2,210.16 + $0.54 CC interest. Rate: 4.02% on $54,980. AFR compliant at issuance.</div></div><div class="e-val">$2,211</div><div class="e-src">QBO Interest Expense</div></div>
+
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 16a - Depreciation (Form 4562)</div><div class="e-note">MACRS Year 2 MQ Q3 rates. Office $646 + Furniture $335 + Warehouse $1,736. <span class="warn-text">Corrected from TY2024 copy-paste ($507).</span></div></div><div class="e-val">$2,716</div><div class="e-src">QBO JE #2347 corrected</div></div>
+
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 17 - Depletion</div></div><div class="e-val">$0</div><div class="e-src"></div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 18 - Retirement plans</div></div><div class="e-val">$0</div><div class="e-src"></div></div>
+
+  <div class="entry warn"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 19 - Employee benefit programs</div><div class="e-note"><span class="warn-text">Enter $0. The $6,222 health insurance is in GP (Line 10), NOT here. QBO shows $6,222 in this category - do not carry it over.</span></div></div><div class="e-val" style="color:var(--amber)">$0</div><div class="e-src">GP already on Line 10</div></div>
+
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 20 - Energy efficient buildings</div></div><div class="e-val">$0</div><div class="e-src"></div></div>
+
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 21 - Other deductions (attach statement)</div><div class="e-note">See breakdown below. Includes amortization, contract labor, software, travel, meals, utilities, etc.</div></div><div class="e-val">$101,283</div><div class="e-src">QBO - see detail</div></div>
+
+  <div class="entry subtotal"><div class="e-chk"></div><div class="e-desc"><div class="e-line">Line 22 - Total deductions (Lines 9-21)</div></div><div class="e-val">$164,180</div><div class="e-src">Sum of above</div></div>
+
+  <div class="entry subtotal"><div class="e-chk"></div><div class="e-desc"><div class="e-line">Line 23 - Ordinary business income (loss)</div><div class="e-note">Line 8 minus Line 22</div></div><div class="e-val neg">($101,100)</div><div class="e-src">Before separately stated</div></div>
+  </div>
+
+  <div class="card">
+  <h3>Line 21 - Other Deductions Detail (Attach Statement)</h3>
+  <div class="callout callout-amber"><strong>TaxAct:</strong> Enter each item separately in the "Other Deductions" section. TaxAct generates the statement automatically.</div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Amortization</div><div class="e-note">Startup $3,902 + Software $3,933 + R&D $750. <span class="warn-text">Corrected from $2,862.</span></div></div><div class="e-val">$8,585</div><div class="e-src">QBO JE #2346</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Contract labor</div><div class="e-note">Qing Zhao $8,000 + other $52.50. Contractor capacity confirmed.</div></div><div class="e-val">$8,053</div><div class="e-src">QBO + 1099</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Utilities</div></div><div class="e-val">$13,900</div><div class="e-src">QBO</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Vehicle lease payments</div><div class="e-note">BMW lease $13,617 x 85% = $11,575. <span class="warn-text">85% is estimated, pending mileage log.</span></div></div><div class="e-val">$11,575</div><div class="e-src">QBO x 85%</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Vehicle expenses</div><div class="e-note">$230 x 85% = $196</div></div><div class="e-val">$196</div><div class="e-src">QBO x 85%</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Telephone</div></div><div class="e-val">$5,129</div><div class="e-src">QBO</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Software & apps</div></div><div class="e-val">$5,090</div><div class="e-src">QBO</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Travel</div><div class="e-note">Airfare $2,009 + Hotels $1,522 + Other $235</div></div><div class="e-val">$3,766</div><div class="e-src">QBO</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Outbound shipping</div></div><div class="e-val">$3,724</div><div class="e-src">QBO</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Marketing & advertising</div></div><div class="e-val">$2,822</div><div class="e-src">QBO</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Merchant processing fees</div></div><div class="e-val">$2,672</div><div class="e-src">QBO</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Meals (50% deductible only)</div><div class="e-note">Total meals $831. Enter $416 (50%). Other $415 goes to K Line 18c nondeductible.</div></div><div class="e-val">$416</div><div class="e-src">QBO x 50%</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Commissions & fees</div></div><div class="e-val">$559</div><div class="e-src">QBO</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">General business expenses</div></div><div class="e-val">$549</div><div class="e-src">QBO</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Insurance</div></div><div class="e-val">$325</div><div class="e-src">QBO - Veracity</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">R&D expense</div></div><div class="e-val">$198</div><div class="e-src">QBO</div></div>
+  <div class="entry subtotal"><div class="e-chk"></div><div class="e-desc"><div class="e-line">Subtotal - Other Deductions</div><div class="e-note">Verify this total matches what TaxAct computes for Line 21</div></div><div class="e-val">~$67,559</div><div class="e-src">Cross-check</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- TAB 4: COGS                                 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="panel" id="p-cogs">
+<div class="sec">
+  <div class="sec-hdr">Form 1125-A - Cost of Goods Sold <span class="badge badge-green">From QBO/A2X</span></div>
+
+  <div class="card">
+  <h3>Inventory & COGS</h3>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 1 - Beginning inventory</div><div class="e-note">Must match TY2024 Line 7 ending inventory exactly.</div></div><div class="e-val">$82,362</div><div class="e-src">TY2024 1125-A L7</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 2 - Purchases</div><div class="e-note">Manufacturer, packaging, lab fees, ingredients. See pre-filing package Section 1.</div></div><div class="e-val">$47,832</div><div class="e-src">QBO Purchases</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 3 - Cost of labor</div></div><div class="e-val">$0</div><div class="e-src">Contract mfg</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 4 - Additional Section 263A costs</div><div class="e-note">Not applicable - under $31M gross receipts threshold.</div></div><div class="e-val">$0</div><div class="e-src">UNICAP exempt</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 5 - Other costs</div><div class="e-note">Inbound freight. TY2024 was $4,997.</div></div><div class="e-val">$5,159</div><div class="e-src">QBO Freight-Inbound</div></div>
+  <div class="entry subtotal"><div class="e-chk"></div><div class="e-desc"><div class="e-line">Line 6 - Total (Lines 1-5)</div></div><div class="e-val">$135,353</div><div class="e-src">Goods available</div></div>
+  <div class="entry warn"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 7 - Ending inventory</div><div class="e-note"><span class="warn-text">Use BS figure ($105,291) for Schedule L. Set 1125-A to $104,635 (computed: Line 6 - Line 8). $656 gap from rounding.</span></div></div><div class="e-val">$104,635</div><div class="e-src">Computed</div></div>
+  <div class="entry subtotal"><div class="e-chk"></div><div class="e-desc"><div class="e-line">Line 8 - Cost of goods sold</div></div><div class="e-val">$30,718</div><div class="e-src">-> 1065 Line 2</div></div>
+  </div>
+
+  <div class="card">
+  <h3>Line 9 - Inventory Method</h3>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">9a(i) - Valuation method</div></div><div class="e-val">Cost (X)</div><div class="e-src">Per TY2024</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">9e - Section 263A applies?</div></div><div class="e-val">No (X)</div><div class="e-src">Under $31M</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">9f - Change in method?</div></div><div class="e-val">No (X)</div><div class="e-src">Same as TY2024</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- TAB 5: DEPRECIATION & AMORTIZATION          -->
+<!-- ════════════════════════════════════════════ -->
+<div class="panel" id="p-depreciation">
+<div class="sec">
+  <div class="sec-hdr">Form 4562 - Depreciation & Amortization <span class="badge badge-amber">Corrected</span></div>
+
+  <div class="callout callout-amber"><strong>Both JEs were corrected from TY2024 copy-paste errors.</strong> TY2024 was a partial year (4 months for amortization, Year 1 MQ for depreciation). TY2025 uses full-year amounts and Year 2 MACRS rates.</div>
+
+  <div class="card">
+  <h3>Part III - MACRS Depreciation (Year 2)</h3>
+  <div class="callout callout-blue"><strong>Decision needed:</strong> TY2024 elected OUT of bonus depreciation (IRC 168(k)(7)). OBBBA restored 100% bonus for property acquired after 1/19/2025. Decide if new TY2025 assets get bonus or elect out again. Existing assets use MACRS regardless.</div>
+
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Line 17 - Prior year MACRS</div><div class="e-note">Assets placed in service TY2024, now in Year 2</div></div><div class="e-val">$2,716</div><div class="e-src">QBO JE #2347</div></div>
+
+  <div style="margin:0 0 8px 42px; font-size:11px; color:var(--text-dim);">
+    <div style="display:grid;grid-template-columns:1fr 80px 60px 40px 60px 80px;gap:4px;padding:4px 0;border-bottom:1px solid var(--card-border);font-weight:700;">
+      <span>Asset</span><span style="text-align:right">Basis</span><span style="text-align:center">Life</span><span style="text-align:center">MQ</span><span style="text-align:center">Rate</span><span style="text-align:right">TY2025</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 80px 60px 40px 60px 80px;gap:4px;padding:3px 0;">
+      <span>5yr - Office Equipment</span><span style="text-align:right;font-family:var(--mono)">$1,899</span><span style="text-align:center">5 yr</span><span style="text-align:center">Q3</span><span style="text-align:center">34.00%</span><span style="text-align:right;font-family:var(--mono)">$645.66</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 80px 60px 40px 60px 80px;gap:4px;padding:3px 0;">
+      <span>7yr - Furniture</span><span style="text-align:right;font-family:var(--mono)">$1,367</span><span style="text-align:center">7 yr</span><span style="text-align:center">Q3</span><span style="text-align:center">24.49%</span><span style="text-align:right;font-family:var(--mono)">$334.78</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 80px 60px 40px 60px 80px;gap:4px;padding:3px 0;border-bottom:1px solid var(--card-border);">
+      <span>15yr - Outdoor Warehouse</span><span style="text-align:right;font-family:var(--mono)">$18,272</span><span style="text-align:center">15 yr</span><span style="text-align:center">Q3</span><span style="text-align:center">9.50%</span><span style="text-align:right;font-family:var(--mono)">$1,735.84</span>
+    </div>
+  </div>
+  </div>
+
+  <div class="card">
+  <h3>Part VI - Amortization</h3>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Total amortization</div><div class="e-note">Goes to Line 21 Other Deductions (not Line 16)</div></div><div class="e-val">$8,585</div><div class="e-src">QBO JE #2346</div></div>
+
+  <div style="margin:0 0 8px 42px; font-size:11px; color:var(--text-dim);">
+    <div style="display:grid;grid-template-columns:1fr 80px 60px 60px 80px;gap:4px;padding:4px 0;border-bottom:1px solid var(--card-border);font-weight:700;">
+      <span>Description</span><span style="text-align:right">Basis</span><span style="text-align:center">Code</span><span style="text-align:center">Period</span><span style="text-align:right">TY2025</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 80px 60px 60px 80px;gap:4px;padding:3px 0;">
+      <span>Startup Legal Costs</span><span style="text-align:right;font-family:var(--mono)">$33,277</span><span style="text-align:center">195</span><span style="text-align:center">15 yr</span><span style="text-align:right;font-family:var(--mono)">$2,218</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 80px 60px 60px 80px;gap:4px;padding:3px 0;">
+      <span>Design & Packaging</span><span style="text-align:right;font-family:var(--mono)">$10,250</span><span style="text-align:center">195</span><span style="text-align:center">15 yr</span><span style="text-align:right;font-family:var(--mono)">$683</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 80px 60px 60px 80px;gap:4px;padding:3px 0;">
+      <span>GTM Consulting Plan</span><span style="text-align:right;font-family:var(--mono)">$15,000</span><span style="text-align:center">195</span><span style="text-align:center">15 yr</span><span style="text-align:right;font-family:var(--mono)">$1,000</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 80px 60px 60px 80px;gap:4px;padding:3px 0;">
+      <span>Software Development</span><span style="text-align:right;font-family:var(--mono)">$11,799</span><span style="text-align:center">AMT</span><span style="text-align:center">3 yr</span><span style="text-align:right;font-family:var(--mono)">$3,933</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 80px 60px 60px 80px;gap:4px;padding:3px 0;border-bottom:1px solid var(--card-border);">
+      <span>R&D - Initial Formulas</span><span style="text-align:right;font-family:var(--mono)">$3,750</span><span style="text-align:center">174</span><span style="text-align:center">5 yr</span><span style="text-align:right;font-family:var(--mono)">$750</span>
+    </div>
+  </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- TAB 6: SCHEDULES K/L/M                      -->
+<!-- ════════════════════════════════════════════ -->
+<div class="panel" id="p-schedules">
+<div class="sec">
+  <div class="sec-hdr">Schedules K, L, M-1, M-2 <span class="badge badge-blue">Auto-generated by TaxAct</span></div>
+
+  <div class="callout callout-blue"><strong>TaxAct auto-generates most of these from your income/deduction entries.</strong> Verify the computed values match the expected amounts below.</div>
+
+  <div class="card">
+  <h3>Schedule K - Partners' Distributive Share (Verify)</h3>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">K Line 1 - Ordinary income (loss)</div></div><div class="e-val neg">~($70,911)</div><div class="e-src">After M-1 adj</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">K Line 4a - GP (services)</div><div class="e-note">Management fee only. Health ins NOT on 4a.</div></div><div class="e-val">$24,048</div><div class="e-src">Tina only</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">K Line 4c - Total GP</div><div class="e-note">Includes health insurance.</div></div><div class="e-val">$30,270</div><div class="e-src">$24,048 + $6,222</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">K Line 5 - Interest income</div><div class="e-note">Separately stated (change from TY2024 which included in Line 7)</div></div><div class="e-val">$155</div><div class="e-src">QBO</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">K Line 13 Code M - Health insurance</div></div><div class="e-val">$6,222</div><div class="e-src">Tina's K-1 only</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">K Line 14a - Net SE earnings</div><div class="e-note">Tina only (active managing member).</div></div><div class="e-val">Calculate</div><div class="e-src">TaxAct computes</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">K Line 18c - Nondeductible expenses</div><div class="e-note">50% meals ($415) + 15% vehicle personal use ($2,077)</div></div><div class="e-val">$2,492</div><div class="e-src">M-1 add-backs</div></div>
+  </div>
+
+  <div class="card">
+  <h3>Schedule M-1 - Book to Tax Reconciliation (If Filed)</h3>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">M-1 Line 1 - Net income per books</div></div><div class="e-val neg">($73,403)</div><div class="e-src">QBO after corrections</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">M-1 Line 4b - Meals & entertainment</div></div><div class="e-val">$415</div><div class="e-src">50% meals</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">M-1 Line 4b - Vehicle personal use</div></div><div class="e-val">$2,077</div><div class="e-src">15% of $13,848</div></div>
+  <div class="entry subtotal"><div class="e-chk"></div><div class="e-desc"><div class="e-line">M-1 Line 9 - Income per return</div></div><div class="e-val neg">($70,911)</div><div class="e-src">= K Line 1</div></div>
+  </div>
+
+  <div class="card">
+  <h3>Schedule M-2 - Partners' Capital Accounts</h3>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">M-2 Line 1 - Beginning balance</div><div class="e-note">From TY2024 Schedule L Line 21 (NOT M-2 ending of $204,613). See workpaper note.</div></div><div class="e-val">$199,055</div><div class="e-src">TY2024 Sch L</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">M-2 Line 2 - Capital contributed</div><div class="e-note">Any new contributions in TY2025? If none, $0.</div></div><div class="e-val">$0</div><div class="e-src">Verify QBO equity</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">M-2 Line 3 - Net income (loss)</div></div><div class="e-val neg">($70,911)</div><div class="e-src">= K Line 1</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">M-2 Line 7 - Other decreases</div><div class="e-note">Nondeductible expenses + GP distributions</div></div><div class="e-val">$2,492</div><div class="e-src">K Line 18c</div></div>
+  <div class="entry subtotal"><div class="e-chk"></div><div class="e-desc"><div class="e-line">M-2 Line 9 - Ending balance</div><div class="e-note">Must = Schedule L Line 21 col (d)</div></div><div class="e-val">$125,652</div><div class="e-src">Calculated</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- TAB 7: PARTNERS                             -->
+<!-- ════════════════════════════════════════════ -->
+<div class="panel" id="p-partners">
+<div class="sec">
+  <div class="sec-hdr">Partners & K-1 Generation <span class="badge badge-blue">12 K-1s</span></div>
+
+  <div class="callout callout-red"><strong>Tina Mui K-1 recipient:</strong> Must be issued to SSN 549-XX-XXXX (Tina Mui individually). Check H2 = Yes, list Infinity Beauty LLC as disregarded entity with TIN 92-1209105. Entity type I1 = "DISREGARDED ENTITY." This is required for the BBA elect-out to be valid.</div>
+
+  <div class="card">
+  <h3>Partner Roster</h3>
+  <div class="p-scroll">
+  <table class="p-table">
+    <thead>
+      <tr><th>#</th><th>Partner</th><th>Type</th><th>TIN</th><th>Profit/Loss %</th><th>Capital %</th><th>Box 1 Loss</th><th>Box 4 GP</th><th>Recourse Debt</th><th>K-1 Box L Begin</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td class="name">Tina Mui</td><td><span class="tag tag-gp">GP</span></td><td class="num">549-XX-8764</td><td class="num">70.26%</td><td class="num">0.00%</td><td class="num" style="color:var(--red)">TBD</td><td class="num">$30,270</td><td class="num">$0</td><td class="num" style="color:var(--red)">-$76,517</td></tr>
+      <tr><td>2</td><td class="name">Jade Wong</td><td><span class="tag tag-gp">GP</span></td><td class="num">621-XX-1199</td><td class="num">6.80%</td><td class="num">25.00%</td><td class="num" style="color:var(--red)">TBD</td><td class="num">$0</td><td class="num">$0</td><td class="num">$70,304</td></tr>
+      <tr><td>3</td><td class="name">Paul Wong</td><td><span class="tag tag-lp">LP</span></td><td class="num">XXX-XX-8369</td><td class="num">6.20%</td><td class="num">16.67%</td><td class="num" style="color:var(--red)">TBD</td><td class="num">$0</td><td class="num">$20,000</td><td class="num">$45,679</td></tr>
+      <tr><td>4</td><td class="name">Gigi Chow</td><td><span class="tag tag-lp">LP</span></td><td class="num">XXX-XX-8766</td><td class="num">5.00%</td><td class="num">0.00%</td><td class="num" style="color:var(--red)">TBD</td><td class="num">$0</td><td class="num">$0</td><td class="num" style="color:var(--red)">-$3,569</td></tr>
+      <tr><td>5</td><td class="name">Harlan Irvine</td><td><span class="tag tag-lp">LP</span></td><td class="num">560-XX-7267</td><td class="num">2.80%</td><td class="num">33.33%</td><td class="num" style="color:var(--red)">TBD</td><td class="num">$0</td><td class="num">$9,980</td><td class="num">$98,212</td></tr>
+      <tr><td>6</td><td class="name">Mark Segal Trust</td><td><span class="tag tag-lp">LP</span></td><td class="num">55-4234702</td><td class="num">2.10%</td><td class="num">25.00%</td><td class="num" style="color:var(--red)">TBD</td><td class="num">$0</td><td class="num">$0</td><td class="num">$74,677</td></tr>
+      <tr><td>7</td><td class="name">KP Phung</td><td><span class="tag tag-lp">LP</span></td><td class="num">XXX-XX-6726</td><td class="num">2.00%</td><td class="num">0.00%</td><td class="num" style="color:var(--red)">TBD</td><td class="num">$0</td><td class="num">$0</td><td class="num" style="color:var(--red)">-$1,428</td></tr>
+      <tr><td>8</td><td class="name">Qing Zhao</td><td><span class="tag tag-lp">LP</span></td><td class="num">XXX-XX-4818</td><td class="num">2.00%</td><td class="num">0.00%</td><td class="num" style="color:var(--red)">TBD</td><td class="num">$0</td><td class="num">$0</td><td class="num" style="color:var(--red)">-$718</td></tr>
+      <tr><td>9</td><td class="name">Alice Rossiter</td><td><span class="tag tag-lp">LP</span></td><td class="num">XXX-XX-7554</td><td class="num">1.20%</td><td class="num">0.00%</td><td class="num" style="color:var(--red)">TBD</td><td class="num">$0</td><td class="num">$0</td><td class="num" style="color:var(--red)">-$856</td></tr>
+      <tr><td>10</td><td class="name">Ingrid Marone</td><td><span class="tag tag-lp">LP</span></td><td class="num">548-XX-7073</td><td class="num">1.20%</td><td class="num">0.00%</td><td class="num" style="color:var(--red)">TBD</td><td class="num">$0</td><td class="num">$0</td><td class="num" style="color:var(--red)">-$857</td></tr>
+      <tr><td>11</td><td class="name">Patty Waggoner</td><td><span class="tag tag-lp">LP</span></td><td class="num">XXX-XX-2566</td><td class="num">0.30%</td><td class="num">0.00%</td><td class="num" style="color:var(--red)">TBD</td><td class="num">$0</td><td class="num">$25,000</td><td class="num" style="color:var(--red)">-$214</td></tr>
+      <tr><td>12</td><td class="name">Joe Pachorek</td><td><span class="tag tag-lp">LP</span></td><td class="num">XXX-XX-5312</td><td class="num">0.14%</td><td class="num">0.00%</td><td class="num" style="color:var(--red)">TBD</td><td class="num">$0</td><td class="num">$0</td><td class="num" style="color:var(--red)">-$100</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div style="font-size:10px;color:var(--text-muted);margin-top:8px;">Box 1 loss amounts will be auto-calculated by TaxAct based on profit/loss % allocations. K-1 Box L beginning capital = TY2024 ending capital from filed return.</div>
+  </div>
+
+  <div class="card">
+  <h3>K-1 Special Items - Tina Mui Only</h3>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Box 4a - GP (services)</div></div><div class="e-val">$24,048</div><div class="e-src">Mgmt fee only</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Box 4c - Total GP</div></div><div class="e-val">$30,270</div><div class="e-src">Incl health $6,222</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Box 13 Code M - Health insurance</div></div><div class="e-val">$6,222</div><div class="e-src">SE health deduction</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Box 14a - SE earnings</div><div class="e-note">TaxAct auto-computes from GP + distributive share (active member)</div></div><div class="e-val">Auto</div><div class="e-src">TaxAct</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Box H2 - Disregarded entity</div><div class="e-note">Yes. Name: Infinity Beauty LLC. TIN: 92-1209105. Type: DISREGARDED ENTITY.</div></div><div class="e-val">Yes</div><div class="e-src">Per TY2024</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Supplemental statement</div><div class="e-note">"Nonpassive ordinary income included in line 1" + "Health insurance payments for partner included in line 4"</div></div><div class="e-val">Attach</div><div class="e-src">Per TY2024</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- TAB 8: CALIFORNIA                           -->
+<!-- ════════════════════════════════════════════ -->
+<div class="panel" id="p-california">
+<div class="sec">
+  <div class="sec-hdr">CA Form 568 <span class="badge badge-amber">State Filing</span></div>
+
+  <div class="callout callout-amber"><strong>CA non-conformity:</strong> TY2024 had a $1,600 CA adjustment despite electing out of bonus depreciation. Source was not identified. Watch for TaxAct auto-generating CA differences. Do not override to $0 without understanding the source.</div>
+
+  <div class="card">
+  <h3>Form 568 - Tax Computation</h3>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Annual LLC tax</div></div><div class="e-val">$800</div><div class="e-src">R&TC 17941</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">LLC fee</div><div class="e-note">Total income under $250K threshold</div></div><div class="e-val">$0</div><div class="e-src">R&TC 17942</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Nonresident withholding</div><div class="e-note">All 12 partners are CA residents per TY2024 return.</div></div><div class="e-val">$0</div><div class="e-src">No nonresidents</div></div>
+  </div>
+
+  <div class="card">
+  <h3>CA Estimated Tax Payments (Form 3522)</h3>
+  <div class="callout callout-amber"><strong>Note:</strong> The 2x $800 payments in QBO (Oct 29-30, 2025) are the annual LLC tax (Form 3522), not quarterly estimated payments. CDTFA sales tax payments ($180, $556, $476, $799) are separate and do NOT go here.</div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Q1 (Apr 15) payment</div></div><div class="e-val">$0</div><div class="e-src">No Q1 payment</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Q2 (Jun 16) payment</div></div><div class="e-val">$0</div><div class="e-src">No Q2 payment</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Q3 (Sep 15) payment</div></div><div class="e-val">$0</div><div class="e-src">No Q3 payment</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Q4 (Dec 15) payment</div></div><div class="e-val">$0</div><div class="e-src">No Q4 payment</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Late payment amount</div><div class="e-note">2x $800 LLC tax paid Oct 29-30, 2025 via ACH</div></div><div class="e-val">$1,600</div><div class="e-src">QBO: Oct 29 + Oct 30</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Late payment date</div></div><div class="e-val">10/29/2025</div><div class="e-src">First of 2 payments</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Payment method</div></div><div class="e-val">ACH</div><div class="e-src">Preauthorized ACH debit</div></div>
+  </div>
+
+  <div class="card">
+  <h3>CA Non-Conformity Items to Watch</h3>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Section 179</div><div class="e-note">Federal $2,500,000 limit vs CA $25,000 limit. Add back any excess.</div></div><div class="e-val">No excess taken</div><div class="e-src">No Sec 179 claimed</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Bonus depreciation</div><div class="e-note">Federal 100% (OBBBA) vs CA $0. Add back all if claimed.</div></div><div class="e-val">Elected out TY2024</div><div class="e-src">Verify TY2025 election</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Section 199A QBI</div><div class="e-note">CA does not allow. Member-level adjustment.</div></div><div class="e-val">N/A at entity</div><div class="e-src">Member returns</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Section 174 R&D</div><div class="e-note">Federal: immediate expensing (OBBBA 174A). CA: also current deduction (pre-2015 IRC). Minimal difference for domestic R&D.</div></div><div class="e-val">No adjustment expected</div><div class="e-src">Both allow current</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- TAB 9: FINAL REVIEW                         -->
+<!-- ════════════════════════════════════════════ -->
+<div class="panel" id="p-review">
+<div class="sec">
+  <div class="sec-hdr">Final Review Before E-Filing <span class="badge badge-red">Must Complete</span></div>
+
+  <div class="card">
+  <h3>TaxAct Alerts</h3>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Run TaxAct Alerts - fix ALL red errors</div><div class="e-note">Warnings are OK. Errors must be resolved.</div></div><div class="e-val">0 errors</div><div class="e-src">TaxAct</div></div>
+  </div>
+
+  <div class="card">
+  <h3>Cross-Check Verification (12 items)</h3>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">P&L net income matches QBO and TaxAct</div></div><div class="e-val neg">~($73,403)</div><div class="e-src">QBO P&L</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Schedule L balances (Assets = Liabilities + Equity)</div></div><div class="e-val">Balanced</div><div class="e-src">TaxAct</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">M-2 ending = Schedule L Line 21</div></div><div class="e-val">$125,652</div><div class="e-src">Must match</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">All K-1 ownership % total 100%</div></div><div class="e-val">100.00%</div><div class="e-src">12 partners</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Sum of K-1 Box 1 = Schedule K Line 1</div></div><div class="e-val neg">~($70,911)</div><div class="e-src">Must tie</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">All partner SSNs/addresses correct</div></div><div class="e-val">Verify each</div><div class="e-src">TY2024 return</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">NAICS code = 424990</div></div><div class="e-val">424990</div><div class="e-src">Header</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Accounting method = Accrual</div></div><div class="e-val">Accrual</div><div class="e-src">Box H(2)</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">CA Form 568 amounts consistent with federal</div></div><div class="e-val">Check adj</div><div class="e-src">Watch $1,600 gap</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">No TaxAct red errors remain</div></div><div class="e-val">0</div><div class="e-src">TaxAct Alerts</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">1125-A beginning inventory = TY2024 ending</div></div><div class="e-val">$82,362</div><div class="e-src">Carryforward</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">BBA elect-out on Schedule B Q33 = Yes</div></div><div class="e-val">Yes</div><div class="e-src">+ Schedule B-2</div></div>
+  </div>
+
+  <div class="card">
+  <h3>E-File Actions</h3>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">E-file Federal Form 1065</div></div><div class="e-val">Submit</div><div class="e-src">IRS</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">E-file CA Form 568</div></div><div class="e-val">Submit</div><div class="e-src">FTB</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Save filed returns + confirmation numbers</div></div><div class="e-val">Archive</div><div class="e-src">7 year retention</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Generate K-1 PDFs for all 12 partners</div></div><div class="e-val">12 PDFs</div><div class="e-src">TaxAct export</div></div>
+  <div class="entry"><div class="e-chk"><div class="chk" onclick="tog(this)"></div></div><div class="e-desc"><div class="e-line">Email K-1s to all partners</div></div><div class="e-val">12 emails</div><div class="e-src">Partner addresses</div></div>
+  </div>
+</div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// Tab switching
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('p-' + t.dataset.tab).classList.add('active');
+  });
+});
+
+// Checkbox toggling + progress
+function tog(el) {
+  el.classList.toggle('done');
+  if (el.classList.contains('done')) el.innerHTML = '&#10003;';
+  else el.innerHTML = '';
+  updateProgress();
+}
+
+function updateProgress() {
+  const all = document.querySelectorAll('.chk');
+  const done = document.querySelectorAll('.chk.done');
+  const pct = all.length ? Math.round(done.length / all.length * 100) : 0;
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('prog-text').textContent = done.length + ' / ' + all.length + ' entered';
+  document.getElementById('prog-pct').textContent = pct + '%';
+}
+
+// Init progress
+updateProgress();
+</script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

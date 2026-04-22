@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Pre-Filing QA Cross-Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0d14; --bg2: #10131c; --card: #161923; --card-border: #232738;
+  --card-hover: #1c2030; --text: #e2e4ea; --text-dim: #7c7f8e; --text-muted: #52556a;
+  --accent: #6366f1; --accent-light: #818cf8; --accent-glow: rgba(99,102,241,0.12);
+  --accent-border: rgba(99,102,241,0.3);
+  --red: #f43f5e; --red-dim: rgba(244,63,94,0.1); --red-border: rgba(244,63,94,0.25);
+  --amber: #f59e0b; --amber-dim: rgba(245,158,11,0.1); --amber-border: rgba(245,158,11,0.25);
+  --green: #10b981; --green-dim: rgba(16,185,129,0.1); --green-border: rgba(16,185,129,0.25);
+  --font: 'DM Sans', -apple-system, system-ui, sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', monospace;
+  --radius: 10px; --radius-sm: 6px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.55; min-height:100vh; }
+.container { max-width:960px; margin:0 auto; padding:20px 24px 60px; }
+
+/* ─── BREADCRUMB ─── */
+.breadcrumb { display:flex; align-items:center; gap:8px; margin-bottom:20px; font-size:12px; }
+.breadcrumb a { color:var(--accent-light); text-decoration:none; font-weight:500; }
+.breadcrumb a:hover { text-decoration:underline; }
+.breadcrumb .sep { color:var(--text-muted); }
+.breadcrumb .current { color:var(--text-dim); }
+
+/* ─── HEADER ─── */
+.page-header { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:24px; flex-wrap:wrap; }
+.header-left h1 { font-size:22px; font-weight:800; letter-spacing:-0.5px; }
+.header-left h1 span { color:var(--accent); }
+.header-left .subtitle { font-size:12px; color:var(--text-dim); margin-top:4px; font-weight:500; }
+.header-left .entity-tags { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+.entity-tag { font-size:10px; padding:3px 10px; border-radius:20px; background:rgba(255,255,255,0.04); border:1px solid var(--card-border); color:var(--text-dim); font-weight:600; letter-spacing:0.3px; }
+.entity-tag.accent { background:var(--accent-glow); border-color:var(--accent-border); color:var(--accent-light); }
+
+/* ─── SCORE CARD ─── */
+.score-card { text-align:center; min-width:140px; }
+.score-num { font-size:56px; font-weight:800; line-height:1; letter-spacing:-3px; font-family:var(--mono); }
+.score-label { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); font-weight:700; margin-top:4px; }
+.score-sub { font-size:11px; color:var(--text-muted); margin-top:2px; }
+
+/* ─── STATUS BAR ─── */
+.status-bar { display:grid; grid-template-columns:repeat(12, 1fr); gap:3px; margin-bottom:28px; }
+.status-pip { height:6px; border-radius:3px; background:var(--card-border); transition:background .3s ease; }
+.status-pip.pass { background:var(--green); }
+.status-pip.fail { background:var(--red); }
+.status-pip.warn { background:var(--amber); }
+
+/* ─── CHECK CARDS ─── */
+.check-card { background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius); margin-bottom:8px; overflow:hidden; transition:border-color .3s ease, background .3s ease; }
+.check-card:hover { border-color:var(--card-hover); }
+.check-card.status-pass { border-color:var(--green-border); }
+.check-card.status-fail { border-color:var(--red-border); }
+.check-card.status-warn { border-color:var(--amber-border); }
+
+.check-header { display:flex; align-items:center; gap:12px; padding:14px 18px; cursor:pointer; user-select:none; }
+.check-number { font-family:var(--mono); font-size:11px; font-weight:600; color:var(--text-muted); min-width:28px; }
+.check-title { flex:1; font-size:13px; font-weight:600; }
+.check-why { font-size:11px; color:var(--text-dim); flex:1; display:none; }
+.check-badge { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; padding:3px 10px; border-radius:20px; white-space:nowrap; }
+.badge-pass { background:var(--green-dim); color:var(--green); border:1px solid var(--green-border); }
+.badge-fail { background:var(--red-dim); color:var(--red); border:1px solid var(--red-border); }
+.badge-warn { background:var(--amber-dim); color:var(--amber); border:1px solid var(--amber-border); }
+.badge-incomplete { background:rgba(255,255,255,0.03); color:var(--text-muted); border:1px solid var(--card-border); }
+.check-chevron { color:var(--text-muted); transition:transform .2s ease; font-size:14px; }
+.check-card.open .check-chevron { transform:rotate(90deg); }
+
+.check-body { max-height:0; overflow:hidden; transition:max-height .35s ease; }
+.check-body-inner { padding:0 18px 18px; }
+.check-desc { font-size:12px; color:var(--text-dim); margin-bottom:14px; line-height:1.6; }
+.check-desc strong { color:var(--text); font-weight:600; }
+
+/* ─── FORM ELEMENTS ─── */
+.field-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; }
+.field-row.single { grid-template-columns:1fr; }
+.field-row.triple { grid-template-columns:1fr 1fr 1fr; }
+.field-group { display:flex; flex-direction:column; gap:4px; }
+.field-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-dim); }
+.field-input { background:var(--bg2); border:1px solid var(--card-border); border-radius:var(--radius-sm); padding:9px 12px; font-family:var(--mono); font-size:13px; color:var(--text); outline:none; transition:border-color .2s; width:100%; }
+.field-input:focus { border-color:var(--accent-border); }
+.field-input.error { border-color:var(--red-border); background:var(--red-dim); }
+.field-input.valid { border-color:var(--green-border); }
+.field-input::placeholder { color:var(--text-muted); }
+
+.field-result { font-size:11px; margin-top:6px; padding:6px 10px; border-radius:var(--radius-sm); font-weight:500; }
+.field-result.pass { background:var(--green-dim); color:var(--green); border:1px solid var(--green-border); }
+.field-result.fail { background:var(--red-dim); color:var(--red); border:1px solid var(--red-border); }
+.field-result.warn { background:var(--amber-dim); color:var(--amber); border:1px solid var(--amber-border); }
+
+/* ─── PARTNER GRID ─── */
+.partner-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; }
+.partner-row { display:flex; align-items:center; gap:8px; background:var(--bg2); border:1px solid var(--card-border); border-radius:var(--radius-sm); padding:8px 10px; }
+.partner-name { font-size:11px; font-weight:600; min-width:110px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.partner-pct, .partner-amt, .partner-cap { font-family:var(--mono); font-size:12px; }
+.partner-row input[type="text"] { background:transparent; border:1px solid var(--card-border); border-radius:4px; padding:4px 8px; font-family:var(--mono); font-size:12px; color:var(--text); outline:none; width:90px; text-align:right; }
+.partner-row input[type="text"]:focus { border-color:var(--accent-border); }
+.partner-row input[type="checkbox"] { accent-color:var(--accent); width:16px; height:16px; cursor:pointer; }
+
+/* ─── SUMMARY ─── */
+.summary-card { background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius); padding:28px; text-align:center; margin-top:24px; }
+.summary-card.ready { border-color:var(--green-border); background:var(--green-dim); }
+.summary-card.not-ready { border-color:var(--red-border); background:var(--red-dim); }
+.summary-title { font-size:20px; font-weight:800; letter-spacing:-0.5px; margin-bottom:4px; }
+.summary-card.ready .summary-title { color:var(--green); }
+.summary-card.not-ready .summary-title { color:var(--red); }
+.summary-sub { font-size:12px; color:var(--text-dim); }
+.summary-timestamp { font-family:var(--mono); font-size:11px; color:var(--text-muted); margin-top:12px; }
+
+/* ─── BUTTONS ─── */
+.btn-row { display:flex; gap:10px; justify-content:center; margin-top:18px; flex-wrap:wrap; }
+.btn { padding:10px 22px; border-radius:var(--radius-sm); font-family:var(--font); font-size:12px; font-weight:700; border:1px solid var(--card-border); cursor:pointer; transition:all .15s; background:var(--card); color:var(--text); letter-spacing:0.3px; }
+.btn:hover { background:var(--card-hover); }
+.btn-accent { background:var(--accent); border-color:var(--accent); color:#fff; }
+.btn-accent:hover { background:var(--accent-light); }
+.btn-danger { color:var(--red); border-color:var(--red-border); }
+.btn-danger:hover { background:var(--red-dim); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width:700px) {
+  .page-header { flex-direction:column; }
+  .score-card { text-align:left; }
+  .score-num { font-size:40px; }
+  .field-row, .field-row.triple { grid-template-columns:1fr; }
+  .partner-grid { grid-template-columns:1fr; }
+  .partner-name { min-width:80px; }
+  .check-why { display:none !important; }
+  .status-bar { gap:2px; }
+}
+@media (min-width:701px) {
+  .check-why { display:block; }
+}
+
+/* ─── PRINT ─── */
+@media print {
+  body { background:#fff; color:#111; }
+  .container { max-width:100%; padding:0; }
+  .breadcrumb, .btn-row, .check-chevron, .check-body, .status-bar { display:none !important; }
+  .check-card { border:1px solid #ddd; break-inside:avoid; margin-bottom:6px; background:#fff; }
+  .check-header { cursor:default; }
+  .check-badge { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+  .badge-pass { background:#dcfce7; color:#166534; border-color:#bbf7d0; }
+  .badge-fail { background:#fee2e2; color:#991b1b; border-color:#fecaca; }
+  .badge-warn { background:#fef9c3; color:#854d0e; border-color:#fde68a; }
+  .badge-incomplete { background:#f3f4f6; color:#6b7280; border-color:#e5e7eb; }
+  .summary-card { break-before:page; background:#fff; border:2px solid #111; }
+  .summary-card.ready { border-color:#166534; }
+  .summary-card.not-ready { border-color:#991b1b; }
+  .summary-card .summary-title { color:#111; }
+  .page-header { margin-bottom:12px; }
+  .score-num { color:#111; }
+  .cert-section { display:block !important; break-before:page; }
+  .entity-tag { border:1px solid #ccc; }
+}
+
+/* ─── CERTIFICATION (print only) ─── */
+.cert-section { display:none; padding:40px 0; font-size:13px; color:#111; }
+.cert-section h2 { font-size:18px; margin-bottom:20px; text-align:center; }
+.cert-table { width:100%; border-collapse:collapse; margin:20px 0; }
+.cert-table th, .cert-table td { padding:8px 12px; border:1px solid #ddd; text-align:left; font-size:12px; }
+.cert-table th { background:#f5f5f5; font-weight:700; }
+.cert-sig { margin-top:60px; display:grid; grid-template-columns:1fr 1fr; gap:40px; }
+.cert-sig-line { border-top:1px solid #111; padding-top:6px; font-size:11px; color:#666; }
+.cert-disclaimer { margin-top:30px; font-size:10px; color:#888; text-align:center; font-style:italic; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="tax-dashboard.html">Tax Command Center</a>
+    <span class="sep">/</span>
+    <span class="current">Pre-Filing QA Cross-Check</span>
+  </div>
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1>Pre-Filing <span>QA Cross-Check</span></h1>
+      <div class="subtitle">TY2025 Form 1065 - Verification before filing</div>
+      <div class="entity-tags">
+        <span class="entity-tag accent">AWARE Hair LLC</span>
+        <span class="entity-tag">Form 1065</span>
+        <span class="entity-tag">CA Form 568</span>
+        <span class="entity-tag">12 Partners</span>
+      </div>
+    </div>
+    <div class="score-card">
+      <div class="score-num" id="scoreNum">0</div>
+      <div class="score-label">of 12 Passed</div>
+      <div class="score-sub" id="scoreSub">Enter data to begin</div>
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar" id="statusBar"></div>
+
+  <!-- CHECKS -->
+  <div id="checksContainer"></div>
+
+  <!-- SUMMARY -->
+  <div class="summary-card not-ready" id="summaryCard">
+    <div class="summary-title" id="summaryTitle">12 ISSUES REMAINING</div>
+    <div class="summary-sub" id="summarySub">Complete all checks to verify filing readiness</div>
+    <div class="summary-timestamp" id="summaryTimestamp"></div>
+    <div class="btn-row">
+      <button class="btn btn-accent" id="btnCert" disabled onclick="printCertification()">Generate Filing Certification</button>
+      <button class="btn btn-danger" onclick="clearAll()">Clear All</button>
+    </div>
+  </div>
+
+  <!-- CERTIFICATION (print only) -->
+  <div class="cert-section" id="certSection">
+    <h2>AWARE Hair LLC - Pre-Filing Verification Certification</h2>
+    <table class="cert-table">
+      <tr><th>Entity</th><td>AWARE Hair LLC</td></tr>
+      <tr><th>EIN</th><td>88-4202230</td></tr>
+      <tr><th>Tax Year</th><td>2025</td></tr>
+      <tr><th>Return Type</th><td>Form 1065 (Federal) / Form 568 (CA)</td></tr>
+      <tr><th>Date Verified</th><td id="certDate"></td></tr>
+    </table>
+    <table class="cert-table" id="certChecks">
+      <thead><tr><th>#</th><th>Check</th><th>Status</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="cert-sig">
+      <div>
+        <div class="cert-sig-line">Signature</div>
+      </div>
+      <div>
+        <div class="cert-sig-line">Date</div>
+      </div>
+    </div>
+    <div class="cert-disclaimer">This is an internal verification document only, not an IRS form. It does not constitute legal or tax advice.</div>
+  </div>
+
+</div>
+
+<script>
+// ─── DATA ───
+const PARTNERS = [
+  { name: 'Tina Mui', pct: 71.46 },
+  { name: 'Segal Family Trust', pct: 0.90 },
+  { name: 'Jade Wong', pct: 6.80 },
+  { name: 'Harlan Irvine', pct: 2.80 },
+  { name: 'Qing Zhao', pct: 2.00 },
+  { name: 'Paul Wong', pct: 6.20 },
+  { name: 'Gigi Chow', pct: 5.00 },
+  { name: 'Joe Pachorek', pct: 0.14 },
+  { name: 'KP Phung', pct: 2.00 },
+  { name: 'Alice Rossiter', pct: 1.20 },
+  { name: 'Patty Waggoner', pct: 0.30 },
+  { name: 'Partner 12', pct: 1.20 }
+];
+
+const LS_PREFIX = 'qa-check-';
+
+// ─── HELPERS ───
+function fmt$(v) {
+  if (v === '' || v === null || v === undefined || isNaN(v)) return '';
+  const n = parseFloat(v);
+  if (n < 0) return '($' + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ')';
+  return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function parse$(str) {
+  if (!str) return NaN;
+  let s = str.replace(/[$,\s]/g, '');
+  const neg = s.startsWith('(') && s.endsWith(')');
+  if (neg) s = s.slice(1, -1);
+  const n = parseFloat(s);
+  return neg ? -n : n;
+}
+
+function save(key, val) { try { localStorage.setItem(LS_PREFIX + key, val); } catch(e) {} }
+function load(key) { try { return localStorage.getItem(LS_PREFIX + key) || ''; } catch(e) { return ''; } }
+
+// ─── CHECK DEFINITIONS ───
+const CHECKS = [
+  {
+    id: 'bal-sheet',
+    num: 1,
+    title: 'Schedule L Balance',
+    why: 'IRS rejects if L doesn\'t balance',
+    desc: '<strong>Total Assets (Line 14)</strong> must equal <strong>Total Liabilities + Capital (Line 22)</strong> at end of year.',
+    fields: [
+      { key: 'l14-end', label: 'Total Assets (Line 14, End)', placeholder: '$0.00' },
+      { key: 'l22-end', label: 'Total Liab + Capital (Line 22, End)', placeholder: '$0.00' }
+    ],
+    validate(vals) {
+      const a = parse$(vals['l14-end']), b = parse$(vals['l22-end']);
+      if (isNaN(a) || isNaN(b)) return { status: 'incomplete', msg: '' };
+      const diff = Math.abs(a - b);
+      if (diff < 0.01) return { status: 'pass', msg: 'Balanced: ' + fmt$(a) };
+      return { status: 'fail', msg: 'Difference: ' + fmt$(diff) + ' - Assets ' + fmt$(a) + ' vs Liab+Capital ' + fmt$(b) };
+    }
+  },
+  {
+    id: 'm2-l21',
+    num: 2,
+    title: 'Schedule M-2 = Schedule L Line 21',
+    why: 'Mismatch = equity JE error',
+    desc: '<strong>M-2 ending capital</strong> must equal <strong>Schedule L Line 21</strong> (Partners\' capital accounts).',
+    fields: [
+      { key: 'm2-end', label: 'M-2 Ending Capital', placeholder: '$0.00' },
+      { key: 'l21-end', label: 'Schedule L Line 21 (End)', placeholder: '$0.00' }
+    ],
+    validate(vals) {
+      const a = parse$(vals['m2-end']), b = parse$(vals['l21-end']);
+      if (isNaN(a) || isNaN(b)) return { status: 'incomplete', msg: '' };
+      const diff = Math.abs(a - b);
+      if (diff < 0.01) return { status: 'pass', msg: 'Match: ' + fmt$(a) };
+      return { status: 'fail', msg: 'Difference: ' + fmt$(diff) + ' - M-2 ' + fmt$(a) + ' vs L-21 ' + fmt$(b) };
+    }
+  },
+  {
+    id: 'k1-pct',
+    num: 3,
+    title: 'K-1 Ownership Percentages = 100%',
+    why: 'Must total exactly 100%',
+    desc: 'All 12 partners\' profit allocation percentages must total exactly <strong>100.00%</strong>.',
+    custom: 'pct-grid',
+    validate(vals) {
+      let sum = 0, filled = 0;
+      for (let i = 0; i < 12; i++) {
+        const v = parseFloat(vals['pct-' + i]);
+        if (!isNaN(v)) { sum += v; filled++; }
+      }
+      if (filled < 12) return { status: 'incomplete', msg: filled + ' of 12 entered' };
+      const rounded = Math.round(sum * 100) / 100;
+      if (Math.abs(rounded - 100) < 0.005) return { status: 'pass', msg: 'Sum: ' + rounded.toFixed(2) + '%' };
+      return { status: 'fail', msg: 'Sum: ' + rounded.toFixed(2) + '% (off by ' + (rounded - 100).toFixed(2) + '%)' };
+    }
+  },
+  {
+    id: 'k1-income',
+    num: 4,
+    title: 'K-1 Income Allocations = 1065 Line 23',
+    why: 'Sum of K-1s must match partnership total',
+    desc: 'Sum of all K-1 <strong>Line 1</strong> amounts must equal <strong>Form 1065 Line 23</strong> (Ordinary business income).',
+    custom: 'income-grid',
+    validate(vals) {
+      let sum = 0, filled = 0;
+      for (let i = 0; i < 12; i++) {
+        const v = parse$(vals['inc-' + i]);
+        if (!isNaN(v)) { sum += v; filled++; }
+      }
+      const total = parse$(vals['line23']);
+      if (filled < 12 || isNaN(total)) return { status: 'incomplete', msg: filled + ' of 12 K-1s + 1065 total entered' };
+      const diff = Math.abs(sum - total);
+      if (diff < 0.01) return { status: 'pass', msg: 'Match: ' + fmt$(total) };
+      if (diff < 1.00) return { status: 'warn', msg: 'Rounding difference: ' + fmt$(diff) + ' (K-1 sum ' + fmt$(sum) + ' vs 1065 ' + fmt$(total) + ')' };
+      return { status: 'fail', msg: 'Difference: ' + fmt$(diff) + ' - K-1 sum ' + fmt$(sum) + ' vs 1065 Line 23 ' + fmt$(total) };
+    }
+  },
+  {
+    id: 'k1-capital',
+    num: 5,
+    title: 'K-1 Capital Accounts = L Line 21',
+    why: 'Ending capitals must reconcile',
+    desc: 'Sum of all 12 ending capital accounts on K-1s must equal <strong>Schedule L Line 21</strong>.',
+    custom: 'capital-grid',
+    validate(vals) {
+      let sum = 0, filled = 0;
+      for (let i = 0; i < 12; i++) {
+        const v = parse$(vals['cap-' + i]);
+        if (!isNaN(v)) { sum += v; filled++; }
+      }
+      const l21 = parse$(vals['cap-l21']);
+      if (filled < 12 || isNaN(l21)) return { status: 'incomplete', msg: filled + ' of 12 capitals + L-21 entered' };
+      const diff = Math.abs(sum - l21);
+      if (diff < 0.01) return { status: 'pass', msg: 'Match: ' + fmt$(l21) };
+      if (diff < 1.00) return { status: 'warn', msg: 'Rounding difference: ' + fmt$(diff) };
+      return { status: 'fail', msg: 'Difference: ' + fmt$(diff) + ' - K-1 sum ' + fmt$(sum) + ' vs L-21 ' + fmt$(l21) };
+    }
+  },
+  {
+    id: 'pnl-match',
+    num: 6,
+    title: 'P&L Net Income Matches',
+    why: 'QBO must tie to 1065 via M-1',
+    desc: '<strong>QBO P&L net income</strong> + <strong>M-1 adjustments</strong> should equal <strong>Form 1065 Line 23</strong>.',
+    fields: [
+      { key: 'qbo-net', label: 'QBO P&L Net Income', placeholder: '$0.00' },
+      { key: 'pnl-line23', label: '1065 Line 23', placeholder: '$0.00' },
+      { key: 'm1-adj', label: 'M-1 Adjustments Total', placeholder: '$0.00' }
+    ],
+    layout: 'triple',
+    validate(vals) {
+      const qbo = parse$(vals['qbo-net']), l23 = parse$(vals['pnl-line23']), m1 = parse$(vals['m1-adj']);
+      if (isNaN(qbo) || isNaN(l23)) return { status: 'incomplete', msg: '' };
+      const adj = isNaN(m1) ? 0 : m1;
+      const expected = qbo + adj;
+      const diff = Math.abs(expected - l23);
+      if (diff < 0.01) return { status: 'pass', msg: 'Match: QBO ' + fmt$(qbo) + ' + M-1 ' + fmt$(adj) + ' = ' + fmt$(l23) };
+      if (diff < 5.00) return { status: 'warn', msg: 'Small difference: ' + fmt$(diff) + ' (QBO+M1 = ' + fmt$(expected) + ' vs 1065 ' + fmt$(l23) + ')' };
+      return { status: 'fail', msg: 'Difference: ' + fmt$(diff) + ' - QBO+M1 = ' + fmt$(expected) + ' vs 1065 ' + fmt$(l23) };
+    }
+  },
+  {
+    id: 'retained-zero',
+    num: 7,
+    title: 'Retained Earnings = $0',
+    why: 'Year-end allocation JE must zero it out',
+    desc: 'After year-end allocation journal entry, QBO Retained Earnings should be <strong>$0</strong>.',
+    fields: [
+      { key: 're-bal', label: 'QBO Retained Earnings Balance', placeholder: '$0.00' }
+    ],
+    layout: 'single',
+    validate(vals) {
+      const v = parse$(vals['re-bal']);
+      if (isNaN(v)) return { status: 'incomplete', msg: '' };
+      if (Math.abs(v) < 1.01) return { status: 'pass', msg: 'Balance: ' + fmt$(v) };
+      return { status: 'fail', msg: 'Balance is ' + fmt$(v) + ' - needs year-end allocation JE' };
+    }
+  },
+  {
+    id: 'cash-bank',
+    num: 8,
+    title: 'Cash Matches Bank Statement',
+    why: 'L Line 1 must tie to bank',
+    desc: '<strong>Schedule L Line 1 (Cash, end)</strong> should match <strong>bank statement balance</strong> as of Dec 31.',
+    fields: [
+      { key: 'l1-cash', label: 'Schedule L Line 1 Cash (End)', placeholder: '$0.00' },
+      { key: 'bank-bal', label: 'Bank Statement Dec 31', placeholder: '$0.00' }
+    ],
+    validate(vals) {
+      const a = parse$(vals['l1-cash']), b = parse$(vals['bank-bal']);
+      if (isNaN(a) || isNaN(b)) return { status: 'incomplete', msg: '' };
+      const diff = Math.abs(a - b);
+      if (diff < 0.01) return { status: 'pass', msg: 'Match: ' + fmt$(a) };
+      if (diff < 5.00) return { status: 'warn', msg: 'Small difference: ' + fmt$(diff) + ' (rounding?)' };
+      return { status: 'fail', msg: 'Difference: ' + fmt$(diff) + ' - L-1 ' + fmt$(a) + ' vs Bank ' + fmt$(b) };
+    }
+  },
+  {
+    id: 'naics',
+    num: 9,
+    title: 'NAICS Code Consistency',
+    why: 'Must match prior year',
+    desc: 'NAICS code must match TY2024 return: <strong>424990</strong>.',
+    fields: [
+      { key: 'naics-code', label: 'NAICS Code on TY2025 Return', placeholder: '424990', prefill: '424990' }
+    ],
+    layout: 'single',
+    validate(vals) {
+      const v = (vals['naics-code'] || '').trim();
+      if (!v) return { status: 'incomplete', msg: '' };
+      if (v === '424990') return { status: 'pass', msg: 'Matches TY2024: 424990' };
+      return { status: 'fail', msg: 'Code "' + v + '" does not match TY2024 (424990) - verify this is intentional' };
+    }
+  },
+  {
+    id: 'acct-method',
+    num: 10,
+    title: 'Accounting Method Consistency',
+    why: 'Must match prior year: Accrual',
+    desc: 'Accounting method must match TY2024: <strong>Accrual</strong>.',
+    fields: [
+      { key: 'acct-method', label: 'Method in TaxAct', placeholder: 'Accrual', prefill: 'Accrual' }
+    ],
+    layout: 'single',
+    validate(vals) {
+      const v = (vals['acct-method'] || '').trim().toLowerCase();
+      if (!v) return { status: 'incomplete', msg: '' };
+      if (v === 'accrual') return { status: 'pass', msg: 'Matches TY2024: Accrual' };
+      return { status: 'fail', msg: '"' + vals['acct-method'].trim() + '" does not match TY2024 (Accrual)' };
+    }
+  },
+  {
+    id: 'ca-568',
+    num: 11,
+    title: 'CA Form 568 Consistency',
+    why: 'CA return income must match federal',
+    desc: '<strong>Federal ordinary income</strong> (1065 Line 23) should equal <strong>CA Form 568 income</strong> unless CA adjustments apply.',
+    fields: [
+      { key: 'fed-inc', label: 'Federal 1065 Line 23', placeholder: '$0.00' },
+      { key: 'ca-inc', label: 'CA Form 568 Income', placeholder: '$0.00' }
+    ],
+    validate(vals) {
+      const fed = parse$(vals['fed-inc']), ca = parse$(vals['ca-inc']);
+      if (isNaN(fed) || isNaN(ca)) return { status: 'incomplete', msg: '' };
+      const diff = Math.abs(fed - ca);
+      if (diff < 0.01) return { status: 'pass', msg: 'Match: ' + fmt$(fed) };
+      return { status: 'warn', msg: 'Difference: ' + fmt$(diff) + ' - verify CA adjustments justify this (Fed ' + fmt$(fed) + ' vs CA ' + fmt$(ca) + ')' };
+    }
+  },
+  {
+    id: 'tins',
+    num: 12,
+    title: 'All Partner SSNs/EINs Present',
+    why: 'Every K-1 requires a valid TIN',
+    desc: 'Confirm that every K-1 has a valid <strong>SSN or EIN</strong> for the partner.',
+    custom: 'tin-checklist',
+    validate(vals) {
+      let checked = 0;
+      for (let i = 0; i < 12; i++) {
+        if (vals['tin-' + i] === 'true') checked++;
+      }
+      if (checked === 12) return { status: 'pass', msg: 'All 12 TINs verified' };
+      if (checked === 0) return { status: 'incomplete', msg: '0 of 12 verified' };
+      return { status: 'fail', msg: checked + ' of 12 verified - ' + (12 - checked) + ' missing' };
+    }
+  }
+];
+
+// ─── RENDER ───
+function init() {
+  // Status bar pips
+  const bar = document.getElementById('statusBar');
+  for (let i = 0; i < 12; i++) {
+    const pip = document.createElement('div');
+    pip.className = 'status-pip';
+    pip.id = 'pip-' + i;
+    bar.appendChild(pip);
+  }
+
+  const container = document.getElementById('checksContainer');
+  CHECKS.forEach((check, idx) => {
+    const card = document.createElement('div');
+    card.className = 'check-card';
+    card.id = 'card-' + check.id;
+    card.innerHTML = `
+      <div class="check-header" onclick="toggleCard('${check.id}')">
+        <span class="check-number">${String(check.num).padStart(2, '0')}</span>
+        <span class="check-title">${check.title}</span>
+        <span class="check-why">${check.why}</span>
+        <span class="check-badge badge-incomplete" id="badge-${check.id}">INCOMPLETE</span>
+        <span class="check-chevron">&#9654;</span>
+      </div>
+      <div class="check-body" id="body-${check.id}">
+        <div class="check-body-inner">
+          <div class="check-desc">${check.desc}</div>
+          ${renderFields(check)}
+          <div class="field-result" id="result-${check.id}" style="display:none"></div>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  // Load saved and validate
+  loadAll();
+  validateAll();
+}
+
+function renderFields(check) {
+  if (check.custom === 'pct-grid') return renderPctGrid();
+  if (check.custom === 'income-grid') return renderIncomeGrid();
+  if (check.custom === 'capital-grid') return renderCapitalGrid();
+  if (check.custom === 'tin-checklist') return renderTinChecklist();
+
+  const layout = check.layout || '';
+  const cls = layout === 'triple' ? 'field-row triple' : layout === 'single' ? 'field-row single' : 'field-row';
+  let html = '<div class="' + cls + '">';
+  check.fields.forEach(f => {
+    const val = load(check.id + '-' + f.key);
+    const displayVal = val || (f.prefill || '');
+    html += `<div class="field-group">
+      <label class="field-label">${f.label}</label>
+      <input type="text" class="field-input" data-check="${check.id}" data-key="${f.key}"
+        placeholder="${f.placeholder}" value="${displayVal}"
+        oninput="onInput(this)">
+    </div>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+function renderPctGrid() {
+  let html = '<div class="partner-grid">';
+  PARTNERS.forEach((p, i) => {
+    const val = load('k1-pct-pct-' + i);
+    const displayVal = val || p.pct;
+    html += `<div class="partner-row">
+      <span class="partner-name" title="${p.name}">${p.name}</span>
+      <input type="text" data-check="k1-pct" data-key="pct-${i}" value="${displayVal}" oninput="onInput(this)" style="width:70px">
+      <span style="font-size:11px;color:var(--text-muted)">%</span>
+    </div>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+function renderIncomeGrid() {
+  let html = '<div class="partner-grid">';
+  PARTNERS.forEach((p, i) => {
+    const val = load('k1-income-inc-' + i);
+    html += `<div class="partner-row">
+      <span class="partner-name" title="${p.name}">${p.name}</span>
+      <input type="text" data-check="k1-income" data-key="inc-${i}" placeholder="$0.00" value="${val}" oninput="onInput(this)">
+    </div>`;
+  });
+  html += '</div>';
+  const l23val = load('k1-income-line23');
+  html += `<div class="field-row single"><div class="field-group">
+    <label class="field-label">Form 1065 Line 23 (Total)</label>
+    <input type="text" class="field-input" data-check="k1-income" data-key="line23" placeholder="$0.00" value="${l23val}" oninput="onInput(this)">
+  </div></div>`;
+  return html;
+}
+
+function renderCapitalGrid() {
+  let html = '<div class="partner-grid">';
+  PARTNERS.forEach((p, i) => {
+    const val = load('k1-capital-cap-' + i);
+    html += `<div class="partner-row">
+      <span class="partner-name" title="${p.name}">${p.name}</span>
+      <input type="text" data-check="k1-capital" data-key="cap-${i}" placeholder="$0.00" value="${val}" oninput="onInput(this)">
+    </div>`;
+  });
+  html += '</div>';
+  const l21val = load('k1-capital-cap-l21');
+  html += `<div class="field-row single"><div class="field-group">
+    <label class="field-label">Schedule L Line 21 (End)</label>
+    <input type="text" class="field-input" data-check="k1-capital" data-key="cap-l21" placeholder="$0.00" value="${l21val}" oninput="onInput(this)">
+  </div></div>`;
+  return html;
+}
+
+function renderTinChecklist() {
+  let html = '<div class="partner-grid">';
+  PARTNERS.forEach((p, i) => {
+    const checked = load('tins-tin-' + i) === 'true';
+    html += `<div class="partner-row">
+      <input type="checkbox" data-check="tins" data-key="tin-${i}" ${checked ? 'checked' : ''} onchange="onCheck(this)">
+      <span class="partner-name" title="${p.name}">${p.name}</span>
+    </div>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+// ─── INTERACTION ───
+function toggleCard(id) {
+  const card = document.getElementById('card-' + id);
+  const body = document.getElementById('body-' + id);
+  if (card.classList.contains('open')) {
+    card.classList.remove('open');
+    body.style.maxHeight = '0';
+  } else {
+    card.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+}
+
+function onInput(el) {
+  const checkId = el.dataset.check;
+  const key = el.dataset.key;
+  save(checkId + '-' + key, el.value);
+  validateCheck(checkId);
+  updateSummary();
+}
+
+function onCheck(el) {
+  const checkId = el.dataset.check;
+  const key = el.dataset.key;
+  save(checkId + '-' + key, el.checked ? 'true' : 'false');
+  validateCheck(checkId);
+  updateSummary();
+}
+
+// ─── VALIDATION ───
+function gatherVals(check) {
+  const vals = {};
+  if (check.fields) {
+    check.fields.forEach(f => {
+      const el = document.querySelector(`[data-check="${check.id}"][data-key="${f.key}"]`);
+      vals[f.key] = el ? el.value : load(check.id + '-' + f.key);
+    });
+  }
+  // Custom grids
+  if (check.custom === 'pct-grid') {
+    for (let i = 0; i < 12; i++) {
+      const el = document.querySelector(`[data-check="${check.id}"][data-key="pct-${i}"]`);
+      vals['pct-' + i] = el ? el.value : load(check.id + '-pct-' + i);
+    }
+  }
+  if (check.custom === 'income-grid') {
+    for (let i = 0; i < 12; i++) {
+      const el = document.querySelector(`[data-check="${check.id}"][data-key="inc-${i}"]`);
+      vals['inc-' + i] = el ? el.value : load(check.id + '-inc-' + i);
+    }
+    const el = document.querySelector(`[data-check="${check.id}"][data-key="line23"]`);
+    vals['line23'] = el ? el.value : load(check.id + '-line23');
+  }
+  if (check.custom === 'capital-grid') {
+    for (let i = 0; i < 12; i++) {
+      const el = document.querySelector(`[data-check="${check.id}"][data-key="cap-${i}"]`);
+      vals['cap-' + i] = el ? el.value : load(check.id + '-cap-' + i);
+    }
+    const el = document.querySelector(`[data-check="${check.id}"][data-key="cap-l21"]`);
+    vals['cap-l21'] = el ? el.value : load(check.id + '-cap-l21');
+  }
+  if (check.custom === 'tin-checklist') {
+    for (let i = 0; i < 12; i++) {
+      const el = document.querySelector(`[data-check="${check.id}"][data-key="tin-${i}"]`);
+      vals['tin-' + i] = el ? String(el.checked) : load(check.id + '-tin-' + i);
+    }
+  }
+  return vals;
+}
+
+function validateCheck(checkId) {
+  const check = CHECKS.find(c => c.id === checkId);
+  if (!check) return;
+  const vals = gatherVals(check);
+  const result = check.validate(vals);
+
+  // Badge
+  const badge = document.getElementById('badge-' + checkId);
+  badge.className = 'check-badge';
+  if (result.status === 'pass') { badge.classList.add('badge-pass'); badge.textContent = 'PASS'; }
+  else if (result.status === 'fail') { badge.classList.add('badge-fail'); badge.textContent = 'FAIL'; }
+  else if (result.status === 'warn') { badge.classList.add('badge-warn'); badge.textContent = 'WARNING'; }
+  else { badge.classList.add('badge-incomplete'); badge.textContent = 'INCOMPLETE'; }
+
+  // Card border
+  const card = document.getElementById('card-' + checkId);
+  card.className = card.className.replace(/\bstatus-\w+/g, '').trim();
+  if (result.status !== 'incomplete') card.classList.add('status-' + result.status);
+
+  // Result message
+  const resEl = document.getElementById('result-' + checkId);
+  if (result.msg) {
+    resEl.style.display = 'block';
+    resEl.className = 'field-result ' + result.status;
+    resEl.textContent = result.msg;
+  } else {
+    resEl.style.display = 'none';
+  }
+
+  // Status pip
+  const idx = CHECKS.findIndex(c => c.id === checkId);
+  const pip = document.getElementById('pip-' + idx);
+  pip.className = 'status-pip';
+  if (result.status !== 'incomplete') pip.classList.add(result.status);
+
+  // Recalculate body height if open
+  const body = document.getElementById('body-' + checkId);
+  if (card.classList.contains('open')) {
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+
+  return result.status;
+}
+
+function validateAll() {
+  CHECKS.forEach(c => validateCheck(c.id));
+  updateSummary();
+}
+
+function updateSummary() {
+  let passed = 0, failed = 0, warns = 0, incomplete = 0;
+  CHECKS.forEach(c => {
+    const vals = gatherVals(c);
+    const r = c.validate(vals);
+    if (r.status === 'pass') passed++;
+    else if (r.status === 'fail') failed++;
+    else if (r.status === 'warn') warns++;
+    else incomplete++;
+  });
+
+  const scoreNum = document.getElementById('scoreNum');
+  const scoreSub = document.getElementById('scoreSub');
+  scoreNum.textContent = passed;
+
+  if (passed === 12) {
+    scoreNum.style.color = 'var(--green)';
+    scoreSub.textContent = 'All checks passed';
+  } else if (failed > 0) {
+    scoreNum.style.color = 'var(--red)';
+    scoreSub.textContent = failed + ' failed, ' + warns + ' warnings, ' + incomplete + ' incomplete';
+  } else if (warns > 0) {
+    scoreNum.style.color = 'var(--amber)';
+    scoreSub.textContent = warns + ' warnings, ' + incomplete + ' incomplete';
+  } else {
+    scoreNum.style.color = 'var(--text-muted)';
+    scoreSub.textContent = incomplete + ' checks remaining';
+  }
+
+  const card = document.getElementById('summaryCard');
+  const title = document.getElementById('summaryTitle');
+  const sub = document.getElementById('summarySub');
+  const ts = document.getElementById('summaryTimestamp');
+  const btn = document.getElementById('btnCert');
+
+  const allClear = passed + warns === 12 && failed === 0 && incomplete === 0;
+  const allPass = passed === 12;
+
+  if (allPass) {
+    card.className = 'summary-card ready';
+    title.textContent = 'READY TO FILE';
+    sub.textContent = 'All 12 verification checks passed';
+    btn.disabled = false;
+  } else if (allClear) {
+    card.className = 'summary-card ready';
+    title.textContent = 'READY TO FILE (WITH WARNINGS)';
+    sub.textContent = warns + ' warnings to review - no failures';
+    btn.disabled = false;
+  } else {
+    card.className = 'summary-card not-ready';
+    const issues = failed + incomplete;
+    title.textContent = issues + ' ISSUE' + (issues !== 1 ? 'S' : '') + ' REMAINING';
+    sub.textContent = failed + ' failed, ' + warns + ' warnings, ' + incomplete + ' incomplete';
+    btn.disabled = true;
+  }
+
+  ts.textContent = 'Last checked: ' + new Date().toLocaleString();
+}
+
+// ─── PERSISTENCE ───
+function loadAll() {
+  // Pre-fill defaults for percentage fields if no saved value
+  PARTNERS.forEach((p, i) => {
+    const key = 'k1-pct-pct-' + i;
+    if (!load(key)) save(key, String(p.pct));
+  });
+  // Pre-fill NAICS
+  if (!load('naics-naics-code')) save('naics-naics-code', '424990');
+  // Pre-fill accounting method
+  if (!load('acct-method-acct-method')) save('acct-method-acct-method', 'Accrual');
+}
+
+function clearAll() {
+  if (!confirm('Clear all entered data? This cannot be undone.')) return;
+  const keys = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && k.startsWith(LS_PREFIX)) keys.push(k);
+  }
+  keys.forEach(k => localStorage.removeItem(k));
+  location.reload();
+}
+
+// ─── CERTIFICATION ───
+function printCertification() {
+  const certDate = document.getElementById('certDate');
+  certDate.textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+
+  const tbody = document.querySelector('#certChecks tbody');
+  tbody.innerHTML = '';
+  CHECKS.forEach(c => {
+    const vals = gatherVals(c);
+    const r = c.validate(vals);
+    const statusText = r.status === 'pass' ? 'PASS' : r.status === 'warn' ? 'WARNING' : r.status === 'fail' ? 'FAIL' : 'INCOMPLETE';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${c.num}</td><td>${c.title}</td><td>${statusText}${r.msg ? ' - ' + r.msg : ''}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  window.print();
+}
+
+// ─── INIT ───
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

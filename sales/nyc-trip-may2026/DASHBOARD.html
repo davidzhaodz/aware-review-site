@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NYC Trip Intelligence Dashboard - AWARE Hair</title>
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+  :root {
+    --bg: #f4efe9;
+    --surface: #faf8f5;
+    --surface-alt: #eee9e2;
+    --text: #102B26;
+    --text-muted: rgba(16,43,38,0.55);
+    --gold: #D4A574;
+    --sage: #7d8471;
+    --teal: #113035;
+    --teal-light: rgba(17,48,53,0.08);
+    --green: #3a7d5c;
+    --green-light: rgba(58,125,92,0.1);
+    --amber: #b8860b;
+    --amber-light: rgba(184,134,11,0.1);
+    --red: #8b3a3a;
+    --red-light: rgba(139,58,58,0.08);
+    --font-heading: "orpheuspro", Georgia, serif;
+    --font-body: "DM Sans", sans-serif;
+    --radius: 6px;
+    --shadow-sm: 0 1px 3px rgba(16,43,38,0.06);
+    --shadow-md: 0 4px 12px rgba(16,43,38,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Header */
+  .header {
+    padding: 48px 32px 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .header-eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--text);
+  }
+  .header-meta {
+    margin-top: 12px;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+  .header-meta span { margin-right: 24px; }
+
+  /* Sections */
+  .section {
+    padding: 0 32px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .section-title {
+    font-family: var(--font-heading);
+    font-size: 1.375rem;
+    font-weight: 400;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--surface-alt);
+  }
+
+  /* Stats Grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+  }
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .stat-number {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--text);
+  }
+  .stat-number.gold { color: var(--gold); }
+  .stat-number.green { color: var(--green); }
+  .stat-number.teal { color: var(--teal); }
+  .stat-label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-top: 8px;
+    letter-spacing: 0.02em;
+  }
+  .stat-detail {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* Divider */
+  .divider {
+    text-align: center;
+    padding: 24px 0;
+    color: var(--gold);
+    font-size: 0.75rem;
+    letter-spacing: 0.5em;
+  }
+
+  /* Day Timeline */
+  .timeline {
+    display: grid;
+    gap: 12px;
+  }
+  .day-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 80px;
+    align-items: start;
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 200ms ease;
+    cursor: default;
+  }
+  .day-row:hover { transform: translateX(4px); }
+  .day-row.event-day {
+    background: var(--teal);
+    color: var(--bg);
+  }
+  .day-row.event-day .day-label { color: var(--gold); }
+  .day-row.event-day .day-salons { color: rgba(244,239,233,0.7); }
+  .day-row.event-day .day-count { color: var(--bg); }
+  .day-row.ripple-day {
+    border-left: 3px solid var(--gold);
+  }
+  .day-row.prime-day {
+    border-left: 3px solid var(--green);
+  }
+  .day-label {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 400;
+  }
+  .day-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .day-row.event-day .day-date { color: rgba(244,239,233,0.5); }
+  .day-salons {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .day-salons .salon-name {
+    display: inline-block;
+    background: var(--teal-light);
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin: 2px 4px 2px 0;
+    font-size: 0.75rem;
+    color: var(--text);
+  }
+  .day-row.event-day .salon-name {
+    background: rgba(244,239,233,0.12);
+    color: var(--bg);
+  }
+  .day-count {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    text-align: right;
+    color: var(--text);
+  }
+  .day-theme {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .day-theme.ripple { color: var(--gold); }
+  .day-theme.prime { color: var(--green); }
+  .day-theme.event { color: var(--gold); }
+
+  /* Neighborhood bars */
+  .neighborhood-bars { margin-top: 8px; }
+  .bar-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 40px;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+  }
+  .bar-label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-align: right;
+  }
+  .bar-track {
+    height: 24px;
+    background: var(--surface-alt);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+  }
+  .bar-fill {
+    height: 100%;
+    background: var(--teal);
+    border-radius: 3px;
+    transition: width 800ms ease;
+    min-width: 2px;
+  }
+  .bar-fill.ripple-zone {
+    background: linear-gradient(90deg, var(--teal), var(--gold));
+  }
+  .bar-count {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  /* Ripple Zone */
+  .ripple-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .ripple-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 200ms ease;
+  }
+  .ripple-card:hover { transform: translateY(-2px); }
+  .ripple-card.close { border-left: 3px solid var(--gold); }
+  .ripple-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  .ripple-meta {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .ripple-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 48px;
+  }
+  .ripple-minutes {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+  .ripple-unit {
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+
+  /* Signal tags */
+  .tag {
+    display: inline-block;
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 6px;
+    border-radius: 2px;
+    margin-right: 4px;
+    margin-top: 4px;
+  }
+  .tag-scalp { background: var(--green-light); color: var(--green); }
+  .tag-campaign { background: var(--amber-light); color: var(--amber); }
+  .tag-ripple { background: rgba(212,165,116,0.15); color: var(--gold); }
+
+  /* Checklist */
+  .checklist {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .check-group {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    box-shadow: var(--shadow-sm);
+  }
+  .check-group-title {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .check-item {
+    font-size: 0.8125rem;
+    padding: 4px 0;
+    padding-left: 20px;
+    position: relative;
+    color: var(--text);
+  }
+  .check-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    border: 1.5px solid var(--sage);
+    border-radius: 2px;
+  }
+  .check-item.done::before {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .check-item.done::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 10px;
+    width: 6px;
+    height: 3px;
+    border-left: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(-45deg);
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px 32px 48px;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* Print */
+  @media print {
+    body { background: white; }
+    .stat-card, .day-row, .ripple-card, .check-group { box-shadow: none; border: 1px solid #e0dcd6; }
+    .day-row:hover { transform: none; }
+    .stat-card:hover { transform: none; }
+    .section { break-inside: avoid; }
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .header, .section { padding-left: 20px; padding-right: 20px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .day-row { grid-template-columns: 80px 1fr 50px; padding: 16px; }
+    .bar-row { grid-template-columns: 100px 1fr 32px; }
+    .ripple-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <p class="header-eyebrow">Field Sales Intelligence</p>
+  <h1>NYC Trip Dashboard</h1>
+  <div class="header-meta">
+    <span>May 18 - 26, 2026</span>
+    <span>C.O. Bigelow Launch + Salon Prospecting</span>
+    <span>Generated April 15, 2026</span>
+  </div>
+</div>
+
+<!-- Pipeline Overview -->
+<div class="section">
+  <h2 class="section-title">Pipeline Overview</h2>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number">389</div>
+      <div class="stat-label">Manhattan Salons</div>
+      <div class="stat-detail">Deduped from 437 raw prospects</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number teal">55</div>
+      <div class="stat-label">Intelligence Cards</div>
+      <div class="stat-detail">47 primary + 8 backup</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number gold">47</div>
+      <div class="stat-label">Assigned Visits</div>
+      <div class="stat-detail">Across 7 visit days</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number green">30</div>
+      <div class="stat-label">Ripple Zone</div>
+      <div class="stat-detail">Within 15 min of Bigelow</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">25</div>
+      <div class="stat-label">Pre-Warmed</div>
+      <div class="stat-detail">Already in email campaign</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">80</div>
+      <div class="stat-label">Hours Enriched</div>
+      <div class="stat-detail">$2.56 Google Places API</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider">&#9670; &#9670; &#9670;</div>
+
+<!-- Daily Schedule -->
+<div class="section">
+  <h2 class="section-title">Daily Schedule</h2>
+  <div class="timeline" id="timeline"></div>
+</div>
+
+<div class="divider">&#9670; &#9670; &#9670;</div>
+
+<!-- Neighborhood Distribution -->
+<div class="section">
+  <h2 class="section-title">Neighborhood Distribution (Score 80+)</h2>
+  <div class="neighborhood-bars" id="neighborhoods"></div>
+</div>
+
+<div class="divider">&#9670; &#9670; &#9670;</div>
+
+<!-- Bigelow Ripple Zone -->
+<div class="section">
+  <h2 class="section-title">Bigelow Ripple Zone (30 Salons, 15-Min Walk)</h2>
+  <div class="ripple-grid" id="ripple-grid"></div>
+</div>
+
+<div class="divider">&#9670; &#9670; &#9670;</div>
+
+<!-- Pre-Trip Checklist -->
+<div class="section">
+  <h2 class="section-title">Pre-Trip Checklist</h2>
+  <div class="checklist">
+    <div class="check-group">
+      <div class="check-group-title">Print Materials</div>
+      <div class="check-item">25-30 line sheets (color, PDF from HTML)</div>
+      <div class="check-item">25-30 pricing sheets</div>
+      <div class="check-item">25 business cards</div>
+    </div>
+    <div class="check-group">
+      <div class="check-group-title">Product Samples</div>
+      <div class="check-item">25-30 sample kit pairs (cleanser + conditioner)</div>
+      <div class="check-item">5 full-size product sets</div>
+      <div class="check-item">Sandalwood Gua Sha samples (if available)</div>
+    </div>
+    <div class="check-group">
+      <div class="check-group-title">Digital</div>
+      <div class="check-item done">Google Maps routes saved offline</div>
+      <div class="check-item done">55 salon intelligence cards</div>
+      <div class="check-item done">3 conversation scripts</div>
+      <div class="check-item done">3 follow-up email templates</div>
+      <div class="check-item">Scalp Environment Report demo on phone</div>
+    </div>
+    <div class="check-group">
+      <div class="check-group-title">Logistics</div>
+      <div class="check-item">Comfortable walking shoes</div>
+      <div class="check-item">Phone charger / battery pack</div>
+      <div class="check-item">Small bag for materials</div>
+      <div class="check-item">Notebook for visit notes</div>
+    </div>
+    <div class="check-group">
+      <div class="check-group-title">Pre-Departure (May 16-17)</div>
+      <div class="check-item">Check email replies from Bigelow sequence</div>
+      <div class="check-item">Review Day 1 and Day 2 routes</div>
+      <div class="check-item">Confirm Bigelow staff training (May 18, 11am)</div>
+    </div>
+    <div class="check-group">
+      <div class="check-group-title">Deliverables</div>
+      <div class="check-item done">STRATEGY.md</div>
+      <div class="check-item done">bigelow-ripple.md</div>
+      <div class="check-item done">9 daily route plans</div>
+      <div class="check-item done">3 scripts + 3 email templates</div>
+      <div class="check-item done">ENRICHMENT-STATS.md</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  AWARE Hair - NYC Field Sales Intelligence Package<br>
+  sales/nyc-trip-may2026/ - 75 files
+</div>
+
+<script>
+// Data
+const daySchedule = [
+  { day: 1, label: 'Day 1', date: 'Mon May 18', theme: '', salons: ['Maison Sisley Paris', 'Rizza Salon', 'Elm Boutique Spa', 'Nadia Vassell Salon'], count: 4, type: 'ripple', themeText: 'Post-Training, West Village' },
+  { day: 2, label: 'Day 2', date: 'Tue May 19', theme: '', salons: ['Shampoo Avenue B', 'Palms Salon', 'Fox and Jane', 'Salon V', 'Wind Hair Salon', 'Yo-C Salon', 'ORO New York', 'Ollin Salon NYC'], count: 8, type: '', themeText: 'East Village Blitz' },
+  { day: 3, label: 'Day 3', date: 'Wed May 20', theme: 'event', salons: ['C.O. Bigelow Launch Event'], count: 0, type: 'event', themeText: 'Bigelow Event Day' },
+  { day: 4, label: 'Day 4', date: 'Thu May 21', theme: 'ripple', salons: ['Vidov West', 'YARA', 'Salon V', 'Vidov West 14', 'Kiwa Salon', 'Tomoko Shima', 'Bloom Beauty Lounge', 'Salon Jatel'], count: 8, type: 'ripple', themeText: 'Bigelow Ripple Day' },
+  { day: 5, label: 'Day 5', date: 'Fri May 22', theme: '', salons: ['Dima Salon', 'Muze Salon', 'Antonio Prieto', 'AR Hair Salon', 'Capelli D\'Oro', 'Zirka Place', 'Catalia Beauty', 'MEY New York'], count: 8, type: '', themeText: 'Chelsea Corridor' },
+  { day: 6, label: 'Day 6', date: 'Sat May 23', theme: 'prime', salons: ['The Drawing Room', 'Sam Brocato', 'Arte Salon', 'Salon MUSA', 'NOON HAUS', 'Roman K Salon', 'Tribeca Hair Studio', 'Maria Bonita'], count: 8, type: 'prime', themeText: 'Prime Saturday' },
+  { day: 7, label: 'Day 7', date: 'Sun May 24', theme: '', salons: ['Rescue Spa', 'Heyday Skincare'], count: 2, type: '', themeText: 'Rest / Overflow' },
+  { day: 8, label: 'Day 8', date: 'Mon May 25', theme: '', salons: ['Allure Day Spa', 'Head Spa Day', 'Ree Spa', 'GEALY SPA', 'LAICALE', 'Mark Ryan Salon'], count: 6, type: '', themeText: 'UES / Midtown' },
+  { day: 9, label: 'Day 9', date: 'Tue May 26', theme: '', salons: ['The House of Beauty', 'Davida Salon', 'Benjamin Salon'], count: 3, type: '', themeText: 'Final Morning' },
+];
+
+const neighborhoods = [
+  { name: 'Chelsea', count: 37, ripple: true },
+  { name: 'Upper East Side', count: 25, ripple: false },
+  { name: 'Other Manhattan', count: 23, ripple: false },
+  { name: 'East Village-LES', count: 19, ripple: true },
+  { name: 'Midtown East', count: 14, ripple: false },
+  { name: 'SoHo', count: 10, ripple: true },
+  { name: 'Upper West Side', count: 10, ripple: false },
+  { name: 'Tribeca', count: 8, ripple: false },
+  { name: 'West Village', count: 7, ripple: true },
+  { name: 'Flatiron-Gramercy', count: 6, ripple: false },
+  { name: 'NoMad', count: 3, ripple: false },
+  { name: 'NoHo-Nolita', count: 1, ripple: false },
+];
+const maxCount = Math.max(...neighborhoods.map(n => n.count));
+
+const rippleSalons = [
+  { name: 'Rizza Salon', hood: 'West Village', min: 4, close: true, scalp: true },
+  { name: 'Vidov West 14', hood: 'Chelsea', min: 6, close: true, scalp: true },
+  { name: 'YARA - West Village', hood: 'West Village', min: 6, close: true, scalp: true },
+  { name: 'Vidov West Hair Salon', hood: 'West Village', min: 7, close: true, scalp: true },
+  { name: 'Salon V', hood: 'East Village-LES', min: 7, close: true, scalp: true },
+  { name: 'Elm Boutique Spa', hood: 'West Village', min: 7, close: true, scalp: false },
+  { name: 'Kiwa Salon', hood: 'Chelsea', min: 9, close: true, scalp: true },
+  { name: 'Tomoko Shima', hood: 'Chelsea', min: 9, close: true, scalp: true },
+  { name: 'Bloom Beauty Lounge', hood: 'Chelsea', min: 10, close: true, scalp: true },
+  { name: 'Salon Jatel', hood: 'Chelsea', min: 11, close: false, scalp: true },
+  { name: 'Dima Salon', hood: 'Chelsea', min: 11, close: false, scalp: false },
+  { name: 'Muze Salon', hood: 'Chelsea', min: 13, close: false, scalp: false },
+  { name: 'Antonio Prieto Salon', hood: 'Chelsea', min: 13, close: false, scalp: false },
+  { name: 'AR Hair Salon', hood: 'Chelsea', min: 13, close: false, scalp: false },
+  { name: 'Mark Ryan Salon', hood: 'Chelsea', min: 13, close: false, scalp: false },
+  { name: 'Salon MUSA', hood: 'SoHo', min: 13, close: false, scalp: false },
+  { name: 'Maison Sisley Paris', hood: 'West Village', min: 14, close: false, scalp: true },
+  { name: 'Nadia Vassell Salon', hood: 'SoHo', min: 15, close: false, scalp: false },
+  { name: 'NOON HAUS', hood: 'SoHo', min: 15, close: false, scalp: true },
+  { name: 'Rescue Spa', hood: 'East Village-LES', min: 15, close: false, scalp: false },
+];
+
+// Render Timeline
+const timelineEl = document.getElementById('timeline');
+daySchedule.forEach(d => {
+  const isEvent = d.type === 'event';
+  const isRipple = d.type === 'ripple' && !isEvent;
+  const isPrime = d.type === 'prime';
+  const cls = isEvent ? 'event-day' : isRipple ? 'ripple-day' : isPrime ? 'prime-day' : '';
+  const themeCls = isEvent ? 'event' : isRipple ? 'ripple' : isPrime ? 'prime' : '';
+
+  const salonChips = d.salons.map(s => `<span class="salon-name">${s}</span>`).join('');
+
+  timelineEl.innerHTML += `
+    <div class="day-row ${cls}">
+      <div>
+        <div class="day-label">${d.label}</div>
+        <div class="day-date">${d.date}</div>
+      </div>
+      <div class="day-salons">
+        <div class="day-theme ${themeCls}">${d.themeText}</div>
+        ${salonChips}
+      </div>
+      <div class="day-count">${isEvent ? '' : d.count}</div>
+    </div>
+  `;
+});
+
+// Render Neighborhoods
+const neighbEl = document.getElementById('neighborhoods');
+neighborhoods.forEach(n => {
+  const pct = (n.count / maxCount * 100).toFixed(0);
+  const fillCls = n.ripple ? 'ripple-zone' : '';
+  neighbEl.innerHTML += `
+    <div class="bar-row">
+      <div class="bar-label">${n.name}</div>
+      <div class="bar-track">
+        <div class="bar-fill ${fillCls}" style="width: ${pct}%"></div>
+      </div>
+      <div class="bar-count">${n.count}</div>
+    </div>
+  `;
+});
+
+// Render Ripple Zone
+const rippleEl = document.getElementById('ripple-grid');
+rippleSalons.forEach(s => {
+  const tags = [];
+  if (s.scalp) tags.push('<span class="tag tag-scalp">Scalp</span>');
+  if (s.close) tags.push('<span class="tag tag-ripple">Close</span>');
+
+  rippleEl.innerHTML += `
+    <div class="ripple-card ${s.close ? 'close' : ''}">
+      <div>
+        <div class="ripple-name">${s.name}</div>
+        <div class="ripple-meta">${s.hood} ${tags.join('')}</div>
+      </div>
+      <div class="ripple-badge">
+        <div class="ripple-minutes">${s.min}</div>
+        <div class="ripple-unit">min</div>
+      </div>
+    </div>
+  `;
+});
+
+// Animate bars on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.bar-fill').forEach(bar => {
+        bar.style.width = bar.style.width;
+      });
+    }
+  });
+}, { threshold: 0.2 });
+observer.observe(document.getElementById('neighborhoods'));
+</script>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

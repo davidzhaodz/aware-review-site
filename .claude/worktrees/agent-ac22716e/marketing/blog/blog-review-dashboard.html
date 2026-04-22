@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Blog Content Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--t:#102B26;--bg:#f4efe9;--sf:#faf8f5;--go:#D4A574;--sa:#7d8471;--bd:rgba(16,43,38,.12);--gr:#2d6a4f;--gbg:#e8f5e9;--am:#9a6d00;--abg:#fef3d0;--rd:#8b2635;--rbg:#fde8ea;--mu:rgba(16,43,38,.52);--grbg:#f1f0ee;--bl:#1a4a7a;--blbg:#dce8f5}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--t);line-height:1.5;font-size:14px}
+.hdr{background:var(--t);color:#f4efe9;padding:24px 36px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.hdr h1{font-family:Georgia,serif;font-size:20px;font-weight:600;margin-bottom:2px}
+.hdr .sub{font-size:12px;color:rgba(244,239,233,.55)}
+.hdr .ts{font-size:11px;color:rgba(244,239,233,.38);white-space:nowrap;margin-top:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:24px 20px 48px}
+/* Stats row */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:18px}
+.sc{background:var(--sf);border:1px solid var(--bd);border-radius:6px;padding:14px 12px;text-align:center}
+.sc .sv{font-family:Georgia,serif;font-size:26px;font-weight:600;line-height:1;margin-bottom:3px}
+.sc .sk{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px}
+/* Pipeline */
+.pflow{display:flex;align-items:stretch;margin:14px 0 18px;overflow-x:auto}
+.pstage{flex:1;min-width:120px;background:var(--sf);border:1px solid var(--bd);border-right:none;padding:12px 14px}
+.pstage:first-child{border-radius:6px 0 0 6px}.pstage:last-child{border-right:1px solid var(--bd);border-radius:0 6px 6px 0}
+.pstage .sl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--mu);margin-bottom:4px}
+.pstage .sn{font-family:Georgia,serif;font-size:22px;font-weight:600;margin-bottom:2px}
+.pstage .sd{font-size:12px;color:var(--mu);line-height:1.35}
+.parr{width:18px;display:flex;align-items:center;justify-content:center;color:var(--go);font-size:14px;flex-shrink:0;background:var(--sf);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+/* Collapsible */
+details{background:var(--sf);border:1px solid var(--bd);border-radius:6px;margin-bottom:10px;overflow:hidden}
+summary{padding:13px 18px;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;user-select:none}
+summary::-webkit-details-marker{display:none}
+.stitle{font-family:Georgia,serif;font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+.smeta{font-size:12px;color:var(--mu);font-family:'DM Sans',sans-serif}
+.sarrow{color:var(--mu);font-size:11px;flex-shrink:0;transition:transform .2s}
+details[open] .sarrow{transform:rotate(180deg)}
+.sbody{padding:4px 18px 18px;border-top:1px solid var(--bd)}
+/* Badge */
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+.badge.gr{background:var(--gbg);color:var(--gr)}.badge.am{background:var(--abg);color:var(--am)}
+.badge.rd{background:var(--rbg);color:var(--rd)}.badge.gy{background:var(--grbg);color:#6b7280}
+.badge.go{background:#fdf0e4;color:#8a5a20}.badge.bl{background:var(--blbg);color:var(--bl)}
+.badge.pr{background:#f0e6f6;color:#6b21a8}
+/* Table */
+.dt{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
+.dt th{text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--mu);padding:7px 10px;border-bottom:1px solid var(--bd)}
+.dt td{padding:9px 10px;border-bottom:1px solid var(--bd);vertical-align:top}
+.dt tr:last-child td{border-bottom:none}
+.dt .ttl{font-weight:600;color:var(--t)}
+.dt .fp{font-family:'SF Mono','Fira Code',monospace;font-size:10px;color:var(--mu);margin-top:2px}
+.dt .kw{font-size:11px;color:var(--sa);margin-top:2px}
+/* Progress bar */
+.prog-wrap{background:rgba(16,43,38,.08);border-radius:4px;height:6px;overflow:hidden;margin-top:6px;width:100%}
+.prog-fill{height:100%;border-radius:4px;background:var(--gr)}
+.prog-fill.am{background:var(--am)}.prog-fill.rd{background:var(--rd)}
+/* Section label */
+.slabel{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--go);margin:20px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--bd)}
+/* Note box */
+.note{background:var(--sf);border:1px solid var(--bd);border-left:3px solid var(--go);border-radius:0 6px 6px 0;padding:12px 16px;margin-bottom:14px;font-size:13px;color:var(--mu);line-height:1.5}
+.note strong{color:var(--t)}
+/* Lead magnet */
+.lm{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:11px;color:var(--bl)}
+.lm::before{content:"";display:inline-block;width:10px;height:10px;border:1.5px solid var(--bl);border-radius:50%;flex-shrink:0}
+/* Links row */
+.links{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.links a{font-size:11px;color:var(--go);text-decoration:none;border:1px solid var(--bd);padding:2px 8px;border-radius:3px}
+.links a:hover{border-color:var(--go);background:rgba(212,165,116,.08)}
+.footer{text-align:center;padding:18px;font-size:11px;color:var(--mu);border-top:1px solid var(--bd);margin-top:8px}
+@media(max-width:680px){
+  .hdr{padding:18px 14px;flex-direction:column;gap:6px}
+  .wrap{padding:14px 10px 36px}
+  .sgrid{grid-template-columns:repeat(2,1fr)}
+  .pflow{flex-direction:column}.pstage{border-right:1px solid var(--bd);border-bottom:none;border-radius:0}
+  .pstage:first-child{border-radius:6px 6px 0 0}.pstage:last-child{border-bottom:1px solid var(--bd);border-radius:0 0 6px 6px}
+  .parr{display:none}
+  .dt{font-size:12px}.dt th,.dt td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <h1>Blog Content Dashboard</h1>
+    <div class="sub">AWARE Hair - Article Pipeline, Review Status, Professional Series Tracker</div>
+  </div>
+  <div class="ts">Updated: 2026-03-27</div>
+</div>
+
+<div class="wrap">
+
+<!-- Stats -->
+<div class="sgrid">
+  <div class="sc"><div class="sv">20</div><div class="sk">Published</div></div>
+  <div class="sc"><div class="sv">2</div><div class="sk">New Pro Articles</div></div>
+  <div class="sc"><div class="sv">7</div><div class="sk">Drafts</div></div>
+  <div class="sc"><div class="sv">3</div><div class="sk">Briefs Done</div></div>
+  <div class="sc"><div class="sv">10</div><div class="sk">Pro Series Total</div></div>
+  <div class="sc"><div class="sv">1</div><div class="sk">Needs Review Fix</div></div>
+</div>
+
+<!-- Pipeline -->
+<div class="slabel">Pro Series Pipeline</div>
+<div class="pflow">
+  <div class="pstage"><div class="sl">Idea</div><div class="sn">4</div><div class="sd">Articles 4, 5, 6, 8 - not yet briefed</div></div>
+  <div class="parr">&rarr;</div>
+  <div class="pstage"><div class="sl">Researching</div><div class="sn">1</div><div class="sd">Brief 02 (Scalp Consultation)</div></div>
+  <div class="parr">&rarr;</div>
+  <div class="pstage"><div class="sl">Brief Done</div><div class="sn">1</div><div class="sd">Brief 01 (Add Scalp Treatments)</div></div>
+  <div class="parr">&rarr;</div>
+  <div class="pstage"><div class="sl">Article Draft</div><div class="sn">2</div><div class="sd">Articles 03 + 07 - HTML complete</div></div>
+  <div class="parr">&rarr;</div>
+  <div class="pstage"><div class="sl">David Review</div><div class="sn">2</div><div class="sd">Ready for review</div></div>
+  <div class="parr">&rarr;</div>
+  <div class="pstage"><div class="sl">Published</div><div class="sn">0</div><div class="sd">None yet</div></div>
+</div>
+
+<!-- ═══ PRO SERIES (NEW) ═══ -->
+<div class="slabel">Professional Stylist Series (10 Articles)</div>
+
+<details open>
+  <summary>
+    <span class="stitle"><span class="badge bl">PRO</span> Article 03 - Why Your Best Colorists Should Care About Scalp Health</span>
+    <span style="display:flex;align-items:center;gap:8px"><span class="badge gr">HTML Done</span><span class="sarrow">&#9660;</span></span>
+  </summary>
+  <div class="sbody">
+    <table class="dt">
+      <tr><td style="width:120px;color:var(--mu)">Status</td><td><span class="badge gr">Article written</span> - ready for David review</td></tr>
+      <tr><td style="color:var(--mu)">Priority</td><td>#1 - Completely uncontested content position</td></tr>
+      <tr><td style="color:var(--mu)">Word count</td><td>~3,000+ editorial words (7,858 HTML)</td></tr>
+      <tr><td style="color:var(--mu)">Primary keyword</td><td><span class="kw">scalp care before color / scalp health color services</span></td></tr>
+      <tr><td style="color:var(--mu)">Key angle</td><td>Healthy scalp = better color results (offensive, not defensive framing)</td></tr>
+      <tr><td style="color:var(--mu)">Components</td><td>3 science callouts, 4 chair-side takeaways, 3 pull quotes, 3 tables, 5 FAQs, pro CTA</td></tr>
+      <tr><td style="color:var(--mu)">Lead magnet</td><td><div class="lm">Pre-Color Scalp Assessment Checklist (PDF)</div></td></tr>
+    </table>
+    <div class="links">
+      <a href="colorist-scalp-health-guide.html">Article HTML</a>
+      <a href="briefs/pro-series/brief-03-colorist-scalp-health.md">Research Brief</a>
+    </div>
+  </div>
+</details>
+
+<details open>
+  <summary>
+    <span class="stitle"><span class="badge bl">PRO</span> Article 07 - GLP-1 Hair Loss Is Filling Your Chair</span>
+    <span style="display:flex;align-items:center;gap:8px"><span class="badge gr">HTML Done</span><span class="sarrow">&#9660;</span></span>
+  </summary>
+  <div class="sbody">
+    <table class="dt">
+      <tr><td style="width:120px;color:var(--mu)">Status</td><td><span class="badge gr">Article written</span> - ready for David review</td></tr>
+      <tr><td style="color:var(--mu)">Priority</td><td>#2 - Trending topic, time-sensitive first-mover advantage</td></tr>
+      <tr><td style="color:var(--mu)">Word count</td><td>~3,200 editorial words (7,695 HTML)</td></tr>
+      <tr><td style="color:var(--mu)">Primary keyword</td><td><span class="kw">glp-1 hair loss stylist / ozempic hair loss salon</span></td></tr>
+      <tr><td style="color:var(--mu)">Key angle</td><td>1 in 5 women 50-64 on GLP-1s - the salon industry's core demographic</td></tr>
+      <tr><td style="color:var(--mu)">Components</td><td>3 science callouts, 3 chair-side takeaways, 3 pull quotes, 4 tables (incl. Say This/Not That), 5 FAQs</td></tr>
+      <tr><td style="color:var(--mu)">Lead magnet</td><td><div class="lm">GLP-1 Client Support Card (stylist, gated) + Client Handout (ungated)</div></td></tr>
+    </table>
+    <div class="links">
+      <a href="glp1-hair-loss-stylist-guide.html">Article HTML</a>
+      <a href="briefs/pro-series/brief-07-glp1-stylist-guide.md">Research Brief</a>
+    </div>
+  </div>
+</details>
+
+<details>
+  <summary>
+    <span class="stitle"><span class="badge bl">PRO</span> Article 01 - How to Add Scalp Treatments to Your Salon Menu</span>
+    <span style="display:flex;align-items:center;gap:8px"><span class="badge am">Brief Done</span><span class="sarrow">&#9660;</span></span>
+  </summary>
+  <div class="sbody">
+    <table class="dt">
+      <tr><td style="width:120px;color:var(--mu)">Status</td><td><span class="badge am">Brief complete</span> - awaiting article draft</td></tr>
+      <tr><td style="color:var(--mu)">Priority</td><td>#4 - Expands existing 1,900-word draft to full depth</td></tr>
+      <tr><td style="color:var(--mu)">Primary keyword</td><td><span class="kw">how to add scalp treatments to salon / salon scalp treatment menu</span></td></tr>
+      <tr><td style="color:var(--mu)">Key additions</td><td>Equipment tiers (under $500 to start), first-90-days roadmap, real case studies (90% rebook), licensing</td></tr>
+      <tr><td style="color:var(--mu)">Lead magnet</td><td><div class="lm">Scalp Service Launch Checklist (PDF)</div></td></tr>
+      <tr><td style="color:var(--mu)">Draft fix needed</td><td><span class="badge rd">Unverified PBA "68%" stat</span> - replace with Kline PRO data</td></tr>
+    </table>
+    <div class="links">
+      <a href="briefs/pro-series/brief-01-scalp-treatment-menu.md">Research Brief</a>
+      <a href="drafts/professional-scalp-treatment-salon-guide.md">Existing Draft</a>
+    </div>
+  </div>
+</details>
+
+<details>
+  <summary>
+    <span class="stitle"><span class="badge bl">PRO</span> Article 02 - The Scalp Consultation Every Stylist Can Do</span>
+    <span style="display:flex;align-items:center;gap:8px"><span class="badge go">Researching</span><span class="sarrow">&#9660;</span></span>
+  </summary>
+  <div class="sbody">
+    <table class="dt">
+      <tr><td style="width:120px;color:var(--mu)">Status</td><td><span class="badge go">Research in progress</span></td></tr>
+      <tr><td style="color:var(--mu)">Priority</td><td>#3 - Counter-positions against $300-2,000 paid certifications</td></tr>
+      <tr><td style="color:var(--mu)">Primary keyword</td><td><span class="kw">scalp consultation for stylists / scalp assessment salon</span></td></tr>
+      <tr><td style="color:var(--mu)">Key angle</td><td>Free, practical consultation framework - currently locked behind paywalled courses</td></tr>
+      <tr><td style="color:var(--mu)">Lead magnet</td><td><div class="lm">Scalp Assessment Quick Reference Card (PDF)</div></td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>
+    <span class="stitle"><span class="badge bl">PRO</span> Article 04 - Recognizing Scalp Conditions Behind the Chair</span>
+    <span style="display:flex;align-items:center;gap:8px"><span class="badge gy">Idea</span><span class="sarrow">&#9660;</span></span>
+  </summary>
+  <div class="sbody">
+    <table class="dt">
+      <tr><td style="width:120px;color:var(--mu)">Priority</td><td>#5 - Visual reference guide, strong lead magnet potential</td></tr>
+      <tr><td style="color:var(--mu)">Primary keyword</td><td><span class="kw">scalp conditions stylists should know / common scalp problems salon</span></td></tr>
+      <tr><td style="color:var(--mu)">Key angle</td><td>Treat vs. refer decision tree - only PJ's College has deep free content (poorly distributed)</td></tr>
+      <tr><td style="color:var(--mu)">Lead magnet</td><td><div class="lm">Chair-Side Visual Reference Card (printable PDF)</div></td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>
+    <span class="stitle"><span class="badge bl">PRO</span> Article 05 - The Revenue Math: Why Scalp Services Outperform Add-Ons</span>
+    <span style="display:flex;align-items:center;gap:8px"><span class="badge gy">Idea</span><span class="sarrow">&#9660;</span></span>
+  </summary>
+  <div class="sbody">
+    <table class="dt">
+      <tr><td style="width:120px;color:var(--mu)">Priority</td><td>#7 - Business case with actual math</td></tr>
+      <tr><td style="color:var(--mu)">Primary keyword</td><td><span class="kw">scalp services salon revenue / scalp treatment profit margin</span></td></tr>
+      <tr><td style="color:var(--mu)">Key angle</td><td>No one has done the actual math. Revenue per hour, margin comparison, LTV impact</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>
+    <span class="stitle"><span class="badge bl">PRO</span> Article 06 - Talking to Clients About Scalp Health</span>
+    <span style="display:flex;align-items:center;gap:8px"><span class="badge gy">Idea</span><span class="sarrow">&#9660;</span></span>
+  </summary>
+  <div class="sbody">
+    <table class="dt">
+      <tr><td style="width:120px;color:var(--mu)">Priority</td><td>#6 - Solves #1 stylist adoption barrier</td></tr>
+      <tr><td style="color:var(--mu)">Primary keyword</td><td><span class="kw">talking to clients about scalp / upselling scalp services</span></td></tr>
+      <tr><td style="color:var(--mu)">Key angle</td><td>Conversation scripts and timing - juliArt (Taiwan) has the only existing piece</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>
+    <span class="stitle"><span class="badge bl">PRO</span> Article 08 - Building a Head Spa Program That Lasts</span>
+    <span style="display:flex;align-items:center;gap:8px"><span class="badge gy">Idea</span><span class="sarrow">&#9660;</span></span>
+  </summary>
+  <div class="sbody">
+    <table class="dt">
+      <tr><td style="width:120px;color:var(--mu)">Priority</td><td>#9 - Clinical voice in equipment-seller-dominated space</td></tr>
+      <tr><td style="color:var(--mu)">Primary keyword</td><td><span class="kw">head spa salon setup / head spa business</span></td></tr>
+      <tr><td style="color:var(--mu)">Key angle</td><td>Results-focused, not aesthetic-only. Tina owns "head spa done right"</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>
+    <span class="stitle"><span class="badge bl">PRO</span> Article 09 - Getting Your Team on Board: Training Stylists</span>
+    <span style="display:flex;align-items:center;gap:8px"><span class="badge gy">Idea</span><span class="sarrow">&#9660;</span></span>
+  </summary>
+  <div class="sbody">
+    <table class="dt">
+      <tr><td style="width:120px;color:var(--mu)">Priority</td><td>#10 - Counter-positions $1,500 courses with "start here for free"</td></tr>
+      <tr><td style="color:var(--mu)">Primary keyword</td><td><span class="kw">training stylists scalp treatments / stylist scalp education</span></td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>
+    <span class="stitle"><span class="badge bl">PRO</span> Article 10 - Supporting Clients Through Scalp Changes</span>
+    <span style="display:flex;align-items:center;gap:8px"><span class="badge gy">Idea</span><span class="sarrow">&#9660;</span></span>
+  </summary>
+  <div class="sbody">
+    <table class="dt">
+      <tr><td style="width:120px;color:var(--mu)">Priority</td><td>#8 - Menopause, medication, thinning protocols</td></tr>
+      <tr><td style="color:var(--mu)">Primary keyword</td><td><span class="kw">menopause hair loss stylist / hormonal hair loss salon</span></td></tr>
+      <tr><td style="color:var(--mu)">Key angle</td><td>Cloud Nine (UK) has the only guide. US market has nothing</td></tr>
+    </table>
+  </div>
+</details>
+
+<!-- ═══ PUBLISHED CONSUMER ARTICLES ═══ -->
+<div class="slabel">Published Consumer Articles (18 + 1 B2B)</div>
+
+<details>
+  <summary>
+    <span class="stitle">Consumer Article Library</span>
+    <span style="display:flex;align-items:center;gap:8px"><span class="smeta">18 consumer + 1 B2B</span><span class="sarrow">&#9660;</span></span>
+  </summary>
+  <div class="sbody">
+    <table class="dt">
+      <tr><th>Title</th><th>Audience</th><th>Cluster</th><th>File</th></tr>
+      <tr><td class="ttl">Dandruff Treatment: What the AAD Actually Recommends</td><td><span class="badge gy">Consumer</span></td><td>Conditions</td><td class="fp">aad-dandruff-treatment-guide.html</td></tr>
+      <tr><td class="ttl">Best Shampoo for Damaged and Thinning Hair</td><td><span class="badge gy">Consumer</span></td><td>Product Guide</td><td class="fp">best-shampoo-damaged-thinning-hair-guide.html</td></tr>
+      <tr><td class="ttl">Dandruff vs. Dry Scalp: How to Tell the Difference</td><td><span class="badge gy">Consumer</span></td><td>Conditions</td><td class="fp">dandruff-vs-dry-scalp-guide.html</td></tr>
+      <tr><td class="ttl">Best Shampoo for Dry Scalp</td><td><span class="badge gy">Consumer</span></td><td>Product Guide</td><td class="fp">dry-scalp-shampoo-guide.html</td></tr>
+      <tr><td class="ttl">GLP-1 Medications and Your Hair</td><td><span class="badge gy">Consumer</span></td><td>Medical</td><td class="fp">glp1-medication-scalp-hair-guide.html</td></tr>
+      <tr><td class="ttl">Is Hard Water Damaging Your Hair?</td><td><span class="badge gy">Consumer</span></td><td>Environmental</td><td class="fp">hard-water-scalp-guide.html</td></tr>
+      <tr><td class="ttl">What Is a Head Spa?</td><td><span class="badge gy">Consumer</span></td><td>Salon Service</td><td class="fp">head-spa-treatment-guide.html</td></tr>
+      <tr><td class="ttl">Hyaluronic Acid for Scalp: Why Molecular Weight Matters</td><td><span class="badge gy">Consumer</span></td><td>Ingredient Science</td><td class="fp">hyaluronic-acid-scalp-guide.html</td></tr>
+      <tr><td class="ttl">How to Improve Scalp Health: The Complete Guide</td><td><span class="badge gy">Consumer</span></td><td>Scalp Health</td><td class="fp">improve-scalp-health-guide.html</td></tr>
+      <tr><td class="ttl">Why Your Scalp Itches (And How to Fix It)</td><td><span class="badge gy">Consumer</span></td><td>Conditions</td><td class="fp">itchy-scalp-causes-guide.html</td></tr>
+      <tr><td class="ttl">Menopause and Your Scalp</td><td><span class="badge gy">Consumer</span></td><td>Life Stage</td><td class="fp">menopause-scalp-health-guide.html</td></tr>
+      <tr><td class="ttl">Oily Scalp: Causes and Professional Balancing Guide</td><td><span class="badge gy">Consumer</span></td><td>Conditions</td><td class="fp">oily-scalp-causes-guide.html</td></tr>
+      <tr><td class="ttl">Professional Leave-In Conditioner</td><td><span class="badge gy">Consumer</span></td><td>Product Guide</td><td class="fp">professional-leave-in-conditioner-guide.html</td></tr>
+      <tr><td class="ttl">Salon Pricing in 2026</td><td><span class="badge bl">B2B</span></td><td>Salon Business</td><td class="fp">salon-pricing-industry-trends-2026-guide.html</td></tr>
+      <tr><td class="ttl">Scalp Detox: When You Need It</td><td><span class="badge gy">Consumer</span></td><td>Treatment</td><td class="fp">scalp-detox-guide.html</td></tr>
+      <tr><td class="ttl">Your Scalp Microbiome: A Beginner's Guide</td><td><span class="badge gy">Consumer</span></td><td>Scalp Science</td><td class="fp">scalp-microbiome-guide.html</td></tr>
+      <tr><td class="ttl">Seasonal Scalp Care</td><td><span class="badge gy">Consumer</span></td><td>Routine</td><td class="fp">seasonal-scalp-care-guide.html</td></tr>
+      <tr><td class="ttl">White Buildup on Hair and Scalp</td><td><span class="badge gy">Consumer</span></td><td>Conditions</td><td class="fp">white-buildup-hair-scalp-guide.html</td></tr>
+      <tr><td class="ttl">The Science Page</td><td><span class="badge gy">Consumer</span></td><td>Brand</td><td class="fp">the-science-page.html</td></tr>
+    </table>
+  </div>
+</details>
+
+<!-- ═══ DRAFTS ═══ -->
+<div class="slabel">Drafts in Progress</div>
+
+<details>
+  <summary>
+    <span class="stitle">Consumer Drafts</span>
+    <span style="display:flex;align-items:center;gap:8px"><span class="smeta">6 drafts</span><span class="sarrow">&#9660;</span></span>
+  </summary>
+  <div class="sbody">
+    <table class="dt">
+      <tr><th>Title</th><th>Status</th><th>Priority</th><th>File</th></tr>
+      <tr><td class="ttl">Complete Guide to Scalp Care Products</td><td><span class="badge am">Needs Review</span></td><td><span class="badge rd">Critical Gap</span></td><td class="fp">drafts/best-scalp-care-products-guide.md</td></tr>
+      <tr><td class="ttl">Dry Scalp Shampoo: Environmental Causes</td><td><span class="badge am">Needs Review</span></td><td><span class="badge rd">Critical Gap</span></td><td class="fp">drafts/dry-scalp-shampoo-environmental-guide.md</td></tr>
+      <tr><td class="ttl">Do Multi-in-1 Shampoos Actually Work?</td><td><span class="badge am">Needs Review</span></td><td><span class="badge gy">Normal</span></td><td class="fp">drafts/multi-in-1-shampoo-guide.md</td></tr>
+      <tr><td class="ttl">Professional Leave-In Conditioner (v2)</td><td><span class="badge am">Needs Review</span></td><td><span class="badge gy">Normal</span></td><td class="fp">drafts/professional-leave-in-conditioner-guide.md</td></tr>
+      <tr><td class="ttl">Professional Scalp Treatments: Salon Guide</td><td><span class="badge go">Being Expanded</span></td><td><span class="badge rd">Critical B2B</span></td><td class="fp">drafts/professional-scalp-treatment-salon-guide.md</td></tr>
+      <tr><td class="ttl">Complete Scalp Care Routine</td><td><span class="badge gy">Auto-Draft</span></td><td><span class="badge gy">Normal</span></td><td class="fp">drafts/auto-draft-2026-03-17.md</td></tr>
+    </table>
+  </div>
+</details>
+
+<!-- ═══ KNOWN ISSUES ═══ -->
+<div class="slabel">Known Issues (from Blog Review Report)</div>
+
+<div class="note">
+  <strong>2 Critical issues</strong> from the March 4 blog review: (1) Placeholder webhook URL in all 12 original articles, (2) Misattributed citation in template article. Plus 7 high-priority items. Full details in <code>BLOG-REVIEW-REPORT.md</code>.
+</div>
+
+<!-- ═══ KEY FILES ═══ -->
+<div class="slabel">Key Files</div>
+
+<details>
+  <summary>
+    <span class="stitle">File Reference</span>
+    <span class="sarrow">&#9660;</span>
+  </summary>
+  <div class="sbody">
+    <table class="dt">
+      <tr><th>File</th><th>Purpose</th></tr>
+      <tr><td class="fp">marketing/blog/aware-premium-article-template.html</td><td>HTML template for all articles</td></tr>
+      <tr><td class="fp">marketing/blog/BLOG-REVIEW-REPORT.md</td><td>Audit report (March 4, 2026)</td></tr>
+      <tr><td class="fp">marketing/blog/CONTENT-CLUSTER-MAP.md</td><td>Content strategy and keyword clusters</td></tr>
+      <tr><td class="fp">marketing/blog/briefs/pro-series/</td><td>Research briefs for professional series</td></tr>
+      <tr><td class="fp">marketing/Q2-2026-CONTENT-CALENDAR.md</td><td>Publishing schedule</td></tr>
+      <tr><td class="fp">sales/seo-pipeline/reports/keywords-2026-03-23-salon-exclusive.md</td><td>B2B keyword research</td></tr>
+      <tr><td class="fp">skills/blog-workspace/skill.md</td><td>Blog design system and content rules</td></tr>
+      <tr><td class="fp">skills/salon-sales/skill.md</td><td>B2B tone and anti-patterns</td></tr>
+    </table>
+  </div>
+</details>
+
+<div class="footer">AWARE Hair Blog Dashboard - Generated 2026-03-27 - Open in browser to review</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scalp Class Salon Invite Dashboard - AWARE Hair</title>
+  <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal: #102B26;
+      --cream: #f4efe9;
+      --surface: #faf8f5;
+      --gold: #D4A574;
+      --gold-light: #E8C9A8;
+      --sage: #7d8471;
+      --text: #102B26;
+      --muted: #4a5c56;
+      --divider: #d4cfc6;
+      --white: #ffffff;
+      --green: #4a8c6b;
+      --green-bg: #f2f8f5;
+      --amber: #b8860b;
+      --amber-bg: #fffbf0;
+      --red: #c45b4a;
+      --red-bg: #fdf5f4;
+      --blue: #4a7cb8;
+      --blue-bg: #f0f5fc;
+      --purple: #7c5cbf;
+      --purple-bg: #f5f0ff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    .hero {
+      background: var(--teal);
+      border-radius: 12px;
+      padding: 48px 48px 40px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: rgba(212,165,116,0.06);
+    }
+
+    .hero-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-family: 'orpheus-pro', Georgia, serif;
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 15px;
+      color: var(--sage);
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    .hero-date {
+      margin-top: 20px;
+      font-size: 11px;
+      color: rgba(212,165,116,0.6);
+      letter-spacing: 1px;
+    }
+
+    /* Stats */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      border-top: 3px solid var(--gold);
+    }
+
+    .stat-card .num {
+      font-family: 'orpheus-pro', Georgia, serif;
+      font-size: 36px;
+      color: var(--teal);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-card .label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.3px;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 240px;
+      padding: 10px 16px;
+      border: 1px solid var(--divider);
+      border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      background: var(--white);
+      color: var(--text);
+      outline: none;
+    }
+
+    .search-box:focus { border-color: var(--gold); }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--divider);
+      border-radius: 6px;
+      background: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover { border-color: var(--gold); color: var(--text); }
+    .filter-btn.active { background: var(--teal); color: var(--cream); border-color: var(--teal); }
+
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 32px 0 16px;
+    }
+
+    .section-header h2 {
+      font-family: 'orpheus-pro', Georgia, serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--teal);
+      white-space: nowrap;
+    }
+
+    .section-header .count {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gold);
+      background: var(--amber-bg);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .section-header .line {
+      flex: 1;
+      height: 1px;
+      background: var(--divider);
+    }
+
+    /* Table */
+    .salon-table {
+      background: var(--white);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .table-header {
+      background: var(--teal);
+      color: var(--cream);
+      padding: 12px 20px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 2fr 1.5fr 1fr;
+      gap: 12px;
+    }
+
+    .salon-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 2fr 1.5fr 1fr;
+      gap: 12px;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--divider);
+      font-size: 13px;
+      align-items: center;
+      transition: background 0.15s;
+    }
+
+    .salon-row:nth-child(even) { background: var(--surface); }
+    .salon-row:hover { background: var(--cream); }
+
+    .salon-name {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .salon-contact {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .salon-email {
+      font-family: 'SF Mono', 'Fira Code', Menlo, monospace;
+      font-size: 11px;
+      color: var(--blue);
+      word-break: break-all;
+    }
+
+    .salon-notes {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .badge-google { background: var(--green-bg); color: var(--green); }
+    .badge-research { background: var(--purple-bg); color: var(--purple); }
+    .badge-both { background: var(--blue-bg); color: var(--blue); }
+    .badge-high { background: var(--amber-bg); color: var(--amber); }
+    .badge-unverified { background: var(--red-bg); color: var(--red); }
+    /* followup removed - all treated as fresh */
+
+    /* Email copy */
+    .copy-btn {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      background: var(--surface);
+      color: var(--muted);
+      border: none;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.15s;
+    }
+
+    .copy-btn:hover { background: var(--gold); color: var(--white); }
+    .copy-btn.copied { background: var(--green); color: var(--white); }
+
+    /* Email Preview */
+    .email-preview {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 32px;
+      margin-top: 32px;
+      border-left: 3px solid var(--gold);
+    }
+
+    .email-preview h3 {
+      font-family: 'orpheus-pro', Georgia, serif;
+      font-size: 18px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+
+    .email-preview .subject {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .email-preview .body {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text);
+      white-space: pre-line;
+    }
+
+    .email-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .stats-strip { grid-template-columns: repeat(3, 1fr); }
+      .table-header, .salon-row { grid-template-columns: 1fr 1fr; }
+      .table-header > :nth-child(n+3), .salon-row > :nth-child(n+3) { display: none; }
+      .email-pair { grid-template-columns: 1fr; }
+    }
+
+    /* Export bar */
+    .export-bar {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-bottom: 16px;
+    }
+
+    .export-btn {
+      padding: 8px 20px;
+      border-radius: 0;
+      background: var(--teal);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .export-btn:hover { opacity: 0.85; }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-label">Scalp Class - April 20, 2026</div>
+    <h1>OC Salon Invite Dashboard</h1>
+    <p>Merged prospect list for the complimentary scalp education class at Images Salon, Corona Del Mar. 84 salons with emails across 21 OC cities, sourced from Google Drive pipeline + web research.</p>
+    <div class="hero-date">Email 1: April 8 (today) | Email 2: April 13 (Monday) | Via Instantly.ai from david@awarehair.care</div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="num">80</div>
+      <div class="label">Total Salons</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">65</div>
+      <div class="label">Google Drive</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">16</div>
+      <div class="label">Found via Research</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">21</div>
+      <div class="label">Cities</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">10</div>
+      <div class="label">High Priority</div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <input type="text" class="search-box" id="search" placeholder="Search salon name, contact, city, or email...">
+    <button class="filter-btn active" data-filter="all">All (80)</button>
+    <button class="filter-btn" data-filter="high">High Priority</button>
+    <button class="filter-btn" data-filter="research">Found via Research</button>
+    <button class="filter-btn" data-filter="google">Google Drive Only</button>
+    <button class="filter-btn" data-filter="cdm-nb">CDM + Newport</button>
+  </div>
+
+  <!-- Export -->
+  <div class="export-bar">
+    <button class="export-btn" onclick="copyAllEmails()">Copy All Emails</button>
+    <button class="export-btn" onclick="copyVisibleEmails()">Copy Filtered Emails</button>
+  </div>
+
+  <!-- Salon Table -->
+  <div id="salon-container"></div>
+
+  <!-- Email Preview -->
+  <div class="section-header" style="margin-top:48px">
+    <h2>Email Drafts</h2>
+    <div class="line"></div>
+  </div>
+
+  <div class="email-pair">
+    <div class="email-preview">
+      <h3>Email 1 - The Invite</h3>
+      <div class="subject">Subject: Scalp Health Class in Newport Beach - April 20th</div>
+      <div class="body">Hi,
+
+We'd love to invite you to an exclusive Scalp Health Class in Newport Beach for stylists interested in elevating their knowledge of scalp care and treatment.
+
+Hosted by AWARE Hair and Tina Mui, this intimate session is designed for stylists who want to deepen their understanding of scalp health while learning practical techniques they can bring back to the chair.
+
+Date: Monday, April 20th
+Time: 10:00 AM - 11:30 AM
+Location: Images Salon, Newport Beach
+
+Included:
+&#8226; Live scalp analysis and meridian gua sha demo
+&#8226; Coffee and pastries
+&#8226; AWARE Hair gift bag
+
+The class is completely complimentary. Spots are limited. RSVP here: https://tally.so/r/44vqRB
+
+We hope you can join us.
+
+Warmly,
+David</div>
+    </div>
+    <div class="email-preview">
+      <h3>Email 2 - The Reminder</h3>
+      <div class="subject">Subject: This Monday - Scalp Health Class in Newport Beach</div>
+      <div class="body">Hi,
+
+A quick reminder about Monday's Scalp Health Class at Images Salon.
+
+One thing we're especially looking forward to: Tina will be doing live scalp analysis under 50x magnification, projected for the room. It's the kind of detail that changes how you see every client who sits in your chair.
+
+Monday, April 20th
+10:00 AM - 11:30 AM
+Images Salon, Newport Beach
+
+A few spots remain. RSVP: https://tally.so/r/44vqRB
+
+See you Monday.
+
+Warmly,
+David</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const salons = [
+  // Corona Del Mar
+  {name:"Strands Hair Studio",contact:"Gary",email:"storeygary@yahoo.com",city:"Corona Del Mar",notes:"",source:"google",priority:""},
+  {name:"Leshays Salon",contact:"Sharon",email:"leshayssalon@yahoo.com",city:"Corona Del Mar",notes:"Curly Cut",source:"google",priority:""},
+  {name:"Drift Salon",contact:"Brianna",email:"contact@drift.salon",city:"Corona Del Mar",notes:"",source:"google",priority:""},
+  {name:"Salon 27 Eleven",contact:"Wendy",email:"wendycurran@sbcglobal.net",city:"Corona Del Mar",notes:"",source:"google",priority:""},
+  // Newport Beach
+  {name:"The Balcony Salon",contact:"",email:"thebalconycdm@gmail.com",city:"Newport Beach",notes:"",source:"google",priority:""},
+  {name:"madison the salon",contact:"",email:"style@madisonsalon.com",city:"Newport Beach",notes:"closed on Tuesday",source:"google",priority:""},
+  {name:"Soho Salon",contact:"Kirsty",email:"sohosalon1815@gmail.com",city:"Newport Beach",notes:"",source:"google",priority:""},
+  {name:"Cristophe Salon",contact:"",email:"info@cristophenb.com",city:"Newport Beach",notes:"Fashion Island",source:"both",priority:"high"},
+  {name:"Montecito House",contact:"",email:"montecitohousecm@gmail.com",city:"Newport Beach",notes:"",source:"both",priority:""},
+  {name:"Vogue Salon",contact:"Donato",email:"dbianchini@comcast.net",city:"Newport Beach",notes:"",source:"google",priority:"high"},
+  {name:"The Luxury Hair Spa",contact:"",email:"support@theluxuryhairspa.com",city:"Newport Beach",notes:"",source:"research",priority:"high"},
+  // Costa Mesa
+  {name:"Sage on Seventeenth",contact:"",email:"info@sageon17th.com",city:"Costa Mesa",notes:"",source:"both",priority:""},
+  {name:"The David Salon",contact:"David",email:"frontdesk@thedavidsalon.com",city:"Costa Mesa",notes:"Redken Kevin Murphy",source:"google",priority:"high"},
+  {name:"Stranded Salon",contact:"Lindsey",email:"HairbyLindseyd@yahoo.com",city:"Costa Mesa",notes:"",source:"google",priority:""},
+  {name:"Stranded Salon",contact:"Lauren",email:"laurenalvarezhair@gmail.com",city:"Costa Mesa",notes:"Kerastase, Oribe, Milbon",source:"google",priority:""},
+  {name:"Rapor Salon and Barber",contact:"",email:"raporsalon@gmail.com",city:"Costa Mesa",notes:"Brooklyn, Emily",source:"both",priority:""},
+  {name:"Salty Blonde Cut Co.",contact:"Brittany",email:"brittany@saltyblondecut.co",city:"Costa Mesa",notes:"",source:"both",priority:""},
+  {name:"Vanilla Salon",contact:"",email:"lovetostyle@gmail.com",city:"Costa Mesa",notes:"",source:"google",priority:""},
+  {name:"The LivingRoom Salon & Art Gallery",contact:"",email:"support@livingroomsalonsoha.com",city:"Costa Mesa",notes:"Davines, Olaplex",source:"both",priority:""},
+  {name:"MIRAGE SALON",contact:"",email:"info@miragesalon.com",city:"Costa Mesa",notes:"Organic since 1968",source:"both",priority:""},
+  {name:"Aroma Head Spa & Massage",contact:"",email:"aromaheadspamassage@gmail.com",city:"Costa Mesa",notes:"Head spa specialist",source:"both",priority:""},
+  {name:"SAS by Social Dry Lounge",contact:"",email:"info@socialdrylounge.com",city:"Costa Mesa",notes:"",source:"google",priority:""},
+  {name:"Hair Society",contact:"Thao",email:"thao@hairsocietycm.com",city:"Costa Mesa",notes:"",source:"research",priority:""},
+  // Huntington Beach
+  {name:"Del Sol Hair Studio",contact:"Tanya",email:"tannyaspeir@gmail.com",city:"Huntington Beach",notes:"",source:"both",priority:""},
+  {name:"Moxie Huntington Beach",contact:"",email:"moxiehairhb@gmail.com",city:"Huntington Beach",notes:"",source:"both",priority:""},
+  {name:"Salon Soleil",contact:"",email:"Salonsoleilhb@gmail.com",city:"Huntington Beach",notes:"",source:"google",priority:""},
+  {name:"The Bleach House",contact:"Alexa",email:"THEbleachhousesalon@gmail.com",city:"Huntington Beach",notes:"Oribe, Davines",source:"google",priority:"high"},
+  {name:"Shearly Blissfull",contact:"Lindsey",email:"lindseykaye84@hotmail.com",city:"Huntington Beach",notes:"",source:"google",priority:""},
+  {name:"The Best Little Hair House",contact:"",email:"thegrid1222@yahoo.com",city:"Huntington Beach",notes:"",source:"google",priority:""},
+  {name:"Hair Theory Salon",contact:"",email:"info@hairtheorysalon.com",city:"Huntington Beach",notes:"",source:"both",priority:""},
+  {name:"Christian Michael Salon",contact:"",email:"info@christianmichaelhair.com",city:"Huntington Beach",notes:"",source:"both",priority:""},
+  {name:"Medusa Salon",contact:"",email:"TressTribe3@gmail.com",city:"Huntington Beach",notes:"[UNVERIFIED]",source:"research",priority:"unverified"},
+  {name:"Salt Hair Lounge",contact:"Maria",email:"maria@salthairlounge.com",city:"Huntington Beach",notes:"",source:"research",priority:""},
+  {name:"Thao & Hair",contact:"Thao",email:"thaoh711@yahoo.com",city:"Huntington Beach",notes:"",source:"research",priority:""},
+  // Orange Area
+  {name:"Blue Moon Head Spa",contact:"",email:"bluemoonheadspa1@gmail.com",city:"Orange",notes:"Head spa specialist",source:"both",priority:""},
+  {name:"OC Scalp Spa",contact:"",email:"contact@ocscalpspa.com",city:"Orange",notes:"Scalp-focused spa",source:"both",priority:""},
+  {name:"Synergy Salon",contact:"Stacy",email:"synergysalonandspa@att.net",city:"Orange",notes:"R+Co, KM, Eleven, Unite",source:"google",priority:""},
+  {name:"Dye Beauty Bar",contact:"",email:"dyebeautysalon@gmail.com",city:"Orange",notes:"",source:"google",priority:""},
+  {name:"Salon reBelle",contact:"Marcos",email:"Salonrebelle02@gmail.com",city:"Orange",notes:"Old Town Orange",source:"google",priority:""},
+  // Laguna Beach
+  {name:"Serandi Salon",contact:"Sergio",email:"info@serandi.com",city:"Laguna Beach",notes:"call disconnected",source:"both",priority:""},
+  {name:"Salon Revelation",contact:"Dana/Hailey",email:"info@salonrevelationoc.com",city:"Laguna Beach",notes:"",source:"google",priority:""},
+  {name:"Indigenous Salon",contact:"",email:"info@indigenoussalon.com",city:"Laguna Beach",notes:"Clean beauty, scalp treatments",source:"both",priority:""},
+  {name:"Belo Blow Dry Bar",contact:"Patricia",email:"patricia@beloblowdrybar.com",city:"Laguna Beach",notes:"",source:"both",priority:""},
+  {name:"Pure YL Organic Salon",contact:"",email:"info@pureorganicsalon.com",city:"Laguna Beach",notes:"Holistic organic",source:"both",priority:""},
+  {name:"Lulu Hair Studio",contact:"",email:"laguna@luluhairstudio.com",city:"Laguna Beach",notes:"Organic Japanese treatments",source:"both",priority:""},
+  // Laguna Hills/Niguel/Woods
+  {name:"Nicole Martin Hair",contact:"Nicole",email:"nicolemartinhair@yahoo.com",city:"Laguna Hills",notes:"",source:"google",priority:""},
+  {name:"Onyx Hair Studio",contact:"Shima",email:"onyxhair.info@gmail.com",city:"Laguna Niguel",notes:"OPEN TO TRYING PRODUCTS",source:"google",priority:""},
+  {name:"Kenneth Brown Salon",contact:"Desiree",email:"admin@kennethbrownsalons.com",city:"Laguna Niguel",notes:"switching lines",source:"research",priority:"high"},
+  {name:"Dedication Salon",contact:"Bobby",email:"info@dedicationsalon.com",city:"Laguna Niguel",notes:"Bobby Canaday, owner",source:"research",priority:""},
+  {name:"Julian Hans",contact:"Saverio",email:"julianhansalon@gmail.com",city:"Laguna Woods",notes:"",source:"google",priority:""},
+  // Fountain Valley
+  {name:"Ooh La La Salon",contact:"Nella",email:"ollsalonspa@gmail.com",city:"Fountain Valley",notes:"Nella is the owner, Loreal Professionel",source:"google",priority:""},
+  // Fullerton
+  {name:"Lux Salon",contact:"Wade",email:"wade@luxsalon.com",city:"Fullerton",notes:"Aveda Concept Salon",source:"both",priority:""},
+  {name:"Salon Lujon",contact:"",email:"info@salonlujon.com",city:"Fullerton",notes:"CJ is manager",source:"both",priority:""},
+  // Irvine
+  {name:"House of Lange",contact:"",email:"team@houseoflange.com",city:"Irvine",notes:"",source:"research",priority:""},
+  {name:"LuxSeries Salon",contact:"",email:"info@luxseriessalon.com",city:"Irvine",notes:"",source:"research",priority:""},
+  // Mission Viejo
+  {name:"Secrets Salon",contact:"Erika",email:"hairstylingbyerika949@gmail.com",city:"Mission Viejo",notes:"",source:"google",priority:""},
+  {name:"Salon Pompei",contact:"",email:"salonpompei949@yahoo.com",city:"Mission Viejo",notes:"",source:"google",priority:""},
+  {name:"Gold and Braid Salon",contact:"Amber",email:"costamesa@salongoldandbraid.com",city:"Mission Viejo",notes:"3 salons",source:"google",priority:""},
+  {name:"The House Salon",contact:"Andrea",email:"andrea.thehousesalon@gmail.com",city:"Mission Viejo",notes:"2 locations (MV + HB)",source:"google",priority:""},
+  // Aliso Viejo
+  {name:"Telles Hair",contact:"Tim",email:"tribecatimtelles@gmail.com",city:"Aliso Viejo",notes:"",source:"google",priority:""},
+  {name:"Salon Platinum",contact:"Sarah",email:"sarahsuemcadoo@icloud.com",city:"Aliso Viejo",notes:"",source:"google",priority:""},
+  // Rancho Mission Viejo
+  {name:"The Powder Room",contact:"Ashly",email:"thepowderroomoc@gmail.com",city:"Rancho Mission Viejo",notes:"AG Care, Olaplex",source:"google",priority:""},
+  // San Clemente
+  {name:"Copa de Beauty",contact:"Erin",email:"Ochairstylisterinm@gmail.com",city:"San Clemente",notes:"",source:"both",priority:""},
+  {name:"Kate Lane Salon",contact:"",email:"hello@katelanesalon.com",city:"San Clemente",notes:"",source:"both",priority:""},
+  {name:"Bow Head Salon",contact:"",email:"bowheadsalon@gmail.com",city:"San Clemente",notes:"",source:"google",priority:""},
+  // Tustin
+  {name:"Sadler Studio",contact:"",email:"sadlerdoeshair@gmail.com",city:"Tustin",notes:"",source:"both",priority:""},
+  {name:"Bodhi Hair Salon",contact:"",email:"bodhithesalon@gmail.com",city:"Tustin",notes:"",source:"google",priority:""},
+  {name:"Made Man Salon",contact:"Yelena",email:"yelena@mademansalon.com",city:"Tustin Ranch",notes:"",source:"google",priority:""},
+  {name:"Jack Martin Salon",contact:"Jack",email:"jackmartinsalon@gmail.com",city:"Tustin",notes:"",source:"research",priority:""},
+  // Brea
+  {name:"Vanity Salon",contact:"Chandler",email:"contactus@vanitybrea.com",city:"Brea",notes:"no retail commissions",source:"google",priority:""},
+  {name:"The Associated Hair Co",contact:"Jacque",email:"jacquefrazier@yahoo.com",city:"Brea",notes:"DAVINES, RCO, REDKEN",source:"google",priority:""},
+  {name:"The Nest Salon",contact:"Jessica",email:"info@thenest.salon",city:"Brea",notes:"",source:"google",priority:""},
+  {name:"Salon Midori",contact:"Lei",email:"Salonmidori@gmail.com",city:"Brea",notes:"Brea + Yorba Linda, Davines",source:"google",priority:""},
+  {name:"Alexander's Salon and Spa",contact:"Elaine",email:"contact@alexanderssalonbrea.com",city:"Brea",notes:"",source:"research",priority:"high"},
+  {name:"Modern Beige Salon",contact:"Frances",email:"modernbeigesalon@gmail.com",city:"Brea",notes:"",source:"research",priority:""},
+  // Anaheim
+  {name:"Latitude Beauty and Boutique",contact:"",email:"latitudeloft@gmail.com",city:"Anaheim",notes:"",source:"research",priority:""},
+  {name:"Hi-Lite Head Spa",contact:"Thi",email:"thinguyenllc2022@gmail.com",city:"Anaheim",notes:"Head spa",source:"research",priority:""},
+  // Long Beach (LA County)
+  {name:"Molly Moon",contact:"",email:"hello@mollymoonsalon.com",city:"Long Beach",notes:"",source:"research",priority:"high"},
+  {name:"Nu Du Salon",contact:"Meredith",email:"nudusalon20@gmail.com",city:"Long Beach",notes:"",source:"google",priority:""},
+  {name:"Interior Hair",contact:"Kelly",email:"thekellywalker@gmail.com",city:"Long Beach",notes:"Oribe",source:"google",priority:""},
+];
+
+const cityOrder = [
+  "Corona Del Mar","Newport Beach","Costa Mesa","Huntington Beach",
+  "Orange","Laguna Beach","Laguna Hills","Laguna Niguel","Laguna Woods",
+  "Fountain Valley","Fullerton","Irvine","Mission Viejo","Aliso Viejo",
+  "Rancho Mission Viejo","San Clemente","Tustin","Tustin Ranch",
+  "Brea","Anaheim","Long Beach"
+];
+
+function getSourceBadge(source) {
+  if (source === 'research') return '<span class="badge badge-research">RESEARCH</span>';
+  if (source === 'both') return '<span class="badge badge-both">BOTH</span>';
+  return '<span class="badge badge-google">GOOGLE DRIVE</span>';
+}
+
+function getPriorityBadge(priority) {
+  if (priority === 'high') return ' <span class="badge badge-high">HIGH</span>';
+  // followup removed - all fresh
+  if (priority === 'unverified') return ' <span class="badge badge-unverified">UNVERIFIED</span>';
+  return '';
+}
+
+function renderSalons(filtered) {
+  const container = document.getElementById('salon-container');
+  container.innerHTML = '';
+
+  const grouped = {};
+  filtered.forEach(s => {
+    if (!grouped[s.city]) grouped[s.city] = [];
+    grouped[s.city].push(s);
+  });
+
+  const orderedCities = cityOrder.filter(c => grouped[c]);
+
+  orderedCities.forEach(city => {
+    const salonsInCity = grouped[city];
+    const section = document.createElement('div');
+    section.innerHTML = `
+      <div class="section-header">
+        <h2>${city}</h2>
+        <div class="count">${salonsInCity.length}</div>
+        <div class="line"></div>
+      </div>
+      <div class="salon-table">
+        <div class="table-header">
+          <div>Salon</div>
+          <div>Contact</div>
+          <div>Email</div>
+          <div>Notes</div>
+          <div>Source</div>
+        </div>
+        ${salonsInCity.map(s => `
+          <div class="salon-row" data-email="${s.email}">
+            <div class="salon-name">${s.name}${getPriorityBadge(s.priority)}</div>
+            <div class="salon-contact">${s.contact || '-'}</div>
+            <div class="salon-email">${s.email} <button class="copy-btn" onclick="copyEmail(this,'${s.email}')">Copy</button></div>
+            <div class="salon-notes">${s.notes || ''}</div>
+            <div>${getSourceBadge(s.source)}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    container.appendChild(section);
+  });
+
+  if (orderedCities.length === 0) {
+    container.innerHTML = '<p style="padding:40px;text-align:center;color:var(--muted)">No salons match your search.</p>';
+  }
+}
+
+// Search
+document.getElementById('search').addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+  applyFilters(q, activeFilter);
+});
+
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const q = document.getElementById('search').value.toLowerCase();
+    applyFilters(q, this.dataset.filter);
+  });
+});
+
+function applyFilters(query, filter) {
+  let filtered = salons;
+  if (filter === 'high') filtered = filtered.filter(s => s.priority === 'high');
+  if (filter === 'research') filtered = filtered.filter(s => s.source === 'research');
+  if (filter === 'google') filtered = filtered.filter(s => s.source === 'google');
+  if (filter === 'cdm-nb') filtered = filtered.filter(s => s.city === 'Corona Del Mar' || s.city === 'Newport Beach');
+  if (query) {
+    filtered = filtered.filter(s =>
+      s.name.toLowerCase().includes(query) ||
+      s.contact.toLowerCase().includes(query) ||
+      s.email.toLowerCase().includes(query) ||
+      s.city.toLowerCase().includes(query) ||
+      s.notes.toLowerCase().includes(query)
+    );
+  }
+  renderSalons(filtered);
+}
+
+function copyEmail(btn, email) {
+  navigator.clipboard.writeText(email);
+  btn.textContent = 'Copied';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+}
+
+function copyAllEmails() {
+  const emails = salons.map(s => s.email).join('\n');
+  navigator.clipboard.writeText(emails);
+  alert('Copied ' + salons.length + ' emails to clipboard');
+}
+
+function copyVisibleEmails() {
+  const rows = document.querySelectorAll('.salon-row');
+  const emails = Array.from(rows).map(r => r.dataset.email).filter(Boolean);
+  navigator.clipboard.writeText(emails.join('\n'));
+  alert('Copied ' + emails.length + ' emails to clipboard');
+}
+
+// Initial render
+renderSalons(salons);
+</script>
+</body>
+</html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Autonomous Systems Architecture</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #f4efe9;
+    --surface: #faf8f5;
+    --text: #102B26;
+    --gold: #D4A574;
+    --sage: #7d8471;
+    --red: #c0392b;
+    --amber: #e67e22;
+    --green: #27ae60;
+    --blue: #2c3e50;
+    --purple: #8e44ad;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+  h2 { font-size: 1.4rem; margin: 2.5rem 0 0.75rem; border-bottom: 2px solid var(--gold); padding-bottom: 0.25rem; }
+  h3 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem; color: var(--sage); }
+  h4 { font-size: 0.95rem; margin: 1rem 0 0.4rem; }
+  p { margin: 0.5rem 0; }
+
+  .subtitle { color: var(--sage); font-size: 0.9rem; margin-bottom: 2rem; }
+
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+  th { background: var(--text); color: var(--bg); padding: 0.5rem; text-align: left; font-weight: 500; }
+  td { padding: 0.5rem; border-bottom: 1px solid #ddd; vertical-align: top; }
+  tr:nth-child(even) { background: var(--surface); }
+
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; }
+  .tag-red { background: #fde8e8; color: var(--red); }
+  .tag-amber { background: #fef3e2; color: var(--amber); }
+  .tag-green { background: #e8f5e9; color: var(--green); }
+  .tag-blue { background: #e3f2fd; color: var(--blue); }
+  .tag-purple { background: #f3e5f5; color: var(--purple); }
+
+  .diagram { background: var(--surface); border: 1px solid #ddd; border-radius: 8px; padding: 1.5rem; margin: 1rem 0; font-family: monospace; font-size: 0.78rem; white-space: pre; overflow-x: auto; line-height: 1.4; }
+
+  .metric { display: inline-block; background: var(--surface); border: 1px solid #ddd; border-radius: 8px; padding: 0.75rem 1rem; margin: 0.25rem; text-align: center; min-width: 110px; }
+  .metric-value { font-size: 1.5rem; font-weight: 700; }
+  .metric-label { font-size: 0.7rem; color: var(--sage); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  details { margin: 0.5rem 0; }
+  summary { cursor: pointer; font-weight: 500; padding: 0.5rem; background: var(--surface); border-radius: 4px; }
+  details[open] summary { border-radius: 4px 4px 0 0; }
+  details > div { padding: 0.75rem; border: 1px solid #ddd; border-top: none; border-radius: 0 0 4px 4px; font-size: 0.9rem; }
+
+  code { background: var(--surface); padding: 2px 6px; border-radius: 3px; font-size: 0.85rem; }
+  .cmd { background: var(--text); color: var(--bg); padding: 0.5rem 1rem; border-radius: 4px; font-family: monospace; font-size: 0.8rem; display: block; margin: 0.5rem 0; overflow-x: auto; white-space: pre; }
+
+  .callout { background: var(--surface); border-left: 4px solid var(--gold); padding: 1rem; margin: 1rem 0; border-radius: 0 4px 4px 0; }
+  .callout-warn { border-left-color: var(--amber); }
+  .callout-info { border-left-color: var(--blue); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<h1>Autonomous Systems Architecture</h1>
+<p class="subtitle">AWARE Hair AI Operations Platform - v2.0 (Phase 5) - Updated 2026-03-29</p>
+
+<div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;">
+  <div class="metric"><div class="metric-value">15</div><div class="metric-label">Engines</div></div>
+  <div class="metric"><div class="metric-value">13</div><div class="metric-label">Agents</div></div>
+  <div class="metric"><div class="metric-value">17</div><div class="metric-label">Idle Tasks</div></div>
+  <div class="metric"><div class="metric-value">8</div><div class="metric-label">SQLite Tables</div></div>
+  <div class="metric"><div class="metric-value">10/10</div><div class="metric-label">Chaos Tests</div></div>
+  <div class="metric"><div class="metric-value">$0</div><div class="metric-label">API Cost (Max)</div></div>
+</div>
+
+<div class="callout">
+  <strong>Cost model:</strong> All agents run on Claude Max subscription via <code>claude -p</code>. Zero API cost. The engines are Node.js (zero tokens). The entire system runs at the cost of the Max subscription - no per-token billing.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>1. Design Principles</h2>
+
+<div class="grid-2">
+  <div>
+    <h4>"Engines for math, Claude for prose"</h4>
+    <p>Deterministic engines (Node.js, zero tokens) handle data pull, scoring, diffing, and alerting. Claude agents handle judgment, writing, and synthesis. The supervisor daemon handles scheduling and process management. Each layer is more reliable than the one above it.</p>
+  </div>
+  <div>
+    <h4>"The system proposes, David disposes"</h4>
+    <p>Agents draft, recommend, and analyze. They never send emails, publish content, make purchases, or commit to external parties. All customer-facing output goes through David's review. Trust zones define what can auto-execute vs. what needs approval.</p>
+  </div>
+</div>
+
+<div class="grid-2" style="margin-top: 1rem;">
+  <div>
+    <h4>"Idle capacity should always be working"</h4>
+    <p>When no scheduled agent is running, the daemon dispatches proactive work from the idle queue: prospecting, content drafting, competitive research, and infrastructure maintenance. Tiered by business value.</p>
+  </div>
+  <div>
+    <h4>"Institutional knowledge is the deepest moat"</h4>
+    <p>Every session generates structured reflections. Lessons promote from candidate to proven over time. The system compounds knowledge about salons, competitors, and what works - data no competitor can replicate.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>2. System Topology</h2>
+
+<div class="diagram">
+                SUPERVISOR DAEMON (Node.js, single launchd plist)
+                |-- Schedule: 15 engines + 13 agents + 10 orchestration
+                |-- Health checks + circuit breakers (3 failures/hr = trip)
+                |-- Sleep/wake detection (macOS lid close/open)
+                |-- Idle work queue dispatcher (17 standing tasks)
+                         |
+          +--------------+--------------+
+          |              |              |
+     AGENT TEAM     ENGINE POOL      NEW ENGINES
+     |-- CHIEF      |-- SENTINEL     |-- CASHFLOW (AR aging)
+     |-- MARKETER   |-- SCOUT        |-- SOCIAL LISTENER (reviews)
+     |-- CLOSER     |-- SHEPHERD     |-- REFERRAL (salon referrals)
+     |-- HERALD     |-- BEACON       |-- REORDER NUDGE
+     |-- STEWARD    |-- AUDITOR      |-- OUTCOME TRACKER
+     |-- SUPPLIER   |-- COURIER      |-- LESSON LIFECYCLE
+     |-- FUNNEL     |-- AD-INTEL     |-- ECOSYSTEM SCANNER
+     |-- STRATEGIST |-- PUBLISHER    |-- IDLE QUEUE
+     |-- OPTIMIZER                   |-- MODEL ROUTER (library)
+     |-- PROSPECTOR
+     |-- CREATOR
+     |-- SCOUT-PLUS
+     |-- ACTIVATOR
+
+          SQLite Event Bus (agent-bus.db)
+          |-- event_queue (atomic claiming via BEGIN IMMEDIATE)
+          |-- heartbeats (agent liveness)
+          |-- engine_runs (tracking)
+          |-- lessons (knowledge base)
+          |-- outcomes (34 tracked actions)
+          |-- nudge_history (reorder dedup)
+          |-- idle_queue (proactive tasks)
+          |-- referral_tracking (referral asks/conversions)
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>3. Engine Inventory (15 engines)</h2>
+
+<p>All engines are deterministic Node.js - zero Claude tokens, zero API cost. They follow the 7-step contract: Data Pull, Filter, Cluster, Score, Context Check, Brief Gen, Signal Emit.</p>
+
+<h3>Business Engines (protect revenue)</h3>
+<table>
+  <tr><th>Engine</th><th>File</th><th>Schedule</th><th>What It Does</th><th>Key Signals</th></tr>
+  <tr><td>SENTINEL</td><td><code>b2b-health-engine.mjs</code></td><td>Daily 06:50</td><td>Salon reorder health scoring, stockout projection for 42 accounts</td><td><code>churn_risk</code> (red), <code>reorder_overdue</code> (amber), <code>stockout_imminent</code> (red)</td></tr>
+  <tr><td>REORDER NUDGE</td><td><code>reorder-nudge.mjs</code></td><td>Daily 07:00</td><td>Connects SENTINEL projections to agent tasks. Found 11 salons on first run.</td><td><code>reorder-nudge</code> -> CLOSER (red) or STEWARD (amber)</td></tr>
+  <tr><td><span class="tag tag-green">NEW</span> CASHFLOW</td><td><code>cashflow-engine.mjs</code></td><td>Daily 06:55</td><td>AR aging (0-30/31-60/61-90/90+ buckets), cash position, refund tracking</td><td><code>ar_aging_risk</code> (salon >60d + >$500), <code>ar_total_high</code> (>$10K)</td></tr>
+  <tr><td><span class="tag tag-green">NEW</span> REFERRAL</td><td><code>referral-engine.mjs</code></td><td>Daily 07:05</td><td>Identifies referral-eligible salons (3+ orders, GREEN, LTV >$300). Found 8 on first run.</td><td><code>referral_eligible</code> -> STEWARD</td></tr>
+  <tr><td>SHEPHERD</td><td><code>shepherd-engine.mjs</code></td><td>Daily 07:15</td><td>Sample kit follow-up pipeline (Day 5/14/21/35 touchpoints)</td><td><code>sample_followup_due</code></td></tr>
+  <tr><td>COURIER</td><td><code>courier-dispatch.mjs</code></td><td>Weekdays 08:30</td><td>Scans ready follow-up drafts, matches to overdue threads</td><td><code>followup_ready</code></td></tr>
+  <tr><td>AUDITOR</td><td><code>auditor-engine.mjs</code></td><td>Daily 06:55</td><td>Revenue projection, B2B concentration risk, AR aging, contribution margin, tax deadlines</td><td><code>concentration_risk</code>, <code>margin_erosion</code></td></tr>
+</table>
+
+<h3>Intelligence Engines (inform decisions)</h3>
+<table>
+  <tr><th>Engine</th><th>File</th><th>Schedule</th><th>What It Does</th><th>Key Signals</th></tr>
+  <tr><td>SCOUT</td><td><code>competitor-engine.mjs</code></td><td>Nightly 02:00</td><td>Competitor page scraping, snapshot diffing, materiality scoring</td><td><code>competitor_change</code> (if material)</td></tr>
+  <tr><td>PUBLISHER</td><td><code>seo-engine.mjs</code></td><td>Daily 06:45</td><td>SEO AI query clustering from GSC data</td><td><code>seo_opportunity</code></td></tr>
+  <tr><td>AD-INTEL</td><td><code>ad-intel-engine.mjs</code></td><td>Sunday 03:00</td><td>Meta Ad Library scraping, competitor ad longevity scoring</td><td><code>competitor_ad_launch</code></td></tr>
+  <tr><td><span class="tag tag-green">NEW</span> SOCIAL LISTENER</td><td><code>social-listener-engine.mjs</code></td><td>Daily 06:30</td><td>Judge.me review monitoring, sentiment classification, product complaint detection</td><td><code>new_review</code> -> MARKETER, <code>negative_review</code> -> STEWARD, <code>product_complaint</code></td></tr>
+  <tr><td>ECOSYSTEM SCANNER</td><td><code>ecosystem-scanner.mjs</code></td><td>Sunday 04:00</td><td>Weekly GitHub+HN scan for new agent tools (117 repos indexed)</td><td><code>ecosystem_high_impact</code> (score >70)</td></tr>
+</table>
+
+<h3>Self-Improvement Engines</h3>
+<table>
+  <tr><th>Engine</th><th>File</th><th>Schedule</th><th>What It Does</th></tr>
+  <tr><td>OUTCOME TRACKER</td><td><code>outcome-tracker.mjs</code></td><td>Daily 05:55</td><td>Logs agent actions, scores outcomes after 7-90 day windows. 34 actions tracked.</td></tr>
+  <tr><td>LESSON LIFECYCLE</td><td><code>lesson-lifecycle.mjs</code></td><td>Daily 05:30</td><td>Promotes/decays/archives lessons. Hard caps: 50 proven, 100 established, 200 candidates.</td></tr>
+  <tr><td>IDLE QUEUE</td><td><code>idle-work-queue.mjs</code></td><td>Daemon-triggered</td><td>Replenishes 17 standing proactive tasks across 4 tiers when capacity is available.</td></tr>
+  <tr><td>BEACON</td><td><code>beacon-engine.mjs</code></td><td>Saturday 08:00</td><td>Weekly performance digest + 5-metric behavioral health check.</td></tr>
+</table>
+
+<p><strong>Library (no schedule):</strong> <code>model-router.mjs</code> - maps 26 task types to 5 models (Opus/Sonnet/Haiku/Gemini Flash/Local Llama). Not used for billing - used for selecting the right model per task type if/when multi-model routing is activated.</p>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>4. Agent Team (13 scheduled agents)</h2>
+
+<div class="callout callout-info">
+  All agents run via <code>claude -p</code> on Max subscription (zero cost). Model: Sonnet for all scheduled runs. Timeout: 900 seconds. Max turns: 25. All output is drafts/analysis for David's review.
+</div>
+
+<h3>Daily Schedule (Weekdays)</h3>
+<table>
+  <tr><th>Time</th><th>Agent</th><th>Days</th><th>Role</th><th>Key Outputs</th></tr>
+  <tr><td>07:30</td><td><strong>CHIEF</strong></td><td>Daily</td><td>Orchestrator, priority briefs, Saturday MAR review</td><td>Daily Priority Brief, handoff coordination</td></tr>
+  <tr><td>08:00</td><td><strong>MARKETER</strong></td><td>M-F</td><td>Strategy only: calendar, briefs, channel analysis, ad loop</td><td>Content briefs for CREATOR, performance reviews</td></tr>
+  <tr><td>09:30</td><td><strong>CLOSER</strong></td><td>M-F</td><td>Sales pipeline, outreach, PROSPECTOR handoff, sample tracking</td><td>Outreach drafts, pipeline report, conversion tracking</td></tr>
+  <tr><td>10:00</td><td><strong>HERALD</strong></td><td>M-F</td><td>Awards + daily press scanning (HARO, editor callouts)</td><td>Pitch drafts, award applications, media list</td></tr>
+  <tr><td>10:30</td><td><strong>STEWARD</strong></td><td>M-F</td><td>Account health, reorder reminders, SKU expansion, referral program</td><td>Check-in drafts, referral asks, expansion recs</td></tr>
+  <tr><td>11:00</td><td><strong>SUPPLIER</strong></td><td>M-F</td><td>Supply chain, IPSY tracker, manufacturer, compliance check</td><td>PO drafts, capacity forecasts, compliance status</td></tr>
+  <tr><td>11:30</td><td><strong>FUNNEL</strong></td><td>M/W/F</td><td>DTC lifecycle, welcome flows, conversion optimization</td><td>Flow designs, segment analysis, conversion recs</td></tr>
+  <tr><td>13:00</td><td><strong>SCOUT-PLUS</strong></td><td>W/Sat</td><td>Deep intelligence: trends, influencers, retail, events</td><td>Trend briefs, influencer profiles, event pipeline</td></tr>
+  <tr><td>14:00</td><td><strong>PROSPECTOR</strong></td><td>M/W/F</td><td>New business: finds salons via Google Places, Instagram</td><td>Enriched prospect profiles in sales/prospects/</td></tr>
+  <tr><td>14:00</td><td><strong>ACTIVATOR</strong></td><td>Tu/Th</td><td>Dormant account recovery, win-back campaigns</td><td>Reactivation drafts, churn analysis</td></tr>
+  <tr><td>15:00</td><td><strong>CREATOR</strong></td><td>M/Tu/Th/F</td><td>Content production: blogs, carousels, education, visuals</td><td>Publish-ready articles, social batches, PDF kits</td></tr>
+</table>
+
+<p><strong>Weekend:</strong> CHIEF (daily), STRATEGIST (Sat 10:00), OPTIMIZER (Sat 10:00), SCOUT-PLUS (Sat 13:00), BEACON engine (Sat 08:00)</p>
+
+<h3>Agent Relationships and Handoffs</h3>
+<div class="diagram">
+  MARKETER writes briefs -------> CREATOR produces content
+  PROSPECTOR finds prospects ----> CLOSER qualifies + outreaches
+  SENTINEL flags health ---------> STEWARD checks in / ACTIVATOR reactivates
+  REFERRAL engine signals -------> STEWARD asks for referrals
+  REORDER NUDGE creates tasks ---> CLOSER (red) / STEWARD (amber) execute
+  CLOSER reports salon data -----> CREATOR writes case studies
+  SCOUT-PLUS finds trends ------> MARKETER adjusts strategy
+  SOCIAL LISTENER detects -------> MARKETER (positive UGC) / STEWARD (negative response)
+  ALL agents write reflections --> LESSON LIFECYCLE promotes/decays
+  CHIEF reads everything -------> Daily Priority Brief for David
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>5. Communication Layer</h2>
+
+<h3>SQLite Event Bus (agent-bus.db)</h3>
+<p>File: <code>engines/event-bus.mjs</code> | DB: <code>~/.config/aware-hair/data/agent-bus.db</code></p>
+<p>WAL mode for concurrent readers. All writes are atomic via <code>BEGIN IMMEDIATE</code>.</p>
+
+<table>
+  <tr><th>Table</th><th>Purpose</th><th>Key Operations</th></tr>
+  <tr><td><code>event_queue</code></td><td>Signals from engines, tasks for agents</td><td><code>emitEvent()</code>, <code>claimNextEvent()</code> (atomic), <code>completeEvent()</code></td></tr>
+  <tr><td><code>heartbeats</code></td><td>Agent liveness (daemon kills stale >5 min)</td><td><code>updateHeartbeat()</code>, <code>getHeartbeats()</code></td></tr>
+  <tr><td><code>engine_runs</code></td><td>Track which engines ran and when</td><td><code>registerEngineStart()</code>, <code>completeEngineRun()</code></td></tr>
+  <tr><td><code>lessons</code></td><td>Institutional knowledge base</td><td>Maturity lifecycle: candidate -> established -> proven -> archived</td></tr>
+  <tr><td><code>outcomes</code></td><td>Action-to-result tracking (7-90 day windows)</td><td>34 pending outcomes, scored when window elapses</td></tr>
+  <tr><td><code>nudge_history</code></td><td>Salon reorder nudge deduplication</td><td>14-day cooldown per salon</td></tr>
+  <tr><td><code>idle_queue</code></td><td>Proactive work items (4 tiers)</td><td>Atomic claiming, cooldown-based replenishment</td></tr>
+  <tr><td><code>referral_tracking</code></td><td>Referral asks and conversion outcomes</td><td>90-day cooldown, outcome tracking</td></tr>
+</table>
+
+<h3>Signal Priority System</h3>
+<table>
+  <tr><th>Severity</th><th>Priority</th><th>Meaning</th><th>Example</th></tr>
+  <tr><td><span class="tag tag-red">RED</span></td><td>10</td><td>Immediate action required</td><td>Salon at churn risk, stockout imminent, adverse event</td></tr>
+  <tr><td><span class="tag tag-amber">AMBER</span></td><td>25</td><td>Action needed within 24h</td><td>Reorder approaching overdue, negative review, AR >60d</td></tr>
+  <tr><td style="background:#fff3cd; padding:2px 8px; border-radius:4px; font-size:0.75rem;">YELLOW</td><td>50</td><td>Monitor, may need action</td><td>Salon drifting from schedule, competitor price change</td></tr>
+  <tr><td><span class="tag tag-green">GREEN</span></td><td>75</td><td>Informational, no action</td><td>Healthy reorder, positive review</td></tr>
+  <tr><td><span class="tag tag-blue">INFO</span></td><td>90</td><td>System/operational</td><td>Engine completed, ecosystem scan results</td></tr>
+</table>
+
+<h3>Dual-Write Migration</h3>
+<p><code>engine-base.mjs</code> writes to both <code>signal-results.json</code> (legacy) and SQLite (primary). After 2 weeks of validation, JSON writes will be removed. Agents and the daemon read from SQLite.</p>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>6. Self-Improvement Flywheel</h2>
+
+<div class="diagram">
+  Agents act --------> Outcome tracker logs actions (34 tracked)
+                            |
+                      7-90 day delay (email=7d, content=30d, relationships=90d)
+                            |
+                      Score outcomes -----> Feed back to agents
+                            |
+            Agents reflect -------> Propose candidate lessons
+                            |
+            Lesson lifecycle -----> Promote / decay / archive
+                            |
+            Proven lessons -------> Injected into agent context at session start
+                            |
+            Ecosystem scanner ----> Find better tools / patterns weekly
+                            |
+            BEACON health check --> Detect drift, stagnation, echo chambers
+                            |
+            (loop continues, system improves)
+</div>
+
+<h3>Lesson Maturity Ladder</h3>
+<table>
+  <tr><th>Level</th><th>Enter When</th><th>Decay</th><th>Cap</th><th>How Used</th></tr>
+  <tr><td><span class="tag tag-blue">Candidate</span></td><td>1 observation from any agent</td><td>Archive after 30d if unvalidated</td><td>200</td><td>"Consider this" suggestions</td></tr>
+  <tr><td><span class="tag tag-amber">Established</span></td><td>3+ validations OR MAR endorsement</td><td>Candidate after 90d without validation</td><td>100</td><td>Loaded when domain matches</td></tr>
+  <tr><td><span class="tag tag-green">Proven</span></td><td>7+ validations over 30+ days, 0 contradictions</td><td>Established after 180d</td><td>50</td><td>Injected as standing instructions</td></tr>
+  <tr><td style="color: var(--sage);">Archived</td><td>Decayed or contradicted</td><td>Permanent</td><td>-</td><td>Historical analysis only</td></tr>
+</table>
+
+<h3>Weekly MAR Review (Saturday, CHIEF-led)</h3>
+<p>Multi-Agent Reflexion debate - structured cross-agent knowledge review:</p>
+<ol>
+  <li>Read BEACON digest (includes 5-metric behavioral health check)</li>
+  <li>Collect all agent reflections from <code>assistant/state/reflections/</code></li>
+  <li>Cross-examine: contradictions? Cross-domain insights? Promotion-ready?</li>
+  <li>Synthesize: promote up to 5 lessons, flag contradictions for David</li>
+  <li>Archive processed reflections</li>
+</ol>
+
+<h3>BEACON Behavioral Health Check (5 metrics)</h3>
+<table>
+  <tr><th>Metric</th><th>Healthy</th><th>Yellow</th><th>Red</th></tr>
+  <tr><td>Diversity index</td><td>Stable or increasing WoW</td><td>10-30% drop</td><td>>30% drop (echo chamber)</td></tr>
+  <tr><td>Learning velocity</td><td>1-20 new lessons/week</td><td>>20 (noise)</td><td>0 (stagnation)</td></tr>
+  <tr><td>Contradiction rate</td><td>5-15% of total</td><td><5% or >15%</td><td>0% (echo chamber) or >20%</td></tr>
+  <tr><td>Autonomy score</td><td>Trending up slowly</td><td>Sudden spike</td><td>Sustained low</td></tr>
+  <tr><td>Cross-pollination</td><td>Non-zero, not dominant</td><td>>50% off-domain</td><td>0% (siloed agents)</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>7. Idle Work Queue</h2>
+
+<p>Core principle: <strong>anytime Claude capacity is available, the system should be doing proactive work.</strong> 17 standing tasks auto-replenish with cooldowns.</p>
+
+<table>
+  <tr><th>Tier</th><th>Focus</th><th>Tasks</th><th>Priority Range</th><th>Examples</th></tr>
+  <tr><td><span class="tag tag-red">T1</span></td><td>Revenue</td><td>5</td><td>75-95</td><td>Prospect 5 salons, reactivate dormant accounts, mine referrals, research distributors, expand SKU penetration</td></tr>
+  <tr><td><span class="tag tag-amber">T2</span></td><td>Brand</td><td>6</td><td>55-70</td><td>Draft blog article, batch social content, generate visuals, scan press opportunities, prepare publish package, optimize email flows</td></tr>
+  <tr><td><span class="tag tag-blue">T3</span></td><td>Intelligence</td><td>4</td><td>35-45</td><td>Competitor deep dive, trend research, influencer mapping, partnership scanning</td></tr>
+  <tr><td><span class="tag tag-green">T4</span></td><td>Infrastructure</td><td>2</td><td>15-20</td><td>Documentation audit, state file cleanup</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>8. Trust Zones</h2>
+
+<table>
+  <tr><th>Zone</th><th>Actions</th><th>How to Evolve</th></tr>
+  <tr><td><span class="tag tag-green">Autonomous</span></td><td>Engine operations, lesson lifecycle, state updates, scheduling, heartbeats, brief generation, worktree management, ecosystem scanning</td><td>Default for proven-safe actions</td></tr>
+  <tr><td><span class="tag tag-amber">Notify + Execute</span></td><td>Goal adjustments (bounded), prompt A/B tests, lesson promotion to proven, escalation threshold tightening, minor schedule changes</td><td>Action succeeds 50+ times with approval first</td></tr>
+  <tr><td><span class="tag tag-red">Propose + Wait</span></td><td>Persona edits, new agents/engines, architecture changes, external communications, pricing, financial transactions, safety boundaries, customer data</td><td>David must approve. Always.</td></tr>
+</table>
+
+<div class="callout callout-warn">
+  <strong>Emergency stop:</strong> Create <code>~/.config/aware-hair/locks/automation-paused</code> to instantly halt all agent execution. All scheduled runs will skip until the file is removed.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>9. Compliance (MOCRA)</h2>
+
+<div class="callout callout-warn">
+  <strong>Highest legal risk item:</strong> Adverse Event SOP must be operational before IPSY units ship (July 2026). 200K units in consumer hands = near-certain probability of at least one complaint requiring FDA-reportable action within 15 business days.
+</div>
+
+<table>
+  <tr><th>Document</th><th>Location</th><th>Status</th></tr>
+  <tr><td>Adverse Event SOP</td><td><code>legal/compliance/adverse-event-sop.md</code></td><td><span class="tag tag-green">Created</span></td></tr>
+  <tr><td>Adverse Event Log</td><td><code>legal/compliance/adverse-event-log.yaml</code></td><td><span class="tag tag-green">Created</span> (empty, ready)</td></tr>
+  <tr><td>COA Registry</td><td><code>sales/supply-chain/coa-registry.yaml</code></td><td><span class="tag tag-green">Created</span> (empty, ready)</td></tr>
+  <tr><td>Label Contact Verification</td><td>Physical product check</td><td><span class="tag tag-red">David must verify</span></td></tr>
+  <tr><td>Safety Substantiation Files</td><td>Per-SKU assembly needed</td><td><span class="tag tag-amber">Not yet assembled</span></td></tr>
+</table>
+
+<p>SUPPLIER agent has a compliance heartbeat step (Step 5b) that checks SOP currency, adverse event log, COA registry, and label compliance at every run.</p>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>10. Observability</h2>
+
+<h3>Hooks (9 event types)</h3>
+<p>File: <code>.claude/hooks/observability/send_event.py</code> - HTTP POSTs to localhost:4000 on every hook event. Silent when server down. Zero token cost. Zero latency impact.</p>
+<p>Events captured: SessionStart, PreToolUse, PostToolUse, UserPromptSubmit, PreCompact, Notification, Stop, SubagentStart, SubagentStop</p>
+
+<h3>Chaos Test Suite (10 tests)</h3>
+<p>File: <code>engines/chaos-test.mjs</code> - validates concurrent writes, atomic claiming, circuit breaker, corrupt file recovery, DB integrity, malformed input, lesson boundaries, queue stats, heartbeat staleness, event archiving.</p>
+<div class="cmd">node engines/chaos-test.mjs    # Run all 10 tests</div>
+
+<h3>Full Day Simulation</h3>
+<p>File: <code>engines/simulate-day.mjs</code> - end-to-end test using real SENTINEL data. Engines fire, signals flow through event bus, agents claim tasks, outcomes tracked.</p>
+<div class="cmd">node engines/simulate-day.mjs  # Full Monday simulation with real data</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>11. Multi-Model Routing</h2>
+
+<p>Static routing table at <code>engines/model-router.mjs</code>. Not used for billing (Max subscription = zero cost). Used to select the optimal model per task type when multi-model dispatch is activated.</p>
+
+<table>
+  <tr><th>Task Type</th><th>Model</th><th>Use Case</th></tr>
+  <tr><td>Strategic synthesis, brand voice, complex judgment</td><td>Claude Opus</td><td>Award applications, competitive analysis, investor pitch</td></tr>
+  <tr><td>Daily orchestration, email drafting, content</td><td>Claude Sonnet</td><td>All scheduled agent sessions (current default)</td></tr>
+  <tr><td>Data extraction, classification, summarization</td><td>Claude Haiku</td><td>Routine processing, template filling</td></tr>
+  <tr><td>Competitor diffs, bulk processing, variant gen</td><td>Gemini Flash</td><td>Cheapest for high-volume tasks</td></tr>
+  <tr><td>Sensitive financial data</td><td>Local Llama (ollama)</td><td>No data leaves machine</td></tr>
+</table>
+<div class="cmd">node engines/model-router.mjs  # Print full routing table with 26 task types</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>12. Key Commands</h2>
+
+<h3>Testing and Validation</h3>
+<div class="cmd">node engines/simulate-day.mjs                      # Full day simulation with real data
+node engines/chaos-test.mjs                        # 10-point resilience validation
+node engines/idle-work-queue.mjs --status           # Show proactive task queue
+node engines/lesson-lifecycle.mjs --stats            # Show lesson corpus status
+node engines/model-router.mjs                       # Show model routing table</div>
+
+<h3>Engine Status</h3>
+<div class="cmd">node engines/cashflow-engine.mjs --dry-run           # Preview AR aging
+node engines/social-listener-engine.mjs --dry-run    # Preview review monitoring
+node engines/referral-engine.mjs --dry-run           # Preview referral candidates
+node engines/outcome-tracker.mjs --dry-run           # Preview outcome tracking
+node engines/reorder-nudge.mjs --dry-run             # Preview salon nudges</div>
+
+<h3>Daemon</h3>
+<div class="cmd">node ~/.config/aware-hair/daemon/supervisor.mjs --status       # Daemon status
+node ~/.config/aware-hair/daemon/supervisor.mjs --dry-run --once  # Single daemon tick
+node ~/.config/aware-hair/daemon/supervisor.mjs                  # Start daemon (foreground)</div>
+
+<h3>Database</h3>
+<div class="cmd">sqlite3 ~/.config/aware-hair/data/agent-bus.db ".tables"                    # List all tables
+sqlite3 ~/.config/aware-hair/data/agent-bus.db "SELECT * FROM event_queue WHERE status='pending' ORDER BY priority LIMIT 10"
+sqlite3 ~/.config/aware-hair/data/agent-bus.db "SELECT maturity, COUNT(*) FROM lessons GROUP BY maturity"
+sqlite3 ~/.config/aware-hair/data/agent-bus.db "SELECT action_type, COUNT(*) FROM outcomes GROUP BY action_type"</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>13. File Map</h2>
+
+<details>
+  <summary>Engines (engines/)</summary>
+  <div>
+    <table>
+      <tr><th>File</th><th>Type</th><th>Purpose</th></tr>
+      <tr><td><code>engine-base.mjs</code></td><td>Core</td><td>Shared utilities, dual-write to JSON+SQLite</td></tr>
+      <tr><td><code>event-bus.mjs</code></td><td>Core</td><td>SQLite WAL event bus (foundation of all communication)</td></tr>
+      <tr><td><code>b2b-health-engine.mjs</code></td><td>Business</td><td>SENTINEL - salon reorder health, stockout projection</td></tr>
+      <tr><td><code>reorder-nudge.mjs</code></td><td>Business</td><td>Predictive salon reorder automation</td></tr>
+      <tr><td><code>cashflow-engine.mjs</code></td><td>Finance</td><td>AR aging, cash position, refund tracking</td></tr>
+      <tr><td><code>referral-engine.mjs</code></td><td>Sales</td><td>Referral-eligible account identification</td></tr>
+      <tr><td><code>shepherd-engine.mjs</code></td><td>Pipeline</td><td>Sample kit follow-up pipeline</td></tr>
+      <tr><td><code>courier-dispatch.mjs</code></td><td>Pipeline</td><td>Follow-up draft scanning</td></tr>
+      <tr><td><code>auditor-engine.mjs</code></td><td>Finance</td><td>Revenue projection, concentration risk, tax deadlines</td></tr>
+      <tr><td><code>competitor-engine.mjs</code></td><td>Intel</td><td>SCOUT - competitor page scraping</td></tr>
+      <tr><td><code>seo-engine.mjs</code></td><td>Intel</td><td>PUBLISHER - SEO query clustering</td></tr>
+      <tr><td><code>ad-intel-engine.mjs</code></td><td>Intel</td><td>Meta Ad Library intelligence</td></tr>
+      <tr><td><code>social-listener-engine.mjs</code></td><td>Intel</td><td>Judge.me reviews, brand mentions</td></tr>
+      <tr><td><code>beacon-engine.mjs</code></td><td>Digest</td><td>Weekly performance + behavioral health check</td></tr>
+      <tr><td><code>ecosystem-scanner.mjs</code></td><td>Meta</td><td>Weekly GitHub+HN tool intelligence</td></tr>
+      <tr><td><code>outcome-tracker.mjs</code></td><td>Learning</td><td>Action-to-result feedback loop</td></tr>
+      <tr><td><code>lesson-lifecycle.mjs</code></td><td>Learning</td><td>Knowledge maturity management</td></tr>
+      <tr><td><code>idle-work-queue.mjs</code></td><td>Dispatch</td><td>Proactive task replenishment</td></tr>
+      <tr><td><code>model-router.mjs</code></td><td>Library</td><td>Task-to-model routing (26 types)</td></tr>
+      <tr><td><code>chaos-test.mjs</code></td><td>Testing</td><td>10-point resilience validation</td></tr>
+      <tr><td><code>simulate-day.mjs</code></td><td>Testing</td><td>Full day simulation with real data</td></tr>
+      <tr><td><code>supabase-schema.sql</code></td><td>Migration</td><td>Warm state schema (8 tables, needs credentials)</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>Daemon (~/.config/aware-hair/daemon/)</summary>
+  <div>
+    <table>
+      <tr><td><code>supervisor.mjs</code></td><td>Main daemon: scheduler, process manager, circuit breaker, sleep/wake detection</td></tr>
+      <tr><td><code>schedule.yaml</code></td><td>All 15 engines + 13 agents + 10 orchestration + 3 reactive triggers</td></tr>
+      <tr><td><code>trust-zones.yaml</code></td><td>Permission boundaries (autonomous/notify/propose)</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>Agent Infrastructure (.claude/agents/)</summary>
+  <div>
+    <table>
+      <tr><td><code>protocols/session-reflection.md</code></td><td>Structured reflection format (required at every session end)</td></tr>
+      <tr><td><code>*.md</code> (17 files)</td><td>Agent personas with heartbeat protocols and reflection sections</td></tr>
+      <tr><td><code>goals/*.md</code> (13 files)</td><td>Standing goals, weekly targets, MAR review protocol (CHIEF)</td></tr>
+      <tr><td><code>souls/</code></td><td>Identity/voice files (immutable to agents)</td></tr>
+      <tr><td><code>heartbeats/</code></td><td>Monitoring config per agent</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>Compliance (legal/compliance/)</summary>
+  <div>
+    <table>
+      <tr><td><code>adverse-event-sop.md</code></td><td>MOCRA-compliant adverse event procedure with IPSY protocol</td></tr>
+      <tr><td><code>adverse-event-log.yaml</code></td><td>Event log template (3-year retention minimum)</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>Supply Chain (sales/supply-chain/)</summary>
+  <div>
+    <table>
+      <tr><td><code>coa-registry.yaml</code></td><td>Certificate of Analysis tracking per production batch</td></tr>
+      <tr><td><code>manufacturer-specs.json</code></td><td>Boom Lab pricing, lead times, MOQs</td></tr>
+    </table>
+  </div>
+</details>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>14. Research Foundation</h2>
+
+<p>This architecture was designed after:</p>
+<ul>
+  <li>Evaluating <strong>60+ open-source agent projects</strong> (GitHub, HN, blog posts)</li>
+  <li>Synthesizing reviews from <strong>6 expert perspectives</strong> (systems architect, SRE, AI researcher, security engineer, innovation scout, business strategist)</li>
+  <li>Conducting <strong>beauty startup operations research</strong> (Drivepoint 19 metrics, accelerator programs, VC interviews, founder mistakes)</li>
+  <li>Running <strong>5 specialist audits</strong> (CFO, customer intelligence, compliance, content strategy, sales pipeline)</li>
+</ul>
+
+<p>Full research: <code>.claude/plans/scalable-humming-candy.md</code></p>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>15. Build History</h2>
+
+<table>
+  <tr><th>Phase</th><th>Commit</th><th>What Was Built</th></tr>
+  <tr><td>1-3</td><td><code>e165906</code></td><td>SQLite event bus, supervisor daemon, observability hooks, reflections, outcome tracker, lesson lifecycle, ecosystem scanner, model router (+3,111 lines)</td></tr>
+  <tr><td>4</td><td><code>a12cff3</code></td><td>Reorder nudge engine, MAR review protocol</td></tr>
+  <tr><td>4</td><td><code>bcd142f</code></td><td>Chaos test suite (10/10), BEACON behavioral health check</td></tr>
+  <tr><td>4+</td><td><code>66c42cb</code></td><td>Idle work queue, full day simulation, 3 agent schedule fixes</td></tr>
+  <tr><td>4+</td><td><code>3a46510</code></td><td>Architecture doc v1, schedule expansion</td></tr>
+  <tr><td>4+</td><td><code>8350c27</code></td><td>PROSPECTOR, CREATOR, SCOUT-PLUS personas</td></tr>
+  <tr><td>4+</td><td><code>7175f6e</code></td><td>ACTIVATOR persona, goals for all 4 new agents</td></tr>
+  <tr><td>5</td><td><code>32efaeb</code></td><td>Cashflow engine, social listener, referral engine, adverse event SOP, COA registry, agent modifications (CLOSER, STEWARD, CREATOR, SUPPLIER, MARKETER)</td></tr>
+</table>
+
+<p style="color: var(--sage); font-size: 0.8rem; margin-top: 2rem;">Last updated: 2026-03-29 | Architecture doc v2.0 (Phase 5)</p>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

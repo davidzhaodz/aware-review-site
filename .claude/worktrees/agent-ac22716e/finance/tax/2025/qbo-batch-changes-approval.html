@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - QBO Batch Changes: Final Approval</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0d14; --bg2: #10131c; --card: #161923; --card-border: #232738;
+  --text: #e2e4ea; --text-dim: #7c7f8e; --text-muted: #52556a;
+  --accent: #6366f1; --accent-glow: rgba(99,102,241,0.12);
+  --red: #f43f5e; --red-dim: rgba(244,63,94,0.1); --red-border: rgba(244,63,94,0.25);
+  --amber: #f59e0b; --amber-dim: rgba(245,158,11,0.1); --amber-border: rgba(245,158,11,0.25);
+  --green: #10b981; --green-dim: rgba(16,185,129,0.1); --green-border: rgba(16,185,129,0.25);
+  --blue: #3b82f6; --blue-dim: rgba(59,130,246,0.1); --blue-border: rgba(59,130,246,0.25);
+  --font: 'DM Sans', sans-serif; --mono: 'JetBrains Mono', monospace; --radius: 10px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.55; }
+.container { max-width:1200px; margin:0 auto; padding:20px 24px 60px; }
+h1 { font-size:22px; font-weight:800; margin-bottom:2px; }
+h1 span { color:var(--accent); }
+.subtitle { font-size:12px; color:var(--text-dim); margin-bottom:16px; }
+.warn-banner { background:var(--amber-dim); border:1px solid var(--amber-border); border-radius:var(--radius); padding:12px 16px; margin-bottom:20px; display:flex; align-items:center; gap:10px; }
+.warn-banner .icon { font-size:20px; }
+.warn-banner .msg { font-size:13px; color:var(--amber); font-weight:600; }
+.warn-banner .detail { font-size:11px; color:var(--text-dim); margin-top:2px; }
+
+.summary-strip { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-bottom:24px; }
+.sc { background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius); padding:12px 14px; text-align:center; }
+.sc .lbl { font-size:9px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-dim); font-weight:700; }
+.sc .val { font-size:26px; font-weight:800; font-family:var(--mono); margin:2px 0; }
+.sc .sub { font-size:10px; color:var(--text-muted); }
+
+.group { margin-bottom:28px; }
+.group-title { font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--card-border); display:flex; align-items:center; gap:8px; }
+.badge { font-size:10px; padding:2px 8px; border-radius:10px; font-weight:700; }
+.badge-red { background:var(--red-dim); color:var(--red); }
+.badge-amber { background:var(--amber-dim); color:var(--amber); }
+.badge-green { background:var(--green-dim); color:var(--green); }
+.badge-blue { background:var(--blue-dim); color:var(--blue); }
+
+table { width:100%; border-collapse:collapse; font-size:12px; }
+th { text-align:left; padding:6px 10px; background:rgba(255,255,255,0.03); color:var(--text-dim); font-size:10px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:1px solid var(--card-border); font-weight:700; }
+td { padding:6px 10px; border-bottom:1px solid rgba(255,255,255,0.025); vertical-align:top; }
+.num { font-family:var(--mono); font-size:11px; text-align:right; white-space:nowrap; }
+.dim { color:var(--text-dim); }
+.em { font-weight:700; }
+.wrong { color:var(--red); text-decoration:line-through; font-size:11px; }
+.new { color:var(--green); font-weight:600; font-size:11px; }
+.arrow { color:var(--green); font-weight:700; margin:0 2px; }
+.card { background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius); padding:16px 18px; margin-bottom:12px; }
+.note { font-size:11px; color:var(--text-dim); margin-top:8px; padding:8px 12px; background:rgba(255,255,255,0.02); border-radius:6px; }
+.note.green { color:var(--green); background:var(--green-dim); }
+.note.amber { color:var(--amber); background:var(--amber-dim); }
+.note.red { color:var(--red); background:var(--red-dim); }
+.method { font-size:9px; padding:2px 6px; border-radius:4px; font-weight:700; background:rgba(255,255,255,0.06); color:var(--text-dim); white-space:nowrap; }
+.method-cc { background:var(--amber-dim); color:var(--amber); }
+.method-bank { background:var(--green-dim); color:var(--green); }
+.method-amex { background:var(--blue-dim); color:var(--blue); }
+tr.total-row { border-top:2px solid var(--card-border); }
+tr.total-row td { padding-top:10px; font-weight:700; }
+
+.approval-box { background:var(--card); border:2px solid var(--accent); border-radius:var(--radius); padding:20px; margin-top:24px; text-align:center; }
+.approval-box h3 { font-size:16px; margin-bottom:6px; }
+.approval-box p { font-size:12px; color:var(--text-dim); }
+
+@media print {
+  body { background:#fff; color:#111; }
+  .card { border:1px solid #ddd; }
+  th { background:#f5f5f5; color:#333; }
+  .wrong { color:#c00; }
+  .new { color:#060; }
+  .warn-banner { background:#fff8e1; border-color:#f0c000; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1><span>QBO Batch Changes</span> - Final Approval</h1>
+<div class="subtitle">All planned API calls before execution. Review each row, then give the go-ahead. | Prepared Mar 12, 2026</div>
+
+<div class="warn-banner">
+  <div class="icon">!</div>
+  <div>
+    <div class="msg">Nothing has been changed in QBO yet.</div>
+    <div class="detail">This document lists every planned edit_expense / edit_journal_entry call. David must approve before Claude executes.</div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="summary-strip">
+  <div class="sc" style="border-color:var(--green-border)">
+    <div class="lbl">Total Changes</div>
+    <div class="val" style="color:var(--green)">22</div>
+    <div class="sub">Transactions to modify</div>
+  </div>
+  <div class="sc" style="border-color:var(--amber-border)">
+    <div class="lbl">Recategorize</div>
+    <div class="val" style="color:var(--amber)">18</div>
+    <div class="sub">Move to correct account</div>
+  </div>
+  <div class="sc" style="border-color:var(--red-border)">
+    <div class="lbl">Reclassify</div>
+    <div class="val" style="color:var(--red)">3</div>
+    <div class="sub">Expense to Income (CC rewards)</div>
+  </div>
+  <div class="sc">
+    <div class="lbl">Split</div>
+    <div class="val" style="color:var(--accent)">1</div>
+    <div class="sub">Multi-line split</div>
+  </div>
+  <div class="sc" style="border-color:var(--green-border)">
+    <div class="lbl">Net P&L Impact</div>
+    <div class="val" style="color:var(--green)">+$1,409</div>
+    <div class="sub">Net loss improves to -$62,929</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- GROUP 1: UNCATEGORIZED EXPENSE → RENT       -->
+<!-- ════════════════════════════════════════════ -->
+<div class="group">
+  <div class="group-title">Group A: Uncategorized Expense to Rent <span class="badge badge-green">3 changes - $10,500</span> <span class="method method-bank">Bank</span></div>
+
+  <div class="card">
+    <table>
+      <tr>
+        <th>#</th><th>Date</th><th>Vendor / Memo</th><th>Amount</th><th>QBO Txn</th><th>Current Account</th><th></th><th>New Account</th><th>P&L Impact</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Feb 4, 2025</td>
+        <td>Wire to DD 7376 (Spa Sante)</td>
+        <td class="num">$3,000.00</td>
+        <td class="dim">Bank check</td>
+        <td><span class="wrong">Uncategorized Expense</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Rent</span></td>
+        <td class="dim">$0</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Feb 18, 2025</td>
+        <td>Wire to DD 7376 (Spa Sante)</td>
+        <td class="num">$3,000.00</td>
+        <td class="dim">Bank check</td>
+        <td><span class="wrong">Uncategorized Expense</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Rent</span></td>
+        <td class="dim">$0</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Feb 28, 2025</td>
+        <td>Wire to DD 7376 (Spa Sante)</td>
+        <td class="num">$4,500.00</td>
+        <td class="dim">Bank check</td>
+        <td><span class="wrong">Uncategorized Expense</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Rent</span></td>
+        <td class="dim">$0</td>
+      </tr>
+    </table>
+    <div class="note">Same wire destination (DD 7376) as the 7 existing rent payments. Total 2025 rent becomes $23,700. Expense-to-expense: no P&L change.</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- GROUP 2: CC REWARDS RECLASSIFICATION        -->
+<!-- ════════════════════════════════════════════ -->
+<div class="group">
+  <div class="group-title">Group B: CC Rewards - Expense to Income <span class="badge badge-red">1 change - $1,409 P&L impact</span> <span class="method method-cc">Capital One</span></div>
+
+  <div class="card" style="border-color:var(--red-border)">
+    <table>
+      <tr>
+        <th>#</th><th>Date</th><th>Description</th><th>Amount</th><th>QBO Txn</th><th>Current Account</th><th></th><th>New Account</th><th>P&L Impact</th>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Aug 27, 2025</td>
+        <td>Capital One CC cash back reward</td>
+        <td class="num">$1,408.56</td>
+        <td class="dim">CC credit</td>
+        <td><span class="wrong">Credit card rewards (Expense debit)</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Credit card rewards (Other Income)</span></td>
+        <td class="em" style="color:var(--green)">+$1,409</td>
+      </tr>
+    </table>
+    <div class="note red">This is the ONLY change that affects the tax return bottom line. Moves $1,409 from expenses to income, improving net loss from -$64,337 to -$62,929.</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- GROUP 3: FIXED ASSET FURNITURE → CORRECT    -->
+<!-- ════════════════════════════════════════════ -->
+<div class="group">
+  <div class="group-title">Group C: Fixed Asset Furniture Corrections <span class="badge badge-amber">12 changes - $1,933</span></div>
+
+  <div class="card">
+    <h3 style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--text-dim);">C1: Fixed Asset Furniture --> Packaging Materials (holiday scarves + gift wrap)</h3>
+    <table>
+      <tr>
+        <th>#</th><th>Date</th><th>Vendor</th><th>Amount</th><th>QBO Txn</th><th>Current</th><th></th><th>New</th><th>Card</th>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Nov 11, 2025</td>
+        <td>Temu</td>
+        <td class="num">$124.02</td>
+        <td class="dim">txn 1197</td>
+        <td><span class="wrong">Fixed Asset Furniture</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Packaging Materials</span></td>
+        <td><span class="method method-cc">Cap One</span></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Dec 2, 2025</td>
+        <td>Temu</td>
+        <td class="num">$482.26</td>
+        <td class="dim">txn 1210</td>
+        <td><span class="wrong">Fixed Asset Furniture</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Packaging Materials</span></td>
+        <td><span class="method method-cc">Cap One</span></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Dec 10, 2025</td>
+        <td>Temu</td>
+        <td class="num">$323.76</td>
+        <td class="dim">txn 1218</td>
+        <td><span class="wrong">Fixed Asset Furniture</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Packaging Materials</span></td>
+        <td><span class="method method-cc">Cap One</span></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>Dec 12, 2025</td>
+        <td>Temu</td>
+        <td class="num">$187.98</td>
+        <td class="dim">txn 1220</td>
+        <td><span class="wrong">Fixed Asset Furniture</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Packaging Materials</span></td>
+        <td><span class="method method-cc">Cap One</span></td>
+      </tr>
+    </table>
+    <div class="note">$1,118.02 total. Holiday silk scarf gift wrapping supplies. David confirmed Dec 2 and Dec 10 are scarves.</div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--text-dim);">C2: Fixed Asset Furniture --> Inventory Asset - Finished Goods (gua shas)</h3>
+    <table>
+      <tr>
+        <th>#</th><th>Date</th><th>Vendor</th><th>Amount</th><th>QBO Txn</th><th>Current</th><th></th><th>New</th><th>Card</th>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>Feb 5, 2025</td>
+        <td>Amazon</td>
+        <td class="num">$9.84</td>
+        <td class="dim">CC txn</td>
+        <td><span class="wrong">Fixed Asset Furniture</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Inventory Asset - Finished Goods</span></td>
+        <td><span class="method method-cc">Cap One</span></td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>Feb 6, 2025</td>
+        <td>Amazon</td>
+        <td class="num">$20.79</td>
+        <td class="dim">CC txn</td>
+        <td><span class="wrong">Fixed Asset Furniture</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Inventory Asset - Finished Goods</span></td>
+        <td><span class="method method-cc">Cap One</span></td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td>Feb 11, 2025</td>
+        <td>Amazon</td>
+        <td class="num">$10.94</td>
+        <td class="dim">CC txn</td>
+        <td><span class="wrong">Fixed Asset Furniture</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Inventory Asset - Finished Goods</span></td>
+        <td><span class="method method-cc">Cap One</span></td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>Feb 11, 2025</td>
+        <td>Amazon</td>
+        <td class="num">$33.29</td>
+        <td class="dim">CC txn</td>
+        <td><span class="wrong">Fixed Asset Furniture</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Inventory Asset - Finished Goods</span></td>
+        <td><span class="method method-cc">Cap One</span></td>
+      </tr>
+      <tr>
+        <td>13</td>
+        <td>Jun 10, 2025</td>
+        <td>Amazon</td>
+        <td class="num">$147.05</td>
+        <td class="dim">AmEx txn</td>
+        <td><span class="wrong">Fixed Asset Furniture</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Inventory Asset - Finished Goods</span></td>
+        <td><span class="method method-amex">AmEx</span></td>
+      </tr>
+    </table>
+    <div class="note">$221.91 total. Gua shas are sold product - goes to inventory, not R&D.</div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--text-dim);">C3: Fixed Asset Furniture --> Office / Admin (non-holiday Temu)</h3>
+    <table>
+      <tr>
+        <th>#</th><th>Date</th><th>Vendor</th><th>Amount</th><th>QBO Txn</th><th>Current</th><th></th><th>New</th><th>Card</th>
+      </tr>
+      <tr>
+        <td>14</td>
+        <td>Jan 6, 2025</td>
+        <td>Temu</td>
+        <td class="num">$102.35</td>
+        <td class="dim">txn 524</td>
+        <td><span class="wrong">Fixed Asset Furniture</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Office / Admin</span></td>
+        <td><span class="method method-cc">Cap One</span></td>
+      </tr>
+      <tr>
+        <td>15</td>
+        <td>Jan 23, 2025</td>
+        <td>Temu</td>
+        <td class="num">$72.85</td>
+        <td class="dim">txn 542</td>
+        <td><span class="wrong">Fixed Asset Furniture</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Office / Admin</span></td>
+        <td><span class="method method-cc">Cap One</span></td>
+      </tr>
+      <tr>
+        <td>16</td>
+        <td>Dec 16, 2025</td>
+        <td>Temu</td>
+        <td class="num">$155.30</td>
+        <td class="dim">CC txn</td>
+        <td><span class="wrong">Fixed Asset Furniture</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Office / Admin</span></td>
+        <td><span class="method method-cc">Cap One</span></td>
+      </tr>
+    </table>
+    <div class="note">$330.50 total. Dec 16 is the meridian combs order (net $0 after refund) - parking in Office/Admin. Jan orders are misc non-holiday supplies.</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- GROUP 4: SPLIT TRANSACTION                  -->
+<!-- ════════════════════════════════════════════ -->
+<div class="group">
+  <div class="group-title">Group D: Split Transaction <span class="badge badge-amber">1 change - $262</span> <span class="method method-cc">Cap One</span></div>
+
+  <div class="card" style="border-color:var(--amber-border)">
+    <table>
+      <tr>
+        <th>#</th><th>Date</th><th>Vendor</th><th>Total</th><th>QBO Txn</th><th>Current</th><th></th><th>Split To</th>
+      </tr>
+      <tr>
+        <td>17</td>
+        <td>Jan 6, 2025</td>
+        <td>Temu</td>
+        <td class="num">$262.13</td>
+        <td class="dim">txn 523</td>
+        <td><span class="wrong">Fixed Asset Furniture</span></td>
+        <td class="arrow">--></td>
+        <td>
+          <span class="new">~$131 Inventory Asset - Finished Goods</span> (gua shas)<br>
+          <span class="new">~$131 Packaging Materials</span> (discovery kit pouch)
+        </td>
+      </tr>
+    </table>
+    <div class="note amber">This requires splitting the expense into 2 line items in QBO. David confirmed ~50/50 split. Exact amounts TBD based on order details - will split evenly ($131.07 / $131.06) unless David specifies.</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- GROUP 5: OTHER RECATEGORIZATIONS            -->
+<!-- ════════════════════════════════════════════ -->
+<div class="group">
+  <div class="group-title">Group E: Other Account Corrections <span class="badge badge-green">5 changes - $2,077</span></div>
+
+  <div class="card">
+    <table>
+      <tr>
+        <th>#</th><th>Date</th><th>Vendor</th><th>Amount</th><th>Current</th><th></th><th>New</th><th>Reason</th><th>Card</th>
+      </tr>
+      <tr>
+        <td>18</td>
+        <td>Jan 30, 2025</td>
+        <td>Indie Beauty Expo</td>
+        <td class="num">$1,008.81</td>
+        <td><span class="wrong">Education & Training</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Trade Shows & Events</span></td>
+        <td class="dim">BITE Beauty LA registration</td>
+        <td><span class="method method-cc">Cap One</span></td>
+      </tr>
+      <tr>
+        <td>19</td>
+        <td>Feb 20, 2025</td>
+        <td>USA Beauty LLC</td>
+        <td class="num">$202.20</td>
+        <td><span class="wrong">Education & Training</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Trade Shows & Events</span></td>
+        <td class="dim">Beauty industry event</td>
+        <td><span class="method method-cc">Cap One</span></td>
+      </tr>
+      <tr>
+        <td>20</td>
+        <td>Aug 13, 2025</td>
+        <td>BAS*CustomPrints</td>
+        <td class="num">$348.18</td>
+        <td><span class="wrong">General business expenses</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Marketing & Advertising</span></td>
+        <td class="dim">Custom printed marketing materials</td>
+        <td><span class="method method-cc">Cap One</span></td>
+      </tr>
+      <tr>
+        <td>21</td>
+        <td>Jul 28, 2025</td>
+        <td>Booth Eleven11</td>
+        <td class="num">$500.00</td>
+        <td><span class="wrong">Marketing & Advertising</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Trade Shows & Events</span></td>
+        <td class="dim">Booth rental</td>
+        <td><span class="method method-cc">Cap One</span></td>
+      </tr>
+      <tr>
+        <td>22</td>
+        <td>Mar 28, 2025</td>
+        <td>BerlinPackaging</td>
+        <td class="num">$38.07</td>
+        <td><span class="wrong">Software & Apps</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Raw Materials (Packaging)</span></td>
+        <td class="dim">Packaging supplier, not software</td>
+        <td><span class="method method-amex">AmEx</span></td>
+      </tr>
+    </table>
+    <div class="note">All expense-to-expense. No P&L impact. Better categorization for the return.</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- GROUP 6: DAVID-CONFIRMED NEW CATEGORIES     -->
+<!-- ════════════════════════════════════════════ -->
+<div class="group">
+  <div class="group-title">Group F: David-Confirmed Recategorizations <span class="badge badge-green">2 changes - $778</span> <span class="method method-amex">AmEx</span></div>
+
+  <div class="card">
+    <table>
+      <tr>
+        <th>#</th><th>Date</th><th>Vendor</th><th>Amount</th><th>Current</th><th></th><th>New</th><th>David's Input</th>
+      </tr>
+      <tr>
+        <td>23</td>
+        <td>Jun 16, 2025</td>
+        <td>Amazon</td>
+        <td class="num">$498.70</td>
+        <td>Office / Admin</td>
+        <td class="arrow">--></td>
+        <td><span class="new">Education & Training</span></td>
+        <td class="dim">Mannequin heads for classes</td>
+      </tr>
+      <tr>
+        <td>24</td>
+        <td>Jul 3, 2025</td>
+        <td>Amazon</td>
+        <td class="num">$279.35</td>
+        <td>Office / Admin</td>
+        <td class="arrow">--></td>
+        <td><span class="new">Inventory Asset - Finished Goods</span></td>
+        <td class="dim">Gua shas (sold product)</td>
+      </tr>
+    </table>
+    <div class="note">Both confirmed by David on Mar 12, 2026.</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- GROUP 7: MISC SMALL ITEMS                   -->
+<!-- ════════════════════════════════════════════ -->
+<div class="group">
+  <div class="group-title">Group G: Miscellaneous Reclassifications <span class="badge badge-green">2 changes - $40</span> <span class="method method-cc">Cap One</span></div>
+
+  <div class="card">
+    <table>
+      <tr>
+        <th>#</th><th>Date</th><th>Vendor</th><th>Amount</th><th>Current</th><th></th><th>New</th><th>Reason</th>
+      </tr>
+      <tr>
+        <td>25</td>
+        <td>May 7, 2025</td>
+        <td>Groupon, Inc.</td>
+        <td class="num">$20.00</td>
+        <td><span class="wrong">Miscellaneous Expense</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Marketing & Advertising</span></td>
+        <td class="dim">Groupon deal/promotion</td>
+      </tr>
+      <tr>
+        <td>26</td>
+        <td>Aug 15, 2025</td>
+        <td>Giddy Up Nuts / Tina Mui</td>
+        <td class="num">$20.00</td>
+        <td><span class="wrong">Miscellaneous Expense</span></td>
+        <td class="arrow">--></td>
+        <td><span class="new">Meals</span></td>
+        <td class="dim">Business snacks/food</td>
+      </tr>
+    </table>
+    <div class="note">Clears Miscellaneous Expense account to $0. Both immaterial amounts.</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- MASTER SUMMARY                              -->
+<!-- ════════════════════════════════════════════ -->
+<div class="group">
+  <div class="group-title">Master Summary - All 26 Planned Changes</div>
+
+  <div class="card" style="border-color:var(--accent)">
+    <table>
+      <tr><th>Group</th><th>Description</th><th>Changes</th><th>Amount</th><th>P&L Impact</th></tr>
+      <tr>
+        <td class="em">A</td>
+        <td>Uncategorized Expense --> Rent</td>
+        <td class="num">3</td>
+        <td class="num">$10,500</td>
+        <td class="dim">$0</td>
+      </tr>
+      <tr>
+        <td class="em" style="color:var(--red)">B</td>
+        <td>CC Rewards expense --> Other Income</td>
+        <td class="num">1</td>
+        <td class="num">$1,409</td>
+        <td class="em" style="color:var(--green)">+$1,409</td>
+      </tr>
+      <tr>
+        <td class="em">C1</td>
+        <td>Fixed Asset Furniture --> Packaging Materials</td>
+        <td class="num">4</td>
+        <td class="num">$1,118</td>
+        <td class="dim">$0</td>
+      </tr>
+      <tr>
+        <td class="em">C2</td>
+        <td>Fixed Asset Furniture --> Inventory (gua shas)</td>
+        <td class="num">5</td>
+        <td class="num">$222</td>
+        <td class="dim">$0</td>
+      </tr>
+      <tr>
+        <td class="em">C3</td>
+        <td>Fixed Asset Furniture --> Office / Admin</td>
+        <td class="num">3</td>
+        <td class="num">$331</td>
+        <td class="dim">$0</td>
+      </tr>
+      <tr>
+        <td class="em">D</td>
+        <td>Fixed Asset Furniture --> Split (Inventory + Packaging)</td>
+        <td class="num">1</td>
+        <td class="num">$262</td>
+        <td class="dim">$0</td>
+      </tr>
+      <tr>
+        <td class="em">E</td>
+        <td>Other account corrections (5 vendors)</td>
+        <td class="num">5</td>
+        <td class="num">$2,097</td>
+        <td class="dim">$0</td>
+      </tr>
+      <tr>
+        <td class="em">F</td>
+        <td>David-confirmed (mannequin heads + gua shas)</td>
+        <td class="num">2</td>
+        <td class="num">$778</td>
+        <td class="dim">$0</td>
+      </tr>
+      <tr>
+        <td class="em">G</td>
+        <td>Miscellaneous --> Marketing/Meals</td>
+        <td class="num">2</td>
+        <td class="num">$40</td>
+        <td class="dim">$0</td>
+      </tr>
+      <tr class="total-row">
+        <td></td>
+        <td class="em">TOTAL</td>
+        <td class="num em">26</td>
+        <td class="num em">$16,757</td>
+        <td class="em" style="color:var(--green)">+$1,409 (net loss improves)</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:13px;font-weight:700;margin-bottom:8px;">Post-Change Account Impact</h3>
+    <table>
+      <tr><th>Account</th><th>Before</th><th>After</th><th>Change</th></tr>
+      <tr>
+        <td>Uncategorized Expense</td>
+        <td class="num">$10,500</td>
+        <td class="num" style="color:var(--green)">$0</td>
+        <td class="dim">Cleared (all to Rent)</td>
+      </tr>
+      <tr>
+        <td>Miscellaneous Expense</td>
+        <td class="num">$40</td>
+        <td class="num" style="color:var(--green)">$0</td>
+        <td class="dim">Cleared</td>
+      </tr>
+      <tr>
+        <td>Fixed Asset Furniture (from Temu/Amazon)</td>
+        <td class="num">$1,933</td>
+        <td class="num" style="color:var(--green)">$0</td>
+        <td class="dim">All reclassified to correct accounts</td>
+      </tr>
+      <tr>
+        <td>Rent</td>
+        <td class="num">$13,200</td>
+        <td class="num">$23,700</td>
+        <td class="dim">+$10,500</td>
+      </tr>
+      <tr>
+        <td>Packaging Materials</td>
+        <td class="num">varies</td>
+        <td class="num">+$1,249</td>
+        <td class="dim">Holiday scarves + kit pouch</td>
+      </tr>
+      <tr>
+        <td>Inventory Asset - Finished Goods</td>
+        <td class="num">varies</td>
+        <td class="num">+$632</td>
+        <td class="dim">Gua sha purchases (sold product)</td>
+      </tr>
+      <tr>
+        <td>Trade Shows & Events</td>
+        <td class="num">varies</td>
+        <td class="num">+$1,711</td>
+        <td class="dim">IBE + USA Beauty + Booth</td>
+      </tr>
+      <tr>
+        <td>Other Income (CC Rewards)</td>
+        <td class="num">$0</td>
+        <td class="num">$1,409</td>
+        <td class="em" style="color:var(--green)">New income recognized</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- NOT INCLUDED / NO CHANGE                    -->
+<!-- ════════════════════════════════════════════ -->
+<div class="group">
+  <div class="group-title">Reviewed But No Change Needed <span class="badge badge-green">Not in batch</span></div>
+
+  <div class="card" style="opacity:0.7">
+    <table>
+      <tr><th>Item</th><th>Amount</th><th>Current Category</th><th>Why No Change</th></tr>
+      <tr>
+        <td>Jan 14, 2025 - Amazon (ink)</td>
+        <td class="num">$203.01</td>
+        <td class="dim">Office / Admin</td>
+        <td class="dim">David confirmed: ink. Already correct.</td>
+      </tr>
+      <tr>
+        <td>10x Temu orders (Jan-Mar, under $200)</td>
+        <td class="num">$334.04</td>
+        <td class="dim">Office / Admin</td>
+        <td class="dim">Already correct per David's guidance</td>
+      </tr>
+      <tr>
+        <td>9x Amazon orders Cap One (under $200)</td>
+        <td class="num">$289.05</td>
+        <td class="dim">Office / Admin</td>
+        <td class="dim">Correct. Some may be gua shas but immaterial.</td>
+      </tr>
+      <tr>
+        <td>12x Amazon orders AmEx (under $200)</td>
+        <td class="num">$1,108.60</td>
+        <td class="dim">Office / Admin</td>
+        <td class="dim">Correct. Some may be gua shas but immaterial.</td>
+      </tr>
+      <tr>
+        <td>67x Software & Apps subscriptions</td>
+        <td class="num">$1,456</td>
+        <td class="dim">Software & Apps</td>
+        <td class="dim">All verified correct</td>
+      </tr>
+      <tr>
+        <td>8x AT&T phone bills</td>
+        <td class="num">$3,993</td>
+        <td class="dim">Phone Service</td>
+        <td class="dim">Correct (business % TBD for return)</td>
+      </tr>
+      <tr>
+        <td>6x Southwest Airlines (AmEx)</td>
+        <td class="num">$1,504</td>
+        <td class="dim">Airfare</td>
+        <td class="dim">All verified correct</td>
+      </tr>
+      <tr>
+        <td>All other verified categories</td>
+        <td class="num">$48,000+</td>
+        <td class="dim">Various</td>
+        <td class="dim">Rent, vehicle, health ins, raw materials, etc.</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- APPROVAL -->
+<div class="approval-box">
+  <h3>Ready for David's Approval</h3>
+  <p>26 changes across 3 payment methods (Capital One, Bank, AmEx).</p>
+  <p>Only Group B ($1,409 CC rewards) changes the tax return bottom line. Everything else is expense-to-expense.</p>
+  <p style="margin-top:12px;color:var(--accent);font-weight:700;">Tell Claude "approved, go ahead" to execute all changes via QBO MCP API.</p>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:10px;border-top:1px solid var(--card-border);margin-top:24px">
+  AWARE Hair, LLC - QBO Batch Changes Approval Document | Prepared Mar 12, 2026 | Source: QBO MCP + David's confirmations
+  <br>26 planned changes | $16,757 total | +$1,409 P&L impact | All 3 payment methods covered
+</div>
+
+</div><!-- /container -->
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

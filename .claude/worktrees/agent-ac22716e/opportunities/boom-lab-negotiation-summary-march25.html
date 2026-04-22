@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manufacturing Renegotiation - Boom Lab Inc</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --forest: #2D4739;
+            --forest-deep: #1E3228;
+            --sage: #7A8F7D;
+            --cream: #F8F6F1;
+            --sand: #E8E4DC;
+            --charcoal: #2C2C2C;
+            --warm-gray: #6B6B6B;
+            --gold: #B8956E;
+            --gold-light: #C9A882;
+            --white: #FFFFFF;
+            --green-soft: #4A8C6B;
+            --green-bg: #F2F8F5;
+            --red-soft: #C45B4A;
+            --red-bg: #FDF5F4;
+            --amber-soft: #B8860B;
+            --amber-bg: #FFFBF0;
+            --blue-soft: #4A7CB8;
+            --blue-bg: #F0F5FC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'EB Garamond', serif;
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--charcoal);
+            background: var(--sand);
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--white);
+        }
+
+        /* Header */
+        .header {
+            background: var(--forest-deep);
+            color: var(--white);
+            padding: 36px 48px 32px;
+            border-bottom: 3px solid var(--gold);
+            position: relative;
+        }
+
+        .header-confidential {
+            font-family: 'EB Garamond', serif;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
+        .header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: 32px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .header-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: 18px;
+            letter-spacing: 2px;
+            color: var(--sage);
+        }
+
+        .header-date {
+            font-family: 'EB Garamond', serif;
+            font-size: 13px;
+            color: var(--sage);
+            margin-top: 12px;
+            letter-spacing: 1px;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px 48px;
+        }
+
+        .section {
+            margin-bottom: 36px;
+        }
+
+        .section-label {
+            font-family: 'EB Garamond', serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
+        .section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: 22px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--forest-deep);
+            margin-bottom: 20px;
+        }
+
+        /* Stat Cards */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card {
+            padding: 20px 16px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-card.green { background: var(--green-bg); border: 1px solid #D4E8DC; }
+        .stat-card.blue { background: var(--blue-bg); border: 1px solid #D4DEE8; }
+        .stat-card.amber { background: var(--amber-bg); border: 1px solid #E8DEC4; }
+        .stat-card.red { background: var(--red-bg); border: 1px solid #E8D4D4; }
+
+        .stat-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+
+        .stat-card.green .stat-value { color: var(--green-soft); }
+        .stat-card.blue .stat-value { color: var(--blue-soft); }
+        .stat-card.amber .stat-value { color: var(--amber-soft); }
+        .stat-card.red .stat-value { color: var(--red-soft); }
+
+        .stat-label {
+            font-family: 'EB Garamond', serif;
+            font-size: 12px;
+            color: var(--warm-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Callout Boxes */
+        .callout {
+            padding: 24px 28px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .callout.green {
+            background: var(--green-bg);
+            border-left: 4px solid var(--green-soft);
+        }
+
+        .callout.red {
+            background: var(--red-bg);
+            border-left: 4px solid var(--red-soft);
+        }
+
+        .callout h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: 18px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--forest-deep);
+            margin-bottom: 16px;
+        }
+
+        .concession {
+            margin-bottom: 14px;
+        }
+
+        .concession:last-child {
+            margin-bottom: 0;
+        }
+
+        .concession strong {
+            font-family: 'EB Garamond', serif;
+            font-weight: 600;
+            color: var(--charcoal);
+        }
+
+        .concession p {
+            margin-top: 2px;
+            color: var(--warm-gray);
+            font-size: 14px;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        thead th {
+            font-family: 'EB Garamond', serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--warm-gray);
+            text-align: left;
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--sand);
+            font-weight: 400;
+        }
+
+        thead th:last-child {
+            text-align: right;
+        }
+
+        tbody td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #F0EDE8;
+            vertical-align: top;
+        }
+
+        tbody td:last-child {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        tbody tr.total-row td {
+            border-top: 2px solid var(--sand);
+            border-bottom: none;
+            font-weight: 600;
+            padding-top: 12px;
+        }
+
+        tbody tr.subtotal-row td {
+            font-weight: 600;
+        }
+
+        tbody tr.deduction-row td {
+            color: var(--warm-gray);
+            font-style: italic;
+        }
+
+        .table-label {
+            font-family: 'EB Garamond', serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--forest);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Contract References */
+        .ref-table th:nth-child(2),
+        .ref-table td:nth-child(2) {
+            white-space: nowrap;
+            color: var(--warm-gray);
+            font-size: 13px;
+        }
+
+        .ref-table td:last-child {
+            text-align: left;
+            font-size: 13px;
+            color: var(--warm-gray);
+            font-style: italic;
+        }
+
+        .ref-table thead th:last-child {
+            text-align: left;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 24px 48px;
+            border-top: 1px solid var(--sand);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--warm-gray);
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .page {
+                max-width: 100%;
+                margin: 0;
+                box-shadow: none;
+            }
+
+            .header {
+                padding: 24px 36px 20px;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .header h1 {
+                font-size: 26px;
+            }
+
+            .content {
+                padding: 24px 36px;
+            }
+
+            .section {
+                margin-bottom: 24px;
+            }
+
+            .stat-grid {
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 14px 10px;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .stat-value {
+                font-size: 22px;
+            }
+
+            .callout {
+                padding: 16px 20px;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .section:last-of-type {
+                page-break-inside: avoid;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            .footer {
+                padding: 16px 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-confidential">Confidential</div>
+            <h1>Manufacturing Renegotiation</h1>
+            <div class="header-subtitle">Boom Lab Inc - Meeting Brief</div>
+            <div class="header-date">March 25, 2026</div>
+        </div>
+
+        <div class="content">
+            <!-- Section 1: At a Glance -->
+            <div class="section">
+                <div class="section-label">At a Glance</div>
+                <div class="stat-grid">
+                    <div class="stat-card green">
+                        <div class="stat-value">$43,890</div>
+                        <div class="stat-label">Total Credit Owed</div>
+                    </div>
+                    <div class="stat-card blue">
+                        <div class="stat-value">$53,750</div>
+                        <div class="stat-label">New Production Value</div>
+                    </div>
+                    <div class="stat-card amber">
+                        <div class="stat-value">$32,622</div>
+                        <div class="stat-label">Net Due to Boom Lab</div>
+                    </div>
+                    <div class="stat-card red">
+                        <div class="stat-value">400</div>
+                        <div class="stat-label">Shampoo Units Owed</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: What We're Offering -->
+            <div class="section">
+                <div class="section-label">Our Position</div>
+                <div class="callout green">
+                    <h3>What We're Offering</h3>
+                    <div class="concession">
+                        <strong>1. Accept New Pricing</strong>
+                        <p>Shampoo $3.85 (+18.1%), Conditioner $3.25 (+17.8%), Leave-In $3.65 (+13.4%). Previously countered at ~8%; now accepting full increase.</p>
+                    </div>
+                    <div class="concession">
+                        <strong>2. Source and Supply Fragrance + Actives</strong>
+                        <p>AWARE will procure and deliver fragrance (Pacific Air NF) and active ingredients (SO-Resisthyal-25, SymHair Force 1631) directly to Boom Lab at AWARE's expense. Not included in per-unit pricing.</p>
+                    </div>
+                    <div class="concession">
+                        <strong>3. Commit to Volume</strong>
+                        <p>5,000 new units per SKU (15,000 total) by March 25, 2027. Represents significant volume commitment.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: What We Require -->
+            <div class="section">
+                <div class="section-label">Non-Negotiables</div>
+                <div class="callout red">
+                    <h3>What We Require</h3>
+                    <div class="concession">
+                        <strong>1. Credit Recognition</strong>
+                        <p>$43,890 total credit from pre-payments applied to future invoices.</p>
+                    </div>
+                    <div class="concession">
+                        <strong>2. 400 Shampoo Units</strong>
+                        <p>Run 1 shortage (ordered 2,500, received 2,100). Already paid for. Deliver with next run at no additional charge.</p>
+                    </div>
+                    <div class="concession">
+                        <strong>3. Written Purchase Orders</strong>
+                        <p>Formal PO for each production run specifying quantities, pricing, delivery date, payment terms.</p>
+                    </div>
+                    <div class="concession">
+                        <strong>4. Production Timeline</strong>
+                        <p>Run 2 by Q3 2026 (2,500 per SKU + 400 shampoo owed). Run 3 by Q1 2027 (2,500 per SKU).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Financial Summary -->
+            <div class="section">
+                <div class="section-label">Financial Summary</div>
+                <h2>Credit &amp; Cost Breakdown</h2>
+
+                <div class="table-label">Credit Calculation</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cash paid (July 2024 deposit)</td>
+                            <td>$27,720.00</td>
+                        </tr>
+                        <tr>
+                            <td>Cash paid (Oct 2024 addendum)</td>
+                            <td>$8,085.00</td>
+                        </tr>
+                        <tr>
+                            <td>Cash paid (Early 2025 addendum)</td>
+                            <td>$8,085.00</td>
+                        </tr>
+                        <tr class="subtotal-row">
+                            <td>Total credits</td>
+                            <td>$43,890.00</td>
+                        </tr>
+                        <tr class="deduction-row">
+                            <td>Less: Run 1 goods received (7,400 units at original prices)</td>
+                            <td>-$22,762.00</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>Net credit balance</td>
+                            <td>$21,128.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="table-label">New Production Cost</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SKU</th>
+                            <th style="text-align: center;">Units</th>
+                            <th style="text-align: center;">Rate</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Shampoo 300ML</td>
+                            <td style="text-align: center;">5,000</td>
+                            <td style="text-align: center;">$3.85</td>
+                            <td>$19,250.00</td>
+                        </tr>
+                        <tr>
+                            <td>Conditioner 300ML</td>
+                            <td style="text-align: center;">5,000</td>
+                            <td style="text-align: center;">$3.25</td>
+                            <td>$16,250.00</td>
+                        </tr>
+                        <tr>
+                            <td>Leave-In 250ML</td>
+                            <td style="text-align: center;">5,000</td>
+                            <td style="text-align: center;">$3.65</td>
+                            <td>$18,250.00</td>
+                        </tr>
+                        <tr class="subtotal-row">
+                            <td>Total due to Boom Lab</td>
+                            <td style="text-align: center;">15,000</td>
+                            <td></td>
+                            <td>$53,750.00</td>
+                        </tr>
+                        <tr class="deduction-row">
+                            <td>Less: credit balance</td>
+                            <td></td>
+                            <td></td>
+                            <td>-$21,128.00</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>Net remaining to Boom Lab</td>
+                            <td></td>
+                            <td></td>
+                            <td>$32,622.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p style="font-size: 12px; color: var(--warm-gray); margin-top: -12px; margin-bottom: 0;">Fragrance and active ingredients sourced and supplied by AWARE at AWARE's expense (not part of Boom Lab invoicing). $3,500 lab fee credit (Section 5.3) reserved separately for future R&D.</p>
+            </div>
+
+            <!-- Section 5: Key Contract References -->
+            <div class="section">
+                <div class="section-label">Reference</div>
+                <h2>Key Contract References</h2>
+                <table class="ref-table">
+                    <thead>
+                        <tr>
+                            <th>Point</th>
+                            <th>Clause</th>
+                            <th>What It Says</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Price changes require mutual agreement</td>
+                            <td>Section 5.4</td>
+                            <td>"Any price adjustments for future orders shall be subject to mutual agreement"</td>
+                        </tr>
+                        <tr>
+                            <td>Materials are manufacturer's responsibility</td>
+                            <td>Section 2.3</td>
+                            <td>"Manufacturer shall be responsible for procuring all materials and ingredients, except active ingredients"</td>
+                        </tr>
+                        <tr>
+                            <td>Amendments require written agreement</td>
+                            <td>Section 13.4</td>
+                            <td>"This Agreement may be amended or modified only by a written agreement signed by both parties"</td>
+                        </tr>
+                        <tr>
+                            <td>Entire agreement clause</td>
+                            <td>Section 13.3</td>
+                            <td>"This Agreement... supersedes all prior and contemporaneous agreements"</td>
+                        </tr>
+                        <tr>
+                            <td>Payment terms per addendum</td>
+                            <td>Oct 2024 Addendum</td>
+                            <td>Installments split before production and after delivery</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            AWARE Hair LLC - Internal Document - Not for Distribution
+        </div>
+    </div>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

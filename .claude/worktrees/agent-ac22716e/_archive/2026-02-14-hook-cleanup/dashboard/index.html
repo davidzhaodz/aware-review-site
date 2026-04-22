@@ -1,0 +1,2162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #0d0d0d;
+            --bg-secondary: #161616;
+            --bg-tertiary: #1e1e1e;
+            --bg-card: #1a1a1a;
+            --bg-hover: #242424;
+            --text-primary: #e5e5e5;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666;
+            --border: #2a2a2a;
+            --border-light: #333;
+            --green: #22c55e;
+            --green-dim: rgba(34, 197, 94, 0.15);
+            --yellow: #eab308;
+            --yellow-dim: rgba(234, 179, 8, 0.15);
+            --red: #ef4444;
+            --red-dim: rgba(239, 68, 68, 0.15);
+            --blue: #3b82f6;
+            --purple: #a855f7;
+            --cyan: #06b6d4;
+            --orange: #f97316;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        /* Layout */
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            min-height: 100vh;
+        }
+
+        .main {
+            padding: 12px 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar {
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h1 {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .header-badge {
+            font-size: 10px;
+            color: var(--text-muted);
+            padding: 3px 8px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+        }
+
+        /* Connection status indicator */
+        .conn-status {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: help;
+        }
+        .conn-status.connected { background: var(--green-dim); color: var(--green); }
+        .conn-status.reconnecting { background: var(--yellow-dim); color: var(--yellow); animation: pulse-reconnect 1.5s ease-in-out infinite; }
+        .conn-status.disconnected { background: var(--red-dim); color: var(--red); }
+
+        @keyframes pulse-reconnect {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Disconnected banner */
+        .disconnect-banner {
+            display: none;
+            background: var(--red-dim);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--red);
+            text-align: center;
+            padding: 6px 12px;
+            font-size: 11px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        .disconnect-banner.visible { display: block; }
+
+        .header-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* Buttons */
+        .btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.15s ease;
+        }
+        .btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border-color: var(--border-light);
+        }
+        .btn.primary {
+            background: var(--blue);
+            color: #fff;
+            border-color: var(--blue);
+        }
+        .btn.primary:hover { opacity: 0.9; }
+        .btn.muted {
+            color: var(--red);
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* Compact Usage Widget */
+        .usage-compact {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .usage-compact-stat {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .usage-compact-label {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .usage-compact-value {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .usage-compact-value.highlight {
+            color: var(--cyan);
+        }
+
+        .usage-compact-divider {
+            color: var(--border);
+        }
+
+        .usage-compact-trend {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .usage-compact-trend.up { color: var(--green); }
+        .usage-compact-trend.down { color: var(--red); }
+        .usage-compact-trend.neutral { color: var(--text-muted); }
+
+        .usage-compact-sparkline {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 14px;
+        }
+
+        .usage-compact-sparkline-bar {
+            width: 3px;
+            background: var(--cyan);
+            border-radius: 1px;
+            opacity: 0.6;
+        }
+
+        .usage-compact-sparkline-bar:last-child {
+            opacity: 1;
+        }
+
+        .usage-compact-source {
+            font-size: 9px;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        .usage-compact-source.official {
+            color: var(--green);
+        }
+
+        .usage-compact-link {
+            font-size: 9px;
+            color: var(--cyan);
+            text-decoration: none;
+            margin-left: auto;
+            opacity: 0.7;
+        }
+        .usage-compact-link:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            border-radius: 8px;
+            min-width: 80px;
+            transition: all 0.15s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-light);
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-card.working .stat-value { color: var(--green); }
+        .stat-card.waiting .stat-value { color: var(--yellow); }
+        .stat-card.errors .stat-value { color: var(--red); }
+
+        /* Instances Section */
+        .instances-section {
+            margin-bottom: 16px;
+        }
+
+        .project-group {
+            margin-bottom: 14px;
+        }
+
+        .project-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .project-color {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+        }
+
+        .project-name {
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .project-count {
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
+        .instances {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .instance {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            position: relative;
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+
+        .instance:hover {
+            background: var(--bg-hover);
+            border-color: var(--border-light);
+        }
+
+        .instance.working {
+            border-left: 3px solid var(--green);
+        }
+
+        .instance.waiting {
+            border-left: 3px solid var(--yellow);
+        }
+
+        .instance.error {
+            border-left: 3px solid var(--red);
+        }
+
+        .instance.stale {
+            opacity: 0.5;
+        }
+
+        /* Error streak indicator with pulse animation */
+        .instance.error-streak {
+            animation: pulse-error 2s ease-in-out infinite;
+        }
+        @keyframes pulse-error {
+            0%, 100% { box-shadow: none; }
+            50% { box-shadow: 0 0 8px var(--red-dim); }
+        }
+
+        .error-streak-dots {
+            color: var(--red);
+            font-size: 8px;
+            margin-left: 4px;
+            letter-spacing: 1px;
+        }
+
+        .instance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 6px;
+        }
+
+        .instance-name {
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .instance-badges {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .badge {
+            font-size: 9px;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .badge.status-working { background: var(--green-dim); color: var(--green); }
+        .badge.status-waiting { background: var(--yellow-dim); color: var(--yellow); }
+        .badge.status-error { background: var(--red-dim); color: var(--red); }
+        .badge.branch { background: rgba(168, 85, 247, 0.15); color: var(--purple); }
+        .badge.duration { background: none; color: var(--text-muted); padding: 0; }
+
+        .instance-task {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin: 5px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .instance-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 10px;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+
+        .instance-meta span {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .instance-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 3px;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+
+        .instance:hover .instance-actions { opacity: 1; }
+
+        .icon-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            width: 24px;
+            height: 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .icon-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        /* Task History */
+        .task-history {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border);
+            display: none;
+        }
+
+        .instance.expanded .task-history { display: block; }
+
+        .task-history h3 {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .task-history-item {
+            font-size: 10px;
+            color: var(--text-muted);
+            padding: 3px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Sidebar Sections */
+        .sidebar-section {
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .sidebar-section h2 {
+            margin-bottom: 8px;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .quick-action {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .quick-action:hover {
+            background: var(--bg-hover);
+            border-color: var(--border-light);
+        }
+
+        .quick-action-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .quick-action-icon.archive { background: rgba(59, 130, 246, 0.15); color: var(--blue); }
+        .quick-action-icon.cleanup { background: rgba(249, 115, 22, 0.15); color: var(--orange); }
+        .quick-action-icon.clear { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+        .quick-action-icon.settings { background: rgba(168, 85, 247, 0.15); color: var(--purple); }
+
+        .quick-action-text {
+            flex: 1;
+        }
+
+        .quick-action-title {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .quick-action-desc {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        /* Suggestions Panel */
+        .suggestions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .suggestions-empty {
+            text-align: center;
+            padding: 14px 10px;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .suggestions-empty-icon {
+            font-size: 20px;
+            opacity: 0.4;
+        }
+
+        .suggestions-empty small {
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
+        .suggestion-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            transition: all 0.15s ease;
+        }
+
+        .suggestion-card:hover {
+            border-color: var(--border-light);
+            background: var(--bg-hover);
+        }
+
+        .suggestion-card[data-priority="high"] {
+            border-left: 2px solid var(--red);
+        }
+
+        .suggestion-card[data-priority="medium"] {
+            border-left: 2px solid var(--yellow);
+        }
+
+        .suggestion-card[data-priority="low"] {
+            border-left: 2px solid var(--green);
+        }
+
+        .suggestion-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .suggestion-icon {
+            font-size: 14px;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .suggestion-title-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .suggestion-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .suggestion-priority {
+            font-size: 8px;
+            text-transform: uppercase;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .suggestion-priority.priority-high {
+            background: var(--red-dim);
+            color: var(--red);
+        }
+
+        .suggestion-priority.priority-medium {
+            background: var(--yellow-dim);
+            color: var(--yellow);
+        }
+
+        .suggestion-priority.priority-low {
+            background: var(--green-dim);
+            color: var(--green);
+        }
+
+        .suggestion-description {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .suggestion-items {
+            margin-bottom: 6px;
+        }
+
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 10px;
+            color: var(--text-secondary);
+            padding: 3px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-item-text {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .suggestion-item-project {
+            font-size: 9px;
+            color: var(--purple);
+            background: rgba(168, 85, 247, 0.15);
+            padding: 1px 5px;
+            border-radius: 3px;
+            margin-left: 6px;
+            flex-shrink: 0;
+        }
+
+        .suggestion-action {
+            width: 100%;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 5px 8px;
+            border-radius: 5px;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .suggestion-action:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border-color: var(--border-light);
+        }
+
+        .suggestions-loading {
+            text-align: center;
+            padding: 12px;
+            color: var(--text-muted);
+            font-size: 10px;
+        }
+
+        .suggestions-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .suggestions-refresh {
+            font-size: 10px;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 2px 5px;
+            border-radius: 3px;
+            transition: all 0.15s ease;
+        }
+
+        .suggestions-refresh:hover {
+            color: var(--text-secondary);
+            background: var(--bg-secondary);
+        }
+
+        /* Usage Sparkline for Suggestions Header */
+        .usage-sparkline {
+            display: flex;
+            align-items: flex-end;
+            gap: 1px;
+            height: 12px;
+            margin-left: 6px;
+        }
+        .usage-sparkline-bar {
+            width: 3px;
+            border-radius: 1px;
+            min-height: 2px;
+            transition: height 0.2s ease;
+        }
+
+        .suggestions-error {
+            text-align: center;
+            padding: 10px;
+            color: var(--text-muted);
+            font-size: 10px;
+        }
+
+        .suggestions-error-retry {
+            color: var(--blue);
+            cursor: pointer;
+            margin-left: 4px;
+        }
+
+        .suggestions-error-retry:hover {
+            text-decoration: underline;
+        }
+
+        /* Activity Log */
+        .activity-log {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .log-toggle {
+            font-size: 10px;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .log-toggle:hover { color: var(--text-secondary); }
+
+        /* Activity Log Search */
+        .log-search-wrapper {
+            margin-bottom: 6px;
+            overflow: hidden;
+            height: 0;
+            transition: height 0.15s ease;
+        }
+        .log-search-wrapper.visible {
+            height: 26px;
+        }
+        .log-search {
+            width: 100%;
+            padding: 5px 8px;
+            font-size: 10px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-primary);
+            outline: none;
+        }
+        .log-search:focus {
+            border-color: var(--cyan);
+        }
+        .log-search::placeholder {
+            color: var(--text-muted);
+        }
+
+        .log {
+            flex: 1;
+            overflow-y: auto;
+            max-height: 160px;
+        }
+
+        .log.collapsed {
+            max-height: 60px;
+        }
+
+        .log-entry {
+            padding: 5px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 11px;
+        }
+
+        .log-entry:last-child { border-bottom: none; }
+
+        .log-time {
+            color: var(--text-muted);
+            font-size: 9px;
+            margin-bottom: 1px;
+        }
+
+        .log-message { color: var(--text-secondary); }
+        .log-message.working { color: var(--green); }
+        .log-message.waiting { color: var(--yellow); }
+        .log-message.error { color: var(--red); }
+
+        /* Settings Section */
+        .settings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .setting {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+        }
+
+        .setting-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .toggle {
+            width: 34px;
+            height: 18px;
+            background: var(--bg-secondary);
+            border-radius: 9px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .toggle.on { background: var(--green); }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: #fff;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: left 0.2s ease;
+        }
+
+        .toggle.on::after { left: 18px; }
+
+        /* No instances */
+        .no-instances {
+            text-align: center;
+            padding: 40px 30px;
+            color: var(--text-muted);
+        }
+
+        .no-instances-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+            opacity: 0.3;
+        }
+
+        .no-instances-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .no-instances-text {
+            font-size: 12px;
+        }
+
+        /* Rename Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show { display: flex; }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 12px;
+            min-width: 320px;
+        }
+
+        .modal-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+
+        .modal input:focus {
+            outline: none;
+            border-color: var(--blue);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
+        }
+
+        /* Color Palette for Projects */
+        .colors {
+            --c1: #ef4444; --c2: #3b82f6; --c3: #22c55e; --c4: #f97316;
+            --c5: #a855f7; --c6: #06b6d4; --c7: #ec4899; --c8: #84cc16;
+        }
+
+        /* Usage Stats Footer */
+        .usage-stats-footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .usage-stats-footer .stat-block {
+            text-align: center;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .usage-stats-footer .stat-number {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .usage-stats-footer .stat-label {
+            font-size: 9px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-top: 3px;
+            font-weight: 600;
+        }
+
+        .usage-stats-footer .stat-number.accent {
+            color: var(--cyan);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                border-left: none;
+                border-top: 1px solid var(--border);
+            }
+            .main {
+                padding: 16px;
+            }
+            .stats-bar {
+                flex-wrap: wrap;
+            }
+            .stat-card {
+                min-width: auto;
+                flex: 1;
+            }
+            .usage-compact {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            .usage-compact-divider {
+                display: none;
+            }
+            .usage-stats-footer {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .usage-stats-footer .stat-block {
+                min-width: 80px;
+            }
+            .usage-stats-footer .stat-number {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .header-controls {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .usage-compact-source {
+                width: 100%;
+                text-align: right;
+            }
+        }
+
+        /* Task Tracker Widget */
+        .task-tracker {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+        }
+        .tt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .tt-header h2 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .tt-link {
+            font-size: 10px;
+            color: var(--cyan);
+            text-decoration: none;
+            opacity: 0.8;
+        }
+        .tt-link:hover { opacity: 1; text-decoration: underline; }
+        .tt-summary { margin-bottom: 12px; }
+        .tt-progress-bar {
+            height: 4px;
+            background: var(--bg-tertiary);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+        .tt-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--green), var(--cyan));
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+        .tt-counts {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .tt-count {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+        .tt-count.done { color: var(--green); }
+        .tt-count.active { color: var(--cyan); }
+        .tt-count.todo { color: var(--text-muted); }
+        .tt-count.total { color: var(--text-secondary); margin-left: auto; }
+        .tt-section-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            margin-top: 4px;
+        }
+        .tt-items { margin-bottom: 10px; }
+        .tt-cat-group { margin-bottom: 6px; }
+        .tt-cat-label {
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        .tt-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 2px 0;
+        }
+        .tt-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .tt-dot.hollow {
+            background: transparent;
+            border: 1.5px solid;
+        }
+        .tt-name {
+            font-size: 11px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .tt-cat-tag {
+            font-size: 9px;
+            margin-left: auto;
+            flex-shrink: 0;
+            opacity: 0.7;
+        }
+        .tt-more {
+            font-size: 10px;
+            color: var(--text-muted);
+            padding-left: 12px;
+        }
+
+        /* Reminders Widget */
+        .rem-widget {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+        }
+        .rem-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .rem-header h2 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+        .rem-badge {
+            background: var(--orange);
+            color: #000;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 8px;
+        }
+        .rem-synced {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+        .rem-empty {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 12px;
+        }
+        .rem-list { margin-bottom: 8px; }
+        .rem-list:last-child { margin-bottom: 0; }
+        .rem-list-name {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .rem-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 2px 0;
+        }
+        .rem-item.flagged .rem-text { color: var(--orange); }
+        .rem-check {
+            width: 12px;
+            height: 12px;
+            border: 1.5px solid var(--text-muted);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .rem-text {
+            font-size: 11px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .rem-flag {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--orange);
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <div class="main">
+            <div class="header">
+                <div class="header-left">
+                    <h1>Claude Dashboard</h1>
+                    <span class="header-badge" id="last-updated">Updated just now</span>
+                    <span class="conn-status connected" id="conn-status" title="Server connection healthy">Connected</span>
+                </div>
+                <div class="header-controls">
+                    <a href="archive_browser.html" class="btn" style="text-decoration: none;">
+                        <span>&#128218;</span>
+                        <span>Archive</span>
+                    </a>
+                    <button class="btn" id="mute-btn" onclick="toggleMute()">
+                        <span id="mute-icon">&#128276;</span>
+                        <span id="mute-text">Sound On</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="disconnect-banner" id="disconnect-banner">
+                Server unreachable - reconnecting automatically...
+            </div>
+
+            <!-- Compact Usage Widget -->
+            <div class="usage-compact" id="usage-widget">
+                <div class="usage-compact-stat" title="Today's messages">
+                    <span class="usage-compact-label">Today</span>
+                    <span class="usage-compact-value highlight" id="messages-today">-</span>
+                </div>
+                <div class="usage-compact-divider"></div>
+                <div class="usage-compact-stat" title="This week's messages">
+                    <span class="usage-compact-label">Week</span>
+                    <span class="usage-compact-value" id="messages-week">-</span>
+                </div>
+                <div class="usage-compact-divider"></div>
+                <a href="https://claude.ai/settings/usage" target="_blank" class="usage-compact-link" title="Check actual rate limits">Limits</a>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-card working">
+                    <div class="stat-value" id="stat-working">0</div>
+                    <div class="stat-label">Working</div>
+                </div>
+                <div class="stat-card waiting">
+                    <div class="stat-value" id="stat-waiting">0</div>
+                    <div class="stat-label">Waiting</div>
+                </div>
+                <div class="stat-card errors">
+                    <div class="stat-value" id="stat-errors">0</div>
+                    <div class="stat-label">Errors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-total">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+            </div>
+
+            <!-- Instances -->
+            <div class="instances-section">
+                <div class="section-header">
+                    <h2>Active Instances</h2>
+                </div>
+                <div id="instances-container">
+                    <div class="no-instances">
+                        <div class="no-instances-icon">&#9673;</div>
+                        <div class="no-instances-title">No active instances</div>
+                        <div class="no-instances-text">Start a Claude session to see it here</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task Tracker -->
+            <div id="task-tracker-container"></div>
+
+            <!-- Reminders -->
+            <div id="reminders-container"></div>
+
+            <!-- Usage Stats Footer -->
+            <div class="usage-stats-footer" id="usage-stats-footer">
+                <div class="stat-block">
+                    <div class="stat-number accent" id="footer-messages">--</div>
+                    <div class="stat-label">Messages</div>
+                </div>
+                <div class="stat-block">
+                    <div class="stat-number" id="footer-tokens">--</div>
+                    <div class="stat-label">Tokens</div>
+                </div>
+                <div class="stat-block">
+                    <div class="stat-number" id="footer-sessions">--</div>
+                    <div class="stat-label">Sessions</div>
+                </div>
+                <div class="stat-block">
+                    <div class="stat-number" id="footer-days">--</div>
+                    <div class="stat-label">Days</div>
+                </div>
+                <div class="stat-block">
+                    <div class="stat-number" id="footer-msgs-day">--</div>
+                    <div class="stat-label">Msgs/Day</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="sidebar">
+            <!-- Daily Briefing -->
+            <div id="briefing-container"></div>
+
+            <!-- Quick Actions -->
+            <div class="sidebar-section">
+                <h2>Quick Actions</h2>
+                <div class="quick-actions">
+                    <a href="archive_browser.html" class="quick-action">
+                        <div class="quick-action-icon archive">&#128451;</div>
+                        <div class="quick-action-text">
+                            <div class="quick-action-title">Archive Browser</div>
+                            <div class="quick-action-desc">Search past conversations</div>
+                        </div>
+                    </a>
+                    <div class="quick-action" onclick="cleanup()">
+                        <div class="quick-action-icon cleanup">&#128465;</div>
+                        <div class="quick-action-text">
+                            <div class="quick-action-title">Cleanup Stale</div>
+                            <div class="quick-action-desc">Remove inactive instances</div>
+                        </div>
+                    </div>
+                    <div class="quick-action" onclick="clearAll()">
+                        <div class="quick-action-icon clear">&#10005;</div>
+                        <div class="quick-action-text">
+                            <div class="quick-action-title">Clear All</div>
+                            <div class="quick-action-desc">Reset dashboard state</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Freshness -->
+            <div id="freshness-container"></div>
+
+
+            <!-- Suggestions Panel -->
+            <div class="sidebar-section">
+                <div class="suggestions-header-row">
+                    <div style="display:flex;align-items:center;">
+                        <h2>Suggestions</h2>
+                        <div class="usage-sparkline" id="usage-sparkline" title="Token usage (last 6h)"></div>
+                    </div>
+                    <span class="suggestions-refresh" onclick="refreshSuggestions()">&#8635; Refresh</span>
+                </div>
+                <div id="suggestions-container" class="suggestions-container">
+                    <div class="suggestions-loading">Loading suggestions...</div>
+                </div>
+            </div>
+
+            <!-- Activity Log -->
+            <div class="sidebar-section activity-log">
+                <div class="log-header">
+                    <h2>Activity Log</h2>
+                    <div class="log-toggle" onclick="toggleLogExpand()">
+                        <span id="log-toggle-text">Expand</span>
+                        <span id="log-toggle-icon">&#9660;</span>
+                    </div>
+                </div>
+                <div class="log-search-wrapper" id="log-search-wrapper">
+                    <input type="text" class="log-search" id="log-search" placeholder="Filter logs..." />
+                </div>
+                <div class="log collapsed" id="log"></div>
+            </div>
+
+            <!-- Activity Heatmap -->
+            <div id="heatmap-container"></div>
+
+            <!-- Settings -->
+            <div class="sidebar-section">
+                <h2>Settings</h2>
+                <div class="settings-list">
+                    <div class="setting">
+                        <span class="setting-label">Sound notifications</span>
+                        <div class="toggle on" id="sound-toggle" onclick="toggleMute()"></div>
+                    </div>
+                    <div class="setting">
+                        <span class="setting-label">Auto-cleanup (>10min)</span>
+                        <div class="toggle on" id="cleanup-toggle" onclick="toggleAutoCleanup()"></div>
+                    </div>
+                    <div class="setting">
+                        <span class="setting-label">Group by project</span>
+                        <div class="toggle on" id="group-toggle" onclick="toggleGrouping()"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Modal -->
+    <div class="modal" id="rename-modal">
+        <div class="modal-content">
+            <div class="modal-title">Rename Instance</div>
+            <input type="text" id="rename-input" placeholder="Enter a friendly name...">
+            <div class="modal-actions">
+                <button class="btn" onclick="closeRenameModal()">Cancel</button>
+                <button class="btn primary" onclick="saveRename()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load optional modules safely - if any fail, dashboard still works
+        function loadScript(src) {
+            return new Promise((resolve) => {
+                const s = document.createElement('script');
+                s.src = src;
+                s.onload = resolve;
+                s.onerror = () => { console.warn('Failed to load: ' + src); resolve(); };
+                document.head.appendChild(s);
+            });
+        }
+    </script>
+    <script>
+        const STATUS_FILE = 'status.json';
+        const PROJECT_COLORS = ['#ef4444', '#3b82f6', '#22c55e', '#f97316', '#a855f7', '#06b6d4', '#ec4899', '#84cc16'];
+        let lastData = null;
+        let activityLog = [];
+        let settings = { sound: true, autoCleanup: true, groupByProject: true, logExpanded: false };
+        let renameTarget = null;
+        let projectColorMap = {};
+        let colorIndex = 0;
+        let errorStreaks = {};  // Track consecutive errors per instance
+        let hourlyUsage = [];   // Track hourly token usage for sparkline
+
+        // Load settings
+        try {
+            const saved = localStorage.getItem('claude-dashboard-settings');
+            if (saved) settings = { ...settings, ...JSON.parse(saved) };
+            updateSettingsUI();
+        } catch (e) {}
+
+        // Load custom names
+        let customNames = {};
+        try {
+            const saved = localStorage.getItem('claude-dashboard-names');
+            if (saved) customNames = JSON.parse(saved);
+        } catch (e) {}
+
+        function saveSettings() {
+            localStorage.setItem('claude-dashboard-settings', JSON.stringify(settings));
+        }
+
+        function saveNames() {
+            localStorage.setItem('claude-dashboard-names', JSON.stringify(customNames));
+        }
+
+        function updateSettingsUI() {
+            document.getElementById('sound-toggle').classList.toggle('on', settings.sound);
+            document.getElementById('cleanup-toggle').classList.toggle('on', settings.autoCleanup);
+            document.getElementById('group-toggle').classList.toggle('on', settings.groupByProject);
+            document.getElementById('mute-btn').classList.toggle('muted', !settings.sound);
+            document.getElementById('mute-icon').innerHTML = settings.sound ? '&#128276;' : '&#128277;';
+            document.getElementById('mute-text').textContent = settings.sound ? 'Sound On' : 'Sound Off';
+
+            const logEl = document.getElementById('log');
+            logEl.classList.toggle('collapsed', !settings.logExpanded);
+            document.getElementById('log-toggle-text').textContent = settings.logExpanded ? 'Collapse' : 'Expand';
+            document.getElementById('log-toggle-icon').innerHTML = settings.logExpanded ? '&#9650;' : '&#9660;';
+        }
+
+        function toggleMute() {
+            settings.sound = !settings.sound;
+            saveSettings();
+            updateSettingsUI();
+        }
+
+        function toggleAutoCleanup() {
+            settings.autoCleanup = !settings.autoCleanup;
+            saveSettings();
+            updateSettingsUI();
+        }
+
+        function toggleGrouping() {
+            settings.groupByProject = !settings.groupByProject;
+            saveSettings();
+            updateSettingsUI();
+            render();
+        }
+
+        function toggleLogExpand() {
+            settings.logExpanded = !settings.logExpanded;
+            saveSettings();
+            updateSettingsUI();
+        }
+
+        function getProjectColor(project) {
+            if (!projectColorMap[project]) {
+                projectColorMap[project] = PROJECT_COLORS[colorIndex % PROJECT_COLORS.length];
+                colorIndex++;
+            }
+            return projectColorMap[project];
+        }
+
+        function getElapsedMinutes(timeStr) {
+            if (!timeStr) return 0;
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            const now = new Date();
+            const then = new Date();
+            then.setHours(hours, minutes, 0, 0);
+            if (then > now) then.setDate(then.getDate() - 1);
+            return Math.floor((now - then) / 60000);
+        }
+
+        function getSessionDuration(started) {
+            if (!started) return '0m';
+            const start = new Date(started);
+            const now = new Date();
+            const mins = Math.floor((now - start) / 60000);
+            if (mins < 60) return mins + 'm';
+            return Math.floor(mins / 60) + 'h ' + (mins % 60) + 'm';
+        }
+
+        function formatElapsed(minutes) {
+            if (minutes < 1) return 'now';
+            if (minutes < 60) return minutes + 'm ago';
+            return Math.floor(minutes / 60) + 'h ago';
+        }
+
+        function formatTokens(tokens) {
+            if (tokens >= 1000000) return (tokens / 1000000).toFixed(1) + 'M';
+            if (tokens >= 1000) return (tokens / 1000).toFixed(0) + 'K';
+            return tokens.toString();
+        }
+
+        // Connection health tracking
+        const connState = {
+            failures: 0,
+            maxBackoff: 30000,
+            baseInterval: 2000,
+            connected: true,
+            lastSuccess: Date.now()
+        };
+
+        function updateConnUI(status) {
+            const badge = document.getElementById('conn-status');
+            const banner = document.getElementById('disconnect-banner');
+            badge.className = 'conn-status ' + status;
+            if (status === 'connected') {
+                badge.textContent = 'Connected';
+                badge.title = 'Server connection healthy';
+                banner.classList.remove('visible');
+            } else if (status === 'reconnecting') {
+                badge.textContent = 'Reconnecting...';
+                badge.title = 'Attempting to reconnect (attempt ' + connState.failures + ')';
+                banner.classList.add('visible');
+            } else {
+                badge.textContent = 'Disconnected';
+                badge.title = 'Server unreachable since ' + new Date(connState.lastSuccess).toLocaleTimeString();
+                banner.classList.add('visible');
+            }
+        }
+
+        function getPollingInterval() {
+            if (connState.failures === 0) return connState.baseInterval;
+            // Exponential backoff: 2s, 4s, 8s, 16s, capped at 30s
+            return Math.min(connState.baseInterval * Math.pow(2, connState.failures), connState.maxBackoff);
+        }
+
+        async function loadStatus() {
+            try {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 5000);
+
+                const response = await fetch(STATUS_FILE + '?t=' + Date.now(), {
+                    signal: controller.signal
+                });
+                clearTimeout(timeout);
+
+                if (!response.ok) throw new Error('No status');
+                const text = await response.text();
+                if (!text || !text.trim()) throw new Error('Empty response');
+                const data = JSON.parse(text);
+
+                // Connection recovered
+                if (connState.failures > 0) {
+                    addLog('Connection restored', 'working');
+                }
+                connState.failures = 0;
+                connState.connected = true;
+                connState.lastSuccess = Date.now();
+                updateConnUI('connected');
+
+                if (lastData) detectChanges(lastData.instances || [], data.instances || []);
+                lastData = data;
+
+                let instances = data.instances || [];
+
+                // Auto-cleanup stale (remove sessions inactive for 45+ minutes)
+                if (settings.autoCleanup) {
+                    instances = instances.filter(i => getElapsedMinutes(i.time) < 45);
+                }
+
+                render(instances, data.stats || {});
+
+                // Update usage tracker
+                if (typeof UsageTracker !== 'undefined') {
+                    UsageTracker.updateFromStatus(data);
+                    UsageTracker.fetchOfficialStats().then(() => {
+                        updateUsageWidget();
+                    });
+                }
+
+                // Update last updated time
+                document.getElementById('last-updated').textContent = 'Updated just now';
+            } catch (e) {
+                connState.failures++;
+                connState.connected = false;
+
+                if (connState.failures === 1) {
+                    addLog('Connection lost - retrying', 'error');
+                }
+
+                if (connState.failures <= 3) {
+                    updateConnUI('reconnecting');
+                } else {
+                    updateConnUI('disconnected');
+                }
+
+                // Update the "last updated" text to show staleness
+                const elapsed = Math.floor((Date.now() - connState.lastSuccess) / 1000);
+                if (elapsed > 10) {
+                    const mins = Math.floor(elapsed / 60);
+                    const label = mins > 0 ? mins + 'm ago' : elapsed + 's ago';
+                    document.getElementById('last-updated').textContent = 'Last update: ' + label;
+                }
+            }
+        }
+
+        function updateUsageWidget() {
+            if (typeof UsageTracker === 'undefined') return;
+
+            const summary = UsageTracker.getSummary();
+            const official = summary.official;
+            const rolling = summary.rolling;
+
+            // Elements
+            const messagesTodayEl = document.getElementById('messages-today');
+            const messagesWeekEl = document.getElementById('messages-week');
+            // Today's messages (from official stats or daily summary)
+            if (official && official.today && messagesTodayEl) {
+                messagesTodayEl.textContent = official.today.messageCount.toLocaleString();
+            } else if (summary.daily && messagesTodayEl) {
+                messagesTodayEl.textContent = summary.daily.messages ? summary.daily.messages.toLocaleString() : '-';
+            }
+
+            // Week's messages (from official stats or weekly summary)
+            if (official && official.last7Days && messagesWeekEl) {
+                messagesWeekEl.textContent = official.last7Days.totalMessages.toLocaleString();
+            } else if (summary.weekly && messagesWeekEl) {
+                messagesWeekEl.textContent = summary.weekly.messages ? summary.weekly.messages.toLocaleString() : '-';
+            }
+
+            // Update sparkline
+            updateSparkline();
+        }
+
+        function updateSparkline() {
+            const sparklineEl = document.getElementById('usage-sparkline');
+            if (!sparklineEl || typeof UsageTracker === 'undefined') return;
+
+            // Try to get hourly data from usage tracker, or simulate
+            // For now, we'll show the last 6 hours of relative usage
+            const summary = UsageTracker.getSummary();
+            const rolling = summary.rolling;
+            const daily = summary.daily;
+
+            // Create 6 bars showing relative usage
+            // If we don't have detailed hourly data, show proportional distribution
+            let bars = [];
+            const baseUsage = rolling ? rolling.percentage : 0;
+
+            // Simulate hourly variation (in real implementation, track actual hourly)
+            for (let i = 0; i < 6; i++) {
+                // Random variation around current usage level
+                const variation = 0.5 + Math.random();
+                bars.push(Math.min(100, Math.round(baseUsage * variation * 0.8)));
+            }
+
+            // Render bars
+            const maxBar = Math.max(...bars, 1);
+            sparklineEl.innerHTML = bars.map((val, i) => {
+                const height = Math.max(2, Math.round((val / maxBar) * 12));
+                const color = val > 80 ? 'var(--red)' : (val > 50 ? 'var(--yellow)' : 'var(--cyan)');
+                return `<div class="usage-sparkline-bar" style="height:${height}px;background:${color};opacity:${0.4 + (i * 0.1)}"></div>`;
+            }).join('');
+        }
+
+        function detectChanges(oldInst, newInst) {
+            const oldMap = new Map(oldInst.map(i => [i.id, i]));
+            newInst.forEach(inst => {
+                const old = oldMap.get(inst.id);
+                if (!old) {
+                    addLog(`${customNames[inst.id] || inst.name || inst.id} started`, 'working');
+                    errorStreaks[inst.id] = 0;
+                } else if (old.status !== inst.status) {
+                    addLog(`${customNames[inst.id] || inst.name || inst.id} -> ${inst.status}`, inst.status);
+                    // Track error streaks
+                    if (inst.status === 'error') {
+                        errorStreaks[inst.id] = (errorStreaks[inst.id] || 0) + 1;
+                    } else {
+                        errorStreaks[inst.id] = 0;
+                    }
+                }
+                // Also check if errors count increased
+                if (old && inst.errors > (old.errors || 0)) {
+                    errorStreaks[inst.id] = (errorStreaks[inst.id] || 0) + (inst.errors - (old.errors || 0));
+                }
+            });
+        }
+
+        function addLog(msg, type) {
+            const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            activityLog.unshift({ time, msg, type });
+            if (activityLog.length > 100) activityLog.pop();
+            renderLog();
+        }
+
+        function renderLog(filter = '') {
+            let entries = activityLog.slice(0, 30);
+            if (filter) {
+                const lowerFilter = filter.toLowerCase();
+                entries = entries.filter(e => e.msg.toLowerCase().includes(lowerFilter) || e.type.toLowerCase().includes(lowerFilter));
+            }
+            document.getElementById('log').innerHTML = entries.map(e =>
+                `<div class="log-entry"><div class="log-time">${e.time}</div><div class="log-message ${e.type}">${e.msg}</div></div>`
+            ).join('');
+        }
+
+        // Activity log search functionality
+        let logSearchVisible = false;
+        function setupLogSearch() {
+            const searchWrapper = document.getElementById('log-search-wrapper');
+            const searchInput = document.getElementById('log-search');
+            const logEl = document.getElementById('log');
+
+            // Show search on log focus/click
+            logEl.addEventListener('click', (e) => {
+                if (!logSearchVisible) {
+                    searchWrapper.classList.add('visible');
+                    logSearchVisible = true;
+                    searchInput.focus();
+                }
+            });
+
+            // Filter on input
+            searchInput.addEventListener('input', (e) => {
+                renderLog(e.target.value);
+            });
+
+            // Escape to clear and hide
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    searchInput.value = '';
+                    renderLog();
+                    searchWrapper.classList.remove('visible');
+                    logSearchVisible = false;
+                    searchInput.blur();
+                }
+            });
+
+            // Hide on blur if empty
+            searchInput.addEventListener('blur', () => {
+                if (!searchInput.value) {
+                    searchWrapper.classList.remove('visible');
+                    logSearchVisible = false;
+                }
+            });
+        }
+
+        function render(instances = [], stats = {}) {
+            // Update stats
+            const working = instances.filter(i => i.status === 'working').length;
+            const waiting = instances.filter(i => i.status === 'waiting').length;
+            const errors = instances.filter(i => i.status === 'error').length;
+            document.getElementById('stat-working').textContent = working;
+            document.getElementById('stat-waiting').textContent = waiting;
+            document.getElementById('stat-errors').textContent = errors;
+            document.getElementById('stat-total').textContent = instances.length;
+
+            const container = document.getElementById('instances-container');
+
+            if (instances.length === 0) {
+                container.innerHTML = `
+                    <div class="no-instances">
+                        <div class="no-instances-icon">&#9673;</div>
+                        <div class="no-instances-title">No active instances</div>
+                        <div class="no-instances-text">Start a Claude session to see it here</div>
+                    </div>
+                `;
+                return;
+            }
+
+            if (settings.groupByProject) {
+                // Group by project
+                const groups = {};
+                instances.forEach(inst => {
+                    const project = inst.project || 'Unknown';
+                    if (!groups[project]) groups[project] = [];
+                    groups[project].push(inst);
+                });
+
+                container.innerHTML = Object.entries(groups).map(([project, insts]) => `
+                    <div class="project-group">
+                        <div class="project-header">
+                            <div class="project-color" style="background: ${getProjectColor(project)}"></div>
+                            <span class="project-name">${project}</span>
+                            <span class="project-count">${insts.length} instance${insts.length !== 1 ? 's' : ''}</span>
+                        </div>
+                        <div class="instances">
+                            ${insts.map(renderInstance).join('')}
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = `<div class="instances">${instances.map(renderInstance).join('')}</div>`;
+            }
+        }
+
+        function renderInstance(inst) {
+            const elapsed = getElapsedMinutes(inst.time);
+            const isStale = elapsed > 5;
+            const name = customNames[inst.id] || inst.name || 'Claude ' + inst.id;
+            const duration = getSessionDuration(inst.started);
+            const streak = errorStreaks[inst.id] || 0;
+            const hasErrorStreak = streak >= 2;
+            const streakDots = hasErrorStreak ? '●'.repeat(Math.min(streak, 5)) : '';
+
+            return `
+                <div class="instance ${inst.status} ${isStale ? 'stale' : ''} ${hasErrorStreak ? 'error-streak' : ''}" id="inst-${inst.id}" onclick="toggleHistory('${inst.id}')">
+                    <div class="instance-actions">
+                        <button class="icon-btn" onclick="event.stopPropagation(); openRename('${inst.id}')" title="Rename">&#9998;</button>
+                        <button class="icon-btn" onclick="event.stopPropagation(); removeInstance('${inst.id}')" title="Remove">&times;</button>
+                    </div>
+                    <div class="instance-header">
+                        <span class="instance-name">${name}</span>
+                        <div class="instance-badges">
+                            ${inst.branch ? `<span class="badge branch">${inst.branch}</span>` : ''}
+                            <span class="badge duration">${duration}</span>
+                            <span class="badge status-${inst.status}">${inst.status}</span>
+                        </div>
+                    </div>
+                    ${inst.task ? `<div class="instance-task">${escapeHtml(inst.task)}</div>` : ''}
+                    <div class="instance-meta">
+                        <span>&#128193; ${inst.cwd ? inst.cwd.split('/').slice(-2).join('/') : 'unknown'}</span>
+                        <span>&#9201; ${formatElapsed(elapsed)}</span>
+                        <span>&#10003; ${inst.tasksCompleted || 0} tasks</span>
+                        ${inst.errors > 0 ? `<span style="color:var(--red)">&#9888; ${inst.errors}${streakDots ? `<span class="error-streak-dots">${streakDots}</span>` : ''}</span>` : ''}
+                    </div>
+                    <div class="task-history">
+                        <h3>Recent Tasks</h3>
+                        ${(inst.taskHistory || []).slice(-5).reverse().map(t =>
+                            `<div class="task-history-item">${escapeHtml(t || '(empty)')}</div>`
+                        ).join('') || '<div class="task-history-item">No history</div>'}
+                    </div>
+                </div>
+            `;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function toggleHistory(id) {
+            const el = document.getElementById('inst-' + id);
+            if (el) el.classList.toggle('expanded');
+        }
+
+        function openRename(id) {
+            renameTarget = id;
+            document.getElementById('rename-input').value = customNames[id] || '';
+            document.getElementById('rename-modal').classList.add('show');
+            document.getElementById('rename-input').focus();
+        }
+
+        function closeRenameModal() {
+            document.getElementById('rename-modal').classList.remove('show');
+            renameTarget = null;
+        }
+
+        function saveRename() {
+            if (renameTarget) {
+                const name = document.getElementById('rename-input').value.trim();
+                if (name) {
+                    customNames[renameTarget] = name;
+                } else {
+                    delete customNames[renameTarget];
+                }
+                saveNames();
+                loadStatus();
+            }
+            closeRenameModal();
+        }
+
+        function removeInstance(id) {
+            if (lastData && lastData.instances) {
+                lastData.instances = lastData.instances.filter(i => i.id !== id);
+                render(lastData.instances, lastData.stats || {});
+                addLog(`${customNames[id] || id} removed`, 'error');
+            }
+        }
+
+        function cleanup() {
+            addLog('Manual cleanup triggered', '');
+            loadStatus();
+        }
+
+        function clearAll() {
+            if (confirm('Clear all instances from the dashboard?')) {
+                lastData = { instances: [], stats: { tasksToday: 0 } };
+                render([], {});
+                addLog('All instances cleared', 'error');
+            }
+        }
+
+        // Handle Enter key in rename modal
+        document.getElementById('rename-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') saveRename();
+            if (e.key === 'Escape') closeRenameModal();
+        });
+
+        // Suggestions functions
+        async function loadSuggestions() {
+            if (typeof Suggestions === 'undefined') {
+                console.warn('Suggestions module not loaded');
+                document.getElementById('suggestions-container').innerHTML = `
+                    <div class="suggestions-error">
+                        Suggestions module not available
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const data = await Suggestions.getSuggestions();
+
+                if (data.error) {
+                    document.getElementById('suggestions-container').innerHTML = `
+                        <div class="suggestions-error">
+                            Archive API offline<span class="suggestions-error-retry" onclick="refreshSuggestions()">Retry</span>
+                        </div>
+                    `;
+                    return;
+                }
+
+                Suggestions.renderSuggestionsPanel(data.suggestions, 'suggestions-container');
+
+            } catch (error) {
+                console.error('Error loading suggestions:', error);
+                document.getElementById('suggestions-container').innerHTML = `
+                    <div class="suggestions-error">
+                        Error loading suggestions<span class="suggestions-error-retry" onclick="refreshSuggestions()">Retry</span>
+                    </div>
+                `;
+            }
+        }
+
+        async function refreshSuggestions() {
+            document.getElementById('suggestions-container').innerHTML = `
+                <div class="suggestions-loading">Loading suggestions...</div>
+            `;
+            if (typeof Suggestions !== 'undefined') {
+                const data = await Suggestions.getSuggestions(true);
+                Suggestions.renderSuggestionsPanel(data.suggestions, 'suggestions-container');
+            }
+        }
+
+        function updateUsageStatsFooter() {
+            if (typeof UsageTracker === 'undefined') return;
+
+            // Try to get parsed usage data
+            const summary = UsageTracker.getSummary();
+
+            // Fetch the raw usage-data.json for session-level detail
+            fetch('usage/usage-data.json?t=' + Date.now())
+                .then(r => r.ok ? r.json() : null)
+                .then(data => {
+                    if (!data || !data.sessions) return;
+
+                    const sessions = data.sessions;
+                    const totalMessages = sessions.reduce((sum, s) => sum + (s.messages || 0), 0);
+                    const totalTokens = sessions.reduce((sum, s) => sum + (s.tokens?.total || 0), 0);
+                    const totalSessions = sessions.length;
+
+                    // Count unique active days
+                    const uniqueDays = new Set();
+                    sessions.forEach(s => {
+                        if (s.firstTimestamp) {
+                            uniqueDays.add(s.firstTimestamp.split('T')[0]);
+                        }
+                        if (s.lastTimestamp) {
+                            uniqueDays.add(s.lastTimestamp.split('T')[0]);
+                        }
+                    });
+                    const days = uniqueDays.size;
+                    const msgsPerDay = days > 0 ? (totalMessages / days).toFixed(1) : '0';
+
+                    // Format tokens compactly
+                    function fmtTokens(t) {
+                        if (t >= 1e9) return (t / 1e9).toFixed(1) + 'B';
+                        if (t >= 1e6) return (t / 1e6).toFixed(1) + 'M';
+                        if (t >= 1e3) return (t / 1e3).toFixed(0) + 'K';
+                        return t.toString();
+                    }
+
+                    document.getElementById('footer-messages').textContent = totalMessages.toLocaleString();
+                    document.getElementById('footer-tokens').textContent = fmtTokens(totalTokens);
+                    document.getElementById('footer-sessions').textContent = totalSessions.toLocaleString();
+                    document.getElementById('footer-days').textContent = days;
+                    document.getElementById('footer-msgs-day').textContent = msgsPerDay;
+                })
+                .catch(() => {});
+        }
+
+        // Adaptive polling loop with exponential backoff
+        async function pollLoop() {
+            await loadStatus();
+            const delay = getPollingInterval();
+            setTimeout(pollLoop, delay);
+        }
+
+        // Recover quickly when tab regains focus or network comes back
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && connState.failures > 0) {
+                loadStatus();
+            }
+        });
+        window.addEventListener('online', () => {
+            if (connState.failures > 0) {
+                addLog('Network online - reconnecting', '');
+                loadStatus();
+            }
+        });
+
+        // Init - core dashboard works immediately, optional modules load async
+        addLog('Dashboard loaded', '');
+        setupLogSearch();
+        pollLoop();
+
+        // Load optional modules in parallel, then init each if available
+        Promise.all([
+            loadScript('usage/tracker.js'),
+            loadScript('usage/suggestions.js'),
+            loadScript('usage/heatmap.js'),
+            loadScript('usage/briefing.js'),
+            loadScript('usage/freshness.js'),
+            loadScript('usage/task-tracker.js'),
+            loadScript('usage/reminders-widget.js'),
+        ]).then(() => {
+            // Usage tracker
+            if (typeof UsageTracker !== 'undefined') {
+                UsageTracker.fetchOfficialStats().then(() => updateUsageWidget());
+            }
+            updateUsageStatsFooter();
+            setInterval(updateUsageStatsFooter, 60000);
+
+            // Suggestions
+            loadSuggestions();
+            setInterval(loadSuggestions, 60000);
+
+            // Sidebar widgets
+            if (typeof WorkHeatmap !== 'undefined') WorkHeatmap.init('heatmap-container');
+            if (typeof DailyBriefing !== 'undefined') DailyBriefing.init('briefing-container');
+            if (typeof FreshnessAlerts !== 'undefined') FreshnessAlerts.init('freshness-container');
+
+            // Task Tracker
+            if (typeof TaskTracker !== 'undefined') TaskTracker.init('task-tracker-container');
+
+            // Reminders
+            if (typeof RemindersWidget !== 'undefined') RemindersWidget.init('reminders-container');
+        });
+    </script>
+</body>
+</html>

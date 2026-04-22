@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmoprof Miami 2026 - Priority Contacts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            padding: 40px 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #eee;
+        }
+        .section-icon {
+            font-size: 24px;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .section-count {
+            background: #e0e0e0;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #666;
+        }
+        .tier-0 .section-header { border-bottom-color: #d500f9; }
+        .tier-0 .section-title { color: #aa00ff; }
+        .tier-1 .section-header { border-bottom-color: #e53935; }
+        .tier-1 .section-title { color: #c62828; }
+        .tier-2 .section-header { border-bottom-color: #fb8c00; }
+        .tier-2 .section-title { color: #ef6c00; }
+        .tier-3 .section-header { border-bottom-color: #7cb342; }
+        .tier-3 .section-title { color: #558b2f; }
+        .tier-4 .section-header { border-bottom-color: #29b6f6; }
+        .tier-4 .section-title { color: #0288d1; }
+        .tier-5 .section-header { border-bottom-color: #ab47bc; }
+        .tier-5 .section-title { color: #7b1fa2; }
+        .skip .section-header { border-bottom-color: #bdbdbd; }
+        .skip .section-title { color: #757575; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            text-align: left;
+            padding: 12px 16px;
+            background: #fafafa;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #666;
+            border-bottom: 1px solid #eee;
+        }
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: top;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover {
+            background: #fafafa;
+        }
+        .name {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        .title {
+            color: #666;
+            font-size: 14px;
+        }
+        .company {
+            font-weight: 500;
+            color: #1976d2;
+        }
+        .why {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: 6px;
+        }
+        .badge-new {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .badge-viewed {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        .badge-sally {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+        .badge-distributor {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        .badge-headspa {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        .badge-scalp {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .badge-haircare {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .summary-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1976d2;
+        }
+        .summary-label {
+            color: #666;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        .summary-card.highlight {
+            background: linear-gradient(135deg, #7b1fa2, #aa00ff);
+        }
+        .summary-card.highlight .summary-number,
+        .summary-card.highlight .summary-label {
+            color: white;
+        }
+        .notes {
+            background: #fffde7;
+            border-left: 4px solid #fbc02d;
+            padding: 16px 20px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        .notes-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .notes ul {
+            margin-left: 20px;
+        }
+        .notes li {
+            margin-bottom: 6px;
+            color: #555;
+        }
+        @media print {
+            body { background: white; padding: 20px; }
+            .section { box-shadow: none; border: 1px solid #ddd; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cosmoprof Miami 2026 - Priority Contacts</h1>
+        <p class="subtitle">January 27-29, 2026 | Curated for AWARE Hair Distribution Strategy</p>
+
+        <div class="summary">
+            <div class="summary-card highlight">
+                <div class="summary-number">7</div>
+                <div class="summary-label">Head Spa / Scalp</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-number">19</div>
+                <div class="summary-label">Must Meet</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-number">23</div>
+                <div class="summary-label">Hair Care Pros</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-number">23</div>
+                <div class="summary-label">Salon Owners</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-number">13</div>
+                <div class="summary-label">Strategic</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-number">7</div>
+                <div class="summary-label">Investors</div>
+            </div>
+        </div>
+
+        <!-- TIER 0: HEAD SPA & SCALP SCIENCE - NEW PRIORITY -->
+        <div class="section tier-0">
+            <div class="section-header">
+                <span class="section-icon">&#129504;</span>
+                <span class="section-title">Priority 0: Head Spa & Scalp Science - MUST MEET</span>
+                <span class="section-count">7 contacts</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 22%">Name</th>
+                        <th style="width: 25%">Company</th>
+                        <th style="width: 53%">Why Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="name">MARIANNA STIGLITZ</div>
+                            <div class="title">Co-Founder</div>
+                        </td>
+                        <td>
+                            <span class="company">MARE HEAD SPA SYSTEM</span>
+                            <span class="badge badge-headspa">HEAD SPA</span>
+                        </td>
+                        <td class="why"><strong>Direct category competitor/partner.</strong> Head spa system founder - must understand their model, positioning, distribution. Could be competitor intel or potential partnership opportunity.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">SANDRA FIORE</div>
+                            <div class="title">Director of Design</div>
+                        </td>
+                        <td>
+                            <span class="company">Scalp Science Professional Inc.</span>
+                            <span class="badge badge-scalp">SCALP</span>
+                        </td>
+                        <td class="why"><strong>Scalp Science Professional Inc.</strong> - Company name says it all. Research their product line, pricing, distribution. Key competitive intel or acquisition target.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">ANDREA YEBRA</div>
+                            <div class="title">Manager</div>
+                        </td>
+                        <td>
+                            <span class="company">STYLE LOUNGE HEAD SPA</span>
+                            <span class="badge badge-headspa">HEAD SPA</span>
+                        </td>
+                        <td class="why">Head spa operator. Learn about their service model, what products they use, client demographics. Potential salon partner and category research.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">KEVIN KIM</div>
+                            <div class="title">Representative</div>
+                        </td>
+                        <td>
+                            <span class="company">K-HEADSPA</span>
+                            <span class="badge badge-headspa">HEAD SPA</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why"><strong>First complete scalp facial treatment system in the U.S.</strong> Distributed through SalonCentric. Sells equipment + consumable tablets to salons ($120+ treatment pricing). Complementary partner - they do equipment, AWARE does products.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">VLADLENA PESCHANSKA</div>
+                            <div class="title">President/Co-Founder</div>
+                        </td>
+                        <td>
+                            <span class="company">ORISING USA</span>
+                            <span class="badge badge-scalp">SCALP</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why"><strong>Direct competitor.</strong> U.S. distributor of Italian trichology brand Orising (20+ years in Europe). Professional-exclusive, premium, 98% natural ingredients. Study their U.S. market entry strategy and positioning.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">RACHAEL FOX</div>
+                            <div class="title">Senior Product Director</div>
+                        </td>
+                        <td>
+                            <span class="company">DIVI OFFICIAL</span>
+                            <span class="badge badge-scalp">SCALP</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why"><strong>$40M first-year revenue</strong> scalp care brand. Ex-Honest Company, Nutrafol, Henkel. DTC-first, now in 500+ Ulta at Target. Competitive intel on scalp care market validation.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">SAM RADWAN</div>
+                            <div class="title">VP of Sales</div>
+                        </td>
+                        <td>
+                            <span class="company">BOSLEYMD / KERANIQUE</span>
+                            <span class="badge badge-scalp">SCALP</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">VP Sales at scalp health brand (45+ years clinical heritage, 2M+ women served). Omnichannel distribution. Different angle (hair loss vs. prevention) but overlapping scalp health category.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TIER 1: MUST MEET -->
+        <div class="section tier-1">
+            <div class="section-header">
+                <span class="section-icon">&#128293;</span>
+                <span class="section-title">Tier 1: Must Meet - Distribution Decision Makers</span>
+                <span class="section-count">19 contacts</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 22%">Name</th>
+                        <th style="width: 25%">Company</th>
+                        <th style="width: 53%">Why Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="name">MINDY LEWIS</div>
+                            <div class="title">Sr. Procurement Manager, Global Sourcing</div>
+                        </td>
+                        <td>
+                            <span class="company">SALLY BEAUTY HOLDINGS INC</span>
+                            <span class="badge badge-sally">SALLY</span>
+                        </td>
+                        <td class="why">Parent company level procurement. More senior than buyers - influences what gets sourced globally across Sally Beauty and CosmoProf. <strong>Top target.</strong></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">DEBORAH MORRIS</div>
+                            <div class="title">Senior Director Strategy</div>
+                        </td>
+                        <td>
+                            <span class="company">SALLY BEAUTY</span>
+                            <span class="badge badge-sally">SALLY</span>
+                        </td>
+                        <td class="why">Strategy role at Sally Beauty means she influences which new brands get evaluated. Add to your existing Sally/CosmoProf contact list.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">JENNIFER STERNER</div>
+                            <div class="title">Buyer</div>
+                        </td>
+                        <td>
+                            <span class="company">SALLY BEAUTY</span>
+                            <span class="badge badge-sally">SALLY</span>
+                        </td>
+                        <td class="why">Direct buyer at Sally Beauty. She decides what goes on shelves. Essential meeting.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">MONICA SITTON</div>
+                            <div class="title">Regional Purchasing Director</div>
+                        </td>
+                        <td>
+                            <span class="company">DISTRIBEAUTE</span>
+                            <span class="badge badge-distributor">DISTRIBUTOR</span>
+                        </td>
+                        <td class="why">Regional distributor purchasing director. Could be West Coast entry point similar to your Tier 2 targets (Beauty Solutions, Bassett).</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">DANIEL BEDOLLA</div>
+                            <div class="title">Buyer / Distributor</div>
+                        </td>
+                        <td>
+                            <span class="company">JBC BRANDS</span>
+                            <span class="badge badge-distributor">DISTRIBUTOR</span>
+                        </td>
+                        <td class="why">Listed as BOTH buyer and distributor. Rare combo - worth understanding their business model and if they work with salon brands.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">JOHN REINHARDT</div>
+                            <div class="title">VP of Sales</div>
+                        </td>
+                        <td>
+                            <span class="company">UNITED HAIR CARE</span>
+                            <span class="badge badge-haircare">HAIR CARE</span>
+                        </td>
+                        <td class="why">VP Sales at a hair care company. Research United Hair Care - could be distribution or wholesale partner. They have 3 people attending.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">YASMINA BOUGAIZ</div>
+                            <div class="title">Sales Manager</div>
+                        </td>
+                        <td>
+                            <span class="company">SYNERGY DISTRIBUTION</span>
+                            <span class="badge badge-distributor">DISTRIBUTOR</span>
+                        </td>
+                        <td class="why">Sales manager at an actual distributor. Research their portfolio and geographic focus to see if aligned.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">CHARLES EDELSTEIN</div>
+                            <div class="title">VP Sales & Marketing</div>
+                        </td>
+                        <td>
+                            <span class="company">HAIR INDUSTRY USA</span>
+                            <span class="badge badge-haircare">HAIR CARE</span>
+                        </td>
+                        <td class="why">VP at "Hair Industry USA" - trade organization or distributor. Key network connection for professional hair industry.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">JERRY VALDEZ</div>
+                            <div class="title">Operations Manager</div>
+                        </td>
+                        <td>
+                            <span class="company">NOVA LIFE DISTRIBUTION INC.</span>
+                            <span class="badge badge-distributor">DISTRIBUTOR</span>
+                        </td>
+                        <td class="why"><strong>NEW:</strong> Distribution company operations - research their portfolio and geographic coverage.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">JOEL LAKATOS</div>
+                            <div class="title">Managing Director</div>
+                        </td>
+                        <td>
+                            <span class="company">MS DISTRIBUTION GROUP</span>
+                            <span class="badge badge-distributor">DISTRIBUTOR</span>
+                        </td>
+                        <td class="why"><strong>NEW:</strong> Distribution group MD - senior decision maker. Research their brand portfolio.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">JOSEPH JACOBOWITZ</div>
+                            <div class="title">Buyer</div>
+                        </td>
+                        <td>
+                            <span class="company">BD DISTRIBUTORS INC</span>
+                            <span class="badge badge-distributor">DISTRIBUTOR</span>
+                        </td>
+                        <td class="why"><strong>NEW:</strong> Buyer at distributor - direct purchasing decision maker.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">NESTOR VIDES</div>
+                            <div class="title">Sales Manager</div>
+                        </td>
+                        <td>
+                            <span class="company">INDEPENDENT BEAUTY DISTRIBUTOR</span>
+                            <span class="badge badge-distributor">DISTRIBUTOR</span>
+                        </td>
+                        <td class="why"><strong>NEW:</strong> Independent distributor sales - could be flexible partner for emerging brands.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">LUIS RAMOS</div>
+                            <div class="title">Co-Owner</div>
+                        </td>
+                        <td>
+                            <span class="company">LA TROVADORA DISTRIBUTOR LLC</span>
+                            <span class="badge badge-distributor">DISTRIBUTOR</span>
+                        </td>
+                        <td class="why"><strong>NEW:</strong> Distributor co-owner - decision maker. Research their specialty and territory.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">TYESHA VIDAL</div>
+                            <div class="title">Senior Buyer</div>
+                        </td>
+                        <td>
+                            <span class="company">ULTRA STANDARD DISTRIBUTORS</span>
+                            <span class="badge badge-distributor">DISTRIBUTOR</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why"><strong>Top target.</strong> 40+ years, 200+ brands, 35,000+ store doors nationwide. Leader in multicultural beauty distribution. Senior buyer is the decision maker for adding new brands.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">PETER PRELL</div>
+                            <div class="title">President</div>
+                        </td>
+                        <td>
+                            <span class="company">BEAUTY SERVICE DISTRIBUTORS</span>
+                            <span class="badge badge-distributor">DISTRIBUTOR</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why"><strong>Specializes in Italian pro brands for US salons.</strong> Full-service importer in Congers, NY. Exact model AWARE needs - imports premium brands into US professional channel.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">ANDREA KING / DAINA KING</div>
+                            <div class="title">Portfolio Development / Strategic Sourcing</div>
+                        </td>
+                        <td>
+                            <span class="company">TOUCAN DISTRIBUTORS</span>
+                            <span class="badge badge-distributor">DISTRIBUTOR</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">Two contacts from same distributor - one does portfolio development, other does strategic sourcing. Both are exactly the roles that decide to bring on new brands.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">WENDY CAMPANELLO</div>
+                            <div class="title">Director of Sales</div>
+                        </td>
+                        <td>
+                            <span class="company">FANTASIA INDUSTRIES CORP</span>
+                            <span class="badge badge-distributor">DISTRIBUTOR</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">Hair care manufacturer/distributor since 1963, Paramus NJ. Professional styling and treatment products. Distributed through pro beauty suppliers.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">CAROLINA REYES</div>
+                            <div class="title">Distributor</div>
+                        </td>
+                        <td>
+                            <span class="company">PURE BEAUTY CHILE</span>
+                            <span class="badge badge-distributor">DISTRIBUTOR</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">Self-identified as "Distributor" in beauty. LATAM market entry opportunity if distribution strategy expands internationally.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TIER 2: HAIR CARE PROFESSIONALS -->
+        <div class="section tier-2">
+            <div class="section-header">
+                <span class="section-icon">&#127919;</span>
+                <span class="section-title">Tier 2: Hair Care Brand Leaders - Intel & Partnerships</span>
+                <span class="section-count">23 contacts</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 22%">Name</th>
+                        <th style="width: 25%">Company</th>
+                        <th style="width: 53%">Why Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="name">ADAM KLAUSNER</div>
+                            <div class="title">President</div>
+                        </td>
+                        <td>
+                            <span class="company">SYMBIOME AND OCTO SKINCARE</span>
+                            <span class="badge badge-scalp">MICROBIOME</span>
+                        </td>
+                        <td class="why">Microbiome skincare president. Scalp is skin - science alignment. Could discuss microbiome research, formulation insights, or potential partnership.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">LAURA JOHNSON</div>
+                            <div class="title">Product Development Manager</div>
+                        </td>
+                        <td>
+                            <span class="company">IGK HAIR</span>
+                            <span class="badge badge-haircare">HAIR CARE</span>
+                        </td>
+                        <td class="why">IGK is salon-professional brand. Competitive intel or potential collaboration. Learn about their distribution journey.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">LAUREN ERRICO</div>
+                            <div class="title">Vice President</div>
+                        </td>
+                        <td>
+                            <span class="company">NATURE LAB</span>
+                            <span class="badge badge-haircare">HAIR CARE</span>
+                        </td>
+                        <td class="why">VP at Nature Lab (owns multiple hair brands). Industry insights on building hair care brands.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">NICHOLE MCGOVERN</div>
+                            <div class="title">Global Director of Sales</div>
+                        </td>
+                        <td>
+                            <span class="company">NATURELAB NORTH AMERICA</span>
+                            <span class="badge badge-haircare">HAIR CARE</span>
+                        </td>
+                        <td class="why">Global sales director at NatureLab. Could discuss distribution strategies, retail partnerships.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">LINA MCELWEE</div>
+                            <div class="title">Principal Director Insights, Hair Care</div>
+                        </td>
+                        <td>
+                            <span class="company">PROCTER & GAMBLE</span>
+                            <span class="badge badge-new">INTEL</span>
+                        </td>
+                        <td class="why">P&G Hair Care insights leader. Category trends, consumer behavior data, industry benchmarks. Valuable intel for pitch deck.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">MAURA DICK</div>
+                            <div class="title">CMO</div>
+                        </td>
+                        <td>
+                            <span class="company">UNITED HAIR CARE</span>
+                            <span class="badge badge-haircare">HAIR CARE</span>
+                        </td>
+                        <td class="why">CMO at United Hair Care. Marketing leader - understand their positioning and if there's partnership potential.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">NICK BURNS</div>
+                            <div class="title">Co-Founder</div>
+                        </td>
+                        <td>
+                            <span class="company">CHRONICLE HAIR LABS</span>
+                            <span class="badge badge-haircare">HAIR CARE</span>
+                        </td>
+                        <td class="why">Hair labs co-founder. Innovation focus - could be formulation partner or industry connection.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">TRACEY AITKEN</div>
+                            <div class="title">Co-Founder</div>
+                        </td>
+                        <td>
+                            <span class="company">HAIRTRACKER</span>
+                            <span class="badge badge-new">HAIR TECH</span>
+                        </td>
+                        <td class="why">Hair tech company co-founder. Could be tech partnership for scalp analysis tools or data.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">DAVID CARBONI</div>
+                            <div class="title">Co-Founder</div>
+                        </td>
+                        <td>
+                            <span class="company">HAIRTRACKER</span>
+                            <span class="badge badge-new">HAIR TECH</span>
+                        </td>
+                        <td class="why">Other co-founder of HairTracker. Tech innovation in hair/scalp space.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">JOE ROMEO</div>
+                            <div class="title">President</div>
+                        </td>
+                        <td>
+                            <span class="company">KASHMIR KERATIN</span>
+                            <span class="badge badge-haircare">HAIR CARE</span>
+                        </td>
+                        <td class="why">Keratin treatment brand president. Salon-professional focused - learn about their distribution model.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">KELLY FOREMAN</div>
+                            <div class="title">Founder/President</div>
+                        </td>
+                        <td>
+                            <span class="company">MOPTOP</span>
+                            <span class="badge badge-haircare">HAIR CARE</span>
+                        </td>
+                        <td class="why">Curly hair brand founder. Indie brand experience - distribution learnings, potential cross-promotion.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">ZOE WORK</div>
+                            <div class="title">SVP, Brand</div>
+                        </td>
+                        <td>
+                            <span class="company">FRAMESI NORTH AMERICA</span>
+                            <span class="badge badge-haircare">HAIR CARE</span>
+                        </td>
+                        <td class="why">SVP at major professional hair brand. Senior leader with deep salon channel experience.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">TIFFANY ALEXANDER</div>
+                            <div class="title">Global Director of Wholesale</div>
+                        </td>
+                        <td>
+                            <span class="company">ARCTIC FOX USA</span>
+                            <span class="badge badge-haircare">HAIR CARE</span>
+                        </td>
+                        <td class="why">Arctic Fox is professional hair color sold in salons. She knows how to build wholesale in salon channel.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">MICHAEL YUJA</div>
+                            <div class="title">Co-Founder</div>
+                        </td>
+                        <td>
+                            <span class="company">SALONISTA</span>
+                            <span class="badge badge-new">SALON TECH</span>
+                        </td>
+                        <td class="why">Salon tech platform co-founder. Could be partnership for salon discovery/booking integration.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">BROOKE WHITEHEAD</div>
+                            <div class="title">Product Development Manager</div>
+                        </td>
+                        <td>
+                            <span class="company">CHI BY FAROUK SYSTEMS</span>
+                            <span class="badge badge-haircare">HAIR CARE</span>
+                        </td>
+                        <td class="why"><strong>NEW:</strong> Major professional brand PD manager. Intel on salon channel trends and product development.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">CHRIS DAVIS</div>
+                            <div class="title">Sr Category Manager</div>
+                        </td>
+                        <td>
+                            <span class="company">TIKTOK SHOP</span>
+                            <span class="badge badge-new">E-COMMERCE</span>
+                        </td>
+                        <td class="why"><strong>NEW:</strong> TikTok Shop category manager - emerging channel opportunity for brand awareness even with salon-first strategy.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">STEVEN DE NICOLA</div>
+                            <div class="title">Global Key Account Lead</div>
+                        </td>
+                        <td>
+                            <span class="company">TIKTOK</span>
+                            <span class="badge badge-new">E-COMMERCE</span>
+                        </td>
+                        <td class="why"><strong>NEW:</strong> TikTok global accounts - understands beauty brand partnerships on platform.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">KATHRYN MONTESANO</div>
+                            <div class="title">Executive Director, Account Lead</div>
+                        </td>
+                        <td>
+                            <span class="company">THE ESTEE LAUDER COMPANIES</span>
+                            <span class="badge badge-new">INTEL</span>
+                        </td>
+                        <td class="why"><strong>NEW:</strong> Estee Lauder executive - industry intel on specialty multi-channel and Amazon strategies.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">KATHRYN PRATT</div>
+                            <div class="title">CMO</div>
+                        </td>
+                        <td>
+                            <span class="company">BEACON WELLNESS BRANDS</span>
+                            <span class="badge badge-new">WELLNESS</span>
+                        </td>
+                        <td class="why"><strong>NEW:</strong> Wellness brand CMO - scalp care fits wellness positioning. Marketing insights.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">GORDON RAMSAY</div>
+                            <div class="title">Hair Care Global Innovation</div>
+                        </td>
+                        <td>
+                            <span class="company">PROCTER & GAMBLE</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why"><strong>P&G Hair Care Global Innovation lead.</strong> Category trends, R&D direction, potential strategic partnership. P&G is investing heavily in scalp care innovation.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">SONIA SUMMERS</div>
+                            <div class="title">CEO</div>
+                        </td>
+                        <td>
+                            <span class="company">BEAUTY BARRAGE</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why"><strong>Deploys brands into salons/retail.</strong> Sales management agency for emerging beauty brands. Won WWD "Best Executed Brand Launch." Women-owned. Could scale AWARE's field presence.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">STACEY JONES</div>
+                            <div class="title">Exec Dir, Product Development</div>
+                        </td>
+                        <td>
+                            <span class="company">LUXURY BRAND PARTNERS</span>
+                            <span class="badge badge-haircare">HAIR CARE</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why"><strong>Salon brand incubator</strong> (R+Co, IGK, One Size). Product development leader with deep understanding of building prestige salon brands from scratch.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">PAUL DESIDERIOSCIOLI</div>
+                            <div class="title">SVP, Business Development</div>
+                        </td>
+                        <td>
+                            <span class="company">MADISON-REED</span>
+                            <span class="badge badge-haircare">HAIR CARE</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">SVP BD at Madison-Reed (major hair care brand with salon partnerships). Deep industry relationships and DTC-to-salon experience.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TIER 2.5: INVESTORS & CAPITAL -->
+        <div class="section tier-4">
+            <div class="section-header">
+                <span class="section-icon">&#128176;</span>
+                <span class="section-title">Investors & Capital - Funding Opportunities</span>
+                <span class="section-count">7 contacts</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 22%">Name</th>
+                        <th style="width: 25%">Company</th>
+                        <th style="width: 53%">Investment Thesis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="name">JAMIE SCHWARTZ</div>
+                            <div class="title">Director</div>
+                        </td>
+                        <td>
+                            <span class="company">ENCORE CONSUMER CAPITAL</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why"><strong>Best fit investor.</strong> $900M+ committed, targets $10M-$150M revenue. Beauty portfolio: Tarte, Supergoop!, LYS Beauty. Jamie previously at CAVU (Poppi, Bulletproof boards).</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">PERRY LEON</div>
+                            <div class="title">Head of Consumer Growth Equity</div>
+                        </td>
+                        <td>
+                            <span class="company">TZP GROUP</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">$2B AUM, lower-middle market consumer focus. "Branded Consumer" sector expertise. Perry joined from AEA Growth. Right size for growth equity in beauty.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">NICOLE FOURGOUX</div>
+                            <div class="title">Operating Partner</div>
+                        </td>
+                        <td>
+                            <span class="company">STRIDE CONSUMER PARTNERS</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why"><strong>Beauty specialist.</strong> Ex-L'Oreal, ran IT Cosmetics. Portfolio: Odele, Skinfix, Patrick Ta, Drybar, Tatcha. Emphasizes founder stories and differentiated brands.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">DREW CONNOR</div>
+                            <div class="title">VP Investments</div>
+                        </td>
+                        <td>
+                            <span class="company">MANNA TREE PARTNERS</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">Denver-based health/wellness investor (Health-Ade, Vital Farms). Primarily food-focused but wellness angle could apply to scalp health category.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">SHELDON HOWELL</div>
+                            <div class="title">Co-Founder</div>
+                        </td>
+                        <td>
+                            <span class="company">EQ EQUITY PARTNERS</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">Newly formed 2024 by ex-ICV Partners team. Focuses on founder-led consumer and professional services. 100+ years combined experience.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">SHREYA KEDIA</div>
+                            <div class="title">Principal</div>
+                        </td>
+                        <td>
+                            <span class="company">HIGHPOST CAPITAL</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">Dual-fund structure (buyout + venture). Targets $15M+ EBITDA companies for main fund. Has beauty tech investments. Shreya ex-Gridiron, Walmart.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">STEPHANIE BALAZS</div>
+                            <div class="title">Investor</div>
+                        </td>
+                        <td>
+                            <span class="company">LADY PRIMROSE</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">Listed as "Investor" at beauty company. Worth a conversation to understand her investment interests and beauty portfolio.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TIER 3: STRATEGIC VALUE -->
+        <div class="section tier-3">
+            <div class="section-header">
+                <span class="section-icon">&#128161;</span>
+                <span class="section-title">Tier 3: Strategic Value - Intel, PR & Industry</span>
+                <span class="section-count">13 contacts</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 22%">Name</th>
+                        <th style="width: 25%">Company</th>
+                        <th style="width: 53%">Strategic Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="name">LIZ BONOFIGLIO REANEY</div>
+                            <div class="title">Director, Beauty</div>
+                        </td>
+                        <td><span class="company">NIELSENIQ</span></td>
+                        <td class="why">Market data and research leader. Could provide industry benchmarks, category trends, and competitive intel for your pitch deck.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">JEN BIRKHOFER</div>
+                            <div class="title">VP of Commerce</div>
+                        </td>
+                        <td><span class="company">NBC / TODAY SHOW</span></td>
+                        <td class="why">Major media exposure opportunity. Not distribution, but could lead to massive awareness and credibility boost.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">KELLY KOVACK</div>
+                            <div class="title">CEO & Founder</div>
+                        </td>
+                        <td><span class="company">BEAUTYMATTER</span></td>
+                        <td class="why">Industry media CEO. BeautyMatter is key trade publication - could lead to press coverage and industry visibility.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">KATHRYN HOPKINS</div>
+                            <div class="title">Senior Beauty Editor</div>
+                        </td>
+                        <td><span class="company">WWD</span></td>
+                        <td class="why">WWD beauty editor. Trade press opportunity for brand story and scalp care category coverage.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">JENNIFER THOMAS</div>
+                            <div class="title">CEO</div>
+                        </td>
+                        <td><span class="company">BEAUTY RESULTS PR</span></td>
+                        <td class="why">PR agency CEO. Could help with trade press coverage and industry awareness building.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">GALEN SMITH</div>
+                            <div class="title">CEO</div>
+                        </td>
+                        <td><span class="company">IPSY</span></td>
+                        <td class="why">CEO of major beauty subscription box. Not salon channel, but if DTC scale ever becomes a priority, this is a key connection.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">DAVID SCHLOSS</div>
+                            <div class="title">President</div>
+                        </td>
+                        <td><span class="company">ALL STEP SALES AND MARKETING</span></td>
+                        <td class="why">Sales organization president. Could be a broker/rep partner to help you get into distribution networks.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">TED PETERSON</div>
+                            <div class="title">President</div>
+                        </td>
+                        <td><span class="company">CPG LINKAGES</span></td>
+                        <td class="why">CPG connector/broker. These companies specialize in making introductions and placing brands.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">DANIELLE DOOLEY</div>
+                            <div class="title">Director, Editorial Partnerships</div>
+                        </td>
+                        <td><span class="company">NEWBEAUTY</span></td>
+                        <td class="why"><strong>NEW:</strong> NewBeauty editorial partnerships director - trade/consumer media coverage opportunity.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">CLAUDIA STAGNO</div>
+                            <div class="title">Editor in Chief</div>
+                        </td>
+                        <td><span class="company">MTE EDIZIONI</span></td>
+                        <td class="why"><strong>NEW:</strong> Trade publication editor - potential press coverage.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">BERENICE MORENO</div>
+                            <div class="title">Influencer Marketing Specialist</div>
+                        </td>
+                        <td><span class="company">INFLUUR</span></td>
+                        <td class="why"><strong>NEW:</strong> Influencer marketing platform - could help with creator partnerships for awareness.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">ERIN JURCHAK</div>
+                            <div class="title">Beauty Content Creator</div>
+                        </td>
+                        <td><span class="company">TIKTOK / IG / YOUTUBE</span></td>
+                        <td class="why"><strong>NEW:</strong> Multi-platform beauty creator - potential brand ambassador or content partnership.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">AARON PARK</div>
+                            <div class="title">Category Manager</div>
+                        </td>
+                        <td><span class="company">TIKTOK</span></td>
+                        <td class="why"><strong>NEW:</strong> TikTok category manager - platform relationship for organic content strategy.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TIER 4: SALON OWNERS -->
+        <div class="section tier-5">
+            <div class="section-header">
+                <span class="section-icon">&#128135;</span>
+                <span class="section-title">Tier 4: Salon Owners & Professionals</span>
+                <span class="section-count">23 contacts</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 22%">Name</th>
+                        <th style="width: 25%">Company</th>
+                        <th style="width: 53%">Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="name">WHITNEY VAN NESS</div>
+                            <div class="title">Salon Owner</div>
+                        </td>
+                        <td><span class="company">33 DEGREES NORTH</span></td>
+                        <td class="why">Salon owner - potential new salon partner.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">SYDNEY WOLK</div>
+                            <div class="title">Owner</div>
+                        </td>
+                        <td><span class="company">SALON JAMES</span></td>
+                        <td class="why">Salon owner - potential salon partner.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">JENNIFER BROWN</div>
+                            <div class="title">Owner</div>
+                        </td>
+                        <td><span class="company">AURORA SALON</span></td>
+                        <td class="why">Salon owner - potential salon partner.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">KELLI BUFFO</div>
+                            <div class="title">Salon Owner</div>
+                        </td>
+                        <td><span class="company">C3 SALON SUITE LLC</span></td>
+                        <td class="why">Salon suite owner - could influence multiple stylists.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">KARLA LOPEZ</div>
+                            <div class="title">Beauty Salon Owner</div>
+                        </td>
+                        <td><span class="company">LAURENTS</span></td>
+                        <td class="why">Salon owner - potential partner.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">THEA JOHANSEN</div>
+                            <div class="title">Manager</div>
+                        </td>
+                        <td><span class="company">THE LEXINGTON SALON AND SPA</span></td>
+                        <td class="why">Salon and spa manager - dual offering potential.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">ARAM MANOUKIAN</div>
+                            <div class="title">Owner/Hairstylist</div>
+                        </td>
+                        <td><span class="company">ARAM MANOUKIAN HAIR STUDIO</span></td>
+                        <td class="why">Stylist and owner - hands-on professional.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">KIRIL MUMDJIEV</div>
+                            <div class="title">Artistic Director / Salon/Spa Owner</div>
+                        </td>
+                        <td><span class="company">ONE 2 ONE STUDIO</span></td>
+                        <td class="why">Artistic director and owner - could be influential in professional community.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">MARZENA HAWKINS</div>
+                            <div class="title">Owner</div>
+                        </td>
+                        <td><span class="company">BONMAR SALON AND SPA</span></td>
+                        <td class="why">Salon and spa owner - hybrid model.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">SIMONE DOBSON</div>
+                            <div class="title">Spa Director and Owner</div>
+                        </td>
+                        <td><span class="company">EUPHORIA WELLNESS SPA</span></td>
+                        <td class="why">Wellness spa owner - scalp treatment opportunity.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">MADISON KIRCH</div>
+                            <div class="title">Spa Manager</div>
+                        </td>
+                        <td><span class="company">HAND AND STONE</span></td>
+                        <td class="why">Spa chain manager - scalp service potential.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">MATT MAROONE</div>
+                            <div class="title">CEO, Co-Founder</div>
+                        </td>
+                        <td><span class="company">SILVER MIRROR</span></td>
+                        <td class="why">Facial bar chain CEO - scalp treatment expansion opportunity.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">CELESTE PRELL</div>
+                            <div class="title">Director of Education</div>
+                        </td>
+                        <td><span class="company">UNIQUE SALON CONCEPTS</span></td>
+                        <td class="why">Salon education director - could influence many stylists through training.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">CARLA BALLEZA</div>
+                            <div class="title">Cosmetology Program Chair</div>
+                        </td>
+                        <td><span class="company">SOUTH TEXAS COLLEGE</span></td>
+                        <td class="why">Cosmetology educator - influences next generation of stylists.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">ALENA STAVNJAK</div>
+                            <div class="title">Corporate Spa Director</div>
+                        </td>
+                        <td><span class="company">STARWOOD HOTELS</span></td>
+                        <td class="why">Hotel spa buyer - hospitality channel opportunity.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">FRANCIA ROSARIO</div>
+                            <div class="title">Salon Owner / Starting Distribution</div>
+                        </td>
+                        <td>
+                            <span class="company">FRANCIS DOMINICAN HAIR DRESSER</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why"><strong>Dual opportunity:</strong> Salon owner actively starting her own distribution business. Could be both a salon partner AND a micro-distributor for AWARE.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">ROCKELLE WAREIKIS</div>
+                            <div class="title">Owner</div>
+                        </td>
+                        <td>
+                            <span class="company">UNICORN HAIR QUEEN (Salon + Schools)</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">Owns both salons AND cosmetology schools. Dual channel - retail placement plus education/training partnerships for next-gen stylists.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">SAHIBA DASSAN</div>
+                            <div class="title">Salon Owner / AP Esthetician</div>
+                        </td>
+                        <td>
+                            <span class="company">SEVA SALON</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">Salon owner who is also an esthetician - understands both business and treatment sides of scalp care.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">SHERETTE FABI-PARKER</div>
+                            <div class="title">Salon Owner</div>
+                        </td>
+                        <td>
+                            <span class="company">SALONTREND</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">Salon owner actively at Cosmoprof scouting products.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">REIZA HOSEIN / SASHA MOHAMMED</div>
+                            <div class="title">Owners</div>
+                        </td>
+                        <td>
+                            <span class="company">AURA SALON AND SPA</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">Two owners from same salon/spa - dual offering space for scalp treatment integration.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">SNEHA RANA</div>
+                            <div class="title">Owner</div>
+                        </td>
+                        <td>
+                            <span class="company">SPA BLUE</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">Spa owner - scalp care treatment services opportunity.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">TETIANA MARKEL</div>
+                            <div class="title">Owner</div>
+                        </td>
+                        <td>
+                            <span class="company">WINTERGREEN SPA</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">Spa owner - potential for scalp treatments integration.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">STEPHANIE DOPPS</div>
+                            <div class="title">Salon Owner</div>
+                        </td>
+                        <td>
+                            <span class="company">CJS HOUSE OF STYLE</span>
+                            <span class="badge badge-new">NEW</span>
+                        </td>
+                        <td class="why">Salon owner scouting new products at Cosmoprof.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SKIP LIST -->
+        <div class="section skip">
+            <div class="section-header">
+                <span class="section-icon">&#9940;</span>
+                <span class="section-title">Skip - Not Aligned with Salon-Exclusive Strategy</span>
+                <span class="section-count">6 contacts</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 22%">Name</th>
+                        <th style="width: 25%">Company</th>
+                        <th style="width: 53%">Why Skip</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="name">NICOLE DELEONE / STEFANI HEDIN</div>
+                            <div class="title">Co-Founders</div>
+                        </td>
+                        <td><span class="company">INDIE BEAUTY BROKERS</span></td>
+                        <td class="why">Places brands in Target, CVS, Ulta, Whole Foods. <strong>Not salon channel</strong> - conflicts with professional-exclusive strategy.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">LUIS GONZALEZ / NYVETTE MARQUEZ</div>
+                            <div class="title">Category Managers</div>
+                        </td>
+                        <td><span class="company">CVS HEALTH</span></td>
+                        <td class="why">Mass retail pharmacy. Not aligned with salon-exclusive positioning.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">DULCE CASTILLO / CAM MACQUEEN</div>
+                            <div class="title">Business Development</div>
+                        </td>
+                        <td><span class="company">AMAZON</span></td>
+                        <td class="why">Amazon BD. Conflicts with salon-exclusive distribution strategy.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">KATHERINE STEVENSON</div>
+                            <div class="title">Category Merchant</div>
+                        </td>
+                        <td><span class="company">WHOLE FOODS MARKET</span></td>
+                        <td class="why">Retail grocery. Not professional channel. Maybe later for DTC expansion.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">PETER DEL GROSSO</div>
+                            <div class="title">Vice President</div>
+                        </td>
+                        <td><span class="company">COSTCO WHOLESALE</span></td>
+                        <td class="why">Club retail. Not aligned with professional positioning currently.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="name">SELENA COX</div>
+                            <div class="title">Exec Dir, DMM Beauty</div>
+                        </td>
+                        <td><span class="company">CVS</span></td>
+                        <td class="why">CVS executive. Save for potential future retail expansion.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- NOTES -->
+        <div class="notes">
+            <div class="notes-title">Key Action Items</div>
+            <ul>
+                <li><strong>Head Spa Cluster (NEW):</strong> Kevin Kim (K-HeadSpa), Vladlena Peschanska (Orising), Rachael Fox (DIVI), Sam Radwan (BosleyMD) - scalp care market intel and partnerships</li>
+                <li><strong>Top Distributors (NEW):</strong> Tyesha Vidal (Ultra Standard - 35K doors), Peter Prell (Beauty Service Distributors - Italian pro brands), Andrea/Daina King (Toucan)</li>
+                <li><strong>Investor Meetings (NEW):</strong> Jamie Schwartz (Encore - best fit, $10-150M target), Nicole Fourgoux (Stride - ex-L'Oreal/IT Cosmetics), Perry Leon (TZP - consumer growth equity)</li>
+                <li><strong>Sally Beauty Cluster:</strong> Mindy Lewis, Deborah Morris, Jennifer Sterner - coordinate approach</li>
+                <li><strong>Brand Partners (NEW):</strong> Sonia Summers (Beauty Barrage - deploys brands into salons), Stacey Jones (Luxury Brand Partners - R+Co incubator)</li>
+                <li><strong>Talking Points:</strong> 96% B2B repurchase, patent-pending formulation, 25 salon partners, head spa trend, $87K revenue</li>
+                <li><strong>Note:</strong> JADE WONG (AWARE Hair Co-Founder) is also registered for the show</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; color: #999; font-size: 13px;">
+            Generated for AWARE Hair | Cosmoprof Miami 2026 | Last Updated: January 23, 2026 (v3 - 24 new contacts added from updated visitor lists)
+        </div>
+    </div>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

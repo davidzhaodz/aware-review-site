@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K18 B2B-to-Stylist Deep Dive - AWARE Hair</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://use.typekit.net">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<style>
+:root {
+  --teal: #102B26;
+  --cream: #f4efe9;
+  --surface: #faf8f5;
+  --gold: #D4A574;
+  --sage: #7d8471;
+  --gold-muted: #c9a67a;
+  --teal-06: rgba(16, 43, 38, 0.06);
+  --teal-08: rgba(16, 43, 38, 0.08);
+  --teal-12: rgba(16, 43, 38, 0.12);
+  --teal-20: rgba(16, 43, 38, 0.20);
+  --teal-40: rgba(16, 43, 38, 0.40);
+  --teal-60: rgba(16, 43, 38, 0.60);
+  --red: #8b2635;
+  --red-bg: #fde8ea;
+  --green: #2d6a4f;
+  --green-bg: #e8f5e9;
+  --amber: #9a6d00;
+  --amber-bg: #fef3d0;
+  --blue: #1a5276;
+  --blue-bg: #e8f0f8;
+  --heading: 'orpheus-pro', Georgia, 'Times New Roman', serif;
+  --body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius: 6px;
+  --transition: 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--body); background: var(--cream); color: var(--teal); line-height: 1.65; font-size: 15px; -webkit-font-smoothing: antialiased; }
+
+h1, h2, h3 { font-family: var(--heading); font-weight: 400; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1.1; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.2; margin-top: 56px; margin-bottom: 8px; padding-top: 40px; border-top: 1px solid var(--teal-12); }
+h3 { font-size: 1.15rem; line-height: 1.3; margin-top: 32px; margin-bottom: 12px; }
+h4 { font-family: var(--body); font-weight: 600; font-size: 14px; margin-top: 20px; margin-bottom: 8px; }
+p { margin-bottom: 14px; }
+.label { font-family: var(--body); font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); }
+.section-num { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--sage); display: block; margin-bottom: 4px; font-family: var(--body); font-weight: 600; }
+.gold-divider { width: 64px; height: 1px; background: var(--gold); opacity: 0.4; margin: 20px 0; }
+.container { max-width: 960px; margin: 0 auto; padding: 0 32px; }
+section { padding: 64px 0; }
+
+.cover { background: var(--teal); color: var(--cream); min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 48px 80px; position: relative; overflow: hidden; }
+.cover::before { content: ''; position: absolute; top: -30%; right: -15%; width: 650px; height: 650px; border-radius: 50%; border: 1px solid rgba(212, 165, 116, 0.08); }
+.cover::after { content: ''; position: absolute; bottom: -20%; left: -10%; width: 500px; height: 500px; border-radius: 50%; border: 1px solid rgba(212, 165, 116, 0.05); }
+.cover .inner { max-width: 960px; margin: 0 auto; width: 100%; }
+.cover .label { color: var(--gold); margin-bottom: 32px; }
+.cover h1 { margin-bottom: 28px; max-width: 720px; }
+.cover h1 em { font-style: italic; color: var(--gold); }
+.cover-desc { font-size: 15px; color: rgba(244,239,233,0.65); max-width: 640px; line-height: 1.65; margin-top: 8px; }
+.cover-meta { display: flex; gap: 40px; margin-top: 28px; font-size: 13px; color: rgba(244,239,233,0.5); flex-wrap: wrap; }
+.cover-meta strong { color: rgba(244,239,233,0.75); font-weight: 500; }
+.cover-nav { position: absolute; top: 40px; right: 48px; }
+.cover-nav .logo-text { font-family: var(--heading); font-size: 18px; color: var(--cream); letter-spacing: 0.08em; }
+
+.stats-row { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat-card { flex: 1; min-width: 140px; padding: 20px; background: var(--surface); border: 1px solid var(--teal-12); border-radius: var(--radius); text-align: center; }
+.stat-card .stat-value { font-family: var(--heading); font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.1; margin-bottom: 4px; }
+.stat-card .stat-label { font-size: 11px; color: var(--teal-40); font-weight: 500; letter-spacing: 0.3px; }
+.stat-card.highlight { border-color: var(--gold); border-width: 1.5px; }
+.stat-card.highlight .stat-value { color: var(--gold-muted); }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0; }
+th { text-align: left; font-weight: 600; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--sage); padding: 10px 16px; border-bottom: 2px solid var(--teal-12); }
+td { padding: 12px 16px; border-bottom: 1px solid var(--teal-06); line-height: 1.5; vertical-align: top; }
+tr:hover td { background: rgba(212, 165, 116, 0.04); }
+
+.tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; }
+.tag-high { background: var(--green-bg); color: var(--green); }
+.tag-med { background: var(--amber-bg); color: var(--amber); }
+.tag-low { background: var(--teal-06); color: var(--teal-40); }
+.tag-new { background: var(--blue-bg); color: var(--blue); }
+.tag-winner { background: var(--gold); color: white; }
+.tag-verified { background: var(--green-bg); color: var(--green); }
+.tag-unverified { background: var(--amber-bg); color: var(--amber); }
+.tag-estimated { background: var(--teal-06); color: var(--teal-60); }
+.tag-inverse { background: var(--red-bg); color: var(--red); }
+
+.insight-box { margin: 28px 0; padding: 24px 28px; background: var(--surface); border: 1px solid var(--teal-12); border-left: 3px solid var(--gold); border-radius: var(--radius); }
+.insight-box .insight-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+.insight-box p { font-size: 13px; color: var(--teal-60); line-height: 1.6; margin-bottom: 10px; }
+.insight-box p:last-child { margin-bottom: 0; }
+.insight-box strong { color: var(--teal); }
+
+.aware-box { margin: 28px 0; padding: 24px 28px; background: rgba(45, 106, 79, 0.04); border: 1px solid rgba(45, 106, 79, 0.12); border-left: 3px solid var(--green); border-radius: var(--radius); }
+.aware-box .aware-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+.aware-box ul { list-style: none; padding: 0; }
+.aware-box li { font-size: 13px; color: var(--teal); line-height: 1.6; padding: 6px 0; padding-left: 16px; position: relative; }
+.aware-box li::before { content: ''; position: absolute; left: 0; top: 14px; width: 6px; height: 6px; border-radius: 50%; background: var(--green); opacity: 0.4; }
+
+.contrast-box { margin: 28px 0; padding: 24px 28px; background: rgba(139, 38, 53, 0.04); border: 1px solid rgba(139, 38, 53, 0.12); border-left: 3px solid var(--red); border-radius: var(--radius); }
+.contrast-box .contrast-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--red); margin-bottom: 10px; }
+
+.pull-quote { font-family: var(--heading); font-size: clamp(1.2rem, 2.5vw, 1.65rem); line-height: 1.45; color: var(--teal); margin: 32px 0; padding-left: 28px; border-left: 2px solid var(--gold); }
+.pull-quote em { font-style: italic; color: var(--gold-muted); }
+
+.unknown-box { margin: 28px 0; padding: 24px 28px; background: var(--teal-06); border: 1px solid var(--teal-12); border-radius: var(--radius); }
+.unknown-box .unknown-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal-40); margin-bottom: 12px; }
+.unknown-box li { font-size: 13px; color: var(--teal-60); line-height: 1.6; margin-bottom: 6px; list-style-position: inside; }
+
+.toc { columns: 2; column-gap: 32px; margin-top: 24px; }
+.toc-item { display: block; padding: 8px 0; border-bottom: 1px solid var(--teal-06); break-inside: avoid; text-decoration: none; color: var(--teal); transition: color var(--transition); }
+.toc-item:hover { color: var(--gold); }
+.toc-num { font-family: var(--heading); font-size: 18px; color: var(--gold); margin-right: 10px; }
+.toc-name { font-size: 14px; font-weight: 500; }
+
+.ad-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin: 24px 0; }
+.ad-card { background: white; border: 1px solid var(--teal-12); border-radius: var(--radius); overflow: hidden; transition: border-color var(--transition), box-shadow var(--transition); }
+.ad-card:hover { border-color: var(--gold); box-shadow: 0 4px 20px rgba(16, 43, 38, 0.08); }
+.ad-card img { width: 100%; height: auto; display: block; border-bottom: 1px solid var(--teal-12); }
+.ad-card figcaption { padding: 14px 16px; }
+.ad-card .ad-angle-name { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.ad-card .ad-copy { font-size: 12px; color: var(--teal-60); line-height: 1.5; font-style: italic; margin-bottom: 10px; }
+
+.full-screenshot { margin: 24px 0; border: 1px solid var(--teal-12); border-radius: var(--radius); overflow: hidden; }
+.full-screenshot img { width: 100%; height: auto; display: block; }
+.full-screenshot .screenshot-caption { padding: 10px 16px; font-size: 11px; color: var(--teal-40); background: var(--teal-06); border-top: 1px solid var(--teal-12); }
+
+.bar-chart { margin: 20px 0; }
+.bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.bar-label { font-size: 12px; font-weight: 500; min-width: 200px; text-align: right; }
+.bar-track { flex: 1; height: 22px; background: var(--teal-06); border-radius: 3px; overflow: hidden; position: relative; }
+.bar-fill { height: 100%; border-radius: 3px; display: flex; align-items: center; padding-left: 8px; font-size: 11px; font-weight: 600; color: white; min-width: 30px; }
+.bar-fill.gold { background: var(--gold); }
+.bar-fill.teal { background: var(--teal); }
+.bar-fill.sage { background: var(--sage); }
+.bar-fill.green { background: var(--green); }
+.bar-fill.red { background: var(--red); }
+.bar-count { font-size: 12px; color: var(--teal-40); min-width: 70px; }
+
+.matrix-table td:nth-child(2),
+.matrix-table td:nth-child(3),
+.matrix-table td:nth-child(4),
+.matrix-table td:nth-child(5) { text-align: center; }
+
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+.compare-card { padding: 24px; background: var(--surface); border: 1px solid var(--teal-12); border-radius: var(--radius); }
+.compare-card h4 { margin-top: 0; margin-bottom: 12px; }
+
+.compare-vs { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 24px 0; border: 1px solid var(--teal-12); border-radius: var(--radius); overflow: hidden; }
+.compare-vs > div { padding: 24px; }
+.compare-vs > div:first-child { background: var(--surface); border-right: 1px solid var(--teal-12); }
+.compare-vs > div:last-child { background: rgba(45, 106, 79, 0.04); }
+.compare-vs h4 { margin-top: 0; font-size: 13px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--sage); }
+
+.sources { font-size: 12px; color: var(--teal-60); line-height: 1.7; }
+.sources ol { padding-left: 20px; }
+.sources li { margin-bottom: 8px; }
+.sources a { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--teal-12); }
+.sources a:hover { border-color: var(--gold); }
+
+.figure-meta-line { font-size: 12px; color: var(--teal-40); margin-top: -8px; }
+.figure-meta-line a { color: var(--gold); text-decoration: none; font-weight: 600; border-bottom: 1px solid transparent; transition: border-color var(--transition); }
+.figure-meta-line a:hover { border-color: var(--gold); }
+
+@media (max-width: 768px) {
+  .cover { padding: 0 24px 56px; }
+  .container { padding: 0 20px; }
+  section { padding: 48px 0; }
+  .stats-row { flex-direction: column; }
+  .stat-card { min-width: auto; }
+  .compare-grid, .compare-vs { grid-template-columns: 1fr; }
+  .compare-vs > div:first-child { border-right: none; border-bottom: 1px solid var(--teal-12); }
+  .bar-label { min-width: 130px; font-size: 11px; }
+  .toc { columns: 1; }
+  .cover-meta { gap: 20px; }
+  .ad-gallery { grid-template-columns: 1fr; }
+  table { font-size: 12px; }
+  td, th { padding: 8px 10px; }
+}
+@media print {
+  .cover { min-height: auto; padding: 40px 24px; }
+  section { padding: 32px 0; page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="cover-nav"><span class="logo-text">AWARE</span></div>
+  <div class="inner">
+    <p class="label">Competitive Intelligence - B2B Deep Dive No. 2</p>
+    <div style="width: 64px; height: 1px; background: var(--gold); opacity: 0.4; margin: 20px 0;"></div>
+    <h1>K18's <em>Inverted Pro Strategy</em></h1>
+    <p class="cover-desc">
+      The biotech haircare brand acquired by Unilever runs the structural opposite of Innersense's playbook. K18 has zero brand-direct B2B paid ads, leans on a 7-distributor wholesale network and the #k18partner stylist whitelist program for pro reach, and wraps the whole thing in a structured certification funnel with a literal profit calculator. What this means for AWARE.
+    </p>
+    <div class="cover-meta">
+      <span><strong>Live Data</strong> &ensp;April 21, 2026</span>
+      <span><strong>Sources</strong> &ensp;Meta Ad Library, k18hair.com, k18hairpro.com, @k18hair + @k18hairpro IG (via Xpoz)</span>
+      <span><strong>Prior Deep Dive</strong> &ensp;Innersense (cross-referenced throughout)</span>
+      <span><strong>Prepared for</strong> &ensp;David Zhao</span>
+    </div>
+  </div>
+</section>
+
+<!-- THESIS -->
+<section>
+  <div class="container">
+    <span class="section-num">01 &mdash; The Thesis</span>
+    <p class="label">Why K18 Matters</p>
+    <h2 style="border-top: none; padding-top: 0; margin-top: 8px;">The Inverse Model</h2>
+    <div class="gold-divider"></div>
+
+    <div class="pull-quote">
+      Innersense buys stylist attention with paid ads. K18 buys consumer attention with paid ads, and lets the resulting demand <em>force</em> stylists to carry it. Same end goal (salon shelf placement). Opposite tactical model. Both work, for different reasons.
+    </div>
+
+    <p>
+      Last week's deep dive on Innersense found a tightly run B2B paid program: 5 active brand-direct ads on Meta, all driving to a single soft-gated education hub at innersensepro.com, all using a FREE TRIAL KIT offer, the brand running its own pro Instagram (@innersensepro, 15K followers) at media-brand cadence. That is one B2B model.
+    </p>
+
+    <p>
+      K18 runs the inverse. A keyword search of the Meta Ad Library on April 21, 2026 returns approximately <strong>4,800 active K18 ads</strong> - two orders of magnitude more than Innersense's program - and essentially all of them are consumer-facing DTC creative driving to k18hair.com or Sephora. A search for K18's pro destination URL (<code>k18hairpro.com</code>) returns just 3 results, of which only 2 are actual K18-paid ads, and both of those drive to the DTC site, not the pro portal. K18 does not run a paid acquisition funnel for stylists. They run a paid demand-creation funnel for consumers, and the consumer demand pulls K18 onto salon shelves through the wholesale distribution layer.
+    </p>
+
+    <div class="stats-row">
+      <div class="stat-card highlight">
+        <div class="stat-value">~4,800</div>
+        <div class="stat-label">Active K18 ads (April 21)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">0</div>
+        <div class="stat-label">Brand-direct B2B ads driving to pro portal</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">2</div>
+        <div class="stat-label">#k18partner whitelisted stylist ads (driving to DTC)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">505K</div>
+        <div class="stat-label">@k18hair followers (vs 5.5K @k18hairpro)</div>
+      </div>
+    </div>
+
+    <h3>Table of Contents</h3>
+    <div class="toc">
+      <a class="toc-item" href="#findings"><span class="toc-num">01</span><span class="toc-name">Five Key Findings</span></a>
+      <a class="toc-item" href="#paid-channel"><span class="toc-num">02</span><span class="toc-name">The Paid Pro Channel That Isn't</span></a>
+      <a class="toc-item" href="#pro-site"><span class="toc-num">03</span><span class="toc-name">The Pro Site &amp; Certification Funnel</span></a>
+      <a class="toc-item" href="#artist-program"><span class="toc-num">04</span><span class="toc-name">The K18 PRO Artist Program</span></a>
+      <a class="toc-item" href="#distribution-as-acquisition"><span class="toc-num">05</span><span class="toc-name">Distribution as Acquisition</span></a>
+      <a class="toc-item" href="#ig-strategy"><span class="toc-num">06</span><span class="toc-name">The Single-IG Strategy</span></a>
+      <a class="toc-item" href="#vs-innersense"><span class="toc-num">07</span><span class="toc-name">K18 vs Innersense: Side by Side</span></a>
+      <a class="toc-item" href="#transferability"><span class="toc-num">08</span><span class="toc-name">Transferability Matrix for AWARE</span></a>
+      <a class="toc-item" href="#priority-actions"><span class="toc-num">09</span><span class="toc-name">Priority Action Items</span></a>
+      <a class="toc-item" href="#unknowns"><span class="toc-num">10</span><span class="toc-name">What We Still Don't Know</span></a>
+      <a class="toc-item" href="#sources"><span class="toc-num">11</span><span class="toc-name">Sources &amp; Methodology</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- FIVE KEY FINDINGS -->
+<section id="findings">
+  <div class="container">
+    <span class="section-num">02 &mdash; Key Findings</span>
+    <h2>Five Findings That Matter Most</h2>
+    <div class="gold-divider"></div>
+
+    <div class="insight-box">
+      <div class="insight-title">Finding 01 &middot; K18 runs no brand-direct B2B paid ads</div>
+      <p>A search for "K18 Hair" in the Meta Ad Library returns ~4,800 active ads. A search for "k18hairpro.com" (their pro destination) returns 3. Of those 3, two are <strong>#k18partner whitelisted stylist creator ads</strong> (Alexa Scally, Colourmelilyrose) - both driving to k18hair.com (DTC) with "Shop Now" CTA, not to the pro portal. The third is an independent salon (SoHair Studio) tagging K18 in their own service ad. K18 has zero ads in the Meta Library that try to acquire stylists as customers via paid spend.</p>
+      <p><span class="tag tag-verified">VERIFIED via Meta Ad Library 2026-04-21</span></p>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-title">Finding 02 &middot; The pro funnel is gated behind certification, not free trial</div>
+      <p>K18's pro site (a separate domain, <strong>k18hairpro.com</strong>) leads with <strong>"GET CERTIFIED"</strong> as the primary nav item. The featured CTA is the K18REPAIR™ certification program, not a sample kit request. Innersense gives stylists a free product to try. K18 makes stylists complete a structured certification curriculum first. Different mental model: K18 frames the relationship as "earn the right to use this" while Innersense frames it as "try this, see if it works for you."</p>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-title">Finding 03 &middot; The pro site has a literal profit calculator</div>
+      <p>k18hairpro.com features a <code>/pages/profit-calculator</code> tool: <em>"Calculate your K18REPAIR™ profit. Find out your potential revenue with the K18REPAIR™ service add-on."</em> This makes the entire economic value proposition for the salon explicit and front-loaded. It also signals what K18 is selling stylists: not just a product, but an in-salon <strong>service routine</strong> with a defined per-client revenue add-on. Innersense's wholesale page mentions "up to 37% return" as a single line; K18 builds a calculator.</p>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-title">Finding 04 &middot; Distribution does the stylist acquisition, not paid media</div>
+      <p>K18 lists 7 named distribution partners on its consumer site (Paramount Beauty Supply, Salon Services Pro, Salon Service Group, Sweis Inc, Liquid Assets, Salonwax Pro, Premier Beauty Supply [VERIFIED via k18hair.com]). The TripleBright launch IG post tags <em>"@saloncentric and @cosmoprofbeauty"</em> as the pro online channels [VERIFIED via @k18hair Mar 2026]. K18 is in <strong>9+ wholesale networks</strong>. Each of those distributors has its own field rep team selling K18 to salons in person. Paid media is not the acquisition channel - the distributor rep network is.</p>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-title">Finding 05 &middot; The single-Instagram strategy: 505K consumer + 5.5K pro UGC</div>
+      <p>K18 runs the main consumer Instagram (@k18hair, 505,071 followers, verified) and a much smaller satellite (@k18hairpro, 5,516 followers, not verified). The pro account is positioned as a <strong>UGC submission engine</strong> - bio reads <em>"Tag us + #k18results for the chance to be featured"</em> - rather than a content engine. Innersense flips this ratio: their pro account (15K) is bigger as an absolute number than K18's pro account, and is run as a media brand publishing class announcements and educator spotlights. K18 uses the main account to broadcast everything, including the K18 PRO Artist Program announcement (480 likes, 210 comments).</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP DIVE 1: THE PAID PRO CHANNEL THAT ISN'T -->
+<section id="paid-channel">
+  <div class="container">
+    <span class="section-num">Deep Dive 01</span>
+    <h2>The Paid Pro Channel That Isn't</h2>
+    <div class="gold-divider"></div>
+
+    <p>To understand K18's pro paid program, you have to first understand the absence at the center of it. Below is the actual Meta Ad Library result for "k18hairpro.com" on April 21, 2026:</p>
+
+    <div class="full-screenshot">
+      <img src="k18-ads/meta-search-k18hairpro.png" alt="Meta Ad Library search for k18hairpro.com showing only 3 results, all stylist-creator content not K18-direct" loading="lazy">
+      <div class="screenshot-caption">Meta Ad Library search for <code>k18hairpro.com</code> &middot; 3 results &middot; April 21, 2026</div>
+    </div>
+
+    <p>Three results. None are K18 ads. All three are stylist-or-salon content tagging K18:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Library ID</th>
+          <th>Advertiser</th>
+          <th>Type</th>
+          <th>Destination</th>
+          <th>CTA</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1675228260594297</td>
+          <td>Alexa Scally <em>with K18 Hair</em></td>
+          <td>#k18partner whitelisted</td>
+          <td>k18hair.com (DTC)</td>
+          <td>Shop Now</td>
+          <td><a href="https://www.facebook.com/ads/library/?id=1675228260594297" target="_blank" rel="noopener">View &#8599;</a></td>
+        </tr>
+        <tr>
+          <td>1664872034542237</td>
+          <td>Colourmelilyrose <em>with K18 Hair</em></td>
+          <td>#k18partner whitelisted</td>
+          <td>k18hair.com (DTC)</td>
+          <td>Shop Now</td>
+          <td><a href="https://www.facebook.com/ads/library/?id=1664872034542237" target="_blank" rel="noopener">View &#8599;</a></td>
+        </tr>
+        <tr>
+          <td>946630498238465</td>
+          <td>SoHair Studio</td>
+          <td>Independent salon ad (not K18-paid)</td>
+          <td>instagram.com (salon profile)</td>
+          <td>Visit Instagram</td>
+          <td><a href="https://www.facebook.com/ads/library/?id=946630498238465" target="_blank" rel="noopener">View &#8599;</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>The Two Whitelisted #k18partner Creatives, Frame by Frame</h3>
+
+    <p>Frames extracted via the same yt-dlp + ffmpeg method developed for the Innersense deep-dive (download MP4 from Meta CDN, sample frames at 7%/50%/93% of duration).</p>
+
+    <h4 style="margin-top: 32px;">Creative 1 &middot; Alexa Scally (TripleBright launch) &middot; 27-second &middot; Started Apr 15, 2026</h4>
+
+    <div class="ad-gallery">
+      <figure class="ad-card">
+        <img src="k18-ads/ad-k18partner-alexa-scally-hook.png" alt="Alexa Scally hook frame at 0:02 - blonde hair before frame" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">HOOK &middot; 0:02</div>
+          <div class="ad-copy">Stylist's blonde hair, "before" framing - opens on the problem</div>
+        </figcaption>
+      </figure>
+      <figure class="ad-card">
+        <img src="k18-ads/ad-k18partner-alexa-scally-mid.png" alt="Alexa Scally mid frame - product application" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">MID &middot; 0:13</div>
+          <div class="ad-copy">Mid-application sequence (TripleBright purple shampoo)</div>
+        </figcaption>
+      </figure>
+      <figure class="ad-card">
+        <img src="k18-ads/ad-k18partner-alexa-scally-cta.png" alt="Alexa Scally CTA frame at 0:25 - BEFORE label, brassy blonde" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">CTA &middot; 0:25</div>
+          <div class="ad-copy">"BEFORE" comparison frame setting up final reveal</div>
+        </figcaption>
+      </figure>
+    </div>
+
+    <p class="figure-meta-line">
+      <strong>Copy</strong>: "Searching for a purple shampoo that both neutralizes brassiness and defends against future brass? 💜 TripleBright™ Oxidation Defense Purple Shampoo just entered the chat 👀 #k18results #k18partner #k18hair @k18hair @k18hairpro" &middot;
+      <strong>Destination</strong>: K18HAIR.COM &middot;
+      <strong>CTA</strong>: Shop Now &middot;
+      <a href="https://www.facebook.com/ads/library/?id=1675228260594297" target="_blank" rel="noopener">View in Ad Library &#8599;</a>
+    </p>
+
+    <h4 style="margin-top: 40px;">Creative 2 &middot; Colourmelilyrose (TripleBright launch) &middot; 62-second &middot; Started Apr 10, 2026</h4>
+
+    <div class="ad-gallery">
+      <figure class="ad-card">
+        <img src="k18-ads/ad-k18partner-colourmelilyrose-hook.png" alt="Colourmelilyrose hook frame at 0:04 - intro shot" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">HOOK &middot; 0:04</div>
+          <div class="ad-copy">Creator-led intro frame, salon environment</div>
+        </figcaption>
+      </figure>
+      <figure class="ad-card">
+        <img src="k18-ads/ad-k18partner-colourmelilyrose-mid.png" alt="Colourmelilyrose mid frame at 0:30 - shampoo bowl application with green gloves" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">MID &middot; 0:30</div>
+          <div class="ad-copy">At-the-shampoo-bowl: stylist applying purple shampoo with green gloves; "NATURAL" overlay text appears</div>
+        </figcaption>
+      </figure>
+      <figure class="ad-card">
+        <img src="k18-ads/ad-k18partner-colourmelilyrose-cta.png" alt="Colourmelilyrose CTA frame at 0:57" loading="lazy">
+        <figcaption>
+          <div class="ad-angle-name">CTA &middot; 0:57</div>
+          <div class="ad-copy">Final transformation reveal before sign-off</div>
+        </figcaption>
+      </figure>
+    </div>
+
+    <p class="figure-meta-line">
+      <strong>Copy</strong>: "Do your blondes still feel a little...dull? @k18hairpro new TripleBright oxidation defense purple shampoo is the solution to erase 3 months of brass in just one wash while defending against future brass! <em>as a professional stylist, what more could you ask for?</em>" &middot;
+      <strong>Destination</strong>: K18HAIR.COM &middot;
+      <strong>CTA</strong>: Shop Now &middot;
+      <a href="https://www.facebook.com/ads/library/?id=1664872034542237" target="_blank" rel="noopener">View in Ad Library &#8599;</a>
+    </p>
+
+    <div class="insight-box">
+      <div class="insight-title">The structural quirk: stylist-voiced ads selling to consumers</div>
+      <p>Read Colourmelilyrose's copy carefully: <em>"as a professional stylist, what more could you ask for?"</em> The voice is stylist-to-stylist. The CTA is "Shop Now" to the consumer site. K18 is using stylist credibility to sell to consumers, but writing the ad as if it's a stylist talking to other stylists. This <strong>two-audience optimization</strong> probably plays well with Meta's interest-based targeting: pro stylists scrolling will recognize the peer voice, and consumers who follow stylists for hair tips get the credibility halo.</p>
+      <p>This is a third pattern beyond pure DTC and pure B2B: <strong>pseudo-B2B that converts to DTC</strong>. Innersense never does this; their B2B ads use clear B2B framing with B2B destinations.</p>
+    </div>
+
+    <div class="aware-box">
+      <div class="aware-title">What this means for AWARE</div>
+      <ul>
+        <li>The whitelisted creator-ad mechanic is replicable at our scale. Pay one Tina-network stylist to run a creator ad from her own account during a launch window. Cost: low four figures plus product gifting.</li>
+        <li>Decide consciously whether the destination is DTC (like K18 does) or a partner application page (like Innersense does). The choice shapes everything downstream.</li>
+        <li>K18's two-audience copy ("as a professional stylist...") with consumer destination is risky for AWARE: most of our growth is salon partner acquisition, so we'd lose the qualified stylist clicks if we sent them to consumer checkout.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP DIVE 2: THE PRO SITE -->
+<section id="pro-site">
+  <div class="container">
+    <span class="section-num">Deep Dive 02</span>
+    <h2>The Pro Site &amp; Certification Funnel</h2>
+    <div class="gold-divider"></div>
+
+    <p>K18 operates a <strong>separate professional domain</strong> at k18hairpro.com - not a subpage on the main site. This is a deliberate architectural choice that signals to stylists "this content is for you, not for the consumer." The page hero on April 21, 2026:</p>
+
+    <div class="full-screenshot">
+      <img src="k18-ads/k18hairpro-landing.png" alt="k18hairpro.com landing page hero featuring TripleBright product, with email capture modal asking for business tips signup" loading="lazy">
+      <div class="screenshot-caption">k18hairpro.com hero &middot; April 21, 2026 &middot; Email capture modal: <em>"Sign up for emails to get exclusive K18 info, business tips, and so much more"</em></div>
+    </div>
+
+    <h3>Navigation: certification first, products second</h3>
+
+    <p>Top nav order: <strong>GET CERTIFIED</strong> (with checkmark badge) &middot; PRODUCTS &middot; EDUCATION &middot; ABOUT US. Get Certified is positioned as the primary action, not Shop. Compare to Innersense's pro destination, which routes through a soft-gate modal asking "Do you have a Professional Salon Account?" with no certification framing - Innersense's funnel is "are you in or out?" K18's funnel is "are you certified yet?"</p>
+
+    <h3>The Get Certified page</h3>
+
+    <div class="full-screenshot">
+      <img src="k18-ads/k18-get-certified.png" alt="K18 Get Certified page showing 3-pillar funnel with certify, master, build business pillars, featuring stylist Kendra Alla and a Find a Distribution Partner cross-funnel link" loading="lazy">
+      <div class="screenshot-caption">k18hairpro.com/pages/get-certified &middot; The full certification funnel page</div>
+    </div>
+
+    <p>The page shows:</p>
+
+    <ul style="padding-left: 20px; margin-bottom: 20px;">
+      <li style="margin-bottom: 8px;"><strong>3 pillars at the top</strong>: <em>Get Certified &middot; Master K18 &middot; Build Your Business</em>. The third one is the killer - K18 explicitly frames certification as a business-building tool, not just product training.</li>
+      <li style="margin-bottom: 8px;"><strong>Featured certified stylist</strong>: Kendra Alla (#iamkendraalla) with a "certified" badge overlay - social proof of program graduates.</li>
+      <li style="margin-bottom: 8px;"><strong>"Meet the NEW + improved K18REPAIR™ certification"</strong> headline - the program is being actively iterated, not static.</li>
+      <li style="margin-bottom: 8px;"><strong>Country selector + GET CERTIFIED CTA</strong> - the certification is geo-gated, suggesting different curricula or distribution partners by country.</li>
+      <li style="margin-bottom: 8px;"><strong>"Find A Distribution Partner"</strong> cross-funnel link - certification leads directly to "now that you're certified, here's where to buy" without forcing the stylist to chase down a wholesaler separately.</li>
+    </ul>
+
+    <h3>The profit calculator: B2B's favorite metric, made visible</h3>
+
+    <p>The pro site features <code>/pages/profit-calculator</code> with the headline <em>"calculate your K18REPAIR™ profit. Find out your potential revenue with the K18REPAIR™ service add-on."</em> This is an underrated piece of B2B nurture content because it does three jobs simultaneously:</p>
+
+    <ol style="padding-left: 24px; margin-bottom: 20px;">
+      <li style="margin-bottom: 8px;"><strong>It transforms the stylist's mental model from "buy product" to "add a service line."</strong> A salon owner deciding whether to stock K18 isn't doing inventory math; they're doing service-menu math. The calculator meets them in the right frame.</li>
+      <li style="margin-bottom: 8px;"><strong>It captures email in exchange for the personalized output</strong> (likely - the page would gate the result behind a form). This is the highest-intent lead K18 can possibly capture: a stylist who has already done the math on themselves.</li>
+      <li style="margin-bottom: 8px;"><strong>It pre-overcomes the price objection.</strong> Once a stylist sees their projected $X/month from K18REPAIR™ as a service add-on, the wholesale order cost becomes a much smaller number relative to expected revenue.</li>
+    </ol>
+
+    <h3>The blog content for stylists</h3>
+
+    <p>Three featured pro blog posts surfaced on the homepage [VERIFIED via DOM]:</p>
+
+    <table>
+      <tbody>
+        <tr><td><strong>"4 ways K18REPAIR™ builds your salon business"</strong></td><td><em>"Why top stylists trust this exclusive service to deliver results and keep clients coming back."</em></td></tr>
+        <tr><td><strong>"How to Perform K18REPAIR™ in Every Service"</strong></td><td><em>"Top celebrity stylists break it down step-by-step for better, longer-lasting salon results - every time."</em></td></tr>
+        <tr><td><strong>"Build Your Business Like a PRO With K18REPAIR™"</strong></td><td><em>"How to make more money with every service and keep clients coming back by delivering healthier hair through every transformation."</em></td></tr>
+      </tbody>
+    </table>
+
+    <p>All three lead with business-building or revenue language, not product features. This is consistent with the profit calculator pattern: K18 sells the salon owner on the dollar value, not the molecule.</p>
+
+    <div class="contrast-box">
+      <div class="contrast-title">Versus Innersense's funnel</div>
+      <p>Innersense's pro destination (innersensebeauty.com/pages/education) leads with <strong>education as the offer</strong>: Digital Chair, In-Person Events, Virtual Classes, Free Pro Webinars. The educator is the hero. K18's pro destination leads with <strong>certification + revenue as the offer</strong>: Get Certified, profit calculator, business-building blog content. The salon-owner-as-business-operator is the hero. Both work. They optimize for different stylist personas: the artisan vs the entrepreneur.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP DIVE 3: PRO ARTIST PROGRAM -->
+<section id="artist-program">
+  <div class="container">
+    <span class="section-num">Deep Dive 03</span>
+    <h2>The K18 PRO Artist Program</h2>
+    <div class="gold-divider"></div>
+
+    <p>The single most innovative B2B move K18 has made is the <strong>PRO Artist Program</strong>, announced via @k18hairpro and amplified through @k18hair in early 2026. The verbatim announcement copy [VERIFIED via @k18hair Instagram, post id 3870914672556318996, 480 likes, 210 comments]:</p>
+
+    <div class="pull-quote">
+      "Introducing a new era of hair education: the K18 PRO Artist Program. Created by stylists, for stylists, Artist Program is a worldwide education initiative <em>led by educators who drive the industry forward, with support from K18</em>. Class offerings will include a broad spectrum of technical and hair-science courses led by global industry educators."
+    </div>
+
+    <p>Read carefully. The structural verb is <em>"led by educators...with support from K18"</em>. The brand is the supporter, not the curator. This inverts the standard brand-led education model where the brand designs the curriculum and pays an educator to deliver it. K18 is delegating curriculum authority to the stylists themselves.</p>
+
+    <h3>Why this matters more than it looks</h3>
+
+    <div class="insight-box">
+      <div class="insight-title">The stylist-led curriculum model is the highest-leverage B2B move in the category</div>
+      <p>Most education programs (including Innersense's) follow a simple pattern: the brand defines what should be taught (their products and protocols), hires an educator to deliver it, and pays a per-class honorarium. The educator's incentive is to be a good ambassador for the brand's chosen content.</p>
+      <p>K18's program flips the contract: educators design what they want to teach, the brand provides money + product + platform. This <strong>changes who the program attracts</strong>. Stylists with their own teaching brand and audience won't sign up to deliver a brand's pre-built curriculum, because doing so dilutes their own credibility. They WILL sign up if the program lets them teach their own material with the brand's resources behind them.</p>
+      <p>The economic effect: K18 attracts the top tier of teaching talent in the industry. Innersense's educator roster is solid but mostly mid-tier; K18's program (if it executes) recruits the celebrity-tier. The same dollar buys very different outputs.</p>
+    </div>
+
+    <h3>The 3-call-to-action structure of the announcement</h3>
+
+    <p>The announcement post asks for three actions in sequence:</p>
+
+    <ol style="padding-left: 24px; margin-bottom: 20px;">
+      <li style="margin-bottom: 8px;"><strong>"Meet the gamechangers of the U.S. Artist Program! Find all their handles in the comments below."</strong> - drives engagement to the comment section, where K18 posts the educator handles. Each handle is itself a discovery surface.</li>
+      <li style="margin-bottom: 8px;"><strong>"Follow along on @k18hairpro as we roll out our global Artist Programs worldwide"</strong> - explicitly drives audience to the small pro account, growing it from the main account's 505K reservoir.</li>
+      <li style="margin-bottom: 8px;"><strong>"Comment 'education' to get a link to our education calendar delivered to your inbox."</strong> - email capture via comment trigger, a high-intent funnel mechanic.</li>
+    </ol>
+
+    <p>This is the only post in the recent 30 from @k18hair that asks for any action other than "shop." The Artist Program is being amplified deliberately and aggressively from the main account, which is itself a signal of how strategically important it is.</p>
+
+    <div class="aware-box">
+      <div class="aware-title">What this means for AWARE</div>
+      <ul>
+        <li>If we ever build an "AWARE Educator Program," the model worth copying is K18's - not Innersense's. Let educators set the curriculum, fund their work, get out of the way.</li>
+        <li>Tina is already a teaching talent. We don't need to recruit her - she's our founder. But our roster of 50+ partner salons probably contains 3-5 stylists who already teach in their region. They are our pilot Artist Program cohort.</li>
+        <li>Comment-triggered email capture ("comment 'education' for the link") is a low-friction mechanic worth using on the first @aware_pro launch post when we get there.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP DIVE 4: DISTRIBUTION AS ACQUISITION -->
+<section id="distribution-as-acquisition">
+  <div class="container">
+    <span class="section-num">Deep Dive 04</span>
+    <h2>Distribution as Acquisition</h2>
+    <div class="gold-divider"></div>
+
+    <p>K18 ships through at least 9 distribution channels. The 7 named on k18hair.com [VERIFIED]:</p>
+
+    <table>
+      <thead>
+        <tr><th>Distributor</th><th>Tier (estimated)</th><th>Geographic focus</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Paramount Beauty Supply</td><td>Regional</td><td>US (multiple states)</td></tr>
+        <tr><td>Salon Services Pro</td><td>Regional</td><td>US</td></tr>
+        <tr><td>Salon Service Group</td><td>Regional</td><td>US</td></tr>
+        <tr><td><strong>Sweis Inc</strong></td><td>Regional</td><td>US (West Coast - relevant to AWARE's MariLynne intel)</td></tr>
+        <tr><td>Liquid Assets</td><td>Regional</td><td>US</td></tr>
+        <tr><td>Salonwax Pro</td><td>Regional</td><td>US</td></tr>
+        <tr><td>Premier Beauty Supply</td><td>Regional</td><td>US</td></tr>
+      </tbody>
+    </table>
+
+    <p>Plus the two giant distribution networks K18 explicitly tags in product launch posts [VERIFIED via @k18hair Mar 2026 TripleBright launch caption: <em>"PROs, shop online at @saloncentric + @cosmoprofbeauty!"</em>]:</p>
+
+    <table>
+      <thead>
+        <tr><th>Distributor</th><th>Owner</th><th>Network size (approx)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>SalonCentric</strong></td><td>L'Oréal</td><td>Largest US pro distributor; rep network in every state</td></tr>
+        <tr><td><strong>CosmoProf</strong></td><td>Sally Beauty</td><td>Second largest US pro distributor; brick-and-mortar pro stores</td></tr>
+      </tbody>
+    </table>
+
+    <h3>What this stack actually does for K18</h3>
+
+    <p>The combined network covers nearly every salon in the US through some combination of:</p>
+
+    <ul style="padding-left: 20px; margin-bottom: 20px;">
+      <li style="margin-bottom: 8px;"><strong>Field rep visits</strong> from SalonCentric and CosmoProf (paid by the distributor, not K18 directly)</li>
+      <li style="margin-bottom: 8px;"><strong>In-store displays</strong> in the 1,000+ pro stores SalonCentric and CosmoProf operate</li>
+      <li style="margin-bottom: 8px;"><strong>Regional rep specialization</strong> from the 7 mid-tier distributors who can give K18 dedicated mindshare in their territories</li>
+    </ul>
+
+    <p>K18 doesn't need a paid B2B Meta program because there are <strong>thousands of salespeople already pitching K18 to salons</strong>, paid by the distributors themselves. K18's job is to make sure consumer demand for K18 is loud enough that those distributor reps can sell it without friction.</p>
+
+    <div class="insight-box">
+      <div class="insight-title">The acquisition flywheel</div>
+      <p>K18 spends on consumer DTC ads -&gt; consumer asks stylist for K18 -&gt; stylist asks distributor rep about K18 -&gt; distributor rep already has K18 stocked and trained on -&gt; salon orders K18 -&gt; the same DTC consumer comes to that salon for K18REPAIR™ service. The flywheel never requires a stylist to see a K18 ad in their feed.</p>
+    </div>
+
+    <div class="aware-box">
+      <div class="aware-title">What this means for AWARE</div>
+      <ul>
+        <li>We can't replicate this flywheel at our stage. K18 spends millions/month on DTC; we spend ~zero. The flywheel needs DTC fuel we don't yet generate.</li>
+        <li>But the strategic insight is portable: if we ever land 1-2 distribution partnerships (Sweis is on K18's list and is part of AWARE's existing conversation thread), we may not need a heavy direct B2B paid program either. Distribution can substitute for paid acquisition.</li>
+        <li>Sweis appears on K18's distributor list. Worth noting in the AWARE-Sweis conversation: this is the company that distributes K18, so the rep network is already trained on biotech-narrative haircare.</li>
+        <li>Until we have either DTC mass or a distribution partner, paid B2B (the Innersense model) is the right approach for AWARE - not the K18 model.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP DIVE 5: SINGLE IG STRATEGY -->
+<section id="ig-strategy">
+  <div class="container">
+    <span class="section-num">Deep Dive 05</span>
+    <h2>The Single-Instagram Strategy</h2>
+    <div class="gold-divider"></div>
+
+    <p>K18 runs both a primary consumer Instagram and a secondary pro Instagram, but the ratio is opposite to Innersense's:</p>
+
+    <div class="compare-vs">
+      <div>
+        <h4>K18 Hair (@k18hair)</h4>
+        <p style="font-size:13px;"><strong>505,071 followers &middot; verified &middot; 2,046 posts</strong></p>
+        <p style="font-size:13px; color: var(--teal-60);">Bio: "#k18results &middot; Biology-first haircare &middot; 20+ billion TikTok Views &middot; 7K+ 5-star reviews &middot; 37+ awards &middot; Patented molecules &middot; Vegan &amp; cruelty free"</p>
+        <p style="font-size:12px; color: var(--teal-40);">External link: k18hair.com (DTC)</p>
+        <p style="font-size:12px; color: var(--teal-40); margin-top: 12px;">Content mix in 30 most recent posts: ~75% TripleBright product launch, ~10% Sephora promotion, ~10% educational (purple shampoo science, blonde routine), 1 Pro Artist Program announcement (cross-posted from @k18hairpro).</p>
+      </div>
+      <div>
+        <h4>K18 PRO Stylist Community (@k18hairpro)</h4>
+        <p style="font-size:13px;"><strong>5,516 followers &middot; not verified &middot; (post count not pulled)</strong></p>
+        <p style="font-size:13px; color: var(--teal-60);">Bio: "The @k18hair stylist destination for biology-first haircare 🧬 Show what's possible. Tag us + #k18results for the chance to be featured."</p>
+        <p style="font-size:12px; color: var(--teal-40);">External link: k18hairpro.com (pro)</p>
+        <p style="font-size:12px; color: var(--teal-40); margin-top: 12px;">Positioning: <strong>UGC submission engine</strong>, not a content engine. Stylists tag the brand + hashtag for a chance at being featured. K18 curates rather than produces.</p>
+      </div>
+    </div>
+
+    <h3>Why K18 doesn't run a media-brand pro account</h3>
+
+    <p>Innersense runs @innersensepro at 15K followers like a small magazine: 30 posts in 6 weeks, named educator spotlights, in-person class announcements, AURIC workshop launches, Founders Summit content. K18 chose not to do this. Why?</p>
+
+    <ul style="padding-left: 20px; margin-bottom: 20px;">
+      <li style="margin-bottom: 8px;"><strong>The K18 PRO Artist Program <em>is</em> the content engine.</strong> If the stylist-led educators are publishing on their own accounts (with K18 tags and #k18results), K18 doesn't need to publish original content - the educators are doing it. This is a delegation efficiency.</li>
+      <li style="margin-bottom: 8px;"><strong>The 505K main account already serves both audiences.</strong> When K18 wants to reach stylists, they can post on the main account and capture the small pro slice within the larger consumer audience. Innersense's main consumer account is much smaller, so they can't depend on this overlap.</li>
+      <li style="margin-bottom: 8px;"><strong>Owning two big accounts costs twice the content production.</strong> A small "submission" pro account costs almost nothing to run because it just reposts UGC. K18 picked the cheaper option.</li>
+    </ul>
+
+    <div class="aware-box">
+      <div class="aware-title">What this means for AWARE</div>
+      <ul>
+        <li>For our scale, the Innersense model (run @aware_pro as a small media brand) makes more sense than the K18 model (UGC-only satellite). Our main account is small; we can't depend on overlap to reach stylists from a consumer post.</li>
+        <li>BUT - the UGC submission mechanic is great for an early-stage pro account. Bio: "Tag us + #aware_pro for the chance to be featured" gives partner salons a low-effort way to surface their work.</li>
+        <li>Reposting partner salon content costs us almost nothing and rewards the salon owner publicly - both are good for retention.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section id="vs-innersense">
+  <div class="container">
+    <span class="section-num">Cross-Brand Analysis</span>
+    <h2>K18 vs Innersense: Side by Side</h2>
+    <div class="gold-divider"></div>
+
+    <p>Two different B2B paid strategies, both surviving in the same category. The contrast is the lesson.</p>
+
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Innersense</th>
+          <th>K18</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Active Meta ads (April 21)</td><td>~26 total &middot; 5 B2B</td><td>~4,800 total &middot; 0 brand-direct B2B</td></tr>
+        <tr><td>B2B paid model</td><td>Brand runs ads to stylists with FREE TRIAL KIT offer</td><td>Brand runs DTC ads + funds 2 stylist-whitelisted ads to consumers</td></tr>
+        <tr><td>Pro destination</td><td>innersensepro.com (redirects to /pages/education)</td><td>k18hairpro.com (separate domain)</td></tr>
+        <tr><td>Pro funnel gate</td><td>Soft modal: "Sign in if you have a salon account"</td><td>Country-gated certification application</td></tr>
+        <tr><td>Pro funnel offer</td><td>Free Trial Kit (sample-based)</td><td>Get Certified (program-based)</td></tr>
+        <tr><td>B2B economic narrative</td><td>"up to 37% return" (one line on wholesale page)</td><td>Profit Calculator (full tool with personalized output)</td></tr>
+        <tr><td>Pro Instagram strategy</td><td>@innersensepro, 15K followers, run as media brand (~30 posts/6 weeks)</td><td>@k18hairpro, 5.5K followers, run as UGC submission</td></tr>
+        <tr><td>Education program</td><td>In-person + virtual classes, Founders Summit, AURIC workshops &mdash; brand-curated</td><td>K18 PRO Artist Program: stylist-led, brand-supported</td></tr>
+        <tr><td>Distribution</td><td>Direct + select wholesale partners</td><td>SalonCentric + CosmoProf + 7 named regional distributors</td></tr>
+        <tr><td>Owner / acquisition</td><td>Independent (Greg + Joanne Starkman, Co-Founders)</td><td>Acquired by Unilever <span class="tag tag-unverified">UNVERIFIED year</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3>When each model works</h3>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <h4>Innersense's model is right when...</h4>
+        <ul style="font-size:13px; padding-left: 20px;">
+          <li>You don't have major distribution partners</li>
+          <li>You can't outspend competitors on consumer DTC</li>
+          <li>Your founders are educators (Tina-style)</li>
+          <li>Your B2B-to-DTC ratio is &gt;50% B2B revenue</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <h4>K18's model is right when...</h4>
+        <ul style="font-size:13px; padding-left: 20px;">
+          <li>You have national distributor coverage already</li>
+          <li>You can sustain $millions/month in DTC ad spend</li>
+          <li>Your product story is biotech/clinical (consumer-credible)</li>
+          <li>Your acquirer has demand-creation capital (Unilever)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="contrast-box">
+      <div class="contrast-title">Where AWARE actually sits</div>
+      <p>AWARE is much closer to Innersense's stage profile (early-stage, founder-led, no national distribution). The K18 model is unreachable for us in the short term because it requires a fundamentally different capital base. The Innersense model is replicable at AWARE's budget. Phase A's deep-dive identified specific tactics worth stealing from Innersense; this Phase B analysis confirms K18's tactics are <em>aspirational, not actionable</em> for our stage.</p>
+      <p>The two K18 tactics that ARE actionable at AWARE's scale: the <strong>profit calculator</strong> and the <strong>stylist-led Artist Program model</strong> (delegating curriculum). Both are content/structural moves, not capital moves.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TRANSFERABILITY MATRIX -->
+<section id="transferability">
+  <div class="container">
+    <span class="section-num">Transferability</span>
+    <h2>Transferability Matrix for AWARE</h2>
+    <div class="gold-divider"></div>
+
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>K18 Tactic</th>
+          <th>Applicability</th>
+          <th>Cost</th>
+          <th>Complexity</th>
+          <th>Impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Whitelisted creator ad (single stylist partner)</strong></td>
+          <td><span class="tag tag-high">High</span></td>
+          <td>$1-3K per partner per month</td>
+          <td><span class="tag tag-low">Low</span></td>
+          <td><span class="tag tag-med">Medium</span></td>
+        </tr>
+        <tr>
+          <td><strong>Profit calculator on partner site</strong></td>
+          <td><span class="tag tag-high">High</span></td>
+          <td>Dev time only</td>
+          <td><span class="tag tag-med">Medium</span> (need clean revenue model)</td>
+          <td><span class="tag tag-high">High</span></td>
+        </tr>
+        <tr>
+          <td><strong>Stylist-led Artist Program (let educators teach their own material)</strong></td>
+          <td><span class="tag tag-high">High</span></td>
+          <td>$2-5K per educator per program</td>
+          <td><span class="tag tag-high">High</span> (program design)</td>
+          <td><span class="tag tag-high">High</span></td>
+        </tr>
+        <tr>
+          <td><strong>Separate pro domain (e.g. awarehairpro.com)</strong></td>
+          <td><span class="tag tag-med">Medium</span></td>
+          <td>Domain + dev time</td>
+          <td><span class="tag tag-med">Medium</span></td>
+          <td><span class="tag tag-med">Medium</span></td>
+        </tr>
+        <tr>
+          <td><strong>Country-gated certification program</strong></td>
+          <td><span class="tag tag-low">Low</span></td>
+          <td>Significant program design</td>
+          <td><span class="tag tag-high">High</span></td>
+          <td><span class="tag tag-med">Medium</span> (when at scale)</td>
+        </tr>
+        <tr>
+          <td><strong>Mass DTC ad demand-creation flywheel</strong></td>
+          <td><span class="tag tag-low">Low</span></td>
+          <td>$millions/mo ongoing</td>
+          <td><span class="tag tag-high">High</span></td>
+          <td><span class="tag tag-low">N/A</span> at our stage</td>
+        </tr>
+        <tr>
+          <td><strong>9-distributor wholesale network</strong></td>
+          <td><span class="tag tag-low">Low</span></td>
+          <td>Years of relationship building</td>
+          <td><span class="tag tag-high">High</span></td>
+          <td><span class="tag tag-high">High</span> (long horizon)</td>
+        </tr>
+        <tr>
+          <td><strong>UGC submission satellite IG account</strong></td>
+          <td><span class="tag tag-med">Medium</span></td>
+          <td>Content time minimal</td>
+          <td><span class="tag tag-low">Low</span></td>
+          <td><span class="tag tag-med">Medium</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PRIORITY ACTIONS -->
+<section id="priority-actions">
+  <div class="container">
+    <span class="section-num">Actions</span>
+    <h2>Priority Action Items for AWARE</h2>
+    <div class="gold-divider"></div>
+
+    <ol style="padding-left: 24px; font-size: 14px; line-height: 1.7;">
+      <li style="margin-bottom: 14px;">
+        <strong>Build a profit calculator for AWARE partner salons.</strong> Inputs: number of services per week, average ticket, % clients who'd add a scalp treatment, AWARE wholesale cost per service. Output: projected monthly added revenue + payback timeline on first wholesale order. This is the #1 steal from K18 because it works at any scale and converts the salon owner's "should I order?" into "I'd be losing money to NOT order." Lives at <code>awarehair.com/pages/partner-profit-calculator</code>.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Pilot one whitelisted stylist creator ad.</strong> Pick one of our 50+ partner salons with strong personal IG content. Pay them $1,500-$2,500 to produce a 30-60 second creator-style ad about an AWARE service or product, run from their account with "in partnership with AWARE" disclosure. Destination: AWARE partner application page (NOT consumer checkout - K18's model breaks for us at the consumer destination step). Run 30 days, measure stylist-application conversion.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Sketch the Tina-led Artist Program 1-pager.</strong> Document the structure: who's eligible (existing AWARE partner stylists, ~3-5 year vision), what they get (product budget, marketing support, AWARE-platform amplification), what they bring (their own teaching curriculum). Use this to recruit 2-3 founding educators in 2026 and seed the program before paid program structure is needed. Critical: K18's structural choice is "led by educators with support from K18" - copy that verb.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Add Sweis context to the existing AWARE-Sweis conversation thread.</strong> Sweis distributes K18 (per K18's own list). Their reps are already trained on biotech-narrative haircare. This is a useful credibility marker for our Sweis discussions: we're in their wheelhouse, not a left-field new pitch.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Decide if AWARE wants a separate <code>awarehairpro.com</code> domain.</strong> Both Innersense (innersensepro.com) and K18 (k18hairpro.com) operate dedicated pro domains. Innersense's redirects to a subpage; K18's is a fully separate site. The signal is "this content is for stylists" without the visitor having to cross consumer marketing first. Low-cost test: register the domain, decide architecture later.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Bake "business-building" language into our partner-facing copy.</strong> K18's pro blog headlines are <em>"4 ways K18REPAIR™ builds your salon business"</em> &middot; <em>"Build Your Business Like a PRO."</em> AWARE's partner-facing content should adopt this same vocabulary - not "scalp education" but "salon revenue from scalp services." The shift is from artisan framing to entrepreneur framing.
+      </li>
+      <li style="margin-bottom: 14px;">
+        <strong>Skip the K18 distribution flywheel entirely (for now).</strong> The temptation looking at K18 is to chase distribution as the unlock. Don't. K18's flywheel only works because of the DTC ad spend volume that creates the consumer pull on distributors. AWARE doesn't have that yet. Distribution conversations (Sweis, others) should happen, but should not displace direct B2B paid acquisition as the primary stylist-acquisition channel for 2026.
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- UNKNOWNS -->
+<section id="unknowns">
+  <div class="container">
+    <span class="section-num">Gaps</span>
+    <h2>What We Still Don't Know</h2>
+    <div class="gold-divider"></div>
+
+    <div class="unknown-box">
+      <div class="unknown-title">Data we cannot access</div>
+      <ul>
+        <li>K18's monthly Meta ad spend (~4,800 active ads suggests $millions/month, but unconfirmed)</li>
+        <li>Conversion rate of #k18partner whitelisted ads to DTC purchases</li>
+        <li>K18 PRO Artist Program educator compensation structure (per-class? salary? equity?)</li>
+        <li>Number of certified K18 stylists worldwide</li>
+        <li>The actual profit calculator inputs and outputs (would need a stylist sign-up to access)</li>
+        <li>Salon penetration rate for K18 in the US (% of pro salons that stock it)</li>
+      </ul>
+    </div>
+
+    <div class="unknown-box">
+      <div class="unknown-title">Verification gaps in this scan</div>
+      <ul>
+        <li>K18 founder names (Suveen Sahib + Britta Cox circulating in beauty press) - <strong>not verified</strong> against a primary source on April 21, 2026. Multiple WebFetch attempts returned 404. Founders intentionally NOT named in this deep-dive to honor verification rules.</li>
+        <li>Unilever acquisition year and price - widely reported but not re-verified during this scan</li>
+        <li>Jack Martin (referenced on k18hairpro.com as a celebrity stylist using K18) - presumed real but his K18 collaboration was not separately confirmed</li>
+        <li>Kendra Alla (featured certified stylist on the Get Certified page) - exists on the page; not separately verified</li>
+      </ul>
+    </div>
+
+    <div class="unknown-box">
+      <div class="unknown-title">Questions worth investigating in a follow-up scan</div>
+      <ul>
+        <li>Does CosmoProf or SalonCentric run dedicated K18 ad creative? (separate Ad Library scan)</li>
+        <li>Does the K18 PRO Artist Program publish a public roster of educators by region? Could be a recruiting source for AWARE's eventual program.</li>
+        <li>What's the K18REPAIR™ certification program completion rate? (Likely behind the gated portal)</li>
+        <li>Are there other K18 satellite IG accounts beyond @k18hairpro? (e.g. country-specific @k18hair.uk, @k18hair.au)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SOURCES -->
+<section id="sources">
+  <div class="container">
+    <span class="section-num">Methodology</span>
+    <h2>Sources &amp; Methodology</h2>
+    <div class="gold-divider"></div>
+
+    <h3>Primary sources</h3>
+    <div class="sources">
+      <ol>
+        <li><strong>Meta Ad Library</strong> - captured live April 21, 2026 via Playwright. Two searches: "K18 Hair" (returned ~4,800 results, all consumer DTC) and "k18hairpro.com" (returned 3 results, 2 stylist-whitelisted + 1 independent salon). <a href="https://www.facebook.com/ads/library/?active_status=active&amp;ad_type=all&amp;country=US&amp;media_type=all&amp;q=k18hairpro.com&amp;search_type=keyword_unordered" target="_blank" rel="noopener">Replicate pro-destination search</a></li>
+        <li><strong>k18hair.com</strong> - WebFetch April 21, 2026. Found Pro Site link (<code>k18hairpro.com</code>), 7-distributor list (Paramount, Salon Services Pro, Salon Service Group, Sweis Inc, Liquid Assets, Salonwax Pro, Premier Beauty Supply), salon locator at <code>/pages/salon-locator</code>.</li>
+        <li><strong>k18hairpro.com</strong> - Playwright navigation April 21, 2026. Captured hero, Get Certified page (<code>/pages/get-certified</code>), profit calculator reference (<code>/pages/profit-calculator</code>), 3 featured pro blog posts.</li>
+        <li><strong>@k18hair Instagram</strong> - Xpoz getInstagramUser + getInstagramPostsByUser, April 21, 2026. 505,071 followers verified.</li>
+        <li><strong>@k18hairpro Instagram</strong> - Xpoz getInstagramUser, April 21, 2026. 5,516 followers, "K18 PRO Stylist Community."</li>
+        <li><strong>K18 PRO Artist Program announcement</strong> - @k18hair post id 3870914672556318996, retrieved via Xpoz April 21, 2026.</li>
+      </ol>
+    </div>
+
+    <h3>Video frame extraction</h3>
+    <p style="font-size: 13px; color: var(--teal-60);">
+      Same yt-dlp + ffmpeg method developed for the Innersense deep-dive. For each of the 2 #k18partner whitelisted ads, the source MP4 was downloaded from Meta's CDN via <code>yt-dlp "https://www.facebook.com/ads/library/?id={ad_id}"</code>, then frames were extracted at 7%/50%/93% of measured duration via <code>ffmpeg -ss &lt;timestamp&gt; -frames:v 1 -q:v 2</code>, then optimized via <code>pngquant</code>. The same approach worked here without modification - Meta's CDN serves the same MP4 format regardless of whether the advertiser is a brand or a stylist-creator.
+    </p>
+
+    <h3>Verification labeling</h3>
+    <p style="font-size: 13px; color: var(--teal-60);">As with the Innersense deep-dive, every named entity and metric carries one of three labels: <span class="tag tag-verified">VERIFIED</span> (confirmed at a direct source URL during this scan), <span class="tag tag-estimated">ESTIMATED</span> (derived from comparables), <span class="tag tag-unverified">UNVERIFIED</span> (cited but not re-confirmed during this scan).</p>
+
+    <h3>Known gaps in methodology</h3>
+    <ul style="font-size: 13px; padding-left: 20px;">
+      <li>Did not log in as a salon account on k18hairpro.com - all analysis is of public-facing content</li>
+      <li>Did not interact with the profit calculator (would have required completing the form)</li>
+      <li>Did not transcribe audio of the 2 partner videos (only visual frames captured)</li>
+      <li>Did not analyze CosmoProf's or SalonCentric's K18-featuring ads (could be a Phase B follow-up)</li>
+      <li>Founder names omitted to honor verification rules - press references exist but were not confirmed against a primary source during this scan</li>
+    </ul>
+
+    <h3>Update cadence recommendation</h3>
+    <p style="font-size: 13px; color: var(--teal-60);">K18's #k18partner whitelist program rotates creators roughly monthly based on the 2 currently visible ads (started Apr 10 + Apr 15). Re-scan the Meta Ad Library every 30-60 days to track new partner creator additions. The K18 PRO Artist Program is the highest-leverage thing to track - re-pull @k18hairpro every 30 days for new educator announcements. The pro site itself is stable - quarterly is sufficient.</p>
+
+    <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--teal-12); font-size: 12px; color: var(--teal-40);">
+      Document generated April 21, 2026 &middot; Prepared for David Zhao &middot; AWARE Hair Control &middot; marketing/competitor-intel/k18-b2b-stylist-deep-dive.html &middot; Phase B No. 1 of 3 (Davines + Great Lengths to follow)
+    </div>
+  </div>
+</section>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

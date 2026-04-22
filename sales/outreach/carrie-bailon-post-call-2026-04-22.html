@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post-Call Findings: Carrie Bailon / TRIMM</title>
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #102B26;
+    --teal-soft: rgba(16, 43, 38, 0.75);
+    --teal-faint: rgba(16, 43, 38, 0.12);
+    --cream: #f4efe9;
+    --surface: #faf8f5;
+    --gold: #D4A574;
+    --sage: #7d8471;
+    --green: #4a6b4a;
+    --amber: #a67c3a;
+    --red: #8b3a3a;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--cream);
+    color: var(--teal);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 880px; margin: 0 auto; padding: 64px 48px 96px; }
+  .eyebrow {
+    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold); margin: 0 0 16px;
+  }
+  h1 {
+    font-family: 'Orpheus Pro', serif; font-weight: 400;
+    font-size: clamp(2.25rem, 4vw, 3rem); line-height: 1.1;
+    margin: 0 0 12px; color: var(--teal);
+  }
+  h1 .sub {
+    display: block; font-size: 0.45em; font-family: 'DM Sans', sans-serif;
+    font-weight: 400; letter-spacing: 0.04em; color: var(--teal-soft);
+    margin-top: 12px;
+  }
+  h2 {
+    font-family: 'Orpheus Pro', serif; font-weight: 400;
+    font-size: 1.65rem; line-height: 1.2;
+    margin: 56px 0 16px; color: var(--teal);
+  }
+  h3 {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--teal); margin: 28px 0 10px;
+  }
+  p { margin: 0 0 14px; }
+  ul, ol { margin: 0 0 14px; padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  strong { font-weight: 600; }
+  code { font-family: 'SF Mono', Menlo, monospace; font-size: 0.85em; background: var(--surface); padding: 2px 6px; border-radius: 2px; }
+  a { color: var(--teal); text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 3px; }
+
+  .divider { text-align: center; padding: 24px 0; color: var(--gold); font-size: 0.75rem; letter-spacing: 0.5em; }
+
+  .meta-card {
+    background: var(--surface); border-left: 3px solid var(--gold);
+    padding: 24px 28px; margin-top: 32px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px 32px;
+  }
+  .meta-card .row { font-size: 0.9rem; }
+  .meta-card .label {
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--teal-soft); display: block; margin-bottom: 2px;
+  }
+
+  .outcome-banner {
+    margin: 28px 0 12px; padding: 24px 28px; border-radius: 4px;
+    background: #e9efe6; border-left: 3px solid var(--green);
+  }
+  .outcome-banner .tag {
+    display: inline-block; font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 8px;
+  }
+  .outcome-banner p { margin: 0; font-family: 'Orpheus Pro', serif; font-style: italic; font-size: 1.15rem; line-height: 1.5; }
+
+  .callout {
+    background: var(--surface); padding: 24px 28px;
+    border-radius: 4px; margin: 20px 0;
+  }
+  .callout.warn { background: #f5efe2; border-left: 3px solid var(--amber); }
+  .callout.info { border-left: 3px solid var(--sage); }
+
+  .findings {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0;
+  }
+  .finding {
+    background: var(--surface); padding: 20px 22px; border-radius: 4px;
+    border-top: 3px solid var(--sage);
+  }
+  .finding h4 {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; margin: 0 0 10px; color: var(--sage);
+  }
+  .finding p { margin: 0 0 8px; font-size: 0.92rem; }
+  .finding p:last-child { margin: 0; }
+
+  .correction {
+    background: var(--surface); padding: 18px 22px; margin: 10px 0;
+    border-radius: 4px; border-left: 3px solid var(--amber);
+  }
+  .correction .label {
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--amber); margin-bottom: 4px;
+    display: block;
+  }
+  .correction .was { color: var(--teal-soft); text-decoration: line-through; display: block; font-size: 0.9rem; }
+  .correction .is { color: var(--teal); font-weight: 500; display: block; font-size: 0.95rem; }
+
+  .signals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0 28px; }
+  .signal {
+    padding: 20px 22px; border-radius: 4px;
+    background: var(--surface); border-top: 3px solid var(--teal-faint);
+  }
+  .signal.green { border-top-color: var(--green); }
+  .signal.amber { border-top-color: var(--amber); }
+  .signal.red { border-top-color: var(--red); }
+  .signal h4 {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; margin: 0 0 12px;
+  }
+  .signal.green h4 { color: var(--green); }
+  .signal.amber h4 { color: var(--amber); }
+  .signal.red h4 { color: var(--red); }
+  .signal ul { margin: 0; padding-left: 18px; }
+  .signal li { font-size: 0.88rem; margin-bottom: 6px; }
+
+  .action-list { list-style: none; padding: 0; margin: 20px 0; }
+  .action-list li {
+    background: var(--surface); padding: 18px 22px; margin-bottom: 10px;
+    border-radius: 4px; border-left: 3px solid var(--teal);
+    display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: baseline;
+  }
+  .action-list .num {
+    font-family: 'Orpheus Pro', serif; font-size: 1.5rem; color: var(--gold); line-height: 1;
+  }
+  .action-list .owner {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--teal-soft);
+  }
+  .action-list .when { font-size: 0.82rem; color: var(--teal-soft); margin-top: 4px; }
+
+  .email-draft {
+    background: var(--surface); padding: 32px 36px;
+    border: 1px solid var(--teal-faint); border-radius: 4px; margin: 20px 0;
+  }
+  .email-draft .fields {
+    font-size: 0.82rem; color: var(--teal-soft); margin-bottom: 18px;
+    padding-bottom: 14px; border-bottom: 1px solid var(--teal-faint);
+  }
+  .email-draft .fields div { margin-bottom: 4px; }
+  .email-draft .body {
+    font-family: 'Orpheus Pro', serif; font-size: 1.05rem; line-height: 1.7;
+    color: var(--teal); white-space: pre-line;
+  }
+
+  .footer-note {
+    margin-top: 56px; padding-top: 24px;
+    border-top: 1px solid var(--teal-faint);
+    font-size: 0.82rem; color: var(--teal-soft);
+  }
+
+  @media (max-width: 720px) {
+    .page { padding: 40px 24px 64px; }
+    .meta-card, .findings, .signals { grid-template-columns: 1fr; }
+    .action-list li { grid-template-columns: 1fr; }
+  }
+  @media print {
+    body { background: white; }
+    .page { padding: 24px; max-width: none; }
+    h2 { page-break-after: avoid; }
+    .finding, .callout, .email-draft, .signal, .action-list li { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="eyebrow">Post-Call Findings &nbsp;·&nbsp; 25 Minutes</p>
+  <h1>
+    Carrie Bailon
+    <span class="sub">TRIMM beauty + barber &nbsp;·&nbsp; Sacramento, CA</span>
+  </h1>
+
+  <div class="meta-card">
+    <div class="row"><span class="label">Date</span>Tuesday, 2026-04-22, 10:59 AM PT</div>
+    <div class="row"><span class="label">Duration</span>25 minutes</div>
+    <div class="row"><span class="label">Attendees</span>David Zhao &nbsp;·&nbsp; Carrie Bailon</div>
+    <div class="row"><span class="label">Source</span>Noah Wilson (SBP) intro</div>
+  </div>
+
+  <div class="outcome-banner">
+    <span class="tag">Outcome · Warm Yes to Sample</span>
+    <p>"I would love to start first with trying it out. I'm just having a little sample pack and I'll try it out and test it. I am interested, I see the potential with this line."</p>
+  </div>
+
+  <h2>Executive summary</h2>
+  <p>Warm, relationship-first call. Carrie is open to AWARE but capacity-constrained through Q3, she is mid-rebrand and onboarding Ted Gibson's mushroom wellness line in Sept/Nov. She asked specific operator questions (back bar sizes, sample logistics, the microscope app), proactively disclosed the Ted Gibson incoming as a courtesy, and asked David to ship a sample set to her Sacramento showroom. <strong>Next step is low-stakes and she owns it:</strong> she will email her shipping address.</p>
+
+  <h2>Facts corrected by the call</h2>
+
+  <div class="correction">
+    <span class="label">Territory footprint</span>
+    <span class="was">Research framed TRIMM as a single Sacramento storefront with dozens of walk-in pros</span>
+    <span class="is">Actually an 8-state West Coast and Mountain West operation: Northern California, Bay Area, Oregon, Washington, Idaho, Montana, Utah, Nevada, Palm Springs. Has field reps in Palm Springs, Bay Area, Oregon, Washington. "Small and mighty."</span>
+  </div>
+
+  <div class="correction">
+    <span class="label">Current brand roster</span>
+    <span class="was">J Beverly Hills, ABBA, All Nutrient, Dikson, Pure Brazilian, Product Club, Tocco Magico, TRYBE</span>
+    <span class="is">J Beverly Hills, Aveda, TRYBE, Tocco Magico, and Colors by Tina (just added, Noah is the common connector). Carrie mentioned actively "cleaning up the portfolio" and dropping grandfathered brands she doesn't believe in. Website roster is likely stale.</span>
+  </div>
+
+  <div class="correction">
+    <span class="label">Business history</span>
+    <span class="was">Relocated "from Central Point, Oregon"</span>
+    <span class="is">Bought the business 2.5 years ago from a solo operator (treats her like family, "she's still my mom"). First moved it to Reno because Carrie's sister was co-founder. Got out of a bad Reno landlord contract in January, moved to Sacramento because that is home. Carrie educated for J Beverly Hills for many years and was one of this previous owner's top sales reps before buying the business.</span>
+  </div>
+
+  <h2>Key findings</h2>
+
+  <div class="findings">
+    <div class="finding">
+      <h4>What she liked</h4>
+      <p>The microscope app got the strongest reaction of the call: "That was a really good idea, very smart, a really good investment on your part."</p>
+      <p>Price integrity (no Amazon, no mass discounting) was a green light, she cited the same talk track she tells her own clients: pulling off mass channels restores stylist loyalty.</p>
+      <p>The founder story landed: 40+ years behind the chair, trichologist, five-year formulation arc.</p>
+    </div>
+    <div class="finding">
+      <h4>What she wants</h4>
+      <p>Sample set shipped to her Sacramento showroom. Back bar shampoo, back bar conditioner, leave-in, plus travel sizes. "Don't send a bunch of stuff."</p>
+      <p>Time to play with it with her in-house team of three ("the main people that matter") before any commitment conversation.</p>
+      <p>Transparency on timing, she wants to surface conflicts early rather than waste David's pipeline energy.</p>
+    </div>
+    <div class="finding">
+      <h4>Her stated values</h4>
+      <p>Independent, family-owned, relationship-driven. Cares about ethics and ingredient quality on top of margin.</p>
+      <p>"I want to create a community within" the distribution business, not just supply product.</p>
+      <p>Biggest industry frustration: stylists not feeling confident selling product. Sees education as the unlock, not price or promo.</p>
+    </div>
+    <div class="finding">
+      <h4>Her operating model</h4>
+      <p>Distributor with field reps in 8 states + online sales + showroom event space in Sacramento.</p>
+      <p>Currently "quiet" on marketing while she rebuilds the brand. More marketing coming after the rebrand ships.</p>
+      <p>Does in-store education events at the Sacramento showroom as a core brand activation format.</p>
+    </div>
+  </div>
+
+  <h2>Timing and competitive signals</h2>
+
+  <div class="signals">
+    <div class="signal green">
+      <h4>Green · Moving forward</h4>
+      <ul>
+        <li>She asked for samples unprompted</li>
+        <li>She volunteered her Ted Gibson conflict, a trust signal</li>
+        <li>She self-identified as "the crazy idea person" on her team, she is the decision maker</li>
+        <li>She is actively adding brands in this window, not closed</li>
+      </ul>
+    </div>
+    <div class="signal amber">
+      <h4>Amber · Real friction</h4>
+      <ul>
+        <li>She is mid-rebrand right now, capacity is the bottleneck</li>
+        <li>Ted Gibson brand launches Sept/Nov 2026, similar energy even if different category</li>
+        <li>She hasn't seen end-client demand for scalp specifically yet, only ambient wellness awareness</li>
+        <li>She does not want to commit cost up front</li>
+      </ul>
+    </div>
+    <div class="signal red">
+      <h4>Red · None observed</h4>
+      <ul>
+        <li>No exclusivity demand</li>
+        <li>No margin-stacking pressure</li>
+        <li>No mass channel signal</li>
+        <li>No off-strategy retail questions</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <h3>The Ted Gibson read</h3>
+    <p style="margin-bottom: 8px;">Ted Gibson is bringing a mushroom-technology wellness line through TRIMM in Sept/Nov 2026. She described it as "a drink and a thing," not a scalp treatment. Category adjacent (wellness + hair), not a direct scalp-care competitor.</p>
+    <p style="margin: 0;"><strong>What this means for AWARE:</strong> not blocking, but it does occupy her "new brand launch" attention slot in Q3. Best case for AWARE is activation timed <em>after</em> the Ted Gibson launch lands, so ~Q4 2026. Pushing earlier risks her saying yes to samples then going dark until Q4 anyway.</p>
+  </div>
+
+  <h2>Action items</h2>
+  <ol class="action-list" style="list-style: none;">
+    <li>
+      <span class="num">1</span>
+      <div>
+        <strong>Wait for Carrie's email</strong> with shipping address for the Sacramento showroom.
+        <div class="when">Expected within 24 hours. If not received by Thursday 04-24 EOD, send a warm nudge.</div>
+      </div>
+      <span class="owner">Carrie</span>
+    </li>
+    <li>
+      <span class="num">2</span>
+      <div>
+        <strong>Ship sample set</strong> once address lands. One of each:
+        back bar Shampoo, back bar Conditioner, Leave-In (one size),
+        plus travel-size Shampoo + Conditioner, plus sample sachets if in stock.
+        <div class="when">Same day as address received. Ground shipping is fine.</div>
+      </div>
+      <span class="owner">David</span>
+    </li>
+    <li>
+      <span class="num">3</span>
+      <div>
+        <strong>Update Noah Wilson</strong> by end of week. Short note: call went well, samples going out, plan to reconnect after Q3 rebrand settles. Keeps the referral channel healthy.
+        <div class="when">By Friday 04-25</div>
+      </div>
+      <span class="owner">David</span>
+    </li>
+    <li>
+      <span class="num">4</span>
+      <div>
+        <strong>Set a 2-week follow-up reminder</strong> (2026-05-06) to check in on her team's reaction to the samples. Do not push for commitment, just ask for honest feedback.
+        <div class="when">Reminder: 2026-05-06</div>
+      </div>
+      <span class="owner">David</span>
+    </li>
+    <li>
+      <span class="num">5</span>
+      <div>
+        <strong>Set a Q3 follow-up</strong> (early September) to gauge where her rebrand and Ted Gibson onboarding are at, and whether Q4 is realistic for an AWARE activation at the Sacramento showroom.
+        <div class="when">Reminder: 2026-09-03</div>
+      </div>
+      <span class="owner">David</span>
+    </li>
+  </ol>
+
+  <h2>Follow-up email · Draft</h2>
+  <div class="email-draft">
+    <div class="fields">
+      <div><strong>To:</strong> carrie@trimmbeauty.com</div>
+      <div><strong>Subject:</strong> Great talking with you, Carrie</div>
+      <div><strong>From:</strong> david@awarehair.com</div>
+    </div>
+    <div class="body">Carrie,
+
+Really enjoyed the conversation this morning. Your story of buying the business from someone who treats you like family and moving it home to Sacramento, that is the kind of foundation that makes a relationship worth building, so thank you for sharing it.
+
+As soon as you send over the shipping address, I will get a set out to you. You will get the back bar Shampoo, back bar Conditioner, and the Leave-In, plus a couple of travel sizes so your team has something easy to pass around. No cost, no commitment, just enjoy it and give me your honest read when you are ready.
+
+I will circle back in a couple of weeks to see how everyone felt. And I will catch up with Noah to let him know the call went well, he is the reason we are in this conversation at all.
+
+Have a great rest of your day in the field.
+
+David
+
+David Zhao
+Co-Founder, AWARE Hair
+awarehair.com</div>
+  </div>
+
+  <div class="callout info">
+    <h3>Strategic recommendation</h3>
+    <p style="margin-bottom: 8px;"><strong>Pursue, but slow.</strong> TRIMM is a bigger opportunity than the pre-call research suggested: an 8-state operation with field reps, not a single storefront. Carrie is the decision maker and she is engaged.</p>
+    <p style="margin-bottom: 8px;">That said, the real activation window is Q4 2026 at earliest, after her rebrand and the Ted Gibson launch settle. Do not chase urgency here, it will read as desperation and she is too smart to miss it. The play is: ship the samples fast, stay warm, come back in September with a concrete proposal tied to her showroom education model.</p>
+    <p style="margin: 0;"><strong>Upside if it lands:</strong> distributed coverage across the West Coast and Mountain West via a trusted relationship, including markets AWARE has no direct sales presence in (Washington, Idaho, Montana, Utah). Sacramento showroom as an education venue. This is meaningfully more leverage than the prep doc credited.</p>
+  </div>
+
+  <div class="footer-note">
+    <strong>Supporting context</strong><br>
+    Pre-call prep: <code>sales/outreach/carrie-bailon-prep-2026-04-22.html</code> (.md version alongside)<br>
+    Original outbound: <code>sales/outreach/noah-referral-emails-2026-04-08-v2.md</code><br>
+    Contact memory: <code>contact_carrie_bailon_trimm.md</code><br>
+    Related pattern: <code>sales/outreach/carrie-cooper-post-meeting-2026-04-13.md</code>
+  </div>
+
+</div>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Email Marketing Automation</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<style>
+  :root {
+    --teal: #102B26;
+    --cream: #f4efe9;
+    --gold: #D4A574;
+    --sage: #7d8471;
+    --surface: #faf8f5;
+    --white: #ffffff;
+    --teal-95: rgba(16,43,38,0.95);
+    --teal-80: rgba(16,43,38,0.8);
+    --teal-60: rgba(16,43,38,0.6);
+    --teal-40: rgba(16,43,38,0.4);
+    --teal-20: rgba(16,43,38,0.2);
+    --teal-10: rgba(16,43,38,0.1);
+    --teal-05: rgba(16,43,38,0.05);
+    --gold-50: rgba(212,165,116,0.5);
+    --gold-20: rgba(212,165,116,0.2);
+    --gold-10: rgba(212,165,116,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body { background: var(--teal); color: var(--teal); }
+
+  /* ── SLIDE SYSTEM ─────────────────────────────── */
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide-inner {
+    width: 100%;
+    max-width: 1200px;
+    padding: 80px 60px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .slide--teal { background: var(--teal); color: var(--cream); }
+  .slide--cream { background: var(--cream); color: var(--teal); }
+  .slide--surface { background: var(--surface); color: var(--teal); }
+  .slide--white { background: var(--white); color: var(--teal); }
+
+  /* ── TYPOGRAPHY ──────────────────────────────── */
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  .headline {
+    font-family: 'orpheus-pro', Georgia, 'Times New Roman', serif;
+    font-size: clamp(44px, 5.5vw, 76px);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.5px;
+    margin-bottom: 28px;
+  }
+
+  .headline em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .subhead {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.65;
+    max-width: 620px;
+    opacity: 0.7;
+  }
+
+  .section-title {
+    font-family: 'orpheus-pro', Georgia, 'Times New Roman', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+
+  .section-subtitle {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.7;
+    opacity: 0.6;
+    max-width: 560px;
+  }
+
+  /* ── DIVIDER ─────────────────────────────────── */
+  .diamond-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 48px 0;
+    opacity: 0.3;
+  }
+
+  .diamond-divider span {
+    width: 5px;
+    height: 5px;
+    background: currentColor;
+    transform: rotate(45deg);
+  }
+
+  .diamond-divider::before,
+  .diamond-divider::after {
+    content: '';
+    width: 60px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.4;
+  }
+
+  /* ── HERO ────────────────────────────────────── */
+  .hero { min-height: 100vh; }
+
+  .hero .eyebrow { margin-bottom: 40px; }
+
+  .hero-date {
+    display: inline-block;
+    margin-top: 48px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 10px 20px;
+    border: 1px solid var(--gold-50);
+    border-radius: 2px;
+  }
+
+  .hero-accent {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    opacity: 0.03;
+    background: radial-gradient(ellipse at 70% 40%, var(--gold) 0%, transparent 70%);
+  }
+
+  /* ── STATS BAR ───────────────────────────────── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--teal-10);
+    border-top: 1px solid var(--teal-10);
+    border-bottom: 1px solid var(--teal-10);
+  }
+
+  .stat-cell {
+    background: var(--cream);
+    padding: 56px 40px;
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: clamp(52px, 7vw, 88px);
+    font-weight: 400;
+    line-height: 0.95;
+    color: var(--teal);
+    margin-bottom: 12px;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--sage);
+  }
+
+  .stat-cell--gold .stat-number { color: var(--gold); }
+
+  /* ── LIFECYCLE DIAGRAM ───────────────────────── */
+  .lifecycle {
+    min-height: auto;
+    padding: 100px 0;
+  }
+
+  .lifecycle-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 80px;
+    padding: 0 40px;
+  }
+
+  .lifecycle-tracks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .track {
+    position: relative;
+  }
+
+  .track-header {
+    padding: 20px 32px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .track--dtc .track-header {
+    background: var(--teal);
+    color: var(--cream);
+    margin-right: 1px;
+  }
+
+  .track--b2b .track-header {
+    background: var(--gold);
+    color: var(--teal);
+    margin-left: 1px;
+  }
+
+  .track-stages {
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .track--dtc .track-stages {
+    border-right: 1px solid var(--teal-10);
+    padding-right: 48px;
+  }
+
+  .track--b2b .track-stages {
+    padding-left: 48px;
+  }
+
+  /* ── STAGE ───────────────────────────────────── */
+  .stage {
+    position: relative;
+    margin-bottom: 48px;
+  }
+
+  .stage:last-child { margin-bottom: 0; }
+
+  .stage-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .stage-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--teal-10);
+  }
+
+  .flow-card {
+    background: var(--white);
+    border: 1px solid var(--teal-10);
+    padding: 28px;
+    position: relative;
+    margin-bottom: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .flow-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(16,43,38,0.08);
+  }
+
+  .flow-card:last-child { margin-bottom: 0; }
+
+  .flow-card__status {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  .flow-card__status--live {
+    background: var(--teal);
+    color: var(--cream);
+  }
+
+  .flow-card__status--draft {
+    background: var(--gold-20);
+    color: var(--gold);
+    border: 1px solid var(--gold);
+  }
+
+  .flow-card__status--built {
+    background: var(--teal-05);
+    color: var(--sage);
+    border: 1px solid var(--teal-20);
+  }
+
+  .flow-card__status--designed {
+    background: transparent;
+    color: var(--sage);
+    border: 1px dashed var(--teal-20);
+  }
+
+  .flow-card__name {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 8px;
+    color: var(--teal);
+    padding-right: 70px;
+  }
+
+  .flow-card__trigger {
+    font-size: 12px;
+    color: var(--sage);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .flow-card__emails {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .email-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 8px 12px;
+    background: var(--surface);
+    font-size: 13px;
+  }
+
+  .email-row__num {
+    font-weight: 600;
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 1px;
+    min-width: 20px;
+    flex-shrink: 0;
+  }
+
+  .email-row__subject {
+    color: var(--teal-80);
+    font-style: italic;
+    flex: 1;
+  }
+
+  .email-row__timing {
+    font-size: 11px;
+    color: var(--sage);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── B2B REORDER HIGHLIGHT ───────────────────── */
+  .reorder-highlight {
+    background: var(--teal);
+    color: var(--cream);
+    border: none;
+    padding: 36px 32px;
+  }
+
+  .reorder-highlight .flow-card__name { color: var(--cream); }
+  .reorder-highlight .flow-card__trigger { color: var(--gold); }
+
+  .reorder-highlight .email-row {
+    background: rgba(255,255,255,0.06);
+    border-left: 2px solid var(--gold);
+  }
+
+  .reorder-highlight .email-row__num { color: var(--gold); }
+  .reorder-highlight .email-row__subject { color: rgba(244,239,233,0.8); }
+  .reorder-highlight .email-row__timing { color: var(--gold-50); }
+
+  .reorder-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .reorder-stat__number {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: 44px;
+    font-weight: 400;
+    color: var(--gold);
+  }
+
+  .reorder-stat__label {
+    font-size: 14px;
+    opacity: 0.6;
+    line-height: 1.5;
+  }
+
+  /* ── CONNECTOR DOTS ON CENTER LINE ───────────── */
+  .track--dtc .stage::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    right: -52px;
+    width: 9px;
+    height: 9px;
+    background: var(--gold);
+    border-radius: 50%;
+    z-index: 3;
+  }
+
+  .track--dtc .track-stages::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -5px;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--teal-10), var(--gold-50), var(--teal-10));
+    z-index: 1;
+  }
+
+  /* ── WAVE DEPLOYMENT ─────────────────────────── */
+  .waves-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--teal-10);
+    margin-top: 60px;
+  }
+
+  .wave-card {
+    background: var(--cream);
+    padding: 40px 32px;
+  }
+
+  .wave-card__number {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .wave-card__title {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+
+  .wave-card__count {
+    font-size: 14px;
+    color: var(--sage);
+    margin-bottom: 20px;
+  }
+
+  .wave-card__list {
+    list-style: none;
+    font-size: 13px;
+    color: var(--teal-60);
+    line-height: 2;
+  }
+
+  .wave-card__list li::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  /* ── INFRASTRUCTURE ──────────────────────────── */
+  .infra-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-top: 60px;
+  }
+
+  .infra-block {
+    padding: 32px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .infra-block__title {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+
+  .infra-block__desc {
+    font-size: 14px;
+    color: rgba(244,239,233,0.5);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .infra-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .infra-tag {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 6px 14px;
+    border: 1px solid rgba(212,165,116,0.3);
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .code-preview {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    color: rgba(244,239,233,0.6);
+    background: rgba(0,0,0,0.2);
+    padding: 20px;
+    border-left: 2px solid var(--gold);
+    margin-top: 16px;
+    overflow-x: auto;
+  }
+
+  .code-preview .hl { color: var(--gold); }
+  .code-preview .cm { color: rgba(244,239,233,0.3); }
+
+  /* ── CAMPAIGNS ───────────────────────────────── */
+  .campaigns-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--teal-10);
+    margin-top: 60px;
+  }
+
+  .campaign-card {
+    background: var(--white);
+    padding: 36px 28px;
+  }
+
+  .campaign-card__name {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 6px;
+  }
+
+  .campaign-card__count {
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+
+  .campaign-card__desc {
+    font-size: 13px;
+    color: var(--sage);
+    line-height: 1.6;
+  }
+
+  .campaign-total {
+    grid-column: 1 / -1;
+    background: var(--teal);
+    color: var(--cream);
+    padding: 32px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .campaign-total__label {
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .campaign-total__number {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: 32px;
+    color: var(--gold);
+  }
+
+  /* ── FOOTER ──────────────────────────────────── */
+  .footer {
+    background: var(--teal);
+    padding: 80px 60px;
+    text-align: center;
+    color: var(--cream);
+  }
+
+  .footer-logo {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    color: var(--cream);
+  }
+
+  .footer-sub {
+    font-size: 13px;
+    opacity: 0.4;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ── ANIMATIONS ──────────────────────────────── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .stagger-1 { transition-delay: 0.1s; }
+  .stagger-2 { transition-delay: 0.2s; }
+  .stagger-3 { transition-delay: 0.3s; }
+  .stagger-4 { transition-delay: 0.4s; }
+
+  /* ── RESPONSIVE ──────────────────────────────── */
+  @media (max-width: 900px) {
+    .slide-inner { padding: 60px 32px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .lifecycle-tracks { grid-template-columns: 1fr; }
+    .track--dtc .track-stages { border-right: none; padding-right: 24px; }
+    .track--b2b .track-stages { padding-left: 24px; border-top: 1px solid var(--teal-10); padding-top: 48px; }
+    .track--dtc .stage::after { display: none; }
+    .track--dtc .track-stages::after { display: none; }
+    .waves-grid { grid-template-columns: 1fr; }
+    .infra-grid { grid-template-columns: 1fr; }
+    .campaigns-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .slide-inner { padding: 48px 20px; }
+    .stat-cell { padding: 36px 20px; }
+    .flow-card { padding: 20px; }
+    .flow-card__name { font-size: 17px; }
+    .lifecycle-tracks { padding: 0 20px; }
+  }
+
+  /* ── PRINT ───────────────────────────────────── */
+  @media print {
+    .slide { min-height: auto; page-break-inside: avoid; }
+    .fade-up { opacity: 1 !important; transform: none !important; }
+    body { background: white; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════
+     HERO
+     ════════════════════════════════════════════════ -->
+<section class="slide slide--teal hero">
+  <div class="hero-accent"></div>
+  <div class="slide-inner">
+    <div class="eyebrow fade-up">Co-Founder Briefing</div>
+    <h1 class="headline fade-up stagger-1">
+      Email Marketing<br><em>Automation</em>
+    </h1>
+    <p class="subhead fade-up stagger-2">
+      A complete lifecycle system - from first touch to repeat purchase, every customer touchpoint automated, branded, and deployed live in Klaviyo.
+    </p>
+    <div class="hero-date fade-up stagger-3">Deployed February 24, 2026</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     STATS BAR
+     ════════════════════════════════════════════════ -->
+<section class="slide--cream" style="min-height:auto;">
+  <div class="stats-grid">
+    <div class="stat-cell fade-up">
+      <div class="stat-number" data-count="19">19</div>
+      <div class="stat-label">Templates</div>
+    </div>
+    <div class="stat-cell fade-up stagger-1">
+      <div class="stat-number" data-count="7">7</div>
+      <div class="stat-label">Automated Flows</div>
+    </div>
+    <div class="stat-cell fade-up stagger-2">
+      <div class="stat-number" data-count="16">16</div>
+      <div class="stat-label">Flow Emails</div>
+    </div>
+    <div class="stat-cell stat-cell--gold fade-up stagger-3">
+      <div class="stat-number" data-count="96">96%</div>
+      <div class="stat-label">B2B Reorder Rate</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     LIFECYCLE DIAGRAM
+     ════════════════════════════════════════════════ -->
+<section class="lifecycle slide--surface">
+  <div class="lifecycle-header fade-up">
+    <div class="eyebrow" style="color:var(--gold);">The System</div>
+    <h2 class="section-title">Full Lifecycle Coverage</h2>
+    <p class="section-subtitle">Every stage of the customer journey has automated, branded email touchpoints - from the moment they discover AWARE through years of repeat purchases.</p>
+  </div>
+
+  <div class="lifecycle-tracks">
+
+    <!-- ── DTC TRACK ──────────────────────────── -->
+    <div class="track track--dtc">
+      <div class="track-header">DTC Customer Journey</div>
+      <div class="track-stages">
+
+        <!-- AWARENESS -->
+        <div class="stage fade-up">
+          <div class="stage-label">Awareness</div>
+          <div class="flow-card">
+            <span class="flow-card__status flow-card__status--live">Live</span>
+            <div class="flow-card__name">Scalp Report Lead Gen</div>
+            <div class="flow-card__trigger">Trigger: Scalp Environment Report completed, added to Quiz Leads list</div>
+            <div class="flow-card__emails">
+              <div class="email-row">
+                <span class="email-row__num">01</span>
+                <span class="email-row__subject">"Your Scalp Environment Report is Ready"</span>
+                <span class="email-row__timing">Day 0</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">02</span>
+                <span class="email-row__subject">"The truth about scalp health"</span>
+                <span class="email-row__timing">Day 3</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">03</span>
+                <span class="email-row__subject">"What a healthy scalp actually looks like"</span>
+                <span class="email-row__timing">Day 7</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">04</span>
+                <span class="email-row__subject">"The science behind AWAREbio Complex"</span>
+                <span class="email-row__timing">Day 12</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONVERSION -->
+        <div class="stage fade-up">
+          <div class="stage-label">Conversion</div>
+          <div class="flow-card">
+            <span class="flow-card__status flow-card__status--live">Live</span>
+            <div class="flow-card__name">Abandoned Cart</div>
+            <div class="flow-card__trigger">Trigger: Checkout Started (exits on Placed Order)</div>
+            <div class="flow-card__emails">
+              <div class="email-row">
+                <span class="email-row__num">01</span>
+                <span class="email-row__subject">"Still thinking about it?"</span>
+                <span class="email-row__timing">4 hours</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">02</span>
+                <span class="email-row__subject">"Your scalp will thank you"</span>
+                <span class="email-row__timing">24 hours</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ONBOARDING -->
+        <div class="stage fade-up">
+          <div class="stage-label">Onboarding</div>
+          <div class="flow-card">
+            <span class="flow-card__status flow-card__status--live">Live</span>
+            <div class="flow-card__name">Post-Purchase Welcome</div>
+            <div class="flow-card__trigger">Trigger: Placed Order</div>
+            <div class="flow-card__emails">
+              <div class="email-row">
+                <span class="email-row__num">01</span>
+                <span class="email-row__subject">"Thank you for choosing AWARE"</span>
+                <span class="email-row__timing">Immediate</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">02</span>
+                <span class="email-row__subject">"Getting the most from your products"</span>
+                <span class="email-row__timing">Day 3</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">03</span>
+                <span class="email-row__subject">"How's your scalp feeling?"</span>
+                <span class="email-row__timing">Day 10</span>
+              </div>
+            </div>
+          </div>
+          <div class="flow-card" style="margin-top:16px;">
+            <span class="flow-card__status flow-card__status--live">Live</span>
+            <div class="flow-card__name">Shipping Notifications</div>
+            <div class="flow-card__trigger">Trigger: Fulfilled Order (3 separate event-driven flows)</div>
+            <div class="flow-card__emails">
+              <div class="email-row">
+                <span class="email-row__num">01</span>
+                <span class="email-row__subject">"Your AWARE order has shipped"</span>
+                <span class="email-row__timing">On fulfillment</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">02</span>
+                <span class="email-row__subject">"Your order is out for delivery"</span>
+                <span class="email-row__timing">Out for delivery</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">03</span>
+                <span class="email-row__subject">"Your AWARE order has been delivered"</span>
+                <span class="email-row__timing">On delivery</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RETENTION -->
+        <div class="stage fade-up">
+          <div class="stage-label">Retention</div>
+          <div class="flow-card">
+            <span class="flow-card__status flow-card__status--live">Live</span>
+            <div class="flow-card__name">Review Request</div>
+            <div class="flow-card__trigger">Trigger: Fulfilled Order, 14-day delay</div>
+            <div class="flow-card__emails">
+              <div class="email-row">
+                <span class="email-row__num">01</span>
+                <span class="email-row__subject">"How are you liking your AWARE products?"</span>
+                <span class="email-row__timing">Day 14</span>
+              </div>
+            </div>
+          </div>
+          <div class="flow-card" style="margin-top:16px;">
+            <span class="flow-card__status flow-card__status--live">Live</span>
+            <div class="flow-card__name">Winback</div>
+            <div class="flow-card__trigger">Trigger: Winback segment (120+ days since last purchase, exits on Placed Order)</div>
+            <div class="flow-card__emails">
+              <div class="email-row">
+                <span class="email-row__num">01</span>
+                <span class="email-row__subject">"We miss you"</span>
+                <span class="email-row__timing">Day 120+</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">02</span>
+                <span class="email-row__subject">"Last chance: special offer inside"</span>
+                <span class="email-row__timing">+7 days</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADVOCACY -->
+        <div class="stage fade-up">
+          <div class="stage-label">Advocacy</div>
+          <div class="flow-card">
+            <span class="flow-card__status flow-card__status--live">Live</span>
+            <div class="flow-card__name">Loyalty Points</div>
+            <div class="flow-card__trigger">Template deployed, triggered by loyalty program events</div>
+            <div class="flow-card__emails">
+              <div class="email-row">
+                <span class="email-row__num">01</span>
+                <span class="email-row__subject">Points balance update + rewards status</span>
+                <span class="email-row__timing">On event</span>
+              </div>
+            </div>
+          </div>
+          <div class="flow-card" style="margin-top:16px;">
+            <span class="flow-card__status flow-card__status--draft">Draft</span>
+            <div class="flow-card__name">Referral Program</div>
+            <div class="flow-card__trigger">Trigger: Repeat Buyers segment</div>
+            <div class="flow-card__emails">
+              <div class="email-row">
+                <span class="email-row__num">01</span>
+                <span class="email-row__subject">"Share AWARE, earn rewards"</span>
+                <span class="email-row__timing">On segment entry</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── B2B TRACK ─────────────────────────── -->
+    <div class="track track--b2b">
+      <div class="track-header">B2B Salon Journey</div>
+      <div class="track-stages">
+
+        <!-- LEAD NURTURE -->
+        <div class="stage fade-up">
+          <div class="stage-label">Lead Nurture</div>
+          <div class="flow-card">
+            <span class="flow-card__status flow-card__status--built">Built</span>
+            <div class="flow-card__name">B2B Lead Nurture</div>
+            <div class="flow-card__trigger">4-email sequence for new salon prospects</div>
+            <div class="flow-card__emails">
+              <div class="email-row">
+                <span class="email-row__num">01</span>
+                <span class="email-row__subject">Welcome + sample offer</span>
+                <span class="email-row__timing">Day 0</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">02</span>
+                <span class="email-row__subject">Business case for scalp care</span>
+                <span class="email-row__timing">Day 3</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">03</span>
+                <span class="email-row__subject">Social proof + objection handling</span>
+                <span class="email-row__timing">Day 7</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">04</span>
+                <span class="email-row__subject">Honest close</span>
+                <span class="email-row__timing">Day 14</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- REORDER PROTECTION -->
+        <div class="stage fade-up">
+          <div class="stage-label">Reorder Protection</div>
+          <div class="flow-card reorder-highlight">
+            <span class="flow-card__status flow-card__status--designed">N8N + Klaviyo</span>
+            <div class="flow-card__name">B2B Reorder Automation</div>
+            <div class="flow-card__trigger">N8N-orchestrated daily check, calculates days since last B2B order</div>
+            <div class="flow-card__emails">
+              <div class="email-row">
+                <span class="email-row__num">D35</span>
+                <span class="email-row__subject">Restock reminder - "Time to reorder?"</span>
+                <span class="email-row__timing">Day 35</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">D42</span>
+                <span class="email-row__subject">Follow-up - personalized reorder prompt</span>
+                <span class="email-row__timing">Day 42</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">D50</span>
+                <span class="email-row__subject">Internal alert to David + Tina</span>
+                <span class="email-row__timing">Day 50</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">D60</span>
+                <span class="email-row__subject">Win-back outreach</span>
+                <span class="email-row__timing">Day 60</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">D90</span>
+                <span class="email-row__subject">Flagged as churned, escalation</span>
+                <span class="email-row__timing">Day 90</span>
+              </div>
+            </div>
+            <div class="reorder-stat">
+              <div class="reorder-stat__number">96%</div>
+              <div class="reorder-stat__label">B2B reorder rate this system<br>is designed to protect at scale</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DTC WELCOME (DESIGNED) -->
+        <div class="stage fade-up">
+          <div class="stage-label">Coming Next</div>
+          <div class="flow-card">
+            <span class="flow-card__status flow-card__status--designed">Designed</span>
+            <div class="flow-card__name">DTC Welcome Sequence</div>
+            <div class="flow-card__trigger">Post-Scalp Report nurture, 5 emails over 14 days converting curiosity to purchase</div>
+            <div class="flow-card__emails">
+              <div class="email-row">
+                <span class="email-row__num">01</span>
+                <span class="email-row__subject">Report delivery + first touch</span>
+                <span class="email-row__timing">Day 0</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">02</span>
+                <span class="email-row__subject">Environmental education</span>
+                <span class="email-row__timing">Day 2</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">03</span>
+                <span class="email-row__subject">Personalized recommendation</span>
+                <span class="email-row__timing">Day 5</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">04</span>
+                <span class="email-row__subject">Social proof + results</span>
+                <span class="email-row__timing">Day 9</span>
+              </div>
+              <div class="email-row">
+                <span class="email-row__num">05</span>
+                <span class="email-row__subject">Re-engagement + salon pull</span>
+                <span class="email-row__timing">Day 14</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     DEPLOYMENT WAVES
+     ════════════════════════════════════════════════ -->
+<section class="slide slide--cream">
+  <div class="slide-inner">
+    <div class="eyebrow fade-up">Deployment</div>
+    <h2 class="section-title fade-up stagger-1">19 Templates, 3 Waves</h2>
+    <p class="section-subtitle fade-up stagger-2">Prioritized by revenue impact. Wave 1 protects existing revenue. Wave 2 builds retention loops. Wave 3 generates new leads.</p>
+
+    <div class="waves-grid fade-up stagger-3">
+      <div class="wave-card">
+        <div class="wave-card__number">Wave 1</div>
+        <div class="wave-card__title">Revenue Critical</div>
+        <div class="wave-card__count">7 templates</div>
+        <ul class="wave-card__list">
+          <li>AC-01 Cart Reminder</li>
+          <li>AC-02 Cart Urgency</li>
+          <li>PP-01 Welcome</li>
+          <li>PP-02 How To Use</li>
+          <li>PP-03 Results Timeline</li>
+          <li>SHP-01 Shipment Confirmed</li>
+          <li>SHP-02 Out For Delivery</li>
+        </ul>
+      </div>
+      <div class="wave-card">
+        <div class="wave-card__number">Wave 2</div>
+        <div class="wave-card__title">Retention & Engagement</div>
+        <div class="wave-card__count">7 templates</div>
+        <ul class="wave-card__list">
+          <li>SHP-03 Delivery Confirmed</li>
+          <li>RET-01 Review Request</li>
+          <li>RET-02 Winback Reminder</li>
+          <li>RET-03 Winback Last Chance</li>
+          <li>REF-01 Referral Program</li>
+          <li>REF-02 Referred Client</li>
+          <li>LOY-01 Points Balance</li>
+        </ul>
+      </div>
+      <div class="wave-card">
+        <div class="wave-card__number">Wave 3</div>
+        <div class="wave-card__title">Scalp Report Lead Gen</div>
+        <div class="wave-card__count">5 templates</div>
+        <ul class="wave-card__list">
+          <li>SER-01 Scalp Report</li>
+          <li>SER-02 Why Scalp Care</li>
+          <li>SER-03 Healthy Scalp</li>
+          <li>SER-03b Social Proof</li>
+          <li>SER-04 AWAREbio Complex</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     INFRASTRUCTURE
+     ════════════════════════════════════════════════ -->
+<section class="slide slide--teal">
+  <div class="slide-inner">
+    <div class="eyebrow fade-up">Infrastructure</div>
+    <h2 class="section-title fade-up stagger-1" style="color:var(--cream);">Deployment Pipeline</h2>
+    <p class="section-subtitle fade-up stagger-2" style="color:rgba(244,239,233,0.5);">Not just emails - a reproducible deployment system with version tracking, QA compliance, and automated flow creation.</p>
+
+    <div class="infra-grid fade-up stagger-3">
+      <div class="infra-block">
+        <div class="infra-block__title">deploy-to-klaviyo.mjs</div>
+        <div class="infra-block__desc">
+          Automated deployment script. Uploads templates in priority waves, creates flows with correct triggers and timing, handles rate limiting and resume support.
+        </div>
+        <div class="infra-tag-list">
+          <span class="infra-tag">Wave Deployment</span>
+          <span class="infra-tag">Rate Limiting</span>
+          <span class="infra-tag">Resume Support</span>
+          <span class="infra-tag">Template Upload</span>
+          <span class="infra-tag">Flow Creation</span>
+        </div>
+        <div class="code-preview">
+<span class="cm">// Deploy modes</span>
+node deploy-to-klaviyo.mjs <span class="hl">--templates-only</span>
+node deploy-to-klaviyo.mjs <span class="hl">--flows-only</span>
+node deploy-to-klaviyo.mjs <span class="hl">--wave 1</span>
+node deploy-to-klaviyo.mjs <span class="hl">--update</span>  <span class="cm">// PATCH existing</span>
+        </div>
+      </div>
+
+      <div class="infra-block">
+        <div class="infra-block__title">Deployment Manifest</div>
+        <div class="infra-block__desc">
+          Complete version tracking of every template ID, flow ID, prerequisite metric, list, and segment. QA compliance status for all 19 templates.
+        </div>
+        <div class="infra-tag-list">
+          <span class="infra-tag">19 Template IDs</span>
+          <span class="infra-tag">7 Flow IDs</span>
+          <span class="infra-tag">6 Prerequisites</span>
+          <span class="infra-tag">QA Verified</span>
+        </div>
+        <div class="code-preview">
+<span class="cm">// klaviyo-deployment-manifest.json</span>
+{
+  "<span class="hl">status</span>": "deployed_live",
+  "<span class="hl">deployed_at</span>": "2026-02-24",
+  "<span class="hl">compliance_audit</span>": "PASS 19/19"
+}
+        </div>
+      </div>
+
+      <div class="infra-block">
+        <div class="infra-block__title">Flow Exit Conditions</div>
+        <div class="infra-block__desc">
+          Separate recreation script adds intelligent exit conditions - abandoned cart exits on purchase, winback exits on re-engagement, preventing email overlap.
+        </div>
+        <div class="infra-tag-list">
+          <span class="infra-tag">Exit on Purchase</span>
+          <span class="infra-tag">Dry-Run Mode</span>
+          <span class="infra-tag">Selective Rebuild</span>
+        </div>
+      </div>
+
+      <div class="infra-block">
+        <div class="infra-block__title">QA Compliance</div>
+        <div class="infra-block__desc">
+          Every template verified for Klaviyo compatibility: unsubscribe tags, HTTPS images, Klaviyo Liquid syntax, no Shopify variable leaks.
+        </div>
+        <div class="infra-tag-list">
+          <span class="infra-tag">Unsubscribe Tags</span>
+          <span class="infra-tag">HTTPS Images</span>
+          <span class="infra-tag">Liquid Syntax</span>
+          <span class="infra-tag">19/19 Pass</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     CAMPAIGNS
+     ════════════════════════════════════════════════ -->
+<section class="slide slide--surface">
+  <div class="slide-inner">
+    <div class="eyebrow fade-up" style="color:var(--gold);">Campaigns</div>
+    <h2 class="section-title fade-up stagger-1">Beyond Flows</h2>
+    <p class="section-subtitle fade-up stagger-2">Automated flows run the lifecycle. Campaigns drive strategic moments - trade show follow-up, seasonal pushes, partner referrals.</p>
+
+    <div class="campaigns-grid fade-up stagger-3">
+      <div class="campaign-card">
+        <div class="campaign-card__name">CosmoProf 2026</div>
+        <div class="campaign-card__count">5 emails</div>
+        <div class="campaign-card__desc">Post-show follow-up segmented by relationship: past purchasers, new contacts, salon partners, re-engagement. Led with NewBeauty Top 10 validation.</div>
+      </div>
+      <div class="campaign-card">
+        <div class="campaign-card__name">DTC Spring 2026</div>
+        <div class="campaign-card__count">4 emails</div>
+        <div class="campaign-card__desc">Seasonal content series: spring scalp reset, microbiome education, Beauty Tank winner announcement, color aftercare.</div>
+      </div>
+      <div class="campaign-card">
+        <div class="campaign-card__name">B2B Warm Lead Series</div>
+        <div class="campaign-card__count">11 emails</div>
+        <div class="campaign-card__desc">Multi-variant outreach with reconnect, education, and offer angles. Refreshed Feb 2026 with reintroduction, business case, and offer versions.</div>
+      </div>
+      <div class="campaign-card">
+        <div class="campaign-card__name">Newsletters</div>
+        <div class="campaign-card__count">2 emails</div>
+        <div class="campaign-card__desc">DTC winter scalp guide + B2B 2026 trends ("ChatGPT is sending clients to your competitors"). All with A/B subject lines.</div>
+      </div>
+      <div class="campaign-card">
+        <div class="campaign-card__name">B2B Referral Launch</div>
+        <div class="campaign-card__count">1 email</div>
+        <div class="campaign-card__desc">Partner referral program announcement. "Your referrals built this community. Now we have a way to say thank you properly."</div>
+      </div>
+      <div class="campaign-card">
+        <div class="campaign-card__name">PlayLab Workshop</div>
+        <div class="campaign-card__count">2 emails</div>
+        <div class="campaign-card__desc">Event promotion (Pasadena scalp health lab, gua sha + discovery kit) and post-event follow-up with ritual instructions.</div>
+      </div>
+      <div class="campaign-total">
+        <span class="campaign-total__label">Total campaign emails built</span>
+        <span class="campaign-total__number">27</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     SUMMARY
+     ════════════════════════════════════════════════ -->
+<section class="slide slide--teal">
+  <div class="slide-inner" style="text-align:center; max-width:800px;">
+    <div class="eyebrow fade-up">The Full Picture</div>
+    <h2 class="headline fade-up stagger-1" style="color:var(--cream); font-size:clamp(36px,4.5vw,56px);">
+      Every customer touchpoint,<br><em>designed and deployed.</em>
+    </h2>
+    <div class="diamond-divider fade-up stagger-2" style="color:var(--gold);"><span></span><span></span><span></span></div>
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:40px; margin-top:40px;">
+      <div class="fade-up stagger-2">
+        <div style="font-family:'orpheus-pro',Georgia,serif; font-size:48px; color:var(--gold); margin-bottom:8px;">19</div>
+        <div style="font-size:12px; letter-spacing:2px; text-transform:uppercase; opacity:0.5; color:var(--cream);">Branded Templates</div>
+      </div>
+      <div class="fade-up stagger-3">
+        <div style="font-family:'orpheus-pro',Georgia,serif; font-size:48px; color:var(--gold); margin-bottom:8px;">43</div>
+        <div style="font-size:12px; letter-spacing:2px; text-transform:uppercase; opacity:0.5; color:var(--cream);">Total Emails Built</div>
+      </div>
+      <div class="fade-up stagger-4">
+        <div style="font-family:'orpheus-pro',Georgia,serif; font-size:48px; color:var(--gold); margin-bottom:8px;">10</div>
+        <div style="font-size:12px; letter-spacing:2px; text-transform:uppercase; opacity:0.5; color:var(--cream);">Lifecycle Flows</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     FOOTER
+     ════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="diamond-divider" style="color:var(--gold); margin-bottom:40px;"><span></span><span></span><span></span></div>
+  <div class="footer-logo">AWARE</div>
+  <div class="footer-sub">Professional Scalp Care</div>
+</footer>
+
+<!-- ── SCROLL ANIMATION ────────────────────────── -->
+<script>
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+})();
+</script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

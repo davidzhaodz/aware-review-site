@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Strategic Roadmap Q2-Q3 2026 (v2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<style>
+  :root {
+    --teal: #102B26;
+    --cream: #f4efe9;
+    --surface: #faf8f5;
+    --gold: #D4A574;
+    --sage: #7d8471;
+    --white: #ffffff;
+    --border: #e5ddd5;
+    --muted: #8a8078;
+    --red: #c44b3f;
+    --green: #3a7d5c;
+    --blue: #3a6b8c;
+    --amber: #b8860b;
+    --font-heading: 'orpheus-pro', Georgia, serif;
+    --font-body: 'DM Sans', -apple-system, sans-serif;
+    --radius: 6px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-body); background: var(--cream); color: var(--teal); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  /* Header */
+  .page-header { background: var(--teal); color: var(--cream); padding: 48px 0 40px; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+  .page-header h1 { font-family: var(--font-heading); font-size: 2.4rem; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .subtitle { font-size: 0.95rem; color: var(--gold); font-weight: 400; letter-spacing: 0.04em; text-transform: uppercase; }
+  .meta-row { display: flex; gap: 32px; margin-top: 20px; font-size: 0.85rem; color: rgba(244,239,233,0.6); }
+
+  /* Hard Truth Banner */
+  .truth-banner { background: var(--teal); border-top: 1px solid rgba(244,239,233,0.1); padding: 0 0 40px; }
+  .truth-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .truth-card { background: rgba(244,239,233,0.06); border: 1px solid rgba(244,239,233,0.1); border-radius: var(--radius); padding: 18px 16px; }
+  .truth-number { font-family: var(--font-heading); font-size: 2rem; color: var(--gold); font-weight: 400; }
+  .truth-label { font-size: 0.78rem; color: rgba(244,239,233,0.6); margin-top: 2px; line-height: 1.4; }
+  .truth-note { font-size: 0.72rem; color: var(--red); margin-top: 6px; font-weight: 500; }
+
+  /* Strategy Banner */
+  .strategy-banner { background: var(--white); border-bottom: 2px solid var(--gold); padding: 28px 0; }
+  .strategy-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .focus-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold); margin-bottom: 8px; }
+  .focus-statement { font-family: var(--font-heading); font-size: 1.3rem; line-height: 1.4; }
+  .model-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .pill { font-size: 0.7rem; padding: 4px 12px; border-radius: 20px; font-weight: 600; letter-spacing: 0.03em; }
+  .pill-primary { background: var(--teal); color: var(--cream); }
+  .pill-secondary { background: var(--gold); color: var(--white); }
+  .pill-supporting { background: var(--sage); color: var(--white); }
+  .pill-kill { background: rgba(196,75,63,0.1); color: var(--red); }
+
+  /* Main */
+  .main { max-width: 1100px; margin: 0 auto; padding: 32px 32px 80px; }
+
+  /* Timeline */
+  .timeline-strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; margin-bottom: 32px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+  .timeline-month { padding: 14px 12px; background: var(--white); border-right: 1px solid var(--border); text-align: center; }
+  .timeline-month:last-child { border-right: none; }
+  .month-name { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+  .timeline-month.now { background: rgba(212,165,116,0.08); }
+  .timeline-month.now .month-name { color: var(--gold); }
+  .timeline-event { margin-top: 8px; padding: 5px 8px; border-radius: 3px; font-size: 0.72rem; font-weight: 500; line-height: 1.3; }
+  .ev-tentpole { background: var(--teal); color: var(--cream); }
+  .ev-deadline { background: rgba(196,75,63,0.1); color: var(--red); }
+  .ev-delivery { background: rgba(58,125,92,0.1); color: var(--green); }
+
+  /* Sections */
+  .section { margin-bottom: 24px; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 16px 20px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); user-select: none; }
+  .section-header:hover { background: var(--surface); }
+  .section-header h2 { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 400; }
+  .count { font-size: 0.75rem; color: var(--muted); font-weight: 500; }
+  .chevron { font-size: 0.8rem; color: var(--muted); transition: transform 0.3s; }
+  .section.open .chevron { transform: rotate(180deg); }
+  .section-body { display: none; padding: 16px 0 0; }
+  .section.open .section-body { display: block; }
+
+  /* Cards */
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; position: relative; }
+  .card:hover { border-color: var(--gold); }
+  .card-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; padding-right: 40px; line-height: 1.35; }
+  .card-detail { font-size: 0.76rem; color: var(--muted); line-height: 1.45; }
+  .card-tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .tag { font-size: 0.65rem; padding: 2px 8px; border-radius: 3px; font-weight: 500; }
+  .tag-david { background: rgba(58,107,140,0.1); color: var(--blue); }
+  .tag-jade { background: rgba(212,165,116,0.15); color: var(--amber); }
+  .tag-tina { background: rgba(58,125,92,0.1); color: var(--green); }
+  .tag-ai { background: rgba(16,43,38,0.08); color: var(--teal); }
+  .tag-deadline { background: rgba(196,75,63,0.08); color: var(--red); }
+  .tag-new { background: rgba(58,125,92,0.12); color: var(--green); font-weight: 700; }
+  .badge { position: absolute; top: 12px; right: 12px; font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 3px; }
+  .badge-revenue { background: var(--green); color: white; }
+  .badge-protect { background: var(--sage); color: white; }
+  .badge-new { background: var(--gold); color: white; }
+
+  /* Callout */
+  .callout { background: var(--white); border-left: 3px solid var(--gold); border-radius: 0 var(--radius) var(--radius) 0; padding: 16px 20px; margin-bottom: 12px; border: 1px solid var(--border); border-left: 3px solid var(--gold); }
+  .callout-source { font-size: 0.7rem; color: var(--gold); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .callout-text { font-size: 0.85rem; font-style: italic; line-height: 1.5; }
+  .callout-attr { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+
+  /* Kill list */
+  .kill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .kill-item { display: flex; gap: 10px; padding: 12px 16px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); }
+  .kill-x { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; background: rgba(196,75,63,0.08); color: var(--red); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; }
+  .kill-name { font-size: 0.82rem; font-weight: 600; }
+  .kill-reason { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
+
+  /* Rhythm */
+  .rhythm-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .rhythm-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+  .rhythm-freq { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold); margin-bottom: 6px; }
+  .rhythm-name { font-family: var(--font-heading); font-size: 1.05rem; margin-bottom: 8px; }
+  .rhythm-detail { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+  .rhythm-detail strong { color: var(--teal); }
+
+  .section-note { font-size: 0.8rem; color: var(--muted); padding: 12px 16px; background: var(--surface); border-radius: var(--radius); margin-bottom: 12px; line-height: 1.5; }
+  .section-note strong { color: var(--teal); }
+
+  /* Footer */
+  .page-footer { text-align: center; padding: 32px; font-size: 0.75rem; color: var(--muted); }
+
+  @media print {
+    .section-body { display: block !important; }
+    .chevron { display: none; }
+    body { background: white; }
+    .page-header, .truth-banner { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+  @media (max-width: 768px) {
+    .truth-grid { grid-template-columns: 1fr 1fr; }
+    .strategy-inner { grid-template-columns: 1fr; gap: 20px; }
+    .card-grid, .kill-grid { grid-template-columns: 1fr; }
+    .rhythm-grid { grid-template-columns: 1fr; }
+    .timeline-strip { grid-template-columns: repeat(3, 1fr); }
+    .page-header h1 { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="page-header">
+  <div class="container">
+    <div class="subtitle">Strategic Roadmap v2</div>
+    <h1>Q2-Q3 2026 Operating Plan</h1>
+    <div class="meta-row">
+      <span>April 1, 2026</span>
+      <span>David, Jade, Tina</span>
+      <span>Growth Model: B2B Acquisition + Partnerships</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ HARD TRUTHS ═══ -->
+<div class="truth-banner">
+  <div class="container">
+    <div style="margin-bottom:16px;">
+      <div class="focus-label" style="color:rgba(244,239,233,0.4);">Reality Check - Where We Actually Are</div>
+    </div>
+    <div class="truth-grid">
+      <div class="truth-card">
+        <div class="truth-number">~15</div>
+        <div class="truth-label">Active salon accounts (3+ orders)</div>
+        <div class="truth-note">Not 50. Many B2B-tagged accounts are samples/tests.</div>
+      </div>
+      <div class="truth-card">
+        <div class="truth-number">42.7%</div>
+        <div class="truth-label">Revenue from top 2 accounts</div>
+        <div class="truth-note">Concentration risk. One quiet week = $559 revenue.</div>
+      </div>
+      <div class="truth-card">
+        <div class="truth-number">8 of 55</div>
+        <div class="truth-label">Initiatives that directly generate revenue</div>
+        <div class="truth-note">The other 47 are infrastructure or brand-building.</div>
+      </div>
+      <div class="truth-card">
+        <div class="truth-number">1.7%</div>
+        <div class="truth-label">Cold email reply rate (benchmark: 4-8%)</div>
+        <div class="truth-note">Cold email is a tactic, not a strategy at this rate.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STRATEGY ═══ -->
+<div class="strategy-banner">
+  <div class="container">
+    <div class="strategy-inner">
+      <div>
+        <div class="focus-label">Growth Model</div>
+        <div class="focus-statement">Fix how we acquire salons. Pursue high-impact partnerships. Let DTC compound in the background.</div>
+        <div class="model-pills">
+          <span class="pill pill-primary">Primary: Salon Acquisition</span>
+          <span class="pill pill-secondary">Secondary: Partnerships</span>
+          <span class="pill pill-supporting">Supporting: DTC Pull</span>
+          <span class="pill pill-kill">Kill: 30+ low-impact tasks</span>
+        </div>
+      </div>
+      <div>
+        <div class="focus-label">Q2 Goals (12-Week Cycle)</div>
+        <div style="font-size:0.88rem;line-height:1.6;">
+          <strong>1. Double the active salon base from ~15 to ~30</strong><br>
+          <span style="color:var(--muted);font-size:0.78rem;">Referrals, product seeding, distributor deals, treatment menu</span><br><br>
+          <strong>2. Execute IPSY + C.O. Bigelow without dropping reorders</strong><br>
+          <span style="color:var(--muted);font-size:0.78rem;">Terms by Apr 15, production by Jun 1, reorder automation live by Apr 18</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ═══ TIMELINE ═══ -->
+<div class="timeline-strip">
+  <div class="timeline-month now">
+    <div class="month-name">April</div>
+    <div class="timeline-event ev-deadline">IPSY terms Apr 15</div>
+    <div class="timeline-event ev-deadline">Reorder flow live</div>
+  </div>
+  <div class="timeline-month now">
+    <div class="month-name">May</div>
+    <div class="timeline-event ev-tentpole">C.O. Bigelow Launch</div>
+    <div class="timeline-event ev-delivery">Product seeding starts</div>
+  </div>
+  <div class="timeline-month now">
+    <div class="month-name">June</div>
+    <div class="timeline-event ev-delivery">IPSY production</div>
+    <div class="timeline-event ev-delivery">Treatment menu pilot</div>
+  </div>
+  <div class="timeline-month">
+    <div class="month-name">July</div>
+    <div class="timeline-event ev-tentpole">Cosmoprof Vegas</div>
+    <div class="timeline-event ev-delivery">IPSY delivery</div>
+  </div>
+  <div class="timeline-month">
+    <div class="month-name">August</div>
+    <div class="timeline-event" style="background:rgba(125,132,113,0.1);color:var(--sage);">BITE prep</div>
+  </div>
+  <div class="timeline-month">
+    <div class="month-name">September</div>
+    <div class="timeline-event ev-tentpole">BITE Exhibit</div>
+    <div class="timeline-event ev-delivery">IPSY in Glam Bags</div>
+  </div>
+</div>
+
+<!-- ═══ PRIMARY: SALON ACQUISITION ═══ -->
+<div class="section open" id="sec-salons">
+  <div class="section-header" onclick="toggle('sec-salons')">
+    <h2>Primary: Fix the Salon Acquisition Engine</h2>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="pill pill-primary" style="font-size:0.6rem;">PRIMARY</span>
+      <span class="count">11 initiatives</span>
+      <span class="chevron">&#9660;</span>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="callout">
+      <div class="callout-source">What K18 Did (20,000 salons in 18 months)</div>
+      <div class="callout-text">"Thousands upon thousands of Zooms with stylists." Sent physical product for personal use. Built a private Facebook group. NOT cold email.</div>
+      <div class="callout-attr">Suveen Sahib, K18 Co-founder - TheIndustry.beauty [VERIFIED]</div>
+    </div>
+
+    <div class="section-note">
+      <strong>Constraint:</strong> Tina's role is advisory - she's not doing weekly sales calls. Her trichologist credentials are a brand asset (name on protocol cards, authority in collateral), not an operational resource. The acquisition engine runs on David + Jade + sales infrastructure.
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <span class="badge badge-new">NEW</span>
+        <div class="card-title">Pivot Cold Email to Product Seeding</div>
+        <div class="card-detail">Stop selling by email. New offer: "We'd like to send you a complimentary set to experience on your own scalp." Product-in-hand converts; cold pitches don't at 1.7%. Every comparable brand converted their first 100 salons through demonstration, not persuasion copy.</div>
+        <div class="card-tags">
+          <span class="tag tag-new">NEW INITIATIVE</span>
+          <span class="tag tag-david">David</span>
+          <span class="tag tag-ai">AI Agent</span>
+          <span class="tag tag-deadline">Apr 14 pivot</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge badge-revenue">$$$</span>
+        <div class="card-title">Referral Program from Existing 15</div>
+        <div class="card-detail">One email to 15 active accounts: "Know a salon that would benefit? We'll send them a free protocol kit." If 4 refer and 2 convert, that's a 13% growth in active base at zero acquisition cost.</div>
+        <div class="card-tags">
+          <span class="tag tag-david">David</span>
+          <span class="tag tag-ai">AI Agent</span>
+          <span class="tag tag-deadline">Apr 7</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge badge-new">NEW</span>
+        <div class="card-title">AWARE Scalp Ritual - Treatment Menu Protocol</div>
+        <div class="card-detail">1-page protocol card: 45-60 min salon service using AWARE's 3-product system. Salon charges $50-80 per treatment. Creates back-bar consumption AND retail conversation. Scalp services up 88% YoY. Pilot with 5 existing salons.</div>
+        <div class="card-tags">
+          <span class="tag tag-new">NEW INITIATIVE</span>
+          <span class="tag tag-tina">Tina (protocol)</span>
+          <span class="tag tag-jade">Jade (collateral)</span>
+          <span class="tag tag-deadline">May pilot</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge badge-revenue">$$$</span>
+        <div class="card-title">SKU Penetration Audit + Upsell Calls</div>
+        <div class="card-detail">How many of ~15 active salons carry the full 3-product protocol? Audit first, then David makes 5-10 calls in one afternoon. Fastest revenue from existing base.</div>
+        <div class="card-tags">
+          <span class="tag tag-david">David</span>
+          <span class="tag tag-ai">AI Agent</span>
+          <span class="tag tag-deadline">Apr 4 audit, Apr 7 calls</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge badge-new">NEW</span>
+        <div class="card-title">B2B Auto-Replenishment for Top 15</div>
+        <div class="card-detail">Convert active salons to auto-ship with 5-8% discount. SENTINEL already flags reorder timing. Locks in $3,000-8,000/month predictable revenue. Reduces churn friction.</div>
+        <div class="card-tags">
+          <span class="tag tag-new">NEW INITIATIVE</span>
+          <span class="tag tag-david">David</span>
+          <span class="tag tag-deadline">Apr 18</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge badge-protect">PROTECT</span>
+        <div class="card-title">Reorder Automation Flow (Klaviyo + N8N)</div>
+        <div class="card-detail">Flag at day 35, follow-up at day 42. Protects the 96% reorder rate. Non-negotiable before pushing past current base. Infrastructure, not strategy.</div>
+        <div class="card-tags">
+          <span class="tag tag-ai">AI Agent</span>
+          <span class="tag tag-deadline">Apr 18 HARD</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Distributor Partnerships (SBP, Canrad)</div>
+        <div class="card-detail">Distributors are the scaling mechanism. SBP handles what David can't do alone. Canrad opens Canada. These are the bridge from 30 salons to 100+. Follow up April 7 if no response.</div>
+        <div class="card-tags">
+          <span class="tag tag-david">David</span>
+          <span class="tag tag-deadline">Apr 7 follow-up</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">KM Referral Asks (10-15 Top Partners)</div>
+        <div class="card-detail">Kevin Murphy expanded to SalonCentric. 714 KM salons identified. 3 referral ask templates for top engaged partners. 30-minute David task.</div>
+        <div class="card-tags">
+          <span class="tag tag-david">David</span>
+          <span class="tag tag-deadline">Apr 4</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge badge-new">NEW</span>
+        <div class="card-title">Activate Olivia Fishburn (One Credible Advocate)</div>
+        <div class="card-detail">Olaplex grew from ONE person (Tracey Cunningham). Olivia (Nashville DSC) is already an AWARE champion and bridge to McKenzie Barbo for distribution. One 20-minute call: "What would it take for you to actively recommend us to other salons?" This is higher leverage than any system.</div>
+        <div class="card-tags">
+          <span class="tag tag-new">NEW INITIATIVE</span>
+          <span class="tag tag-david">David</span>
+          <span class="tag tag-deadline">THIS WEEK</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge badge-new">NEW</span>
+        <div class="card-title">Scalp Report as B2B Sales Tool</div>
+        <div class="card-detail">Reframe: salons use the Scalp Report during appointments as a consultation tool. Client enters zip code, sees local UV/water/pollen data, stylist recommends AWARE protocol. Turns a DTC asset into salon sales enablement. Create a 1-page "Salon Guide to the Scalp Report" for partners.</div>
+        <div class="card-tags">
+          <span class="tag tag-new">NEW INITIATIVE</span>
+          <span class="tag tag-david">David</span>
+          <span class="tag tag-ai">AI Agent</span>
+          <span class="tag tag-deadline">Apr 14</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge badge-new">NEW</span>
+        <div class="card-title">Monthly Zoom: "Scalp Science for Stylists"</div>
+        <div class="card-detail">K18 did "thousands of Zooms." Tina can't, but David hosts a monthly 30-min Zoom using Tina's content (she reviews script, 1 hr/month). Invite cold email list + current salons. A Zoom is warmer than an email, costs $0, and converts through education not selling.</div>
+        <div class="card-tags">
+          <span class="tag tag-new">NEW INITIATIVE</span>
+          <span class="tag tag-david">David (host)</span>
+          <span class="tag tag-tina">Tina (1hr/mo)</span>
+          <span class="tag tag-deadline">First event May</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECONDARY: PARTNERSHIPS ═══ -->
+<div class="section open" id="sec-partnerships">
+  <div class="section-header" onclick="toggle('sec-partnerships')">
+    <h2>Secondary: Strategic Partnerships (Revenue Spikes)</h2>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="pill pill-secondary" style="font-size:0.6rem;">SECONDARY</span>
+      <span class="count">6 initiatives</span>
+      <span class="chevron">&#9660;</span>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="callout">
+      <div class="callout-source">Why Partnerships Matter at This Stage</div>
+      <div class="callout-text">IPSY alone ($86K) is larger than months of normal salon operations. One C.O. Bigelow placement could create more brand credibility than a year of content. Partnerships provide lumpy revenue spikes that fund the steady B2B build.</div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <span class="badge badge-revenue">$86K</span>
+        <div class="card-title">IPSY 200K-Unit Deal Execution</div>
+        <div class="card-detail">Terms negotiation (Apr 15), BOOM Lab capacity confirmation (May 1), production start (Jun 1), delivery Jul 6-17. Cash flow gap needs solving - check Shopify Capital this week.</div>
+        <div class="card-tags">
+          <span class="tag tag-david">David</span>
+          <span class="tag tag-deadline">Apr 15 terms</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge badge-revenue">$$$</span>
+        <div class="card-title">C.O. Bigelow Store Launch</div>
+        <div class="card-detail">Late May. Retail placement in iconic NYC store. Requires product allocation, brand collateral, staff training guide. All 3 founders' effort needed.</div>
+        <div class="card-tags">
+          <span class="tag tag-jade">Jade (lead)</span>
+          <span class="tag tag-david">David</span>
+          <span class="tag tag-tina">Tina</span>
+          <span class="tag tag-deadline">Late May</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Cosmoprof Vegas / Beauty Vanities</div>
+        <div class="card-detail">July exhibition. Pre-show outreach to attendees (highest ROI activity per trade show research). Product seeding kits for demo. All 3 founders attend.</div>
+        <div class="card-tags">
+          <span class="tag tag-david">David</span>
+          <span class="tag tag-jade">Jade</span>
+          <span class="tag tag-tina">Tina</span>
+          <span class="tag tag-deadline">July</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">BITE Exhibit</div>
+        <div class="card-detail">September. Prep begins August. Same playbook as Cosmoprof: pre-show outreach, product seeding, treatment demo at booth.</div>
+        <div class="card-tags">
+          <span class="tag tag-david">David</span>
+          <span class="tag tag-jade">Jade</span>
+          <span class="tag tag-tina">Tina</span>
+          <span class="tag tag-deadline">September</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge badge-new">NEW</span>
+        <div class="card-title">Barbershop / Men's Grooming Channel Test</div>
+        <div class="card-detail">$5.8B US industry. Men's scalp conversations up 17.6% YoY. AWARE's gender-neutral positioning is unused here. Create barbershop one-pager, adapt existing cold email sequences, test 20-30 targets.</div>
+        <div class="card-tags">
+          <span class="tag tag-new">NEW INITIATIVE</span>
+          <span class="tag tag-ai">AI Agent</span>
+          <span class="tag tag-david">David</span>
+          <span class="tag tag-deadline">May</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge badge-new">NEW</span>
+        <div class="card-title">SalonInteractive Digital Shelf</div>
+        <div class="card-detail">B2B ecommerce platform, integrated with SalonCentric/CosmoProf/Square. 500+ brands listed. Ask Noah (SBP) or Canrad if they're integrated. Could be a 24-hr activation.</div>
+        <div class="card-tags">
+          <span class="tag tag-new">NEW INITIATIVE</span>
+          <span class="tag tag-david">David</span>
+          <span class="tag tag-deadline">Next distributor call</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SUPPORTING: DTC PULL ═══ -->
+<div class="section" id="sec-dtc">
+  <div class="section-header" onclick="toggle('sec-dtc')">
+    <h2>Supporting: DTC Pull (Compounds in Background)</h2>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="pill pill-supporting" style="font-size:0.6rem;">SUPPORTING</span>
+      <span class="count">5 initiatives</span>
+      <span class="chevron">&#9660;</span>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="callout">
+      <div class="callout-source">The Innersense Lesson</div>
+      <div class="callout-text">B2B push alone took 12 years and nearly killed the company. Consumer demand pulling salons only began after 2018. Today, scalp care has real consumer search demand - so modest DTC investment creates the pull effect faster.</div>
+      <div class="callout-attr">Beauty Independent, Glossy [VERIFIED]</div>
+    </div>
+
+    <div class="section-note">
+      <strong>Rule:</strong> Do not create new content. Ship what's already drafted. The blog pipeline (4 posts), email flows (4 emails), and Scalp Report are all built - they just need publishing. Zero new creation in Q2.
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title">Scalp Report Funnel + Welcome Flow</div>
+        <div class="card-detail">Already built. Get the 5-email welcome sequence live in Klaviyo. This is the DTC conversion mechanism. Every other DTC effort is wasted without it.</div>
+        <div class="card-tags">
+          <span class="tag tag-ai">AI Agent</span>
+          <span class="tag tag-deadline">Apr 14 HARD</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Publish 4 Blog Posts (Already Drafted)</div>
+        <div class="card-detail">Best Scalp Care, GLP-1 Guide, Menopause Guide, Science Page. All drafted. Final review and Shopify publish. SEO compounds over 6-18 months.</div>
+        <div class="card-tags">
+          <span class="tag tag-ai">AI Agent</span>
+          <span class="tag tag-deadline">Apr 14</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">DTC Spring Email Campaign</div>
+        <div class="card-detail">4 emails built with hero images. Deploy to existing Klaviyo segments. Revenue from existing DTC list.</div>
+        <div class="card-tags">
+          <span class="tag tag-ai">AI Agent</span>
+          <span class="tag tag-deadline">Apr 7</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge badge-new">NEW</span>
+        <div class="card-title">TikTok Creator Seeding (10-20 Creators)</div>
+        <div class="card-detail">Scalp content: 20M weekly views, +107% YoY. Seed micro-creators with product kits + note from Tina (uses her name, not her time). Cost: $600-1,200. No paid requirement. Asymmetric upside.</div>
+        <div class="card-tags">
+          <span class="tag tag-new">NEW INITIATIVE</span>
+          <span class="tag tag-jade">Jade</span>
+          <span class="tag tag-deadline">May</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Paid Ads Pilot ($500/mo)</div>
+        <div class="card-detail">Only boost proven organic. Kill at $15/email capture. This is a test, not a commitment. Data by end of Q2 determines whether to scale or stop.</div>
+        <div class="card-tags">
+          <span class="tag tag-david">David</span>
+          <span class="tag tag-deadline">Apr 14 start</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AWARDS (REDUCED) ═══ -->
+<div class="section" id="sec-awards">
+  <div class="section-header" onclick="toggle('sec-awards')">
+    <h2>Awards (Reduced to 2)</h2>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="count">Only BeautyMatter + SHAPE</span>
+      <span class="chevron">&#9660;</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="section-note">
+      <strong>Why only 2:</strong> BeautyMatter is the only award with verified ROI (Allure data: 527% YoY lift from second seal). SHAPE is free (Google Form, 15 min). Everything else is cut - Beacon ($297), Popsugar (no deadline), and any future awards until active salon base exceeds 50.
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title">BeautyMatter NEXT Award</div>
+        <div class="card-detail">Early bird April 15, $550/entry. The one award worth paying for based on verified conversion data.</div>
+        <div class="card-tags">
+          <span class="tag tag-ai">AI Agent</span>
+          <span class="tag tag-deadline">Apr 15</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">SHAPE Beauty Awards</div>
+        <div class="card-detail">Free Google Form, ~15 minutes. Zero reason not to submit.</div>
+        <div class="card-tags">
+          <span class="tag tag-ai">AI Agent</span>
+          <span class="tag tag-deadline">Apr 30</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ KILL LIST ═══ -->
+<div class="section open" id="sec-kill">
+  <div class="section-header" onclick="toggle('sec-kill')">
+    <h2>Kill List (Explicit Stops)</h2>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="pill pill-kill" style="font-size:0.6rem;">KILL</span>
+      <span class="count">15+ items freed</span>
+      <span class="chevron">&#9660;</span>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="callout">
+      <div class="callout-source">Act+Acre said no to Sephora. Innersense rejected retail. K18 stayed salon-only by design.</div>
+      <div class="callout-text">"If something doesn't clearly help the customer or grow the business, it's a no."</div>
+      <div class="callout-attr">Katie Sturino, Megababe</div>
+    </div>
+
+    <div class="kill-grid">
+      <div class="kill-item">
+        <span class="kill-x">&times;</span>
+        <div>
+          <div class="kill-name">GEO Registrations (10 of 14 tasks)</div>
+          <div class="kill-reason">Keep Google Business + Bing + Wikidata (done). Kill Foursquare, Data Axle, DUNS, Featured, Perplexity, OpenLens, Trustpilot. No evidence these drive acquisition.</div>
+        </div>
+      </div>
+      <div class="kill-item">
+        <span class="kill-x">&times;</span>
+        <div>
+          <div class="kill-name">LinkedIn AI Series (Ep 2-8)</div>
+          <div class="kill-reason">Salon owners don't buy on LinkedIn. Publish Ep 1, stop.</div>
+        </div>
+      </div>
+      <div class="kill-item">
+        <span class="kill-x">&times;</span>
+        <div>
+          <div class="kill-name">Reddit Presence Building</div>
+          <div class="kill-reason">Low ROI for B2B-first model. Revisit if/when DTC becomes primary.</div>
+        </div>
+      </div>
+      <div class="kill-item">
+        <span class="kill-x">&times;</span>
+        <div>
+          <div class="kill-name">Beacon Awards ($297)</div>
+          <div class="kill-reason">No verified ROI. Reallocate $297 to product seeding kits (ships ~12 salon kits).</div>
+        </div>
+      </div>
+      <div class="kill-item">
+        <span class="kill-x">&times;</span>
+        <div>
+          <div class="kill-name">Popsugar Awards</div>
+          <div class="kill-reason">No deadline, consumer-facing, unclear B2B benefit.</div>
+        </div>
+      </div>
+      <div class="kill-item">
+        <span class="kill-x">&times;</span>
+        <div>
+          <div class="kill-name">Investor Warm Intro Mapping</div>
+          <div class="kill-reason">Decision trigger is $25-35K MRR. At $10K, materials will be stale before conversations are credible.</div>
+        </div>
+      </div>
+      <div class="kill-item">
+        <span class="kill-x">&times;</span>
+        <div>
+          <div class="kill-name">Stylist Ambassador Program</div>
+          <div class="kill-reason">Well-designed, wrong timing. Need 100+ active accounts first. Defer Q4.</div>
+        </div>
+      </div>
+      <div class="kill-item">
+        <span class="kill-x">&times;</span>
+        <div>
+          <div class="kill-name">GlossGenius Partnership Pitch</div>
+          <div class="kill-reason">No clear revenue path. Lower priority than active distributor conversations.</div>
+        </div>
+      </div>
+      <div class="kill-item">
+        <span class="kill-x">&times;</span>
+        <div>
+          <div class="kill-name">Aggressive Meta Ads (Beyond $500 Pilot)</div>
+          <div class="kill-reason">Unit economics don't support cold acquisition. Test first, decide with data.</div>
+        </div>
+      </div>
+      <div class="kill-item">
+        <span class="kill-x">&times;</span>
+        <div>
+          <div class="kill-name">New Content Creation</div>
+          <div class="kill-reason">4 blog posts, 4 emails, and the Scalp Report are already drafted. Ship existing work. Zero new creation in Q2.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ OPERATING RHYTHM ═══ -->
+<div class="section" id="sec-rhythm">
+  <div class="section-header" onclick="toggle('sec-rhythm')">
+    <h2>Operating Rhythm</h2>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="count">60-75 min/week total</span>
+      <span class="chevron">&#9660;</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="rhythm-grid">
+      <div class="rhythm-card">
+        <div class="rhythm-freq">Monday - 30 min</div>
+        <div class="rhythm-name">Founder Sync (All 3)</div>
+        <div class="rhythm-detail">
+          Open with: <strong>"Is what we're doing this week acquiring salons or executing partnerships?"</strong> If the answer is neither, stop that work.<br><br>
+          Review: What moved? What's stuck? Any inbound that changes priorities?<br><br>
+          Each person confirms their top 3 for the week.
+        </div>
+      </div>
+      <div class="rhythm-card">
+        <div class="rhythm-freq">Friday - 30 min</div>
+        <div class="rhythm-name">Execution Score (David)</div>
+        <div class="rhythm-detail">
+          Score: <strong>What % of planned tasks got done?</strong><br><br>
+          Below 70% for 2 weeks = too many initiatives, something must be killed.<br><br>
+          Move completed items, pull next from backlog.
+        </div>
+      </div>
+      <div class="rhythm-card">
+        <div class="rhythm-freq">Monthly - 60 min</div>
+        <div class="rhythm-name">Roadmap Review (All 3)</div>
+        <div class="rhythm-detail">
+          Review this document. Ask: <strong>"What should we start, stop, or change?"</strong><br><br>
+          ICE-score any new opportunities. Update kill list.<br><br>
+          Check: Is anyone consistently over 80% capacity?
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RESEARCH INSIGHTS ═══ -->
+<div class="section" id="sec-research">
+  <div class="section-header" onclick="toggle('sec-research')">
+    <h2>Research That Informed This Plan</h2>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="count">See strategy/strategic-research-april-2026.md for full report</span>
+      <span class="chevron">&#9660;</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="callout">
+      <div class="callout-source">K18 - 20,000 Salons in 18 Months</div>
+      <div class="callout-text">"Thousands upon thousands of Zooms with stylists." Product-in-hand, not emails. Private community, not cold outreach.</div>
+      <div class="callout-attr">Suveen Sahib - TheIndustry.beauty, Glossy [VERIFIED]</div>
+    </div>
+    <div class="callout">
+      <div class="callout-source">Olaplex - One Person Changed Everything</div>
+      <div class="callout-text">Founder personally gave a bottle to celebrity colorist Tracey Cunningham. Her celebrity clients spread it. One credible advocate beat thousands of cold contacts.</div>
+      <div class="callout-attr">Multiple sources [VERIFIED]</div>
+    </div>
+    <div class="callout">
+      <div class="callout-source">Innersense - The 12-Year Warning</div>
+      <div class="callout-text">Tried B2B-only push for 12 years. Had $50,000 in payables with less than $50 in the bank. Only scaled when consumer demand pulled salons toward them post-2018.</div>
+      <div class="callout-attr">Greg Starkman - Beauty Independent [VERIFIED]</div>
+    </div>
+    <div class="callout">
+      <div class="callout-source">Kiku Chaudhuri, Shaz & Kiks</div>
+      <div class="callout-text">"We don't multitask larger initiatives. At any given time, the business has one primary focus."</div>
+      <div class="callout-attr">Beauty Independent, March 2026 [VERIFIED]</div>
+    </div>
+    <div class="callout">
+      <div class="callout-source">Scalp Service Economy</div>
+      <div class="callout-text">Scalp detox services up 88% YoY. Scalp facials up 67%. TikTok scalp content: 20M weekly views, +107% YoY growth. No professional brand owns the treatment protocol space.</div>
+      <div class="callout-attr">GlossGenius Glossed 2024, Kline Group, BeautyMatter [VERIFIED]</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<footer class="page-footer">
+  AWARE Hair - Strategic Roadmap Q2-Q3 2026 (v2) - April 1, 2026<br>
+  Growth Model: B2B Acquisition + Partnerships | ~23 initiatives (down from 55)<br>
+  Full research: strategy/strategic-research-april-2026.md
+</footer>
+
+<script>
+function toggle(id) { document.getElementById(id).classList.toggle('open'); }
+window.addEventListener('beforeprint', () => document.querySelectorAll('.section').forEach(s => s.classList.add('open')));
+</script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Q1 2026 Progress Review</title>
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #102B26;
+    --cream: #f4efe9;
+    --surface: #faf8f5;
+    --white: #ffffff;
+    --gold: #D4A574;
+    --gold-light: rgba(212,165,116,0.1);
+    --sage: #7d8471;
+    --sage-light: #a8b09e;
+    --border: #e2ddd6;
+    --text-secondary: #5a6b5e;
+    --red-soft: #c45d4a;
+    --green-soft: #4a8c6a;
+    --amber-soft: #c49a4a;
+    --black-soft: #3a3a3a;
+    --font-heading: 'orpheus-pro', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-mono: 'DM Mono', 'SF Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-body); background: var(--cream); color: var(--teal); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  /* Header */
+  .header { background: var(--teal); color: var(--cream); padding: 56px 0 48px; position: relative; overflow: hidden; }
+  .header::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 20%, rgba(212,165,116,0.08) 0%, transparent 60%); pointer-events: none; }
+  .header-inner { max-width: 1120px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+  .header-eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  .header h1 { font-family: var(--font-heading); font-size: 42px; font-weight: 400; letter-spacing: -0.3px; line-height: 1.15; }
+  .header-sub { font-size: 15px; color: var(--sage-light); margin-top: 8px; max-width: 720px; line-height: 1.6; }
+  .header-date { font-family: var(--font-mono); font-size: 12px; color: var(--sage-light); margin-top: 20px; letter-spacing: 0.5px; }
+
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 32px; }
+
+  /* Metrics Strip */
+  .metrics-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); margin: -24px 32px 0; max-width: 1056px; margin-left: auto; margin-right: auto; border-radius: 8px; overflow: hidden; position: relative; z-index: 2; box-shadow: 0 1px 3px rgba(16,43,38,0.06), 0 8px 24px rgba(16,43,38,0.04); }
+  .metric-card { background: white; padding: 28px 20px; text-align: center; }
+  .metric-value { font-family: var(--font-heading); font-size: 36px; font-weight: 400; color: var(--teal); line-height: 1.1; }
+  .metric-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--sage); margin-top: 6px; font-weight: 500; }
+  .metric-note { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+  /* Sections */
+  section { padding: 56px 0; }
+  section + section { border-top: 1px solid var(--border); }
+  .section-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+  .section-number { font-family: var(--font-mono); font-size: 12px; color: var(--gold); min-width: 20px; }
+  h2 { font-family: var(--font-heading); font-size: 26px; font-weight: 400; letter-spacing: -0.2px; }
+  .section-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 32px; max-width: 720px; line-height: 1.7; }
+
+  /* Cards */
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card-grid.two-col { grid-template-columns: repeat(2, 1fr); }
+
+  .review-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 300ms ease, box-shadow 300ms ease;
+    position: relative;
+  }
+  .review-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16,43,38,0.06), 0 12px 32px rgba(16,43,38,0.04);
+  }
+
+  .card-badge-row { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; white-space: nowrap; }
+  .b-amber { background: rgba(196,154,74,0.1); color: var(--amber-soft); }
+  .b-green { background: rgba(74,140,106,0.1); color: var(--green-soft); }
+  .b-gold { background: var(--gold-light); color: #8b6b3d; }
+
+  .card-headline { font-family: var(--font-heading); font-size: 20px; font-weight: 400; margin-bottom: 12px; line-height: 1.3; letter-spacing: -0.1px; }
+  .card-detail { font-size: 13.5px; color: var(--text-secondary); line-height: 1.7; flex: 1; }
+  .card-detail .hl { color: var(--teal); font-weight: 600; }
+
+  /* Card links */
+  .card-links { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0; }
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--teal);
+    text-decoration: none;
+    padding: 6px 0;
+    transition: color 200ms ease;
+  }
+  .card-link:hover { color: var(--gold); }
+  .card-link svg { width: 14px; height: 14px; flex-shrink: 0; transition: transform 200ms ease; }
+  .card-link:hover svg { transform: translateX(2px); }
+
+  .card-link-list { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0; }
+  .card-link-list .card-link { font-size: 12.5px; }
+  .card-link-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.5px; color: var(--sage); margin-right: 4px; }
+
+  .coming-soon { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--sage-light); padding: 4px 10px; background: var(--surface); border-radius: 100px; display: inline-block; }
+
+  /* Footer */
+  .footer { padding: 40px 0; border-top: 1px solid var(--border); text-align: center; }
+  .footer p { font-size: 12px; color: var(--sage); line-height: 1.8; }
+  .footer .confidential { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+
+  /* Strategic Context */
+  .strategic-context { padding: 56px 0 40px; max-width: 100%; }
+  .thesis { border-left: 4px solid var(--gold); padding-left: 24px; font-family: var(--font-heading); font-style: italic; font-size: 18px; color: var(--teal); margin-bottom: 48px; line-height: 1.6; }
+
+  /* Flywheel */
+  .flywheel { margin-bottom: 0; }
+  .flywheel-title { font-family: var(--font-heading); font-size: 28px; font-weight: 400; text-align: center; margin-bottom: 32px; letter-spacing: -0.2px; }
+  .flywheel-node { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 20px; text-align: center; }
+  .flywheel-node .node-num { font-family: var(--font-mono); font-size: 10px; color: var(--gold); letter-spacing: 2px; display: block; margin-bottom: 6px; }
+  .flywheel-node .node-title { font-family: var(--font-body); font-weight: 600; font-size: 14px; color: var(--teal); margin-bottom: 4px; }
+  .flywheel-node .node-desc { font-family: var(--font-body); font-size: 12px; color: var(--sage); margin: 6px 0; line-height: 1.5; }
+  .flywheel-node .node-tags { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-top: 8px; }
+  .flywheel-tag { font-size: 9px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 8px; background: var(--surface); border-radius: 100px; color: var(--sage); }
+  .flywheel-arrow { color: var(--gold); text-align: center; font-size: 20px; padding: 4px 0; }
+  .flywheel-row { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 8px; }
+  .flywheel-vertical { text-align: center; padding: 8px 0; color: var(--gold); font-size: 20px; }
+  .flywheel-vertical-row { display: flex; justify-content: space-between; padding: 0 10%; }
+  .flywheel-caption { text-align: center; font-style: italic; color: var(--sage); font-size: 14px; margin-top: 24px; margin-bottom: 48px; }
+
+  /* Priority Grid */
+  .priority-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 24px; }
+  .priority-col { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+  .priority-header { background: var(--teal); color: var(--cream); padding: 16px 20px; font-family: var(--font-heading); font-size: 16px; font-weight: 400; }
+  .priority-header .priority-num { font-family: var(--font-mono); font-size: 10px; color: var(--gold); letter-spacing: 2px; display: block; margin-bottom: 4px; }
+  .priority-item { padding: 16px 20px; border-bottom: 1px solid var(--border); }
+  .priority-item:last-child { border-bottom: none; }
+  .priority-item .item-name { font-family: var(--font-body); font-weight: 600; font-size: 13px; margin-bottom: 4px; color: var(--teal); }
+  .priority-item .item-role { font-family: var(--font-body); font-size: 11px; color: var(--sage); line-height: 1.5; }
+  .priority-foundation { margin-top: 16px; padding: 20px; background: var(--surface); border-radius: 8px; text-align: center; font-size: 13px; color: var(--sage); }
+  .priority-foundation strong { color: var(--teal); }
+  .priority-map-title { font-family: var(--font-heading); font-size: 22px; font-weight: 400; margin-bottom: 8px; color: var(--teal); letter-spacing: -0.1px; }
+  .priority-map-subtitle { font-family: var(--font-body); font-size: 13px; color: var(--sage); margin-bottom: 24px; }
+
+  /* 90-Day Priorities */
+  .tier-block { margin-bottom: 24px; }
+  .tier-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 6px 14px; border-radius: 100px; display: inline-block; margin-bottom: 12px; }
+  .tier-nn { background: var(--teal); color: var(--cream); }
+  .tier-hv { background: var(--gold); color: white; }
+  .tier-ic { background: var(--surface); color: var(--sage); border: 1px solid var(--border); }
+  .tier-items { list-style: none; padding: 0; }
+  .tier-items li { padding: 8px 0; font-size: 14px; border-bottom: 1px solid var(--border); color: var(--teal); line-height: 1.6; }
+  .tier-items li:last-child { border-bottom: none; }
+
+  /* Revenue Bridge */
+  .revenue-bridge { margin: 40px 0; }
+  .revenue-bridge table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .revenue-bridge th { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--teal); color: var(--sage); }
+  .revenue-bridge td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--teal); }
+  .revenue-bridge tr:last-child td { font-weight: 600; border-bottom: 2px solid var(--teal); }
+  .revenue-note { font-size: 13px; color: var(--sage); margin-top: 12px; font-style: italic; line-height: 1.6; }
+
+  /* Decision Cards */
+  .decision-card { padding: 20px 24px; border-left: 4px solid var(--gold); background: white; border-radius: 0 8px 8px 0; margin-bottom: 16px; }
+  .decision-title { font-family: var(--font-body); font-weight: 600; font-size: 15px; margin-bottom: 6px; color: var(--teal); }
+  .decision-body { font-size: 13px; color: var(--sage); line-height: 1.6; }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .card-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .metrics-strip { grid-template-columns: repeat(3, 1fr); }
+    .metrics-strip .metric-card:nth-child(4),
+    .metrics-strip .metric-card:nth-child(5) { grid-column: span 1; }
+    .card-grid, .card-grid.two-col { grid-template-columns: 1fr; }
+    .header h1 { font-size: 32px; }
+    .header { padding: 40px 0 36px; }
+    .section-desc { margin-bottom: 24px; }
+    .review-card { padding: 24px; }
+    .flywheel-row { display: flex; flex-direction: column; }
+    .priority-grid { grid-template-columns: 1fr; }
+    .flywheel-vertical-row { flex-direction: column; align-items: center; }
+  }
+  @media (max-width: 520px) {
+    .metrics-strip { grid-template-columns: repeat(2, 1fr); }
+    .container { padding: 0 20px; }
+    .metrics-strip { margin-left: 20px; margin-right: 20px; }
+  }
+
+  /* Print */
+  @media print {
+    .header { padding: 24px 0; }
+    .metrics-strip { margin-top: 0; box-shadow: none; border: 1px solid var(--border); }
+    section { padding: 24px 0; break-inside: avoid; }
+    .review-card { break-inside: avoid; box-shadow: none; }
+    .review-card:hover { transform: none; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="header-eyebrow">Confidential - Internal Review</div>
+    <h1>Q1 2026 Progress Review</h1>
+    <div class="header-sub">
+      A comprehensive overview of AWARE Hair initiatives built March 2026. Ten workstreams spanning partnerships, growth systems, content infrastructure, and autonomous operations.
+      <a href="executive-summary.html" style="display: inline-block; margin-top: 12px; font-size: 13px; font-family: 'DM Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 2px;">Read Executive Summary</a>
+    </div>
+    <div class="header-date">March 2026</div>
+  </div>
+</header>
+
+<!-- Metrics Strip -->
+<div class="metrics-strip">
+  <div class="metric-card">
+    <div class="metric-value">16</div>
+    <div class="metric-label">Workstreams</div>
+    <div class="metric-note">Active initiatives</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value">25</div>
+    <div class="metric-label">Presentations</div>
+    <div class="metric-note">Detailed documents</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value">21</div>
+    <div class="metric-label">Blog Articles</div>
+    <div class="metric-note">Published guides</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value">7</div>
+    <div class="metric-label">Email Flows</div>
+    <div class="metric-note">Live in Klaviyo</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value">9</div>
+    <div class="metric-label">Engines</div>
+    <div class="metric-note">Autonomous systems</div>
+  </div>
+</div>
+
+<!-- Strategic Context -->
+<div class="strategic-context">
+  <div class="container">
+
+    <div class="thesis">
+      Our 96% B2B reorder rate is 2-3x the industry average. It is the moat. Everything we've built serves one system: converting organic attention into owned demand, which creates salon pull that is self-sustaining. The workstreams below are not independent projects - they are nodes in a single flywheel.
+    </div>
+
+    <h3 class="flywheel-title">The AWARE Flywheel</h3>
+
+    <div class="flywheel">
+      <div class="flywheel-row">
+        <div class="flywheel-node">
+          <div class="node-num">01</div>
+          <div class="node-title">Organic Content</div>
+          <div class="node-desc">18M views, untapped conversion</div>
+          <div class="node-tags">
+            <span class="flywheel-tag">Social Engine</span>
+            <span class="flywheel-tag">SEO</span>
+          </div>
+        </div>
+        <div class="flywheel-arrow">&rarr;</div>
+        <div class="flywheel-node">
+          <div class="node-num">02</div>
+          <div class="node-title">Lead Capture</div>
+          <div class="node-desc">Scalp Report converts visitors to email</div>
+          <div class="node-tags">
+            <span class="flywheel-tag">Scalp Report</span>
+          </div>
+        </div>
+        <div class="flywheel-arrow">&rarr;</div>
+        <div class="flywheel-node">
+          <div class="node-num">03</div>
+          <div class="node-title">Email Nurture</div>
+          <div class="node-desc">Personalized DTC conversion path</div>
+          <div class="node-tags">
+            <span class="flywheel-tag">Email Flows</span>
+            <span class="flywheel-tag">Paid Ads</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flywheel-vertical-row">
+        <div class="flywheel-vertical">&uarr;</div>
+        <div class="flywheel-vertical">&darr;</div>
+      </div>
+
+      <div class="flywheel-row">
+        <div class="flywheel-node">
+          <div class="node-num">06</div>
+          <div class="node-title">Brand Credibility</div>
+          <div class="node-desc">Authority compounds over time</div>
+          <div class="node-tags">
+            <span class="flywheel-tag">Awards</span>
+            <span class="flywheel-tag">IPSY</span>
+          </div>
+        </div>
+        <div class="flywheel-arrow">&larr;</div>
+        <div class="flywheel-node">
+          <div class="node-num">05</div>
+          <div class="node-title">Retention</div>
+          <div class="node-desc">96% reorder rate, protected by automation</div>
+          <div class="node-tags">
+            <span class="flywheel-tag">AI Team</span>
+            <span class="flywheel-tag">B2B Reorder</span>
+          </div>
+        </div>
+        <div class="flywheel-arrow">&larr;</div>
+        <div class="flywheel-node">
+          <div class="node-num">04</div>
+          <div class="node-title">Salon Growth</div>
+          <div class="node-desc">Consumer demand creates salon pull</div>
+          <div class="node-tags">
+            <span class="flywheel-tag">ISPA/KM</span>
+            <span class="flywheel-tag">Sales</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flywheel-caption">
+      DTC and B2B are not parallel streams. They are sequential and multiplicative.
+    </div>
+
+    <h3 class="priority-map-title">How It Maps to Our Three Priorities</h3>
+    <p class="priority-map-subtitle">Every workstream serves at least one strategic priority. Foundation elements enable all three.</p>
+
+    <div class="priority-grid">
+      <div class="priority-col">
+        <div class="priority-header">
+          <span class="priority-num">Priority 1</span>
+          Deepen Existing Accounts
+        </div>
+        <div class="priority-item">
+          <div class="item-name">Email Automation</div>
+          <div class="item-role">B2B reorder protection, Day 35-90 touchpoints</div>
+        </div>
+        <div class="priority-item">
+          <div class="item-name">AI Employee Team</div>
+          <div class="item-role">SENTINEL monitors reorder health per salon</div>
+        </div>
+      </div>
+
+      <div class="priority-col">
+        <div class="priority-header">
+          <span class="priority-num">Priority 2</span>
+          Convert Organic to Owned
+        </div>
+        <div class="priority-item">
+          <div class="item-name">Social Content Engine</div>
+          <div class="item-role">10 carousel types, automated rendering pipeline</div>
+        </div>
+        <div class="priority-item">
+          <div class="item-name">SEO &amp; Content Strategy</div>
+          <div class="item-role">16 articles, 13% to 80% visibility target</div>
+        </div>
+        <div class="priority-item">
+          <div class="item-name">Paid Social Strategy</div>
+          <div class="item-role">$500/mo boosting proven organic to Scalp Report</div>
+        </div>
+      </div>
+
+      <div class="priority-col">
+        <div class="priority-header">
+          <span class="priority-num">Priority 3</span>
+          Grow Salon Count
+        </div>
+        <div class="priority-item">
+          <div class="item-name">ISPA / KM Expansion</div>
+          <div class="item-role">Spa vertical entry, 350+ director targets</div>
+        </div>
+        <div class="priority-item">
+          <div class="item-name">Sales Pipeline</div>
+          <div class="item-role">136 SoCal targets, cold email automation</div>
+        </div>
+        <div class="priority-item">
+          <div class="item-name">KM Campaign</div>
+          <div class="item-role">Salon-exclusive positioning playbook</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="priority-foundation">
+      <strong>Foundation</strong> - Manufacturing (Boom Lab), IPSY Partnership, Awards Pipeline - these enable all three priorities
+    </div>
+
+  </div>
+</div>
+
+<!-- Section 1: Strategic Partnerships -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <h2>Strategic Partnerships</h2>
+    </div>
+    <p class="section-desc">
+      Three partnership initiatives that define AWARE's growth trajectory: a major sampling opportunity, spa vertical expansion, and manufacturing renegotiation.
+    </p>
+
+    <div class="card-grid two-col">
+
+      <!-- Card 1: IPSY -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-amber">Decision Needed</span>
+        </div>
+        <div class="card-headline">$86K revenue opportunity</div>
+        <div class="card-detail">
+          200K-unit sampling for September Glam Bag. Expected <span class="hl">+$12K profit</span> (14% margin). 200K brand impressions worth $100-200K in equivalent media value. Out List cleared March 25 - next step: negotiate Net 30 terms.
+        </div>
+        <div class="card-links">
+          <a href="../opportunities/ipsy-partnership/ipsy-partnership-presentation.html" class="card-link">
+            View Full Analysis
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 2: ISPA -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-green">In Progress</span>
+        </div>
+        <div class="card-headline">350+ spa director targets</div>
+        <div class="card-detail">
+          Complete trade show package for ISPA Conference booth #417 targeting 350+ spa directors. 5 presentations, 3 print-ready assets, 1 luxury spa line sheet.
+        </div>
+        <div class="card-links">
+          <a href="../opportunities/meetings/ispa-2026-brand.html" class="card-link">Brand Deck <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../opportunities/meetings/ispa-2026-pricing.html" class="card-link">Pricing <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../opportunities/meetings/ispa-2026-protocol.html" class="card-link">Protocol <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../opportunities/meetings/ispa-2026-qr-landing.html" class="card-link">QR Landing <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../opportunities/meetings/ispa-2026-training-brief-slide.html" class="card-link">Training Brief <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../opportunities/meetings/ispa-2026-booth-cheat-sheet.html" class="card-link">Booth Cheat Sheet <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../opportunities/meetings/ispa-2026-faq-sheet.html" class="card-link">FAQ Sheet <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../sales/outreach/ispa-luxury-spa-line-sheet.html" class="card-link">Luxury Spa Line Sheet <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Card 3: Boom Lab -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-green">Negotiated</span>
+        </div>
+        <div class="card-headline">$21K credit recovered, 12K units secured</div>
+        <div class="card-detail">
+          Renegotiated contract: four production runs of 3,000 units through March 2027. Updated pricing (<span class="hl">$3.85 shampoo</span>, <span class="hl">$3.25 conditioner</span>). First PO ready for execution at $8,768 net after credit.
+        </div>
+        <div class="card-links">
+          <a href="../opportunities/boom-lab-negotiation-summary-march25.html" class="card-link">
+            View Negotiation Summary
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card: KM Salon Expansion -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-green">Ready</span>
+        </div>
+        <div class="card-headline">Salon-exclusive positioning playbook</div>
+        <div class="card-detail">
+          Full campaign presentation for salon acquisition. Data-driven disruption strategy targeting the professional-only channel. Positions AWARE's <span class="hl">96% reorder rate</span> as the conversion argument for new salon partners.
+        </div>
+        <div class="card-links">
+          <a href="../marketing/km-campaign-presentation.html" class="card-link">
+            View Campaign Deck
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+          </a>
+          <a href="../marketing/km-campaign-hub.html" class="card-link">Campaign Hub <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Card: Distribution Pipeline -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-green">Active</span>
+        </div>
+        <div class="card-headline">SBP, Canrad, EBL - three distributor conversations</div>
+        <div class="card-detail">
+          Complete meeting prep packages for all three distribution partners. Canrad: pilot proposal, full briefing, review dashboard (12+ documents). SBP: territory proposal for Western US. EBL: on hold pending product samples.
+        </div>
+        <div class="card-links">
+          <a href="../opportunities/distributors/distributor-sprint-dashboard.html" class="card-link">Distributor Dashboard <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../opportunities/meetings/canrad-pilot-proposal.html" class="card-link">Canrad Pilot Proposal <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../opportunities/meetings/canrad-review-dashboard.html" class="card-link">Canrad Review <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../opportunities/meetings/noah-wilson-sbp-meeting-prep.html" class="card-link">SBP Meeting Prep <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../opportunities/meetings/barry-shaich-ebl-meeting-prep.html" class="card-link">EBL Meeting Prep <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Section 2: Growth Engines -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <h2>Growth Engines</h2>
+    </div>
+    <p class="section-desc">
+      Systems designed to compound organic reach, automate content production, and build the lifecycle infrastructure that supports every customer touchpoint.
+    </p>
+
+    <div class="card-grid two-col">
+
+      <!-- Card 4: Social Content Engine -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-gold">New System</span>
+        </div>
+        <div class="card-headline">10 carousel types, 62 slides, automated pipeline</div>
+        <div class="card-detail">
+          Playwright-based rendering system with <span class="hl">11 custom render scripts</span>, three design families, and three output formats. Weekly batch production covering content calendar from March 24 through May 19. Over 400 rendered PNGs to date.
+        </div>
+        <div class="card-link-list">
+          <a href="social-content-engine.html" class="card-link">
+            View Content Engine Report
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+          </a>
+          <a href="../aware-hair-social-media/carousel-generator/carousel-dashboard.html" class="card-link">
+            <span class="card-link-label">Tool</span> Carousel Dashboard
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+          </a>
+          <a href="../aware-hair-social-media/social-dashboard.html" class="card-link">Social Dashboard <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Card 5: SEO & Content Strategy -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-gold">New Strategy</span>
+        </div>
+        <div class="card-headline">13% to 80% search visibility target</div>
+        <div class="card-detail">
+          <span class="hl">16 published guide articles</span> across five content clusters targeting 15 search queries. AEO optimization for AI search engines. Four N8N automation workflows and a six-month publishing roadmap.
+        </div>
+        <div class="card-links">
+          <a href="seo-content-strategy.html" class="card-link">
+            View SEO Strategy
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+          </a>
+          <a href="../marketing/blog/blog-review-dashboard.html" class="card-link">Blog Review Dashboard <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Card 6: Paid Social Strategy -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-amber">Ready to Launch</span>
+        </div>
+        <div class="card-headline">$500/month conservative pilot</div>
+        <div class="card-detail">
+          First-ever paid social spend. Three audiences (retargeting, lookalikes, engaged followers). 30-day phased test with <span class="hl">seven N8N automation workflows</span>. Kill criteria defined. Boosts proven organic content only.
+        </div>
+        <div class="card-link-list">
+          <a href="paid-social-strategy.html" class="card-link">
+            View Pilot Plan
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+          </a>
+          <a href="../marketing/paid-ads/dashboard.html" class="card-link">
+            <span class="card-link-label">Tool</span> Ads Dashboard
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 7: Email Automation -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-green">Deployed</span>
+        </div>
+        <div class="card-headline">19 templates, 7 flows live in Klaviyo</div>
+        <div class="card-detail">
+          Full lifecycle coverage: lead gen, abandoned cart, post-purchase, shipping, retention, loyalty, referral, <span class="hl">B2B reorder protection</span> (Day 35-90), and B2B lead nurture. Automated deployment scripts for consistent rollout.
+        </div>
+        <div class="card-links">
+          <a href="email-automation.html" class="card-link">
+            <span class="link-arrow">&rarr;</span> View Email System
+          </a>
+        </div>
+      </div>
+
+      <!-- Card: Competitive Intelligence -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-green">Active</span>
+        </div>
+        <div class="card-headline">5-brand landscape audit + weekly scans</div>
+        <div class="card-detail">
+          Complete competitive audits of Act+Acre, Innersense, Jupiter, Prose, and Kilgour MD. Combined landscape view with positioning maps. Weekly automated scans from <span class="hl">SCOUT engine</span> track pricing, messaging, and product changes.
+        </div>
+        <div class="card-links">
+          <a href="../marketing/competitor-intel/competitive-landscape-audit.html" class="card-link">Landscape Audit <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../marketing/competitor-intel/act-acre-audit.html" class="card-link">Act+Acre <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../marketing/competitor-intel/innersense-audit.html" class="card-link">Innersense <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../marketing/competitor-intel/jupiter-audit.html" class="card-link">Jupiter <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../marketing/competitor-intel/prose-audit.html" class="card-link">Prose <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Section 3: Operations & Infrastructure -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <h2>Operations and Infrastructure</h2>
+    </div>
+    <p class="section-desc">
+      The systems layer that runs the business autonomously, tracks competitive positioning, and manages the sales pipeline at scale.
+    </p>
+
+    <div class="card-grid">
+
+      <!-- Card 8: AI Employee Team -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-green">Operational</span>
+        </div>
+        <div class="card-headline">9 engines, 10 agents, $0 operating cost</div>
+        <div class="card-detail">
+          Autonomous business operations layer. Deterministic Node.js engines handle the math (Shopify, Klaviyo, competitor data). Claude agents handle prose (drafting, synthesis, strategy). Closed-loop signal system with <span class="hl">daily branded HTML reports</span>.
+        </div>
+        <div class="card-links">
+          <a href="../engines/AI-EMPLOYEE-TEAM-REPORT.html" class="card-link">
+            View Architecture Report
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 9: Awards Pipeline -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-green">Active</span>
+        </div>
+        <div class="card-headline">6 programs, Marie Claire submitted</div>
+        <div class="card-detail">
+          CEW ($1K, due Mar 27), Marie Claire (submitted Mar 24), SHAPE (free, Apr 30), Beacon ($99/nom), Cosmoprof, and Popsugar. All entry copy written. Command center dashboard tracking progress across programs.
+        </div>
+        <div class="card-links">
+          <a href="../awards/AWARDS-COMMAND-CENTER.html" class="card-link">
+            View Awards Dashboard
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 10: Sales Pipeline -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-green">Active</span>
+        </div>
+        <div class="card-headline">136 SoCal salon targets, cold email automation</div>
+        <div class="card-detail">
+          Google Places enrichment, Instantly.ai campaigns, N8N automation, and <span class="hl">15 warm lead follow-ups</span> drafted. Geographic coverage spans LA, Orange County, San Diego, Inland Empire, and Santa Barbara-Ventura.
+        </div>
+        <div class="card-links">
+          <a href="../sales/cold-email/outreach-dashboard.html" class="card-link">
+            View Outreach Dashboard
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+          </a>
+          <a href="../sales/cold-email/campaign-dashboard.html" class="card-link">Campaign Dashboard <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Card: Traction Snapshot -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-amber">Draft</span>
+        </div>
+        <div class="card-headline">Investor one-pager, data pending</div>
+        <div class="card-detail">
+          Single-page traction snapshot designed for investor conversations. Formatted for quick reads - needs <span class="hl">live Shopify data pull</span> to populate current metrics before sharing.
+        </div>
+        <div class="card-links">
+          <a href="../opportunities/traction-snapshot-march-2026.html" class="card-link">
+            View Traction Snapshot
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card: Certification Program -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-green">Ready</span>
+        </div>
+        <div class="card-headline">2-tier curriculum, dashboard, enrollment page</div>
+        <div class="card-detail">
+          Complete salon certification program. Tier 1 + Tier 2 curriculum designed, Thinkific platform selected, certificate brief created, enrollment landing page built, post-certification email sequence written. Target: <span class="hl">100 certified stylists in Year 1</span>.
+        </div>
+        <div class="card-links">
+          <a href="../sales/certification-program/certification-dashboard.html" class="card-link">Dashboard <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../sales/certification-program/certification-page.html" class="card-link">Enrollment Page <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Card: Pro Tools Suite -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-green">Deployed</span>
+        </div>
+        <div class="card-headline">10 interactive tools for salon professionals</div>
+        <div class="card-detail">
+          Scalp revenue calculator, backbar cost calculator, real hourly rate calculator, retail commission calculator, no-show cost calculator, ingredient decoder, scalp health quiz, 2026 salon trends report, and pro portal mockup. Live on the password-protected review site.
+        </div>
+        <div class="card-links">
+          <a href="../pro-tools/index.html" class="card-link">Pro Tools Hub <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../pro-tools/scalp-revenue-calculator/index.html" class="card-link">Revenue Calculator <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../pro-tools/pro-portal/pro-portal-mockup.html" class="card-link">Pro Portal Mockup <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Card: Investor Materials -->
+      <div class="review-card">
+        <div class="card-badge-row">
+          <span class="badge b-amber">Draft</span>
+        </div>
+        <div class="card-headline">Dashboard, CPG one-pager, strategic asks</div>
+        <div class="card-detail">
+          Investor dashboard with key metrics overview, startup CPG one-pager formatted for quick investor reads, and strategic asks document for advisor conversations. Traction snapshot linked separately above.
+        </div>
+        <div class="card-links">
+          <a href="../opportunities/investors/investor-dashboard.html" class="card-link">Investor Dashboard <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+          <a href="../opportunities/investors/startup-cpg-one-pager-v2.html" class="card-link">CPG One-Pager <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Section 4: What's Next -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <span class="section-number">04</span>
+      <h2>What's Next: 90-Day Priorities</h2>
+    </div>
+    <p class="section-desc">
+      Capacity reality: 12-19 hours per week for growth. These priorities are tiered by strategic cost of delay.
+    </p>
+
+    <div class="tier-block">
+      <span class="tier-label tier-nn">Non-Negotiable</span>
+      <ul class="tier-items">
+        <li>SKU penetration audit across all accounts - highest-leverage activity for deepening</li>
+        <li>Launch referral program to existing 50+ salons (3-tier structure designed and ready)</li>
+        <li>Confirm CM capacity for 2x production - no growth push until manufacturing is secured</li>
+        <li>Build inventory reorder point model for stockout prevention</li>
+      </ul>
+    </div>
+
+    <div class="tier-block">
+      <span class="tier-label tier-hv">High Value</span>
+      <ul class="tier-items">
+        <li>Schedule first education event at top-revenue salon partner (8-12 attendees target)</li>
+        <li>Begin content boosting at $500/month - only boost proven organic posts</li>
+        <li>Clean QBO books for investor readiness</li>
+        <li>SBP distribution pilot conversation - propose Western US territory, 6-month trial</li>
+      </ul>
+    </div>
+
+    <div class="tier-block">
+      <span class="tier-label tier-ic">If Capacity</span>
+      <ul class="tier-items">
+        <li>Seed stylist ambassador program with 5-10 stylists</li>
+        <li>Begin warm intro mapping for angel investors</li>
+        <li>Prepare mid-tier salon case studies for Canrad</li>
+      </ul>
+    </div>
+
+    <div class="revenue-bridge">
+      <h4 style="font-family: 'orpheus-pro', Georgia, serif; font-size: 18px; margin-bottom: 16px;">Revenue Bridge</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>Quarter</th>
+            <th>Active Salons</th>
+            <th>B2B Revenue</th>
+            <th>DTC Revenue</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Q2 2026</td>
+            <td>60-65</td>
+            <td>$22-24K</td>
+            <td>$2K</td>
+            <td>$24-26K</td>
+          </tr>
+          <tr>
+            <td>Q3 2026</td>
+            <td>75-85</td>
+            <td>$32-36K</td>
+            <td>$4-5K</td>
+            <td>$36-41K</td>
+          </tr>
+          <tr>
+            <td>Q4 2026</td>
+            <td>90-100</td>
+            <td>$43-48K</td>
+            <td>$7-8K</td>
+            <td>$50-56K</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="revenue-note">Annualized Q4 run rate: $200-224K. Adding distributor contribution (SBP/Canrad, 40-60 salons at $150/Q net) pushes toward $350-400K by mid-2027.</p>
+    </div>
+
+    <h4 style="font-family: 'orpheus-pro', Georgia, serif; font-size: 18px; margin-bottom: 16px;">Decisions for Co-Founders</h4>
+
+    <div class="decision-card">
+      <div class="decision-title">IPSY Partnership</div>
+      <div class="decision-body">Approve negotiation? Out List cleared March 25 - no ingredient blockers. Expected profit of $12K on $86K gross at 14% margin. Cash flow gap is $11-37K. Next: negotiate Net 30 terms, then sign.</div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-title">Paid Social Pilot</div>
+      <div class="decision-body">Approve $500/month for April? Conservative approach - boosts proven organic content only. Three audiences tested in 30-day phases. Kill criterion: cost per email exceeding $15.</div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-title">Manufacturing PO</div>
+      <div class="decision-body">Execute first purchase order? $8,768 net after credits. 3,400 shampoo units (3,000 ordered + 400 owed). Delivery by September 30, 2026.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <p class="confidential">AWARE Hair - Confidential</p>
+    <p>Generated March 2026</p>
+    <p style="margin-top: 8px; font-size: 11px; color: var(--sage-light);">Click any card to view the detailed presentation</p>
+  </div>
+</footer>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

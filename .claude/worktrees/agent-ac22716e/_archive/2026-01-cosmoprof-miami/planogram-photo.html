@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARE Hair - Retail Planogram</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2D4739;
+      --forest-deep: #1E3329;
+      --sage: #7A8F7D;
+      --sage-light: #A8B8AB;
+      --cream: #F8F5F0;
+      --sand: #E6DFD5;
+      --charcoal: #2A2A2A;
+      --warm-gray: #5C5C5C;
+      --warm-gray-light: #8A8A8A;
+      --gold: #B8956E;
+    }
+
+    @page { size: letter; margin: 0; }
+    @media print {
+      html, body { width: 8.5in; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page { box-shadow: none !important; }
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: #b8b8b8;
+      color: var(--charcoal);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: 8.5in;
+      height: 11in;
+      margin: 24px auto;
+      background: var(--cream);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.15);
+    }
+
+    .page-content {
+      padding: 0.45in 0.5in 0.4in;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .page-header .logo { height: 16px; opacity: 0.85; }
+    .page-header .page-num { font-size: 11px; letter-spacing: 0.15em; color: var(--sage); }
+
+    /* Title */
+    .page-title {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .page-title h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--forest-deep);
+      margin-bottom: 2px;
+    }
+    .page-title p {
+      font-size: 11px;
+      color: var(--warm-gray);
+    }
+
+    /* Main content */
+    .planograms {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Section label */
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--forest);
+      text-align: center;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--sand);
+    }
+
+    /* Planogram block */
+    .planogram-block {
+      background: white;
+      border: 1px solid var(--sand);
+      padding: 14px 20px;
+    }
+
+    /* Shelf row - grid layout */
+    .shelf-row {
+      display: grid;
+      grid-template-columns: 120px 380px;
+      align-items: end;
+      gap: 10px;
+      margin-bottom: 2px;
+      justify-content: center;
+    }
+
+    .shelf-desc {
+      text-align: right;
+      padding-bottom: 6px;
+    }
+    .shelf-desc .desc-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--forest);
+      line-height: 1.3;
+    }
+    .shelf-desc .desc-detail {
+      font-size: 9px;
+      color: var(--warm-gray-light);
+      line-height: 1.3;
+    }
+
+    .shelf-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: 380px; /* represents 24" shelf - proportional to product widths */
+    }
+
+    .shelf-products {
+      display: flex;
+      align-items: flex-end;
+      gap: 1px;
+    }
+
+    .shelf-bar {
+      height: 4px;
+      background: var(--charcoal);
+      margin-top: 1px;
+    }
+
+    .p-img { display: block; object-fit: contain; }
+
+    /* Counter displays grid */
+    .counter-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .counter-block {
+      background: white;
+      border: 1px solid var(--sand);
+      padding: 12px 16px;
+    }
+
+    .counter-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      margin-bottom: 8px;
+    }
+
+    .counter-desc {
+      font-size: 10px;
+      color: var(--warm-gray-light);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .counter-products {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 3px;
+      padding-bottom: 4px;
+      border-bottom: 3px solid var(--charcoal);
+    }
+
+    .counter-size {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--charcoal);
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    /* Bottom grid */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 4px;
+    }
+
+    .tips-block, .fixtures-block {
+      background: white;
+      border: 1px solid var(--sand);
+      padding: 12px 14px;
+    }
+
+    .tips-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--forest);
+      margin-bottom: 8px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid var(--sand);
+    }
+
+    .tips-list {
+      list-style: none;
+      font-size: 9px;
+      color: var(--charcoal);
+      line-height: 1.5;
+    }
+    .tips-list li {
+      margin-bottom: 5px;
+      padding-left: 10px;
+      position: relative;
+    }
+    .tips-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--sage);
+    }
+    .tips-list strong {
+      color: var(--forest);
+      font-weight: 500;
+    }
+
+    .fixtures-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .fixture-item {
+      background: var(--cream);
+      padding: 8px 10px;
+      border: 1px solid var(--sand);
+    }
+    .fixture-name {
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--forest);
+      margin-bottom: 2px;
+    }
+    .fixture-desc {
+      font-size: 8px;
+      color: var(--warm-gray);
+      line-height: 1.3;
+      margin-bottom: 3px;
+    }
+    .fixture-qual {
+      font-size: 7.5px;
+      color: var(--gold);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Footer */
+    .page-footer {
+      text-align: center;
+      font-size: 9px;
+      color: var(--warm-gray-light);
+      margin-top: auto;
+      padding-top: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+    <div class="page-content">
+
+      <header class="page-header">
+        <img class="logo" src="images/aware-logo.png" alt="AWARE Hair">
+        <span class="page-num">11</span>
+      </header>
+
+      <div class="page-title">
+        <h1>Retail Planogram</h1>
+        <p>Suggested shelf arrangements for salon retail displays</p>
+      </div>
+
+      <div class="planograms">
+
+        <!-- ===== FULL SHELF DISPLAY (24") ===== -->
+        <div>
+          <div class="section-label">Full Shelf Display - 24" Width</div>
+          <div class="planogram-block">
+
+            <!-- Top shelf: Shampoo + Conditioner (7 bottles @ 3.5" each = 24.5") -->
+            <div class="shelf-row">
+              <div class="shelf-desc">
+                <span class="desc-name">9-1 Shampoo + Conditioner</span>
+                <span class="desc-detail">3.5" wide × 7 units</span>
+              </div>
+              <div class="shelf-unit">
+                <div class="shelf-products" style="justify-content: flex-start; width: 100%;">
+                  <img class="p-img" src="images/shampoo-tight.png" style="height: 100px; width: 54px;" alt="">
+                  <img class="p-img" src="images/shampoo-tight.png" style="height: 100px; width: 54px;" alt="">
+                  <img class="p-img" src="images/shampoo-tight.png" style="height: 100px; width: 54px;" alt="">
+                  <img class="p-img" src="images/shampoo-tight.png" style="height: 100px; width: 54px;" alt="">
+                  <img class="p-img" src="images/conditioner-tight.png" style="height: 100px; width: 54px;" alt="">
+                  <img class="p-img" src="images/conditioner-tight.png" style="height: 100px; width: 54px;" alt="">
+                  <img class="p-img" src="images/conditioner-tight.png" style="height: 100px; width: 54px;" alt="">
+                </div>
+                <div class="shelf-bar"></div>
+              </div>
+            </div>
+
+            <!-- Middle shelf: Leave-In + Discovery (6 Leave-In @ 3" + 3 Discovery @ 2" = 24") -->
+            <div class="shelf-row">
+              <div class="shelf-desc">
+                <span class="desc-name">9-1 Leave-In + Discovery Kit</span>
+                <span class="desc-detail">3" + 2" wide × 9 units</span>
+              </div>
+              <div class="shelf-unit">
+                <div class="shelf-products" style="justify-content: flex-start; width: 100%;">
+                  <img class="p-img" src="images/leave-in-tight.png" style="height: 72px; width: 46px;" alt="">
+                  <img class="p-img" src="images/leave-in-tight.png" style="height: 72px; width: 46px;" alt="">
+                  <img class="p-img" src="images/leave-in-tight.png" style="height: 72px; width: 46px;" alt="">
+                  <img class="p-img" src="images/leave-in-tight.png" style="height: 72px; width: 46px;" alt="">
+                  <img class="p-img" src="images/leave-in-tight.png" style="height: 72px; width: 46px;" alt="">
+                  <img class="p-img" src="images/leave-in-tight.png" style="height: 72px; width: 46px;" alt="">
+                  <img class="p-img" src="images/discovery-kit-tight.png" style="height: 46px; width: 32px;" alt="">
+                  <img class="p-img" src="images/discovery-kit-tight.png" style="height: 46px; width: 32px;" alt="">
+                  <img class="p-img" src="images/discovery-kit-tight.png" style="height: 46px; width: 32px;" alt="">
+                </div>
+                <div class="shelf-bar"></div>
+              </div>
+            </div>
+
+            <!-- Bottom shelf: Hair Ties + Discovery (6 Ties @ 2" + 6 Discovery @ 2" = 24") -->
+            <div class="shelf-row">
+              <div class="shelf-desc">
+                <span class="desc-name">Hair Ties + Discovery Kit</span>
+                <span class="desc-detail">2" wide × 12 units</span>
+              </div>
+              <div class="shelf-unit">
+                <div class="shelf-products" style="justify-content: flex-start; width: 100%;">
+                  <img class="p-img" src="images/hairties-tight.png" style="height: 46px; width: 32px;" alt="">
+                  <img class="p-img" src="images/hairties-tight.png" style="height: 46px; width: 32px;" alt="">
+                  <img class="p-img" src="images/hairties-tight.png" style="height: 46px; width: 32px;" alt="">
+                  <img class="p-img" src="images/hairties-tight.png" style="height: 46px; width: 32px;" alt="">
+                  <img class="p-img" src="images/hairties-tight.png" style="height: 46px; width: 32px;" alt="">
+                  <img class="p-img" src="images/hairties-tight.png" style="height: 46px; width: 32px;" alt="">
+                  <img class="p-img" src="images/discovery-kit-tight.png" style="height: 46px; width: 32px;" alt="">
+                  <img class="p-img" src="images/discovery-kit-tight.png" style="height: 46px; width: 32px;" alt="">
+                  <img class="p-img" src="images/discovery-kit-tight.png" style="height: 46px; width: 32px;" alt="">
+                  <img class="p-img" src="images/discovery-kit-tight.png" style="height: 46px; width: 32px;" alt="">
+                  <img class="p-img" src="images/discovery-kit-tight.png" style="height: 46px; width: 32px;" alt="">
+                  <img class="p-img" src="images/discovery-kit-tight.png" style="height: 46px; width: 32px;" alt="">
+                </div>
+                <div class="shelf-bar"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ===== COUNTER DISPLAYS (15") ===== -->
+        <div>
+          <div class="section-label">Counter Displays - 15" Width</div>
+          <div class="counter-grid">
+
+            <!-- Entry-level -->
+            <div class="counter-block">
+              <div class="counter-label">Entry-Level Salon</div>
+              <div class="counter-desc">Complete routine + trial kit for new partners</div>
+              <div class="counter-products">
+                <img class="p-img" src="images/shampoo-tight.png" style="height: 80px;" alt="">
+                <img class="p-img" src="images/shampoo-tight.png" style="height: 80px;" alt="">
+                <img class="p-img" src="images/conditioner-tight.png" style="height: 80px;" alt="">
+                <img class="p-img" src="images/conditioner-tight.png" style="height: 80px;" alt="">
+                <img class="p-img" src="images/leave-in-tight.png" style="height: 60px;" alt="">
+                <img class="p-img" src="images/discovery-kit-tight.png" style="height: 38px;" alt="">
+              </div>
+              <div class="counter-size">6 units - Retail value: $295</div>
+            </div>
+
+            <!-- High-volume -->
+            <div class="counter-block">
+              <div class="counter-label">High-Volume Salon</div>
+              <div class="counter-desc">Double-facing core routine for busy locations</div>
+              <div class="counter-products">
+                <img class="p-img" src="images/shampoo-tight.png" style="height: 80px;" alt="">
+                <img class="p-img" src="images/shampoo-tight.png" style="height: 80px;" alt="">
+                <img class="p-img" src="images/conditioner-tight.png" style="height: 80px;" alt="">
+                <img class="p-img" src="images/conditioner-tight.png" style="height: 80px;" alt="">
+                <img class="p-img" src="images/leave-in-tight.png" style="height: 60px;" alt="">
+                <img class="p-img" src="images/leave-in-tight.png" style="height: 60px;" alt="">
+                <img class="p-img" src="images/discovery-kit-tight.png" style="height: 38px;" alt="">
+              </div>
+              <div class="counter-size">7 units - Retail value: $400</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ===== BOTTOM SECTIONS ===== -->
+        <div class="bottom-grid">
+
+          <!-- Merchandising Tips -->
+          <div class="tips-block">
+            <div class="tips-label">Visual Merchandising Tips</div>
+            <ul class="tips-list">
+              <li><strong>Eye level is buy level</strong> - Place Shampoo & Conditioner at customer sight line</li>
+              <li><strong>Group the routine</strong> - Always display S + C + L together to encourage full-system purchase</li>
+              <li><strong>Front-face daily</strong> - Pull products forward; full shelves signal quality</li>
+              <li><strong>Discovery Kits at checkout</strong> - Impulse add-on for trial or travel</li>
+              <li><strong>Keep testers fresh</strong> - Replace monthly; clean pumps weekly</li>
+            </ul>
+          </div>
+
+          <!-- Display Fixtures -->
+          <div class="fixtures-block">
+            <div class="tips-label">Display Fixtures Included</div>
+            <div class="fixtures-content">
+              <div class="fixture-item">
+                <div class="fixture-name">Acrylic Shelf Riser</div>
+                <div class="fixture-desc">Clear 3-tier unit for counter displays</div>
+                <div class="fixture-qual">With $500+ orders</div>
+              </div>
+              <div class="fixture-item">
+                <div class="fixture-name">Branded Shelf Talker</div>
+                <div class="fixture-desc">6" x 2" cards with key benefits</div>
+                <div class="fixture-qual">With any order</div>
+              </div>
+              <div class="fixture-item">
+                <div class="fixture-name">Tester Set</div>
+                <div class="fixture-desc">Full-size testers with pump caps</div>
+                <div class="fixture-qual">With $1,000+ orders</div>
+              </div>
+              <div class="fixture-item">
+                <div class="fixture-name">Retail Training Guide</div>
+                <div class="fixture-desc">PDF + video for staff education</div>
+                <div class="fixture-qual">With any order</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <footer class="page-footer">
+        Contact your AWARE representative for custom display solutions
+      </footer>
+
+    </div>
+  </div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Scalp Education Class - Images Salon CDM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════
+   BRAND DECK DESIGN SYSTEM
+   Source: skills/brand-deck-design/skill.md
+   ═══════════════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --dark-teal:#0D1F1A;
+  --warm-cream:#F5F1EC;
+  --off-white:#FAF8F5;
+  --sage-hint:#E8E5DF;
+  --white:#FFFFFF;
+  --near-black:#1A1A1A;
+  --body-text:#333333;
+  --light-grey:#666666;
+  --red-flag:#8B3A3A;
+  --yellow-flag:#8B7340;
+  --green-ok:#3A6B4A;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--dark-teal);color:var(--near-black)}
+body{font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+
+/* ═══════ SLIDE SYSTEM ═══════ */
+.deck{position:relative;width:100vw;height:100vh}
+.slide{
+  position:absolute;inset:0;
+  display:flex;
+  opacity:0;visibility:hidden;
+  transition:opacity .5s cubic-bezier(.4,0,.2,1),transform .5s cubic-bezier(.4,0,.2,1);
+  transform:translateY(8px);
+  overflow:hidden;
+}
+.slide.active{opacity:1;visibility:visible;transform:translateY(0)}
+.slide.exiting{opacity:0;transform:translateY(-8px)}
+
+/* ═══════ LAYOUT PATTERNS ═══════ */
+
+/* Divider slide - full dark teal */
+.slide.divider{
+  background:var(--dark-teal);
+  justify-content:center;align-items:center;
+  flex-direction:column;text-align:center;
+}
+.slide.divider h2{
+  font-family:'DM Sans',sans-serif;font-weight:700;
+  font-size:clamp(28px,3.5vw,48px);
+  letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--white);
+}
+.slide.divider .divider-sub{
+  font-size:15px;color:rgba(255,255,255,.5);
+  margin-top:16px;letter-spacing:0.03em;
+}
+
+/* 50/50 split slide */
+.slide.split{display:grid;grid-template-columns:1fr 1fr}
+.slide.split.reverse{direction:rtl}
+.slide.split.reverse>*{direction:ltr}
+
+/* Photo panel */
+.photo-panel{
+  position:relative;overflow:hidden;
+  background:var(--sage-hint);
+}
+.photo-panel img{
+  width:100%;height:100%;object-fit:cover;
+}
+.photo-panel .placeholder{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:8px;
+  font-size:13px;color:var(--light-grey);
+  letter-spacing:0.05em;text-transform:uppercase;
+  background:var(--sage-hint);
+}
+
+/* Content panel */
+.content-panel{
+  background:var(--warm-cream);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:60px 64px;
+  position:relative;
+}
+.content-panel.off-white{background:var(--off-white)}
+
+/* Footer */
+.slide-footer{
+  position:absolute;bottom:24px;left:64px;right:64px;
+  display:flex;justify-content:space-between;
+  font-size:11px;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--light-grey);font-weight:500;
+}
+.slide.divider .slide-footer{left:48px;right:48px;color:rgba(255,255,255,.25)}
+
+/* Accent bar top/bottom */
+.content-panel::before{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:2px;background:var(--dark-teal);opacity:.08;
+}
+
+/* ═══════ TYPOGRAPHY ═══════ */
+.headline{
+  font-family:'DM Sans',sans-serif;font-weight:700;
+  font-size:clamp(22px,2.5vw,36px);
+  letter-spacing:0.03em;text-transform:uppercase;
+  color:var(--near-black);line-height:1.2;
+  margin-bottom:24px;
+}
+.headline.small{font-size:clamp(16px,1.8vw,24px)}
+
+.sub-headline{
+  font-family:'DM Sans',sans-serif;font-weight:700;
+  font-size:clamp(14px,1.2vw,18px);
+  letter-spacing:0.04em;text-transform:uppercase;
+  color:var(--near-black);margin-bottom:8px;
+}
+
+.body-text{
+  font-size:clamp(13px,1.1vw,16px);
+  color:var(--body-text);line-height:1.7;
+  max-width:520px;
+}
+.body-text+.body-text{margin-top:16px}
+
+.caption{font-size:12px;color:var(--light-grey);line-height:1.5}
+
+/* Stats */
+.stat-number{
+  font-family:'DM Sans',sans-serif;font-weight:700;
+  font-size:clamp(48px,5vw,80px);
+  color:var(--near-black);line-height:1;
+}
+.stat-label{
+  font-size:clamp(12px,1vw,14px);
+  color:var(--body-text);margin-top:6px;
+  line-height:1.4;
+}
+
+/* Stats row */
+.stats-row{display:flex;gap:48px;margin-top:32px}
+.stat-block{display:flex;flex-direction:column}
+
+/* ═══════ CONTENT COMPONENTS ═══════ */
+
+/* Feature grid */
+.feature-grid{display:grid;gap:28px;margin-top:24px}
+.feature-grid.cols-2{grid-template-columns:1fr 1fr}
+.feature-grid.cols-1{grid-template-columns:1fr}
+
+.feature-item .sub-headline{margin-bottom:4px}
+.feature-item .body-text{font-size:13px;max-width:none}
+
+/* Condition card */
+.condition{
+  padding:16px 0;
+  border-bottom:1px solid rgba(0,0,0,.06);
+}
+.condition:last-child{border-bottom:none}
+.condition-name{
+  font-weight:700;font-size:14px;
+  text-transform:uppercase;letter-spacing:0.04em;
+  color:var(--near-black);margin-bottom:4px;
+}
+.condition-desc{font-size:13px;color:var(--body-text);line-height:1.6}
+
+/* Checklist */
+.checklist{list-style:none;margin-top:16px}
+.checklist li{
+  font-size:14px;color:var(--body-text);
+  padding:8px 0 8px 24px;position:relative;
+  line-height:1.5;
+}
+.checklist li::before{
+  content:'';position:absolute;left:0;top:14px;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--dark-teal);opacity:.3;
+}
+
+/* Protocol step */
+.protocol-step{
+  display:flex;gap:16px;align-items:flex-start;
+  padding:14px 0;
+}
+.step-number{
+  font-weight:700;font-size:13px;
+  width:28px;height:28px;border-radius:50%;
+  background:var(--dark-teal);color:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.step-content .sub-headline{margin-bottom:2px;font-size:14px}
+.step-content .body-text{font-size:13px}
+
+/* Table */
+.data-table{
+  width:100%;border-collapse:collapse;margin-top:16px;
+  font-size:13px;
+}
+.data-table th{
+  text-align:left;font-weight:700;font-size:11px;
+  text-transform:uppercase;letter-spacing:0.06em;
+  color:var(--light-grey);padding:8px 12px 8px 0;
+  border-bottom:2px solid rgba(0,0,0,.08);
+}
+.data-table td{
+  padding:10px 12px 10px 0;color:var(--body-text);
+  border-bottom:1px solid rgba(0,0,0,.04);
+  line-height:1.5;vertical-align:top;
+}
+.data-table .tag{
+  display:inline-block;font-size:10px;font-weight:600;
+  letter-spacing:0.04em;text-transform:uppercase;
+  padding:2px 8px;border-radius:3px;
+}
+.tag.green{background:rgba(58,107,74,.1);color:var(--green-ok)}
+.tag.yellow{background:rgba(139,115,64,.1);color:var(--yellow-flag)}
+.tag.red{background:rgba(139,58,58,.1);color:var(--red-flag)}
+
+/* Referral tiers */
+.tier{margin-top:20px}
+.tier-label{
+  font-weight:700;font-size:12px;
+  text-transform:uppercase;letter-spacing:0.06em;
+  padding:4px 10px;display:inline-block;
+  border-radius:3px;margin-bottom:10px;
+}
+.tier-label.urgent{background:rgba(139,58,58,.1);color:var(--red-flag)}
+.tier-label.monitor{background:rgba(139,115,64,.1);color:var(--yellow-flag)}
+
+/* FAQ columns */
+.faq-columns{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:16px}
+.faq-col-title{
+  font-weight:700;font-size:12px;
+  text-transform:uppercase;letter-spacing:0.05em;
+  color:var(--near-black);margin-bottom:12px;
+}
+.faq-item{margin-bottom:14px}
+.faq-q{font-weight:600;font-size:13px;color:var(--near-black);margin-bottom:2px}
+.faq-a{font-size:12px;color:var(--body-text);line-height:1.55}
+
+/* Cover slide */
+.slide.cover{
+  display:grid;grid-template-columns:1fr 1fr;
+}
+.cover-photo{background:var(--sage-hint);position:relative;overflow:hidden}
+.cover-photo img{width:100%;height:100%;object-fit:cover}
+.cover-content{
+  background:var(--warm-cream);
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;padding:60px;
+}
+.cover-eyebrow{
+  font-size:11px;font-weight:600;
+  letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--light-grey);margin-bottom:32px;
+}
+.cover-title{
+  font-family:'DM Sans',sans-serif;font-weight:700;
+  font-size:clamp(28px,3vw,44px);
+  letter-spacing:0.04em;text-transform:uppercase;
+  color:var(--near-black);line-height:1.15;
+  margin-bottom:16px;
+}
+.cover-sub{
+  font-size:15px;color:var(--body-text);
+  line-height:1.6;max-width:380px;
+}
+.cover-details{
+  margin-top:40px;font-size:13px;color:var(--light-grey);
+  line-height:1.8;
+}
+
+/* Close slide */
+.slide.close{
+  background:var(--warm-cream);
+  flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;padding:80px;
+}
+
+/* ═══════ NAVIGATION ═══════ */
+.progress{position:fixed;top:0;left:0;height:2px;background:var(--dark-teal);z-index:100;transition:width .4s ease}
+.counter{
+  position:fixed;bottom:28px;right:48px;z-index:100;
+  font-size:12px;letter-spacing:0.5px;color:var(--light-grey);
+  font-variant-numeric:tabular-nums;
+}
+.counter .current{color:var(--dark-teal);font-weight:600}
+.nav-hint{
+  position:fixed;bottom:28px;left:48px;z-index:100;
+  font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--light-grey);opacity:.4;
+}
+</style>
+</head>
+<body>
+
+<div id="progress" class="progress"></div>
+<div class="counter"><span id="currentSlide" class="current">1</span> / <span id="totalSlides"></span></div>
+<div class="nav-hint">Arrow keys to navigate</div>
+
+<div class="deck">
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 1: COVER
+     ═══════════════════════════════════════════════════ -->
+<div class="slide cover active">
+  <div class="cover-photo">
+    <div class="placeholder"><span>Tina + Jade salon photo</span></div>
+  </div>
+  <div class="cover-content">
+    <p class="cover-eyebrow">AWARE Hair x Images Salon</p>
+    <h1 class="cover-title">Scalp Education Class</h1>
+    <p class="cover-sub">Professional scalp health education for licensed stylists. Led by Tina Mui, Certified Trichologist.</p>
+    <div class="cover-details">
+      Sunday, April 20, 2026<br>
+      10:00 - 11:30 AM<br>
+      Images Salon, Corona Del Mar
+    </div>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>01</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 2: WHY SCALP MATTERS
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split">
+  <div class="photo-panel">
+    <div class="placeholder"><span>Stylist examining client's scalp</span></div>
+  </div>
+  <div class="content-panel">
+    <p class="eyebrow" style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--light-grey);margin-bottom:16px">Your Instructor</p>
+    <h2 class="headline">Tina Mui</h2>
+    <p class="body-text" style="font-weight:600">Certified Trichologist. Licensed Stylist. 40+ years specializing in scalp health.</p>
+    <p class="body-text">Thousands of clients. Decades of developing scalp protocols that work. Founded AWARE Hair with her daughter Jade after seeing the same gap for years: haircare that ignores the scalp, and scalp care that isn't built for salon-treated hair.</p>
+    <p class="body-text" style="margin-top:20px;font-style:italic;color:var(--light-grey)">"Today is not a sales pitch. You'll leave with practical skills you can use Monday morning, whether or not you ever carry our products."</p>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>02</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 3: REVENUE OPPORTUNITY
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split reverse">
+  <div class="photo-panel">
+    <div class="placeholder"><span>Scalp treatment service</span></div>
+  </div>
+  <div class="content-panel off-white">
+    <h2 class="headline">You See More Scalps Than Dermatologists</h2>
+    <p class="body-text">Your clients sit in your chair every 4-6 weeks. You're parting their hair, you're at the shampoo bowl, you're blowing them out.</p>
+    <p class="body-text">You are the front line of scalp health. The problem is, most of us were never trained to look.</p>
+    <p class="body-text" style="margin-top:24px;font-weight:600;color:var(--near-black)">Scalp services are the fastest-growing category in the salon industry right now. Your clients are searching for this. And most salons aren't offering it yet.</p>
+    <p class="body-text" style="margin-top:16px">That's an opportunity for you.</p>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>03</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 4: DIVIDER - HOW THE SCALP WORKS
+     ═══════════════════════════════════════════════════ -->
+<div class="slide divider">
+  <h2>How the Scalp Works</h2>
+  <div class="slide-footer">
+    <span>AWARE HAIR</span>
+    <span>04</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 5: SCALP ANATOMY
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split">
+  <div class="photo-panel">
+    <div class="placeholder"><span>Scalp anatomy cross-section</span></div>
+  </div>
+  <div class="content-panel">
+    <h2 class="headline">Your Scalp Is Skin</h2>
+    <p class="body-text">The most metabolically active skin on your body, with 100,000+ hair follicles and the highest density of sebaceous glands.</p>
+    <div class="feature-grid cols-1" style="margin-top:24px">
+      <div class="feature-item">
+        <div class="sub-headline">Epidermis</div>
+        <div class="body-text">The outer barrier, ~20 cell layers. What you see and touch.</div>
+      </div>
+      <div class="feature-item">
+        <div class="sub-headline">Dermis</div>
+        <div class="body-text">Rich with blood vessels, nerve endings, and collagen. Where the follicle lives.</div>
+      </div>
+      <div class="feature-item">
+        <div class="sub-headline">Dermal Papilla</div>
+        <div class="body-text">The blood supply at the base of each follicle. Nutrients and oxygen are delivered here.</div>
+      </div>
+    </div>
+    <p class="caption" style="margin-top:20px">For your clients: "Think of your scalp like a garden. The hair is what grows above the surface, but everything depends on the soil underneath."</p>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>05</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 6: MICRO-CIRCULATION + FASCIA
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split reverse">
+  <div class="photo-panel">
+    <div class="placeholder"><span>Fascia chain diagram</span></div>
+  </div>
+  <div class="content-panel">
+    <h2 class="headline">Circulation + Fascia</h2>
+    <p class="body-text">VEGF-mediated angiogenesis controls follicle size and growth cycle length. More blood flow means larger follicles and longer anagen phases.</p>
+    <div class="feature-grid cols-1" style="margin-top:24px">
+      <div class="feature-item">
+        <div class="sub-headline">The Fascia Chain</div>
+        <div class="body-text">Masseter (jaw) connects to temporalis connects to galea aponeurotica (crown) connects to occipitalis (nape). One continuous system. Jaw tension travels to the top of the head.</div>
+      </div>
+      <div class="feature-item">
+        <div class="sub-headline">4x Micro-Circulation Increase</div>
+        <div class="body-text">Research shows gua sha produces a fourfold increase in surface micro-perfusion at the treated area, plus antioxidant enzyme activation.</div>
+      </div>
+    </div>
+    <p class="caption" style="margin-top:16px">Try it now: hands on your temples, clench your jaw. That tension is traveling through your galea to the crown.</p>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>06</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 7: DIVIDER - COMMON CONDITIONS
+     ═══════════════════════════════════════════════════ -->
+<div class="slide divider">
+  <h2>What Your Clients Are Telling You</h2>
+  <p class="divider-sub">The symptoms you hear and what to ask</p>
+  <div class="slide-footer">
+    <span>AWARE HAIR</span>
+    <span>07</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 8: 5 CONDITIONS
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split">
+  <div class="photo-panel">
+    <div class="placeholder"><span>Scalp condition before/after</span></div>
+  </div>
+  <div class="content-panel" style="padding:48px 56px;overflow-y:auto">
+    <h2 class="headline small">The Symptoms You Hear</h2>
+    <div class="condition">
+      <div class="condition-name">1. "I'm Shedding" / "My Hair Is Thinning"</div>
+      <div class="condition-desc">Could be stress, hormonal, traction from tight styling, or scalp environment. Ask questions first.</div>
+    </div>
+    <div class="condition">
+      <div class="condition-name">2. "I Have Dandruff" / "My Scalp Is Flaking"</div>
+      <div class="condition-desc">Not all flaking is the same. Dry white flakes vs. oily yellow flakes need different approaches.</div>
+    </div>
+    <div class="condition">
+      <div class="condition-name">3. "My Scalp Itches"</div>
+      <div class="condition-desc">Usually inflammation or a reaction. Could be build-up, product sensitivity, stress. Don't dismiss it.</div>
+    </div>
+    <div class="condition">
+      <div class="condition-name">4. "I Have Build-Up"</div>
+      <div class="condition-desc">Product residue, sebum, hard water. You can see it at the bowl. Directly in your wheelhouse.</div>
+    </div>
+    <div class="condition">
+      <div class="condition-name">5. "My Scalp Is Red / Burns After Color"</div>
+      <div class="condition-desc">Could be a product reaction or compromised barrier. Know what was used and when it started.</div>
+    </div>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>08</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 9: WHAT TO LOOK FOR
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split reverse">
+  <div class="photo-panel">
+    <div class="placeholder"><span>Thinning before/after</span></div>
+  </div>
+  <div class="content-panel">
+    <h2 class="headline small">5 Questions to Ask Your Client</h2>
+    <p class="body-text" style="margin-bottom:16px">Before you try to figure out what's going on, gather information first.</p>
+    <ul class="checklist">
+      <li><strong>What products are you using at home?</strong> - The most revealing question. What's clogging pores or stripping the scalp?</li>
+      <li><strong>Have you been under a lot of stress?</strong> - Stress directly affects the scalp through cortisol and tension.</li>
+      <li><strong>How's your diet been?</strong> - Iron, vitamin D, protein deficiencies show up as thinning.</li>
+      <li><strong>Are you exercising regularly?</strong> - Exercise improves circulation everywhere, including the scalp.</li>
+      <li><strong>Has anything changed recently?</strong> - New medications, products, routine? Change is often the trigger.</li>
+    </ul>
+    <p class="body-text" style="margin-top:20px;font-style:italic;color:var(--light-grey)">These questions aren't about selling. They're about understanding your client as a whole person.</p>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>09</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 10: SCALP ANALYSIS DEMO
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split">
+  <div class="photo-panel">
+    <div class="placeholder"><span>Scalp analysis demo</span></div>
+  </div>
+  <div class="content-panel">
+    <h2 class="headline">Scalp Analysis Demo</h2>
+    <p class="body-text">Your clients can tell you their symptoms, but you can't truly understand what's going on until you can see the scalp up close.</p>
+    <p class="body-text">A $40-80 USB microscope changes the entire consultation conversation. When clients see their own scalp on screen, everything clicks.</p>
+    <div class="feature-grid cols-2" style="margin-top:28px">
+      <div class="feature-item">
+        <div class="sub-headline">Buildup</div>
+        <div class="body-text">Deposits around follicle openings</div>
+      </div>
+      <div class="feature-item">
+        <div class="sub-headline">Redness</div>
+        <div class="body-text">Barrier under stress</div>
+      </div>
+      <div class="feature-item">
+        <div class="sub-headline">Miniaturization</div>
+        <div class="body-text">Fine hairs among normal</div>
+      </div>
+      <div class="feature-item">
+        <div class="sub-headline">Healthy</div>
+        <div class="body-text">Clean pores, good density</div>
+      </div>
+    </div>
+    <p class="body-text" style="margin-top:20px;font-weight:600">Offer this as a paid add-on. Book 15 extra minutes. Don't try to squeeze it in for free.</p>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>10</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 11: DIVIDER - THE 4R PROTOCOL
+     ═══════════════════════════════════════════════════ -->
+<div class="slide divider">
+  <h2>The 4R Framework</h2>
+  <p class="divider-sub">Reset - Repair - Reinforce - Reactivate</p>
+  <div class="slide-footer">
+    <span>AWARE HAIR</span>
+    <span>11</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 12: 4R FRAMEWORK OVERVIEW
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split reverse">
+  <div class="photo-panel">
+    <div class="placeholder"><span>AWARE product collection</span></div>
+  </div>
+  <div class="content-panel">
+    <h2 class="headline">The Philosophy</h2>
+    <p class="body-text">Now you understand the scalp and you know what to look for. The next question: what do you actually do about it? This framework works as a baseline for every client.</p>
+    <div style="margin-top:28px">
+      <div class="protocol-step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <div class="sub-headline">Reset</div>
+          <div class="body-text">Purify the scalp of buildup that suffocates follicles</div>
+        </div>
+      </div>
+      <div class="protocol-step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <div class="sub-headline">Repair</div>
+          <div class="body-text">Restore moisture and microbiome balance</div>
+        </div>
+      </div>
+      <div class="protocol-step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <div class="sub-headline">Reinforce</div>
+          <div class="body-text">Protect from UV, pollution, and hard water</div>
+        </div>
+      </div>
+      <div class="protocol-step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <div class="sub-headline">Reactivate</div>
+          <div class="body-text">Stimulate circulation and release fascial tension</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>12</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 13: RESET + REPAIR
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split">
+  <div class="photo-panel">
+    <div class="placeholder"><span>Shampoo + Conditioner products</span></div>
+  </div>
+  <div class="content-panel">
+    <h2 class="headline small">Reset + Repair</h2>
+    <div class="feature-grid cols-1" style="margin-top:8px">
+      <div class="feature-item">
+        <div class="sub-headline">Step 1: Reset (Purify)</div>
+        <div class="body-text">Scalp-focused cleansing. Double cleanse: first wash lifts, second treats. Fingertip pads, never nails. No hot water. Sulfate-free transition takes 2-4 weeks.</div>
+      </div>
+      <div class="feature-item">
+        <div class="sub-headline">Step 2: Repair (Restore)</div>
+        <div class="body-text">Hyaluronic acid holds 1,000x its weight in water, supporting barrier hydration. Green tea extract (EGCG) is antimicrobial against Malassezia, modulates inflammatory cytokines, and normalizes sebaceous activity.</div>
+      </div>
+      <div class="feature-item">
+        <div class="sub-headline">The Microbiome Connection</div>
+        <div class="body-text">A balanced scalp microbiome regulates pH, controls inflammation, and defends the barrier. Dysbiosis can push follicles prematurely from anagen into catagen.</div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>13</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 14: REINFORCE + REACTIVATE
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split reverse">
+  <div class="photo-panel">
+    <div class="placeholder"><span>Leave-In + Gua Sha products</span></div>
+  </div>
+  <div class="content-panel">
+    <h2 class="headline small">Reinforce + Reactivate</h2>
+    <div class="feature-grid cols-1" style="margin-top:8px">
+      <div class="feature-item">
+        <div class="sub-headline">Step 3: Reinforce (Protect)</div>
+        <div class="body-text">UV reduces hair shaft elongation and triggers miniaturization. Particulate matter causes oxidative stress in follicular keratinocytes. Hard water deposits affect texture and clog follicles. The leave-in is the daily defense.</div>
+      </div>
+      <div class="feature-item">
+        <div class="sub-headline">Step 4: Reactivate (Stimulate)</div>
+        <div class="body-text">Sandalwood gua sha, 3-5x per week. 4x micro-perfusion increase. Heme oxygenase-1 upregulation (antioxidant enzyme response). Works the fascial chain: hairline to crown to temples to nape.</div>
+      </div>
+    </div>
+    <p class="body-text" style="margin-top:24px;font-weight:600;color:var(--near-black)">Any client can follow this framework, regardless of products. But our line was built specifically around it:</p>
+    <table class="data-table" style="margin-top:12px">
+      <tr><th>Step</th><th>AWARE Product</th></tr>
+      <tr><td>Reset</td><td>9:1 Professional Shampoo</td></tr>
+      <tr><td>Repair</td><td>9:1 Professional Scalp Mask</td></tr>
+      <tr><td>Reinforce</td><td>9:1 Professional Leave-In</td></tr>
+      <tr><td>Reactivate</td><td>Sandalwood Gua Sha (retail) / Stainless Steel (backbar)</td></tr>
+    </table>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>14</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 15: JADE'S STORY
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split">
+  <div class="photo-panel">
+    <div class="placeholder"><span>Tina and Jade</span></div>
+  </div>
+  <div class="content-panel">
+    <h2 class="headline">Why AWARE Exists</h2>
+    <p class="body-text" style="font-style:italic;color:var(--light-grey);margin-bottom:20px">Jade's Story</p>
+    <p class="body-text">In her early twenties, Jade's scalp turned reactive. Excessive shedding, a scalp that never felt calm. A dermatologist prescribed minoxidil and steroids.</p>
+    <p class="body-text">Tina stepped in with one instruction:</p>
+    <p class="body-text" style="font-weight:700;font-size:clamp(16px,1.5vw,22px);color:var(--near-black);margin:20px 0">"Calm your scalp first. Then decide."</p>
+    <p class="body-text">The protocol she'd been using with clients for decades. Within weeks, the scalp calmed. Within months, the shedding slowed.</p>
+    <p class="body-text" style="margin-top:20px;font-style:italic;color:var(--light-grey)">AWARE was built to bridge the gap between haircare that ignores the scalp and scalp care that isn't built for salon-treated hair.</p>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>15</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 16: DIVIDER - GUA SHA TECHNIQUE
+     ═══════════════════════════════════════════════════ -->
+<div class="slide divider">
+  <h2>Gua Sha Technique</h2>
+  <p class="divider-sub">Four steps, four meridian points</p>
+  <div class="slide-footer">
+    <span>AWARE HAIR</span>
+    <span>16</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 17: THE 4 STEPS
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split reverse">
+  <div class="photo-panel">
+    <div class="placeholder"><span>Head profile with meridian points</span></div>
+  </div>
+  <div class="content-panel">
+    <h2 class="headline small">The 4-Step Technique</h2>
+    <p class="caption" style="margin-bottom:20px">Move the scalp tissue, not just the hair. Light to medium pressure. 8-10 strokes per area.</p>
+    <div class="protocol-step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <div class="sub-headline">Hairline (GV24 - Spirit Court)</div>
+        <div class="body-text">Front to back toward crown. Releases frontalis muscle. Opens face-to-scalp circulation.</div>
+      </div>
+    </div>
+    <div class="protocol-step">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <div class="sub-headline">Crown (GV20 - Baihui)</div>
+        <div class="body-text">Circular or radial outward strokes. Galea is thickest here. Remember this name - saying "Baihui" builds instant credibility.</div>
+      </div>
+    </div>
+    <div class="protocol-step">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <div class="sub-headline">Temples (GB8 - Leading Valley)</div>
+        <div class="body-text">Upward toward crown + small circles. Where jaw tension meets the scalp.</div>
+      </div>
+    </div>
+    <div class="protocol-step">
+      <div class="step-number">4</div>
+      <div class="step-content">
+        <div class="sub-headline">Nape (GB20 - Wind Pool)</div>
+        <div class="body-text">Upward toward crown + outward along skull base. Connects to neck and shoulder tension.</div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>17</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 18: HANDS-ON PRACTICE
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split">
+  <div class="photo-panel">
+    <div class="placeholder"><span>Sandalwood Gua Sha</span></div>
+  </div>
+  <div class="content-panel" style="text-align:center;align-items:center">
+    <h2 class="headline">Practice Together</h2>
+    <p class="body-text" style="max-width:420px;text-align:center">Pick up your gua sha. Run through all four steps on yourself. Feel the difference between light and medium pressure. Notice which areas feel tighter.</p>
+    <p class="body-text" style="max-width:420px;text-align:center;margin-top:24px;font-weight:600">For the chair: same technique, but you're standing behind the client. Use during the Repair step after scalp mask is applied.</p>
+    <p class="caption" style="margin-top:24px">Sanitize between clients with your standard tool protocol.</p>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>18</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 19: WHEN TO REFER
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split reverse">
+  <div class="photo-panel" style="background:var(--warm-cream);display:flex;flex-direction:column;justify-content:center;padding:48px">
+    <div style="margin-bottom:32px">
+      <p style="font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.05em;color:var(--near-black);margin-bottom:16px">How to Have the Conversation</p>
+      <p style="font-size:13px;color:var(--body-text);line-height:1.65;margin-bottom:16px;font-style:italic">"I've noticed some changes at your hairline over the last few visits. I'd feel better if you had a dermatologist take a look. Think of it as a team effort - I'll keep supporting your scalp health from the salon side."</p>
+      <p style="font-size:13px;color:var(--body-text);line-height:1.65;font-style:italic">"What you're describing sounds like it might benefit from a dermatologist's input. You want someone who can rule out anything medical while we keep up the scalp care routine."</p>
+    </div>
+    <p style="font-size:12px;color:var(--light-grey);line-height:1.5">Never diagnose. Never alarm. Describe what you see, not what it is clinically. Position the referral as additive.</p>
+  </div>
+  <div class="content-panel">
+    <h2 class="headline small">When to Recommend Medical Follow-Up</h2>
+    <div class="tier">
+      <div class="tier-label urgent">Refer Promptly</div>
+      <ul class="checklist">
+        <li>Sudden patchy hair loss</li>
+        <li>Pain, burning, or tenderness at the scalp</li>
+        <li>Scarring or smooth, shiny patches with no follicles</li>
+        <li>Pustules, crusting, or non-healing sores</li>
+        <li>Lesions that look different from surrounding scalp</li>
+      </ul>
+    </div>
+    <div class="tier">
+      <div class="tier-label monitor">Monitor 4+ Weeks</div>
+      <ul class="checklist">
+        <li>Chronic flaking unresponsive to gentle cleansing</li>
+        <li>Progressive thinning accelerating visit to visit</li>
+        <li>Persistent redness not correlated with products</li>
+        <li>Itching that disrupts daily life</li>
+      </ul>
+    </div>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>19</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 20: FAQs
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split">
+  <div class="photo-panel">
+    <div class="placeholder"><span>Salon conversation</span></div>
+  </div>
+  <div class="content-panel" style="padding:44px 52px;overflow-y:auto">
+    <h2 class="headline small">Questions You'll Get</h2>
+    <div class="faq-columns">
+      <div>
+        <div class="faq-col-title">From Your Clients</div>
+        <div class="faq-item">
+          <div class="faq-q">How often should I use the gua sha?</div>
+          <div class="faq-a">3-5 times per week, 3-5 minutes. Consistency over intensity.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Can I use it on a sensitive scalp?</div>
+          <div class="faq-a">Yes, lighter pressure. Wait if severely inflamed.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Does this cure hair loss?</div>
+          <div class="faq-a">Supports the environment. Hair loss is multi-factorial. Recommend dermatologist for significant changes.</div>
+        </div>
+      </div>
+      <div>
+        <div class="faq-col-title">Professional</div>
+        <div class="faq-item">
+          <div class="faq-q">What about clients on minoxidil?</div>
+          <div class="faq-a">Different mechanisms. 4R maintains environment, minoxidil targets miniaturization. They complement each other.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Wholesale minimum?</div>
+          <div class="faq-a">$200. Gets you a full starter set. No-commitment trial available.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Works with extensions?</div>
+          <div class="faq-a">Yes. Adapt gua sha around attachment points. Scalp under extensions needs more care.</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>20</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 21: MEDICATED PRODUCTS CHART
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split reverse">
+  <div class="photo-panel" style="background:var(--off-white);display:flex;align-items:center;justify-content:center;padding:48px">
+    <div style="text-align:center">
+      <p style="font-size:15px;color:var(--body-text);line-height:1.7;max-width:340px">AWARE is daily maintenance. Medicated products are targeted intervention.<br><br>They're not competitors.<br>They serve different purposes.</p>
+    </div>
+  </div>
+  <div class="content-panel" style="padding:40px 48px;overflow-y:auto">
+    <h2 class="headline small">Medicated Products Reference</h2>
+    <p class="caption" style="margin-bottom:12px">What your clients may be using and what to know</p>
+    <table class="data-table">
+      <tr>
+        <th>Active</th>
+        <th>Brands</th>
+        <th>Salon Notes</th>
+      </tr>
+      <tr>
+        <td><strong>Zinc Pyrithione</strong></td>
+        <td>Head & Shoulders</td>
+        <td><span class="tag green">Color Safe</span> Can leave residue</td>
+      </tr>
+      <tr>
+        <td><strong>Ketoconazole</strong></td>
+        <td>Nizoral</td>
+        <td><span class="tag green">Compatible</span> Can dry scalp</td>
+      </tr>
+      <tr>
+        <td><strong>Selenium Sulfide</strong></td>
+        <td>Selsun Blue</td>
+        <td><span class="tag yellow">Caution</span> Discolors light/treated hair</td>
+      </tr>
+      <tr>
+        <td><strong>Coal Tar</strong></td>
+        <td>Neutrogena T/Gel</td>
+        <td><span class="tag red">Flag</span> Stains light hair, photosensitizing</td>
+      </tr>
+      <tr>
+        <td><strong>Salicylic Acid</strong></td>
+        <td>Neutrogena T/Sal</td>
+        <td><span class="tag green">Color Safe</span> Good bridge product</td>
+      </tr>
+      <tr>
+        <td><strong>Piroctone Olamine</strong></td>
+        <td>Professional lines</td>
+        <td><span class="tag green">Best Fit</span> Most salon-compatible</td>
+      </tr>
+    </table>
+    <p class="caption" style="margin-top:12px">This chart is in your reference packet.</p>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>21</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 22: SERVICE MENU
+     ═══════════════════════════════════════════════════ -->
+<div class="slide split">
+  <div class="photo-panel">
+    <div class="placeholder"><span>AWARE full product range</span></div>
+  </div>
+  <div class="content-panel">
+    <h2 class="headline">The Opportunity</h2>
+    <p class="body-text">Scalp is where the industry is going. Consumers are searching for it. They're willing to pay for it. And right now, most salons aren't offering it.</p>
+    <p class="body-text">If you can offer your clients scalp services - not just products, but services - scalp analysis, scalp treatments, gua sha at the bowl - you will keep them coming back. You'll stand out from every other salon in your area.</p>
+    <p class="body-text" style="margin-top:24px;font-weight:600;color:var(--near-black)">You don't have to do everything we talked about today all at once. Start with the questions. Start by looking at the scalp with intention. Add one thing to your service. The framework is here whenever you're ready.</p>
+    <p class="body-text" style="margin-top:20px;font-style:italic;color:var(--light-grey)">This is a great way to build your career.</p>
+    <div class="slide-footer">
+      <span>AWARE HAIR</span>
+      <span>22</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 23: CLOSE
+     ═══════════════════════════════════════════════════ -->
+<div class="slide close">
+  <p style="font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--light-grey);margin-bottom:32px">Thank You</p>
+  <h2 style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:clamp(28px,3vw,44px);letter-spacing:0.04em;text-transform:uppercase;color:var(--near-black);margin-bottom:16px">AWARE Hair</h2>
+  <p style="font-size:15px;color:var(--body-text);line-height:1.7;max-width:440px;text-align:center;margin-bottom:40px">Proactive Scalp Wellness, Simplified</p>
+  <p style="font-size:15px;color:var(--light-grey);max-width:480px;text-align:center;line-height:1.7;margin-bottom:40px">Your reference packet has everything from today. We're staying for individual scalp scans, questions, and conversation. Come find us.</p>
+  <div style="display:flex;gap:48px;margin-bottom:32px">
+    <div style="text-align:center">
+      <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--near-black);margin-bottom:4px">Instagram</p>
+      <p style="font-size:13px;color:var(--body-text)">@awarehair</p>
+    </div>
+    <div style="text-align:center">
+      <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--near-black);margin-bottom:4px">Contact</p>
+      <p style="font-size:13px;color:var(--body-text)">jade@awarehair.com</p>
+    </div>
+  </div>
+  <div class="slide-footer" style="position:absolute;bottom:24px;left:64px;right:64px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--light-grey);font-weight:500">
+    <span>AWARE HAIR</span>
+    <span>23</span>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+document.getElementById('totalSlides').textContent = total;
+
+function goTo(n) {
+  if (n < 0 || n >= total || n === current) return;
+  const prev = slides[current];
+  const next = slides[n];
+
+  prev.classList.remove('active');
+  prev.classList.add('exiting');
+  setTimeout(() => prev.classList.remove('exiting'), 500);
+
+  next.classList.add('active');
+  current = n;
+
+  document.getElementById('currentSlide').textContent = current + 1;
+  document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+}
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+    e.preventDefault();
+    goTo(current + 1);
+  }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    goTo(current - 1);
+  }
+  if (e.key === 'Home') goTo(0);
+  if (e.key === 'End') goTo(total - 1);
+});
+
+// Click navigation (left third = back, right two thirds = forward)
+document.addEventListener('click', e => {
+  if (e.target.closest('a, button, input')) return;
+  const x = e.clientX / window.innerWidth;
+  if (x < 0.33) goTo(current - 1);
+  else goTo(current + 1);
+});
+
+// Touch support
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', e => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) goTo(current + 1);
+    else goTo(current - 1);
+  }
+});
+
+// Init progress
+document.getElementById('progress').style.width = (1 / total * 100) + '%';
+</script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

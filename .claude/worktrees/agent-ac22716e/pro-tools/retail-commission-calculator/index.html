@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retail Commission Calculator | AWARE Hair Pro</title>
+    <meta name="description" content="Calculate your retail commission earnings and see how AWARE's 50% margin means 25% more profit per sale than typical salon brands.">
+
+    <!-- AWARE Fonts -->
+    <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- PDF Export Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Klaviyo Client-Side SDK -->
+    <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=pk_1bcdfc5f9fa0dde4ab05653e3f64c5ebb5"></script>
+
+    <style>
+        /* ═══════════════════════════════════════════════════════════════
+           AWARE HAIR DESIGN SYSTEM - Retail Commission Calculator
+           ═══════════════════════════════════════════════════════════════ */
+
+        :root {
+            /* Colors */
+            --color-background: #f4efe9;
+            --color-text: #102b26;
+            --color-text-secondary: #5a6b68;
+            --color-header-text: #031612;
+
+            --color-button-bg: #113035;
+            --color-button-text: #f4efe9;
+            --color-button-hover: #2a7682;
+
+            --color-border: #bdbfbf;
+            --color-border-light: #e4d9ca;
+            --color-accent: #102b26;
+            --color-success: #478947;
+            --color-warning: #c9842b;
+            --color-danger: #c94444;
+
+            --color-surface-light: #faf8f5;
+            --color-surface-dark: #102b26;
+
+            /* Money emphasis */
+            --color-money: #1a5a3d;
+            --color-money-light: #e8f5ed;
+            --color-gold: #d4af37;
+
+            /* Typography */
+            --font-heading: "orpheuspro", Georgia, "Times New Roman", serif;
+            --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+
+            --weight-normal: 400;
+            --weight-medium: 500;
+            --weight-semibold: 600;
+            --weight-bold: 700;
+
+            /* Spacing */
+            --spacing-1: 4px;
+            --spacing-2: 8px;
+            --spacing-3: 12px;
+            --spacing-4: 16px;
+            --spacing-5: 20px;
+            --spacing-6: 24px;
+            --spacing-8: 32px;
+            --spacing-10: 40px;
+            --spacing-12: 48px;
+
+            /* Animation */
+            --easing: cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-fast: 0.2s;
+            --duration-normal: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: var(--spacing-5);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: var(--spacing-8) 0;
+            border-bottom: 1px solid var(--color-border-light);
+            margin-bottom: var(--spacing-6);
+        }
+
+        .logo {
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .header h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(1.75rem, 5vw, 2.25rem);
+            font-weight: var(--weight-normal);
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .header p {
+            font-family: var(--font-heading);
+            font-style: italic;
+            color: var(--color-text-secondary);
+            font-size: 1.0625rem;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: var(--spacing-6);
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .progress-step {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            font-weight: var(--weight-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .progress-step.active {
+            color: var(--color-accent);
+        }
+
+        .progress-step.completed {
+            color: var(--color-success);
+        }
+
+        .progress-bar {
+            height: 2px;
+            background: var(--color-border-light);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--color-accent);
+            transition: width var(--duration-normal) var(--easing);
+        }
+
+        /* Card */
+        .card {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: var(--weight-normal);
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-5);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+        }
+
+        .step-badge {
+            font-family: var(--font-body);
+            background: var(--color-button-bg);
+            color: var(--color-button-text);
+            font-size: 10px;
+            padding: 3px 10px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: var(--spacing-5);
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: var(--weight-medium);
+            margin-bottom: var(--spacing-2);
+            color: var(--color-text);
+        }
+
+        .label-hint {
+            font-weight: var(--weight-normal);
+            color: var(--color-text-secondary);
+            font-size: 13px;
+            display: block;
+            margin-top: var(--spacing-1);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"] {
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-4);
+            border: 1px solid var(--color-border);
+            background: white;
+            font-size: 16px;
+            font-family: var(--font-body);
+            color: var(--color-text);
+            transition: border-color var(--duration-fast) var(--easing);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        .input-prefix {
+            position: relative;
+        }
+
+        .input-prefix input {
+            padding-left: 28px;
+        }
+
+        .input-prefix::before {
+            content: '$';
+            position: absolute;
+            left: var(--spacing-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-secondary);
+            font-size: 16px;
+        }
+
+        .input-suffix {
+            position: relative;
+        }
+
+        .input-suffix input {
+            padding-right: 45px;
+        }
+
+        .input-suffix::after {
+            content: attr(data-suffix);
+            position: absolute;
+            right: var(--spacing-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+
+        /* Toggle Group */
+        .toggle-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-2);
+        }
+
+        .toggle-group.two-col {
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-3);
+        }
+
+        .toggle-option {
+            position: relative;
+        }
+
+        .toggle-option input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .toggle-option label {
+            display: block;
+            padding: var(--spacing-3) var(--spacing-2);
+            text-align: center;
+            border: 1px solid var(--color-border);
+            background: white;
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--easing);
+            font-weight: var(--weight-medium);
+            font-size: 13px;
+        }
+
+        .toggle-option input:checked + label {
+            border-color: var(--color-accent);
+            background: var(--color-surface-dark);
+            color: var(--color-button-text);
+        }
+
+        .toggle-option label:hover {
+            border-color: var(--color-accent);
+        }
+
+        /* Conditional Fields */
+        .conditional-fields {
+            margin-top: var(--spacing-4);
+            padding-top: var(--spacing-4);
+            border-top: 1px solid var(--color-border-light);
+            display: none;
+        }
+
+        .conditional-fields.visible {
+            display: block;
+        }
+
+        /* Slider */
+        .slider-container {
+            position: relative;
+            padding-top: var(--spacing-2);
+        }
+
+        .slider-value {
+            position: absolute;
+            top: -8px;
+            right: 0;
+            font-size: 14px;
+            font-weight: var(--weight-semibold);
+            color: var(--color-accent);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: var(--color-border-light);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--color-button-bg);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--color-button-bg);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: var(--spacing-3);
+            margin-top: var(--spacing-6);
+        }
+
+        .btn {
+            flex: 1;
+            padding: var(--spacing-4) var(--spacing-5);
+            font-size: 14px;
+            font-weight: var(--weight-medium);
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--easing);
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--color-button-bg);
+            color: var(--color-button-text);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-button-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-text);
+            color: var(--color-button-text);
+            border-color: var(--color-text);
+        }
+
+        /* Screen visibility */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.4s var(--easing);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Staggered List Reveals */
+        .breakdown-row,
+        .comparison-card,
+        .timeframe-tab {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.4s var(--easing), transform 0.4s var(--easing);
+        }
+
+        .breakdown-row.visible,
+        .comparison-card.visible,
+        .timeframe-tab.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Enhanced Button Hover */
+        .btn-primary {
+            transition: all var(--duration-normal) var(--easing), transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(17, 48, 53, 0.15);
+        }
+
+        .email-input-group .btn {
+            transition: background var(--duration-fast) var(--easing), transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .email-input-group .btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .screen.active {
+                animation: none;
+            }
+
+            .breakdown-row,
+            .comparison-card,
+            .timeframe-tab {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .btn-primary:hover,
+            .email-input-group .btn:hover {
+                transform: none;
+            }
+        }
+
+        /* Results Hero */
+        .result-hero {
+            text-align: center;
+            padding: var(--spacing-10) var(--spacing-6);
+            background: var(--color-surface-dark);
+            color: var(--color-background);
+            margin-bottom: var(--spacing-4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .result-hero > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .result-eyebrow {
+            font-size: 10px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: var(--spacing-3);
+        }
+
+        .result-label {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-style: italic;
+            opacity: 0.85;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .result-value {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 10vw, 3.5rem);
+            font-weight: var(--weight-normal);
+            letter-spacing: -0.02em;
+            margin-bottom: var(--spacing-2);
+            color: var(--color-gold);
+        }
+
+        .result-subtitle {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        /* Timeframe Tabs */
+        .timeframe-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .timeframe-tab {
+            padding: var(--spacing-4);
+            text-align: center;
+            cursor: pointer;
+            border-right: 1px solid var(--color-border-light);
+            transition: all var(--duration-fast) var(--easing);
+        }
+
+        .timeframe-tab:last-child {
+            border-right: none;
+        }
+
+        .timeframe-tab.active {
+            background: var(--color-surface-dark);
+            color: var(--color-background);
+        }
+
+        .timeframe-tab:hover:not(.active) {
+            background: var(--color-background);
+        }
+
+        .timeframe-label {
+            font-size: 10px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        .timeframe-value {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            margin-top: var(--spacing-1);
+        }
+
+        .timeframe-tab.active .timeframe-value {
+            color: var(--color-gold);
+        }
+
+        /* Opportunity Box */
+        .opportunity-box {
+            background: linear-gradient(135deg, #f5ecd4 0%, #ede4c8 100%);
+            border: 2px solid var(--color-gold);
+            padding: var(--spacing-5);
+            text-align: center;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .opportunity-icon {
+            font-size: 32px;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .opportunity-title {
+            font-family: var(--font-heading);
+            font-size: 1.125rem;
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .opportunity-value {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: #9a7b2c;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .opportunity-subtitle {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+        }
+
+        /* Comparison Cards */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .comparison-card {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            padding: var(--spacing-4);
+            text-align: center;
+        }
+
+        .comparison-card.highlight {
+            border-color: var(--color-success);
+            background: var(--color-money-light);
+        }
+
+        .comparison-card-label {
+            font-size: 11px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .comparison-card-value {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--color-header-text);
+        }
+
+        .comparison-card.highlight .comparison-card-value {
+            color: var(--color-success);
+        }
+
+        .comparison-card-subtext {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            margin-top: var(--spacing-1);
+        }
+
+        /* Key Message */
+        .key-message {
+            background: var(--color-money-light);
+            border: 1px solid rgba(71, 137, 71, 0.2);
+            padding: var(--spacing-5);
+            margin-bottom: var(--spacing-4);
+            position: relative;
+        }
+
+        .key-message::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--color-success);
+        }
+
+        .key-message h4 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-weight: var(--weight-normal);
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .key-message p {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        .key-message .highlight {
+            font-weight: var(--weight-semibold);
+            color: var(--color-success);
+        }
+
+        /* Breakdown */
+        .breakdown-card {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            overflow: hidden;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .breakdown-header {
+            padding: var(--spacing-4) var(--spacing-5);
+            background: var(--color-background);
+            font-size: 12px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-3) var(--spacing-5);
+            border-bottom: 1px solid var(--color-border-light);
+            font-size: 14px;
+        }
+
+        .breakdown-row:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-row.total {
+            background: var(--color-background);
+            font-weight: var(--weight-semibold);
+        }
+
+        .breakdown-label {
+            color: var(--color-text-secondary);
+        }
+
+        .breakdown-value {
+            font-weight: var(--weight-medium);
+        }
+
+        .breakdown-value.positive {
+            color: var(--color-success);
+        }
+
+        /* Email Capture */
+        .email-capture {
+            background: var(--color-surface-dark);
+            color: var(--color-background);
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .email-capture h3 {
+            font-family: var(--font-heading);
+            font-size: 1.125rem;
+            font-weight: var(--weight-normal);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .email-capture p {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .email-input-group {
+            display: flex;
+            gap: var(--spacing-2);
+        }
+
+        .email-input-group input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .email-input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .email-input-group input:focus {
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .email-input-group .btn {
+            flex: 0 0 auto;
+            padding: var(--spacing-3) var(--spacing-5);
+            background: var(--color-gold);
+            color: var(--color-surface-dark);
+        }
+
+        .email-input-group .btn:hover {
+            background: #e5c247;
+        }
+
+        .email-success {
+            display: none;
+            text-align: center;
+            padding: var(--spacing-4);
+            color: var(--color-success);
+            font-weight: var(--weight-medium);
+        }
+
+        .email-success.visible {
+            display: block;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-6);
+        }
+
+        .action-btn {
+            padding: var(--spacing-4);
+            border: 1px solid var(--color-border-light);
+            background: var(--color-surface-light);
+            cursor: pointer;
+            text-align: center;
+            transition: all var(--duration-fast) var(--easing);
+        }
+
+        .action-btn:hover {
+            border-color: var(--color-accent);
+            background: white;
+        }
+
+        .action-btn-icon {
+            font-size: 20px;
+            margin-bottom: var(--spacing-1);
+        }
+
+        .action-btn-label {
+            font-size: 12px;
+            font-weight: var(--weight-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: var(--spacing-8) var(--spacing-6);
+            color: var(--color-text-secondary);
+            font-size: 13px;
+            border-top: 1px solid var(--color-border-light);
+            margin-top: var(--spacing-6);
+        }
+
+        .footer a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: var(--spacing-4);
+            }
+
+            .toggle-group {
+                grid-template-columns: 1fr;
+            }
+
+            .toggle-group.two-col {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .result-value {
+                font-size: 2.5rem;
+            }
+
+            .email-input-group {
+                flex-direction: column;
+            }
+
+            .email-input-group .btn {
+                width: 100%;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">AWARE Hair Pro Tools</div>
+            <h1>Retail Commission Calculator</h1>
+            <p>How much could you be earning from retail?</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-steps">
+                <span class="progress-step active" data-step="1">Your Setup</span>
+                <span class="progress-step" data-step="2">Retail Sales</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 50%"></div>
+            </div>
+        </div>
+
+        <!-- Step 1: Compensation Model -->
+        <div class="screen active" id="step1">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="step-badge">Step 1</span>
+                    Your Setup
+                </h2>
+
+                <div class="form-group">
+                    <label>How are you compensated?</label>
+                    <div class="toggle-group">
+                        <div class="toggle-option">
+                            <input type="radio" name="compModel" id="commission" value="commission">
+                            <label for="commission">Commission</label>
+                        </div>
+                        <div class="toggle-option">
+                            <input type="radio" name="compModel" id="boothRent" value="booth" checked>
+                            <label for="boothRent">Booth Rent</label>
+                        </div>
+                        <div class="toggle-option">
+                            <input type="radio" name="compModel" id="salonOwner" value="owner">
+                            <label for="salonOwner">Salon Owner</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Commission Fields -->
+                <div class="conditional-fields" id="commissionFields">
+                    <div class="form-group">
+                        <label for="retailCommissionRate">Your retail commission rate</label>
+                        <div class="slider-container">
+                            <span class="slider-value" id="commissionRateValue">15%</span>
+                            <input type="range" id="retailCommissionRate" min="5" max="50" value="15">
+                        </div>
+                        <span class="label-hint">% of retail sales you keep</span>
+                    </div>
+                </div>
+
+                <!-- Booth Rent / Owner Info -->
+                <div class="conditional-fields visible" id="boothOwnerFields">
+                    <p style="font-size: 14px; color: var(--color-text-secondary);">
+                        Great! You keep 100% of your retail profits.
+                    </p>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="goToStep(2)">Continue</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Retail Sales -->
+        <div class="screen" id="step2">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="step-badge">Step 2</span>
+                    Your Retail Sales
+                </h2>
+
+                <div class="form-group">
+                    <label for="avgRetailPrice">Average product retail price</label>
+                    <div class="input-prefix">
+                        <input type="number" id="avgRetailPrice" placeholder="42" min="0" value="42">
+                    </div>
+                    <span class="label-hint">Typical price of products you sell</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="productsPerWeek">Products sold per week</label>
+                    <input type="number" id="productsPerWeek" placeholder="5" min="0" value="5">
+                    <span class="label-hint">Your current weekly retail sales volume</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="currentMargin">Your current wholesale margin</label>
+                    <div class="slider-container">
+                        <span class="slider-value" id="marginValue">40%</span>
+                        <input type="range" id="currentMargin" min="25" max="55" value="40">
+                    </div>
+                    <span class="label-hint">Industry standard is 40%</span>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToStep(1)">Back</button>
+                    <button class="btn btn-primary" onclick="calculateResults()">See My Earnings</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="screen" id="results">
+            <div id="resultsContent">
+                <!-- Hero Result -->
+                <div class="result-hero">
+                    <div class="result-eyebrow">Your Annual Retail Earnings</div>
+                    <div class="result-label">With your current products</div>
+                    <div class="result-value" id="currentAnnualEarnings">$4,368</div>
+                    <div class="result-subtitle" id="resultSubtitle">Based on 5 products/week at 40% margin</div>
+                </div>
+
+                <!-- Timeframe Tabs -->
+                <div class="timeframe-tabs">
+                    <div class="timeframe-tab" data-period="weekly">
+                        <div class="timeframe-label">Weekly</div>
+                        <div class="timeframe-value" id="weeklyEarnings">$84</div>
+                    </div>
+                    <div class="timeframe-tab" data-period="monthly">
+                        <div class="timeframe-label">Monthly</div>
+                        <div class="timeframe-value" id="monthlyEarnings">$364</div>
+                    </div>
+                    <div class="timeframe-tab active" data-period="yearly">
+                        <div class="timeframe-label">Yearly</div>
+                        <div class="timeframe-value" id="yearlyEarnings">$4,368</div>
+                    </div>
+                </div>
+
+                <!-- Opportunity Box -->
+                <div class="opportunity-box">
+                    <div class="opportunity-icon">&#128176;</div>
+                    <div class="opportunity-title">You're leaving money on the table</div>
+                    <div class="opportunity-value" id="opportunityValue">+$1,092/year</div>
+                    <div class="opportunity-subtitle">With AWARE's 50% margin instead of 40%</div>
+                </div>
+
+                <!-- Comparison Cards -->
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <div class="comparison-card-label">Typical Brand (40%)</div>
+                        <div class="comparison-card-value" id="typicalProfit">$16.80</div>
+                        <div class="comparison-card-subtext">per product</div>
+                    </div>
+                    <div class="comparison-card highlight">
+                        <div class="comparison-card-label">AWARE (50%)</div>
+                        <div class="comparison-card-value" id="awareProfit">$21.00</div>
+                        <div class="comparison-card-subtext">per product</div>
+                    </div>
+                </div>
+
+                <!-- Key Message -->
+                <div class="key-message">
+                    <h4>AWARE's 50% margin = 25% more profit per sale</h4>
+                    <p>Selling just <span class="highlight" id="productsForBonus">2 AWARE products per week</span> = <span class="highlight" id="yearlyBonus">$436/year</span> extra income. That's the margin difference alone - before considering increased sales from scalp consultations.</p>
+                </div>
+
+                <!-- Breakdown -->
+                <div class="breakdown-card">
+                    <div class="breakdown-header">Earnings Breakdown</div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Products Per Week</span>
+                        <span class="breakdown-value" id="breakdownProducts">5</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Average Retail Price</span>
+                        <span class="breakdown-value" id="breakdownPrice">$42.00</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Your Margin</span>
+                        <span class="breakdown-value" id="breakdownMargin">40%</span>
+                    </div>
+                    <div class="breakdown-row" id="commissionRow" style="display: none;">
+                        <span class="breakdown-label">Commission Rate</span>
+                        <span class="breakdown-value" id="breakdownCommission">15%</span>
+                    </div>
+                    <div class="breakdown-row total">
+                        <span class="breakdown-label">Your Profit Per Product</span>
+                        <span class="breakdown-value" id="breakdownProfitPerProduct">$16.80</span>
+                    </div>
+                </div>
+
+                <div class="breakdown-card">
+                    <div class="breakdown-header">With AWARE (50% Margin)</div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Profit Per Product</span>
+                        <span class="breakdown-value positive" id="awareProfitPerProduct">$21.00</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Extra Per Product</span>
+                        <span class="breakdown-value positive" id="extraPerProduct">+$4.20</span>
+                    </div>
+                    <div class="breakdown-row total">
+                        <span class="breakdown-label">Extra Per Year</span>
+                        <span class="breakdown-value positive" id="extraPerYear">+$1,092</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email Capture -->
+            <div class="email-capture" id="emailCapture">
+                <h3>Get your earnings breakdown + wholesale info</h3>
+                <p>We'll send your report and details on becoming an AWARE wholesale partner</p>
+                <div class="email-input-group" id="emailForm">
+                    <input type="email" id="emailInput" placeholder="your@email.com">
+                    <button class="btn" onclick="submitEmail()">Send Report</button>
+                </div>
+                <div class="email-success" id="emailSuccess">
+                    &#10003; Check your inbox! Your report is on the way.
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="action-btn" onclick="downloadPDF()">
+                    <div class="action-btn-icon">&#128196;</div>
+                    <div class="action-btn-label">Download PDF</div>
+                </button>
+                <button class="action-btn" onclick="shareResults()">
+                    <div class="action-btn-icon">&#128279;</div>
+                    <div class="action-btn-label">Share</div>
+                </button>
+            </div>
+
+            <!-- Start Over -->
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="startOver()">Calculate Again</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Built by <a href="https://awarehair.com" target="_blank">AWARE Hair</a> for stylists who want to maximize their earnings.</p>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════
+        // RETAIL COMMISSION CALCULATOR - JavaScript
+        // ═══════════════════════════════════════════════════════════════
+
+        // Value Counter Animation
+        function animateValue(el, end, duration, prefix, suffix) {
+            duration = duration || 1000;
+            prefix = prefix || '';
+            suffix = suffix || '';
+
+            // Respect reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                el.textContent = prefix + Math.round(end).toLocaleString() + suffix;
+                return;
+            }
+
+            const start = 0;
+            const startTime = performance.now();
+
+            function update(now) {
+                const progress = Math.min((now - startTime) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3); // cubic ease-out
+                const value = Math.floor(start + (end - start) * eased);
+                el.textContent = prefix + value.toLocaleString() + suffix;
+                if (progress < 1) requestAnimationFrame(update);
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        // Staggered reveal for list items
+        function revealListItems(selector, delay) {
+            delay = delay || 100;
+            const items = document.querySelectorAll(selector);
+
+            // Respect reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                items.forEach(item => item.classList.add('visible'));
+                return;
+            }
+
+            items.forEach((item, index) => {
+                setTimeout(() => item.classList.add('visible'), index * delay);
+            });
+        }
+
+        // State
+        let currentStep = 1;
+        let calculationData = {};
+
+        // Constants
+        const AWARE_MARGIN = 0.50;
+        const TYPICAL_MARGIN = 0.40;
+        const WEEKS_PER_YEAR = 52;
+
+        // DOM Elements
+        const progressSteps = document.querySelectorAll('.progress-step');
+        const progressFill = document.querySelector('.progress-fill');
+        const progressContainer = document.getElementById('progressContainer');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Compensation model toggle
+            document.querySelectorAll('input[name="compModel"]').forEach(radio => {
+                radio.addEventListener('change', toggleCompFields);
+            });
+
+            // Slider updates
+            document.getElementById('retailCommissionRate').addEventListener('input', function() {
+                document.getElementById('commissionRateValue').textContent = this.value + '%';
+            });
+
+            document.getElementById('currentMargin').addEventListener('input', function() {
+                document.getElementById('marginValue').textContent = this.value + '%';
+            });
+
+            // Timeframe tab clicks
+            document.querySelectorAll('.timeframe-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.timeframe-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            toggleCompFields();
+        });
+
+        function toggleCompFields() {
+            const isCommission = document.getElementById('commission').checked;
+            document.getElementById('commissionFields').classList.toggle('visible', isCommission);
+            document.getElementById('boothOwnerFields').classList.toggle('visible', !isCommission);
+        }
+
+        function goToStep(step) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+
+            currentStep = step;
+            const percentage = currentStep * 50;
+            progressFill.style.width = `${percentage}%`;
+
+            progressSteps.forEach((ps, index) => {
+                ps.classList.remove('active', 'completed');
+                if (index + 1 < currentStep) ps.classList.add('completed');
+                else if (index + 1 === currentStep) ps.classList.add('active');
+            });
+
+            window.scrollTo(0, 0);
+        }
+
+        function calculateResults() {
+            // Gather inputs
+            const compModel = document.querySelector('input[name="compModel"]:checked').value;
+            const retailCommissionRate = parseFloat(document.getElementById('retailCommissionRate').value) / 100 || 0.15;
+            const avgRetailPrice = parseFloat(document.getElementById('avgRetailPrice').value) || 42;
+            const productsPerWeek = parseFloat(document.getElementById('productsPerWeek').value) || 5;
+            const currentMargin = parseFloat(document.getElementById('currentMargin').value) / 100 || 0.40;
+
+            // Determine effective margin based on comp model
+            let effectiveMargin = currentMargin;
+            let isCommissionBased = compModel === 'commission';
+
+            // Calculate profits
+            const grossProfitPerProduct = avgRetailPrice * currentMargin;
+
+            // If commission, they only get their % of the profit
+            let yourProfitPerProduct = isCommissionBased
+                ? grossProfitPerProduct * retailCommissionRate
+                : grossProfitPerProduct;
+
+            // Weekly/Monthly/Yearly
+            const weeklyEarnings = yourProfitPerProduct * productsPerWeek;
+            const monthlyEarnings = weeklyEarnings * 4.33;
+            const yearlyEarnings = weeklyEarnings * WEEKS_PER_YEAR;
+
+            // AWARE comparison
+            const awareGrossProfitPerProduct = avgRetailPrice * AWARE_MARGIN;
+            const awareProfitPerProduct = isCommissionBased
+                ? awareGrossProfitPerProduct * retailCommissionRate
+                : awareGrossProfitPerProduct;
+
+            const extraPerProduct = awareProfitPerProduct - yourProfitPerProduct;
+            const extraPerYear = extraPerProduct * productsPerWeek * WEEKS_PER_YEAR;
+
+            // Store data
+            calculationData = {
+                compModel,
+                isCommissionBased,
+                retailCommissionRate,
+                avgRetailPrice,
+                productsPerWeek,
+                currentMargin,
+                grossProfitPerProduct,
+                yourProfitPerProduct,
+                weeklyEarnings,
+                monthlyEarnings,
+                yearlyEarnings,
+                awareProfitPerProduct,
+                extraPerProduct,
+                extraPerYear
+            };
+
+            displayResults();
+        }
+
+        function displayResults() {
+            const d = calculationData;
+
+            // Static text updates
+            document.getElementById('resultSubtitle').textContent =
+                `Based on ${d.productsPerWeek} products/week at ${Math.round(d.currentMargin * 100)}% margin`;
+
+            // Key message
+            const productsNeeded = Math.ceil(d.extraPerYear / (d.extraPerProduct * WEEKS_PER_YEAR));
+            const yearlyFromTwo = d.extraPerProduct * 2 * WEEKS_PER_YEAR;
+            document.getElementById('productsForBonus').textContent = `${Math.max(2, productsNeeded)} AWARE products per week`;
+            document.getElementById('yearlyBonus').textContent = formatCurrency(yearlyFromTwo);
+
+            // Breakdown static values
+            document.getElementById('breakdownProducts').textContent = d.productsPerWeek;
+            document.getElementById('breakdownPrice').textContent = formatCurrency(d.avgRetailPrice);
+            document.getElementById('breakdownMargin').textContent = Math.round(d.currentMargin * 100) + '%';
+
+            // Commission row
+            const commissionRow = document.getElementById('commissionRow');
+            if (d.isCommissionBased) {
+                commissionRow.style.display = 'flex';
+                document.getElementById('breakdownCommission').textContent = Math.round(d.retailCommissionRate * 100) + '%';
+            } else {
+                commissionRow.style.display = 'none';
+            }
+
+            // Show results screen first
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('results').classList.add('active');
+            progressContainer.style.display = 'none';
+            window.scrollTo(0, 0);
+
+            // Animate values after screen transition
+            setTimeout(() => {
+                // Hero value
+                animateValue(document.getElementById('currentAnnualEarnings'), d.yearlyEarnings, 1200, '$', '');
+
+                // Timeframe values
+                animateValue(document.getElementById('weeklyEarnings'), d.weeklyEarnings, 800, '$', '');
+                animateValue(document.getElementById('monthlyEarnings'), d.monthlyEarnings, 900, '$', '');
+                animateValue(document.getElementById('yearlyEarnings'), d.yearlyEarnings, 1000, '$', '');
+
+                // Opportunity value
+                animateValue(document.getElementById('opportunityValue'), d.extraPerYear, 1100, '+$', '/year');
+
+                // Comparison cards
+                animateValue(document.getElementById('typicalProfit'), d.yourProfitPerProduct, 700, '$', '');
+                animateValue(document.getElementById('awareProfit'), d.awareProfitPerProduct, 800, '$', '');
+
+                // Breakdown animated values
+                animateValue(document.getElementById('breakdownProfitPerProduct'), d.yourProfitPerProduct, 900, '$', '');
+                animateValue(document.getElementById('awareProfitPerProduct'), d.awareProfitPerProduct, 950, '$', '');
+                animateValue(document.getElementById('extraPerProduct'), d.extraPerProduct, 1000, '+$', '');
+                animateValue(document.getElementById('extraPerYear'), d.extraPerYear, 1100, '+$', '');
+
+                // Reveal list items with stagger
+                revealListItems('.timeframe-tab', 100);
+                revealListItems('.comparison-card', 120);
+                setTimeout(() => revealListItems('.breakdown-row', 80), 300);
+            }, 200);
+        }
+
+        function formatCurrency(value) {
+            return '$' + Math.round(value).toLocaleString();
+        }
+
+        function submitEmail() {
+            const email = document.getElementById('emailInput').value;
+
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            // Klaviyo properties
+            const klaviyoProperties = {
+                '$email': email,
+                'calculator_used': 'retail_commission',
+                'comp_model': calculationData.compModel,
+                'weekly_retail_sales': calculationData.productsPerWeek,
+                'annual_retail_profit': Math.round(calculationData.yearlyEarnings),
+                'aware_vs_typical_difference': Math.round(calculationData.extraPerYear),
+                'current_margin': Math.round(calculationData.currentMargin * 100),
+                'avg_retail_price': calculationData.avgRetailPrice,
+                'calculation_date': new Date().toISOString()
+            };
+
+            if (typeof klaviyo !== 'undefined') {
+                klaviyo.identify(klaviyoProperties);
+
+                klaviyo.track('Calculated Retail Commission', {
+                    comp_model: calculationData.compModel,
+                    weekly_retail_sales: calculationData.productsPerWeek,
+                    annual_profit: Math.round(calculationData.yearlyEarnings),
+                    potential_gain: Math.round(calculationData.extraPerYear)
+                });
+            }
+
+            fetch('https://a.klaviyo.com/client/subscriptions/?company_id=pk_1bcdfc5f9fa0dde4ab05653e3f64c5ebb5', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'revision': '2024-10-15'
+                },
+                body: JSON.stringify({
+                    data: {
+                        type: 'subscription',
+                        attributes: {
+                            custom_source: 'Pro Tools - Retail Commission Calculator',
+                            profile: {
+                                data: {
+                                    type: 'profile',
+                                    attributes: {
+                                        email: email,
+                                        properties: {
+                                            calculator_used: 'retail_commission',
+                                            comp_model: calculationData.compModel,
+                                            annual_profit: Math.round(calculationData.yearlyEarnings),
+                                            potential_gain: Math.round(calculationData.extraPerYear)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+            }).catch(error => console.log('Klaviyo error:', error));
+
+            document.getElementById('emailForm').style.display = 'none';
+            document.getElementById('emailSuccess').classList.add('visible');
+        }
+
+        function downloadPDF() {
+            const element = document.getElementById('resultsContent');
+            html2pdf().set({
+                margin: 10,
+                filename: `retail-commission-${new Date().toISOString().split('T')[0]}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).from(element).save();
+
+            if (typeof klaviyo !== 'undefined') {
+                klaviyo.track('Downloaded PDF', { calculator: 'retail_commission' });
+            }
+        }
+
+        function shareResults() {
+            const text = `I calculated my retail commission: ${formatCurrency(calculationData.yearlyEarnings)}/year. Switching to AWARE's 50% margin could add ${formatCurrency(calculationData.extraPerYear)} more! Calculate yours: `;
+            const url = window.location.href;
+
+            if (navigator.share) {
+                navigator.share({ title: 'My Retail Commission', text, url });
+            } else {
+                navigator.clipboard.writeText(text + url).then(() => alert('Link copied!'));
+            }
+        }
+
+        function startOver() {
+            document.querySelectorAll('input[type="number"]').forEach(i => i.value = i.placeholder || '');
+            document.getElementById('retailCommissionRate').value = 15;
+            document.getElementById('commissionRateValue').textContent = '15%';
+            document.getElementById('currentMargin').value = 40;
+            document.getElementById('marginValue').textContent = '40%';
+            document.getElementById('boothRent').checked = true;
+            toggleCompFields();
+
+            currentStep = 1;
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('step1').classList.add('active');
+            progressContainer.style.display = 'block';
+            progressFill.style.width = '50%';
+
+            // Reset animation states for next calculation
+            document.querySelectorAll('.breakdown-row, .comparison-card, .timeframe-tab').forEach(el => {
+                el.classList.remove('visible');
+            });
+
+            document.getElementById('emailForm').style.display = 'flex';
+            document.getElementById('emailSuccess').classList.remove('visible');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>

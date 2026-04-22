@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - La Dolce Vita Gift Note v4</title>
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #102B26;
+    --teal-soft: #1e3d36;
+    --teal-muted: #3a5850;
+    --cream: #f4efe9;
+    --cream-warm: #f6f1eb;
+    --gold: #D4A574;
+    --gold-dark: #b8885a;
+    --gold-muted: #c9a07a;
+    --sage: #7d8471;
+    --sage-light: #9aa08f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #d8d3cc;
+    font-family: 'DM Sans', sans-serif;
+    color: #333;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .page-title {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--teal);
+    margin-bottom: 6px;
+    text-align: center;
+  }
+
+  .page-sub {
+    font-size: 12px;
+    color: var(--sage);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .card-display {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 50px;
+  }
+
+  .card-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #999;
+    font-weight: 500;
+  }
+
+  /* ========================
+     CARD BASE - 3.5" x 3.5"
+     ======================== */
+  .card {
+    width: 3.5in;
+    height: 3.5in;
+    position: relative;
+    overflow: hidden;
+    background: var(--cream-warm);
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.04),
+      0 4px 16px rgba(0,0,0,0.08),
+      0 12px 40px rgba(0,0,0,0.06);
+  }
+
+  /* Gold edge painting */
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2.5px solid var(--gold);
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* ========================
+     FRONT
+     ======================== */
+  .front {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.32in 0.36in 0.26in;
+    position: relative;
+    height: 100%;
+  }
+
+  /* Single fine gold frame */
+  .front .frame {
+    position: absolute;
+    inset: 0.14in;
+    border: 0.6px solid var(--gold);
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Real botanical background image */
+  .front .botanical-bg {
+    position: absolute;
+    top: -10%;
+    right: -15%;
+    width: 75%;
+    height: 110%;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/6/62/Lemon_tree_%28Citrus_limon%29%3B_branch_with_fruit_and_flowers._Ch_Wellcome_V0044542.jpg');
+    background-size: cover;
+    background-position: center left;
+    opacity: 0.07;
+    z-index: 0;
+    filter: sepia(0.3) saturate(0.8);
+    mix-blend-mode: multiply;
+  }
+
+  /* Secondary botanical - bottom left hint */
+  .front .botanical-bg-2 {
+    position: absolute;
+    bottom: -20%;
+    left: -20%;
+    width: 55%;
+    height: 70%;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/5/5e/Citrus_limonum_%28K%C3%B6hler%29.jpg');
+    background-size: cover;
+    background-position: top right;
+    opacity: 0.04;
+    z-index: 0;
+    filter: sepia(0.3) saturate(0.7);
+    mix-blend-mode: multiply;
+    transform: rotate(15deg);
+  }
+
+  /* --- Top section --- */
+  .front-top {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    width: 100%;
+  }
+
+  .event-line {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 6.5px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-muted);
+    margin-bottom: 0.06in;
+  }
+
+  .logo-img {
+    height: 11px;
+    display: block;
+    margin: 0 auto 0.06in;
+    opacity: 0.85;
+  }
+
+  .gold-rule {
+    width: 20px;
+    height: 0.5px;
+    background: var(--gold);
+    margin: 0 auto;
+    opacity: 0.4;
+  }
+
+  /* --- Message --- */
+  .front-message {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 2.5in;
+  }
+
+  .front-message .para {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: 11px;
+    line-height: 1.65;
+    color: var(--teal-soft);
+    font-weight: 400;
+  }
+
+  .front-message .para + .para {
+    margin-top: 0.06in;
+  }
+
+  .front-message .para.accent {
+    color: var(--teal-muted);
+    font-size: 10.5px;
+  }
+
+  /* --- Sign-off --- */
+  .front-signoff {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .signoff-line {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: 9px;
+    color: var(--sage-light);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.01in;
+  }
+
+  .signoff-names {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--gold-dark);
+    letter-spacing: 0.02em;
+    font-weight: 400;
+  }
+
+  /* ========================
+     BACK
+     ======================== */
+  .back {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    position: relative;
+  }
+
+  .back .frame {
+    position: absolute;
+    inset: 0.14in;
+    border: 0.6px solid var(--gold);
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Botanical ghost on back */
+  .back .botanical-bg {
+    position: absolute;
+    bottom: -25%;
+    right: -20%;
+    width: 60%;
+    height: 80%;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/5/5e/Citrus_limonum_%28K%C3%B6hler%29.jpg');
+    background-size: cover;
+    background-position: top left;
+    opacity: 0.035;
+    z-index: 0;
+    filter: sepia(0.4) saturate(0.6);
+    mix-blend-mode: multiply;
+    transform: rotate(-20deg);
+  }
+
+  .back-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0.35in;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+  }
+
+  .back-logo {
+    height: 10px;
+    margin-bottom: 0.14in;
+    opacity: 0.75;
+  }
+
+  .back-gift-line {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-style: italic;
+    font-size: 9.5px;
+    color: var(--sage);
+    margin-bottom: 0.16in;
+    letter-spacing: 0.02em;
+  }
+
+  /* QR code */
+  .qr-area {
+    width: 1.2in;
+    height: 1.2in;
+    border: 1.2px solid var(--teal);
+    border-radius: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    margin-bottom: 0.1in;
+    position: relative;
+  }
+
+  .qr-finder {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+  }
+  .qr-finder .outer {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--teal);
+  }
+  .qr-finder .inner {
+    position: absolute;
+    inset: 5px;
+    background: var(--teal);
+  }
+  .qr-finder.f-tl { top: 6px; left: 6px; }
+  .qr-finder.f-tr { top: 6px; right: 6px; }
+  .qr-finder.f-bl { bottom: 6px; left: 6px; }
+
+  .qr-center {
+    width: 18px;
+    height: 18px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 3px white;
+    position: absolute;
+  }
+
+  .qr-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    font-weight: 300;
+    color: var(--sage);
+    letter-spacing: 0.03em;
+    margin-bottom: 0.06in;
+  }
+
+  .back-url {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9.5px;
+    color: var(--teal-soft);
+    letter-spacing: 0.03em;
+    font-weight: 400;
+    margin-bottom: 0.04in;
+  }
+
+  .back-offer {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-style: italic;
+    font-size: 8px;
+    color: var(--sage-light);
+    letter-spacing: 0.02em;
+  }
+
+  .back-tagline {
+    position: absolute;
+    bottom: 0.18in;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 5.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sage-light);
+    opacity: 0.6;
+  }
+
+  /* ========================
+     PRINT NOTES
+     ======================== */
+  .notes {
+    max-width: 680px;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .notes h3 {
+    font-family: 'orpheus-pro', Georgia, serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--teal);
+    margin-bottom: 12px;
+  }
+
+  .print-spec {
+    background: white;
+    padding: 16px 20px;
+    border-radius: 4px;
+    border-left: 2px solid var(--gold);
+    font-size: 11px;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  .print-spec strong { color: var(--teal); }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .page-title, .page-sub, .notes { display: none; }
+    .card { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1 class="page-title">The Gift Note v4</h1>
+<p class="page-sub">Real botanical art - refined typography</p>
+
+<div class="card-display">
+
+  <!-- ============ FRONT ============ -->
+  <div class="card-col">
+    <span class="card-label">Front</span>
+    <div class="card front">
+
+      <!-- Fine gold frame -->
+      <div class="frame"></div>
+
+      <!-- Real botanical - Wellcome Collection lemon branch -->
+      <div class="botanical-bg"></div>
+
+      <!-- Real botanical - Kohler plate, bottom left -->
+      <div class="botanical-bg-2"></div>
+
+      <!-- Top -->
+      <div class="front-top">
+        <div class="event-line">La Dolce Vita &middot; 2026</div>
+        <img
+          class="logo-img"
+          src="https://awarehair.com/cdn/shop/files/Untitled-1-01_copy.png?v=1731527827&width=300"
+          alt="AWARE HAIR"
+          crossorigin="anonymous"
+        >
+        <div class="gold-rule"></div>
+      </div>
+
+      <!-- Message -->
+      <div class="front-message">
+        <p class="para">In honor of tonight's La Dolce Vita, a gift devoted to wellness, care, and the art of living well.</p>
+        <p class="para">AWARE is natural-first scalp care with a citrus scent and clean ingredients, crafted in Los Angeles.</p>
+        <p class="para accent">Proud to support Flintridge Prep and the students at the heart of this evening.</p>
+      </div>
+
+      <!-- Sign-off -->
+      <div class="front-signoff">
+        <div class="signoff-line">With love,</div>
+        <div class="signoff-names">Tina & Jade</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ BACK ============ -->
+  <div class="card-col">
+    <span class="card-label">Back</span>
+    <div class="card back">
+
+      <!-- Fine gold frame -->
+      <div class="frame"></div>
+
+      <!-- Botanical ghost -->
+      <div class="botanical-bg"></div>
+
+      <div class="back-content">
+
+        <!-- Wordmark -->
+        <img
+          class="back-logo"
+          src="https://awarehair.com/cdn/shop/files/Untitled-1-01_copy.png?v=1731527827&width=300"
+          alt="AWARE HAIR"
+          crossorigin="anonymous"
+        >
+
+        <div class="back-gift-line">Your gift includes a complimentary scalp analysis</div>
+
+        <!-- QR -->
+        <div class="qr-area">
+          <div class="qr-finder f-tl"><div class="outer"></div><div class="inner"></div></div>
+          <div class="qr-finder f-tr"><div class="outer"></div><div class="inner"></div></div>
+          <div class="qr-finder f-bl"><div class="outer"></div><div class="inner"></div></div>
+          <div class="qr-center">
+            <svg viewBox="0 0 40 40" fill="none" width="14" height="14">
+              <path d="M14 30 L20 10 L26 30" stroke="#102B26" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="16" y1="24" x2="24" y2="24" stroke="#102B26" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="qr-label">Scan to explore</div>
+        <div class="back-url">awarehair.com/flintridge</div>
+        <div class="back-offer">Enjoy a complimentary gift with code FLINTRIDGE</div>
+
+        <div class="back-tagline">Clean Ingredients &middot; Real Results &middot; Made in Los Angeles</div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Print Notes -->
+<div class="notes">
+  <h3>Print Production Notes</h3>
+  <div class="print-spec">
+    <strong>Stock:</strong> 18-20pt cotton, cream, soft-touch laminate both sides.<br>
+    <strong>Foil:</strong> Matte gold (PMS 7407 C) on wordmark, frame line, edge painting.<br>
+    <strong>Botanical:</strong> Replace web image with commissioned watercolor or licensed vintage plate, printed at 6-8% opacity in CMYK. Alternatively, blind deboss the lemon motif for tactile luxury.<br>
+    <strong>Typography:</strong> Orpheus Pro for all text. "Tina & Jade" ideally replaced with scanned handwritten signatures for final print.<br>
+    <strong>QR:</strong> Generate actual QR linking to awarehair.com/flintridge at minimum 1" with 0.25" quiet zone.
+  </div>
+</div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

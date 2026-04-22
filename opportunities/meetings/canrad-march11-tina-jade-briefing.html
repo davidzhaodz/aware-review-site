@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CanRad Briefing - Tina & Jade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2D4739;
+      --forest-deep: #1E3228;
+      --sage: #7A8F7D;
+      --cream: #F8F6F1;
+      --sand: #E8E4DC;
+      --charcoal: #2C2C2C;
+      --warm-gray: #6B6B6B;
+      --gold: #B8956E;
+      --gold-light: #C9A882;
+      --white: #FFFFFF;
+      --mist: #D5DDD8;
+      --divider: #D4CFC6;
+      --green-soft: #4A8C6B;
+      --green-bg: #F2F8F5;
+      --red-soft: #C45B4A;
+      --red-bg: #FDF5F4;
+      --amber-soft: #B8860B;
+      --amber-bg: #FFFBF0;
+      --blue-soft: #4A7CB8;
+      --blue-bg: #F0F5FC;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      background: var(--sand);
+      color: var(--charcoal);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 920px;
+      margin: 0 auto;
+      background: var(--white);
+    }
+
+    /* ============ HEADER ============ */
+
+    .header {
+      background: var(--forest-deep);
+      padding: 36px 48px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 40%, transparent 100%);
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .header h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      font-size: 26px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--cream);
+    }
+
+    .header .subtitle {
+      font-size: 15px;
+      color: var(--gold-light);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    .header .meeting-info {
+      font-size: 14px;
+      color: var(--sage);
+      margin-top: 4px;
+    }
+
+    .header .meeting-info strong {
+      color: var(--gold-light);
+      font-weight: 500;
+    }
+
+    .header .goal-line {
+      margin-top: 14px;
+      font-size: 15px;
+      color: var(--cream);
+      opacity: 0.85;
+      max-width: 650px;
+      line-height: 1.5;
+    }
+
+    .header-right {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .header-right .label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sage);
+      opacity: 0.7;
+    }
+
+    /* ============ NAV STRIP ============ */
+
+    .nav-strip {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--divider);
+      background: var(--cream);
+      overflow-x: auto;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-strip a {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      text-decoration: none;
+      padding: 12px 16px;
+      white-space: nowrap;
+      border-right: 1px solid var(--divider);
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-strip a:hover {
+      color: var(--forest);
+      background: var(--white);
+    }
+
+    /* ============ CONTENT ============ */
+
+    .content {
+      padding: 0 48px 56px;
+    }
+
+    .section {
+      padding-top: 36px;
+    }
+
+    .section-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--divider);
+    }
+
+    /* ============ PEOPLE ============ */
+
+    .people-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--divider);
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .person-card {
+      background: var(--white);
+      padding: 18px 20px;
+    }
+
+    .person-name {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--forest);
+    }
+
+    .person-title {
+      font-size: 12.5px;
+      color: var(--warm-gray);
+      margin-top: 2px;
+    }
+
+    .person-note {
+      font-size: 13px;
+      color: var(--charcoal);
+      margin-top: 8px;
+      line-height: 1.45;
+      font-style: italic;
+    }
+
+    .person-tag {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 600;
+    }
+
+    .tag-champion { background: var(--green-bg); color: var(--green-soft); }
+    .tag-decision { background: var(--amber-bg); color: var(--amber-soft); }
+    .tag-product { background: var(--blue-bg); color: var(--blue-soft); }
+
+    /* ============ MEETING HISTORY ============ */
+
+    .meeting-card {
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+
+    .meeting-card .meeting-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .meeting-card .meeting-title {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--forest);
+    }
+
+    .meeting-card .meeting-date {
+      font-size: 12px;
+      color: var(--warm-gray);
+    }
+
+    .meeting-card .meeting-body {
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--charcoal);
+    }
+
+    .meeting-card .meeting-body strong {
+      color: var(--forest);
+    }
+
+    .meeting-card .outcome-tag {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 600;
+      background: var(--green-bg);
+      color: var(--green-soft);
+    }
+
+    /* ============ INFO CARDS ============ */
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--divider);
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .info-grid-3 {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .info-card {
+      background: var(--white);
+      padding: 16px 20px;
+    }
+
+    .info-card .info-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      font-weight: 600;
+    }
+
+    .info-card .info-value {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--forest);
+      margin-top: 4px;
+    }
+
+    .info-card .info-detail {
+      font-size: 12.5px;
+      color: var(--warm-gray);
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    /* ============ ROLE BOX ============ */
+
+    .role-box {
+      background: var(--green-bg);
+      border: 1px solid #c5ddd0;
+      border-radius: 3px;
+      padding: 20px 24px;
+    }
+
+    .role-box h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--green-soft);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .role-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .role-box li {
+      font-size: 14px;
+      padding: 6px 0;
+      padding-left: 18px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .role-box li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 13px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green-soft);
+      opacity: 0.5;
+    }
+
+    /* ============ REGULATORY SNAPSHOT ============ */
+
+    .reg-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--divider);
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .reg-card {
+      background: var(--white);
+      padding: 16px 20px;
+    }
+
+    .reg-card .reg-status {
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .reg-card .reg-status.good { color: var(--green-soft); }
+    .reg-card .reg-status.action { color: var(--amber-soft); }
+
+    .reg-card .reg-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--forest);
+    }
+
+    .reg-card .reg-detail {
+      font-size: 12.5px;
+      color: var(--warm-gray);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    /* ============ CLAIMS TABLE ============ */
+
+    .claims-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    .claims-table th {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-bottom: 2px solid var(--divider);
+      text-align: left;
+    }
+
+    .claims-table th.safe { color: var(--green-soft); }
+    .claims-table th.avoid { color: var(--red-soft); }
+
+    .claims-table td {
+      padding: 6px 14px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .claims-table td.safe-cell { color: var(--green-soft); }
+    .claims-table td.avoid-cell { color: var(--red-soft); }
+
+    /* ============ TIMELINE (TABLE) ============ */
+
+    .timeline-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .timeline-table th {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      text-align: left;
+      padding: 8px 14px;
+      border-bottom: 2px solid var(--divider);
+      font-weight: 600;
+    }
+
+    .timeline-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--divider);
+      vertical-align: top;
+    }
+
+    .timeline-table .tl-when {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      font-weight: 600;
+      white-space: nowrap;
+      width: 120px;
+    }
+
+    .timeline-table .tl-dot {
+      width: 24px;
+      text-align: center;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .timeline-table .tl-dot .dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sage);
+    }
+
+    .timeline-table .tl-dot .dot.active { background: var(--gold); }
+    .timeline-table .tl-dot .dot.target { background: var(--green-soft); width: 10px; height: 10px; }
+
+    .timeline-table tr.tl-target td {
+      font-weight: 600;
+      color: var(--forest);
+    }
+
+    /* ============ CALLOUT ============ */
+
+    .callout {
+      background: var(--cream);
+      border-left: 3px solid var(--gold);
+      padding: 16px 20px;
+      margin: 12px 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--charcoal);
+    }
+
+    .callout .callout-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    /* ============ LIST BOX ============ */
+
+    .list-box {
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      padding: 20px 24px;
+    }
+
+    .list-box h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .list-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .list-box li {
+      font-size: 13.5px;
+      padding: 5px 0;
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.45;
+    }
+
+    .list-box li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--sage);
+    }
+
+    /* ============ PRINT ============ */
+
+    @media print {
+      body { background: white; }
+      .page { box-shadow: none; max-width: 100%; }
+      .nav-strip { display: none; }
+      .content { padding: 0 36px 36px; }
+
+      /* Prevent breaks inside key elements */
+      .section { break-inside: avoid; }
+      .meeting-card { break-inside: avoid; }
+      .info-grid { break-inside: avoid; }
+      .reg-grid { break-inside: avoid; }
+      .people-grid { break-inside: avoid; }
+      .role-box { break-inside: avoid; }
+      .callout { break-inside: avoid; }
+      .list-box { break-inside: avoid; }
+      .timeline-table { break-inside: avoid; }
+
+      /* Force print backgrounds for colored elements */
+      .header, .info-card, .reg-card, .person-card,
+      .callout, .role-box, .person-tag, .outcome-tag,
+      .tl-dot .dot, .timeline-table {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-row">
+        <div>
+          <h1>AWARE &times; CanRad</h1>
+          <div class="subtitle">Team Briefing - Tina & Jade</div>
+          <div class="meeting-info">
+            Follow-Up Meeting &mdash; <strong>March 11, 2026</strong> &mdash; Virtual
+          </div>
+          <div class="goal-line">
+            CanRad Beauty is Canada's premier independent professional beauty distributor. We're working toward a September 2026 launch of AWARE products through their network of 10,000+ salons.
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="label">Meeting 4</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAV -->
+    <div class="nav-strip">
+      <a href="#canrad">About CanRad</a>
+      <a href="#people">Key People</a>
+      <a href="#history">Meeting History</a>
+      <a href="#where-things-stand">Status</a>
+      <a href="#regulatory">Canadian Regulatory</a>
+      <a href="#education">Education Role</a>
+      <a href="#timeline">Timeline</a>
+    </div>
+
+    <div class="content">
+
+      <!-- ABOUT CANRAD -->
+      <div class="section" id="canrad">
+        <div class="section-label">About CanRad Beauty</div>
+
+        <div class="info-grid info-grid-3">
+          <div class="info-card">
+            <div class="info-label">Founded</div>
+            <div class="info-value">110+ Years</div>
+            <div class="info-detail">4th generation, family-owned (Wise family). HQ: North York, Ontario.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Reach</div>
+            <div class="info-value">10,000+ Salons</div>
+            <div class="info-detail">Ontario and Manitoba. 38 salon consultants. 14 trade-only stores.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Portfolio</div>
+            <div class="info-value">60+ Brands</div>
+            <div class="info-detail">Moroccanoil, Paul Mitchell, Schwarzkopf, Wella, L'ANZA, Kenra, amika, and more.</div>
+          </div>
+        </div>
+
+        <div class="info-grid" style="margin-top: 1px;">
+          <div class="info-card">
+            <div class="info-label">Education Infrastructure</div>
+            <div class="info-value">8 Education Facilities</div>
+            <div class="info-detail">Unusual for an independent distributor. Shows they value brand education and training - a strong fit for AWARE's approach.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Why CanRad</div>
+            <div class="info-value">Independent, No Brand Conflict</div>
+            <div class="info-detail">Unlike SalonCentric (L'Oreal) or CosmoProf (Sally Beauty), CanRad has no parent-brand conflict. They can champion AWARE freely.</div>
+          </div>
+        </div>
+
+        <div class="callout" style="margin-top: 16px;">
+          <div class="callout-label">Scalp Category Gap</div>
+          CanRad carries Nioxin (thinning/hair loss - reactive) and Zenagen (clinical hair loss - reactive), but <strong>no proactive scalp wellness brand</strong>. AWARE fills a genuine gap in their portfolio. We're not competing with their existing brands - we complement them.
+        </div>
+      </div>
+
+      <!-- PEOPLE -->
+      <div class="section" id="people">
+        <div class="section-label">Key People at CanRad</div>
+        <div class="people-grid">
+          <div class="person-card">
+            <div class="person-name">Kenny Wise</div>
+            <div class="person-title">CEO / President</div>
+            <div class="person-note">4th generation owner. Has been briefed internally and is sold on the founder story. We haven't met him yet - Tina-Kenny meeting is being scheduled.</div>
+            <span class="person-tag tag-decision">Decision Maker</span>
+          </div>
+          <div class="person-card">
+            <div class="person-name">Jack Stern</div>
+            <div class="person-title">EVP Sales & Marketing</div>
+            <div class="person-note">Excited about AWARE. Previously ran a brand (Saryna Key) so he evaluates from a brand-builder perspective. Leads commercial discussions.</div>
+            <span class="person-tag tag-champion">Champion</span>
+          </div>
+          <div class="person-card">
+            <div class="person-name">Stuart Lapowich</div>
+            <div class="person-title">Sr. EVP Operations</div>
+            <div class="person-note">Personally tried our conditioner and "noted a significant difference." Operations and logistics lead. Values sustainability.</div>
+            <span class="person-tag tag-product">Product Believer</span>
+          </div>
+        </div>
+
+        <div class="callout" style="margin-top: 16px;">
+          <div class="callout-label">Relationship Dynamics</div>
+          CanRad is a family business with a cooperative, consensus-driven culture. They value long-term partnerships over quick deals. Kenny's personal buy-in on the founder story is a strong signal - he makes decisions based on values alignment, not just numbers.
+        </div>
+      </div>
+
+      <!-- MEETING HISTORY -->
+      <div class="section" id="history">
+        <div class="section-label">How We Got Here - 3 Meetings</div>
+
+        <div class="meeting-card">
+          <div class="meeting-header">
+            <div class="meeting-title">Meeting 1: Cosmoprof Introduction</div>
+            <div class="meeting-date">January 29, 2026</div>
+          </div>
+          <div class="meeting-body">
+            First introduction at the Cosmoprof trade show. CanRad expressed interest but flagged concerns about <strong>price point</strong> ($55 shampoo) and whether AWARE would <strong>sell through</strong> their salon network. Positive enough to schedule a follow-up.
+          </div>
+        </div>
+
+        <div class="meeting-card">
+          <div class="meeting-header">
+            <div class="meeting-title">Meeting 2: Virtual Follow-On</div>
+            <div class="meeting-date">February 2026</div>
+          </div>
+          <div class="meeting-body">
+            Deep pricing discussion. David presented the <strong>$600 opening order package</strong> for salons. CanRad shared their pricing expectations. The $75 discovery kit was called <strong>"uncharted territory"</strong> for their market. CanRad requested specific items from us: a salon success profile, education materials, Health Canada certification, and a Canadian contact person. They also want AWARE featured in their <strong>product catalog</strong> (full or center page spread).
+          </div>
+        </div>
+
+        <div class="meeting-card">
+          <div class="meeting-header">
+            <div class="meeting-title">Meeting 3: Stuart Deep-Dive</div>
+            <div class="meeting-date">Late February 2026</div>
+          </div>
+          <div class="meeting-body">
+            <strong>Major breakthrough.</strong> Meeting with Stuart. Internally at CanRad, Kenny (CEO) has been briefed and is sold on the founder story. Jack also excited. Key outcomes:
+            <br><br>
+            - Target launch: <strong>September-October 2026</strong><br>
+            - 10 mesh kits + 2 full-size sets shipped to CanRad for rep testing<br>
+            - CanRad started setting up trade agreement (CUSMA) vendor status<br>
+            - <strong>Kenny-Tina meeting scheduled</strong> to build the principal-level relationship<br>
+            - Stuart personally used the conditioner and loved it<br>
+            - CanRad offers a flexible return policy to their salons (reduces risk for salon owners)
+          </div>
+          <span class="outcome-tag">Breakthrough</span>
+        </div>
+      </div>
+
+      <!-- WHERE THINGS STAND -->
+      <div class="section" id="where-things-stand">
+        <div class="section-label">Where Things Stand Now</div>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Completed</div>
+            <div class="info-value" style="font-size: 14px; line-height: 1.6;">
+              Sample kits shipped and received<br>
+              CUSMA vendor setup in progress<br>
+              Kenny-Tina meeting scheduled<br>
+              Rep testing underway
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Still Needed</div>
+            <div class="info-value" style="font-size: 14px; line-height: 1.6; color: var(--amber-soft);">
+              Bilingual labels (English + French)<br>
+              Health Canada notification filing<br>
+              Pricing and terms finalization<br>
+              Distribution agreement signed<br>
+              Education program structure
+            </div>
+          </div>
+        </div>
+
+        <div class="callout" style="margin-top: 16px;">
+          <div class="callout-label">This Meeting's Goal</div>
+          Align on the logistics timeline to hit September-October launch. Check in on rep testing feedback, discuss bilingual labeling approach, and confirm next steps toward a signed agreement.
+        </div>
+      </div>
+
+      <!-- REGULATORY -->
+      <div class="section" id="regulatory">
+        <div class="section-label">Canadian Regulatory (High Level)</div>
+
+        <div class="reg-grid">
+          <div class="reg-card">
+            <div class="reg-status good">Good News</div>
+            <div class="reg-title">Simple Classification</div>
+            <div class="reg-detail">AWARE doesn't use zinc pyrithione, so all products classify as cosmetics (not drugs). This means a simple, free notification process with Health Canada.</div>
+          </div>
+          <div class="reg-card">
+            <div class="reg-status action">Work Needed</div>
+            <div class="reg-title">Bilingual Labels</div>
+            <div class="reg-detail">All product labels must include English and French. We'll need a full label redesign for the Canadian market (5-10 week process).</div>
+          </div>
+          <div class="reg-card">
+            <div class="reg-status action">Important</div>
+            <div class="reg-title">Claims Language</div>
+            <div class="reg-detail">Canada has strict rules about what you can say on product labels and marketing. See the claims table below.</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 16px;">
+          <div class="section-label" style="font-size: 10px; margin-bottom: 12px;">What We Can and Can't Say in Canada</div>
+          <table class="claims-table">
+            <thead>
+              <tr>
+                <th class="safe">Safe to Say (Cosmetic Claims)</th>
+                <th class="avoid">Do Not Say (Triggers Drug Classification)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="safe-cell">"Cleanses the scalp"</td><td class="avoid-cell">"Controls dandruff"</td></tr>
+              <tr><td class="safe-cell">"Removes flakes"</td><td class="avoid-cell">"Treats scalp conditions"</td></tr>
+              <tr><td class="safe-cell">"Soothes the scalp"</td><td class="avoid-cell">"Anti-fungal"</td></tr>
+              <tr><td class="safe-cell">"Scalp-balancing formula"</td><td class="avoid-cell">"Regrows hair"</td></tr>
+              <tr><td class="safe-cell">"Nourishes hair"</td><td class="avoid-cell">"Clinically proven to treat..."</td></tr>
+              <tr><td class="safe-cell">"Hydrates and conditions"</td><td class="avoid-cell">"Therapeutic" / "Medicinal"</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout" style="margin-top: 16px;">
+          <div class="callout-label">Why This Matters for Education</div>
+          When Tina trains CanRad's reps or does in-salon education in Canada, the language needs to stay in the "cosmetic" lane. Focus on wellness, ritual, scalp health maintenance - not treatment of specific conditions. This is especially important for any printed or digital materials shared with salons.
+        </div>
+      </div>
+
+      <!-- EDUCATION ROLE -->
+      <div class="section" id="education">
+        <div class="section-label">Tina's Role in the Partnership</div>
+
+        <div class="role-box">
+          <h2>What CanRad Expects from Tina</h2>
+          <ul>
+            <li><strong>Rep training:</strong> Train CanRad's 38 salon consultants on AWARE products, the scalp wellness category, and how to present the line to salon owners</li>
+            <li><strong>Education formats requested:</strong> Live in-person sessions, Zoom/virtual training, and pre-recorded content for ongoing onboarding</li>
+            <li><strong>In-salon launch support:</strong> Help activate pilot salons with education events (similar to what Tina already does with US salon partners)</li>
+            <li><strong>Kenny-Tina meeting:</strong> Scheduled to build the principal-level relationship. Kenny was sold on the founder story - this meeting deepens that connection</li>
+            <li><strong>Catalog content:</strong> CanRad wants AWARE featured in their product book. Tina's story and credentials are central to that positioning</li>
+          </ul>
+        </div>
+
+        <div class="callout" style="margin-top: 16px;">
+          <div class="callout-label">Education is the Differentiator</div>
+          CanRad's reps carry 60+ brands and visit 8-12 salons daily. They can only talk about 3-5 brands per visit. The brands that get mindshare are the ones with the best education and the most compelling story. Tina's trichology credentials and in-salon education approach are what set AWARE apart from every other brand in their bag.
+        </div>
+
+        <div class="list-box" style="margin-top: 16px;">
+          <h2>Proposed Education Program (Draft)</h2>
+          <ul>
+            <li><strong>Phase 1 - Rep training:</strong> 3 virtual sessions (45 min each) covering the scalp wellness category, product science, and how to pitch to salons</li>
+            <li><strong>Phase 2 - Salon launches:</strong> In-salon education events at pilot locations, co-hosted with CanRad reps</li>
+            <li><strong>Phase 3 - Ongoing:</strong> Pre-recorded modules for new rep onboarding, quarterly refresh sessions</li>
+            <li><strong>Timing:</strong> Rep training in August, ahead of September salon launches</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- TIMELINE -->
+      <div class="section" id="timeline">
+        <div class="section-label">Path to September Launch</div>
+        <table class="timeline-table">
+          <thead>
+            <tr>
+              <th>When</th>
+              <th></th>
+              <th>What</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="tl-when">March-April</td>
+              <td class="tl-dot"><span class="dot active"></span></td>
+              <td>Rep testing completes. Tina-Kenny meeting. Feedback collected.</td>
+            </tr>
+            <tr>
+              <td class="tl-when">April-May</td>
+              <td class="tl-dot"><span class="dot"></span></td>
+              <td>Finalize agreement and terms.</td>
+            </tr>
+            <tr>
+              <td class="tl-when">May-July</td>
+              <td class="tl-dot"><span class="dot"></span></td>
+              <td>Bilingual label design, translation, and production.</td>
+            </tr>
+            <tr>
+              <td class="tl-when">July-August</td>
+              <td class="tl-dot"><span class="dot"></span></td>
+              <td>Build inventory. Ship first order to CanRad warehouse.</td>
+            </tr>
+            <tr>
+              <td class="tl-when">August</td>
+              <td class="tl-dot"><span class="dot active"></span></td>
+              <td><strong>Tina-led rep education program</strong> (virtual sessions for 38 consultants).</td>
+            </tr>
+            <tr class="tl-target">
+              <td class="tl-when">September</td>
+              <td class="tl-dot"><span class="dot target"></span></td>
+              <td><strong>Product in pilot salons across Ontario</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /page -->
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

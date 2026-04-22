@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair — Scalp Class Deck Design System Seed</title>
+<!--
+  DESIGN SYSTEM SEED FOR CLAUDE DESIGN
+  ----
+  This file is the authoritative visual reference for the Scalp Education Class
+  teaching deck (April 20, 2026). Upload this file plus skills/brand-deck-design/skill.md
+  to ground Claude Design's proposed design system.
+
+  Match these tokens, typography, and layout patterns EXACTLY.
+  Reject any proposal that adds gradients, shadows beyond subtle, rounded
+  corners over 8px, or any non-palette color.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  /* ========================
+     CANONICAL COLOR TOKENS
+     ========================*/
+  --dark-teal:   #0D1F1A;  /* section dividers, dark backgrounds */
+  --warm-cream:  #F5F1EC;  /* primary content background */
+  --off-white:   #FAF8F5;  /* secondary content background */
+  --sage-hint:   #E8E5DF;  /* subtle background variation */
+  --near-black:  #1A1A1A;  /* headlines on light */
+  --body-text:   #333333;  /* body copy on light */
+  --light-grey:  #666666;  /* captions, secondary */
+  --gold:        #D4A574;  /* ACCENT ONLY: diamond dividers, accent rules, eyebrows */
+  --white:       #FFFFFF;
+
+  /* ========================
+     TYPOGRAPHY
+     ========================*/
+  --font-display: "orpheuspro", "DM Sans", Georgia, serif;
+  --font-body:    "DM Sans", system-ui, -apple-system, sans-serif;
+
+  /* Scale */
+  --size-h1:      clamp(40px, 5vw, 64px);
+  --size-h2:      clamp(28px, 3.5vw, 44px);
+  --size-body:    16px;
+  --size-caption: 13px;
+  --size-eyebrow: 12px;
+}
+
+html,body{width:100%;height:100%;background:var(--dark-teal);color:var(--near-black);overflow:hidden}
+body{font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+
+/* ==========================================
+   SLIDE SYSTEM
+   ========================================== */
+.deck{position:relative;width:100vw;height:100vh}
+.slide{
+  position:absolute;inset:0;
+  display:flex;
+  opacity:0;visibility:hidden;
+  transition:opacity .4s ease,transform .4s ease;
+  transform:translateY(8px);
+}
+.slide.active{opacity:1;visibility:visible;transform:translateY(0)}
+
+/* ==========================================
+   LAYOUT PATTERN A — DIVIDER (full dark teal)
+   Usage: section transitions, opening, Q&A marker
+   ========================================== */
+.slide.divider{
+  background:var(--dark-teal);
+  justify-content:center;align-items:center;
+  flex-direction:column;text-align:center;
+  padding:60px;
+}
+.slide.divider h2{
+  font-family:var(--font-body);font-weight:700;
+  font-size:var(--size-h2);
+  letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--white);
+}
+.slide.divider .divider-sub{
+  font-size:14px;color:rgba(255,255,255,.55);
+  margin-top:16px;letter-spacing:0.05em;
+  font-weight:400;
+}
+.gold-diamond{
+  color:var(--gold);font-size:14px;letter-spacing:.5em;
+  margin:24px 0;opacity:.85;
+}
+
+/* ==========================================
+   LAYOUT PATTERN B — CONTENT (cream, centered)
+   Usage: framework slides, quote slides, close
+   ========================================== */
+.slide.content{
+  background:var(--warm-cream);
+  flex-direction:column;justify-content:center;align-items:center;
+  padding:80px 120px;
+  text-align:center;
+}
+.slide.content .eyebrow{
+  font-family:var(--font-body);
+  font-size:var(--size-eyebrow);font-weight:500;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:24px;
+}
+.slide.content h1{
+  font-family:var(--font-display);font-weight:700;
+  font-size:var(--size-h1);
+  letter-spacing:0.02em;text-transform:uppercase;
+  line-height:1.15;color:var(--near-black);
+  max-width:880px;
+}
+.slide.content p{
+  font-family:var(--font-body);font-weight:400;
+  font-size:var(--size-body);line-height:1.7;
+  color:var(--body-text);
+  max-width:560px;
+  margin-top:32px;
+}
+.slide.content .pullquote{
+  font-family:var(--font-display);
+  font-weight:400;font-style:italic;
+  font-size:clamp(28px, 3.2vw, 42px);
+  line-height:1.3;color:var(--near-black);
+  max-width:860px;
+}
+
+/* ==========================================
+   LAYOUT PATTERN C — SPLIT 50/50
+   Usage: product slides, portrait slides, story slides
+   ========================================== */
+.slide.split{display:grid;grid-template-columns:1fr 1fr}
+.slide.split.reverse>.photo-panel{order:2}
+.photo-panel{
+  background:var(--sage-hint);
+  overflow:hidden;position:relative;
+}
+.photo-panel img{width:100%;height:100%;object-fit:cover;display:block}
+.content-panel{
+  background:var(--warm-cream);
+  padding:80px 64px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.content-panel h2{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(32px, 3.5vw, 48px);
+  letter-spacing:0.02em;text-transform:uppercase;
+  line-height:1.15;color:var(--near-black);
+}
+.content-panel p{
+  font-family:var(--font-body);font-size:var(--size-body);
+  line-height:1.7;color:var(--body-text);
+  max-width:460px;margin-top:24px;
+}
+.content-panel ul{
+  list-style:none;margin-top:24px;
+}
+.content-panel li{
+  font-family:var(--font-body);font-size:var(--size-body);
+  line-height:2;color:var(--body-text);
+  padding-left:0;
+}
+.content-panel li+li{border-top:1px solid rgba(51,51,51,.1)}
+
+/* ==========================================
+   PAGE FURNITURE (footer)
+   ========================================== */
+.slide-footer{
+  position:absolute;bottom:24px;left:64px;right:64px;
+  display:flex;justify-content:space-between;
+  font-family:var(--font-body);
+  font-size:11px;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--light-grey);font-weight:500;
+}
+.slide.divider .slide-footer{color:rgba(255,255,255,.35)}
+
+/* ==========================================
+   TABLE (narration reference slide)
+   ========================================== */
+.ref-table{width:100%;max-width:860px;margin-top:40px;border-collapse:collapse}
+.ref-table td{padding:18px 24px;font-size:15px;line-height:1.5;vertical-align:top;border-bottom:1px solid rgba(51,51,51,.08)}
+.ref-table td:first-child{font-weight:600;color:var(--near-black);width:40%}
+.ref-table td:last-child{color:var(--body-text);font-style:italic}
+
+/* ==========================================
+   DEMO NAVIGATION (for preview only; Claude Design won't need this)
+   ========================================== */
+.nav{position:fixed;bottom:20px;right:20px;display:flex;gap:8px;z-index:100}
+.nav button{padding:6px 14px;background:var(--near-black);color:var(--white);border:0;font:500 11px var(--font-body);letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ============================================
+       EXAMPLE 1 — DIVIDER / COVER
+       Dark teal, centered, uppercase, gold diamond.
+       Use for: Slide 1 (cover), Slide 19/20 style moments, any section break if needed.
+       ============================================ -->
+  <section class="slide divider active" data-slide="1">
+    <div class="gold-diamond">&#9670; &#9670; &#9670;</div>
+    <h2>Scalp Education Class</h2>
+    <div class="divider-sub">AWARE HAIR · Corona Del Mar · April 20, 2026</div>
+    <div class="slide-footer"><span>AWARE HAIR</span><span>01</span></div>
+  </section>
+
+  <!-- ============================================
+       EXAMPLE 2 — CONTENT (centered cream)
+       Pull-quote pattern. Maximum whitespace. One idea per slide.
+       Use for: pull-quote slides (3, 7, 10, 19), framework intros.
+       ============================================ -->
+  <section class="slide content" data-slide="2">
+    <div class="eyebrow">Example · Pull Quote Layout</div>
+    <p class="pullquote">"Your scalp is a garden. The hair grows above. Everything depends on the soil."</p>
+    <div class="slide-footer"><span>AWARE HAIR</span><span>02</span></div>
+  </section>
+
+  <!-- ============================================
+       EXAMPLE 3 — SPLIT 50/50
+       Photo panel + content panel. Alternate sides across deck.
+       Use for: Slide 2 (Meet Tina), Slide 14 (product), Slide 15 (gua sha).
+       ============================================ -->
+  <section class="slide split" data-slide="3">
+    <div class="photo-panel">
+      <!-- Placeholder swatch so layout reads without imagery -->
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#E8E5DF,#D4C8B8);display:flex;align-items:center;justify-content:center;color:var(--light-grey);font-size:13px;letter-spacing:.1em;text-transform:uppercase">Photo Panel</div>
+    </div>
+    <div class="content-panel">
+      <h2>Example · Split Layout</h2>
+      <ul>
+        <li>First line of a 3-bullet example</li>
+        <li>Second line showing the ul pattern</li>
+        <li>Third line — whitespace between is the luxury</li>
+      </ul>
+    </div>
+    <div class="slide-footer" style="color:var(--light-grey)"><span>AWARE HAIR</span><span>03</span></div>
+  </section>
+
+</div>
+
+<div class="nav">
+  <button onclick="nav(-1)">Prev</button>
+  <button onclick="nav(1)">Next</button>
+</div>
+
+<script>
+let i=0;const slides=document.querySelectorAll('.slide');
+function show(n){slides.forEach(s=>s.classList.remove('active'));slides[n].classList.add('active')}
+function nav(d){i=(i+d+slides.length)%slides.length;show(i)}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')nav(1);if(e.key==='ArrowLeft')nav(-1)});
+</script>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

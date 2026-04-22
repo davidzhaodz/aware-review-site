@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finding 1 - Consultation vs Skill</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #0a0a0a;
+            padding: 20px;
+        }
+
+        .slide {
+            width: 1080px;
+            height: 1350px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* BRIGHTER background */
+        .bg-photo {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 40% at 70% 25%, rgba(244, 220, 180, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 80% 60% at 20% 75%, rgba(10, 20, 18, 0.6) 0%, transparent 50%),
+                radial-gradient(ellipse 40% 50% at 85% 50%, rgba(42, 118, 130, 0.12) 0%, transparent 40%),
+                linear-gradient(155deg,
+                    #1a4540 0%,
+                    #14352f 30%,
+                    #102b26 60%,
+                    #0d221e 100%);
+        }
+
+        .grain {
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            mix-blend-mode: overlay;
+            pointer-events: none;
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 56px 56px 48px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 36px;
+        }
+
+        .finding-badge {
+            background: rgba(42, 118, 130, 0.25);
+            border: 1px solid rgba(42, 118, 130, 0.5);
+            color: #6ec9d6;
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 12px 20px;
+            border-radius: 6px;
+        }
+
+        .slide-indicator {
+            color: rgba(244, 239, 233, 0.5);
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        /* Comparison section */
+        .comparison {
+            display: flex;
+            gap: 28px;
+            margin-bottom: 32px;
+        }
+
+        .rating-col {
+            flex: 1;
+            padding: 36px 32px;
+            border-radius: 18px;
+        }
+
+        .rating-col.low {
+            background: rgba(196, 69, 54, 0.1);
+            border: 2px solid rgba(196, 69, 54, 0.35);
+        }
+
+        .rating-col.high {
+            background: rgba(42, 118, 130, 0.15);
+            border: 2px solid rgba(42, 118, 130, 0.5);
+        }
+
+        .rating-number {
+            font-size: 84px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .low .rating-number {
+            color: #e05a4a;
+        }
+
+        .high .rating-number {
+            color: #3aa8b8;
+        }
+
+        .rating-label {
+            color: rgba(244, 239, 233, 0.7);
+            font-size: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 24px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(244, 239, 233, 0.15);
+        }
+
+        .quotes {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .quote {
+            font-size: 22px;
+            font-style: italic;
+            padding: 14px 18px;
+            border-radius: 10px;
+            line-height: 1.35;
+        }
+
+        .low .quote {
+            background: rgba(196, 69, 54, 0.15);
+            color: rgba(244, 239, 233, 0.85);
+            border-left: 4px solid rgba(196, 69, 54, 0.7);
+        }
+
+        .high .quote {
+            background: rgba(42, 118, 130, 0.2);
+            color: rgba(244, 239, 233, 0.9);
+            border-left: 4px solid rgba(42, 118, 130, 0.8);
+        }
+
+        /* Key insight */
+        .insight {
+            text-align: center;
+            padding: 36px 48px;
+            background: rgba(244, 239, 233, 0.06);
+            border-radius: 16px;
+            margin-bottom: 28px;
+        }
+
+        .insight-text {
+            color: #f4efe9;
+            font-size: 40px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .insight-text strong {
+            color: #3aa8b8;
+            font-weight: 700;
+        }
+
+        /* Action box */
+        .action-box {
+            background: rgba(42, 118, 130, 0.18);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(42, 118, 130, 0.4);
+            border-radius: 18px;
+            padding: 32px 36px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2a7682, #5fb8c4);
+        }
+
+        .action-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: #6ec9d6;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .action-label svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        .action-text {
+            color: #f4efe9;
+            font-size: 28px;
+            font-weight: 500;
+            line-height: 1.45;
+        }
+
+        .action-text em {
+            color: rgba(244, 239, 233, 0.9);
+            font-style: italic;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+        }
+
+        .source {
+            color: rgba(244, 239, 233, 0.45);
+            font-size: 18px;
+        }
+
+        .swipe-hint {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(244, 239, 233, 0.6);
+            font-size: 18px;
+        }
+
+        .swipe-hint svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="bg-photo"></div>
+        <div class="grain"></div>
+
+        <div class="content">
+            <div class="header">
+                <div class="finding-badge">Finding 3 of 4</div>
+                <div class="slide-indicator">@awarehairpro</div>
+            </div>
+
+            <div class="comparison">
+                <div class="rating-col low">
+                    <div class="rating-number">4.4</div>
+                    <div class="rating-label">Common Complaints</div>
+                    <div class="quotes">
+                        <div class="quote">"Didn't listen to what I wanted"</div>
+                        <div class="quote">"Not what I asked for"</div>
+                        <div class="quote">"Felt rushed"</div>
+                        <div class="quote">"Miscommunication"</div>
+                    </div>
+                </div>
+
+                <div class="rating-col high">
+                    <div class="rating-number">4.9</div>
+                    <div class="rating-label">Common Praise</div>
+                    <div class="quotes">
+                        <div class="quote">"Really listened to me"</div>
+                        <div class="quote">"Asked great questions"</div>
+                        <div class="quote">"Took their time"</div>
+                        <div class="quote">"Consultative approach"</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insight">
+                <div class="insight-text">
+                    Technical skill gets you to 4.5.<br>
+                    <strong>Consultation</strong> gets you to 4.9.
+                </div>
+            </div>
+
+            <div class="action-box">
+                <div class="action-label">
+                    <svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                    Do This Today
+                </div>
+                <div class="action-text">
+                    Spend 2 extra minutes asking:<br>
+                    <em>"What's your biggest hair frustration right now?"</em>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="source">Based on 1,000+ review analysis</div>
+                <div class="swipe-hint">
+                    <span>Next finding</span>
+                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWARE Hair - Distributor ROI Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #ffffff;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #000000;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #000000;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 8px;
+        }
+
+        .intro {
+            font-size: 14px;
+            color: #444444;
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #cccccc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px 0;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        th.number {
+            text-align: right;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        td.number {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        tr:last-child td {
+            border-bottom: 2px solid #000000;
+        }
+
+        .product-block {
+            margin-bottom: 20px;
+            padding: 16px;
+            background-color: #f8f8f8;
+            border-left: 4px solid #000000;
+        }
+
+        .product-block h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #000000;
+        }
+
+        .product-block ul {
+            list-style: none;
+            margin-bottom: 8px;
+        }
+
+        .product-block li {
+            padding: 3px 0;
+            font-size: 14px;
+        }
+
+        .margin-highlight {
+            font-size: 16px;
+            font-weight: 700;
+            color: #000000;
+            margin-top: 8px;
+        }
+
+        .calculation-box {
+            background-color: #f0f0f0;
+            padding: 16px 20px;
+            margin: 16px 0;
+            border-left: 4px solid #000000;
+        }
+
+        .calculation-box p {
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .key-number {
+            font-size: 18px;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .highlight-box {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 20px;
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        .highlight-box .big-number {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .highlight-box .label {
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .comparison-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 16px 0;
+        }
+
+        .comparison-item h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .comparison-item ul {
+            list-style: none;
+        }
+
+        .comparison-item li {
+            padding: 4px 0;
+            font-size: 14px;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        ul li {
+            margin-bottom: 4px;
+        }
+
+        .risk-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .risk-item {
+            padding: 12px;
+            background-color: #f8f8f8;
+            border-left: 3px solid #000000;
+        }
+
+        .risk-item h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .risk-item p {
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #000000;
+            font-size: 13px;
+            color: #666666;
+        }
+
+        .contact {
+            margin-top: 24px;
+            padding: 16px;
+            background-color: #f8f8f8;
+        }
+
+        .contact h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .contact p {
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        @media print {
+            body {
+                padding: 20px;
+                max-width: 100%;
+            }
+
+            @page {
+                margin: 0.75in;
+                size: letter;
+            }
+
+            h2 {
+                page-break-after: avoid;
+            }
+
+            table, .product-block, .calculation-box, .highlight-box {
+                page-break-inside: avoid;
+            }
+
+            .page-break {
+                page-break-before: always;
+            }
+
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+        }
+
+        @media screen {
+            body {
+                box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>AWARE Hair - Distributor ROI Calculator</h1>
+    <p class="subtitle">What You Make: Real Numbers from a Territory</p>
+    <p class="intro">This calculator shows distributor economics based on AWARE's proven salon performance (96% repurchase rate, 28-35 day reorder cycles).</p>
+
+    <h2>Your Economics on AWARE Hair</h2>
+
+    <h3>Per-Product Margin Example</h3>
+
+    <div class="product-block">
+        <h4>300ml Shampoo or Conditioner</h4>
+        <ul>
+            <li>Retail (MAP): $55.00</li>
+            <li>You sell to salon at: ~$50.00 (50% of MSRP + your markup)</li>
+            <li>You pay AWARE (wholesale): $27.50</li>
+        </ul>
+        <p class="margin-highlight">Your gross margin: $22.50 per bottle (45%)</p>
+    </div>
+
+    <div class="product-block">
+        <h4>250ml Leave-In</h4>
+        <ul>
+            <li>Retail (MAP): $60.00</li>
+            <li>You sell to salon at: ~$50.00</li>
+            <li>You pay AWARE (wholesale): $30.00</li>
+        </ul>
+        <p class="margin-highlight">Your gross margin: $20.00 per bottle (40%)</p>
+    </div>
+
+    <div class="product-block">
+        <h4>1L Backbar (Shampoo or Conditioner)</h4>
+        <ul>
+            <li>Retail (MAP): $150.00</li>
+            <li>You sell to salon at: ~$125.00</li>
+            <li>You pay AWARE (wholesale): $75.00</li>
+        </ul>
+        <p class="margin-highlight">Your gross margin: $50.00 per bottle (40%)</p>
+    </div>
+
+    <h2>Year 1 Territory Scenario: 25 Salons</h2>
+
+    <h3>Initial Stocking Orders (First 90 Days)</h3>
+
+    <p><strong>Average salon starter order: 12-18 units</strong></p>
+    <ul>
+        <li>4x Shampoo 300ml</li>
+        <li>4x Conditioner 300ml</li>
+        <li>3x Leave-In 250ml</li>
+        <li>1x Backbar Shampoo 1L</li>
+        <li>1x Backbar Conditioner 1L</li>
+    </ul>
+
+    <div class="calculation-box">
+        <p>Your revenue per door: ~$625</p>
+        <p>Your cost (wholesale): ~$375</p>
+        <p>Your gross profit per door: ~$250</p>
+        <p class="key-number">25 salons x $250 = $6,250 gross profit (first 90 days)</p>
+    </div>
+
+    <h3>Ongoing Reorders (Months 4-12)</h3>
+
+    <p>Based on sell-through data: salons reorder every 28-35 days at 24-30 units/month.</p>
+
+    <p><strong>Average monthly reorder per salon:</strong></p>
+    <ul>
+        <li>6x Shampoo 300ml</li>
+        <li>6x Conditioner 300ml</li>
+        <li>4x Leave-In 250ml</li>
+        <li>1x Backbar (alternating)</li>
+    </ul>
+
+    <div class="calculation-box">
+        <p>Your revenue per salon per month: ~$625</p>
+        <p>Your cost per salon per month: ~$375</p>
+        <p>Your gross profit per salon per month: ~$250</p>
+    </div>
+
+    <div class="calculation-box">
+        <p><strong>Monthly recurring:</strong></p>
+        <p class="key-number">25 salons x $250 = $6,250/month gross profit</p>
+        <p class="key-number">9 months x $6,250 = $56,250 gross profit (months 4-12)</p>
+    </div>
+
+    <div class="highlight-box">
+        <div class="big-number">$62,500</div>
+        <div class="label">Year 1 Total Gross Profit (25 salons)</div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <h2>Year 2 Projections: Account Growth + Expansion</h2>
+
+    <h3>Existing Account Growth</h3>
+
+    <p><strong>96% retention</strong> means you keep 24 of your 25 original salons.</p>
+
+    <p>Salons typically grow 20-40% in Year 2 as they:</p>
+    <ul>
+        <li>Expand SKU adoption (add travel sizes, more backbar)</li>
+        <li>Stock deeper for faster-moving products</li>
+        <li>Service more clients with AWARE</li>
+    </ul>
+
+    <p><strong>Conservative Year 2 per-door growth: 25%</strong></p>
+
+    <div class="calculation-box">
+        <p><strong>24 retained salons:</strong></p>
+        <p>Year 1 monthly: $250/salon x 24 = $6,000</p>
+        <p>Year 2 monthly: $312/salon x 24 = $7,488</p>
+        <p class="key-number">Monthly increase: $1,488</p>
+        <p class="key-number">Annual increase: $17,856</p>
+    </div>
+
+    <h3>New Account Acquisition</h3>
+
+    <p>Add 15 new salons in Year 2 (modest 60% growth).</p>
+
+    <div class="calculation-box">
+        <p><strong>15 new salons:</strong></p>
+        <p>Initial stocking: 15 x $250 = $3,750</p>
+        <p>Recurring (9 months): 15 x $250 x 9 = $33,750</p>
+        <p class="key-number">New account contribution: $37,500</p>
+    </div>
+
+    <div class="calculation-box">
+        <p><strong>Year 2 Total Gross Profit:</strong></p>
+        <p>Existing accounts (24): $89,856</p>
+        <p>New accounts (15): $37,500</p>
+        <p class="key-number">Total: $127,356</p>
+    </div>
+
+    <h2>The Reorder Advantage: AWARE vs. Industry Average</h2>
+
+    <div class="comparison-list">
+        <div class="comparison-item">
+            <h4>AWARE Hair</h4>
+            <ul>
+                <li><strong>Reorder cycle:</strong> 28-35 days</li>
+                <li><strong>Annual orders per salon:</strong> 11-13 orders</li>
+                <li><strong>Annual touches:</strong> 11-13 (high engagement)</li>
+            </ul>
+        </div>
+        <div class="comparison-item">
+            <h4>Industry Standard (Professional Haircare)</h4>
+            <ul>
+                <li><strong>Reorder cycle:</strong> 45-60 days</li>
+                <li><strong>Annual orders per salon:</strong> 6-8 orders</li>
+                <li><strong>Annual touches:</strong> 6-8 (moderate engagement)</li>
+            </ul>
+        </div>
+    </div>
+
+    <p><strong>What this means for you:</strong></p>
+    <ul>
+        <li>40% more orders per year = 40% more revenue</li>
+        <li>More frequent contact = stronger relationships</li>
+        <li>Faster inventory turn = less working capital tied up</li>
+        <li>Predictable monthly revenue (not quarterly spikes)</li>
+    </ul>
+
+    <h2>Effort Analysis: Onboarding vs. Recurring</h2>
+
+    <h3>Initial Sale Effort (First 90 Days)</h3>
+    <ul>
+        <li>Product training for your sales team: 2-3 hours (virtual training provided)</li>
+        <li>Sales calls to introduce AWARE: 1 hour per salon</li>
+        <li>Demo kits and samples: Provided free by AWARE</li>
+        <li>Initial order processing: Standard (same as any new brand)</li>
+    </ul>
+    <p class="key-number">Total effort to onboard 25 salons: ~50-75 hours (2 hours/salon average)</p>
+
+    <h3>Recurring Effort (Months 4+)</h3>
+    <ul>
+        <li>Salons reorder automatically (most use your online portal)</li>
+        <li>Minimal education needed (products sell themselves)</li>
+        <li>Zero returns = no reverse logistics</li>
+        <li>96% repurchase rate = no re-selling required</li>
+    </ul>
+    <p class="key-number">Ongoing effort: &lt;5 hours/month for 25-salon territory (order processing, occasional questions)</p>
+
+    <div class="page-break"></div>
+
+    <h2>Territory ROI Summary</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Metric</th>
+                <th class="number">Year 1 (25 Salons)</th>
+                <th class="number">Year 2 (39 Salons)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Gross Profit</strong></td>
+                <td class="number"><strong>$62,500</strong></td>
+                <td class="number"><strong>$127,356</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Active Accounts</strong></td>
+                <td class="number">25</td>
+                <td class="number">39</td>
+            </tr>
+            <tr>
+                <td><strong>Monthly Recurring</strong></td>
+                <td class="number">$6,250 (Month 12)</td>
+                <td class="number">$10,614 (Month 24)</td>
+            </tr>
+            <tr>
+                <td><strong>Revenue per Door (Annual)</strong></td>
+                <td class="number">$7,500</td>
+                <td class="number">$9,375 (existing)</td>
+            </tr>
+            <tr>
+                <td><strong>Effort After Onboarding</strong></td>
+                <td class="number">&lt;5 hrs/month</td>
+                <td class="number">&lt;8 hrs/month</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Working Capital Requirements</h2>
+
+    <h3>Initial Inventory Investment (25 Salons)</h3>
+
+    <p><strong>Starter inventory to service 25 salons:</strong></p>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th class="number">Quantity</th>
+                <th class="number">Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Shampoo 300ml</td>
+                <td class="number">100 units</td>
+                <td class="number">$2,750</td>
+            </tr>
+            <tr>
+                <td>Conditioner 300ml</td>
+                <td class="number">100 units</td>
+                <td class="number">$2,750</td>
+            </tr>
+            <tr>
+                <td>Leave-In 250ml</td>
+                <td class="number">75 units</td>
+                <td class="number">$2,250</td>
+            </tr>
+            <tr>
+                <td>Backbar Shampoo 1L</td>
+                <td class="number">25 units</td>
+                <td class="number">$1,875</td>
+            </tr>
+            <tr>
+                <td>Backbar Conditioner 1L</td>
+                <td class="number">25 units</td>
+                <td class="number">$1,875</td>
+            </tr>
+            <tr>
+                <td><strong>Total Initial Inventory</strong></td>
+                <td class="number"></td>
+                <td class="number"><strong>~$11,500</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="calculation-box">
+        <p>First month revenue: ~$15,625 (25 salons x $625)</p>
+        <p class="key-number">Payback period on initial inventory: &lt;1 month</p>
+    </div>
+
+    <h3>Ongoing Working Capital</h3>
+
+    <p>Fast turn rate (28-35 days) means low inventory carrying costs.</p>
+
+    <div class="calculation-box">
+        <p>Monthly inventory on hand: 1.5-2 months supply = ~$17,000-$23,000</p>
+        <p>Monthly revenue: $15,625 (growing)</p>
+        <p class="key-number">Inventory turn ratio: 6-8x per year (excellent for professional beauty)</p>
+    </div>
+
+    <h2>Risk Mitigation</h2>
+
+    <h3>What Makes AWARE Low-Risk</h3>
+
+    <div class="risk-grid">
+        <div class="risk-item">
+            <h4>96% repurchase rate</h4>
+            <p>Products sell themselves after first order</p>
+        </div>
+        <div class="risk-item">
+            <h4>Zero return rate</h4>
+            <p>No reverse logistics costs or inventory write-offs</p>
+        </div>
+        <div class="risk-item">
+            <h4>Fast turn</h4>
+            <p>Lower working capital requirements vs. slow-moving brands</p>
+        </div>
+        <div class="risk-item">
+            <h4>Pilot program</h4>
+            <p>90-day test with full credit on unsold inventory</p>
+        </div>
+        <div class="risk-item">
+            <h4>100% fill rate</h4>
+            <p>We've never had a stock-out (no lost sales)</p>
+        </div>
+        <div class="risk-item">
+            <h4>Professional-exclusive</h4>
+            <p>No DTC competition undercutting your pricing</p>
+        </div>
+    </div>
+
+    <h3>Typical Risks We Don't Have</h3>
+    <ul>
+        <li><strong>No slow-movers:</strong> Industry average 60-70% repurchase. AWARE: 96%</li>
+        <li><strong>No returns:</strong> Industry average 3-5% returns. AWARE: 0%</li>
+        <li><strong>No price erosion:</strong> Strict MAP policy prevents discounting</li>
+        <li><strong>No brand conflicts:</strong> Won't sell through channels that compete with your salons</li>
+    </ul>
+
+    <h2>Comparison: AWARE vs. Typical New Brand Launch</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Factor</th>
+                <th class="number">Typical New Brand</th>
+                <th class="number">AWARE Hair</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Repurchase rate</td>
+                <td class="number">60-70%</td>
+                <td class="number">96%</td>
+            </tr>
+            <tr>
+                <td>Reorder cycle</td>
+                <td class="number">45-60 days</td>
+                <td class="number">28-35 days</td>
+            </tr>
+            <tr>
+                <td>Return rate</td>
+                <td class="number">3-5%</td>
+                <td class="number">0%</td>
+            </tr>
+            <tr>
+                <td>Time to profitability</td>
+                <td class="number">6-12 months</td>
+                <td class="number">1-2 months</td>
+            </tr>
+            <tr>
+                <td>Sales effort after launch</td>
+                <td class="number">Ongoing re-education</td>
+                <td class="number">Minimal (auto-reorders)</td>
+            </tr>
+            <tr>
+                <td>Working capital intensity</td>
+                <td class="number">High (slow turn)</td>
+                <td class="number">Low (fast turn)</td>
+            </tr>
+            <tr>
+                <td>Risk of stock-out</td>
+                <td class="number">5-8%</td>
+                <td class="number">0%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>The Bottom Line</h2>
+
+    <div class="highlight-box">
+        <p style="margin-bottom: 16px;"><strong>Year 1 (25 salons)</strong></p>
+        <p>Investment: ~$11,500 (initial inventory)</p>
+        <p>Gross profit: $62,500</p>
+        <p class="big-number" style="font-size: 24px; margin-top: 12px;">ROI: 443%</p>
+        <p>Payback: &lt;30 days</p>
+    </div>
+
+    <div class="highlight-box" style="margin-top: 16px;">
+        <p style="margin-bottom: 16px;"><strong>Year 2 (39 salons)</strong></p>
+        <p>Gross profit: $127,356</p>
+        <p>Monthly recurring: $10,614</p>
+        <p>Effort: Minimal (products sell themselves)</p>
+    </div>
+
+    <p style="margin-top: 24px;"><strong>Key advantage:</strong> Fast reorder cycles (28-35 days) generate consistent monthly revenue with minimal ongoing effort. After initial onboarding, AWARE becomes a self-perpetuating revenue stream.</p>
+
+    <h2>Next Steps</h2>
+
+    <ol>
+        <li><strong>Pilot Program:</strong> Start with 5-10 salons (90-day test, full credit on unsold inventory)</li>
+        <li><strong>Sales Training:</strong> Virtual product education (2-3 hours, provided free)</li>
+        <li><strong>Initial Stock:</strong> $2,000-$5,000 to service pilot salons</li>
+        <li><strong>Track Results:</strong> 30-day check-in to review reorder patterns</li>
+    </ol>
+
+    <div class="contact">
+        <h4>Questions?</h4>
+        <p><strong>David Zhao, Co-Founder</strong></p>
+        <p>david@awarehair.com</p>
+    </div>
+
+    <div class="footer">
+        <p>Calculations based on AWARE Hair sell-through data (June-December 2025) from 35+ active salon partners. Industry benchmarks sourced from professional beauty distribution averages. Results may vary by territory and sales approach.</p>
+    </div>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

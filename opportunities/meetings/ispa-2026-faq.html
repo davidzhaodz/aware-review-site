@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - FAQs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #102B26;
+    --cream: #f4efe9;
+    --surface: #faf8f5;
+    --gold: #D4A574;
+    --sage: #7d8471;
+    --sand: #E8E4DC;
+    --charcoal: #2C2C2C;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--forest);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 480px; margin: 0 auto; background: #fff; min-height: 100vh; }
+
+  /* --- Back Nav --- */
+  .back-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--forest);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .back-nav a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(244, 239, 233, 0.75);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 8px 8px 0;
+    transition: color 0.2s;
+  }
+
+  .back-nav a:hover { color: var(--gold); }
+
+  .back-nav svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+  }
+
+  .back-nav .page-title {
+    flex: 1;
+    text-align: right;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* --- Hero --- */
+  .hero {
+    background: var(--forest);
+    color: var(--cream);
+    text-align: center;
+    padding: 36px 28px 40px;
+  }
+
+  .hero-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(212, 165, 116, 0.1);
+    border-radius: 50%;
+  }
+
+  .hero-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 28px;
+    font-weight: 300;
+    line-height: 1.25;
+    margin-bottom: 10px;
+  }
+
+  .hero p {
+    font-size: 13px;
+    color: rgba(244, 239, 233, 0.7);
+    max-width: 340px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* --- Section --- */
+  .section {
+    padding: 32px 28px;
+    border-bottom: 1px solid var(--sand);
+  }
+
+  .section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .section h2 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    line-height: 1.3;
+  }
+
+  /* --- FAQ Accordion --- */
+  .faq-item {
+    border-bottom: 1px solid var(--sand);
+  }
+
+  .faq-item:last-child { border-bottom: none; }
+
+  .faq-item summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 0;
+    cursor: pointer;
+    list-style: none;
+    transition: color 0.2s ease;
+  }
+
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::marker { display: none; content: ''; }
+
+  .faq-item summary:hover { color: var(--gold); }
+
+  .faq-question {
+    flex: 1;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--forest);
+    line-height: 1.45;
+    transition: color 0.2s ease;
+  }
+
+  .faq-item summary:hover .faq-question { color: var(--gold); }
+
+  .faq-chevron {
+    width: 16px;
+    height: 16px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+
+  .faq-item[open] .faq-chevron {
+    transform: rotate(90deg);
+  }
+
+  .faq-answer {
+    padding: 0 0 20px;
+    padding-left: 0;
+    border-left: 3px solid rgba(212, 165, 116, 0.3);
+    margin-left: 0;
+    padding-left: 16px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .faq-answer p {
+    font-size: 13px;
+    color: var(--charcoal);
+    line-height: 1.65;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* --- CTA --- */
+  .cta-section {
+    background: var(--forest);
+    padding: 32px 28px;
+    text-align: center;
+  }
+
+  .cta-section h2 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+
+  .cta-sub {
+    font-size: 12px;
+    color: rgba(244, 239, 233, 0.7);
+    margin-bottom: 20px;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--forest);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 14px 36px;
+    transition: all 0.3s ease;
+  }
+
+  .cta-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+  .cta-note {
+    margin-top: 12px;
+    font-size: 11px;
+    color: rgba(244, 239, 233, 0.6);
+  }
+
+  .cta-note a {
+    color: rgba(244, 239, 233, 0.7);
+    text-decoration: none;
+  }
+
+  .cta-note a:hover { color: var(--gold); }
+
+  .social-links {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .social-links a {
+    font-size: 12px;
+    color: rgba(244, 239, 233, 0.6);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .social-links a:hover { color: var(--gold); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; animation-delay: 0ms !important; }
+    .faq-chevron { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Back Nav -->
+  <nav class="back-nav" aria-label="Page navigation">
+    <a href="ispa-2026-qr-landing.html">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </a>
+    <span class="page-title">FAQs</span>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-icon">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+    <h1>Frequently Asked Questions</h1>
+    <p>Everything you need to know about AWARE Hair, our formulations, and partnering with us.</p>
+  </div>
+
+  <!-- About the Brand -->
+  <div class="section">
+    <div class="section-label">About the Brand</div>
+    <details class="faq-item">
+      <summary>
+        <span class="faq-question">What makes AWARE different?</span>
+        <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </summary>
+      <div class="faq-answer">
+        <p>For too long, scalp care has felt like medication, not self-care. AWARE introduces a new category: proactive scalp wellness as a luxurious daily ritual. Created by a master stylist and clinical trichologist after 40 years of treating scalp conditions, each formula blends organic botanicals with clinically-proven bioactives to help strengthen and rebalance the scalp barrier. Featuring a signature 100% natural fine fragrance, each treatment creates a sensorial experience that feels as indulgent as it is effective. The result is a streamlined, professional-grade ritual that gives luxury spas and salons a distinctive, results-driven offering designed for the modern wellness client. AWARE is also professional-exclusive and maintains price integrity - no Amazon.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>
+        <span class="faq-question">Where is AWARE currently sold?</span>
+        <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </summary>
+      <div class="faq-answer">
+        <p>AWARE is currently carried in 50+ luxury salons and spas across the US - exclusively through professionals. Examples include the renowned Benjamin Salon in Hollywood, Scalp Sanctuary in Pasadena, and more. We've been featured in the LA Times, Beauty Independent, NewBeauty, and Beauty Launchpad.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>
+        <span class="faq-question">Where are the products made?</span>
+        <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </summary>
+      <div class="faq-answer">
+        <p>Los Angeles, California. Small batches, made in USA, formulated to EU standards.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Product & Formulation -->
+  <div class="section">
+    <div class="section-label">Product & Formulation</div>
+    <details class="faq-item">
+      <summary>
+        <span class="faq-question">What's in the AWAREBIO Complex?</span>
+        <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </summary>
+      <div class="faq-answer">
+        <p>It's our patent-pending bioactive blend - Tahitian microalgae, dual-weight hyaluronic acid, vegan keratin amino acids, green tea, turmeric, and beet root. Three functions: support the scalp barrier, balance the microbiome, and defend against environmental stress.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>
+        <span class="faq-question">Is it medicated? Does it help with hair growth?</span>
+        <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </summary>
+      <div class="faq-answer">
+        <p>No, it's not medicated. AWARE is a gentle wellness ritual focused on scalp health. We don't make hair growth claims - but a healthy, balanced scalp creates a better environment for healthier hair over time.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>
+        <span class="faq-question">Is it safe for color-treated hair, extensions, and keratin?</span>
+        <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </summary>
+      <div class="faq-answer">
+        <p>Yes - sulfate-free, pH-balanced, and specifically designed to be compatible with color, extensions, and chemically processed hair.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>
+        <span class="faq-question">Is it safe for pregnant women?</span>
+        <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </summary>
+      <div class="faq-answer">
+        <p>Yes.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>
+        <span class="faq-question">Are there new products coming?</span>
+        <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </summary>
+      <div class="faq-answer">
+        <p>Yes - we have a treatment oil and a scalp serum in development.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Getting Started -->
+  <div class="section">
+    <div class="section-label">Getting Started</div>
+    <details class="faq-item">
+      <summary>
+        <span class="faq-question">How would we incorporate this into our service menu?</span>
+        <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </summary>
+      <div class="faq-answer">
+        <p>We provide a complete treatment protocol - step-by-step, timed, ready to go. Your therapist can run a 45 or 60 minute Scalp Ritual using our products. We train your team and sample them complimentary.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>
+        <span class="faq-question">What's the minimum to get started?</span>
+        <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </summary>
+      <div class="faq-answer">
+        <p>Opening packages start at $500 and include complimentary staff training and protocol cards. We also have tester kits if you'd like to experience the products first. Additional 10% off opening orders over $500 for ISPA attendees, excluding bundles.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>
+        <span class="faq-question">Why should I add scalp care to my retail?</span>
+        <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </summary>
+      <div class="faq-answer">
+        <p>Scalp wellness is one of the fastest-emerging categories in beauty and wellness - consumers are increasingly treating their scalp with the same care they give their skin. For spas, it's a natural extension of the holistic wellness experience your clients already expect. Adding scalp care to your menu and retail creates a new touchpoint that deepens the guest relationship and opens a category most spas haven't tapped yet.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Logistics & Support -->
+  <div class="section">
+    <div class="section-label">Logistics & Support</div>
+    <details class="faq-item">
+      <summary>
+        <span class="faq-question">Are backbar / amenity sizes available?</span>
+        <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </summary>
+      <div class="faq-answer">
+        <p>Yes - shampoo and conditioner liters are available for backbar use (not for resale). We also have a stainless steel gua sha for treatment room use.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>
+        <span class="faq-question">Can we get exclusivity in our area?</span>
+        <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </summary>
+      <div class="faq-answer">
+        <p>AWARE is exclusively available through luxury salons and spas - no Amazon, no Sephora, no mass retail. Ever. Your clients can only get AWARE through professionals like you. That's how we protect your investment in the brand.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Ready to Learn More?</h2>
+    <div class="cta-sub">We'd love to learn about your spa and explore a partnership.</div>
+    <a href="mailto:jade@awarehair.com?subject=ISPA%20Attendee%20-%20Let's%20Connect&body=Hi%20Jade%2C%0A%0AI'd%20love%20to%20learn%20more%20about%20AWARE%20Hair.%0A%0AMy%20name%3A%20%0ASpa%2FSalon%3A%20%0A%0AThanks!" class="cta-btn">Get in Touch</a>
+    <div class="cta-note">Jade Wong, Co-Founder &middot; <a href="mailto:jade@awarehair.com">jade@awarehair.com</a> &middot; <a href="tel:+16266889844">(626) 688-9844</a></div>
+    <div class="social-links">
+      <a href="https://www.instagram.com/awarehaircare/" target="_blank" rel="noopener noreferrer" aria-label="Follow AWARE on Instagram">@awarehaircare</a>
+      <a href="https://www.awarehair.com" target="_blank" rel="noopener noreferrer">awarehair.com</a>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

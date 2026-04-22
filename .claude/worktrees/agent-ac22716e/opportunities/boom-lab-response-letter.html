@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Response to Price Adjustment Request</title>
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --muted: #5a5a7a;
+    --border: #e2e2ea;
+    --bg: #fafafa;
+    --white: #ffffff;
+    --green: #0a7c42;
+    --green-bg: #e8f5e9;
+    --red: #c62828;
+    --amber: #e65100;
+    --amber-bg: #fff3e0;
+    --blue: #1565c0;
+    --blue-bg: #e3f2fd;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.65;
+    font-size: 14px;
+  }
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    background: var(--white);
+    min-height: 100vh;
+  }
+
+  /* Letterhead */
+  .letterhead {
+    padding: 36px 48px 24px;
+    border-bottom: 3px solid var(--ink);
+  }
+  .letterhead-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .company-name {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .company-info {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+    line-height: 1.5;
+  }
+
+  /* Body */
+  .letter-body {
+    padding: 32px 48px 40px;
+  }
+  .date-block {
+    margin-bottom: 28px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .recipient {
+    margin-bottom: 28px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .recipient strong {
+    display: block;
+  }
+  .subject-line {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  p { margin-bottom: 14px; }
+
+  /* Section headers */
+  h3 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--muted);
+    margin: 28px 0 12px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; margin: 14px 0 18px; font-size: 13px; }
+  th {
+    background: #f5f5f8;
+    font-weight: 600;
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 2px solid var(--border);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+  }
+  td { padding: 8px 10px; border-bottom: 1px solid #f0f0f5; }
+  tr:last-child td { border-bottom: none; }
+  .text-right { text-align: right; }
+  .text-green { color: var(--green); font-weight: 600; }
+  .text-red { color: var(--red); font-weight: 600; }
+  .text-amber { color: var(--amber); font-weight: 600; }
+  .text-muted { color: var(--muted); }
+  .row-highlight td { background: #f0f7ff; font-weight: 600; }
+  .row-total td { font-weight: 700; border-top: 2px solid var(--ink); background: #f9f9fc; }
+
+  /* Callout */
+  .callout {
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .callout-blue { background: var(--blue-bg); border-left: 3px solid var(--blue); }
+  .callout-amber { background: var(--amber-bg); border-left: 3px solid var(--amber); }
+  .callout strong { display: block; margin-bottom: 4px; }
+
+  /* Document excerpt */
+  .doc-excerpt {
+    background: #f9f9fc;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 12px;
+    line-height: 1.6;
+    position: relative;
+  }
+  .doc-excerpt::before {
+    content: attr(data-source);
+    display: block;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .doc-excerpt em { font-style: normal; background: #fff3cd; padding: 1px 3px; border-radius: 2px; }
+  .doc-excerpt .clause-ref { font-weight: 700; color: var(--blue); }
+
+  /* Comparison block */
+  .compare-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .compare-panel {
+    background: #f9f9fc;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-size: 12px;
+  }
+  .compare-panel.highlight {
+    background: #fff3e0;
+    border-color: var(--amber);
+  }
+  .compare-panel-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .compare-panel .big {
+    font-size: 20px;
+    font-weight: 700;
+    display: block;
+    margin: 4px 0;
+  }
+  .compare-panel .detail {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Signature */
+  .signature {
+    margin-top: 36px;
+    line-height: 1.5;
+  }
+  .signature .name {
+    font-weight: 700;
+    margin-top: 24px;
+  }
+
+  /* Enclosures */
+  .enclosures {
+    margin-top: 28px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .enclosures strong { display: block; margin-bottom: 4px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; }
+
+  /* Footer */
+  .footer {
+    padding: 14px 48px;
+    background: #f5f5f8;
+    font-size: 10px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* Print */
+  @media print {
+    body { background: white; }
+    .page { max-width: none; }
+    .letterhead { padding: 20px 36px 16px; }
+    .letter-body { padding: 24px 36px 32px; }
+    .doc-excerpt em { background: #eee; }
+    @page { margin: 0.9in 1in; size: letter; }
+
+    /* Keep sections together */
+    h3 { break-after: avoid; }
+    table { break-inside: avoid; }
+    .callout { break-inside: avoid; }
+    .doc-excerpt { break-inside: avoid; }
+    .compare-block { break-inside: avoid; }
+    .signature { break-inside: avoid; }
+    .enclosures { break-inside: avoid; }
+
+    /* Keep heading + first paragraph/table together */
+    h3 + p { break-before: avoid; }
+    h3 + table { break-before: avoid; }
+    p + table { break-inside: avoid; }
+
+    /* Avoid orphaned paragraphs before tables */
+    p { orphans: 3; widows: 3; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="letterhead">
+    <div class="letterhead-row">
+      <div class="company-name">AWARE HAIR LLC</div>
+      <div class="company-info">
+        153 E Holly Street<br>
+        Pasadena, CA 91103<br>
+        david@awarehair.com
+      </div>
+    </div>
+  </div>
+
+  <div class="letter-body">
+
+    <div class="date-block">March 8, 2026</div>
+
+    <div class="recipient">
+      <strong>Seyed Hossein Zoie</strong>
+      CEO / Founder<br>
+      Boom Lab Inc<br>
+      6460 Coyote St<br>
+      Chino Hills, CA 91709
+    </div>
+
+    <div class="subject-line">RE: Proposed Price Adjustment - Manufacturing Agreement dated July 22, 2024
+      <div style="font-weight: 400; font-size: 12px; color: var(--muted); margin-top: 4px;">Scope: Retail-sized products only (300ML / 250ML). Gallon-sized products are not covered in this breakdown.</div>
+    </div>
+
+    <p>Hi Seyed,</p>
+
+    <p>Thanks for sharing the cost breakdown - we appreciate the transparency. We totally get that raw material and production costs have moved since we signed the agreement last July, and we want to find something that works for both of us long-term.</p>
+
+    <p>We went through the numbers on our end and wanted to put together this breakdown covering a few things: the shampoo shortage from batch 1, where we stand on payments given the addendum, and a pricing proposal we think could work.</p>
+
+    <!-- ============================================ -->
+    <!-- Section 1: Shortage -->
+    <!-- ============================================ -->
+    <h3>1. Outstanding Units from Batch 1</h3>
+
+    <p>Quick housekeeping item first - from the first production run of 2,500 units per SKU, we came up short on shampoo:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th class="text-right">Ordered</th>
+          <th class="text-right">Received</th>
+          <th class="text-right">Shortage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Shampoo 300ML</td>
+          <td class="text-right">2,500</td>
+          <td class="text-right">2,100</td>
+          <td class="text-right text-red">400</td>
+        </tr>
+        <tr>
+          <td>Conditioner 300ML</td>
+          <td class="text-right">2,500</td>
+          <td class="text-right">2,500</td>
+          <td class="text-right text-green">0</td>
+        </tr>
+        <tr>
+          <td>Leave-In 250ML</td>
+          <td class="text-right">2,500</td>
+          <td class="text-right">2,800</td>
+          <td class="text-right text-amber">+300*</td>
+        </tr>
+        <tr class="row-total">
+          <td>Total</td>
+          <td class="text-right">7,500</td>
+          <td class="text-right">7,400</td>
+          <td class="text-right text-red">400 short / 300 over</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>These 400 shampoo units were included in what we already paid, so can we just make sure they get rolled into the next delivery? Would be great to get that squared away before we move forward.</p>
+
+    <p style="font-size: 12px; color: var(--muted);">*Note: 300 additional leave-in units were received beyond the contracted 2,500. These will be reconciled separately - either invoiced at the current contract rate or deducted from the Run 2 leave-in quantity. This does not affect the pricing or installment calculations for Runs 2-4 below.</p>
+
+    <!-- ============================================ -->
+    <!-- Section 2: Payment History & Addendum -->
+    <!-- ============================================ -->
+    <h3>2. Payment History and Addendum Context</h3>
+
+    <p>Just want to lay out where we stand on payments, since it's helpful context for the pricing conversation. When we signed the original agreement in July 2024, the payment structure was a 30% deposit ($27,720) for the first production run, with the remaining 70% spread across three installments:</p>
+
+    <div class="doc-excerpt" data-source="Original Agreement - Section 5.2 (July 22, 2024)">
+      <span class="clause-ref">Initial Payment:</span> 30% of the total invoice price for the retail-sized products (<em>$27,720.00</em>) ... will be paid upfront before the initial production run, covering the first 2,500 bottles of each SKU.<br><br>
+      <span class="clause-ref">Subsequent Payments:</span> The remaining 70% of the total invoice price for the retail-sized products (<em>$64,680.00</em>) will be divided into <em>three equal installments</em>, each payable in two parts:<br>
+      &bull; 1st installment: <em>$10,780.00</em> before the production and <em>$10,780.00</em> after the delivery of the next 2,500 bottles of each SKU.<br>
+      &bull; 2nd installment: $10,780.00 before and $10,780.00 after the next 2,500 bottles.<br>
+      &bull; 3rd installment: $10,780.00 before and $10,780.00 after the final 2,500 bottles.
+    </div>
+
+    <p>Then in October 2024, we agreed to the Addendum which restructured the payments into four installments and moved the first installment to apply to Run 1 instead of Run 2. That meant we ended up paying a lot more upfront for the first run:</p>
+
+    <div class="doc-excerpt" data-source="Addendum to Manufacturing Agreement (October 16, 2024)">
+      <span class="clause-ref">Subsequent Payments:</span> The remaining 70% of the total invoice price for the retail-sized products ($64,680.00) will be divided into <em>four equal installments</em>, each payable in two parts:<br>
+      &bull; 1st installment: <em>$8,085.00</em> before the production and <em>$8,085.00</em> after the delivery of <em>the first 2,500 bottles of each SKU</em>.<br>
+      &bull; 2nd installment: $8,085.00 before and $8,085.00 after the next 2,500 bottles.<br>
+      &bull; 3rd installment: $8,085.00 before and $8,085.00 after the next 2,500 bottles.<br>
+      &bull; 4th installment: $8,085.00 before and $8,085.00 after the final 2,500 bottles.
+    </div>
+
+    <p>So the bottom line is our payment for Run 1 went from $27,720 to $43,890 - a 58% increase in what we put up front. We were happy to do that to help with cash flow on your side, and we just want to make sure that context is part of how we look at things going forward.</p>
+
+    <div class="compare-block">
+      <div class="compare-panel">
+        <div class="compare-panel-title">Original Contract - Run 1 Payment</div>
+        <span class="big">$27,720</span>
+        <span class="detail">30% deposit only<br>Remaining $64,680 for Runs 2-4</span>
+      </div>
+      <div class="compare-panel highlight">
+        <div class="compare-panel-title">Addendum - Run 1 Payment (Actual)</div>
+        <span class="big text-amber">$43,890</span>
+        <span class="detail">30% deposit + 1st installment<br>+$16,170 extra paid upfront (47.5% of total contract)</span>
+      </div>
+    </div>
+
+    <p>As of today, we've paid <strong>$43,890</strong> (47.5% of the contract) but have received <strong>7,400 of 30,000 units</strong> (24.7%), with 400 shampoo still owed. We're pretty far ahead on payments, which is worth keeping in mind as we work through the pricing piece.</p>
+
+    <!-- ============================================ -->
+    <!-- Section 3: Price Counter-Proposal -->
+    <!-- ============================================ -->
+    <h3>3. Price Adjustment Counter-Proposal</h3>
+
+    <p>We get that costs have gone up and some adjustment makes sense. That said, 13-18% is a big jump, especially given where we are on payments. What do you think about meeting in the middle - splitting the difference between our current rates and your proposed ones?</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th class="text-right">Current Rate</th>
+          <th class="text-right">Your Proposed</th>
+          <th class="text-right">Our Proposed<br>(Midpoint)</th>
+          <th class="text-right">Increase</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Shampoo 300ML</td>
+          <td class="text-right">$3.26</td>
+          <td class="text-right">$3.85</td>
+          <td class="text-right" style="font-weight:700;">$3.56</td>
+          <td class="text-right">+9.2%</td>
+        </tr>
+        <tr>
+          <td>Conditioner 300ML</td>
+          <td class="text-right">$2.76</td>
+          <td class="text-right">$3.25</td>
+          <td class="text-right" style="font-weight:700;">$3.01</td>
+          <td class="text-right">+9.1%</td>
+        </tr>
+        <tr>
+          <td>Leave-In 250ML</td>
+          <td class="text-right">$3.22</td>
+          <td class="text-right">$3.65</td>
+          <td class="text-right" style="font-weight:700;">$3.44</td>
+          <td class="text-right">+6.8%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>That works out to roughly an 8% bump across the board, which feels like a fair middle ground for both sides.</p>
+
+    <!-- ============================================ -->
+    <!-- Section 4: Revised Payment Structure -->
+    <!-- ============================================ -->
+    <h3>4. Revised Payment Structure for Runs 2-4</h3>
+
+    <p>If we go with the midpoint pricing, here's what the remaining installments would look like compared to the current addendum rates:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Production Run</th>
+          <th class="text-right">Current Addendum<br>(Per Run)</th>
+          <th class="text-right">At Midpoint Prices<br>(Per Run)</th>
+          <th class="text-right">Difference</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="text-muted">
+          <td>Run 1 (completed)</td>
+          <td class="text-right">$23,100</td>
+          <td class="text-right">$23,100</td>
+          <td class="text-right">-</td>
+        </tr>
+        <tr>
+          <td>Run 2 (2,500 ea. SKU)</td>
+          <td class="text-right">$23,100</td>
+          <td class="text-right">$25,025</td>
+          <td class="text-right text-amber">+$1,925</td>
+        </tr>
+        <tr>
+          <td>Run 3 (2,500 ea. SKU)</td>
+          <td class="text-right">$23,100</td>
+          <td class="text-right">$25,025</td>
+          <td class="text-right text-amber">+$1,925</td>
+        </tr>
+        <tr>
+          <td>Run 4 (2,500 ea. SKU)</td>
+          <td class="text-right">$23,100</td>
+          <td class="text-right">$25,025</td>
+          <td class="text-right text-amber">+$1,925</td>
+        </tr>
+        <tr class="row-total">
+          <td>Runs 2-4 Subtotal</td>
+          <td class="text-right">$69,300</td>
+          <td class="text-right">$75,075</td>
+          <td class="text-right text-amber">+$5,775</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Since we've already paid $43,890 and Run 1 was valued at $23,100, we're $20,790 ahead on payments. Here's how the remaining installments would break down:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Installment</th>
+          <th class="text-right">Current Addendum</th>
+          <th class="text-right">Revised (Midpoint)</th>
+          <th class="text-right">Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Before Run 2 production</td>
+          <td class="text-right">$8,085.00</td>
+          <td class="text-right">$9,047.50</td>
+          <td class="text-right text-amber">+$962.50</td>
+        </tr>
+        <tr>
+          <td>After Run 2 delivery</td>
+          <td class="text-right">$8,085.00</td>
+          <td class="text-right">$9,047.50</td>
+          <td class="text-right text-amber">+$962.50</td>
+        </tr>
+        <tr>
+          <td>Before Run 3 production</td>
+          <td class="text-right">$8,085.00</td>
+          <td class="text-right">$9,047.50</td>
+          <td class="text-right text-amber">+$962.50</td>
+        </tr>
+        <tr>
+          <td>After Run 3 delivery</td>
+          <td class="text-right">$8,085.00</td>
+          <td class="text-right">$9,047.50</td>
+          <td class="text-right text-amber">+$962.50</td>
+        </tr>
+        <tr>
+          <td>Before Run 4 production</td>
+          <td class="text-right">$8,085.00</td>
+          <td class="text-right">$9,047.50</td>
+          <td class="text-right text-amber">+$962.50</td>
+        </tr>
+        <tr>
+          <td>After Run 4 delivery</td>
+          <td class="text-right">$8,085.00</td>
+          <td class="text-right">$9,047.50</td>
+          <td class="text-right text-amber">+$962.50</td>
+        </tr>
+        <tr class="row-total">
+          <td>Remaining Balance</td>
+          <td class="text-right">$48,510.00</td>
+          <td class="text-right">$54,285.00</td>
+          <td class="text-right text-amber">+$5,775.00</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-blue">
+      <strong>Summary of Proposal</strong>
+      <ol style="margin: 4px 0 0 16px; line-height: 1.7;">
+        <li>Fulfill the 400 outstanding shampoo units in the next delivery at no additional cost.</li>
+        <li>Adjust pricing to the midpoint between current and proposed rates (~8% average increase), applied to the remaining 22,500 units.</li>
+        <li>Revised installments of $9,047.50 (before production) + $9,047.50 (after delivery) per run for Runs 2-4, totaling $54,285 remaining.</li>
+        <li>Formalize any changes through a written amendment per Section 13.4 of our agreement.</li>
+      </ol>
+    </div>
+
+    <div class="callout callout-amber">
+      <strong>Where We Stand on Payments</strong>
+      We've paid $43,890 (47.5% of total contract) and received 7,400 of 30,000 units (24.7%) - so we're $20,790 ahead on payments relative to what's been delivered. Even with this midpoint proposal, we'd be taking on an additional $5,775 beyond the signed contract.
+    </div>
+
+    <!-- ============================================ -->
+    <!-- Section 5: Next Steps -->
+    <!-- ============================================ -->
+    <h3>5. Next Steps</h3>
+
+    <p>A few things that would help us move this forward:</p>
+
+    <ol style="margin: 8px 0 14px 20px; font-size: 13px; line-height: 1.7;">
+      <li>Confirmation that the 400 shampoo units will be included in the next delivery</li>
+      <li>A breakdown of which specific inputs have gone up and by how much - just makes it easier to get aligned on our end</li>
+      <li>A rough timeline for the next production run</li>
+    </ol>
+
+    <p>Happy to hop on a call whenever works for you to talk through any of this. We're in a good spot to figure this out together.</p>
+
+    <!-- Signature -->
+    <div class="signature">
+      <p>Best,</p>
+      <div class="name">David Zhao</div>
+      <div style="color: var(--muted); font-size: 13px;">
+        AWARE Hair LLC<br>
+        david@awarehair.com
+      </div>
+    </div>
+
+    <!-- Enclosures -->
+    <div class="enclosures">
+      <strong>Enclosures:</strong>
+      1. Manufacturing Agreement dated July 22, 2024 (signed)<br>
+      2. Addendum to Manufacturing Agreement dated October 16, 2024 (signed)
+    </div>
+
+  </div>
+
+  <div class="footer">
+    AWARE Hair LLC - Confidential Business Correspondence
+  </div>
+
+</div>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

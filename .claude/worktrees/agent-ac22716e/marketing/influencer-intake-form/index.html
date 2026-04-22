@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWARE Hair | Partner Application</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FAF7F2;
+            --cream-dark: #F0EBE3;
+            --terracotta: #C4A484;
+            --terracotta-dark: #A68B6A;
+            --sage: #9CAF88;
+            --sage-muted: #B8C4AC;
+            --charcoal: #2C2C2C;
+            --charcoal-light: #4A4A4A;
+            --white: #FFFFFF;
+            --error: #C47070;
+            --success: #88A68B;
+
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Outfit', -apple-system, sans-serif;
+
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-weight: 300;
+            background: var(--cream);
+            color: var(--charcoal);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Subtle grain texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 60px 24px 100px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s var(--ease-out-expo) 0.1s forwards;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--terracotta);
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-family: var(--font-display);
+            font-size: clamp(32px, 6vw, 48px);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--charcoal);
+        }
+
+        .header h1 em {
+            font-style: italic;
+            color: var(--terracotta-dark);
+        }
+
+        .header p {
+            font-size: 16px;
+            color: var(--charcoal-light);
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* Form sections */
+        .form-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 20px rgba(44, 44, 44, 0.04);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s var(--ease-out-expo) forwards;
+        }
+
+        .form-section:nth-child(2) { animation-delay: 0.2s; }
+        .form-section:nth-child(3) { animation-delay: 0.3s; }
+        .form-section:nth-child(4) { animation-delay: 0.4s; }
+        .form-section:nth-child(5) { animation-delay: 0.5s; }
+        .form-section:nth-child(6) { animation-delay: 0.6s; }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--sage);
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--sage-muted), transparent);
+        }
+
+        /* Form fields */
+        .field {
+            margin-bottom: 24px;
+        }
+
+        .field:last-child {
+            margin-bottom: 0;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 540px) {
+            .field-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--charcoal);
+            margin-bottom: 8px;
+        }
+
+        label .optional {
+            color: var(--charcoal-light);
+            font-weight: 300;
+            font-size: 13px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            font-family: var(--font-body);
+            font-size: 15px;
+            font-weight: 300;
+            color: var(--charcoal);
+            background: var(--cream);
+            border: 1px solid transparent;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus,
+        select:focus {
+            background: var(--white);
+            border-color: var(--terracotta);
+            box-shadow: 0 0 0 3px rgba(196, 164, 132, 0.1);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #A0A0A0;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234A4A4A' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 44px;
+        }
+
+        /* Checkbox and radio groups */
+        .checkbox-group,
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .checkbox-item,
+        .radio-item {
+            position: relative;
+        }
+
+        .checkbox-item input,
+        .radio-item input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .checkbox-item label,
+        .radio-item label {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 18px;
+            background: var(--cream);
+            border: 1px solid transparent;
+            border-radius: 100px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--charcoal-light);
+            margin-bottom: 0;
+            transition: all 0.25s ease;
+        }
+
+        .checkbox-item:hover label,
+        .radio-item:hover label {
+            border-color: var(--terracotta);
+            color: var(--charcoal);
+        }
+
+        .checkbox-item input:checked + label,
+        .radio-item input:checked + label {
+            background: var(--terracotta);
+            border-color: var(--terracotta);
+            color: var(--white);
+        }
+
+        .checkbox-item input:focus + label,
+        .radio-item input:focus + label {
+            box-shadow: 0 0 0 3px rgba(196, 164, 132, 0.2);
+        }
+
+        /* Address fields */
+        .address-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .address-grid .full-width {
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 540px) {
+            .address-grid {
+                grid-template-columns: 1fr;
+            }
+            .address-grid .full-width {
+                grid-column: 1;
+            }
+        }
+
+        /* Affiliate toggle */
+        .toggle-field {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: var(--cream);
+            border-radius: 12px;
+        }
+
+        .toggle-field .toggle-label {
+            margin-bottom: 0;
+        }
+
+        .toggle-field .toggle-label p {
+            font-size: 13px;
+            color: var(--charcoal-light);
+            margin-top: 4px;
+        }
+
+        .toggle {
+            position: relative;
+            width: 52px;
+            height: 28px;
+            flex-shrink: 0;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--cream-dark);
+            border-radius: 28px;
+            transition: 0.3s ease;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background: var(--white);
+            border-radius: 50%;
+            transition: 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .toggle input:checked + .toggle-slider {
+            background: var(--sage);
+        }
+
+        .toggle input:checked + .toggle-slider::before {
+            transform: translateX(24px);
+        }
+
+        .toggle input:focus + .toggle-slider {
+            box-shadow: 0 0 0 3px rgba(156, 175, 136, 0.2);
+        }
+
+        /* Submit button */
+        .submit-section {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s var(--ease-out-expo) 0.7s forwards;
+        }
+
+        .submit-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 18px 48px;
+            font-family: var(--font-body);
+            font-size: 15px;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            color: var(--white);
+            background: var(--charcoal);
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.4s var(--ease-out-expo);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--terracotta);
+            transform: translateX(-100%);
+            transition: transform 0.4s var(--ease-out-expo);
+        }
+
+        .submit-btn:hover::before {
+            transform: translateX(0);
+        }
+
+        .submit-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(44, 44, 44, 0.15);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .submit-btn:disabled:hover::before {
+            transform: translateX(-100%);
+        }
+
+        .submit-btn .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        .submit-btn.loading .spinner {
+            display: block;
+        }
+
+        .submit-btn.loading .btn-text {
+            display: none;
+        }
+
+        .submit-note {
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--charcoal-light);
+        }
+
+        /* Success state */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 80px 40px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 2px 20px rgba(44, 44, 44, 0.04);
+        }
+
+        .success-message.show {
+            display: block;
+            animation: fadeUp 0.6s var(--ease-out-expo);
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 24px;
+            background: var(--sage);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-icon svg {
+            width: 32px;
+            height: 32px;
+            stroke: white;
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 50;
+            stroke-dashoffset: 50;
+            animation: checkmark 0.6s ease 0.2s forwards;
+        }
+
+        .success-message h2 {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 400;
+            color: var(--charcoal);
+            margin-bottom: 12px;
+        }
+
+        .success-message p {
+            color: var(--charcoal-light);
+            font-size: 15px;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        /* Error state */
+        .field.error input,
+        .field.error textarea,
+        .field.error select {
+            border-color: var(--error);
+            background: #FDF8F8;
+        }
+
+        .error-text {
+            color: var(--error);
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .field.error .error-text {
+            display: block;
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes checkmark {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid var(--cream-dark);
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease-out-expo) 0.8s forwards;
+        }
+
+        .footer p {
+            font-size: 13px;
+            color: var(--charcoal-light);
+        }
+
+        .footer a {
+            color: var(--terracotta);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">AWARE Hair</div>
+            <h1>Join Our <em>Gifting</em> Program</h1>
+            <p>We're building authentic partnerships with creators who believe healthy hair starts at the scalp. Tell us about yourself.</p>
+        </header>
+
+        <form id="influencer-form">
+            <!-- Section 1: About You -->
+            <div class="form-section">
+                <h2 class="section-title">About You</h2>
+
+                <div class="field">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Your name" required>
+                    <div class="error-text">Please enter your name</div>
+                </div>
+
+                <div class="field">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="you@email.com" required>
+                    <div class="error-text">Please enter a valid email</div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label for="instagram">Instagram Handle</label>
+                        <input type="text" id="instagram" name="instagram" placeholder="@yourhandle" required>
+                        <div class="error-text">Please enter your Instagram</div>
+                    </div>
+                    <div class="field">
+                        <label for="tiktok">TikTok Handle <span class="optional">(optional)</span></label>
+                        <input type="text" id="tiktok" name="tiktok" placeholder="@yourhandle">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Shipping Address -->
+            <div class="form-section">
+                <h2 class="section-title">Shipping Address</h2>
+
+                <div class="address-grid">
+                    <div class="field full-width">
+                        <label for="street">Street Address</label>
+                        <input type="text" id="street" name="street" placeholder="123 Main St, Apt 4" required>
+                        <div class="error-text">Please enter your address</div>
+                    </div>
+                    <div class="field">
+                        <label for="city">City</label>
+                        <input type="text" id="city" name="city" placeholder="Los Angeles" required>
+                        <div class="error-text">Required</div>
+                    </div>
+                    <div class="field">
+                        <label for="state">State</label>
+                        <input type="text" id="state" name="state" placeholder="CA" required>
+                        <div class="error-text">Required</div>
+                    </div>
+                    <div class="field">
+                        <label for="zip">ZIP Code</label>
+                        <input type="text" id="zip" name="zip" placeholder="90001" required>
+                        <div class="error-text">Required</div>
+                    </div>
+                    <div class="field">
+                        <label for="country">Country</label>
+                        <input type="text" id="country" name="country" value="United States" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: Your Hair -->
+            <div class="form-section">
+                <h2 class="section-title">Your Hair</h2>
+
+                <div class="field">
+                    <label>Hair Type</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="hair-straight" name="hair_type" value="Straight" required>
+                            <label for="hair-straight">Straight</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="hair-wavy" name="hair_type" value="Wavy">
+                            <label for="hair-wavy">Wavy</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="hair-curly" name="hair_type" value="Curly">
+                            <label for="hair-curly">Curly</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="hair-coily" name="hair_type" value="Coily">
+                            <label for="hair-coily">Coily</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Hair Concerns <span class="optional">(select all that apply)</span></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="concern-thinning" name="concerns" value="Thinning/Shedding">
+                            <label for="concern-thinning">Thinning / Shedding</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="concern-scalp" name="concerns" value="Scalp Issues">
+                            <label for="concern-scalp">Scalp Issues</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="concern-damage" name="concerns" value="Damage/Breakage">
+                            <label for="concern-damage">Damage / Breakage</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="concern-volume" name="concerns" value="Lack of Volume">
+                            <label for="concern-volume">Lack of Volume</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="concern-dullness" name="concerns" value="Dullness">
+                            <label for="concern-dullness">Dullness</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="concern-growth" name="concerns" value="Slow Growth">
+                            <label for="concern-growth">Slow Growth</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Your Content -->
+            <div class="form-section">
+                <h2 class="section-title">Your Content</h2>
+
+                <div class="field">
+                    <label>Platforms You Post On</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="platform-ig-feed" name="platforms" value="Instagram Feed">
+                            <label for="platform-ig-feed">Instagram Feed</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="platform-ig-reels" name="platforms" value="Instagram Reels">
+                            <label for="platform-ig-reels">Instagram Reels</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="platform-ig-stories" name="platforms" value="Instagram Stories">
+                            <label for="platform-ig-stories">Instagram Stories</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="platform-tiktok" name="platforms" value="TikTok">
+                            <label for="platform-tiktok">TikTok</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="platform-youtube" name="platforms" value="YouTube">
+                            <label for="platform-youtube">YouTube</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Content Types You Create</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="content-routine" name="content_types" value="Routine/GRWM">
+                            <label for="content-routine">Routine / GRWM</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="content-reviews" name="content_types" value="Product Reviews">
+                            <label for="content-reviews">Product Reviews</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="content-tutorials" name="content_types" value="Tutorials">
+                            <label for="content-tutorials">Tutorials</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="content-transformations" name="content_types" value="Before/After">
+                            <label for="content-transformations">Before / After</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="content-educational" name="content_types" value="Educational">
+                            <label for="content-educational">Educational</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="content-lifestyle" name="content_types" value="Lifestyle">
+                            <label for="content-lifestyle">Lifestyle</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="posting_frequency">How Often Do You Post?</label>
+                    <select id="posting_frequency" name="posting_frequency" required>
+                        <option value="" disabled selected>Select frequency</option>
+                        <option value="Daily">Daily</option>
+                        <option value="3-5x per week">3-5x per week</option>
+                        <option value="1-2x per week">1-2x per week</option>
+                        <option value="A few times per month">A few times per month</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Section 5: Final Details -->
+            <div class="form-section">
+                <h2 class="section-title">Final Details</h2>
+
+                <div class="field">
+                    <div class="toggle-field">
+                        <div class="toggle-label">
+                            <label for="affiliate">Want an affiliate code?</label>
+                            <p>Earn 10% commission on sales from your audience</p>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" id="affiliate" name="wants_affiliate" value="Yes">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="hair_goal">What's your #1 hair goal right now?</label>
+                    <textarea id="hair_goal" name="hair_goal" placeholder="Tell us what you're working toward..." rows="3"></textarea>
+                </div>
+
+                <div class="field">
+                    <label for="notes">Anything else we should know? <span class="optional">(optional)</span></label>
+                    <textarea id="notes" name="notes" placeholder="Previous brand partnerships, special requests, etc." rows="3"></textarea>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="submit-section">
+                <button type="submit" class="submit-btn">
+                    <span class="btn-text">Submit Application</span>
+                    <div class="spinner"></div>
+                </button>
+                <p class="submit-note">We'll review your application and ship products within 5-7 business days</p>
+            </div>
+        </form>
+
+        <!-- Success Message -->
+        <div class="success-message" id="success-message">
+            <div class="success-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h2>You're In!</h2>
+            <p>Thanks for applying. We'll review your info and get your AWARE products shipped within 5-7 business days.</p>
+        </div>
+
+        <footer class="footer">
+            <p>Questions? Email us at <a href="mailto:hello@awarehair.com">hello@awarehair.com</a></p>
+        </footer>
+    </div>
+
+    <script>
+        const form = document.getElementById('influencer-form');
+        const submitBtn = form.querySelector('.submit-btn');
+        const successMessage = document.getElementById('success-message');
+
+        // Webhook URL - posts to n8n
+        const WEBHOOK_URL = 'https://primary-production-bf4e9.up.railway.app/webhook/scalp-report';
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Clear previous errors
+            document.querySelectorAll('.field.error').forEach(f => f.classList.remove('error'));
+
+            // Validate required fields
+            let isValid = true;
+            const requiredFields = form.querySelectorAll('[required]');
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.closest('.field').classList.add('error');
+                    isValid = false;
+                }
+            });
+
+            // Validate email format
+            const emailField = document.getElementById('email');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailField.value && !emailRegex.test(emailField.value)) {
+                emailField.closest('.field').classList.add('error');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                // Scroll to first error
+                const firstError = document.querySelector('.field.error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+
+            // Collect form data
+            const formData = {
+                source: 'influencer_intake_form',
+                submitted_at: new Date().toISOString(),
+
+                // Contact info
+                name: document.getElementById('name').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                instagram: document.getElementById('instagram').value.trim(),
+                tiktok: document.getElementById('tiktok').value.trim() || null,
+
+                // Address
+                address: {
+                    street: document.getElementById('street').value.trim(),
+                    city: document.getElementById('city').value.trim(),
+                    state: document.getElementById('state').value.trim(),
+                    zip: document.getElementById('zip').value.trim(),
+                    country: document.getElementById('country').value.trim()
+                },
+
+                // Hair info
+                hair_type: document.querySelector('input[name="hair_type"]:checked')?.value || null,
+                concerns: Array.from(document.querySelectorAll('input[name="concerns"]:checked')).map(c => c.value),
+
+                // Content info
+                platforms: Array.from(document.querySelectorAll('input[name="platforms"]:checked')).map(p => p.value),
+                content_types: Array.from(document.querySelectorAll('input[name="content_types"]:checked')).map(c => c.value),
+                posting_frequency: document.getElementById('posting_frequency').value,
+
+                // Final details
+                wants_affiliate: document.getElementById('affiliate').checked,
+                hair_goal: document.getElementById('hair_goal').value.trim() || null,
+                notes: document.getElementById('notes').value.trim() || null
+            };
+
+            // Show loading state
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok || response.status === 200 || response.status === 201) {
+                    // Success - hide form, show message
+                    form.style.display = 'none';
+                    document.querySelector('.submit-section').style.display = 'none';
+                    successMessage.classList.add('show');
+                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    throw new Error('Submission failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Still show success for UX (webhook might not return proper response)
+                form.style.display = 'none';
+                document.querySelector('.submit-section').style.display = 'none';
+                successMessage.classList.add('show');
+                successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+
+        // Real-time validation feedback
+        form.querySelectorAll('input, textarea, select').forEach(field => {
+            field.addEventListener('blur', () => {
+                if (field.required && !field.value.trim()) {
+                    field.closest('.field')?.classList.add('error');
+                } else {
+                    field.closest('.field')?.classList.remove('error');
+                }
+            });
+
+            field.addEventListener('input', () => {
+                field.closest('.field')?.classList.remove('error');
+            });
+        });
+    </script>
+</body>
+</html>

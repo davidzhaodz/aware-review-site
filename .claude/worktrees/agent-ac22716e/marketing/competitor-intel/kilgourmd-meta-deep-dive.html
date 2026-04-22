@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KilgourMD Meta Strategy Deep Dive - AWARE Hair</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://use.typekit.net">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<style>
+:root {
+  --teal: #102B26;
+  --cream: #f4efe9;
+  --surface: #faf8f5;
+  --gold: #D4A574;
+  --sage: #7d8471;
+  --gold-muted: #c9a67a;
+  --teal-06: rgba(16, 43, 38, 0.06);
+  --teal-08: rgba(16, 43, 38, 0.08);
+  --teal-12: rgba(16, 43, 38, 0.12);
+  --teal-20: rgba(16, 43, 38, 0.20);
+  --teal-40: rgba(16, 43, 38, 0.40);
+  --teal-60: rgba(16, 43, 38, 0.60);
+  --red: #8b2635;
+  --red-bg: #fde8ea;
+  --green: #2d6a4f;
+  --green-bg: #e8f5e9;
+  --amber: #9a6d00;
+  --amber-bg: #fef3d0;
+  --blue: #1a5276;
+  --blue-bg: #e8f0f8;
+  --heading: 'orpheus-pro', Georgia, 'Times New Roman', serif;
+  --body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono: 'DM Mono', 'SF Mono', Menlo, monospace;
+  --radius: 6px;
+  --transition: 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--body);
+  background: var(--cream);
+  color: var(--teal);
+  line-height: 1.65;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Typography */
+h1, h2, h3 { font-family: var(--heading); font-weight: 400; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1.1; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.2; margin-top: 56px; margin-bottom: 8px; padding-top: 40px; border-top: 1px solid var(--teal-12); }
+h3 { font-size: 1.15rem; line-height: 1.3; margin-top: 32px; margin-bottom: 12px; }
+h4 { font-family: var(--body); font-weight: 600; font-size: 14px; margin-top: 20px; margin-bottom: 8px; }
+p { margin-bottom: 14px; }
+.label { font-family: var(--body); font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); }
+.label-muted { font-family: var(--body); font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--teal-40); }
+.section-num { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--sage); display: block; margin-bottom: 4px; font-family: var(--body); font-weight: 600; }
+.gold-divider { width: 64px; height: 1px; background: var(--gold); opacity: 0.4; margin: 20px 0; }
+.container { max-width: 960px; margin: 0 auto; padding: 0 32px; }
+section { padding: 64px 0; }
+
+/* Cover */
+.cover {
+  background: var(--teal);
+  color: var(--cream);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 48px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.cover::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -15%;
+  width: 650px;
+  height: 650px;
+  border-radius: 50%;
+  border: 1px solid rgba(212, 165, 116, 0.08);
+}
+.cover::after {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  border: 1px solid rgba(212, 165, 116, 0.05);
+}
+.cover .inner { max-width: 960px; margin: 0 auto; width: 100%; }
+.cover .label { color: var(--gold); margin-bottom: 32px; }
+.cover h1 { margin-bottom: 28px; max-width: 720px; }
+.cover h1 em { font-style: italic; color: var(--gold); }
+.cover-desc { font-size: 15px; color: rgba(244,239,233,0.65); max-width: 600px; line-height: 1.65; margin-top: 8px; }
+.cover-meta { display: flex; gap: 40px; margin-top: 16px; font-size: 13px; color: rgba(244,239,233,0.5); flex-wrap: wrap; }
+.cover-meta strong { color: rgba(244,239,233,0.75); font-weight: 500; }
+.cover-nav { position: absolute; top: 40px; right: 48px; }
+.cover-nav .logo-text { font-family: var(--heading); font-size: 18px; color: var(--cream); letter-spacing: 0.08em; }
+
+/* Stat cards */
+.stats-row { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat-card {
+  flex: 1;
+  min-width: 140px;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--teal-12);
+  border-radius: var(--radius);
+  text-align: center;
+}
+.stat-card .stat-value {
+  font-family: var(--heading);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+.stat-card .stat-label { font-size: 11px; color: var(--teal-40); font-weight: 500; letter-spacing: 0.3px; }
+.stat-card.highlight { border-color: var(--gold); border-width: 1.5px; }
+.stat-card.highlight .stat-value { color: var(--gold-muted); }
+.stat-delta { font-size: 11px; color: var(--red); font-weight: 600; margin-top: 4px; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0; }
+th { text-align: left; font-weight: 600; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--sage); padding: 10px 16px; border-bottom: 2px solid var(--teal-12); }
+td { padding: 12px 16px; border-bottom: 1px solid var(--teal-06); line-height: 1.5; vertical-align: top; }
+tr:hover td { background: rgba(212, 165, 116, 0.04); }
+
+/* Tags */
+.tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; }
+.tag-high { background: var(--green-bg); color: var(--green); }
+.tag-med { background: var(--amber-bg); color: var(--amber); }
+.tag-low { background: var(--teal-06); color: var(--teal-40); }
+.tag-new { background: var(--blue-bg); color: var(--blue); }
+.tag-winner { background: var(--gold); color: white; }
+
+/* Insight boxes */
+.insight-box {
+  margin: 28px 0;
+  padding: 24px 28px;
+  background: var(--surface);
+  border: 1px solid var(--teal-12);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--radius);
+}
+.insight-box .insight-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.insight-box p { font-size: 13px; color: var(--teal-60); line-height: 1.6; margin-bottom: 10px; }
+.insight-box p:last-child { margin-bottom: 0; }
+.insight-box strong { color: var(--teal); }
+
+/* AWARE action boxes */
+.aware-box {
+  margin: 28px 0;
+  padding: 24px 28px;
+  background: rgba(45, 106, 79, 0.04);
+  border: 1px solid rgba(45, 106, 79, 0.12);
+  border-left: 3px solid var(--green);
+  border-radius: var(--radius);
+}
+.aware-box .aware-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 10px;
+}
+.aware-box ul { list-style: none; padding: 0; }
+.aware-box li { font-size: 13px; color: var(--teal); line-height: 1.6; padding: 6px 0; padding-left: 16px; position: relative; }
+.aware-box li::before { content: ''; position: absolute; left: 0; top: 14px; width: 6px; height: 6px; border-radius: 50%; background: var(--green); opacity: 0.4; }
+
+/* Pull quote */
+.pull-quote {
+  font-family: var(--heading);
+  font-size: clamp(1.2rem, 2.5vw, 1.65rem);
+  line-height: 1.45;
+  color: var(--teal);
+  margin: 32px 0;
+  padding-left: 28px;
+  border-left: 2px solid var(--gold);
+}
+.pull-quote em { font-style: italic; color: var(--gold-muted); }
+
+/* Ad copy preview */
+.ad-preview {
+  background: white;
+  border: 1px solid var(--teal-12);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 16px 0;
+}
+.ad-preview-label { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--sage); padding: 10px 16px; border-bottom: 1px solid var(--teal-12); background: var(--teal-06); }
+.ad-preview-content { padding: 16px; font-size: 13px; line-height: 1.7; color: #333; max-height: 200px; overflow-y: auto; scrollbar-width: thin; }
+.ad-preview-content::-webkit-scrollbar { width: 4px; }
+.ad-preview-content::-webkit-scrollbar-thumb { background: var(--teal-12); border-radius: 2px; }
+
+/* Comparison grids */
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+.compare-card {
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--teal-12);
+  border-radius: var(--radius);
+}
+.compare-card h4 { margin-top: 0; margin-bottom: 12px; }
+
+/* Narrative arc diagram */
+.arc-flow {
+  display: flex;
+  gap: 0;
+  margin: 24px 0;
+  position: relative;
+}
+.arc-flow::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  right: 5%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--teal), var(--green));
+  opacity: 0.3;
+}
+.arc-step {
+  flex: 1;
+  text-align: center;
+  padding: 12px 8px;
+  position: relative;
+}
+.arc-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  position: relative;
+  z-index: 1;
+}
+.arc-step:nth-child(1) .arc-dot { background: var(--gold); }
+.arc-step:nth-child(2) .arc-dot { background: var(--gold-muted); }
+.arc-step:nth-child(3) .arc-dot { background: var(--teal); }
+.arc-step:nth-child(4) .arc-dot { background: var(--sage); }
+.arc-step:nth-child(5) .arc-dot { background: var(--green); }
+.arc-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px; }
+.arc-desc { font-size: 11px; color: var(--teal-60); line-height: 1.4; }
+
+/* Bar charts (CSS only) */
+.bar-chart { margin: 20px 0; }
+.bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.bar-label { font-size: 12px; font-weight: 500; min-width: 140px; text-align: right; }
+.bar-track { flex: 1; height: 24px; background: var(--teal-06); border-radius: 3px; overflow: hidden; position: relative; }
+.bar-fill { height: 100%; border-radius: 3px; display: flex; align-items: center; padding-left: 8px; font-size: 11px; font-weight: 600; color: white; min-width: 30px; }
+.bar-fill.gold { background: var(--gold); }
+.bar-fill.teal { background: var(--teal); }
+.bar-fill.sage { background: var(--sage); }
+.bar-fill.green { background: var(--green); }
+.bar-fill.red { background: var(--red); }
+.bar-fill.amber { background: var(--amber); }
+.bar-count { font-size: 12px; color: var(--teal-40); min-width: 40px; }
+
+/* Transferability matrix */
+.matrix-table td:nth-child(2),
+.matrix-table td:nth-child(3),
+.matrix-table td:nth-child(4),
+.matrix-table td:nth-child(5) { text-align: center; }
+
+/* Unknown box */
+.unknown-box {
+  margin: 28px 0;
+  padding: 24px 28px;
+  background: var(--teal-06);
+  border: 1px solid var(--teal-12);
+  border-radius: var(--radius);
+}
+.unknown-box .unknown-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--teal-40);
+  margin-bottom: 12px;
+}
+.unknown-box li { font-size: 13px; color: var(--teal-60); line-height: 1.6; margin-bottom: 6px; }
+
+/* TOC */
+.toc { columns: 2; column-gap: 32px; margin-top: 24px; }
+.toc-item { display: block; padding: 8px 0; border-bottom: 1px solid var(--teal-06); break-inside: avoid; text-decoration: none; color: var(--teal); transition: color var(--transition); }
+.toc-item:hover { color: var(--gold); }
+.toc-num { font-family: var(--heading); font-size: 18px; color: var(--gold); margin-right: 10px; }
+.toc-name { font-size: 14px; font-weight: 500; }
+
+/* Ad screenshot gallery */
+.ad-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  margin: 24px 0;
+}
+.ad-screenshot {
+  background: white;
+  border: 1px solid var(--teal-12);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.ad-screenshot:hover { border-color: var(--gold); box-shadow: 0 4px 20px rgba(16, 43, 38, 0.08); }
+.ad-screenshot img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-bottom: 1px solid var(--teal-12);
+}
+.ad-screenshot .ad-screenshot-caption {
+  padding: 12px 16px;
+}
+.ad-screenshot .ad-angle-name {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.ad-screenshot .ad-angle-hook {
+  font-size: 12px;
+  color: var(--teal-60);
+  line-height: 1.45;
+  font-style: italic;
+}
+.ad-screenshot .ad-angle-meta {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+/* Full-width screenshot */
+.full-screenshot {
+  margin: 24px 0;
+  border: 1px solid var(--teal-12);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.full-screenshot img { width: 100%; height: auto; display: block; }
+.full-screenshot .screenshot-caption {
+  padding: 10px 16px;
+  font-size: 11px;
+  color: var(--teal-40);
+  background: var(--teal-06);
+  border-top: 1px solid var(--teal-12);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cover { padding: 0 24px 56px; }
+  .container { padding: 0 20px; }
+  section { padding: 48px 0; }
+  .stats-row { flex-direction: column; }
+  .stat-card { min-width: auto; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .arc-flow { flex-direction: column; gap: 8px; }
+  .arc-flow::before { display: none; }
+  .bar-label { min-width: 100px; font-size: 11px; }
+  .toc { columns: 1; }
+  .cover-meta { gap: 20px; }
+  .ad-gallery { grid-template-columns: 1fr; }
+  table { font-size: 12px; }
+  td, th { padding: 8px 10px; }
+}
+@media print {
+  .cover { min-height: auto; padding: 40px 24px; }
+  section { padding: 32px 0; page-break-inside: avoid; }
+  .ad-preview-content { max-height: none; overflow: visible; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ COVER ═══════════════════════════════════════════ -->
+<section class="cover">
+  <div class="cover-nav"><span class="logo-text">AWARE</span></div>
+  <div class="inner">
+    <p class="label">Competitive Intelligence - Deep Dive</p>
+    <div style="width: 64px; height: 1px; background: var(--gold); opacity: 0.4; margin: 20px 0;"></div>
+    <h1>Deconstructing KilgourMD's<br><em>Meta Conversion Engine</em></h1>
+    <p class="cover-desc">
+      A consulting-grade analysis of the scalp care category's most aggressive paid acquisition machine. What works, why it works, what requires VC funding to sustain, and what AWARE can deploy at $500/month.
+    </p>
+    <div class="cover-meta">
+      <span><strong>Live Data</strong> &ensp;April 1, 2026</span>
+      <span><strong>Prior Audit</strong> &ensp;March 26, 2026</span>
+      <span><strong>Sources</strong> &ensp;Meta Ad Library, Playwright, Existing Audit</span>
+      <span><strong>Prepared for</strong> &ensp;David Zhao</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ EXEC SUMMARY ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <span class="section-num">Executive Summary</span>
+    <p class="label">Five Findings That Matter</p>
+    <h2 style="border-top: none; padding-top: 0; margin-top: 8px;">The Thesis</h2>
+    <div class="gold-divider"></div>
+
+    <div class="pull-quote">
+      KilgourMD proves that <em>education is the ad</em> in scalp care. Their long-form, science-first approach works not because they have $100K+/month - but because the category demands trust before transaction. AWARE can capture the same conversion patterns at 1/200th the budget because the salon channel provides the trust that KilgourMD has to buy.
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card highlight">
+        <div class="stat-value">2,200</div>
+        <div class="stat-label">Active Meta Ads</div>
+        <div class="stat-delta">+124% from March 26</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">7</div>
+        <div class="stat-label">Distinct Ad Angles</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">2,114</div>
+        <div class="stat-label">Max Words per Ad</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">$0</div>
+        <div class="stat-label">Salon Channel Spend</div>
+      </div>
+    </div>
+
+    <div class="full-screenshot">
+      <img src="kilgourmd-ads/ad-library-overview.png" alt="Meta Ad Library showing 2,200 active KilgourMD ads sorted by impressions">
+      <div class="screenshot-caption">Meta Ad Library - KilgourMD active ads sorted by total impressions. Captured April 1, 2026. 2,200 results (up from ~980 on March 26).</div>
+    </div>
+
+    <h3>Five Key Findings</h3>
+    <table>
+      <tr>
+        <th style="width: 40px;">#</th>
+        <th>Finding</th>
+        <th>AWARE Implication</th>
+      </tr>
+      <tr>
+        <td><strong>1</strong></td>
+        <td><strong>Every top-performing ad is video, not text.</strong> The prior audit focused on "1,000-4,000 word text ads." That's the companion copy. The actual creative is 1-7 minute videos where the founder narrates the same educational content to camera. The text is the backup, not the primary. Video is the format that converts in scalp care Meta ads.</td>
+        <td>AWARE's 8 text creatives are ready-made video scripts. Record Tina Mui presenting Creative 03 or 04 to camera. iPhone quality is fine - KilgourMD's videos are founder-to-camera with no production budget.</td>
+      </tr>
+      <tr>
+        <td><strong>2</strong></td>
+        <td><strong>The "Clinical Trial" angle is their proven winner</strong> - 6 of 26 visible top-impression ads, highest variant count (11), running since Feb 2026. This angle receives the most testing investment, signaling the highest confidence.</td>
+        <td>AWARE's equivalent is the trichologist credential + salon trust signal. Commission even a small efficacy study to unlock this angle.</td>
+      </tr>
+      <tr>
+        <td><strong>3</strong></td>
+        <td><strong>They doubled their ad count in one week</strong> (980 to 2,200, March 26 to April 1). This is Series A capital hitting the market. Their burn rate is accelerating, not decelerating.</td>
+        <td>This validates the market but also signals an escalating CAC war. AWARE's salon channel moat matters more, not less, as KilgourMD floods the paid channel.</td>
+      </tr>
+      <tr>
+        <td><strong>4</strong></td>
+        <td><strong>Named-enemy positioning and condition-specific segmentation are budget-invariant patterns.</strong> They work at any spend level because they're about message clarity, not reach.</td>
+        <td>AWARE can deploy both immediately. Name sulfates/drugstore products as the enemy. Segment by scalp concern (dry, oily, buildup, sensitivity) in Scalp Report flows.</td>
+      </tr>
+      <tr>
+        <td><strong>5</strong></td>
+        <td><strong>Their funnel has a critical architectural gap:</strong> the quiz (their main conversion tool) only exists on ad landing pages, not the main site. Organic visitors miss the personalized experience entirely.</td>
+        <td>AWARE's Scalp Environment Report is already on the main site AND is genuinely data-driven. This is a structural advantage - not just a feature difference.</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ TOC ═══════════════════════════════════════════ -->
+<section style="background: var(--surface); border-top: 1px solid var(--teal-12); border-bottom: 1px solid var(--teal-12); padding: 48px 0;">
+  <div class="container">
+    <p class="label">Analysis</p>
+    <h2 style="border-top: none; padding-top: 0; margin-top: 8px;">Six Deep Dives</h2>
+    <div class="toc">
+      <a href="#s0" class="toc-item"><span class="toc-num" style="color: var(--red);">!!</span><span class="toc-name">Video-First: What the Prior Audit Missed</span></a>
+      <a href="#s1" class="toc-item"><span class="toc-num">01</span><span class="toc-name">Ad Copy Architecture</span></a>
+      <a href="#s2" class="toc-item"><span class="toc-num">02</span><span class="toc-name">Why Long-Form Works in Scalp Care</span></a>
+      <a href="#s3" class="toc-item"><span class="toc-num">03</span><span class="toc-name">Creative Testing Methodology</span></a>
+      <a href="#s4" class="toc-item"><span class="toc-num">04</span><span class="toc-name">Funnel Mechanics</span></a>
+      <a href="#s5" class="toc-item"><span class="toc-num">05</span><span class="toc-name">Audience Segmentation Strategy</span></a>
+      <a href="#s6" class="toc-item"><span class="toc-num">06</span><span class="toc-name">Spend Intelligence & Unit Economics</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ SECTION 0: VIDEO-FIRST ═══════════════════════════════════════════ -->
+<section id="s0">
+  <div class="container">
+    <span class="section-num" style="color: var(--red);">Critical Update</span>
+    <p class="label">What the Prior Audit Missed</p>
+    <h2 style="border-top: none; padding-top: 0; margin-top: 8px;">It's Not Text Ads. It's Video.</h2>
+    <div class="gold-divider"></div>
+
+    <div class="pull-quote">
+      The March 26 audit described KilgourMD as running "long-form text posts (1,000-4,000+ words)." That was the <em>text accompanying the ads</em>. The actual creative that Meta shows users - the thing people see first - is <em>video</em>. Every single top-impression ad is a video.
+    </div>
+
+    <p>This changes the analysis significantly. KilgourMD isn't asking people to read 2,000 words of text in a Meta feed. They're running 1-7 minute videos where Dr. Kilgour narrates the same educational content. The long-form text underneath is a secondary touchpoint for people who expand the ad copy after watching. <strong>The video does the selling. The text is the backup.</strong></p>
+
+    <h3>Video Duration Distribution (38 Videos Analyzed)</h3>
+    <table>
+      <tr><th>Duration</th><th>Count</th><th>Purpose</th><th>Example Angle</th></tr>
+      <tr>
+        <td><strong>Under 30s</strong></td>
+        <td>2</td>
+        <td>Short hooks / teasers for retargeting</td>
+        <td>Emotional Story (13s)</td>
+      </tr>
+      <tr>
+        <td><strong>1-3 minutes</strong></td>
+        <td>14</td>
+        <td>Core persuasion videos - single angle, full narrative arc</td>
+        <td>GLP-1 UGC (2:26), Pattern Interrupt (3:15)</td>
+      </tr>
+      <tr>
+        <td><strong>3-5 minutes</strong></td>
+        <td>16</td>
+        <td>Deep education - multiple proof points, extended mechanism explanation</td>
+        <td>Clinical Trial (4:15), Industry Expose (3:30)</td>
+      </tr>
+      <tr>
+        <td><strong>5-7 minutes</strong></td>
+        <td>6</td>
+        <td>Ultra-long scientific narratives - the equivalent of 2,000+ word text ads</td>
+        <td>Minoxidil Takedown (7:00), Clinical Trial long variant (6:24)</td>
+      </tr>
+    </table>
+
+    <div class="insight-box">
+      <div class="insight-title">Why This Matters for AWARE</div>
+      <p><strong>Video is the format, not text.</strong> Our 8 conversion creatives (meta-conversion-creatives-q2-2026.html) are written as text ads. That's fine for a first test, but the data says the winning format in scalp care Meta ads is video with text as a companion. The same narrative arc works - it just needs to be spoken, not read.</p>
+      <p>This is actually good news for AWARE. Tina's 40+ years of trichology expertise is more credible on camera than in text. A 3-minute video of a real trichologist explaining scalp health is more compelling than any amount of ad copy.</p>
+    </div>
+
+    <h3>Transcript Analysis: Clinical Trial Video (Their #1 Performer)</h3>
+    <p>Full transcript captured via AI transcription of the 4:15 video. This is the ad with the most variants (11) and highest impression volume - their proven winner.</p>
+
+    <h4>Video Structure (5-Stage Narrative Arc - Confirmed in Video)</h4>
+    <p>The video follows the exact same persuasion architecture as the text ads, validating that the 5-stage arc is a deliberate framework, not an accident of copywriting.</p>
+
+    <table>
+      <tr><th style="width: 130px;">Stage</th><th style="width: 80px;">Timestamp</th><th>Content</th><th>Technique</th></tr>
+      <tr>
+        <td><strong>Visual Hook</strong></td>
+        <td>0:00-0:15</td>
+        <td>"This ages your scalp. This ages your scalp. And this ages your scalp." (Objects shown on screen)</td>
+        <td><strong>Pattern interrupt.</strong> Physical objects + repetition. Stops the scroll before any product is mentioned. First 3 seconds are entirely about the PROBLEM, not the solution.</td>
+      </tr>
+      <tr>
+        <td><strong>Problem Amplification</strong></td>
+        <td>0:15-1:30</td>
+        <td>"By the time they notice hair loss, their scalp might be 90 years old." Introduces the "menoscalp" concept. Names failed alternatives: minoxidil, biotin, expensive shampoos. "Up to 70% of menopausal women don't have enough of the enzyme to activate minoxidil anyway."</td>
+        <td><strong>Reframe + named enemies.</strong> Coins "menoscalp" as a branded medical concept. Systematically dismantles every alternative the viewer has already tried or considered. Uses specific percentages to sound clinical.</td>
+      </tr>
+      <tr>
+        <td><strong>Mechanism Reveal</strong></td>
+        <td>1:30-2:30</td>
+        <td>"Back in 2020, my mom's menopausal hair loss got really bad..." Transitions to founder story. Explains scalp tissue aging mechanism. "It dries out, slows down cell turnover, weakens the barrier. That combo flips your scalp into something I call the off position."</td>
+        <td><strong>Founder origin story + scientific mechanism.</strong> Emotional narrative (mother) wraps the science. The "off position" is another coined concept that simplifies complex biology into a memorable metaphor.</td>
+      </tr>
+      <tr>
+        <td><strong>Proof Cascade</strong></td>
+        <td>2:30-3:30</td>
+        <td>"214% boost in growth, over 10,000 new hairs in 90 days. Outperformed minoxidil by 81%. In Vogue, Forbes, Women's Health. Marie Claire Award. Over 150,000 women. Over 1,000 US clinicians."</td>
+        <td><strong>Rapid-fire stacking.</strong> 8 proof points in 60 seconds. Clinical data, press, awards, customer count, clinician count. No proof point gets more than one sentence - the volume IS the persuasion.</td>
+      </tr>
+      <tr>
+        <td><strong>Soft CTA</strong></td>
+        <td>3:30-4:15</td>
+        <td>"Click below to learn more. I'd really encourage you to read up on the three scalp disruptions... This article will explain everything."</td>
+        <td><strong>Education CTA, not purchase CTA.</strong> "Read the article" not "Buy now." Frames the link destination as continued education - an article explaining the "three scalp disruptions." Reinforces the 90-day money-back guarantee.</td>
+      </tr>
+    </table>
+
+    <h4>Key Video Production Patterns</h4>
+    <table>
+      <tr><th>Pattern</th><th>Detail</th><th>AWARE Application</th></tr>
+      <tr>
+        <td><strong>Founder-as-presenter</strong></td>
+        <td>Dr. Kilgour narrates directly to camera. No actors, no voiceover. First-person credibility.</td>
+        <td>Tina Mui on camera. A real trichologist with 40+ years is more credible than any narrator. This is AWARE's strongest untapped asset for video.</td>
+      </tr>
+      <tr>
+        <td><strong>Coined terminology</strong></td>
+        <td>"Menoscalp," "the off position," "three scalp disruptions" - branded concepts that simplify science into shareable language.</td>
+        <td>AWARE needs equivalent coined terms. Candidates: "scalp environment score," "barrier deficit," "microbiome reset." Terms that only AWARE uses, creating search demand that only AWARE can satisfy.</td>
+      </tr>
+      <tr>
+        <td><strong>Object pattern interrupts</strong></td>
+        <td>Opens with physical objects ("this ages your scalp") before showing any person or product. 3-second visual hook designed to stop the scroll.</td>
+        <td>AWARE could open videos with environmental objects: UV lamp, hard water mineral deposits, pollen, product residue. Visual proof of the scalp environment thesis.</td>
+      </tr>
+      <tr>
+        <td><strong>Specific numbers over vague claims</strong></td>
+        <td>"214% boost," "10,000 new hairs," "81% better than minoxidil," "90 years old" - every claim is quantified, even when the methodology is questionable.</td>
+        <td>AWARE currently lacks quantified claims (no clinical trial). The 96% B2B reorder rate and 50+ salon partners are the strongest numbers available. Use them repeatedly.</td>
+      </tr>
+      <tr>
+        <td><strong>Emotional anchor before science</strong></td>
+        <td>Mother's story precedes mechanism explanation. Emotion creates receptivity for technical content.</td>
+        <td>What drove Tina to create AWARE? That story - told in her own words - needs to be the emotional anchor before any AWAREBIO Complex explanation.</td>
+      </tr>
+      <tr>
+        <td><strong>Video = text ad, spoken</strong></td>
+        <td>The video transcript matches the text ad copy almost verbatim. Same narrative, same proof points, same CTA. The video IS the text ad brought to life.</td>
+        <td>AWARE's existing 8 text creatives are essentially video scripts. Record Tina reading Creative 03 (Stylist Authority) or Creative 04 (Environmental Defense) and the video ad is made.</td>
+      </tr>
+    </table>
+
+    <h3>Visual Reference: Video Frame Captures</h3>
+    <p style="font-size: 13px; color: var(--teal-60); margin-bottom: 16px;">Three frames per angle: hook (opening 2s), midpoint (30% through), and CTA (final 5s). Captured from Meta Ad Library video playback.</p>
+
+    <div class="ad-gallery">
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/video-clinical-trial-hook.png" alt="Clinical Trial video - hook frame" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">Clinical Trial - Hook (0:02)</div>
+          <div class="ad-angle-hook">Object interrupt + "This ages your scalp"</div>
+          <div class="ad-angle-meta"><span class="tag tag-winner">#1 Performer</span></div>
+        </div>
+      </div>
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/video-clinical-trial-mid.png" alt="Clinical Trial video - midpoint" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">Clinical Trial - Mechanism (1:15)</div>
+          <div class="ad-angle-hook">Founder story + scalp aging explanation</div>
+        </div>
+      </div>
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/video-clinical-trial-cta.png" alt="Clinical Trial video - CTA frame" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">Clinical Trial - CTA (4:00)</div>
+          <div class="ad-angle-hook">"Click below to learn more" + 90-day guarantee</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ad-gallery">
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/video-pattern-interrupt-hook.png" alt="Pattern Interrupt video" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">Pattern Interrupt - Hook</div>
+          <div class="ad-angle-hook">"A hairdresser spent $10,000 on a hair transplant"</div>
+        </div>
+      </div>
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/video-glp1-segment-hook.png" alt="GLP-1 Segment video" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">GLP-1 Segment - Hook</div>
+          <div class="ad-angle-hook">"Everyone blames rapid weight loss"</div>
+        </div>
+      </div>
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/video-industry-expose-hook.png" alt="Industry Expose video" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">Industry Expose - Hook</div>
+          <div class="ad-angle-hook">"Clinical trial results the industry will hate"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ad-gallery">
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/video-minoxidil-takedown-hook.png" alt="Minoxidil Takedown video" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">Minoxidil Takedown - Hook</div>
+          <div class="ad-angle-hook">"Please stop prescribing minoxidil" (7:00 - longest video)</div>
+        </div>
+      </div>
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/video-glp1-ugc-hook.png" alt="GLP-1 UGC video" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">GLP-1 UGC - Hook</div>
+          <div class="ad-angle-hook">"Stop trying to regrow hair on weight loss medication"</div>
+        </div>
+      </div>
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/video-emotional-story-hook.png" alt="Emotional Story video" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">Emotional Story - Hook (13s teaser)</div>
+          <div class="ad-angle-hook">"I watched my mother cry in front of the mirror"</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Full Transcript: Clinical Trial Video (#1 Performer, 4:15)</h3>
+    <div class="ad-preview">
+      <div class="ad-preview-label">AI-Generated Transcript - KilgourMD Clinical Trial Video (255 seconds)</div>
+      <div class="ad-preview-content" style="max-height: 300px;">
+        <p><strong>[0:00 - VISUAL HOOK]</strong> This ages your scalp. This ages your scalp. And this ages your scalp. Most women don't know this, but by the time they notice hair loss, their scalp might be 90 years old. And if you want your hair to be thick and not fall out, you need to do what this dermatologist at Stanford says. Hair loss isn't always genetic and it's actually easy to reverse. So let me share what I discovered. Something that can fill in bald spots, stop shedding and help grow thousands of new hairs quickly.</p>
+        <p><strong>[0:30 - NAMED ENEMIES]</strong> You can do what most women do, buy minoxidil, then biotin, then expensive shampoos and wait for your hair to magically return. That's not going to happen because these treatments can't penetrate what's really wrong. Your scalp is aged to 90 years old. During menopause, your scalp ages up to 10 times faster than your face because it gets the least blood flow and nutrients of any skin on your body. That's why women look exactly the same after months of trying everything. Plus, up to 70% of menopausal women don't have enough of the enzyme to activate minoxidil anyway. Even if you use it perfectly, your body can't process it.</p>
+        <p><strong>[1:15 - MECHANISM REVEAL]</strong> So instead of telling women to buy more useless products, I tell them to stop everything. Seriously, less is more here. Because there's one simple step that any woman can add after her skincare routine. No matter her age or how bold she thinks she is, that grows more hair than a transplant. I've had women tell me they have teenage hair again at 65.</p>
+        <p><strong>[1:30 - FOUNDER STORY]</strong> So listen, reverse is one aging problem and you'll have the thick that you remember. Back in 2020, my mom's menopausal hair loss got really bad. At first it was subtle, a bit more hair on the brush, a ponytail that felt thinner, a part that suddenly looked wider. But then it snowballed. Almost overnight, she felt like she didn't recognize herself in the mirror anymore. And as a dermatologist and her son, I couldn't sit back and do nothing.</p>
+        <p><strong>[2:00 - SCIENCE]</strong> So I started digging. Turns out menopause doesn't just mess with your hormones, it biologically ages your scalp. It dries out, slows down cell turnover, weakens the barrier. That combo flips your scalp into something I call the off position. I call it menoscalp. And it can silently wipe out over 50% of your hair before you even realize what's happening. So I stopped looking for the perfect product and I built one.</p>
+        <p><strong>[2:30 - PRODUCT + PROOF]</strong> I didn't really have a choice because here's the thing, there was nothing out there. Not a single product from the market that was actually made for menopausal scalps. Everything was designed for younger women or just master symptoms. [...] It's a blend of over a dozen powerful natural compounds. Procopil from olive tree leaves and saw palmetto help block DHT at the root. Redenzil from green tea reactivates dormant follicles. [...] In clinical studies, we saw a 214% boost in growth over 10,000 new hairs in 90 days. It even outperformed minoxidil by 81% with zero burning, zero irritation.</p>
+        <p><strong>[3:15 - PROOF CASCADE]</strong> It started with her, then her friends, then it spread. Next thing I knew it was in Vogue, Forbes, Women's Health. We won a Marie Claire Award, an elite beauty award. And now it's being used by over 150,000 women across the country. [...] Over a thousand US clinicians now recommend it. It's clinically backed and it comes with a 90 day money back guarantee.</p>
+        <p><strong>[3:50 - SOFT CTA]</strong> Click below to learn more. I'd really encourage you to read up on the three scalp disruptions. Once you understand what's really going on, it all starts to make sense. This is what helped my mom and I've put the full story down below. So if you're worried about your thin hair shedding, don't panic. This article will explain everything.</p>
+      </div>
+    </div>
+
+    <div class="aware-box">
+      <div class="aware-title">Immediate Action: Video Strategy for AWARE</div>
+      <ul>
+        <li><strong>Record Tina.</strong> The single highest-leverage creative action is filming Tina Mui talking about scalp health for 3-4 minutes. No script needed - just record her answering "What do you see in your chair that clients don't know about their scalps?" and "Why did you create AWARE?" The 8 text creatives we built are ready-made scripts if she prefers structure.</li>
+        <li><strong>The text creatives are video scripts.</strong> Creative 03 (Stylist Authority) and Creative 04 (Environmental Defense) translate directly to 2-3 minute videos. The narrative arc is already built. Just add a camera.</li>
+        <li><strong>Object pattern interrupts are cheap and effective.</strong> Open with physical objects: hard water scale on a shower head, UV-damaged scalp model, product buildup residue. KilgourMD's "this ages your scalp" with objects is their first 3 seconds - and it's what stops the scroll.</li>
+        <li><strong>Video doesn't require production budget.</strong> KilgourMD's videos are iPhone-quality with one person talking to camera. No studio, no editing effects, no music. The credibility comes from the person, not the production. AWARE can match this quality with zero additional spend.</li>
+        <li><strong>Test video vs text with the same copy.</strong> Run Creative 03 as text alongside a video of Tina reading the same copy. Compare cost per Scalp Report completion. The data will tell you which format your audience prefers.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ SECTION 1: AD COPY ARCHITECTURE ═══════════════════════════════════════════ -->
+<section id="s1">
+  <div class="container">
+    <span class="section-num">01</span>
+    <p class="label">Ad Copy Architecture</p>
+    <h2 style="border-top: none; padding-top: 0; margin-top: 8px;">Forensic Analysis of 2,200 Active Ads</h2>
+    <div class="gold-divider"></div>
+
+    <p style="font-size: 14px; color: var(--teal-60); max-width: 640px;">The previous audit identified 7 ad angles. This section goes deeper: hook taxonomy, narrative arc structure, proof point density, and copy rhythm patterns.</p>
+
+    <h3>Hook Taxonomy</h3>
+    <p>Every KilgourMD ad opens with one of six hook types. The distribution reveals where they're investing and what converts. Data from 26 top-impression ads visible in the Ad Library (sorted by total impressions):</p>
+
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">Clinical Trial Proof</div>
+        <div class="bar-track"><div class="bar-fill gold" style="width: 60%;">6 ads</div></div>
+        <div class="bar-count"><span class="tag tag-winner">Winner</span></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Industry Expose</div>
+        <div class="bar-track"><div class="bar-fill teal" style="width: 40%;">4 ads</div></div>
+        <div class="bar-count"></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Mother's Story</div>
+        <div class="bar-track"><div class="bar-fill sage" style="width: 40%;">4 ads</div></div>
+        <div class="bar-count"></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">GLP-1 / Weight Loss</div>
+        <div class="bar-track"><div class="bar-fill amber" style="width: 20%;">2 ads</div></div>
+        <div class="bar-count"><span class="tag tag-new">New Segment</span></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">GLP-1 UGC Testimonial</div>
+        <div class="bar-track"><div class="bar-fill amber" style="width: 20%;">2 ads</div></div>
+        <div class="bar-count"></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Minoxidil Takedown</div>
+        <div class="bar-track"><div class="bar-fill red" style="width: 20%;">2 ads</div></div>
+        <div class="bar-count"></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Pattern Interrupt</div>
+        <div class="bar-track"><div class="bar-fill sage" style="width: 10%;">1 ad</div></div>
+        <div class="bar-count"></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Other / Testing</div>
+        <div class="bar-track"><div class="bar-fill" style="width: 50%; background: var(--teal-20);">5 ads</div></div>
+        <div class="bar-count"><span class="tag tag-new">New Angles</span></div>
+      </div>
+    </div>
+
+    <h3>Visual Reference: All 7 Ad Angles</h3>
+    <p style="font-size: 13px; color: var(--teal-60); margin-bottom: 16px;">Screenshots from Meta Ad Library (April 1, 2026), sorted by total impressions. Each shows the highest-impression example of that angle.</p>
+
+    <div class="ad-gallery">
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/clinical-trial.png" alt="KilgourMD Clinical Trial ad angle" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">Angle 1: Clinical Trial Proof</div>
+          <div class="ad-angle-hook">"I built this for my mother. Then I proved it works."</div>
+          <div class="ad-angle-meta">
+            <span class="tag tag-winner">Top Performer</span>
+            <span class="tag tag-new">11 Variants</span>
+          </div>
+        </div>
+      </div>
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/pattern-interrupt.png" alt="KilgourMD Pattern Interrupt ad angle" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">Angle 2: Hair Transplant Failure</div>
+          <div class="ad-angle-hook">"A hairdresser spent $10,000 on a hair transplant. The grafts fell out."</div>
+          <div class="ad-angle-meta">
+            <span class="tag tag-low">2 Variants</span>
+          </div>
+        </div>
+      </div>
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/emotional-story.png" alt="KilgourMD Emotional Story ad angle" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">Angle 3: Mother's Story</div>
+          <div class="ad-angle-hook">"I'm not going to pretend I know what it feels like to lose your hair."</div>
+          <div class="ad-angle-meta">
+            <span class="tag tag-med">4 Variants</span>
+          </div>
+        </div>
+      </div>
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/glp1-segment.png" alt="KilgourMD GLP-1 Segment ad angle" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">Angle 4: GLP-1 / Weight Loss</div>
+          <div class="ad-angle-hook">"Everyone blames rapid weight loss. The research says otherwise."</div>
+          <div class="ad-angle-meta">
+            <span class="tag tag-new">Growing Segment</span>
+            <span class="tag tag-med">3 Variants</span>
+          </div>
+        </div>
+      </div>
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/industry-expose.png" alt="KilgourMD Industry Expose ad angle" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">Angle 5: Industry Expose</div>
+          <div class="ad-angle-hook">"We just published clinical trial results the hair loss industry is going to hate."</div>
+          <div class="ad-angle-meta">
+            <span class="tag tag-high">8 Variants</span>
+          </div>
+        </div>
+      </div>
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/minoxidil-takedown.png" alt="KilgourMD Minoxidil Takedown ad angle" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">Angle 6: Minoxidil Takedown</div>
+          <div class="ad-angle-hook">"Please stop prescribing minoxidil to women going through menopause."</div>
+          <div class="ad-angle-meta">
+            <span class="tag tag-high">8 Variants</span>
+          </div>
+        </div>
+      </div>
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/glp1-ugc.png" alt="KilgourMD GLP-1 UGC Testimonial ad angle" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">Angle 7: GLP-1 UGC Testimonial</div>
+          <div class="ad-angle-hook">"Please stop trying to regrow your hair on weight loss medication."</div>
+          <div class="ad-angle-meta">
+            <span class="tag tag-high">7 Variants</span>
+          </div>
+        </div>
+      </div>
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/other.png" alt="KilgourMD new testing angles" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">New: Testing Angles</div>
+          <div class="ad-angle-hook">"Most hair products have never been tested on menopausal women." / "What's the biggest mistake women make?"</div>
+          <div class="ad-angle-meta">
+            <span class="tag tag-new">New Angles</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-title">Key Insight</div>
+      <p><strong>The Clinical Trial angle accounts for 23% of top-impression ads AND has the highest variant count (11 variants).</strong> Variant count is the strongest signal of investment we can observe. When a company tests 11 variations of the same angle, they're pouring budget into optimizing a proven winner. This is their "control" creative - the one everything else is measured against.</p>
+      <p>The 5 "Other/Testing" ads are significant too. These represent new angles being tested that don't match the established 7. KilgourMD is still experimenting, which means their creative playbook is evolving.</p>
+    </div>
+
+    <h3>The Narrative Arc</h3>
+    <p>Every long-form KilgourMD ad follows a 5-stage narrative structure. This is not random - it's a deliberate persuasion architecture that works because each stage does a specific job:</p>
+
+    <div class="arc-flow">
+      <div class="arc-step">
+        <div class="arc-dot"></div>
+        <div class="arc-label">Hook</div>
+        <div class="arc-desc">Pattern interrupt or emotional entry. 1-2 sentences. Single-line paragraph for visual weight.</div>
+      </div>
+      <div class="arc-step">
+        <div class="arc-dot"></div>
+        <div class="arc-label">Problem Amplification</div>
+        <div class="arc-desc">Escalate the pain. Use specifics (dollar amounts, time frames, named alternatives that failed).</div>
+      </div>
+      <div class="arc-step">
+        <div class="arc-dot"></div>
+        <div class="arc-label">Mechanism Reveal</div>
+        <div class="arc-desc">"Here's why everything else fails." Scientific explanation made accessible. Creates new mental model.</div>
+      </div>
+      <div class="arc-step">
+        <div class="arc-dot"></div>
+        <div class="arc-label">Proof Cascade</div>
+        <div class="arc-desc">Clinical trial, clinician count, press mentions, founder story. 3-5 proof points, stacked rapidly.</div>
+      </div>
+      <div class="arc-step">
+        <div class="arc-dot"></div>
+        <div class="arc-label">Soft CTA</div>
+        <div class="arc-desc">"Take the 60-second quiz." Never "Buy Now." The ask matches the education investment.</div>
+      </div>
+    </div>
+
+    <h4>Example: Clinical Trial Angle (Deconstructed)</h4>
+    <div class="ad-preview">
+      <div class="ad-preview-label">Hook (1 sentence, emotional anchor)</div>
+      <div class="ad-preview-content" style="max-height: none;">
+        <p style="font-weight: 600;">"I built this for my mother. Then I proved it works."</p>
+      </div>
+    </div>
+    <div class="ad-preview">
+      <div class="ad-preview-label">Problem Amplification (specific, visual, named alternatives)</div>
+      <div class="ad-preview-content" style="max-height: none;">
+        <p>"We just finished a clinical trial no other hair brand would run. 43 menopausal women with confirmed hair loss. 4 months. Independent lab. Women shampooed at the facility in special showers designed to catch every strand. Researchers dried those hairs..."</p>
+      </div>
+    </div>
+    <div class="ad-preview">
+      <div class="ad-preview-label">Mechanism Reveal (reframes the problem)</div>
+      <div class="ad-preview-content" style="max-height: none;">
+        <p>Introduces "scalp tissue aging" as the root cause. Positions hair loss as a tissue problem, not a follicle problem. Creates a new mental model that makes minoxidil seem outdated.</p>
+      </div>
+    </div>
+    <div class="ad-preview">
+      <div class="ad-preview-label">Proof Cascade (stacked rapidly)</div>
+      <div class="ad-preview-content" style="max-height: none;">
+        <p>"95% saw results by week 6. 68% reduction in long hair shedding. 1,251 clinicians shared it without compensation. Stanford-trained, board-certified dermatologist." Four proof points in four sentences.</p>
+      </div>
+    </div>
+    <div class="ad-preview">
+      <div class="ad-preview-label">Soft CTA (education, not transaction)</div>
+      <div class="ad-preview-content" style="max-height: none;">
+        <p>"Take the 60-second quiz" - not "Buy Now." The reader invested 3 minutes reading. The CTA matches that investment level by asking for 60 more seconds, not $150.</p>
+      </div>
+    </div>
+
+    <h3>Word Count Distribution</h3>
+    <p>The "long-form ads" narrative is more nuanced than it appears. KilgourMD actually runs a bimodal distribution:</p>
+    <table>
+      <tr><th>Tier</th><th>Word Count</th><th>Frequency</th><th>Purpose</th></tr>
+      <tr><td><strong>Teaser</strong></td><td>39-99 words</td><td>~20%</td><td>Video ad companions, retargeting, headline-only hooks</td></tr>
+      <tr><td><strong>Standard</strong></td><td>100-300 words</td><td>~45%</td><td>Core education ads, single-angle narratives</td></tr>
+      <tr><td><strong>Long-form</strong></td><td>300-1,200 words</td><td>~25%</td><td>Multi-proof narratives, clinical authority pieces</td></tr>
+      <tr><td><strong>Ultra-long</strong></td><td>1,200-2,114 words</td><td>~10%</td><td>Scientific deep dives (Minoxidil Takedown, GLP-1 UGC)</td></tr>
+    </table>
+
+    <div class="insight-box">
+      <div class="insight-title">Key Insight</div>
+      <p><strong>The average of 394 words is misleading.</strong> There is no "medium" length. KilgourMD runs either short teasers (~60 words) or substantial narratives (200-2,100 words). The "missing middle" suggests they've tested mid-length copy and it underperformed both extremes.</p>
+      <p><strong>For AWARE at $500/month:</strong> The standard tier (100-300 words) is the sweet spot. Long enough to educate, short enough for mobile consumption. Our 300-800 word creative range aligns well. Skip ultra-long (1,200+) - that requires massive reach to find the self-selecting audience that reads it all.</p>
+    </div>
+
+    <h3>Proof Point Density</h3>
+    <p>Every KilgourMD ad deploys proof points from a fixed arsenal. The mix varies by angle, but the same pool of 8 proof assets rotates throughout:</p>
+    <table>
+      <tr><th>Proof Asset</th><th>Type</th><th>Frequency in Ads</th></tr>
+      <tr><td>"95% saw results by week 6"</td><td>Clinical trial statistic</td><td>Very high - appears in most angles</td></tr>
+      <tr><td>"43 menopausal women, independent lab"</td><td>Methodology credibility</td><td>High - Clinical Trial + Industry Expose</td></tr>
+      <tr><td>"Stanford-trained, board-certified"</td><td>Founder credential</td><td>Very high - every angle</td></tr>
+      <tr><td>"1,251 clinicians shared without compensation"</td><td>Third-party endorsement</td><td>Medium - homepage, some ads</td></tr>
+      <tr><td>"I built this for my mother"</td><td>Origin story / emotional</td><td>Very high - Clinical Trial + Emotional</td></tr>
+      <tr><td>"90-day money-back guarantee"</td><td>Risk reversal</td><td>High - direct purchase angles</td></tr>
+      <tr><td>"No minoxidil. No dependency. No side effects."</td><td>Negative differentiation</td><td>Medium - Takedown + Industry Expose</td></tr>
+      <tr><td>Press logos (Vogue, Forbes, etc.)</td><td>Authority transfer</td><td>Low in ads, high on site</td></tr>
+    </table>
+
+    <div class="aware-box">
+      <div class="aware-title">What AWARE Should Do</div>
+      <ul>
+        <li><strong>Build your own proof arsenal of 6-8 rotating assets.</strong> Current candidates: Trichologist with 40+ years (founder credential), 50+ salon partners (endorsement), 96% B2B reorder rate (product proof), AWAREBIO Complex patent-pending (mechanism), Scalp Environment Report (differentiation), "No sulfates, no silicones" (negative differentiation). You're missing clinical data and press logos - those are the highest-leverage gaps to fill.</li>
+        <li><strong>Adopt the 5-stage narrative arc for all conversion creatives.</strong> Hook, Problem Amplification, Mechanism Reveal, Proof Cascade, Soft CTA. This structure works because it mirrors how trust is built in high-consideration purchases.</li>
+        <li><strong>Target the "Standard" word count tier (100-300 words).</strong> Skip teasers (need video) and ultra-long (need massive reach). The 8 creatives we built at 300-800 words are at the upper end - consider shorter variants for testing.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ SECTION 2: WHY LONG-FORM WORKS ═══════════════════════════════════════════ -->
+<section id="s2" style="background: var(--surface); border-top: 1px solid var(--teal-12);">
+  <div class="container">
+    <span class="section-num">02</span>
+    <p class="label">Original Analysis</p>
+    <h2 style="border-top: none; padding-top: 0; margin-top: 8px;">Why Long-Form Works in Scalp Care</h2>
+    <div class="gold-divider"></div>
+
+    <p style="font-size: 14px; color: var(--teal-60); max-width: 640px;">This is not in the existing audit. It's the analytical framework that explains why KilgourMD's unorthodox approach works - and why it matters for every scalp care brand, including AWARE.</p>
+
+    <h3>The Category Education Requirement</h3>
+    <p>Scalp care is an <strong>emerging category</strong>, not an established one. This distinction is critical for advertising strategy.</p>
+    <div class="compare-grid">
+      <div class="compare-card">
+        <h4>Established Categories</h4>
+        <p><strong>Examples:</strong> Shampoo, conditioner, body wash</p>
+        <p>Consumers already know what the product does. They have existing mental models. Advertising's job is to differentiate within an understood category. Short-form, brand-preference ads work.</p>
+        <p><strong>Ad strategy:</strong> "Our shampoo is better because..."</p>
+      </div>
+      <div class="compare-card">
+        <h4>Emerging Categories</h4>
+        <p><strong>Examples:</strong> Scalp care, gut health, sleep optimization</p>
+        <p>Consumers don't yet have mental models for the category. They may not know the problem exists. Advertising must first <em>create the category</em> in the consumer's mind, then position the product within it.</p>
+        <p><strong>Ad strategy:</strong> "Here's a problem you didn't know you had, here's why it matters, and here's the solution."</p>
+      </div>
+    </div>
+
+    <p>This is why KilgourMD's 1,000-4,000 word ads aren't absurd - they're doing category creation work that established brands don't need to do. And it's why "boost proven organic posts" is the right <em>starting</em> strategy for AWARE, but purpose-built conversion creatives are the necessary <em>next</em> step.</p>
+
+    <h3>Five Reasons Long-Form Converts in Scalp Care</h3>
+    <table>
+      <tr><th style="width: 40px;">#</th><th style="width: 200px;">Mechanism</th><th>Why It Works</th><th>Budget-Dependent?</th></tr>
+      <tr>
+        <td>1</td>
+        <td><strong>Trust Deficit Problem</strong></td>
+        <td>Scalp products make implicit health claims. "Supports microbiome balance" sounds medical. Consumers need credibility signals before spending $75-150 on something that touches their health. Long-form copy IS the credibility signal - the depth itself communicates seriousness.</td>
+        <td><span class="tag tag-high">No</span></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><strong>Named-Enemy Requires Evidence</strong></td>
+        <td>Saying "sulfates are bad" in 3 sentences isn't credible. The takedown requires mechanism explanation ("sodium lauryl sulfate strips the acid mantle in 90 seconds..."), which requires length. KilgourMD's minoxidil takedown is 3,000 words because the argument is scientific, not emotional.</td>
+        <td><span class="tag tag-high">No</span></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><strong>Self-Selection Filter</strong></td>
+        <td>Anyone who reads 2,000 words about scalp health is a highly qualified lead. Long-form naturally filters out casual scrollers and delivers an engaged, educated prospect to the CTA. This reduces wasted clicks and improves conversion rate downstream.</td>
+        <td><span class="tag tag-high">No</span></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>Dwell Time Signal</strong></td>
+        <td>Meta's algorithm rewards engagement. Reading a 1,000-word ad for 3 minutes signals higher engagement than a 2-second scroll-past on a short ad. This likely improves organic distribution and lowers CPM over time. [ESTIMATED - Meta doesn't disclose algorithm weights]</td>
+        <td><span class="tag tag-med">Partially</span></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>Founder Story Advantage</strong></td>
+        <td>"I built this for my mother" needs narrative space to land emotionally. A truncated version ("doctor-made for his mom") loses the emotional arc. The story format requires at least 200-300 words to move through empathy, frustration, breakthrough, and proof.</td>
+        <td><span class="tag tag-high">No</span></td>
+      </tr>
+    </table>
+
+    <div class="insight-box">
+      <div class="insight-title">The Implication for AWARE</div>
+      <p><strong>Four of five mechanisms are budget-invariant.</strong> They work at $500/month the same way they work at $500,000/month. The only partially budget-dependent mechanism (#4, dwell time signal) requires enough impressions for the algorithm to learn - which is a volume question, not a creative quality question.</p>
+      <p>This means AWARE can capture most of the benefit of long-form with a fraction of the spend. The creative quality matters more than the creative quantity.</p>
+    </div>
+
+    <h3>AWARE's "Compressed Education" Approach</h3>
+    <p>At $500/month, AWARE can't run 2,200 ad variants. But we can run 2-3 creatives that capture the same educational depth in less space. The key is understanding that <strong>the Scalp Environment Report does the heavy educational lifting that KilgourMD's ad copy has to do.</strong></p>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <h4>KilgourMD's Flow</h4>
+        <p><strong>2,000-word ad</strong> (educates about the problem) &rarr; <strong>Quiz</strong> (segments by condition) &rarr; <strong>Product page</strong> (converts)</p>
+        <p>The ad does all the education because the quiz adds no real value - it's marketing segmentation.</p>
+      </div>
+      <div class="compare-card">
+        <h4>AWARE's Flow</h4>
+        <p><strong>300-word ad</strong> (introduces the problem) &rarr; <strong>Scalp Report</strong> (educates with real data, captures email) &rarr; <strong>Email nurture</strong> (deepens education) &rarr; <strong>Purchase</strong></p>
+        <p>The ad just needs to get people to the Report. The Report does the education AND provides genuine utility.</p>
+      </div>
+    </div>
+
+    <div class="aware-box">
+      <div class="aware-title">What AWARE Should Do</div>
+      <ul>
+        <li><strong>Frame the Scalp Report as AWARE's long-form ad equivalent.</strong> KilgourMD spends $100K+/month on ad copy to educate consumers. AWARE's Scalp Report does the same education work for free - it just needs a 300-word ad to drive traffic to it.</li>
+        <li><strong>Explicitly position the Scalp Report against quiz funnels in ad copy.</strong> Creative 08 ("Not Another Quiz") does this. It should be the highest-priority creative to test because it directly addresses the competitive differentiator.</li>
+        <li><strong>Develop the founder story for DTC ad copy.</strong> Tina's 40+ years as a trichologist is AWARE's version of "I built this for my mother." The emotional arc needs to be workshopped for ad format: what frustration drove the formulation? What did she see in her chair that no existing product addressed?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ SECTION 3: CREATIVE TESTING ═══════════════════════════════════════════ -->
+<section id="s3">
+  <div class="container">
+    <span class="section-num">03</span>
+    <p class="label">Reverse Engineering</p>
+    <h2 style="border-top: none; padding-top: 0; margin-top: 8px;">Creative Testing Methodology</h2>
+    <div class="gold-divider"></div>
+
+    <p style="font-size: 14px; color: var(--teal-60); max-width: 640px;">We can't see their Ads Manager. But the Ad Library reveals patterns that let us reconstruct their testing approach.</p>
+
+    <h3>Variant Count as Investment Signal</h3>
+    <p>When a company runs 11 variants of the same ad angle, they're not experimenting - they're optimizing a known winner. The variant count is the closest proxy we have for internal confidence level.</p>
+
+    <table>
+      <tr><th>Angle</th><th>Variants</th><th>Signal</th></tr>
+      <tr><td>Clinical Trial Proof</td><td>11</td><td><span class="tag tag-winner">Highest confidence</span> - active optimization</td></tr>
+      <tr><td>Minoxidil Takedown</td><td>8</td><td><span class="tag tag-high">High confidence</span> - scaling</td></tr>
+      <tr><td>Industry Expose</td><td>8</td><td><span class="tag tag-high">High confidence</span> - scaling</td></tr>
+      <tr><td>GLP-1 UGC Testimonial</td><td>7</td><td><span class="tag tag-high">High confidence</span> - newer, fast-scaling</td></tr>
+      <tr><td>Mother's Story</td><td>4</td><td><span class="tag tag-med">Medium</span> - established but not expanding</td></tr>
+      <tr><td>GLP-1 Weight Loss</td><td>3</td><td><span class="tag tag-med">Medium</span> - segment test</td></tr>
+      <tr><td>Pattern Interrupt</td><td>2</td><td><span class="tag tag-low">Low</span> - legacy or testing</td></tr>
+    </table>
+
+    <h3>Longevity as Performance Proxy</h3>
+    <p>An ad that's been running for 75 days is performing. An ad killed after 5 days wasn't. The start date distribution from visible ads:</p>
+
+    <table>
+      <tr><th>Running Since</th><th>Days Active</th><th>Tier</th><th>Interpretation</th></tr>
+      <tr><td>Jan 17, 2026</td><td>75 days</td><td><span class="tag tag-winner">Proven Winner</span></td><td>These ads are profitable. They're not "testing" - they're the backbone of spend.</td></tr>
+      <tr><td>Jan 31, 2026</td><td>61 days</td><td><span class="tag tag-winner">Proven Winner</span></td><td>Four ads from this date still running. Batch launch, multiple survivors.</td></tr>
+      <tr><td>Feb 4-26, 2026</td><td>34-57 days</td><td><span class="tag tag-high">Established</span></td><td>Past the 30-day threshold. Likely profitable, still being optimized.</td></tr>
+      <tr><td>Mar 2-14, 2026</td><td>18-30 days</td><td><span class="tag tag-med">Maturing</span></td><td>Large batch launch Mar 11-13 (13 ads in 3 days). Coordinated creative refresh.</td></tr>
+      <tr><td>Mar 21, 2026</td><td>11 days</td><td><span class="tag tag-new">Testing</span></td><td>Recent launches. Too early to judge performance.</td></tr>
+    </table>
+
+    <div class="insight-box">
+      <div class="insight-title">Key Insight: The March 11-13 Batch</div>
+      <p><strong>13 new ads launched in 3 days.</strong> This is a coordinated creative refresh - likely a new round of testing against the proven Jan 17 winners. In media buying, this pattern suggests they're running a "challenger vs champion" test: keeping the proven ads running while introducing a new batch to find the next winner.</p>
+      <p>The 2,200 total active count (up from 980 on March 26) means most of these challengers haven't been killed yet. They're still in the evaluation window. Within 2-3 weeks, expect the count to stabilize as losing variants are turned off.</p>
+    </div>
+
+    <h3>What This Means for AWARE's $150/month</h3>
+    <p>KilgourMD can afford to test 2,200 variants because each variant gets enough impressions to reach statistical significance quickly at their budget. At $150/month on conversion creatives, AWARE can test 2-3 creatives simultaneously at most.</p>
+
+    <table>
+      <tr><th>Testing Pattern</th><th>KilgourMD ($100K+/mo)</th><th>AWARE ($150/mo)</th></tr>
+      <tr><td>Active variants</td><td>2,200+</td><td>2-3</td></tr>
+      <tr><td>Time to significance</td><td>3-5 days per variant</td><td>14-21 days per variant</td></tr>
+      <tr><td>Kill cadence</td><td>Daily optimization</td><td>Biweekly review</td></tr>
+      <tr><td>Test methodology</td><td>Multi-variant A/B/C/D/E/F per angle</td><td>Champion vs. one challenger</td></tr>
+      <tr><td>Creative refresh</td><td>Weekly batch launches</td><td>Monthly rotation</td></tr>
+    </table>
+
+    <div class="aware-box">
+      <div class="aware-title">What AWARE Should Do</div>
+      <ul>
+        <li><strong>Run only 2 conversion creatives at a time.</strong> Split the $150 evenly. After 14 days, kill the lower performer. Introduce a new challenger. This is the "champion vs challenger" methodology that KilgourMD runs at scale - just slower.</li>
+        <li><strong>Start with the Clinical Trial equivalent and the Named-Enemy angle.</strong> These are KilgourMD's two highest-confidence angles. AWARE's equivalents: Creative 03 (Stylist Authority) and Creative 02 (Sulfate Takedown).</li>
+        <li><strong>Don't optimize for CPM - optimize for cost per Scalp Report completion.</strong> A higher CPM ad that drives more Report completions is more valuable than a cheap impression that bounces.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ SECTION 4: FUNNEL MECHANICS ═══════════════════════════════════════════ -->
+<section id="s4" style="background: var(--surface); border-top: 1px solid var(--teal-12);">
+  <div class="container">
+    <span class="section-num">04</span>
+    <p class="label">Conversion Architecture</p>
+    <h2 style="border-top: none; padding-top: 0; margin-top: 8px;">Funnel Mechanics Deep Dive</h2>
+    <div class="gold-divider"></div>
+
+    <h3>KilgourMD's Funnel Architecture</h3>
+    <p>The funnel has three layers, each serving a distinct purpose. The quiz is the centerpiece, but it has a critical structural flaw.</p>
+
+    <table>
+      <tr><th>Layer</th><th>Mechanism</th><th>Purpose</th><th>Weakness</th></tr>
+      <tr>
+        <td><strong>Top</strong></td>
+        <td>Long-form Meta ads (7 angles, 2,200 variants)</td>
+        <td>Education + qualification. The ad IS the landing page for many prospects.</td>
+        <td>Requires massive spend to reach enough of the right audience</td>
+      </tr>
+      <tr>
+        <td><strong>Middle</strong></td>
+        <td>90+ quiz/advertorial landing pages, segmented by condition</td>
+        <td>Personalization theater + email capture + discount delivery</td>
+        <td><strong>Quiz only exists on ad landing pages.</strong> Organic visitors never see it.</td>
+      </tr>
+      <tr>
+        <td><strong>Bottom</strong></td>
+        <td>Subscription-first product pages with 90-day guarantee</td>
+        <td>Conversion + LTV maximization through subscription pre-selection</td>
+        <td>No cart upsells, no exit intent, subscription complaints on Trustpilot</td>
+      </tr>
+    </table>
+
+    <h3>The Quiz vs. Scalp Report: A Structural Comparison</h3>
+    <p>This is the most important competitive differentiation for AWARE's paid media strategy.</p>
+
+    <table>
+      <tr><th>Dimension</th><th>KilgourMD Quiz</th><th>AWARE Scalp Report</th></tr>
+      <tr>
+        <td><strong>Data source</strong></td>
+        <td>User self-reported answers ("What's your concern?")</td>
+        <td>Real environmental APIs (UV, water hardness, pollen, humidity)</td>
+      </tr>
+      <tr>
+        <td><strong>Personalization</strong></td>
+        <td>Segments into 3 buckets (menopause/GLP-1/general). All routes lead to the same 2 products.</td>
+        <td>Results vary by zip code. Phoenix gets genuinely different data than Seattle.</td>
+      </tr>
+      <tr>
+        <td><strong>Perceived value</strong></td>
+        <td>Low after completion. "This quiz told me what they wanted to sell me."</td>
+        <td>High. "I learned something specific about my environment I didn't know."</td>
+      </tr>
+      <tr>
+        <td><strong>Trust signal</strong></td>
+        <td>Quiz = marketing tool (consumers increasingly recognize this pattern)</td>
+        <td>Report = genuine utility (provides value regardless of purchase)</td>
+      </tr>
+      <tr>
+        <td><strong>Email capture</strong></td>
+        <td>Required to see results. Transactional exchange.</td>
+        <td>Results visible without email. Email capture is opt-in for personalized recommendations.</td>
+      </tr>
+      <tr>
+        <td><strong>Where it exists</strong></td>
+        <td>Only on ad landing pages. Organic visitors can't access it.</td>
+        <td>On the main site. Available to all visitors.</td>
+      </tr>
+      <tr>
+        <td><strong>Competitive moat</strong></td>
+        <td>None. Any brand can build a 5-question quiz in an afternoon.</td>
+        <td>Significant. Requires API integrations, data science, and environmental expertise.</td>
+      </tr>
+    </table>
+
+    <div class="insight-box">
+      <div class="insight-title">The Strategic Implication</div>
+      <p><strong>KilgourMD's ad spend essentially substitutes for product trust.</strong> They spend $100K+/month on ads because they have no other trust channel. No salon partners recommending the product. No professional endorsement. No in-chair experience. The ads have to do ALL the trust-building work.</p>
+      <p>AWARE's salon channel provides trust that no amount of ad spend can replicate. The $500/month paid strategy doesn't need to build trust from zero - it just needs to introduce the brand to people who will then encounter professional endorsement through the Scalp Report, email nurture, and eventually salon recommendations.</p>
+    </div>
+
+    <h3>Email Capture Strategy Comparison</h3>
+    <table>
+      <tr><th>Mechanism</th><th>KilgourMD</th><th>AWARE (Current)</th><th>AWARE (Recommended)</th></tr>
+      <tr><td>Homepage popup</td><td>10% off, fires at 5 sec (too fast)</td><td>None [UNVERIFIED]</td><td>Scalp Report CTA, fires at 15 sec or 30% scroll</td></tr>
+      <tr><td>Quiz/Report</td><td>Email required for results</td><td>Email optional</td><td>Keep optional - trust signal. Add "Email for personalized protocol" upsell.</td></tr>
+      <tr><td>Segmentation at capture</td><td>Concern type (menopause/GLP-1/unknown)</td><td>Not implemented</td><td>Scalp concern (dry/oily/buildup/sensitivity) for Klaviyo flow targeting</td></tr>
+      <tr><td>Exit intent</td><td>Not detected (gap)</td><td>Not implemented</td><td>Low priority - focus on Scalp Report conversion first</td></tr>
+    </table>
+
+    <div class="aware-box">
+      <div class="aware-title">What AWARE Should Do</div>
+      <ul>
+        <li><strong>Add concern-based segmentation to the Scalp Report email capture.</strong> When someone opts in after their report, ask "What's your primary scalp concern?" (dropdown: dry scalp, oily scalp, buildup, sensitivity, thinning). This powers targeted Klaviyo flows - the same thing KilgourMD's quiz does, but with real data backing it.</li>
+        <li><strong>Keep email optional for Report results.</strong> This is a trust advantage over KilgourMD's gated quiz. Demonstrating value before asking for anything builds stronger subscriber quality.</li>
+        <li><strong>Build the "Endorsed by 50+ Salons" widget for the DTC site.</strong> KilgourMD's FrontrowMD widget ("1,251 clinicians") is their strongest conversion element. AWARE's version - backed by real salon relationships, not a third-party endorsement platform - would be more credible.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ SECTION 5: AUDIENCE SEGMENTATION ═══════════════════════════════════════════ -->
+<section id="s5">
+  <div class="container">
+    <span class="section-num">05</span>
+    <p class="label">Market Strategy</p>
+    <h2 style="border-top: none; padding-top: 0; margin-top: 8px;">Audience Segmentation Strategy</h2>
+    <div class="gold-divider"></div>
+
+    <h3>KilgourMD's Three Segments</h3>
+    <p>KilgourMD divides the scalp care market into three condition-based segments. Each gets dedicated ad copy, landing pages, and quiz funnels. The segmentation is condition-first, not demographic.</p>
+
+    <table>
+      <tr><th>Segment</th><th>Audience</th><th>Hook Strategy</th><th>Ad Volume</th><th>Named Enemy</th></tr>
+      <tr>
+        <td><strong>Menopause</strong></td>
+        <td>Women 40-65 experiencing hair thinning during perimenopause/menopause</td>
+        <td>Clinical authority + founder story ("my mother")</td>
+        <td>~60% of ads</td>
+        <td>Minoxidil</td>
+      </tr>
+      <tr>
+        <td><strong>GLP-1</strong></td>
+        <td>Ozempic/Wegovy/Mounjaro users experiencing hair thinning as side effect</td>
+        <td>Market timing + medical reframe ("everyone blames weight loss, the research says otherwise")</td>
+        <td>~25% of ads</td>
+        <td>Biotin, collagen supplements, Nutrafol</td>
+      </tr>
+      <tr>
+        <td><strong>General Thinning</strong></td>
+        <td>Catch-all for non-condition-specific hair loss concerns</td>
+        <td>Industry expose + clinical proof</td>
+        <td>~15% of ads</td>
+        <td>Mass-market treatments</td>
+      </tr>
+    </table>
+
+    <h3>Visual Reference: Segment-Specific Ads</h3>
+    <p style="font-size: 13px; color: var(--teal-60); margin-bottom: 16px;">Note how the GLP-1 segment gets its own emotional angle distinct from the menopause-focused Mother's Story.</p>
+
+    <div class="ad-gallery">
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/glp1-segment.png" alt="KilgourMD GLP-1 segment scientific angle" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">GLP-1: Scientific Angle</div>
+          <div class="ad-angle-hook">"An Oxford study showed weight loss jabs age your skin tissue."</div>
+        </div>
+      </div>
+      <div class="ad-screenshot">
+        <img src="kilgourmd-ads/glp1-emotional.png" alt="KilgourMD GLP-1 emotional angle" loading="lazy">
+        <div class="ad-screenshot-caption">
+          <div class="ad-angle-name">GLP-1: Emotional Angle</div>
+          <div class="ad-angle-hook">"I'm not going to pretend I understand what it feels like to finally find something that works for your weight..."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-title">Why This Works</div>
+      <p><strong>Condition-specific messaging immediately qualifies the reader.</strong> "Please stop prescribing minoxidil to women going through menopause" - if you're a menopausal woman who's been prescribed minoxidil, this ad was written for you. If you're not, you scroll past. No budget wasted.</p>
+      <p>The GLP-1 segment is particularly smart. It's a <strong>rapidly growing audience</strong> (GLP-1 prescriptions are increasing ~40% year-over-year [ESTIMATED]) with a <strong>specific, time-sensitive problem</strong> and <strong>almost no competitors targeting them.</strong> KilgourMD is building position in this segment before other scalp care brands notice.</p>
+    </div>
+
+    <h3>AWARE's Segment Map</h3>
+    <p>AWARE's positioning is different - scalp <em>environment</em>, not scalp <em>condition</em>. But the segmentation discipline translates. Instead of condition-based segments, AWARE should use concern-based segments that map to environmental factors:</p>
+
+    <table>
+      <tr><th>AWARE Segment</th><th>Concern</th><th>Environmental Driver</th><th>Hook Strategy</th><th>Priority</th></tr>
+      <tr>
+        <td><strong>Buildup & Residue</strong></td>
+        <td>Flat, dull hair despite washing</td>
+        <td>Hard water minerals, product residue</td>
+        <td>Sulfate Takedown (Creative 02) - "Your shampoo is causing the problem it claims to solve"</td>
+        <td><span class="tag tag-high">High</span></td>
+      </tr>
+      <tr>
+        <td><strong>Dry & Sensitive</strong></td>
+        <td>Flaking, itching, tightness</td>
+        <td>UV damage, low humidity, harsh products</td>
+        <td>Environmental Defense (Creative 04) - "Your scalp is the most unprotected skin on your body"</td>
+        <td><span class="tag tag-high">High</span></td>
+      </tr>
+      <tr>
+        <td><strong>Professional Seekers</strong></td>
+        <td>Want salon-grade products at home</td>
+        <td>N/A - trust-driven, not condition-driven</td>
+        <td>Stylist Authority (Creative 03) - "Formulated by a trichologist. Trusted by 50+ salons."</td>
+        <td><span class="tag tag-med">Medium</span></td>
+      </tr>
+      <tr>
+        <td><strong>Salon Professionals</strong></td>
+        <td>Need scalp care protocol for clients</td>
+        <td>N/A - business opportunity driven</td>
+        <td>Salon Recruitment (Creative 07) - "Your clients are asking about scalp health."</td>
+        <td><span class="tag tag-med">Medium</span></td>
+      </tr>
+    </table>
+
+    <div class="aware-box">
+      <div class="aware-title">What AWARE Should Do</div>
+      <ul>
+        <li><strong>Test the Buildup and Dry/Sensitive segments first.</strong> These map to AWARE's strongest environmental positioning and have the clearest "named enemy" (sulfates/hard water). Run Creative 02 and Creative 04 as the first two conversion creatives.</li>
+        <li><strong>Consider developing menopause/GLP-1 content (not ads) for organic SEO.</strong> AWARE shouldn't compete with KilgourMD's $100K+/month on these condition-specific segments. But educational blog content on "scalp health during menopause" or "GLP-1 medications and hair" would capture search traffic KilgourMD currently owns via ads, not SEO.</li>
+        <li><strong>Use Scalp Report data to auto-segment email subscribers.</strong> If someone in Phoenix completes the Report and their data shows high UV + low humidity, automatically tag them as "Dry & Sensitive" in Klaviyo. KilgourMD asks people to self-identify their condition. AWARE can infer it from real data.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ SECTION 6: SPEND INTELLIGENCE ═══════════════════════════════════════════ -->
+<section id="s6">
+  <div class="container">
+    <span class="section-num">06</span>
+    <p class="label">Unit Economics</p>
+    <h2 style="border-top: none; padding-top: 0; margin-top: 8px;">Spend Intelligence & Unit Economics</h2>
+    <div class="gold-divider"></div>
+
+    <p style="font-size: 14px; color: var(--teal-60); max-width: 640px;">We can't see their Ads Manager. But ad volume, pricing, and industry benchmarks let us model the economics - and understand why this model requires VC funding.</p>
+
+    <h3>Budget Estimation Model</h3>
+    <p>Three independent estimation methods converge on the same range:</p>
+
+    <table>
+      <tr><th>Method</th><th>Calculation</th><th>Estimate</th></tr>
+      <tr>
+        <td><strong>Ad count proxy</strong></td>
+        <td>2,200 active ads x $5-15/day avg spend per ad (industry range for DTC beauty)</td>
+        <td>$330K - $1M/month</td>
+      </tr>
+      <tr>
+        <td><strong>Industry benchmark</strong></td>
+        <td>Series A DTC beauty brands typically allocate 40-60% of revenue to paid acquisition. If revenue is $5-15M (post-Series A trajectory), paid media = $2-9M/year.</td>
+        <td>$170K - $750K/month</td>
+      </tr>
+      <tr>
+        <td><strong>Growth rate inference</strong></td>
+        <td>Doubling ad count in one week (980 to 2,200) suggests aggressive post-raise scaling. VC playbook: deploy capital within 6-12 months of raise.</td>
+        <td>Accelerating toward $500K+/month</td>
+      </tr>
+    </table>
+
+    <div class="stats-row">
+      <div class="stat-card highlight">
+        <div class="stat-value">$300K-$750K</div>
+        <div class="stat-label">Estimated Monthly Meta Spend [ESTIMATED]</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">$500</div>
+        <div class="stat-label">AWARE's Monthly Budget</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">600x-1,500x</div>
+        <div class="stat-label">Spend Differential</div>
+      </div>
+    </div>
+
+    <h3>Customer Acquisition Cost Model</h3>
+    <p>Using industry benchmarks for cold DTC scalp care acquisition:</p>
+    <table>
+      <tr><th>Metric</th><th>KilgourMD [ESTIMATED]</th><th>AWARE (Current)</th></tr>
+      <tr><td>Cost per email capture (cold)</td><td>$15-40</td><td>N/A (not running cold acquisition)</td></tr>
+      <tr><td>Email to purchase conversion</td><td>5-15% (industry range)</td><td>Unknown (insufficient data)</td></tr>
+      <tr><td>Implied CAC</td><td>$100-800 per customer</td><td>~$0 for B2B (salon referral), TBD for DTC</td></tr>
+      <tr><td>Average order value</td><td>$127-150 (bundle/subscription)</td><td>$55-170 (single product to full collection)</td></tr>
+      <tr><td>First-order profitability</td><td>Likely negative at 49% subscription discount</td><td>Positive at 50% wholesale margin</td></tr>
+      <tr><td>Payback period</td><td>3-6 months via subscription retention</td><td>Immediate (B2B), TBD (DTC)</td></tr>
+    </table>
+
+    <h3>Why This Model Requires VC</h3>
+
+    <div class="insight-box">
+      <div class="insight-title">The Math</div>
+      <p>If KilgourMD acquires customers at $200 CAC (conservative mid-range) and the first subscription order is $127.50 at 28% discount:</p>
+      <p><strong>First order gross margin:</strong> $127.50 x ~70% gross margin = ~$89 gross profit<br>
+      <strong>CAC recovery:</strong> $200 - $89 = -$111 per customer after first order<br>
+      <strong>Months to payback:</strong> 2-3 additional subscription months needed just to recover CAC</p>
+      <p>This only works if: (a) subscription retention is very high, (b) there's enough capital to fund the payback delay, and (c) the subscription LTV exceeds the acquisition cost with margin to spare. This is the classic VC DTC playbook: burn cash to acquire subscribers, then count on retention to eventually deliver unit economics.</p>
+      <p><strong>The Trustpilot reviews suggesting subscription cancellation difficulties are not bugs - they're a feature of this model.</strong> Every retained month improves the unit economics.</p>
+    </div>
+
+    <h3>AWARE's Structural Advantage</h3>
+    <div class="compare-grid">
+      <div class="compare-card">
+        <h4 style="color: var(--red);">KilgourMD's CAC Treadmill</h4>
+        <p><strong>Salon channel:</strong> None<br>
+        <strong>B2B reorder rate:</strong> N/A<br>
+        <strong>Organic discovery:</strong> Minimal (0.1% social engagement)<br>
+        <strong>Growth without ads:</strong> Near zero</p>
+        <p style="font-size: 13px; color: var(--teal-60); margin-top: 12px;">If they stop spending, growth stops. Every customer must be bought. The treadmill speeds up as audiences fatigue and CPMs rise.</p>
+      </div>
+      <div class="compare-card">
+        <h4 style="color: var(--green);">AWARE's Multi-Channel Trust</h4>
+        <p><strong>Salon channel:</strong> 50+ partners (near-zero CAC)<br>
+        <strong>B2B reorder rate:</strong> 96%<br>
+        <strong>Organic discovery:</strong> Salon recommendations + Scalp Report<br>
+        <strong>Growth without ads:</strong> Continues via B2B expansion</p>
+        <p style="font-size: 13px; color: var(--teal-60); margin-top: 12px;">Paid ads are an accelerant, not a dependency. The salon channel generates customers that no amount of Meta spend can replicate.</p>
+      </div>
+    </div>
+
+    <div class="aware-box">
+      <div class="aware-title">What AWARE Should Do</div>
+      <ul>
+        <li><strong>Never try to compete on ad volume.</strong> The 600-1,500x spend differential isn't a gap to close - it's a different business model. AWARE wins on trust channels, not paid reach.</li>
+        <li><strong>Track cost per Scalp Report completion as the primary paid metric.</strong> If warm/retargeting audiences can deliver Report completions at $3-8 (vs KilgourMD's $15-40 for cold email capture), the unit economics favor AWARE by 2-10x.</li>
+        <li><strong>Use KilgourMD's Series A as market validation in investor conversations.</strong> Prelude Growth Partners and Willow Growth Partners backing KilgourMD at Series A validates the category. AWARE's salon channel + positive unit economics is the counter-thesis to their VC CAC treadmill.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ TRANSFERABILITY MATRIX ═══════════════════════════════════════════ -->
+<section style="background: var(--surface); border-top: 1px solid var(--teal-12);">
+  <div class="container">
+    <span class="section-num">07</span>
+    <p class="label">Action Plan</p>
+    <h2 style="border-top: none; padding-top: 0; margin-top: 8px;">Transferability Matrix</h2>
+    <div class="gold-divider"></div>
+
+    <p style="font-size: 14px; color: var(--teal-60); max-width: 640px;">Every finding rated for AWARE applicability. Sorted by expected impact, filtered for the $500/month budget constraint.</p>
+
+    <table class="matrix-table">
+      <tr>
+        <th>Finding</th>
+        <th>Applicability</th>
+        <th>Budget</th>
+        <th>Complexity</th>
+        <th>Impact</th>
+      </tr>
+      <tr>
+        <td><strong>5-stage narrative arc</strong> (Hook, Problem, Mechanism, Proof, Soft CTA) for all ad copy</td>
+        <td><span class="tag tag-high">High</span></td>
+        <td>$0</td>
+        <td>Quick win</td>
+        <td><span class="tag tag-high">High</span></td>
+      </tr>
+      <tr>
+        <td><strong>Named-enemy positioning</strong> against sulfates, silicones, drugstore products</td>
+        <td><span class="tag tag-high">High</span></td>
+        <td>$0</td>
+        <td>Quick win</td>
+        <td><span class="tag tag-high">High</span></td>
+      </tr>
+      <tr>
+        <td><strong>Position Scalp Report as counter-programming</strong> to quiz funnels in ad copy</td>
+        <td><span class="tag tag-high">High</span></td>
+        <td>$150/mo</td>
+        <td>Quick win</td>
+        <td><span class="tag tag-high">High</span></td>
+      </tr>
+      <tr>
+        <td><strong>Concern-based segmentation</strong> at Scalp Report email capture for Klaviyo flows</td>
+        <td><span class="tag tag-high">High</span></td>
+        <td>$0</td>
+        <td>Medium</td>
+        <td><span class="tag tag-high">High</span></td>
+      </tr>
+      <tr>
+        <td><strong>Build proof arsenal</strong> of 6-8 rotating assets for ad copy rotation</td>
+        <td><span class="tag tag-high">High</span></td>
+        <td>$0</td>
+        <td>Medium</td>
+        <td><span class="tag tag-high">High</span></td>
+      </tr>
+      <tr>
+        <td><strong>"Endorsed by 50+ Salons" widget</strong> on DTC site (FrontrowMD equivalent)</td>
+        <td><span class="tag tag-high">High</span></td>
+        <td>$0</td>
+        <td>Medium</td>
+        <td><span class="tag tag-high">High</span></td>
+      </tr>
+      <tr>
+        <td><strong>Champion vs challenger testing</strong> - 2 creatives at a time, biweekly rotation</td>
+        <td><span class="tag tag-high">High</span></td>
+        <td>$150/mo</td>
+        <td>Quick win</td>
+        <td><span class="tag tag-med">Medium</span></td>
+      </tr>
+      <tr>
+        <td><strong>Develop Tina's founder story</strong> for DTC ad copy (emotional narrative)</td>
+        <td><span class="tag tag-high">High</span></td>
+        <td>$0</td>
+        <td>Medium</td>
+        <td><span class="tag tag-med">Medium</span></td>
+      </tr>
+      <tr>
+        <td><strong>100-300 word creative tier</strong> as primary format (standard tier)</td>
+        <td><span class="tag tag-high">High</span></td>
+        <td>$0</td>
+        <td>Quick win</td>
+        <td><span class="tag tag-med">Medium</span></td>
+      </tr>
+      <tr>
+        <td><strong>Menopause/GLP-1 educational blog content</strong> for organic SEO capture</td>
+        <td><span class="tag tag-med">Medium</span></td>
+        <td>$0</td>
+        <td>Medium</td>
+        <td><span class="tag tag-med">Medium</span></td>
+      </tr>
+      <tr>
+        <td><strong>Small efficacy study</strong> (n=20) to unlock clinical proof in ad copy</td>
+        <td><span class="tag tag-high">High</span></td>
+        <td>$5-15K</td>
+        <td>Major</td>
+        <td><span class="tag tag-high">High</span></td>
+      </tr>
+      <tr>
+        <td><strong>Condition-based "Is it right for me?" accordion</strong> on DTC product pages</td>
+        <td><span class="tag tag-med">Medium</span></td>
+        <td>$0</td>
+        <td>Medium</td>
+        <td><span class="tag tag-low">Low</span></td>
+      </tr>
+      <tr>
+        <td><strong>Subscription-first product pages</strong> with tiered discounts</td>
+        <td><span class="tag tag-low">Low</span></td>
+        <td>$0</td>
+        <td>Major</td>
+        <td><span class="tag tag-low">Low</span></td>
+      </tr>
+      <tr>
+        <td><strong>90+ landing page variants</strong> by condition and channel</td>
+        <td><span class="tag tag-low">Low</span></td>
+        <td>Not feasible</td>
+        <td>Major</td>
+        <td><span class="tag tag-low">Low</span></td>
+      </tr>
+      <tr>
+        <td><strong>2,200+ ad variant volume</strong></td>
+        <td><span class="tag tag-low">Low</span></td>
+        <td>Not feasible</td>
+        <td>N/A</td>
+        <td><span class="tag tag-low">Low</span></td>
+      </tr>
+    </table>
+
+    <h3>Priority Action Items</h3>
+    <table>
+      <tr><th style="width: 40px;">#</th><th>Action</th><th>Timeline</th><th>Who</th></tr>
+      <tr><td>1</td><td>Apply 5-stage narrative arc to existing 8 conversion creatives (review copy structure)</td><td>This week</td><td>David + Claude</td></tr>
+      <tr><td>2</td><td>Launch Creative 02 (Sulfate Takedown) + Creative 04 (Environmental Defense) as first test pair</td><td>With April pilot launch</td><td>David (Meta Ads Manager)</td></tr>
+      <tr><td>3</td><td>Build concern-based segmentation dropdown into Scalp Report email capture flow</td><td>April</td><td>Theme edit</td></tr>
+      <tr><td>4</td><td>Workshop Tina's founder story into 300-word ad copy format</td><td>April</td><td>David + Tina</td></tr>
+      <tr><td>5</td><td>Build "Endorsed by 50+ Salons" trust widget for DTC site</td><td>May</td><td>Theme development</td></tr>
+      <tr><td>6</td><td>Publish 2 blog posts: menopause + scalp health, GLP-1 + hair health (educational, no medical claims)</td><td>Q2</td><td>Content calendar</td></tr>
+      <tr><td>7</td><td>Research efficacy study options (labs, protocol, cost) for future clinical data</td><td>Q2</td><td>David + Tina</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ WHAT WE DON'T KNOW ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <span class="section-num">08</span>
+    <p class="label">Intellectual Honesty</p>
+    <h2 style="border-top: none; padding-top: 0; margin-top: 8px;">What We Still Don't Know</h2>
+    <div class="gold-divider"></div>
+
+    <p style="font-size: 14px; color: var(--teal-60); max-width: 640px;">A consulting-grade analysis is honest about its limitations. These gaps are important because acting on assumptions in these areas could lead to poor decisions.</p>
+
+    <div class="unknown-box">
+      <div class="unknown-title">Data We Cannot Access</div>
+      <ul>
+        <li><strong>Actual CPM, CPC, CTR, and conversion rates</strong> - Meta doesn't expose performance data for competitor ads. All estimates are based on industry benchmarks and indirect signals (longevity, variant count).</li>
+        <li><strong>Audience targeting parameters</strong> - commercial ads don't reveal targeting. We can infer segmentation from copy but not actual interest/behavior targeting.</li>
+        <li><strong>Email sequence content and performance</strong> - KilgourMD's post-quiz Klaviyo flows are a black box. We know they segment by condition at capture but not what the nurture sequence looks like.</li>
+        <li><strong>Subscription retention and churn rates</strong> - Trustpilot complaints suggest friction, but we don't know actual churn. Their unit economics model depends entirely on retention.</li>
+        <li><strong>Revenue and customer count</strong> - "150,000+ women" (homepage) vs "50,000+ women" (about page) are inconsistent and likely inflated. Actual customer count is unknown.</li>
+      </ul>
+    </div>
+
+    <div class="unknown-box">
+      <div class="unknown-title">Assumptions That Could Be Wrong</div>
+      <ul>
+        <li><strong>Ad longevity = performance.</strong> We assume long-running ads are profitable. They could also be running at break-even for brand awareness, or the team simply hasn't cleaned up their account.</li>
+        <li><strong>Variant count = investment signal.</strong> More variants could mean active optimization OR it could mean they're struggling to find a winner and keep testing.</li>
+        <li><strong>The 2,200 count is active, not total.</strong> This is based on the "active" filter, but Meta's Ad Library can be inconsistent in filtering, especially with dynamic creative optimization (DCO) that generates variants automatically.</li>
+        <li><strong>AWARE's warm audiences will convert at lower CPL.</strong> We assume warm/retargeting audiences (Segment A and C from the paid strategy) will cost less per Scalp Report completion than KilgourMD's cold acquisition. This needs to be tested - warm audiences are smaller, and smaller audiences can actually have higher CPMs on Meta.</li>
+      </ul>
+    </div>
+
+    <div class="unknown-box">
+      <div class="unknown-title">Questions Worth Investigating Next</div>
+      <ul>
+        <li>What does KilgourMD's post-quiz email sequence look like? (Sign up with a test email to reverse-engineer the flow)</li>
+        <li>Are they running YouTube VSL ads at scale, or is it a test channel? (Google Ads Transparency Center has data)</li>
+        <li>What's the actual clinical trial methodology? (PNAS study they reference is publicly available)</li>
+        <li>Who is their PR agency? (Their press volume suggests professional PR, not organic coverage)</li>
+        <li>How has the 2026 reformulation impacted review sentiment? (Track Trustpilot rating trajectory)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ METHODOLOGY ═══════════════════════════════════════════ -->
+<section style="background: var(--teal); color: var(--cream); padding: 48px 0;">
+  <div class="container">
+    <h3 style="color: var(--gold); margin-top: 0;">Sources and Methodology</h3>
+    <p style="font-size: 13px; color: rgba(244,239,233,0.6); line-height: 1.65; margin-top: 12px;">
+      This analysis was conducted on April 1, 2026, building on the KilgourMD Marketing Audit of March 26, 2026. Live data was pulled from the Meta Ad Library using Playwright browser automation. The existing audit was conducted using direct website analysis, Meta Ad Library, Google Ads Transparency Center, Instagram analysis (Xpoz), and web search.
+    </p>
+    <p style="font-size: 13px; color: rgba(244,239,233,0.6); line-height: 1.65;">
+      <strong style="color: rgba(244,239,233,0.75);">Data labels:</strong>
+      <span style="background: rgba(244,239,233,0.1); padding: 2px 6px; border-radius: 2px; font-size: 11px;">VERIFIED via Ad Library</span> = observed directly in Meta Ad Library on April 1, 2026.
+      <span style="background: rgba(244,239,233,0.1); padding: 2px 6px; border-radius: 2px; font-size: 11px;">FROM EXISTING AUDIT</span> = data from March 26 audit, not re-verified.
+      <span style="background: rgba(244,239,233,0.1); padding: 2px 6px; border-radius: 2px; font-size: 11px;">ESTIMATED</span> = derived from industry benchmarks and indirect signals.
+    </p>
+    <p style="font-size: 13px; color: rgba(244,239,233,0.6); line-height: 1.65; margin-top: 16px;">
+      <strong style="color: rgba(244,239,233,0.75);">Key sources:</strong>
+      Meta Ad Library (2,200 active ads analyzed) | KilgourMD March 26 Audit (888 lines, 6 sections) | AWARE Paid Social Strategy Deck | AWARE Pricing Policy | Industry benchmarks from prior competitive research
+    </p>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(244,239,233,0.1); flex-wrap: wrap; gap: 16px;">
+      <span style="font-family: var(--heading); font-size: 18px; letter-spacing: 0.08em;">AWARE</span>
+      <span style="font-size: 12px; color: rgba(244,239,233,0.35);">Internal document - April 1, 2026</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

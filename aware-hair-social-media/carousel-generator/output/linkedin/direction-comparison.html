@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LinkedIn Carousel - Direction Comparison</title>
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=JetBrains+Mono:wght@300;400;500&display=swap">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1a1a1a;
+    font-family: 'DM Sans', sans-serif;
+    color: #ccc;
+    padding: 40px;
+  }
+  h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 48px;
+    max-width: 700px;
+    line-height: 1.6;
+  }
+  .comparison-row {
+    display: flex;
+    gap: 48px;
+    margin-bottom: 64px;
+    align-items: flex-start;
+  }
+  .direction {
+    flex: 1;
+  }
+  .direction-label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #333;
+  }
+  .direction-label.dark { color: #3aa8b8; }
+  .direction-label.light { color: #D4A574; }
+  .slide-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  .slide-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 8px;
+  }
+  .slide-wrap {
+    flex: 1;
+  }
+
+  /* Slide containers - scaled down for comparison */
+  .slide {
+    width: 360px;
+    height: 450px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+  }
+  /* Scale factor: 360/1080 = 0.333x */
+
+  .s { font-family: 'orpheus-pro', Georgia, serif; }
+  .m { font-family: 'JetBrains Mono', monospace; }
+
+  /* ── DARK MODE TOKENS ── */
+  .dark-slide {
+    background: #102B26;
+  }
+  .dark-slide .slide-inner {
+    padding: 54px; /* 15% of 360px */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+  }
+  .dark-slide .accent-line {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #D4A574 30%, #D4A574 70%, transparent);
+  }
+
+  /* ── LIGHT MODE TOKENS ── */
+  .light-slide {
+    background: #f4efe9;
+  }
+  .light-slide .slide-inner {
+    padding: 54px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+  }
+  .light-slide .accent-line {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #D4A574 30%, #D4A574 70%, transparent);
+  }
+
+  /* Notes section */
+  .notes {
+    background: #222;
+    border-radius: 6px;
+    padding: 24px 32px;
+    margin-top: 16px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #aaa;
+    max-width: 744px;
+  }
+  .notes strong { color: #ddd; }
+
+  .section-header {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin: 48px 0 24px;
+    padding-top: 24px;
+    border-top: 1px solid #333;
+  }
+
+  .grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px;
+  }
+</style>
+</head>
+<body>
+
+<h1>LinkedIn Carousel Redesign - Direction Comparison</h1>
+<p class="subtitle">
+  Both directions apply the same research-backed specs: solid backgrounds, 60-80px headlines / 45px body (at 1080px), 25-30 words/slide, 15% edge margins, consistent 6-element visual system. Slides shown at 1/3 scale.
+</p>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 1: COVER -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="section-header">Slide 1: Cover</div>
+
+<div class="comparison-row">
+  <!-- DARK COVER -->
+  <div class="direction">
+    <div class="direction-label dark">A. Dark Mode</div>
+    <div class="slide dark-slide">
+      <div class="grain"></div>
+      <div class="slide-inner" style="justify-content: flex-end;">
+        <!-- Progress -->
+        <div class="m" style="position:absolute; top:54px; right:54px; font-size:10px; letter-spacing:2px; color:rgba(244,239,233,0.3);">01 / 07</div>
+        <!-- Kicker -->
+        <div class="m" style="font-size:7px; letter-spacing:2.5px; text-transform:uppercase; color:#D4A574; margin-bottom:12px;">Part 1 of 8</div>
+        <!-- Headline -->
+        <div class="s" style="font-size:33px; font-weight:700; color:#f4efe9; line-height:0.95; letter-spacing:-1px; margin-bottom:12px;">
+          My Beauty Brand<br>Has 9 Employees
+        </div>
+        <!-- Subhead -->
+        <div style="font-size:12px; font-weight:300; color:rgba(244,239,233,0.45); font-style:italic; margin-bottom:24px;">
+          Zero of them are human.
+        </div>
+        <!-- Gold bar -->
+        <div style="width:28px; height:1.5px; background:#D4A574; margin-bottom:16px;"></div>
+        <!-- Stats row -->
+        <div style="display:flex; gap:20px; margin-bottom:20px;">
+          <div>
+            <div class="s" style="font-size:22px; font-weight:700; color:#D4A574;">9</div>
+            <div class="m" style="font-size:6px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(244,239,233,0.35);">Agents</div>
+          </div>
+          <div style="width:1px; background:rgba(244,239,233,0.12);"></div>
+          <div>
+            <div class="s" style="font-size:22px; font-weight:700; color:#D4A574;">11</div>
+            <div class="m" style="font-size:6px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(244,239,233,0.35);">Engines</div>
+          </div>
+          <div style="width:1px; background:rgba(244,239,233,0.12);"></div>
+          <div>
+            <div class="s" style="font-size:22px; font-weight:700; color:#D4A574;">46</div>
+            <div class="m" style="font-size:6px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(244,239,233,0.35);">Signals</div>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div style="font-size:6px; color:rgba(244,239,233,0.25); letter-spacing:2px; text-transform:uppercase;">David Zhao</div>
+          <div style="font-size:8px; color:rgba(244,239,233,0.3);">&#8594;</div>
+        </div>
+      </div>
+      <div class="accent-line"></div>
+    </div>
+  </div>
+
+  <!-- LIGHT COVER -->
+  <div class="direction">
+    <div class="direction-label light">B. Light Mode</div>
+    <div class="slide light-slide">
+      <div class="slide-inner" style="justify-content: flex-end;">
+        <!-- Progress -->
+        <div class="m" style="position:absolute; top:54px; right:54px; font-size:10px; letter-spacing:2px; color:rgba(16,43,38,0.2);">01 / 07</div>
+        <!-- Kicker -->
+        <div class="m" style="font-size:7px; letter-spacing:2.5px; text-transform:uppercase; color:#D4A574; margin-bottom:12px;">Part 1 of 8</div>
+        <!-- Headline -->
+        <div class="s" style="font-size:33px; font-weight:700; color:#102B26; line-height:0.95; letter-spacing:-1px; margin-bottom:12px;">
+          My Beauty Brand<br>Has 9 Employees
+        </div>
+        <!-- Subhead -->
+        <div style="font-size:12px; font-weight:300; color:rgba(16,43,38,0.4); font-style:italic; margin-bottom:24px;">
+          Zero of them are human.
+        </div>
+        <!-- Gold bar -->
+        <div style="width:28px; height:1.5px; background:#D4A574; margin-bottom:16px;"></div>
+        <!-- Stats row -->
+        <div style="display:flex; gap:20px; margin-bottom:20px;">
+          <div>
+            <div class="s" style="font-size:22px; font-weight:700; color:#102B26;">9</div>
+            <div class="m" style="font-size:6px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(16,43,38,0.35);">Agents</div>
+          </div>
+          <div style="width:1px; background:rgba(16,43,38,0.1);"></div>
+          <div>
+            <div class="s" style="font-size:22px; font-weight:700; color:#102B26;">11</div>
+            <div class="m" style="font-size:6px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(16,43,38,0.35);">Engines</div>
+          </div>
+          <div style="width:1px; background:rgba(16,43,38,0.1);"></div>
+          <div>
+            <div class="s" style="font-size:22px; font-weight:700; color:#102B26;">46</div>
+            <div class="m" style="font-size:6px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(16,43,38,0.35);">Signals</div>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div style="font-size:6px; color:rgba(16,43,38,0.25); letter-spacing:2px; text-transform:uppercase;">David Zhao</div>
+          <div style="font-size:8px; color:rgba(16,43,38,0.25);">&#8594;</div>
+        </div>
+      </div>
+      <div class="accent-line"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 3: ORG CHART (the problem slide) -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="section-header">Slide 3: Org Chart (the problem slide - was tiny text, dead space, noisy background)</div>
+
+<div class="comparison-row">
+  <!-- DARK ORG CHART -->
+  <div class="direction">
+    <div class="direction-label dark">A. Dark Mode</div>
+    <div class="slide dark-slide">
+      <div class="grain"></div>
+      <div class="slide-inner" style="justify-content: flex-start;">
+        <!-- Progress -->
+        <div class="m" style="position:absolute; top:54px; right:54px; font-size:10px; letter-spacing:2px; color:rgba(244,239,233,0.3);">03 / 07</div>
+        <!-- Kicker -->
+        <div class="m" style="font-size:7px; letter-spacing:2.5px; text-transform:uppercase; color:rgba(244,239,233,0.3); margin-bottom:8px;">The Team</div>
+        <!-- Headline -->
+        <div class="s" style="font-size:26px; font-weight:700; color:#f4efe9; line-height:1.0; margin-bottom:4px;">
+          The AI Org Chart
+        </div>
+        <div style="font-size:10px; color:rgba(244,239,233,0.4); margin-bottom:20px; font-style:italic;">Engines for math. AI for prose.</div>
+
+        <!-- David node -->
+        <div style="text-align:center; margin-bottom:6px;">
+          <div style="display:inline-block; background:rgba(212,165,116,0.15); border:1px solid rgba(212,165,116,0.4); border-radius:4px; padding:6px 16px;">
+            <div style="font-size:12px; font-weight:600; color:#D4A574;">David</div>
+            <div style="font-size:7px; color:rgba(244,239,233,0.4);">Reviews, Approves, Steers</div>
+          </div>
+        </div>
+        <!-- Connector -->
+        <div style="text-align:center; margin-bottom:6px;">
+          <div style="width:1px; height:12px; background:rgba(244,239,233,0.15); margin:0 auto;"></div>
+        </div>
+        <!-- Chief node -->
+        <div style="text-align:center; margin-bottom:10px;">
+          <div style="display:inline-block; background:rgba(58,168,184,0.12); border:1px solid rgba(58,168,184,0.35); border-radius:4px; padding:5px 14px;">
+            <div style="font-size:11px; font-weight:600; color:#3aa8b8;">CHIEF</div>
+            <div style="font-size:7px; color:rgba(244,239,233,0.4);">Orchestrates everything</div>
+          </div>
+        </div>
+        <!-- Connector -->
+        <div style="text-align:center; margin-bottom:10px;">
+          <div style="width:1px; height:8px; background:rgba(244,239,233,0.15); margin:0 auto;"></div>
+        </div>
+        <!-- Agent grid - 2x4 -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:16px;">
+          <div style="background:rgba(244,239,233,0.04); border:1px solid rgba(244,239,233,0.08); border-radius:3px; padding:7px 10px;">
+            <div style="font-size:9px; font-weight:600; color:#f4efe9; letter-spacing:0.5px;">CLOSER</div>
+            <div style="font-size:7px; color:rgba(244,239,233,0.35);">B2B Sales</div>
+          </div>
+          <div style="background:rgba(244,239,233,0.04); border:1px solid rgba(244,239,233,0.08); border-radius:3px; padding:7px 10px;">
+            <div style="font-size:9px; font-weight:600; color:#f4efe9; letter-spacing:0.5px;">STEWARD</div>
+            <div style="font-size:7px; color:rgba(244,239,233,0.35);">Accounts</div>
+          </div>
+          <div style="background:rgba(244,239,233,0.04); border:1px solid rgba(244,239,233,0.08); border-radius:3px; padding:7px 10px;">
+            <div style="font-size:9px; font-weight:600; color:#f4efe9; letter-spacing:0.5px;">SUPPLIER</div>
+            <div style="font-size:7px; color:rgba(244,239,233,0.35);">Supply Chain</div>
+          </div>
+          <div style="background:rgba(244,239,233,0.04); border:1px solid rgba(244,239,233,0.08); border-radius:3px; padding:7px 10px;">
+            <div style="font-size:9px; font-weight:600; color:#f4efe9; letter-spacing:0.5px;">MARKETER</div>
+            <div style="font-size:7px; color:rgba(244,239,233,0.35);">Content + Ads</div>
+          </div>
+          <div style="background:rgba(244,239,233,0.04); border:1px solid rgba(244,239,233,0.08); border-radius:3px; padding:7px 10px;">
+            <div style="font-size:9px; font-weight:600; color:#f4efe9; letter-spacing:0.5px;">HERALD</div>
+            <div style="font-size:7px; color:rgba(244,239,233,0.35);">PR + Awards</div>
+          </div>
+          <div style="background:rgba(244,239,233,0.04); border:1px solid rgba(244,239,233,0.08); border-radius:3px; padding:7px 10px;">
+            <div style="font-size:9px; font-weight:600; color:#f4efe9; letter-spacing:0.5px;">STRATEGIST</div>
+            <div style="font-size:7px; color:rgba(244,239,233,0.35);">Growth</div>
+          </div>
+          <div style="background:rgba(244,239,233,0.04); border:1px solid rgba(244,239,233,0.08); border-radius:3px; padding:7px 10px;">
+            <div style="font-size:9px; font-weight:600; color:#f4efe9; letter-spacing:0.5px;">FUNNEL</div>
+            <div style="font-size:7px; color:rgba(244,239,233,0.35);">DTC Lifecycle</div>
+          </div>
+          <div style="background:rgba(244,239,233,0.04); border:1px solid rgba(244,239,233,0.08); border-radius:3px; padding:7px 10px;">
+            <div style="font-size:9px; font-weight:600; color:#f4efe9; letter-spacing:0.5px;">OPTIMIZER</div>
+            <div style="font-size:7px; color:rgba(244,239,233,0.35);">Self-Improve</div>
+          </div>
+        </div>
+
+        <!-- Takeaway -->
+        <div style="font-size:9px; color:rgba(244,239,233,0.5); font-style:italic; text-align:center;">
+          Every agent writes a handoff with a self-reflection score.
+        </div>
+      </div>
+      <div class="accent-line"></div>
+    </div>
+  </div>
+
+  <!-- LIGHT ORG CHART -->
+  <div class="direction">
+    <div class="direction-label light">B. Light Mode</div>
+    <div class="slide light-slide">
+      <div class="slide-inner" style="justify-content: flex-start;">
+        <!-- Progress -->
+        <div class="m" style="position:absolute; top:54px; right:54px; font-size:10px; letter-spacing:2px; color:rgba(16,43,38,0.2);">03 / 07</div>
+        <!-- Kicker -->
+        <div class="m" style="font-size:7px; letter-spacing:2.5px; text-transform:uppercase; color:rgba(16,43,38,0.35); margin-bottom:8px;">The Team</div>
+        <!-- Headline -->
+        <div class="s" style="font-size:26px; font-weight:700; color:#102B26; line-height:1.0; margin-bottom:4px;">
+          The AI Org Chart
+        </div>
+        <div style="font-size:10px; color:rgba(16,43,38,0.4); margin-bottom:20px; font-style:italic;">Engines for math. AI for prose.</div>
+
+        <!-- David node -->
+        <div style="text-align:center; margin-bottom:6px;">
+          <div style="display:inline-block; background:rgba(212,165,116,0.12); border:1px solid rgba(212,165,116,0.35); border-radius:4px; padding:6px 16px;">
+            <div style="font-size:12px; font-weight:600; color:#8B7355;">David</div>
+            <div style="font-size:7px; color:rgba(16,43,38,0.4);">Reviews, Approves, Steers</div>
+          </div>
+        </div>
+        <!-- Connector -->
+        <div style="text-align:center; margin-bottom:6px;">
+          <div style="width:1px; height:12px; background:rgba(16,43,38,0.12); margin:0 auto;"></div>
+        </div>
+        <!-- Chief node -->
+        <div style="text-align:center; margin-bottom:10px;">
+          <div style="display:inline-block; background:rgba(16,43,38,0.06); border:1px solid rgba(16,43,38,0.15); border-radius:4px; padding:5px 14px;">
+            <div style="font-size:11px; font-weight:600; color:#102B26;">CHIEF</div>
+            <div style="font-size:7px; color:rgba(16,43,38,0.4);">Orchestrates everything</div>
+          </div>
+        </div>
+        <!-- Connector -->
+        <div style="text-align:center; margin-bottom:10px;">
+          <div style="width:1px; height:8px; background:rgba(16,43,38,0.12); margin:0 auto;"></div>
+        </div>
+        <!-- Agent grid - 2x4 -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:16px;">
+          <div style="background:#faf8f5; border:1px solid rgba(16,43,38,0.08); border-radius:3px; padding:7px 10px;">
+            <div style="font-size:9px; font-weight:600; color:#102B26; letter-spacing:0.5px;">CLOSER</div>
+            <div style="font-size:7px; color:rgba(16,43,38,0.4);">B2B Sales</div>
+          </div>
+          <div style="background:#faf8f5; border:1px solid rgba(16,43,38,0.08); border-radius:3px; padding:7px 10px;">
+            <div style="font-size:9px; font-weight:600; color:#102B26; letter-spacing:0.5px;">STEWARD</div>
+            <div style="font-size:7px; color:rgba(16,43,38,0.4);">Accounts</div>
+          </div>
+          <div style="background:#faf8f5; border:1px solid rgba(16,43,38,0.08); border-radius:3px; padding:7px 10px;">
+            <div style="font-size:9px; font-weight:600; color:#102B26; letter-spacing:0.5px;">SUPPLIER</div>
+            <div style="font-size:7px; color:rgba(16,43,38,0.4);">Supply Chain</div>
+          </div>
+          <div style="background:#faf8f5; border:1px solid rgba(16,43,38,0.08); border-radius:3px; padding:7px 10px;">
+            <div style="font-size:9px; font-weight:600; color:#102B26; letter-spacing:0.5px;">MARKETER</div>
+            <div style="font-size:7px; color:rgba(16,43,38,0.4);">Content + Ads</div>
+          </div>
+          <div style="background:#faf8f5; border:1px solid rgba(16,43,38,0.08); border-radius:3px; padding:7px 10px;">
+            <div style="font-size:9px; font-weight:600; color:#102B26; letter-spacing:0.5px;">HERALD</div>
+            <div style="font-size:7px; color:rgba(16,43,38,0.4);">PR + Awards</div>
+          </div>
+          <div style="background:#faf8f5; border:1px solid rgba(16,43,38,0.08); border-radius:3px; padding:7px 10px;">
+            <div style="font-size:9px; font-weight:600; color:#102B26; letter-spacing:0.5px;">STRATEGIST</div>
+            <div style="font-size:7px; color:rgba(16,43,38,0.4);">Growth</div>
+          </div>
+          <div style="background:#faf8f5; border:1px solid rgba(16,43,38,0.08); border-radius:3px; padding:7px 10px;">
+            <div style="font-size:9px; font-weight:600; color:#102B26; letter-spacing:0.5px;">FUNNEL</div>
+            <div style="font-size:7px; color:rgba(16,43,38,0.4);">DTC Lifecycle</div>
+          </div>
+          <div style="background:#faf8f5; border:1px solid rgba(16,43,38,0.08); border-radius:3px; padding:7px 10px;">
+            <div style="font-size:9px; font-weight:600; color:#102B26; letter-spacing:0.5px;">OPTIMIZER</div>
+            <div style="font-size:7px; color:rgba(16,43,38,0.4);">Self-Improve</div>
+          </div>
+        </div>
+
+        <!-- Takeaway -->
+        <div style="font-size:9px; color:rgba(16,43,38,0.45); font-style:italic; text-align:center;">
+          Every agent writes a handoff with a self-reflection score.
+        </div>
+      </div>
+      <div class="accent-line"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 4: OVERNIGHT (content slide) -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="section-header">Slide 4: Overnight Factory (content slide - was decent but noisy background)</div>
+
+<div class="comparison-row">
+  <!-- DARK OVERNIGHT -->
+  <div class="direction">
+    <div class="direction-label dark">A. Dark Mode</div>
+    <div class="slide dark-slide">
+      <div class="grain"></div>
+      <div class="slide-inner" style="justify-content: flex-start;">
+        <!-- Progress -->
+        <div class="m" style="position:absolute; top:54px; right:54px; font-size:10px; letter-spacing:2px; color:rgba(244,239,233,0.3);">04 / 07</div>
+        <!-- Kicker -->
+        <div class="m" style="font-size:7px; letter-spacing:2.5px; text-transform:uppercase; color:rgba(244,239,233,0.3); margin-bottom:8px;">While You Sleep</div>
+        <!-- Headline -->
+        <div class="s" style="font-size:28px; font-weight:700; color:#f4efe9; line-height:1.0; margin-bottom:4px;">
+          The Overnight Factory
+        </div>
+        <div style="font-size:10px; color:rgba(244,239,233,0.4); margin-bottom:28px;">9 PM to 7 AM. Fully autonomous.</div>
+
+        <!-- Timeline -->
+        <div style="position:relative; padding-left:20px; margin-bottom:20px;">
+          <!-- Vertical line -->
+          <div style="position:absolute; left:4px; top:4px; bottom:4px; width:1px; background:linear-gradient(to bottom, #D4A574, rgba(212,165,116,0.2));"></div>
+
+          <!-- 9 PM -->
+          <div style="margin-bottom:14px; position:relative;">
+            <div style="position:absolute; left:-19px; top:3px; width:7px; height:7px; border-radius:50%; background:#D4A574;"></div>
+            <div class="m" style="font-size:7px; color:#D4A574; letter-spacing:1px; margin-bottom:2px;">9 PM</div>
+            <div style="font-size:11px; font-weight:500; color:#f4efe9;">Process task queue by priority</div>
+          </div>
+          <!-- 10 PM -->
+          <div style="margin-bottom:14px; position:relative;">
+            <div style="position:absolute; left:-19px; top:3px; width:7px; height:7px; border-radius:50%; background:#D4A574; opacity:0.7;"></div>
+            <div class="m" style="font-size:7px; color:#D4A574; letter-spacing:1px; opacity:0.7; margin-bottom:2px;">10 PM</div>
+            <div style="font-size:11px; font-weight:500; color:#f4efe9;">Draft SEO blog articles</div>
+          </div>
+          <!-- 11 PM -->
+          <div style="margin-bottom:14px; position:relative;">
+            <div style="position:absolute; left:-19px; top:3px; width:7px; height:7px; border-radius:50%; background:#D4A574; opacity:0.5;"></div>
+            <div class="m" style="font-size:7px; color:#D4A574; letter-spacing:1px; opacity:0.5; margin-bottom:2px;">11 PM</div>
+            <div style="font-size:11px; font-weight:500; color:#f4efe9;">Analyze competitor moves</div>
+          </div>
+          <!-- 12 AM -->
+          <div style="margin-bottom:14px; position:relative;">
+            <div style="position:absolute; left:-19px; top:3px; width:7px; height:7px; border-radius:50%; background:#D4A574; opacity:0.35;"></div>
+            <div class="m" style="font-size:7px; color:#D4A574; letter-spacing:1px; opacity:0.35; margin-bottom:2px;">12 AM</div>
+            <div style="font-size:11px; font-weight:500; color:#f4efe9;">Research and enrich leads</div>
+          </div>
+          <!-- 7 AM -->
+          <div style="position:relative;">
+            <div style="position:absolute; left:-19px; top:3px; width:7px; height:7px; border-radius:50%; background:#7d8471;"></div>
+            <div class="m" style="font-size:7px; color:#7d8471; letter-spacing:1px; margin-bottom:2px;">7 AM</div>
+            <div style="font-size:11px; font-weight:500; color:#7d8471; font-style:italic;">Morning brief ready</div>
+          </div>
+        </div>
+
+        <!-- Safety note -->
+        <div style="margin-top:auto; display:flex; align-items:center; gap:8px;">
+          <div style="width:2px; height:20px; background:#D4A574; border-radius:1px;"></div>
+          <div style="font-size:8px; color:rgba(244,239,233,0.45);"><span style="font-weight:600; color:rgba(244,239,233,0.6);">Safety rule:</span> AI drafts everything. Never sends anything.</div>
+        </div>
+      </div>
+      <div class="accent-line"></div>
+    </div>
+  </div>
+
+  <!-- LIGHT OVERNIGHT -->
+  <div class="direction">
+    <div class="direction-label light">B. Light Mode</div>
+    <div class="slide light-slide">
+      <div class="slide-inner" style="justify-content: flex-start;">
+        <!-- Progress -->
+        <div class="m" style="position:absolute; top:54px; right:54px; font-size:10px; letter-spacing:2px; color:rgba(16,43,38,0.2);">04 / 07</div>
+        <!-- Kicker -->
+        <div class="m" style="font-size:7px; letter-spacing:2.5px; text-transform:uppercase; color:rgba(16,43,38,0.35); margin-bottom:8px;">While You Sleep</div>
+        <!-- Headline -->
+        <div class="s" style="font-size:28px; font-weight:700; color:#102B26; line-height:1.0; margin-bottom:4px;">
+          The Overnight Factory
+        </div>
+        <div style="font-size:10px; color:rgba(16,43,38,0.4); margin-bottom:28px;">9 PM to 7 AM. Fully autonomous.</div>
+
+        <!-- Timeline -->
+        <div style="position:relative; padding-left:20px; margin-bottom:20px;">
+          <!-- Vertical line -->
+          <div style="position:absolute; left:4px; top:4px; bottom:4px; width:1px; background:linear-gradient(to bottom, #D4A574, rgba(212,165,116,0.15));"></div>
+
+          <!-- 9 PM -->
+          <div style="margin-bottom:14px; position:relative;">
+            <div style="position:absolute; left:-19px; top:3px; width:7px; height:7px; border-radius:50%; background:#D4A574;"></div>
+            <div class="m" style="font-size:7px; color:#8B7355; letter-spacing:1px; margin-bottom:2px;">9 PM</div>
+            <div style="font-size:11px; font-weight:500; color:#102B26;">Process task queue by priority</div>
+          </div>
+          <!-- 10 PM -->
+          <div style="margin-bottom:14px; position:relative;">
+            <div style="position:absolute; left:-19px; top:3px; width:7px; height:7px; border-radius:50%; background:#D4A574; opacity:0.7;"></div>
+            <div class="m" style="font-size:7px; color:#8B7355; letter-spacing:1px; opacity:0.7; margin-bottom:2px;">10 PM</div>
+            <div style="font-size:11px; font-weight:500; color:#102B26;">Draft SEO blog articles</div>
+          </div>
+          <!-- 11 PM -->
+          <div style="margin-bottom:14px; position:relative;">
+            <div style="position:absolute; left:-19px; top:3px; width:7px; height:7px; border-radius:50%; background:#D4A574; opacity:0.5;"></div>
+            <div class="m" style="font-size:7px; color:#8B7355; letter-spacing:1px; opacity:0.5; margin-bottom:2px;">11 PM</div>
+            <div style="font-size:11px; font-weight:500; color:#102B26;">Analyze competitor moves</div>
+          </div>
+          <!-- 12 AM -->
+          <div style="margin-bottom:14px; position:relative;">
+            <div style="position:absolute; left:-19px; top:3px; width:7px; height:7px; border-radius:50%; background:#D4A574; opacity:0.35;"></div>
+            <div class="m" style="font-size:7px; color:#8B7355; letter-spacing:1px; opacity:0.35; margin-bottom:2px;">12 AM</div>
+            <div style="font-size:11px; font-weight:500; color:#102B26;">Research and enrich leads</div>
+          </div>
+          <!-- 7 AM -->
+          <div style="position:relative;">
+            <div style="position:absolute; left:-19px; top:3px; width:7px; height:7px; border-radius:50%; background:#7d8471;"></div>
+            <div class="m" style="font-size:7px; color:#7d8471; letter-spacing:1px; margin-bottom:2px;">7 AM</div>
+            <div style="font-size:11px; font-weight:500; color:#7d8471; font-style:italic;">Morning brief ready</div>
+          </div>
+        </div>
+
+        <!-- Safety note -->
+        <div style="margin-top:auto; display:flex; align-items:center; gap:8px;">
+          <div style="width:2px; height:20px; background:#D4A574; border-radius:1px;"></div>
+          <div style="font-size:8px; color:rgba(16,43,38,0.45);"><span style="font-weight:600; color:rgba(16,43,38,0.6);">Safety rule:</span> AI drafts everything. Never sends anything.</div>
+        </div>
+      </div>
+      <div class="accent-line"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 5: MORNING (was the biggest consistency violator) -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="section-header">Slide 5: Morning Brief (was cream/terminal - biggest consistency violator)</div>
+
+<div class="comparison-row">
+  <!-- DARK MORNING -->
+  <div class="direction">
+    <div class="direction-label dark">A. Dark Mode</div>
+    <div class="slide dark-slide">
+      <div class="grain"></div>
+      <div class="slide-inner" style="justify-content: flex-start;">
+        <!-- Progress -->
+        <div class="m" style="position:absolute; top:54px; right:54px; font-size:10px; letter-spacing:2px; color:rgba(244,239,233,0.3);">05 / 07</div>
+        <!-- Kicker -->
+        <div class="m" style="font-size:7px; letter-spacing:2.5px; text-transform:uppercase; color:rgba(244,239,233,0.3); margin-bottom:8px;">My Morning</div>
+        <!-- Headline -->
+        <div class="s" style="font-size:30px; font-weight:700; color:#f4efe9; line-height:0.95; margin-bottom:4px;">
+          7:30 AM.<br>Coffee. 5 Minutes.
+        </div>
+        <div style="font-size:10px; color:rgba(244,239,233,0.4); margin-bottom:24px;">CHIEF already read 11 data sources.</div>
+
+        <!-- Terminal mockup - now matching the dark theme -->
+        <div style="background:rgba(0,0,0,0.35); border:1px solid rgba(244,239,233,0.08); border-radius:4px; padding:14px 16px; margin-bottom:16px;">
+          <!-- Window dots -->
+          <div style="display:flex; gap:4px; margin-bottom:10px;">
+            <div style="width:5px; height:5px; border-radius:50%; background:#e05555;"></div>
+            <div style="width:5px; height:5px; border-radius:50%; background:#D4A574;"></div>
+            <div style="width:5px; height:5px; border-radius:50%; background:#7d8471;"></div>
+          </div>
+          <div class="m" style="font-size:7px; letter-spacing:0.5px; color:rgba(244,239,233,0.3); margin-bottom:8px;">MORNING BRIEF</div>
+          <div class="m" style="font-size:7px; color:rgba(244,239,233,0.5); line-height:1.8;">
+            <div style="color:#D4A574; font-weight:500; margin-bottom:4px;">PENDING YOUR REVIEW (3 items)</div>
+            <div>&nbsp;&nbsp;[CLOSER] Outreach draft for Salon Verde</div>
+            <div>&nbsp;&nbsp;[HERALD] Marie Claire entry - ready</div>
+            <div>&nbsp;&nbsp;[MARKETER] Blog: "Best Shampoo..." - draft</div>
+            <br>
+            <div style="color:#D4A574; font-weight:500; margin-bottom:4px;">OPPORTUNITIES</div>
+            <div>&nbsp;&nbsp;[HIGH] Competitor dropped scalp serum</div>
+            <div>&nbsp;&nbsp;[MED] "scalp detox" - 4,200 searches</div>
+          </div>
+        </div>
+
+        <!-- Quote -->
+        <div style="margin-top:auto;">
+          <div class="s" style="font-size:11px; font-style:italic; color:rgba(244,239,233,0.5); text-align:center;">
+            "I review. I approve. I move on with my day."
+          </div>
+        </div>
+      </div>
+      <div class="accent-line"></div>
+    </div>
+  </div>
+
+  <!-- LIGHT MORNING -->
+  <div class="direction">
+    <div class="direction-label light">B. Light Mode</div>
+    <div class="slide light-slide">
+      <div class="slide-inner" style="justify-content: flex-start;">
+        <!-- Progress -->
+        <div class="m" style="position:absolute; top:54px; right:54px; font-size:10px; letter-spacing:2px; color:rgba(16,43,38,0.2);">05 / 07</div>
+        <!-- Kicker -->
+        <div class="m" style="font-size:7px; letter-spacing:2.5px; text-transform:uppercase; color:rgba(16,43,38,0.35); margin-bottom:8px;">My Morning</div>
+        <!-- Headline -->
+        <div class="s" style="font-size:30px; font-weight:700; color:#102B26; line-height:0.95; margin-bottom:4px;">
+          7:30 AM.<br>Coffee. 5 Minutes.
+        </div>
+        <div style="font-size:10px; color:rgba(16,43,38,0.4); margin-bottom:24px;">CHIEF already read 11 data sources.</div>
+
+        <!-- Terminal mockup - dark inset on light background -->
+        <div style="background:#102B26; border-radius:4px; padding:14px 16px; margin-bottom:16px;">
+          <!-- Window dots -->
+          <div style="display:flex; gap:4px; margin-bottom:10px;">
+            <div style="width:5px; height:5px; border-radius:50%; background:#e05555;"></div>
+            <div style="width:5px; height:5px; border-radius:50%; background:#D4A574;"></div>
+            <div style="width:5px; height:5px; border-radius:50%; background:#7d8471;"></div>
+          </div>
+          <div class="m" style="font-size:7px; letter-spacing:0.5px; color:rgba(244,239,233,0.3); margin-bottom:8px;">MORNING BRIEF</div>
+          <div class="m" style="font-size:7px; color:rgba(244,239,233,0.5); line-height:1.8;">
+            <div style="color:#D4A574; font-weight:500; margin-bottom:4px;">PENDING YOUR REVIEW (3 items)</div>
+            <div>&nbsp;&nbsp;[CLOSER] Outreach draft for Salon Verde</div>
+            <div>&nbsp;&nbsp;[HERALD] Marie Claire entry - ready</div>
+            <div>&nbsp;&nbsp;[MARKETER] Blog: "Best Shampoo..." - draft</div>
+            <br>
+            <div style="color:#D4A574; font-weight:500; margin-bottom:4px;">OPPORTUNITIES</div>
+            <div>&nbsp;&nbsp;[HIGH] Competitor dropped scalp serum</div>
+            <div>&nbsp;&nbsp;[MED] "scalp detox" - 4,200 searches</div>
+          </div>
+        </div>
+
+        <!-- Quote -->
+        <div style="margin-top:auto;">
+          <div class="s" style="font-size:11px; font-style:italic; color:rgba(16,43,38,0.4); text-align:center;">
+            "I review. I approve. I move on with my day."
+          </div>
+        </div>
+      </div>
+      <div class="accent-line"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- DESIGN SYSTEM NOTES -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="section-header">Design System Applied (Both Directions)</div>
+
+<div class="notes">
+  <strong>6-Element Visual Glue (consistent across every slide):</strong><br>
+  1. <strong>Slide number</strong> - top right, JetBrains Mono, "03 / 07" format<br>
+  2. <strong>Gold accent line</strong> - bottom edge, gradient fade<br>
+  3. <strong>Font system</strong> - Orpheus Pro (headlines) + DM Sans (body) + JetBrains Mono (labels/numbers)<br>
+  4. <strong>Color palette</strong> - Fixed: dark teal OR cream background, gold accent, sage for secondary<br>
+  5. <strong>Section kicker</strong> - top left, monospace, uppercase, spaced tracking<br>
+  6. <strong>Edge margins</strong> - 15% on all sides (162px at 1080px = 54px at 360px scale)<br>
+  <br>
+  <strong>What changed from current carousel:</strong><br>
+  - Removed ALL photo backgrounds (solid color only)<br>
+  - Removed burgundy, teal-cyan, random colors (locked to brand palette)<br>
+  - Org chart: grid layout fills space, text at readable sizes<br>
+  - Morning slide: same background as all other slides (no more cream outlier)<br>
+  - Every slide shares the same structural skeleton<br>
+  <br>
+  <strong>Research specs applied:</strong><br>
+  - Headline: ~80-100px at 1080px (26-33px at 360px scale)<br>
+  - Body: ~33-36px at 1080px (11-12px at 360px scale)<br>
+  - Words per slide: ~20-35 (well under 50 max)<br>
+  - Safe zones: content stays 15% from all edges
+</div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

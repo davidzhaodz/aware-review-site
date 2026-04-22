@@ -1,0 +1,2366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barry Shaich / Egg Beauty Labs - Meeting Prep</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2D4739;
+      --forest-deep: #1E3228;
+      --sage: #7A8F7D;
+      --cream: #F8F6F1;
+      --sand: #E8E4DC;
+      --charcoal: #2C2C2C;
+      --warm-gray: #6B6B6B;
+      --gold: #B8956E;
+      --gold-light: #C9A882;
+      --white: #FFFFFF;
+      --divider: #D4CFC6;
+      --green-soft: #4A8C6B;
+      --green-bg: #F2F8F5;
+      --red-soft: #C45B4A;
+      --red-bg: #FDF5F4;
+      --amber-soft: #B8860B;
+      --amber-bg: #FFFBF0;
+      --blue-soft: #4A7CB8;
+      --blue-bg: #F0F5FC;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      background: var(--sand);
+      color: var(--charcoal);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 920px;
+      margin: 0 auto;
+      background: var(--white);
+    }
+
+    /* ============ HEADER ============ */
+
+    .header {
+      background: var(--forest-deep);
+      padding: 36px 48px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 40%, transparent 100%);
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .header h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      font-size: 26px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--cream);
+    }
+
+    .header .meeting-info {
+      font-size: 14px;
+      color: var(--sage);
+      margin-top: 4px;
+    }
+
+    .header .meeting-info strong {
+      color: var(--gold-light);
+      font-weight: 500;
+    }
+
+    .header .goal-line {
+      margin-top: 14px;
+      font-size: 15px;
+      color: var(--cream);
+      opacity: 0.85;
+      max-width: 680px;
+      line-height: 1.5;
+    }
+
+    .header .one-liner {
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--gold-light);
+      font-style: italic;
+      letter-spacing: 0.3px;
+    }
+
+    .header-right {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .header-right .label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sage);
+      opacity: 0.7;
+    }
+
+    .header-right .meeting-type {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 14px;
+      color: var(--gold-light);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    /* Status bar */
+    .status-bar {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--divider);
+      background: var(--forest);
+    }
+
+    .status-item {
+      flex: 1;
+      padding: 10px 16px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      color: var(--cream);
+      font-size: 12px;
+    }
+
+    .status-item:last-child { border-right: none; }
+
+    .status-item .status-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sage);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .status-item .status-value {
+      font-weight: 600;
+      color: var(--gold-light);
+    }
+
+    .status-item .status-value.alert {
+      color: var(--red-soft);
+    }
+
+    .status-item .status-value.amber {
+      color: var(--amber-soft);
+    }
+
+    /* ============ NAV STRIP ============ */
+
+    .nav-strip {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--divider);
+      background: var(--cream);
+      overflow-x: auto;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-strip a {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      text-decoration: none;
+      padding: 12px 16px;
+      white-space: nowrap;
+      border-right: 1px solid var(--divider);
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-strip a:hover {
+      color: var(--forest);
+      background: var(--white);
+    }
+
+    /* ============ CONTENT ============ */
+
+    .content {
+      padding: 0 48px 56px;
+    }
+
+    .section {
+      padding-top: 36px;
+    }
+
+    .section-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--divider);
+    }
+
+    .section-sublabel {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      font-weight: 600;
+      margin-bottom: 12px;
+      margin-top: 24px;
+    }
+
+    /* ============ PEOPLE ============ */
+
+    .person-card {
+      background: var(--white);
+      padding: 18px 20px;
+    }
+
+    .person-name {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--forest);
+    }
+
+    .person-title {
+      font-size: 12.5px;
+      color: var(--warm-gray);
+      margin-top: 2px;
+    }
+
+    .person-note {
+      font-size: 13px;
+      color: var(--charcoal);
+      margin-top: 8px;
+      line-height: 1.45;
+      font-style: italic;
+    }
+
+    .person-tag {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 600;
+    }
+
+    .tag-champion { background: var(--green-bg); color: var(--green-soft); }
+    .tag-decision { background: var(--amber-bg); color: var(--amber-soft); }
+    .tag-caution { background: var(--red-bg); color: var(--red-soft); }
+    .tag-info { background: var(--blue-bg); color: var(--blue-soft); }
+
+    /* ============ ENTITY MAP ============ */
+
+    .entity-map {
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .entity-row {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .entity-row:last-child { border-bottom: none; }
+
+    .entity-label-cell {
+      background: var(--cream);
+      padding: 14px 16px;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+    }
+
+    .entity-content-cell {
+      padding: 14px 16px;
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    .entity-content-cell strong {
+      color: var(--forest);
+    }
+
+    .entity-content-cell .entity-detail {
+      color: var(--warm-gray);
+      font-size: 12.5px;
+      margin-top: 2px;
+    }
+
+    /* ============ TWO-COL ============ */
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .col-box {
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      padding: 20px;
+    }
+
+    .col-box h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .col-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .col-box li {
+      font-size: 13.5px;
+      padding: 5px 0;
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.45;
+    }
+
+    .col-box li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .col-box.red-list li::before { background: var(--red-soft); }
+    .col-box.green-list li::before { background: var(--green-soft); }
+    .col-box.amber-list li::before { background: var(--amber-soft); }
+
+    /* ============ REBUTTAL TABLE ============ */
+
+    .rebuttal-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    .rebuttal-table th {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 10px 14px;
+      border-bottom: 2px solid var(--divider);
+      text-align: left;
+    }
+
+    .rebuttal-table th:first-child { color: var(--warm-gray); }
+    .rebuttal-table th:nth-child(2) { color: var(--blue-soft); }
+    .rebuttal-table th:last-child { color: var(--gold); }
+
+    .rebuttal-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--divider);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .rebuttal-table td:first-child {
+      font-weight: 600;
+      color: var(--charcoal);
+      width: 5%;
+    }
+
+    .rebuttal-table td:nth-child(2) {
+      color: var(--charcoal);
+      width: 55%;
+    }
+
+    .rebuttal-table td:last-child {
+      color: var(--warm-gray);
+      font-style: italic;
+      width: 40%;
+    }
+
+    /* Redirect table (If He Says / We Say) */
+    .redirect-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    .redirect-table th {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 10px 14px;
+      border-bottom: 2px solid var(--divider);
+      text-align: left;
+    }
+
+    .redirect-table th:first-child { color: var(--red-soft); }
+    .redirect-table th:last-child { color: var(--green-soft); }
+
+    .redirect-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--divider);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .redirect-table td:first-child {
+      color: var(--warm-gray);
+      font-style: italic;
+      width: 40%;
+    }
+
+    .redirect-table td:last-child {
+      color: var(--charcoal);
+    }
+
+    /* ============ SCRIPT BOX ============ */
+
+    .script-box {
+      background: var(--cream);
+      border-left: 3px solid var(--gold);
+      padding: 16px 20px;
+      margin: 12px 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--charcoal);
+      font-style: italic;
+    }
+
+    .script-box .script-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      font-style: normal;
+      margin-bottom: 6px;
+    }
+
+    .script-box.caution {
+      border-left-color: var(--red-soft);
+      background: var(--red-bg);
+    }
+
+    .script-box.caution .script-label {
+      color: var(--red-soft);
+    }
+
+    .script-box.success {
+      border-left-color: var(--green-soft);
+      background: var(--green-bg);
+    }
+
+    .script-box.success .script-label {
+      color: var(--green-soft);
+    }
+
+    .script-box.info {
+      border-left-color: var(--blue-soft);
+      background: var(--blue-bg);
+    }
+
+    .script-box.info .script-label {
+      color: var(--blue-soft);
+    }
+
+    /* ============ INFO CARDS ============ */
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--divider);
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .info-grid.three-col {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .info-grid.four-col {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    .info-card {
+      background: var(--white);
+      padding: 16px 20px;
+    }
+
+    .info-card .info-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      font-weight: 600;
+    }
+
+    .info-card .info-value {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--forest);
+      margin-top: 4px;
+    }
+
+    .info-card .info-value.alert { color: var(--red-soft); }
+    .info-card .info-value.good { color: var(--green-soft); }
+    .info-card .info-value.amber { color: var(--amber-soft); }
+
+    .info-card .info-detail {
+      font-size: 12.5px;
+      color: var(--warm-gray);
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    /* ============ FLOW SEQUENCE ============ */
+
+    .flow-sequence {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .flow-step {
+      flex: 1;
+      padding: 16px 18px;
+      position: relative;
+      border-right: 1px solid var(--divider);
+    }
+
+    .flow-step:last-child { border-right: none; }
+
+    .flow-step .flow-num {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .flow-step .flow-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--forest);
+      margin-bottom: 4px;
+    }
+
+    .flow-step .flow-detail {
+      font-size: 12.5px;
+      color: var(--warm-gray);
+      line-height: 1.4;
+    }
+
+    .flow-step::after {
+      content: '';
+      position: absolute;
+      right: -7px;
+      top: 50%;
+      width: 12px;
+      height: 12px;
+      border-top: 1px solid var(--divider);
+      border-right: 1px solid var(--divider);
+      background: var(--white);
+      transform: translateY(-50%) rotate(45deg);
+      z-index: 1;
+    }
+
+    .flow-step:last-child::after { display: none; }
+
+    /* ============ CALLOUT ============ */
+
+    .callout {
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      padding: 18px 20px;
+      margin-top: 16px;
+    }
+
+    .callout.callout-red {
+      border-color: var(--red-soft);
+      background: var(--red-bg);
+    }
+
+    .callout.callout-green {
+      border-color: var(--green-soft);
+      background: var(--green-bg);
+    }
+
+    .callout.callout-amber {
+      border-color: var(--amber-soft);
+      background: var(--amber-bg);
+    }
+
+    .callout.callout-blue {
+      border-color: var(--blue-soft);
+      background: var(--blue-bg);
+    }
+
+    .callout .callout-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .callout.callout-red .callout-title { color: var(--red-soft); }
+    .callout.callout-green .callout-title { color: var(--green-soft); }
+    .callout.callout-amber .callout-title { color: var(--amber-soft); }
+    .callout.callout-blue .callout-title { color: var(--blue-soft); }
+
+    .callout .callout-body {
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    /* ============ COMPACT TIMELINE ============ */
+
+    .compact-timeline {
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .ct-row {
+      display: grid;
+      grid-template-columns: 100px 200px 1fr;
+      border-bottom: 1px solid var(--divider);
+      font-size: 13px;
+    }
+
+    .ct-row:last-child { border-bottom: none; }
+
+    .ct-row.ct-highlight {
+      background: var(--green-bg);
+    }
+
+    .ct-year {
+      padding: 8px 12px;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--gold);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      background: var(--cream);
+    }
+
+    .ct-company {
+      padding: 8px 12px;
+      font-weight: 600;
+      color: var(--forest);
+      display: flex;
+      align-items: center;
+    }
+
+    .ct-detail {
+      padding: 8px 12px;
+      color: var(--warm-gray);
+      font-size: 12.5px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* ============ DECISION FRAMEWORK ============ */
+
+    .decision-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--divider);
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .decision-cell {
+      background: var(--white);
+      padding: 16px 20px;
+    }
+
+    .decision-cell .decision-if {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .decision-cell .decision-then {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .decision-cell .decision-detail {
+      font-size: 12.5px;
+      color: var(--warm-gray);
+      line-height: 1.4;
+    }
+
+    .decision-cell.go .decision-if { color: var(--green-soft); }
+    .decision-cell.go .decision-then { color: var(--green-soft); }
+    .decision-cell.go { background: var(--green-bg); }
+
+    .decision-cell.maybe .decision-if { color: var(--amber-soft); }
+    .decision-cell.maybe .decision-then { color: var(--amber-soft); }
+
+    .decision-cell.wait .decision-if { color: var(--blue-soft); }
+    .decision-cell.wait .decision-then { color: var(--blue-soft); }
+
+    .decision-cell.pass .decision-if { color: var(--red-soft); }
+    .decision-cell.pass .decision-then { color: var(--red-soft); }
+    .decision-cell.pass { background: var(--red-bg); }
+
+    /* ============ CONVERSATION SIMS ============ */
+
+    .sim-scenario {
+      border: 1px solid var(--divider);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .sim-header {
+      background: var(--forest-deep);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sim-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--cream);
+      letter-spacing: 0.5px;
+    }
+
+    .sim-tag {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 2px;
+      font-weight: 600;
+    }
+
+    .sim-tag.tag-likely { background: var(--amber-bg); color: var(--amber-soft); }
+    .sim-tag.tag-critical { background: var(--red-bg); color: var(--red-soft); }
+    .sim-tag.tag-opportunity { background: var(--green-bg); color: var(--green-soft); }
+
+    .sim-context {
+      background: var(--cream);
+      padding: 10px 20px;
+      font-size: 12px;
+      color: var(--warm-gray);
+      font-style: italic;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .sim-dialogue {
+      padding: 0;
+    }
+
+    .sim-turn {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .sim-turn:last-child { border-bottom: none; }
+
+    .sim-turn.barry {
+      background: var(--white);
+    }
+
+    .sim-turn.david {
+      background: var(--green-bg);
+    }
+
+    .sim-turn.david-weak {
+      background: var(--red-bg);
+    }
+
+    .sim-speaker {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .sim-turn.barry .sim-speaker { color: var(--warm-gray); }
+    .sim-turn.david .sim-speaker { color: var(--green-soft); }
+    .sim-turn.david-weak .sim-speaker { color: var(--red-soft); }
+
+    .sim-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--charcoal);
+    }
+
+    .sim-annotation {
+      margin-top: 8px;
+      font-size: 12px;
+      line-height: 1.45;
+      padding: 8px 12px;
+      border-radius: 2px;
+    }
+
+    .sim-turn.david .sim-annotation {
+      background: rgba(74, 140, 107, 0.1);
+      color: var(--green-soft);
+    }
+
+    .sim-turn.david-weak .sim-annotation {
+      background: rgba(196, 91, 74, 0.1);
+      color: var(--red-soft);
+    }
+
+    .sim-divider {
+      text-align: center;
+      padding: 8px;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      background: var(--sand);
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .avoid-list {
+      border: 1px solid var(--red-soft);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .avoid-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .avoid-item:last-child { border-bottom: none; }
+
+    .avoid-say {
+      padding: 12px 16px;
+      background: var(--red-bg);
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--charcoal);
+      font-style: italic;
+    }
+
+    .avoid-why {
+      padding: 12px 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--warm-gray);
+    }
+
+    .avoid-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--forest-deep);
+    }
+
+    .avoid-header span {
+      padding: 8px 16px;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--cream);
+    }
+
+    /* ============ PRINT ============ */
+
+    @media print {
+      body { background: white; }
+      .page { box-shadow: none; }
+      .nav-strip { display: none; }
+      .section { break-inside: avoid; }
+      .content { padding: 0 36px 36px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-row">
+        <div>
+          <h1>Barry Shaich / Egg Beauty Labs</h1>
+          <div class="meeting-info">
+            Meeting - <strong>March 17, 2026</strong>
+          </div>
+          <div class="goal-line">
+            Evaluate fit as distribution/sales channel partner. Understand what EBL can actually do for AWARE vs. what's on Barry's resume. Separate the Rolodex from the packaged services.
+          </div>
+          <div class="one-liner">
+            Barry has the Rolodex we need, but his current business may not be set up to deliver it.
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="label">Meeting Type</div>
+          <div class="meeting-type">Exploratory</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATUS BAR -->
+    <div class="status-bar">
+      <div class="status-item">
+        <span class="status-label">We Need</span>
+        <span class="status-value">B2B Distributor Intros</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">He Offers</span>
+        <span class="status-value amber">DTC/E-comm + Rolodex</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Key Question</span>
+        <span class="status-value alert">Still Active in B2B?</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Prior Relationship</span>
+        <span class="status-value">None - He Reached Out</span>
+      </div>
+    </div>
+
+    <!-- NAV -->
+    <div class="nav-strip">
+      <a href="#background">Background</a>
+      <a href="#psychology">Psychology</a>
+      <a href="#career">Career</a>
+      <a href="#bassett">Bassett Intel</a>
+      <a href="#ebl">EBL Today</a>
+      <a href="#flow">Meeting Flow</a>
+      <a href="#questions">Questions</a>
+      <a href="#redirects">If He Says...</a>
+      <a href="#share">What to Share</a>
+      <a href="#signals">Signals</a>
+      <a href="#decision">Decision</a>
+      <a href="#simulations">Simulations</a>
+      <a href="#followup">Follow-Up</a>
+      <a href="#avoid">Avoid</a>
+    </div>
+
+    <div class="content">
+
+      <!-- BACKGROUND -->
+      <div class="section" id="background">
+        <div class="section-label">Background</div>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Who He Is</div>
+            <div class="info-value">Beauty Industry Veteran</div>
+            <div class="info-detail">30+ years in professional beauty. Built and sold Woody's Quality Grooming to AII (~2006-07). Career at KMS, Graham Webb, American Crew/Revlon. Now runs Egg Beauty Labs, a "beauty brand incubator and social sales accelerator." BA from University of Minnesota (Int'l Business/Marketing). Based in Los Angeles area. [VERIFIED via ZoomInfo, LinkedIn, PR.com]</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Why This Meeting</div>
+            <div class="info-value">He Reached Out to Us</div>
+            <div class="info-detail">Barry contacted AWARE about potentially helping find distribution partners and sales channels. We're exploring whether his network and services match what we actually need. No prior relationship.</div>
+          </div>
+        </div>
+
+        <div class="callout callout-green" style="margin-top: 16px;">
+          <div class="callout-title">Pre-Call Update - Tina Spoke with Barry</div>
+          <div class="callout-body">
+            Tina had a pre-call where Barry mentioned <strong>knowing several distributors personally, including Ward Bassett</strong>. This validates the B2B network claim. The meeting should now focus on: (1) how warm is the Ward Bassett relationship specifically, (2) what other distributors he can name, and (3) what the implementation path looks like for getting AWARE placed.
+          </div>
+        </div>
+
+        <div class="callout callout-amber" style="margin-top: 8px;">
+          <div class="callout-title">Still Clarify</div>
+          <div class="callout-body">
+            EBL's <strong>packaged services</strong> are DTC/e-commerce. The B2B distribution value lives in Barry's personal network. Separate what he'd do as a connector (intros) from what he'd sell as a service (Amazon/TikTok/ads).
+          </div>
+        </div>
+      </div>
+
+      <!-- BARRY PSYCHOLOGY PROFILE -->
+      <div class="section" id="psychology">
+        <div class="section-label">Barry's Psychology - How He Thinks</div>
+
+        <div class="script-box info" style="margin-bottom: 20px;">
+          <div class="script-label">Why This Matters</div>
+          Knowing what drives Barry - what he's proud of, what he's sensitive about, what triggers trust vs. defensiveness - lets you navigate the conversation instead of just reacting to it. This is based on his verified career pattern, not speculation.
+        </div>
+
+        <div class="section-sublabel">His Identity and What Drives Him</div>
+        <div class="entity-map">
+          <div class="entity-row">
+            <div class="entity-label-cell">Core Identity</div>
+            <div class="entity-content-cell">
+              <strong>The Connector / "Mother Hen"</strong>
+              <div class="entity-detail">Barry's self-styled brand is the person who nurtures emerging brands and opens doors. This isn't just positioning - after 30 years, it's genuinely who he is. He takes pride in being the bridge. Use this: frame your ask as an opportunity for him to play that role, not as a transaction.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Peak Achievement</div>
+            <div class="entity-content-cell">
+              <strong>The Woody's Exit</strong>
+              <div class="entity-detail">Building and selling Woody's to AII is Barry's defining moment. It was ~18 years ago, but he will reference it. It represents proof that he can build something real. Don't dismiss it - but also don't let it stand as proxy for current capability. He built Woody's; he didn't build national distribution. AII did that post-acquisition.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Current Tension</div>
+            <div class="entity-content-cell">
+              <strong>EBL's Pivot to DTC</strong>
+              <div class="entity-detail">His packaged services are DTC/e-commerce, but his career credibility is B2B professional. This creates internal tension: he knows the salon world, but he's been building DTC tools for the last several years. He may overcorrect toward DTC because that's what his current business is built around - even if it's not his deepest expertise.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Motivation</div>
+            <div class="entity-content-cell">
+              <strong>Wants to Back a Winner</strong>
+              <div class="entity-detail">He reached out to AWARE - that means something caught his eye. Whether it's the science, the traction, or Tina's background, he sees potential. He wants the story of "I saw AWARE early and helped them break into distribution." That's valuable to him - lean into it. Give him the chance to be part of the origin story.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Sensitive Area</div>
+            <div class="entity-content-cell">
+              <strong>EBL's Thin Track Record</strong>
+              <div class="entity-detail">Only two named EBL clients, no metrics, 71 LinkedIn followers for a 15+ year firm. He knows this looks thin. If you probe too aggressively on "show me a case study," he may get defensive. The better approach: ask about his process and let the answer reveal whether there's real substance. If there isn't, you'll know without making the meeting adversarial.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Negotiation Style</div>
+            <div class="entity-content-cell">
+              <strong>Relationship-First, Then Business</strong>
+              <div class="entity-detail">30 years in professional beauty means Barry operates on trust and rapport. He'll likely spend the first 10-15 minutes building the relationship before getting to terms. Don't rush him to business too early - it signals transactional thinking, which is off-brand for the premium positioning you want. Let him warm up, then steer.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-sublabel">Likely Moves and How to Counter</div>
+        <div class="info-grid three-col">
+          <div class="info-card">
+            <div class="info-label">The Credibility Play</div>
+            <div class="info-value amber">Name-Dropping</div>
+            <div class="info-detail">He'll reference well-known brands, industry figures, or executives he knows. This is real - he has genuine connections - but it often gets deployed as a substitute for specifics. When he drops names, redirect: "That's a great connection - have you worked with them recently? Would that network apply to distribution for AWARE?"</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">The Vision Pitch</div>
+            <div class="info-value amber">Big Picture Framing</div>
+            <div class="info-detail">Barry will likely paint a broad vision of what AWARE could become - "this could be a $10M brand in two years." It's genuine enthusiasm but it delays the specific conversation you need. Appreciate it, then ground it: "We love that vision. Walk us through the specific steps to get there, starting with distribution."</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">The Bundling Move</div>
+            <div class="info-value alert">Package Upsell</div>
+            <div class="info-detail">His business model is packaged services (Amazon + TikTok + ads). He may try to bundle distribution introductions with his DTC offerings - "you really need both." Separate them explicitly: "We want to start with distribution introductions only. We'll evaluate digital channels separately later."</div>
+          </div>
+        </div>
+
+        <div class="callout callout-amber" style="margin-top: 16px;">
+          <div class="callout-title">The Dynamic to Watch: Does He Respect Boundaries?</div>
+          <div class="callout-body">
+            You'll tell Barry clearly that you're focused on B2B distribution, not DTC. How he responds to that tells you everything about whether this engagement will work. <strong>If he respects it and pivots to how his network serves that need - good sign.</strong> If he keeps circling back to Amazon and TikTok after you've redirected twice - that's the engagement in microcosm. He'll keep pushing the wrong channels because that's what he sells.
+          </div>
+        </div>
+      </div>
+
+      <!-- CAREER TIMELINE (COMPACT) -->
+      <div class="section" id="career">
+        <div class="section-label">Barry's Career</div>
+
+        <div class="compact-timeline">
+          <div class="ct-row">
+            <div class="ct-year">1995 - 98</div>
+            <div class="ct-company">Graham Webb Int'l</div>
+            <div class="ct-detail">Professional haircare - early career in salon industry</div>
+          </div>
+          <div class="ct-row">
+            <div class="ct-year">1998 - 00</div>
+            <div class="ct-company">Revlon / American Crew</div>
+            <div class="ct-detail">Ran global sales for American Crew - major men's pro brand</div>
+          </div>
+          <div class="ct-row ct-highlight">
+            <div class="ct-year">2004 - ~07</div>
+            <div class="ct-company">Woody's Quality Grooming</div>
+            <div class="ct-detail">Founded, built, sold to AII in ~3 years. Surf-culture men's grooming. AII scaled it nationally post-exit. [VERIFIED]</div>
+          </div>
+          <div class="ct-row">
+            <div class="ct-year">~2003-04</div>
+            <div class="ct-company">Behindthechair.com</div>
+            <div class="ct-detail">Industry media/education for professional stylists. Role unspecified in public records. [VERIFIED existence]</div>
+          </div>
+          <div class="ct-row">
+            <div class="ct-year">~2007-09</div>
+            <div class="ct-company">Egg Beauty Labs</div>
+            <div class="ct-detail">Founding year disputed (2007 vs 2009 across sources). "I.am Framework" - Incubate, Accelerate, Monetize. [CONFLICTING]</div>
+          </div>
+        </div>
+
+        <div class="info-grid" style="margin-top: 12px;">
+          <div class="info-card">
+            <div class="info-label">BWG Strategy</div>
+            <div class="info-value amber">Affiliation Unverified</div>
+            <div class="info-detail">BWG (now BWG Global) runs 1,200+ exec roundtable events yearly across 20+ sectors. Barry is NOT listed on their site. May have participated as a panelist but no formal role confirmed. [UNVERIFIED]</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Personal Brand</div>
+            <div class="info-value">"Mother Hen"</div>
+            <div class="info-detail">Self-styled title, not a company or product. Personal brand for his advisory/connector role. He'll likely reference it.</div>
+          </div>
+        </div>
+
+        <div class="callout callout-blue" style="margin-top: 16px;">
+          <div class="callout-title">The Woody's Exit - What to Know [VERIFIED via WWD 2010, AII profiles]</div>
+          <div class="callout-body">
+            Woody's was a surf-culture men's grooming line (shaving, hair, body care) founded 2004, launched at a Long Beach trade show. Barry sold it to American International Industries (AII) approximately 2006-07 - a ~3 year build-to-exit. AII is a major conglomerate ($200-275M annual revenue, 40+ brands including Ardell, China Glaze). <strong>Important nuance: Barry built it with fragmented/boutique distribution. AII scaled it nationally post-acquisition.</strong> He didn't build the national distribution himself. The exit was ~18 years ago. Acquisition price was never disclosed.
+          </div>
+        </div>
+      </div>
+
+      <!-- WARD BASSETT / BASSETT SALON SOLUTIONS -->
+      <div class="section" id="bassett">
+        <div class="section-label">Ward Bassett / Bassett Salon Solutions - Our Research</div>
+
+        <div class="info-grid three-col">
+          <div class="info-card">
+            <div class="info-label">Company</div>
+            <div class="info-value good">Bassett Salon Solutions</div>
+            <div class="info-detail">Family-owned independent salon distributor. Founded 2007 by Ward and Christina Bassett. HQ: Anaheim, CA. ~$15M rev, ~87 employees. [VERIFIED]</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Territory</div>
+            <div class="info-value good">9 Western U.S. States</div>
+            <div class="info-detail">CA, AZ, NV, NM, UT, OR, WA, ID + others. Store locations in Anaheim and Las Vegas. [VERIFIED]</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Target Customer</div>
+            <div class="info-value good">Independent Salons Only</div>
+            <div class="info-detail">Motto: "For the Health and Wealth of the Hairdresser." Built as an alternative to corporate distributors. [VERIFIED]</div>
+          </div>
+        </div>
+
+        <div class="section-sublabel">Brand Portfolio (Selected) [VERIFIED]</div>
+        <div class="info-grid four-col">
+          <div class="info-card">
+            <div class="info-label">Premium Hair</div>
+            <div class="info-value">Davines, Evo, Keune</div>
+            <div class="info-detail">Colorproof, REF, Neuma, milk_shake (added Apr 2025)</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Men's/Grooming</div>
+            <div class="info-value">Reuzel, DEPOT</div>
+            <div class="info-detail">DEPOT added Apr 2025 - includes scalp care line. Men's grooming is Barry's world.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Scalp Category</div>
+            <div class="info-value good">Zenagen, DEPOT</div>
+            <div class="info-detail">Zenagen = hair loss/thinning specialist. DEPOT = grooming + scalp. Category presence confirms openness.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Tools & Other</div>
+            <div class="info-value">30+ Brands Total</div>
+            <div class="info-detail">Color Wow, Framar, Sutra Tools, GK Hair, Babe Original, 12 Benefits, Itely, and more.</div>
+          </div>
+        </div>
+
+        <div class="callout callout-green" style="margin-top: 16px;">
+          <div class="callout-title">Why Bassett Is a Strong Fit for AWARE</div>
+          <div class="callout-body">
+            <strong>1. Independent salons only</strong> - exactly our target. <strong>2. Premium brand curation</strong> - Davines, Evo, Keune signal taste and positioning alignment. <strong>3. Already carries scalp-category brands</strong> (Zenagen, DEPOT) - the category isn't new to their reps. <strong>4. Western U.S. territory</strong> - natural fit for a California-origin brand. <strong>5. Family-owned, relationship-first</strong> - warm intros matter more than cold applications. <strong>6. Recently adding brands</strong> (milk_shake, DEPOT, Medavita in 2025) - open to portfolio expansion.
+          </div>
+        </div>
+
+        <div class="callout callout-amber" style="margin-top: 8px;">
+          <div class="callout-title">What We Don't Know Yet</div>
+          <div class="callout-body">
+            No documented connection between Barry Shaich and Ward Bassett found in public records. Both are SoCal professional beauty - plausible they know each other, but <strong>the meeting needs to establish how warm this relationship actually is.</strong> Also: does Bassett have capacity for a new brand? With 30+ brands and 87 employees, bandwidth may be limited.
+          </div>
+        </div>
+
+        <div class="section-sublabel">Competitive Positioning - AWARE vs. Bassett's Current Scalp Brands</div>
+
+        <div class="script-box info">
+          <div class="script-label">How to Use This</div>
+          Bassett already carries two scalp-adjacent brands: Zenagen and DEPOT. If Barry knows Ward, he'll know these brands too. Understanding how AWARE differs from both - and why that difference matters to Bassett's reps - gives you a specific, credible pitch that shows distributor-level thinking.
+        </div>
+
+        <table class="rebuttal-table" style="margin-top: 16px;">
+          <thead>
+            <tr>
+              <th style="width:15%">Brand</th>
+              <th>What They Do</th>
+              <th>Where AWARE Is Different</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Zenagen</strong></td>
+              <td>Hair loss and thinning specialist. Clinical positioning, prescription-adjacent language. Primarily focused on scalp conditions tied to hair loss (androgenetic alopecia, thinning). High price point. DTC-heavy with some salon presence. Appeals to clients already concerned about losing hair.</td>
+              <td>AWARE targets the <em>broader scalp health</em> category - dandruff, sensitivity, buildup, oiliness - not just hair loss. This is a much larger addressable population. Stylists can recommend AWARE to nearly any client; Zenagen requires a specific concern. AWARE is also science-botanical vs. Zenagen's clinical-pharmaceutical feel.</td>
+            </tr>
+            <tr>
+              <td><strong>DEPOT</strong></td>
+              <td>Italian men's grooming brand added by Bassett in April 2025. Includes scalp care as part of a broader men's grooming line. Overlaps with Barry's "Mother Hen" persona in men's grooming. Strong packaging, professional positioning, also has a trichology angle.</td>
+              <td>DEPOT is men's grooming first, scalp second. AWARE is scalp first across all genders - relevant to every client in the chair, not just male clients. Also: DEPOT is Italian-imported, which means different margins and logistics than a domestic brand. AWARE can be the American-made scalp specialist in the portfolio.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-green" style="margin-top: 16px;">
+          <div class="callout-title">The Portfolio Gap Argument for Barry</div>
+          <div class="callout-body">
+            <strong>Use this directly in the meeting if Barry knows Bassett's portfolio:</strong> "Bassett already has Zenagen for hair loss and DEPOT for men's grooming. Neither one addresses the full scalp health category for general clientele. AWARE fills that gap - it's what a stylist recommends to the client who comes in with flakes, buildup, or a reactive scalp but isn't losing their hair yet. That's a conversation happening in every chair, every day. That's the category we own."
+          </div>
+        </div>
+
+        <div class="section-sublabel">Other Distributors to Ask Barry About</div>
+        <div class="info-grid three-col">
+          <div class="info-card">
+            <div class="info-label">Salon Centric (Regis/Luxury Brand Partners)</div>
+            <div class="info-value amber">National - Know Before Mentioning</div>
+            <div class="info-detail">One of the largest professional distributors. Carries premium lines. Barry's American Crew background means he's likely interfaced with them. Ask if he has specific contacts there. Downside: very large, slow to add new brands, may require strong sell-through proof first.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">CosmoProf / Armstrong McCall</div>
+            <div class="info-value alert">Too Mass-Market</div>
+            <div class="info-detail">Major chains but serves a broad customer base including licensed cosmetology students and value-oriented salons. Not aligned with AWARE's premium independent salon positioning. If Barry suggests these, it signals he's not thinking about your positioning correctly.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Other Regional Independents</div>
+            <div class="info-value good">Best Fit Category</div>
+            <div class="info-detail">Brands like Wella-adjacent independents, or regional distributors similar to Bassett in other territories (Southwest, Northwest, Mountain West). Ask Barry: "Who's the Bassett equivalent in Texas? In the Southeast?" Independent regional distributors carry premium brands and have closer salon relationships than national chains.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WHAT EBL DOES TODAY -->
+      <div class="section" id="ebl">
+        <div class="section-label">What EBL Actually Does Today</div>
+
+        <div class="info-grid three-col">
+          <div class="info-card">
+            <div class="info-label">Amazon</div>
+            <div class="info-value alert">Account + PPC Mgmt</div>
+            <div class="info-detail">Amazon store setup, PPC campaigns, listing optimization. Not aligned with our strategy.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">TikTok Shop</div>
+            <div class="info-value alert">Social Commerce</div>
+            <div class="info-detail">SHOPLINE partnership for TikTok Shop activation. Not aligned with our strategy.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Paid Ads</div>
+            <div class="info-value amber">Google + Meta</div>
+            <div class="info-detail">Ad management for beauty brands. Could be relevant later, not now.</div>
+          </div>
+        </div>
+
+        <div class="info-grid" style="margin-top: 1px;">
+          <div class="info-card">
+            <div class="info-label">Brand Incubation</div>
+            <div class="info-value amber">Own Brand - DTC Only</div>
+            <div class="info-detail">"made. for good." men's grooming - active DTC Shopify store (Beefy Bars soap, Secret Sauce lotion, razors). No salon or retail distribution found. Barry not named on the site. [VERIFIED - site live, no retail presence found]</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">The Rolodex</div>
+            <div class="info-value good">Network as Service</div>
+            <div class="info-detail">Connections to distributors, investors, and potential acquirers from 30 years in the industry. This is what we're here for.</div>
+          </div>
+        </div>
+
+        <div class="callout callout-red" style="margin-top: 16px;">
+          <div class="callout-title">Channel Mismatch Warning</div>
+          <div class="callout-body">
+            Amazon, TikTok Shop, and aggressive paid social are all channels we've explicitly decided against (Key Decision #1). <strong>If Barry pitches these as his primary value, the engagement may not be a fit.</strong> The conversation should steer toward his professional distribution network. Don't dismiss it rudely - just redirect.
+          </div>
+        </div>
+
+        <div class="section-sublabel">Research Intelligence</div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">EBL Digital Footprint</div>
+            <div class="info-value alert">71 LinkedIn Followers</div>
+            <div class="info-detail">Extremely low for a 15+ year consultancy. No Instagram found. Website has no specific case study metrics. Either deliberately relationship-driven or very lean. [VERIFIED]</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Named EBL Clients</div>
+            <div class="info-value amber">2 - No Metrics</div>
+            <div class="info-detail">Hillhouse Naturals ("impressive sales surge") and Floyd's Barbershop ("increase in referral traffic"). No numbers, no quotes, no contacts. American Crew/Dermalogica are career refs, not EBL clients. [VERIFIED]</div>
+          </div>
+        </div>
+        <div class="info-grid" style="margin-top: 1px;">
+          <div class="info-card">
+            <div class="info-label">NPV Investment (Oct 2023)</div>
+            <div class="info-value">Minority Strategic</div>
+            <div class="info-detail">Next Point Ventures (Philadelphia) made undisclosed investment. NPV is a small advisory firm, not a prominent beauty VC. Brings operational/digital resources, not capital scale. [VERIFIED via PR.com]</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">SHOPLINE Partnership (Jul 2024)</div>
+            <div class="info-value amber">Announcement Only</div>
+            <div class="info-detail">Co-marketing/tech partnership for social commerce. SHOPLINE is a legit platform (600K+ brands). No follow-up coverage or deployed results found since announcement. [VERIFIED announcement, traction UNVERIFIED]</div>
+          </div>
+        </div>
+
+        <div class="callout callout-amber" style="margin-top: 16px;">
+          <div class="callout-title">Conflict of Interest to Probe</div>
+          <div class="callout-body">
+            EBL operates its own men's grooming brand ("made. for good."). If Barry pitches AWARE on consulting, <strong>ask how he manages potential conflicts between EBL's own brand and client brands in adjacent categories.</strong> Even though men's grooming and scalp care are different, the distribution channels overlap.
+          </div>
+        </div>
+      </div>
+
+      <!-- MEETING FLOW -->
+      <div class="section" id="flow">
+        <div class="section-label">Meeting Flow</div>
+
+        <div class="flow-sequence">
+          <div class="flow-step">
+            <div class="flow-num">5 min</div>
+            <div class="flow-title">Rapport</div>
+            <div class="flow-detail">Thank him for reaching out. Acknowledge his career. Light touch on Woody's exit.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">10 min</div>
+            <div class="flow-title">His Pitch</div>
+            <div class="flow-detail">Let Barry talk. Listen for what he leads with - DTC services or Bassett/distribution network.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">15 min</div>
+            <div class="flow-title">Bassett Deep-Dive</div>
+            <div class="flow-detail">Q1-Q4: How warm is Ward? What does the intro look like? Then Q8-Q11: implementation path.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">5 min</div>
+            <div class="flow-title">AWARE Story</div>
+            <div class="flow-detail">Brief brand pitch. Traction, CanRad, Scalp Report. Only if B2B fit is established.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">5 min</div>
+            <div class="flow-title">Next Steps</div>
+            <div class="flow-detail">Define follow-up or close politely. See decision framework.</div>
+          </div>
+        </div>
+
+        <div class="script-box" style="margin-top: 16px;">
+          <div class="script-label">Key Insight - Phase 2</div>
+          What Barry leads with tells you everything. If he opens with "Let me tell you about our Amazon and TikTok Shop programs" - his current value is DTC. If he opens with "I've been connecting brands with distributors for 30 years" - there's a B2B play here. Listen before you steer.
+        </div>
+      </div>
+
+      <!-- QUESTIONS -->
+      <div class="section" id="questions">
+        <div class="section-label">Questions to Ask</div>
+
+        <!-- TOP 3 MUST-ASK -->
+        <div class="callout callout-green">
+          <div class="callout-title">Top 4 Must-Ask - These Are Non-Negotiable</div>
+          <div class="callout-body">
+            <strong>1.</strong> "You mentioned Ward Bassett - how do you know him and when did you last work together?" <em>- Tests whether this is a warm or cold name drop.</em><br>
+            <strong>2.</strong> "If you introduced us to Ward, what would that conversation look like? Would you be in the room?" <em>- Clarifies his role: connector vs. advocate.</em><br>
+            <strong>3.</strong> "Beyond Bassett, which other distributors would you introduce us to?" <em>- Tests depth of network beyond one name.</em><br>
+            <strong>4.</strong> "Can you walk us through a brand you've recently helped get placed with a distributor?" <em>- Verifiable example or it's resume talk.</em>
+          </div>
+        </div>
+
+        <div class="section-sublabel">Bassett Relationship - Drill In First</div>
+        <table class="rebuttal-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Question</th>
+              <th>What We're Listening For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>"You mentioned Ward Bassett on the pre-call. How do you know him personally? When was the last time you worked together?"</td>
+              <td>"We've been friends for 20 years" vs. "I met him at a show." Recent interaction = warm. Name-only = cold.</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>"Bassett carries Zenagen and DEPOT in scalp care. Do you think there's room for AWARE in that portfolio?"</td>
+              <td>This shows we've done our homework. If Barry knows their portfolio, he's genuinely connected. If he's surprised, it's surface-level.</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>"If you introduced us, what would that conversation look like? Would you be in the room, or is it a handoff?"</td>
+              <td>Connector (makes intro, steps back) vs. advocate (presents the brand with us) vs. agent (negotiates on our behalf). Each implies a different engagement.</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>"Beyond Bassett, which other distributors would you introduce us to? We're looking for 2-3 relationships."</td>
+              <td>Multiple named distributors = real depth. Only Bassett = thin network. Names we can research before follow-up.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-sublabel">Engagement Structure</div>
+        <table class="rebuttal-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Question</th>
+              <th>What We're Listening For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>5</td>
+              <td>"What's your typical fee/engagement model - retainer, commission, equity?"</td>
+              <td>Equity ask = red flag at this stage. Commission on placements = aligned incentives. Retainer = need to see clear deliverables.</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>"What would the timeline look like for getting AWARE into 2-3 distributor conversations?"</td>
+              <td>Weeks = warm relationships. Months = building from scratch. "It depends" = no plan.</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>"How hands-on are you vs. making introductions?"</td>
+              <td>Intro-only is fine if warm and targeted. Full service needs to justify the cost.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-sublabel">Implementation - How Would This Actually Work?</div>
+        <table class="rebuttal-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Question</th>
+              <th>What We're Listening For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>8</td>
+              <td>"Walk us through the process. From intro to Bassett having AWARE on their shelves - what are the steps?"</td>
+              <td>Clear process (intro call, line review, terms negotiation, test market, rollout) vs. vague "I'll make the call." Does he know how distributor onboarding actually works?</td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td>"What does a distributor like Bassett typically need from a brand before they'll take a meeting? What should we have ready?"</td>
+              <td>Tests his operational knowledge. Good answers: sell-through data, margin structure, marketing support plan, education materials, minimum order terms. Generic answers = surface-level.</td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td>"What's the typical timeline from first distributor conversation to first purchase order?"</td>
+              <td>3-6 months = realistic. "A few weeks" = overselling. "A year" = maybe too cautious. We need to calibrate expectations.</td>
+            </tr>
+            <tr>
+              <td>11</td>
+              <td>"What role do you play after the intro? Do you stay involved through negotiation, or is your value the door-opening?"</td>
+              <td>Defines the scope of engagement. If he stays through negotiation, that's advisory value. If it's intro-only, we need to price it accordingly.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-sublabel">Strategic Value</div>
+        <table class="rebuttal-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Question</th>
+              <th>What We're Listening For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>12</td>
+              <td>"You've seen brands at our stage before - what do you think our biggest gap is for distribution readiness?"</td>
+              <td>Insight that shows he understands our specific situation vs. generic advice. Tests his expertise.</td>
+            </tr>
+            <tr>
+              <td>13</td>
+              <td>"What's your take on the professional scalp care category right now?"</td>
+              <td>Does he know our competitive landscape? Can he name players? Or is scalp care new to him?</td>
+            </tr>
+            <tr>
+              <td>14</td>
+              <td>"How do you think about salon-exclusive positioning vs. broader retail?"</td>
+              <td>Does he respect it or push against it? "You need to be everywhere" = misalignment.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-sublabel">Conflict / Credibility Check</div>
+        <table class="rebuttal-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Question</th>
+              <th>What We're Listening For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>15</td>
+              <td>"You're also building 'made. for good.' - how do you manage potential conflicts between your own brand and client brands?"</td>
+              <td>Thoughtful answer about category separation = good. Dismissive or surprised we know about it = concerning.</td>
+            </tr>
+            <tr>
+              <td>16</td>
+              <td>"Can we speak to a brand you've worked with as a reference?"</td>
+              <td>Immediate yes with a name = strong signal. Hesitation or "let me think about that" = thin client base.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-sublabel">DTC / Social Commerce - Only If He Brings It Up</div>
+        <table class="rebuttal-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Question</th>
+              <th>What We're Listening For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>17</td>
+              <td>"Your SHOPLINE partnership - is TikTok Shop working for professional beauty brands?"</td>
+              <td>Real data/examples vs. hype. The partnership was announced Jul 2024 with no follow-up. Has anything shipped?</td>
+            </tr>
+            <tr>
+              <td>18</td>
+              <td>"What's your experience with MAP enforcement across channels?"</td>
+              <td>If he doesn't know what MAP is or dismisses it, he's not thinking salon-exclusive.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- IF HE SAYS / WE SAY -->
+      <div class="section" id="redirects">
+        <div class="section-label">If He Says... Redirect To</div>
+
+        <table class="redirect-table">
+          <thead>
+            <tr>
+              <th>If He Says</th>
+              <th>Our Redirect</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>"Let me tell you about our Amazon program - we can get you set up in 30 days."</td>
+              <td><strong>Acknowledge, then pivot.</strong> "That's impressive, and we may explore DTC channels down the road. Right now our focus is professional distribution - salons are our primary channel. Can you tell us about your distributor connections?"</td>
+            </tr>
+            <tr>
+              <td>"TikTok Shop is where beauty is going. You're missing a huge opportunity."</td>
+              <td><strong>Don't argue the channel - reframe the timing.</strong> "We're watching that space. For now, our unit economics and brand positioning point us to salon distribution first. We'd rather build the professional credibility before going direct to consumer."</td>
+            </tr>
+            <tr>
+              <td>"You need to be everywhere - omnichannel is the only way to scale."</td>
+              <td><strong>Use Woody's as a mirror.</strong> "Interesting - when you built Woody's, didn't you start in salons and barbershops before expanding? That's our playbook. We want to build salon credibility first, then expand. Did that sequencing work for Woody's?"</td>
+            </tr>
+            <tr>
+              <td>"I'd need equity to be really motivated on this."</td>
+              <td><strong>Defer, don't reject.</strong> "We appreciate the interest. We're not at a stage where equity partnerships make sense - we're looking for a performance-based or project-based relationship first. If there's a fit, we can always revisit the structure."</td>
+            </tr>
+            <tr>
+              <td>"I know everyone in this industry. I can open any door."</td>
+              <td><strong>Pin it down politely.</strong> "That's exactly what we need. Can you give us 2-3 specific distributors you'd introduce us to, and what your relationship looks like with them?"</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- WHAT TO SHARE / DON'T SHARE -->
+      <div class="section" id="share">
+        <div class="section-label">What to Share About AWARE</div>
+
+        <div class="two-col">
+          <div class="col-box green-list">
+            <h2>Share</h2>
+            <ul>
+              <li><strong>Tina's background</strong> - scientific-botanical scalp care positioning</li>
+              <li><strong>Traction</strong> - 50+ salons, 96% B2B repurchase [APPROXIMATE - verify before meeting]</li>
+              <li><strong>CanRad partnership</strong> - proof of distribution-readiness, Canadian distributor model</li>
+              <li><strong>Scalp Environment Report</strong> - differentiated lead gen tool for salons</li>
+              <li><strong>The ask</strong> - US regional distributors serving independent salons</li>
+              <li><strong>Category gap</strong> - professional scalp care is underserved vs. haircare</li>
+            </ul>
+          </div>
+          <div class="col-box red-list">
+            <h2>Don't Share</h2>
+            <ul>
+              <li>Detailed unit economics or margin structure</li>
+              <li>Specific revenue figures beyond "6-figure run rate"</li>
+              <li>Names of distributors we're already pursuing</li>
+              <li>Internal pricing strategy or MAP policy details</li>
+              <li>Manufacturing partner details (Boom Labs)</li>
+              <li>Paid advertising budget or DTC channel plans</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="script-box info" style="margin-top: 16px;">
+          <div class="script-label">Leverage Reminder</div>
+          Barry reached out to us. He's looking for clients, and we're looking for a specific type of help. We have the leverage in this conversation. Be warm but don't over-share to impress. Let him prove the value.
+        </div>
+      </div>
+
+      <!-- RED FLAGS / GREEN FLAGS -->
+      <div class="section" id="signals">
+        <div class="section-label">Signals to Watch</div>
+
+        <div class="two-col">
+          <div class="col-box red-list">
+            <h2>Red Flags</h2>
+            <ul>
+              <li>Pushes Amazon or mass retail as primary strategy</li>
+              <li>Vague about actual distributor relationships ("I know people")</li>
+              <li>Wants equity or long-term exclusivity before proving value</li>
+              <li>Can't separate his career credentials from current EBL deliverables</li>
+              <li>No specific examples of brands placed with distributors through EBL</li>
+              <li>Dismisses salon-exclusive positioning as "limiting"</li>
+              <li>Focuses on TikTok Shop / SHOPLINE pitch instead of our stated needs</li>
+              <li>All references are 10+ years old with nothing recent</li>
+              <li>His own brand ("made. for good.") has no salon distribution</li>
+              <li>Can't provide a client reference on request</li>
+            </ul>
+          </div>
+          <div class="col-box green-list">
+            <h2>Green Flags</h2>
+            <ul>
+              <li>Names specific distributors he's worked with recently</li>
+              <li>Has a clear process for brand-distributor matchmaking</li>
+              <li>Understands and respects salon-exclusive positioning</li>
+              <li>Flexible engagement model (performance-based or short-term trial)</li>
+              <li>Asks smart questions about our unit economics and salon sell-through</li>
+              <li>Acknowledges EBL's DTC focus but offers his network separately</li>
+              <li>Can articulate why specific distributors would be right for AWARE</li>
+              <li>References the Woody's playbook as analogous to ours</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- DECISION FRAMEWORK -->
+      <div class="section" id="decision">
+        <div class="section-label">Post-Meeting Decision Framework</div>
+
+        <div class="decision-grid">
+          <div class="decision-cell go">
+            <div class="decision-if">If Ward relationship is warm + he can intro this month</div>
+            <div class="decision-then">Agree on intro terms</div>
+            <div class="decision-detail">Negotiate the intro fee/arrangement on the spot or within 1 week. Prepare our Bassett pitch deck (sell-through data, margin structure, education plan). Ask Barry to set up the call.</div>
+          </div>
+          <div class="decision-cell maybe">
+            <div class="decision-if">If he knows Ward but needs to reconnect / other distributors are stronger</div>
+            <div class="decision-then">Ask for a written proposal</div>
+            <div class="decision-detail">Give him 1 week to send a scope with specific distributor names, timeline, and fee structure. Verify all names independently. Compare against cold outreach.</div>
+          </div>
+          <div class="decision-cell wait">
+            <div class="decision-if">If value is DTC-only but relationship is warm</div>
+            <div class="decision-then">Keep in touch, revisit later</div>
+            <div class="decision-detail">Thank him. Add to network. Circle back when DTC channels are on the roadmap (probably Q3-Q4 2026 at earliest).</div>
+          </div>
+          <div class="decision-cell pass">
+            <div class="decision-if">If vague, asks for equity, or pushes wrong channels</div>
+            <div class="decision-then">Polite pass</div>
+            <div class="decision-detail">"We appreciate your time. We're going to focus on building our salon base first and may reach out down the road." No follow-up needed.</div>
+          </div>
+        </div>
+
+        <div class="section-sublabel">Distributor Economics - Know These Cold</div>
+
+        <div class="info-grid four-col" style="margin-bottom: 1px;">
+          <div class="info-card">
+            <div class="info-label">Direct to Salon (Current)</div>
+            <div class="info-value good">~50% Margin</div>
+            <div class="info-detail">On a $100 MSRP product, AWARE sells direct to salon at ~$50 wholesale. No middleman. Full margin. Requires AWARE to handle all sales, education, and fulfillment.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Through Distributor</div>
+            <div class="info-value amber">~33-38% Margin</div>
+            <div class="info-detail">Distributor buys at ~$32.50-$37.50 (33-38% of MSRP). They sell to salon at ~$50. Distributor takes ~$12-17 per unit as their margin. Standard indie distributor take is 15-20% on top of their cost.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Margin Breakeven Volume</div>
+            <div class="info-value amber">~200 units/month</div>
+            <div class="info-detail">At &lt;200 units/month, the margin hit (~$12-17/unit) isn't justified by the volume gain. At 200+ units across a distributor's territory, total revenue exceeds what direct-to-salon could achieve at current scale.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Barry's Intro Fee</div>
+            <div class="info-value amber">Commission Model Ideal</div>
+            <div class="info-detail">If commission-based: 5-10% of first-year distributor orders is standard for a connector. On $100K of Bassett orders year 1, that's $5-10K to Barry. Retainer should only apply if he's actively managing the relationship ongoing.</div>
+          </div>
+        </div>
+
+        <div class="callout callout-amber">
+          <div class="callout-title">The Margin Math In Full</div>
+          <div class="callout-body">
+            <strong>Scenario: Bassett places AWARE with 50 salons in their territory.</strong> Average salon reorder: 10 units/month at $50 wholesale. That's $500/salon/month, or <strong>$25,000/month total</strong> ($300K/year). At 33% margin (distributor model), AWARE nets ~$10-12K/month from Bassett alone - less per unit than direct, but volume-driven. Compare: 50 new direct salons at the same rate = $25K/month at 50% margin ($12.5K net). The distributor path gives you slightly less per unit but costs far less in sales effort. At scale, the distributor model wins. <strong>The question is whether Barry can actually get you to 50 Bassett salons.</strong>
+          </div>
+        </div>
+
+        <div class="section-sublabel">What Bassett Will Need to Say Yes</div>
+        <table class="rebuttal-table" style="margin-top: 0;">
+          <thead>
+            <tr>
+              <th style="width:25%">Requirement</th>
+              <th>What They'll Ask</th>
+              <th>What to Have Ready</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Sell-Through Proof</strong></td>
+              <td>"What's the velocity at salons that carry you? Do clients reorder, or does it sit on the shelf?"</td>
+              <td>96% B2B repurchase rate. Average reorder cadence. Any salon that's been with AWARE 6+ months and can speak to client demand. This is your strongest card.</td>
+            </tr>
+            <tr>
+              <td><strong>Margin Structure</strong></td>
+              <td>"What's your wholesale price to us, and what's the MSRP? Can we make 40-50% margin?"</td>
+              <td>Know your distributor price (not salon wholesale - they're different). Bassett needs ~40-50% margin on their cost to justify carrying you. Work backward from MSRP before the meeting.</td>
+            </tr>
+            <tr>
+              <td><strong>Minimum Orders</strong></td>
+              <td>"What's the opening order minimum? What's reorder minimum?"</td>
+              <td>Have a number. Opening orders for a new brand at a distributor typically run $500-2,000 in product. Too high kills the conversation. Too low signals you don't understand their economics. ~$800-1,200 opening is realistic.</td>
+            </tr>
+            <tr>
+              <td><strong>Education Support</strong></td>
+              <td>"Do you have education materials? Will you support our reps with training?"</td>
+              <td>The Scalp Environment Report is your education tool. Show how it trains stylists AND generates client demand. Distributors love brands that make their reps look smart - tools that sell the category, not just the product.</td>
+            </tr>
+            <tr>
+              <td><strong>Marketing Support</strong></td>
+              <td>"What are you putting behind this brand? We can't carry brands that don't invest in pull-through."</td>
+              <td>Scalp Report drives inbound leads. CanRad as proof of distributor marketing model. Don't commit to co-op ad budgets you don't have yet - say "we build pull-through with education tools, not advertising."</td>
+            </tr>
+            <tr>
+              <td><strong>Exclusivity</strong></td>
+              <td>"Will you give us exclusivity in our territory?"</td>
+              <td>Prepare your answer: limited exclusivity (Western US for 12 months with performance targets) is reasonable. Lifetime exclusivity with no volume commitment is not. If they want exclusivity, they should guarantee minimum annual orders.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-blue" style="margin-top: 16px;">
+          <div class="callout-title">Negotiation Posture with Bassett (If Barry Gets You the Intro)</div>
+          <div class="callout-body">
+            Enter the Bassett conversation as a brand with options, not a brand begging for shelf space. You have CanRad proving the distributor model works. You have a 96% reorder rate proving the product sells. <strong>Your ask: "We're looking for a distribution partner who wants to own the professional scalp category in the West. Is that Bassett?"</strong> Category ownership framing is more compelling than "please carry our SKUs."
+          </div>
+        </div>
+      </div>
+
+      <!-- PRE-MEETING CHECKLIST -->
+      <div class="section">
+        <div class="section-label">Before the Meeting</div>
+        <div class="entity-map">
+          <div class="entity-row">
+            <div class="entity-label-cell">Verify</div>
+            <div class="entity-content-cell">
+              <strong>Pull live traction numbers from Shopify</strong>
+              <div class="entity-detail">Salon count, revenue, repurchase rate. Don't quote approximate numbers from CLAUDE.md.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Prepare</div>
+            <div class="entity-content-cell">
+              <strong>1-minute brand story for Barry</strong>
+              <div class="entity-detail">Tina's background, the scalp care category, why salon-exclusive, the traction so far. Crisp and confident.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Know</div>
+            <div class="entity-content-cell">
+              <strong>CanRad partnership details</strong>
+              <div class="entity-detail">What the arrangement looks like, what's working, what you'd replicate domestically. Barry will ask.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Know</div>
+            <div class="entity-content-cell">
+              <strong>Bassett Salon Solutions portfolio</strong>
+              <div class="entity-detail">They carry Zenagen and DEPOT in scalp/grooming. Premium brands like Davines, Evo, Keune. 9 Western states. ~$15M revenue. Shows Barry we've done homework.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Skim</div>
+            <div class="entity-content-cell">
+              <strong>Barry's recent LinkedIn posts</strong>
+              <div class="entity-detail">Good for conversation starters and understanding his current focus. Check what he's been posting about - DTC content or B2B distribution?</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Mindset</div>
+            <div class="entity-content-cell">
+              <strong>We're evaluating him, not selling to him</strong>
+              <div class="entity-detail">He reached out to us. We have the leverage. Be curious, not eager. Ask more than you answer.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================ -->
+      <!-- CONVERSATION SIMULATIONS                     -->
+      <!-- ============================================ -->
+      <div class="section" id="simulations">
+        <div class="section-label">Conversation Simulations</div>
+
+        <div class="script-box info" style="margin-bottom: 24px;">
+          <div class="script-label">How to Use These</div>
+          Each scenario shows Barry's likely opening, then two response options - a stronger one and a weaker one. Read through before the meeting. The stronger responses share a pattern: they acknowledge Barry, then redirect to specifics. The weaker responses reveal too much, lose leverage, or let Barry control the frame.
+        </div>
+
+        <!-- SIM 1: The Opening - Does He Lead DTC or B2B? -->
+        <div class="sim-scenario">
+          <div class="sim-header">
+            <div class="sim-title">Scenario 1: The Opening Pitch</div>
+            <span class="sim-tag tag-likely">Most Likely</span>
+          </div>
+          <div class="sim-context">
+            After initial pleasantries, Barry launches into his pitch. This is the most revealing moment - what he leads with tells you where his head is.
+          </div>
+          <div class="sim-dialogue">
+            <div class="sim-turn barry">
+              <div class="sim-speaker">Barry</div>
+              <div class="sim-text">"So look, I've been in this industry over 30 years. I built Woody's from nothing and sold it to AII. Now with EBL, we're doing incredible things with social commerce - TikTok Shop, Amazon, the whole DTC play. I looked at AWARE and honestly, you guys are sitting on a goldmine. The scalp care category is exploding and you're not even on Amazon yet. I think we could 10x your DTC revenue in 12 months."</div>
+            </div>
+            <div class="sim-divider">Stronger Response</div>
+            <div class="sim-turn david">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"That's generous, and your track record speaks for itself. We actually get approached about DTC channels pretty regularly. Where we're really focused right now - and honestly where we think the bigger unlock is - is professional distribution. Tina mentioned you know Ward Bassett? That's the kind of conversation we're most excited about. Can you tell us about that relationship?"</div>
+              <div class="sim-annotation"><strong>Why this works:</strong> Compliments him, shows you're not naive about DTC, then pivots to the specific value you need. Mentioning Tina's pre-call signals you've done prep. Asking about Bassett immediately forces specifics over generalities.</div>
+            </div>
+            <div class="sim-divider">Weaker Response</div>
+            <div class="sim-turn david-weak">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"Yeah, we've thought about Amazon a lot. We're just worried about brand dilution and MAP enforcement. What would your approach be to protecting our salon-exclusive positioning while also being on Amazon?"</div>
+              <div class="sim-annotation"><strong>Why this fails:</strong> You've now spent the next 15 minutes in Barry's comfort zone (DTC) instead of yours (B2B distribution). You're also revealing strategic concerns he can "solve" with a packaged service pitch. You've lost control of the conversation frame.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIM 2: Probing the Bassett Relationship -->
+        <div class="sim-scenario">
+          <div class="sim-header">
+            <div class="sim-title">Scenario 2: Testing the Bassett Relationship</div>
+            <span class="sim-tag tag-critical">Critical Moment</span>
+          </div>
+          <div class="sim-context">
+            You've steered to Bassett. Now Barry responds. His answer here determines whether there's real B2B value or just a name drop.
+          </div>
+          <div class="sim-dialogue">
+            <div class="sim-turn barry">
+              <div class="sim-speaker">Barry - Version A (Warm)</div>
+              <div class="sim-text">"Ward and I go way back - we were both at industry events in the early 2000s. I actually helped connect him with a couple brands when he was first building Bassett. I had dinner with him last month at Premiere Orlando. He's always looking for brands that bring something different to the scalp category."</div>
+            </div>
+            <div class="sim-divider">Stronger Response</div>
+            <div class="sim-turn david">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"That's great to hear. We actually looked into Bassett's portfolio - they carry Zenagen and DEPOT in the scalp space, plus premium brands like Davines and Evo. We think there's a clear lane for AWARE alongside those. If you set up an intro, what would that look like? Would you be presenting with us or making a warm handoff?"</div>
+              <div class="sim-annotation"><strong>Why this works:</strong> Demonstrates you've done homework on Bassett (builds credibility with Barry), positions AWARE alongside brands he'll recognize, and asks the operational question that reveals Barry's actual role - connector vs. advocate.</div>
+            </div>
+            <div class="sim-divider">Watch For This Version</div>
+            <div class="sim-turn barry">
+              <div class="sim-speaker">Barry - Version B (Vague)</div>
+              <div class="sim-text">"Yeah, I mean, I know Ward. I know a lot of the distributors out here. The beauty of what I do is I can pick up the phone and get you in front of any of them. It's all about relationships in this business."</div>
+            </div>
+            <div class="sim-divider">Stronger Response</div>
+            <div class="sim-turn david">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"Totally agree - relationships are everything. Help me get specific though: when was the last time you spoke with Ward? And beyond Bassett, who are the other two or three distributors you'd connect us with? We're trying to map out our first three conversations."</div>
+              <div class="sim-annotation"><strong>Why this works:</strong> Friendly but pins him down. "When was the last time" tests recency. Asking for 2-3 names tests depth. The framing ("map out our first three") makes it a reasonable ask, not an interrogation.</div>
+            </div>
+            <div class="sim-divider">Weaker Response</div>
+            <div class="sim-turn david-weak">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"That's awesome. Yeah, we'd love to get in front of distributors. Whatever you think makes sense, we're open."</div>
+              <div class="sim-annotation"><strong>Why this fails:</strong> You've accepted a vague promise at face value and handed Barry the steering wheel. "Whatever you think" gives him license to pitch his DTC services as "what makes sense." You need names, timelines, and process - not vibes.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIM 3: The Engagement / Fee Negotiation -->
+        <div class="sim-scenario">
+          <div class="sim-header">
+            <div class="sim-title">Scenario 3: Fee Structure and Equity Ask</div>
+            <span class="sim-tag tag-critical">Critical Moment</span>
+          </div>
+          <div class="sim-context">
+            The conversation has gone well. Barry sees an opportunity and now wants to discuss terms. This is where the dynamics shift.
+          </div>
+          <div class="sim-dialogue">
+            <div class="sim-turn barry">
+              <div class="sim-speaker">Barry</div>
+              <div class="sim-text">"Here's what I'm thinking. I really believe in what you guys are building. Usually for something like this, I'd want some equity in the deal - even just 1-2%. That way I'm fully invested in your success. My skin is in the game. I've done this with other brands and it aligns incentives perfectly."</div>
+            </div>
+            <div class="sim-divider">Stronger Response</div>
+            <div class="sim-turn david">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"We appreciate the confidence - it says a lot that you'd want equity. We're not at a stage where we're doing equity partnerships though. What we'd love to explore is a performance-based structure - maybe a commission on the first year of orders from distributors you introduce us to. That way your upside is directly tied to placements that work. Would that be interesting to you?"</div>
+              <div class="sim-annotation"><strong>Why this works:</strong> Reframes equity as a compliment (not a rejection), immediately offers an alternative that's performance-aligned. Commission on distributor introductions means Barry only earns when he delivers real value. It also naturally caps your exposure.</div>
+            </div>
+            <div class="sim-divider">Weaker Response</div>
+            <div class="sim-turn david-weak">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"Hmm, equity is tough. We'd have to think about it. How much equity are you talking about? And what would that look like legally?"</div>
+              <div class="sim-annotation"><strong>Why this fails:</strong> You've opened a negotiation on equity by asking "how much." Now you're in a conversation about cap tables and legal structure instead of whether Barry can actually deliver distributor placements. The correct move is to close the equity door and open the performance door.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIM 4: "Why Should I Take On Another Small Brand?" -->
+        <div class="sim-scenario">
+          <div class="sim-header">
+            <div class="sim-title">Scenario 4: "You're Still Too Small"</div>
+            <span class="sim-tag tag-likely">Most Likely</span>
+          </div>
+          <div class="sim-context">
+            Barry tests your brand's readiness - either because he genuinely wants to assess distribution-readiness, or because he's positioning himself as the bridge you need.
+          </div>
+          <div class="sim-dialogue">
+            <div class="sim-turn barry">
+              <div class="sim-speaker">Barry</div>
+              <div class="sim-text">"I'll be honest with you - distributors get pitched by 50 brands a month. You guys are still early. What's your sell-through data look like? Because Ward isn't going to take a meeting unless there's something that makes AWARE stand out from the other 49 brands."</div>
+            </div>
+            <div class="sim-divider">Stronger Response</div>
+            <div class="sim-turn david">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"That's exactly the right question, and it's why we're being selective about distribution. Here's what we'd bring to that conversation: 96% B2B repurchase rate across 50+ salons - that's not trial, that's reorder. We have a Canadian distributor, CanRad, already onboarded. And the Scalp Environment Report is a lead gen tool that no other scalp brand offers - it gives salons a reason to talk about scalp care with every client. The category itself is underserved in the pro channel. We're not competing with the 49 haircare brands - we're opening a new conversation."</div>
+              <div class="sim-annotation"><strong>Why this works:</strong> Doesn't get defensive about being "small." Leads with the metric that matters most to distributors (repurchase rate), cites a real distributor relationship (CanRad), and differentiates with the Scalp Report tool. The last line reframes from "small brand competing for shelf space" to "category creator."</div>
+            </div>
+            <div class="sim-divider">Weaker Response</div>
+            <div class="sim-turn david-weak">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"Yeah, we know we're early. That's kind of why we're talking to you - we need help getting to that next level. What do you think we need to do to be ready?"</div>
+              <div class="sim-annotation"><strong>Why this fails:</strong> You've positioned yourself as the student and Barry as the expert evaluating you. This flips the power dynamic completely. He now has license to prescribe his services as the solution to your "readiness" gap. You came in with leverage (he reached out to you) and just gave it away.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIM 5: The Omnichannel Push -->
+        <div class="sim-scenario">
+          <div class="sim-header">
+            <div class="sim-title">Scenario 5: "Salon-Exclusive Is Limiting You"</div>
+            <span class="sim-tag tag-opportunity">Opportunity</span>
+          </div>
+          <div class="sim-context">
+            Barry pushes back on your channel strategy. This is either a genuine strategic disagreement or a setup to sell DTC services. Either way, it's a chance to demonstrate conviction.
+          </div>
+          <div class="sim-dialogue">
+            <div class="sim-turn barry">
+              <div class="sim-speaker">Barry</div>
+              <div class="sim-text">"Look, I respect the salon-exclusive thing, but honestly? You're leaving money on the table. The brands that win today are everywhere - Amazon, TikTok, DTC, wholesale. You can't build a real business on salons alone. I've seen it a hundred times - brands that stay too narrow die slow."</div>
+            </div>
+            <div class="sim-divider">Stronger Response</div>
+            <div class="sim-turn david">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"I hear you, and I think there's a version of the future where we're in more channels. But look at how you built Woody's - you started in barbershops and salons, built the credibility there, and then AII took it wider after the acquisition. That sequencing is exactly our playbook. We want the professional stamp of approval before we go broader. It's also what distributors like Bassett value - they don't want brands that are competing with their own salons on Amazon."</div>
+              <div class="sim-annotation"><strong>Why this works:</strong> Uses Barry's own success story as the proof point for your strategy. This is almost impossible to argue against without contradicting his own career. Then ties it back to what distributors value, which keeps the conversation in B2B territory. The Amazon/salon conflict point is something Barry knows is real.</div>
+            </div>
+            <div class="sim-divider">Weaker Response</div>
+            <div class="sim-turn david-weak">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"We've actually been debating that internally. Maybe you're right that we should be thinking about Amazon sooner. What would it cost to get set up?"</div>
+              <div class="sim-annotation"><strong>Why this fails:</strong> You've just undermined your own strategy in front of someone who sells the alternative. Saying "maybe you're right" gives Barry the opening to spend the rest of the meeting selling DTC services. You came for distributor intros and left with an Amazon proposal.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIM 6: Closing and Next Steps -->
+        <div class="sim-scenario">
+          <div class="sim-header">
+            <div class="sim-title">Scenario 6: Closing - Getting to a Concrete Next Step</div>
+            <span class="sim-tag tag-opportunity">Opportunity</span>
+          </div>
+          <div class="sim-context">
+            The meeting has gone well. Barry has named distributors, the Bassett relationship seems warm, and there's genuine potential. Now close with a specific, time-bound next step.
+          </div>
+          <div class="sim-dialogue">
+            <div class="sim-turn barry">
+              <div class="sim-speaker">Barry</div>
+              <div class="sim-text">"This has been great. I think there's a real opportunity here. Let me go back and talk to a few people and I'll circle back with you. I'm excited about this."</div>
+            </div>
+            <div class="sim-divider">Stronger Response</div>
+            <div class="sim-turn david">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"We're excited too. Let's put some structure on the next step so we don't lose momentum. Could you send us a short list of the distributors you'd introduce us to - names, territories, and your relationship with each - by end of this week? On our side, we'll put together the sell-through summary and brand deck that a distributor would want to see. Then we reconnect next week to align on who to approach first and what the engagement looks like. Sound good?"</div>
+              <div class="sim-annotation"><strong>Why this works:</strong> Converts vague enthusiasm into a specific deliverable with a deadline. You're also committing to your own action item (brand deck), which shows you're serious and keeps it reciprocal. The "reconnect next week" creates a natural checkpoint to evaluate whether he follows through.</div>
+            </div>
+            <div class="sim-divider">Weaker Response</div>
+            <div class="sim-turn david-weak">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"Sounds great, Barry. Yeah, just let us know when you've had those conversations. We're flexible on timing."</div>
+              <div class="sim-annotation"><strong>Why this fails:</strong> "Let us know" and "we're flexible" is how meetings die. No deadline, no deliverable, no checkpoint. Barry will "circle back" in 3 weeks with a DTC proposal because there was no commitment to the B2B path. You lose all the momentum from a good conversation.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+        <!-- SIM 7: He Asks About Revenue Directly -->
+        <div class="sim-scenario">
+          <div class="sim-header">
+            <div class="sim-title">Scenario 7: "What Are You Doing in Revenue Right Now?"</div>
+            <span class="sim-tag tag-likely">Most Likely</span>
+          </div>
+          <div class="sim-context">
+            Barry needs to qualify you as a viable client. This is a natural question. Your answer needs to convey momentum without revealing a number that anchors negotiations or signals weakness.
+          </div>
+          <div class="sim-dialogue">
+            <div class="sim-turn barry">
+              <div class="sim-speaker">Barry</div>
+              <div class="sim-text">"Before we go further - where are you guys right now revenue-wise? I need to understand the size of the opportunity. Are you doing $500K? $1M? What's the run rate?"</div>
+            </div>
+            <div class="sim-divider">Stronger Response</div>
+            <div class="sim-turn david">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"We're at a six-figure run rate, entirely B2B, with 96% reorder from our salon partners. We haven't chased volume - we've been building the foundation: product-market fit, the education system, the CanRad distributor model. We're now at the stage where scaling distribution makes sense. The revenue isn't the story - the reorder rate is. A salon that reorders at 96% is a salon that's selling through to clients."</div>
+              <div class="sim-annotation"><strong>Why this works:</strong> Gives him something real without anchoring on a small number. Immediately redirects to the metric that matters - reorder rate. Explains the stage you're at without sounding apologetic. And it shows strategic discipline: you could have chased volume, you chose to build the foundation first.</div>
+            </div>
+            <div class="sim-divider">Weaker Response</div>
+            <div class="sim-turn david-weak">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"We're around $125K annualized right now. We know that's not huge but we're growing. It's been hard to scale without distribution."</div>
+              <div class="sim-annotation"><strong>Why this fails:</strong> "$125K" becomes the number Barry hears. For a 30-year industry vet, that reads as very early-stage. The qualifier "we know that's not huge" immediately signals insecurity. And "hard to scale without distribution" is exactly the desperation framing that costs you leverage. Never explain away your own number.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIM 8: He Name-Drops Other Brands He's Working With -->
+        <div class="sim-scenario">
+          <div class="sim-header">
+            <div class="sim-title">Scenario 8: "I'm Currently Working with [Brand X] and [Brand Y]"</div>
+            <span class="sim-tag tag-likely">Most Likely</span>
+          </div>
+          <div class="sim-context">
+            Barry validates his current relevance by naming brands he's working with. This is partly genuine credential-building, partly a test of whether you know the industry well enough to react intelligently.
+          </div>
+          <div class="sim-dialogue">
+            <div class="sim-turn barry">
+              <div class="sim-speaker">Barry</div>
+              <div class="sim-text">"Right now I'm working with a couple of brands - one in color, one in men's grooming - helping them with distribution and DTC. These are real businesses doing real numbers. I know what it takes to get brands to the next level."</div>
+            </div>
+            <div class="sim-divider">Stronger Response</div>
+            <div class="sim-turn david">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"That's great context. Can you share which brands? We want to make sure there's no channel or positioning overlap - we're salon-exclusive scalp care, which is a pretty distinct category. Also, hearing how you've structured those engagements would help us think about what makes sense for AWARE."</div>
+              <div class="sim-annotation"><strong>Why this works:</strong> Asking for names does two things: tests whether the relationships are real (vague answers = name-dropping), and legitimately surfaces potential conflicts. Framing it as "no overlap" makes it a friendly due diligence question rather than a challenge. You also learn his engagement model from his own examples.</div>
+            </div>
+            <div class="sim-divider">Weaker Response</div>
+            <div class="sim-turn david-weak">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"That's impressive. So you've got real experience doing this. That gives us confidence that you know the landscape."</div>
+              <div class="sim-annotation"><strong>Why this fails:</strong> You've accepted unverified credentials at face value and handed Barry authority he hasn't earned in this conversation. You now sound like a junior founder who's impressed by experience rather than a serious operator who needs to know specifics. Always ask for names.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIM 9: Surprise Guest / He Brings Someone -->
+        <div class="sim-scenario">
+          <div class="sim-header">
+            <div class="sim-title">Scenario 9: He Brings Someone to the Call</div>
+            <span class="sim-tag tag-opportunity">Be Ready</span>
+          </div>
+          <div class="sim-context">
+            Barry may bring a partner, a rep from NPV (his investor), or even a distributor contact to the first call. This changes the dynamic - more social proof for him, more complexity for you.
+          </div>
+          <div class="sim-dialogue">
+            <div class="sim-turn barry">
+              <div class="sim-speaker">Barry</div>
+              <div class="sim-text">"Hope you don't mind - I brought [Name], who I've been working with for years. They know the distribution landscape really well and I thought they'd add to the conversation."</div>
+            </div>
+            <div class="sim-divider">Stronger Response</div>
+            <div class="sim-turn david">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"Great to have you - welcome. Quick question before we dive in: what's your role in relation to Barry and EBL? We want to make sure we understand who's in the room."</div>
+              <div class="sim-annotation"><strong>Why this works:</strong> Friendly but immediately establishes clarity. You need to know if this is a partner (implies a shared engagement cost), a distributor contact (potentially great news), or a sales closer Barry uses. Don't proceed without understanding who you're talking to. "Who's in the room" is a professional question, not rude.</div>
+            </div>
+            <div class="sim-divider">Scenario: It's Ward Bassett</div>
+            <div class="sim-turn david">
+              <div class="sim-speaker">David / Tina (if it's Bassett or a distributor)</div>
+              <div class="sim-text">"Ward - fantastic to meet you. We've actually done a lot of research on Bassett Salon Solutions and have been hoping to have this conversation. We know you carry Zenagen and DEPOT in the scalp space - we think AWARE fills a complementary gap in that portfolio. We'd love to show you why."</div>
+              <div class="sim-annotation"><strong>Why this works:</strong> If Barry surprises you with the actual distributor contact, don't be flustered - be ready. Showing that you know Bassett's portfolio immediately signals you're not wasting their time. Having the "portfolio gap" argument ready (from the competitive positioning section above) is exactly why prep matters.</div>
+            </div>
+            <div class="sim-divider">Weaker Response</div>
+            <div class="sim-turn david-weak">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"Oh great, no problem at all! The more the merrier. So, Barry, should we just pick up where we left off?"</div>
+              <div class="sim-annotation"><strong>Why this fails:</strong> You've skipped establishing who the new person is and what their role means for the conversation. If it's a distributor contact, you've missed the moment to lead with your prepared pitch. If it's a business partner, you don't know if they're evaluating you too. Always clarify who's in the room.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIM 10: He Asks What You'd Pay Him -->
+        <div class="sim-scenario">
+          <div class="sim-header">
+            <div class="sim-title">Scenario 10: "What Are You Thinking in Terms of Compensation?"</div>
+            <span class="sim-tag tag-critical">Critical Moment</span>
+          </div>
+          <div class="sim-context">
+            Barry turns the compensation question back on you. Whether this is a power move or genuine curiosity, letting him anchor the number is a mistake. But so is going first with a low number.
+          </div>
+          <div class="sim-dialogue">
+            <div class="sim-turn barry">
+              <div class="sim-speaker">Barry</div>
+              <div class="sim-text">"So what are you thinking this looks like for me? You've got a sense of what you need - what were you imagining in terms of how we'd work together financially?"</div>
+            </div>
+            <div class="sim-divider">Stronger Response</div>
+            <div class="sim-turn david">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"We're open on structure because it depends on what the engagement looks like. If it's focused on distributor introductions - specifically getting us into 2-3 conversations with regional distributors in the next 60 days - we'd want a performance-based model: commission on the first year of orders from any distributor you introduce us to. Something in the range of 5-8%. We'd also cover a modest project fee to formalize the scope. But before we get into numbers, we want to make sure we're aligned on what the specific deliverables are. What's your thinking?"</div>
+              <div class="sim-annotation"><strong>Why this works:</strong> Refuses to anchor first with a single number. Defines the scope before committing to compensation (smart - the compensation should follow the scope). Proposes a reasonable range (5-8% commission) that's fair but not excessive. Then deflects back to Barry for his view. Performance-based keeps incentives aligned.</div>
+            </div>
+            <div class="sim-divider">Weaker Response</div>
+            <div class="sim-turn david-weak">
+              <div class="sim-speaker">David / Tina</div>
+              <div class="sim-text">"We were thinking maybe $1,500-2,000 a month? We're a small brand so budget is tight. We could do a three-month trial."</div>
+              <div class="sim-annotation"><strong>Why this fails:</strong> You've anchored low and led with budget constraints, which immediately signals limited capacity. A retainer framing also creates an incentive problem - Barry gets paid whether or not he delivers. The 3-month trial sounds sensible but without specific deliverables defined, it's three months of paying for enthusiasm. Never anchor first, and never lead with "budget is tight."</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ============================================ -->
+      <!-- POST-MEETING ACTION PLAYBOOK                 -->
+      <!-- ============================================ -->
+      <div class="section" id="followup">
+        <div class="section-label">Post-Meeting Action Playbook</div>
+
+        <div class="script-box info" style="margin-bottom: 20px;">
+          <div class="script-label">Why Speed Matters</div>
+          The 24 hours after this meeting are the highest-leverage window. Barry is warm, the conversation is fresh, and specific follow-up signals that AWARE operates like a real business. Generic "great to meet you" emails lose the momentum. Every template below is designed to move something forward or close something cleanly.
+        </div>
+
+        <div class="section-sublabel">Outcome A: Warm Bassett Relationship - He Can Intro This Month</div>
+        <div class="callout callout-green">
+          <div class="callout-title">Same-Day Action: Capture the Commitment</div>
+          <div class="callout-body">
+            Before the call ends: get a specific next step on the calendar. "Can we say you'll make that intro to Ward by [date]? And then we reconnect the week after to debrief?" A verbal commitment with a date is far more durable than "I'll be in touch."
+          </div>
+        </div>
+        <div class="script-box success" style="margin-top: 12px;">
+          <div class="script-label">Follow-Up Email - Outcome A (Send Within 2 Hours)</div>
+          Barry,<br><br>
+          Great conversation today - really appreciate you making the time. Based on what we discussed, here's how I'm thinking about next steps:<br><br>
+          <strong>Your side:</strong> Introduction to Ward Bassett by [DATE]. We're happy for you to frame it however makes sense given your relationship - a quick email or a three-way call, whatever feels natural.<br><br>
+          <strong>Our side:</strong> We'll put together a concise brand summary for Ward - sell-through data, margin structure, education overview. We'll have that to you by [DATE] so you can share it ahead of or alongside the intro.<br><br>
+          We then reconnect the week of [DATE] to debrief on how the intro landed and talk about next steps with Bassett.<br><br>
+          Does that timeline work for you? And does Ward prefer email or phone for a first reach-out?<br><br>
+          Looking forward to moving this forward.
+        </div>
+
+        <div class="section-sublabel" style="margin-top: 24px;">Outcome B: He Needs to Reconnect / Asks for Proposal Time</div>
+        <div class="callout callout-amber">
+          <div class="callout-title">Give a Deadline or It Disappears</div>
+          <div class="callout-body">
+            "I'll put something together" without a deadline becomes "let me know when you have capacity." Give him a week - it's reasonable and it keeps the momentum alive. If he misses it, that's information too.
+          </div>
+        </div>
+        <div class="script-box" style="margin-top: 12px;">
+          <div class="script-label">Follow-Up Email - Outcome B (Send Within 2 Hours)</div>
+          Barry,<br><br>
+          Thanks for the conversation today. It's clear you have deep relationships in this channel and we think there's a real fit.<br><br>
+          Based on our discussion, it would be helpful to see a short written scope from you: which 2-3 distributors you'd engage, your relationship with each, the timeline, and how you'd structure the engagement. That gives us something concrete to work from on our end.<br><br>
+          Could you send that over by [ONE WEEK FROM TODAY]? We want to move quickly - we have a few other distributor paths we're exploring and we'd rather work with someone who knows Ward than go in cold.<br><br>
+          Thanks again.
+        </div>
+        <div class="callout callout-amber" style="margin-top: 8px;">
+          <div class="callout-title">Note: "We have other paths" Is True and Worth Saying</div>
+          <div class="callout-body">
+            This is not a bluff - you do have other distributor paths you can pursue (cold outreach, CanRad referrals, trade show introductions). Mentioning it creates urgency without being aggressive. Barry's value is the warm intro; if he delays, that value decreases.
+          </div>
+        </div>
+
+        <div class="section-sublabel" style="margin-top: 24px;">Outcome C: DTC-Only Value / Not a Current Fit</div>
+        <div class="script-box caution" style="margin-top: 0;">
+          <div class="script-label">Follow-Up Email - Outcome C (Send Within 24 Hours - Warm Close)</div>
+          Barry,<br><br>
+          Really enjoyed the conversation today. Your track record in professional beauty is impressive, and it's clear you've built something real with EBL.<br><br>
+          Based on where we are right now, our focus is squarely on building the professional distribution channel - salons are our engine and we want to keep that tight for the next 12-18 months before we expand channels. The DTC and social commerce capabilities you've built are genuinely interesting, but they're not the right fit for us at this stage.<br><br>
+          If your distributor network opens up, or if you're working on B2B placements down the road, we'd love to reconnect. And if you hear of any independent salon distributors looking to expand their scalp care offering, please think of us.<br><br>
+          Thanks for your time.
+        </div>
+
+        <div class="section-sublabel" style="margin-top: 24px;">Outcome D: Red Flags / Pass</div>
+        <div class="script-box caution" style="margin-top: 0;">
+          <div class="script-label">Follow-Up Email - Outcome D (Send Within 24 Hours - Clean Exit)</div>
+          Barry,<br><br>
+          Thanks for taking the time today. It's clear you have deep experience in this industry and genuine enthusiasm for building brands.<br><br>
+          After reflecting on the conversation, we don't think the fit is there for us right now. We're at a stage where we need a very specific kind of help - regional distributor introductions with hands-on advocacy - and the engagement structure we'd need doesn't align with EBL's current offering.<br><br>
+          We appreciate you thinking of AWARE and wish you and EBL continued success.<br><br>
+          Best,
+        </div>
+        <div class="callout callout-red" style="margin-top: 8px;">
+          <div class="callout-title">On the Pass Email: Short Is Kind</div>
+          <div class="callout-body">
+            Don't over-explain a pass. Long explanations invite rebuttals. The shorter the pass email, the cleaner the close. If Barry follows up asking why, a single line suffices: "We've decided to pursue a different path for distribution right now." No need to elaborate.
+          </div>
+        </div>
+
+        <div class="section-sublabel" style="margin-top: 24px;">Internal Debrief - Do This Within the Hour</div>
+        <div class="entity-map">
+          <div class="entity-row">
+            <div class="entity-label-cell">Score the Call</div>
+            <div class="entity-content-cell">
+              <strong>Rate the Bassett relationship 1-5 immediately while it's fresh</strong>
+              <div class="entity-detail">1 = cold name drop, no real connection. 3 = knows Ward, hasn't spoken recently. 5 = warm, spoke within the last 3 months, would advocate for AWARE. This score determines which follow-up email you send and how hard you push for a quick turnaround.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Log Distributor Names</div>
+            <div class="entity-content-cell">
+              <strong>Write down every distributor name he mentioned - immediately</strong>
+              <div class="entity-detail">Research each one within 24 hours: territory, brand portfolio, size, whether they're publicly active in adding new brands. Cross-reference with CanRad's network. This gives you context before any follow-up call and lets you validate whether Barry's relationships are real.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">Flag Red/Green</div>
+            <div class="entity-content-cell">
+              <strong>Note which signals from the Signals section actually appeared</strong>
+              <div class="entity-detail">Tally red vs. green flags from the meeting. More than 3 red flags = pass. 2+ green flags with at least one being distributor-specific = worth pursuing. Update the decision framework with your actual read.</div>
+            </div>
+          </div>
+          <div class="entity-row">
+            <div class="entity-label-cell">What He Didn't Answer</div>
+            <div class="entity-content-cell">
+              <strong>Note any questions he deflected or didn't answer directly</strong>
+              <div class="entity-detail">Did he give a specific timeline when asked? Name a recent placement? Provide a reference? Unanswered questions during the call become follow-up questions in the email or a test in the proposal he sends back. Deflection is data.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================ -->
+      <!-- RED FLAG RESPONSES - THINGS TO NEVER SAY     -->
+      <!-- ============================================ -->
+      <div class="section" id="avoid">
+        <div class="section-label">Phrases That Undermine You</div>
+
+        <div class="script-box caution" style="margin-bottom: 20px;">
+          <div class="script-label">Why This Matters</div>
+          In a meeting with a 30-year industry veteran, certain phrases instantly signal inexperience, desperation, or lack of conviction. Barry has heard every version of "we need help" from brands trying to grow. Your job is to be the brand that doesn't sound like the other 49.
+        </div>
+
+        <div class="avoid-list">
+          <div class="avoid-header">
+            <span>Never Say This</span>
+            <span>Why It Hurts You</span>
+          </div>
+          <div class="avoid-item">
+            <div class="avoid-say">"We really need distribution help - we can't figure it out on our own."</div>
+            <div class="avoid-why">Desperation pricing. You've just told Barry he has all the leverage. He'll price accordingly. You're exploring options, not begging for rescue. Say: "We're evaluating a few paths into distribution and want to understand if your network is the right fit."</div>
+          </div>
+          <div class="avoid-item">
+            <div class="avoid-say">"We're open to anything - whatever you think is best."</div>
+            <div class="avoid-why">Signals you have no strategy. Barry will fill the vacuum with his packaged services (DTC, Amazon). A brand that can't articulate what it wants isn't ready for distribution. Say: "We know exactly what we need - introductions to 2-3 regional distributors serving independent salons."</div>
+          </div>
+          <div class="avoid-item">
+            <div class="avoid-say">"We've been trying to get meetings with distributors but nobody responds."</div>
+            <div class="avoid-why">Tells Barry your brand isn't generating pull - distributors see no demand. This massively weakens your negotiating position. If true, don't volunteer it. Say: "We're being selective about our distribution partnerships - CanRad in Canada was our first, and we want the US partner to be the right fit."</div>
+          </div>
+          <div class="avoid-item">
+            <div class="avoid-say">"How much would it cost for EBL to handle everything for us?"</div>
+            <div class="avoid-why">You've just asked for the full-service pitch. Now Barry will present a $5K-15K/month retainer covering Amazon, TikTok, ads, and distribution bundled together. Unbundle the ask. Say: "We're specifically interested in your distributor relationships. What would a focused introduction arrangement look like?"</div>
+          </div>
+          <div class="avoid-item">
+            <div class="avoid-say">"Tina is the formulator - I handle the business side."</div>
+            <div class="avoid-why">Diminishes Tina's authority in the room. Barry is a men's grooming guy and may default to talking "business" with David. Tina's formulation expertise IS the business differentiator. Say: "Tina built the formulations and leads our salon relationships. She's the reason we have a 96% repurchase rate."</div>
+          </div>
+          <div class="avoid-item">
+            <div class="avoid-say">"We're only doing about $125K right now..."</div>
+            <div class="avoid-why">Never lead with a small number. Revenue is context-dependent - $125K with 96% repurchase and 50+ salons is a different story than $125K struggling. Frame traction, not revenue. Say: "We're at a six-figure run rate with salon reorders driving 96% of B2B revenue."</div>
+          </div>
+          <div class="avoid-item">
+            <div class="avoid-say">"We don't have a sell-through deck or distributor one-sheet yet."</div>
+            <div class="avoid-why">Signals you're not distribution-ready. Even if it's true, don't reveal it before there's an intro on the table. Say: "We're putting together our distributor materials - what does someone like Bassett typically want to see?" (Let Barry tell you what to build - you learn AND avoid admitting a gap.)</div>
+          </div>
+          <div class="avoid-item">
+            <div class="avoid-say">"Maybe you could help us figure out our pricing for distributors."</div>
+            <div class="avoid-why">Pricing is your most sensitive strategic lever. Sharing that you haven't figured it out gives Barry (and eventually distributors) the power to set your margins. Do the math before the meeting. Know your wholesale, distributor, and salon prices cold.</div>
+          </div>
+        </div>
+
+        <div class="callout callout-green" style="margin-top: 20px;">
+          <div class="callout-title">The Frame to Hold</div>
+          <div class="callout-body">
+            Throughout the entire conversation, hold this frame: <strong>"We're a brand that distributors should want. We're choosing who to work with. Barry is one option we're evaluating."</strong> This isn't arrogance - it's the posture that gets you taken seriously. Barry reached out to you, not the other way around. Brands that act chosen get chosen.
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /page -->
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scalp Service Revenue Calculator | AWARE Hair Pro</title>
+    <meta name="description" content="Calculate the annual revenue opportunity from adding scalp consultations and AWARE retail. See how scalp services can increase your retail attach rate by 30-50%.">
+
+    <!-- AWARE Fonts -->
+    <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- PDF Export Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Klaviyo Client-Side SDK -->
+    <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=pk_1bcdfc5f9fa0dde4ab05653e3f64c5ebb5"></script>
+
+    <style>
+        /* ═══════════════════════════════════════════════════════════════
+           AWARE HAIR DESIGN SYSTEM - Scalp Revenue Calculator
+           ═══════════════════════════════════════════════════════════════ */
+
+        :root {
+            /* Colors */
+            --color-background: #f4efe9;
+            --color-text: #102b26;
+            --color-text-secondary: #5a6b68;
+            --color-header-text: #031612;
+
+            --color-button-bg: #113035;
+            --color-button-text: #f4efe9;
+            --color-button-hover: #2a7682;
+
+            --color-border: #bdbfbf;
+            --color-border-light: #e4d9ca;
+            --color-accent: #102b26;
+            --color-success: #478947;
+            --color-warning: #c9842b;
+            --color-danger: #c94444;
+
+            --color-surface-light: #faf8f5;
+            --color-surface-dark: #102b26;
+            --color-overlay: rgba(16, 43, 38, 0.9);
+
+            /* Money colors */
+            --color-money: #1a5a3d;
+            --color-money-light: #e8f5ed;
+            --color-opportunity: #d4af37;
+
+            /* Typography */
+            --font-heading: "orpheuspro", Georgia, "Times New Roman", serif;
+            --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+
+            --weight-normal: 400;
+            --weight-medium: 500;
+            --weight-semibold: 600;
+            --weight-bold: 700;
+
+            /* Spacing */
+            --spacing-1: 4px;
+            --spacing-2: 8px;
+            --spacing-3: 12px;
+            --spacing-4: 16px;
+            --spacing-5: 20px;
+            --spacing-6: 24px;
+            --spacing-8: 32px;
+            --spacing-10: 40px;
+            --spacing-12: 48px;
+
+            /* Animation */
+            --easing: cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-fast: 0.2s;
+            --duration-normal: 0.3s;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(16, 43, 38, 0.05);
+            --shadow-md: 0 4px 12px rgba(16, 43, 38, 0.08);
+            --shadow-lg: 0 8px 24px rgba(16, 43, 38, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: var(--spacing-5);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: var(--spacing-8) 0;
+            border-bottom: 1px solid var(--color-border-light);
+            margin-bottom: var(--spacing-6);
+        }
+
+        .logo {
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .header h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(1.75rem, 5vw, 2.25rem);
+            font-weight: var(--weight-normal);
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .header p {
+            font-family: var(--font-heading);
+            font-style: italic;
+            color: var(--color-text-secondary);
+            font-size: 1.0625rem;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: var(--spacing-6);
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .progress-step {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            font-weight: var(--weight-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: color var(--duration-fast) var(--easing);
+        }
+
+        .progress-step.active {
+            color: var(--color-accent);
+        }
+
+        .progress-step.completed {
+            color: var(--color-success);
+        }
+
+        .progress-bar {
+            height: 2px;
+            background: var(--color-border-light);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--color-accent);
+            transition: width var(--duration-normal) var(--easing);
+        }
+
+        /* Card */
+        .card {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-4);
+            transition: box-shadow var(--duration-normal) var(--easing);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: var(--weight-normal);
+            color: var(--color-header-text);
+            margin-bottom: var(--spacing-5);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+        }
+
+        .step-badge {
+            font-family: var(--font-body);
+            background: var(--color-button-bg);
+            color: var(--color-button-text);
+            font-size: 10px;
+            padding: 3px 10px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: var(--spacing-5);
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: var(--weight-medium);
+            margin-bottom: var(--spacing-2);
+            color: var(--color-text);
+        }
+
+        .label-hint {
+            font-weight: var(--weight-normal);
+            color: var(--color-text-secondary);
+            font-size: 13px;
+            display: block;
+            margin-top: var(--spacing-1);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"] {
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-4);
+            border: 1px solid var(--color-border);
+            background: white;
+            font-size: 16px;
+            font-family: var(--font-body);
+            color: var(--color-text);
+            transition: border-color var(--duration-fast) var(--easing);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        input::placeholder {
+            color: var(--color-text-secondary);
+        }
+
+        .input-prefix {
+            position: relative;
+        }
+
+        .input-prefix input {
+            padding-left: 28px;
+        }
+
+        .input-prefix::before {
+            content: '$';
+            position: absolute;
+            left: var(--spacing-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-secondary);
+            font-size: 16px;
+        }
+
+        .input-suffix {
+            position: relative;
+        }
+
+        .input-suffix input {
+            padding-right: 45px;
+        }
+
+        .input-suffix::after {
+            content: attr(data-suffix);
+            position: absolute;
+            right: var(--spacing-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+
+        /* Slider */
+        .slider-container {
+            position: relative;
+            padding-top: var(--spacing-2);
+        }
+
+        .slider-value {
+            position: absolute;
+            top: -8px;
+            right: 0;
+            font-size: 14px;
+            font-weight: var(--weight-semibold);
+            color: var(--color-accent);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: var(--color-border-light);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--color-button-bg);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform var(--duration-fast) var(--easing);
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--color-button-bg);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Toggle Group */
+        .toggle-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-3);
+        }
+
+        .toggle-option {
+            position: relative;
+        }
+
+        .toggle-option input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .toggle-option label {
+            display: block;
+            padding: var(--spacing-4);
+            text-align: center;
+            border: 1px solid var(--color-border);
+            background: white;
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--easing);
+            font-weight: var(--weight-medium);
+            font-size: 14px;
+        }
+
+        .toggle-option input:checked + label {
+            border-color: var(--color-accent);
+            background: var(--color-surface-dark);
+            color: var(--color-button-text);
+        }
+
+        .toggle-option label:hover {
+            border-color: var(--color-accent);
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: var(--spacing-3);
+            margin-top: var(--spacing-6);
+        }
+
+        .btn {
+            flex: 1;
+            padding: var(--spacing-4) var(--spacing-5);
+            font-size: 14px;
+            font-weight: var(--weight-medium);
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--easing);
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--color-button-bg);
+            color: var(--color-button-text);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-button-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-text);
+            color: var(--color-button-text);
+            border-color: var(--color-text);
+        }
+
+        .btn-success {
+            background: var(--color-success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #3a7a3a;
+        }
+
+        /* Screen visibility */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Staggered List Reveals */
+        .breakdown-row,
+        .comparison-item {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.4s var(--easing), transform 0.4s var(--easing);
+        }
+
+        .breakdown-row.visible,
+        .comparison-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Enhanced Button Hover */
+        .btn-primary {
+            transition: all var(--duration-normal) var(--easing), transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(17, 48, 53, 0.15);
+        }
+
+        .email-input-group .btn {
+            transition: background var(--duration-fast) var(--easing), transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .email-input-group .btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(71, 137, 71, 0.2);
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .screen.active {
+                animation: none;
+            }
+
+            .breakdown-row,
+            .comparison-item {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .btn-primary:hover,
+            .email-input-group .btn:hover {
+                transform: none;
+            }
+        }
+
+        .screen.active {
+            animation: fadeIn 0.4s var(--easing);
+        }
+
+        /* Results Screen */
+        .result-hero {
+            text-align: center;
+            padding: var(--spacing-12) var(--spacing-6);
+            background: var(--color-surface-dark);
+            color: var(--color-background);
+            margin-bottom: var(--spacing-4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(42, 118, 130, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .result-hero > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .result-eyebrow {
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: var(--spacing-3);
+        }
+
+        .result-label {
+            font-family: var(--font-heading);
+            font-size: 1.125rem;
+            font-style: italic;
+            opacity: 0.85;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .result-value {
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 12vw, 4rem);
+            font-weight: var(--weight-normal);
+            letter-spacing: -0.02em;
+            margin-bottom: var(--spacing-2);
+            color: #d4af37;
+            text-shadow: 0 2px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .result-subtitle {
+            font-family: var(--font-body);
+            font-size: 14px;
+            opacity: 0.7;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .result-comparison {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-8);
+            margin-top: var(--spacing-8);
+            padding-top: var(--spacing-6);
+            border-top: 1px solid rgba(244, 239, 233, 0.15);
+        }
+
+        .comparison-item {
+            text-align: center;
+        }
+
+        .comparison-label {
+            font-size: 10px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.6;
+        }
+
+        .comparison-value {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            margin-top: var(--spacing-1);
+        }
+
+        .comparison-value.highlight {
+            color: var(--color-opportunity);
+        }
+
+        /* Key Message Card */
+        .key-message {
+            background: linear-gradient(135deg, #e8f5ed 0%, #d4e8db 100%);
+            border: 1px solid rgba(71, 137, 71, 0.2);
+            padding: var(--spacing-5);
+            margin-bottom: var(--spacing-4);
+            position: relative;
+        }
+
+        .key-message::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--color-success);
+        }
+
+        .key-message-icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: var(--color-success);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-size: 14px;
+            margin-right: var(--spacing-2);
+            vertical-align: middle;
+        }
+
+        .key-message h4 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-weight: var(--weight-normal);
+            color: var(--color-header-text);
+            display: inline;
+            vertical-align: middle;
+        }
+
+        .key-message p {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            margin-top: var(--spacing-3);
+            padding-left: 32px;
+        }
+
+        .key-message .highlight-stat {
+            font-weight: var(--weight-semibold);
+            color: var(--color-money);
+        }
+
+        /* Breakdown Table */
+        .breakdown-card {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            overflow: hidden;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .breakdown-header {
+            padding: var(--spacing-4) var(--spacing-5);
+            background: var(--color-background);
+            font-family: var(--font-body);
+            font-size: 12px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-3) var(--spacing-5);
+            border-bottom: 1px solid var(--color-border-light);
+            font-size: 14px;
+        }
+
+        .breakdown-row:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-row.total {
+            background: var(--color-background);
+            font-weight: var(--weight-semibold);
+        }
+
+        .breakdown-row.opportunity {
+            background: linear-gradient(135deg, #f5ecd4 0%, #ede4c8 100%);
+            font-weight: var(--weight-semibold);
+        }
+
+        .breakdown-label {
+            color: var(--color-text-secondary);
+        }
+
+        .breakdown-value {
+            font-weight: var(--weight-medium);
+        }
+
+        .breakdown-value.negative {
+            color: var(--color-danger);
+        }
+
+        .breakdown-value.positive {
+            color: var(--color-success);
+        }
+
+        .breakdown-value.gold {
+            color: #9a7b2c;
+        }
+
+        /* Assumptions Card */
+        .assumptions-card {
+            background: var(--color-surface-light);
+            border: 1px solid var(--color-border-light);
+            padding: var(--spacing-5);
+            margin-bottom: var(--spacing-4);
+            font-size: 13px;
+        }
+
+        .assumptions-title {
+            font-size: 11px;
+            font-weight: var(--weight-semibold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-3);
+        }
+
+        .assumptions-list {
+            list-style: none;
+            color: var(--color-text-secondary);
+        }
+
+        .assumptions-list li {
+            padding: var(--spacing-1) 0;
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-2);
+        }
+
+        .assumptions-list li::before {
+            content: '*';
+            color: var(--color-accent);
+            font-weight: bold;
+        }
+
+        /* Email Capture */
+        .email-capture {
+            background: var(--color-surface-dark);
+            color: var(--color-background);
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .email-capture h3 {
+            font-family: var(--font-heading);
+            font-size: 1.125rem;
+            font-weight: var(--weight-normal);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .email-capture p {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .email-input-group {
+            display: flex;
+            gap: var(--spacing-2);
+        }
+
+        .email-input-group input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .email-input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .email-input-group input:focus {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .email-input-group .btn {
+            flex: 0 0 auto;
+            padding: var(--spacing-3) var(--spacing-5);
+            background: var(--color-opportunity);
+            color: var(--color-surface-dark);
+        }
+
+        .email-input-group .btn:hover {
+            background: #e5c247;
+        }
+
+        .email-success {
+            display: none;
+            text-align: center;
+            padding: var(--spacing-4);
+            color: var(--color-success);
+            font-weight: var(--weight-medium);
+        }
+
+        .email-success.visible {
+            display: block;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-6);
+        }
+
+        .action-btn {
+            padding: var(--spacing-4);
+            border: 1px solid var(--color-border-light);
+            background: var(--color-surface-light);
+            cursor: pointer;
+            text-align: center;
+            transition: all var(--duration-fast) var(--easing);
+        }
+
+        .action-btn:hover {
+            border-color: var(--color-accent);
+            background: white;
+        }
+
+        .action-btn-icon {
+            font-size: 20px;
+            margin-bottom: var(--spacing-1);
+        }
+
+        .action-btn-label {
+            font-size: 12px;
+            font-weight: var(--weight-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* CTA Banner */
+        .cta-banner {
+            background: linear-gradient(135deg, var(--color-button-bg) 0%, #1a4a50 100%);
+            color: var(--color-background);
+            padding: var(--spacing-6);
+            text-align: center;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .cta-banner h3 {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: var(--weight-normal);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .cta-banner p {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .cta-banner .btn {
+            background: var(--color-opportunity);
+            color: var(--color-surface-dark);
+            display: inline-block;
+            flex: none;
+        }
+
+        .cta-banner .btn:hover {
+            background: #e5c247;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: var(--spacing-8) var(--spacing-6);
+            color: var(--color-text-secondary);
+            font-size: 13px;
+            border-top: 1px solid var(--color-border-light);
+            margin-top: var(--spacing-6);
+        }
+
+        .footer a {
+            color: var(--color-accent);
+            text-decoration: none;
+            transition: opacity var(--duration-fast) var(--easing);
+        }
+
+        .footer a:hover {
+            opacity: 0.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: var(--spacing-4);
+            }
+
+            .result-value {
+                font-size: 2.75rem;
+            }
+
+            .email-input-group {
+                flex-direction: column;
+            }
+
+            .email-input-group .btn {
+                width: 100%;
+            }
+
+            .result-comparison {
+                gap: var(--spacing-6);
+            }
+
+            .toggle-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .email-capture,
+            .action-buttons,
+            .cta-banner,
+            .btn-group,
+            .footer {
+                display: none !important;
+            }
+
+            .result-hero {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">AWARE Hair Pro Tools</div>
+            <h1>Scalp Service Revenue Calculator</h1>
+            <p>Uncover your hidden revenue opportunity</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-steps">
+                <span class="progress-step active" data-step="1">Your Business</span>
+                <span class="progress-step" data-step="2">Current Retail</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 50%"></div>
+            </div>
+        </div>
+
+        <!-- Step 1: Business Basics -->
+        <div class="screen active" id="step1">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="step-badge">Step 1</span>
+                    Your Business
+                </h2>
+
+                <div class="form-group">
+                    <label>Are you a salon owner or individual stylist?</label>
+                    <div class="toggle-group">
+                        <div class="toggle-option">
+                            <input type="radio" name="businessType" id="stylist" value="stylist" checked>
+                            <label for="stylist">Individual Stylist</label>
+                        </div>
+                        <div class="toggle-option">
+                            <input type="radio" name="businessType" id="owner" value="owner">
+                            <label for="owner">Salon Owner</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" id="stylistsGroup" style="display: none;">
+                    <label for="numStylists">How many stylists work at your salon?</label>
+                    <input type="number" id="numStylists" placeholder="5" min="1" value="5">
+                    <span class="label-hint">Include yourself if you take clients</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="clientsPerWeek" id="clientsLabel">Clients per week</label>
+                    <input type="number" id="clientsPerWeek" placeholder="20" min="1" value="20">
+                    <span class="label-hint" id="clientsHint">Your personal weekly client count</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="avgTicket">Average service ticket</label>
+                    <div class="input-prefix">
+                        <input type="number" id="avgTicket" placeholder="125" min="0" value="125">
+                    </div>
+                    <span class="label-hint">Your typical service price</span>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="goToStep(2)">Continue</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Current Retail Performance -->
+        <div class="screen" id="step2">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="step-badge">Step 2</span>
+                    Current Retail
+                </h2>
+
+                <div class="form-group">
+                    <label for="attachRate">Current retail attach rate</label>
+                    <div class="slider-container">
+                        <span class="slider-value" id="attachRateValue">30%</span>
+                        <input type="range" id="attachRate" min="0" max="100" value="30">
+                    </div>
+                    <span class="label-hint">% of clients who purchase retail products</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="avgRetailSale">Average retail sale value</label>
+                    <div class="input-prefix">
+                        <input type="number" id="avgRetailSale" placeholder="45" min="0" value="45">
+                    </div>
+                    <span class="label-hint">When clients buy, how much do they spend?</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="currentMargin">Current retail margin</label>
+                    <div class="slider-container">
+                        <span class="slider-value" id="marginValue">40%</span>
+                        <input type="range" id="currentMargin" min="20" max="60" value="40">
+                    </div>
+                    <span class="label-hint">Your profit % on retail sales (industry avg: 40%)</span>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToStep(1)">Back</button>
+                    <button class="btn btn-primary" onclick="calculateResults()">See My Opportunity</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="screen" id="results">
+            <div id="resultsContent">
+                <!-- Hero Result -->
+                <div class="result-hero">
+                    <div class="result-eyebrow">Your Annual Opportunity</div>
+                    <div class="result-label">Additional revenue with scalp services</div>
+                    <div class="result-value" id="opportunityValue">$27,648</div>
+                    <div class="result-subtitle">By adding scalp consultations and switching to AWARE's 50% margin</div>
+
+                    <div class="result-comparison">
+                        <div class="comparison-item">
+                            <div class="comparison-label">Current</div>
+                            <div class="comparison-value" id="currentRevDisplay">$14,040</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">With AWARE</div>
+                            <div class="comparison-value highlight" id="projectedRevDisplay">$41,688</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Message 1 -->
+                <div class="key-message">
+                    <span class="key-message-icon">&#10003;</span>
+                    <h4>Scalp consultations increase attach rates by 30-50%</h4>
+                    <p>Stylists who add scalp consultations see their retail attach rate jump from <span class="highlight-stat" id="currentAttachDisplay">30%</span> to <span class="highlight-stat" id="projectedAttachDisplay">55%</span> on average. That's <span class="highlight-stat" id="additionalSalesDisplay">520</span> more retail sales per year.</p>
+                </div>
+
+                <!-- Key Message 2 -->
+                <div class="key-message">
+                    <span class="key-message-icon">$</span>
+                    <h4 id="marginMessageTitle">AWARE's 50% margin means $X more per sale</h4>
+                    <p id="marginMessageText">Most salon brands offer 40% margins. AWARE gives you 50%, meaning an extra $4.50 profit on every sale. That adds up to $X/year in pure margin gains.</p>
+                </div>
+
+                <!-- Breakdown -->
+                <div class="breakdown-card">
+                    <div class="breakdown-header">Revenue Breakdown</div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Your Current Annual Retail Revenue</span>
+                        <span class="breakdown-value" id="breakdownCurrent">$14,040</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">+ Revenue from Increased Attach Rate</span>
+                        <span class="breakdown-value positive" id="breakdownAttachGain">+$11,700</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">+ Revenue from Higher Margin (40% &#8594; 50%)</span>
+                        <span class="breakdown-value positive" id="breakdownMarginGain">+$2,925</span>
+                    </div>
+                    <div class="breakdown-row opportunity">
+                        <span class="breakdown-label">Projected Annual Retail Revenue</span>
+                        <span class="breakdown-value gold" id="breakdownProjected">$28,665</span>
+                    </div>
+                </div>
+
+                <!-- Assumptions -->
+                <div class="assumptions-card">
+                    <div class="assumptions-title">Assumptions</div>
+                    <ul class="assumptions-list">
+                        <li>Scalp consultations increase attach rate by 25 percentage points</li>
+                        <li>AWARE wholesale margin: 50% (vs industry standard 40%)</li>
+                        <li>52 weeks per year</li>
+                        <li id="stylistsAssumption" style="display: none;">Calculations based on X stylists</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Email Capture -->
+            <div class="email-capture" id="emailCapture">
+                <h3>Get your personalized revenue report</h3>
+                <p>We'll send you a PDF breakdown plus our guide to launching scalp consultations</p>
+                <div class="email-input-group" id="emailForm">
+                    <input type="email" id="emailInput" placeholder="your@email.com">
+                    <button class="btn" onclick="submitEmail()">Send Report</button>
+                </div>
+                <div class="email-success" id="emailSuccess">
+                    &#10003; Check your inbox! Your report is on the way.
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="action-btn" onclick="downloadPDF()">
+                    <div class="action-btn-icon">&#128196;</div>
+                    <div class="action-btn-label">Download PDF</div>
+                </button>
+                <button class="action-btn" onclick="shareResults()">
+                    <div class="action-btn-icon">&#128279;</div>
+                    <div class="action-btn-label">Share Results</div>
+                </button>
+            </div>
+
+            <!-- CTA Banner -->
+            <div class="cta-banner">
+                <h3>Ready to capture this opportunity?</h3>
+                <p>Apply for an AWARE wholesale account and start offering scalp consultations</p>
+                <a href="https://awarehair.com/pages/professional-program" target="_blank" class="btn">Apply for Wholesale</a>
+            </div>
+
+            <!-- Start Over -->
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="startOver()">Calculate Again</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Built by <a href="https://awarehair.com" target="_blank">AWARE Hair</a> for stylists ready to grow.</p>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════
+        // SCALP SERVICE REVENUE CALCULATOR - JavaScript
+        // ═══════════════════════════════════════════════════════════════
+
+        // Value Counter Animation
+        function animateValue(el, end, duration, prefix, suffix) {
+            duration = duration || 1000;
+            prefix = prefix || '';
+            suffix = suffix || '';
+
+            // Respect reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                el.textContent = prefix + Math.round(end).toLocaleString() + suffix;
+                return;
+            }
+
+            var start = 0;
+            var startTime = performance.now();
+
+            function update(now) {
+                var progress = Math.min((now - startTime) / duration, 1);
+                var eased = 1 - Math.pow(1 - progress, 3); // cubic ease-out
+                var value = Math.floor(start + (end - start) * eased);
+                el.textContent = prefix + value.toLocaleString() + suffix;
+                if (progress < 1) requestAnimationFrame(update);
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        // Staggered reveal for list items
+        function revealListItems(selector, delay) {
+            delay = delay || 100;
+            var items = document.querySelectorAll(selector);
+
+            // Respect reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                items.forEach(function(item) {
+                    item.classList.add('visible');
+                });
+                return;
+            }
+
+            items.forEach(function(item, index) {
+                setTimeout(function() {
+                    item.classList.add('visible');
+                }, index * delay);
+            });
+        }
+
+        // State
+        let currentStep = 1;
+        let calculationData = {};
+
+        // Constants
+        const AWARE_MARGIN = 0.50;
+        const ATTACH_RATE_INCREASE = 25; // percentage points
+        const WEEKS_PER_YEAR = 52;
+
+        // DOM Elements
+        const progressSteps = document.querySelectorAll('.progress-step');
+        const progressFill = document.querySelector('.progress-fill');
+        const progressContainer = document.getElementById('progressContainer');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Business type toggle
+            document.querySelectorAll('input[name="businessType"]').forEach(radio => {
+                radio.addEventListener('change', toggleBusinessType);
+            });
+
+            // Slider updates
+            document.getElementById('attachRate').addEventListener('input', function() {
+                document.getElementById('attachRateValue').textContent = this.value + '%';
+            });
+
+            document.getElementById('currentMargin').addEventListener('input', function() {
+                document.getElementById('marginValue').textContent = this.value + '%';
+            });
+
+            toggleBusinessType();
+        });
+
+        function toggleBusinessType() {
+            const isOwner = document.getElementById('owner').checked;
+            const stylistsGroup = document.getElementById('stylistsGroup');
+            const clientsLabel = document.getElementById('clientsLabel');
+            const clientsHint = document.getElementById('clientsHint');
+
+            stylistsGroup.style.display = isOwner ? 'block' : 'none';
+
+            if (isOwner) {
+                clientsLabel.textContent = 'Clients per stylist per week';
+                clientsHint.textContent = 'Average clients each stylist sees weekly';
+            } else {
+                clientsLabel.textContent = 'Clients per week';
+                clientsHint.textContent = 'Your personal weekly client count';
+            }
+        }
+
+        function goToStep(step) {
+            // Validate current step
+            if (step > currentStep && !validateStep(currentStep)) {
+                return;
+            }
+
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+
+            // Show target screen
+            document.getElementById(`step${step}`).classList.add('active');
+
+            // Update progress
+            currentStep = step;
+            updateProgress();
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function validateStep(step) {
+            if (step === 1) {
+                const clients = parseFloat(document.getElementById('clientsPerWeek').value);
+                const ticket = parseFloat(document.getElementById('avgTicket').value);
+
+                if (!clients || clients <= 0) {
+                    alert('Please enter your clients per week');
+                    return false;
+                }
+                if (!ticket || ticket <= 0) {
+                    alert('Please enter your average service ticket');
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function updateProgress() {
+            const percentage = currentStep * 50;
+            progressFill.style.width = `${percentage}%`;
+
+            progressSteps.forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index + 1 < currentStep) {
+                    step.classList.add('completed');
+                } else if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+        }
+
+        function calculateResults() {
+            // Gather inputs
+            const isOwner = document.getElementById('owner').checked;
+            const numStylists = isOwner ? (parseFloat(document.getElementById('numStylists').value) || 1) : 1;
+            const clientsPerWeek = parseFloat(document.getElementById('clientsPerWeek').value) || 20;
+            const avgTicket = parseFloat(document.getElementById('avgTicket').value) || 125;
+            const currentAttachRate = parseFloat(document.getElementById('attachRate').value) || 30;
+            const avgRetailSale = parseFloat(document.getElementById('avgRetailSale').value) || 45;
+            const currentMargin = parseFloat(document.getElementById('currentMargin').value) || 40;
+
+            // Calculate totals
+            const totalClientsPerWeek = clientsPerWeek * numStylists;
+            const totalClientsPerYear = totalClientsPerWeek * WEEKS_PER_YEAR;
+
+            // Current state
+            const currentRetailSalesCount = totalClientsPerYear * (currentAttachRate / 100);
+            const currentGrossRetailRevenue = currentRetailSalesCount * avgRetailSale;
+            const currentRetailProfit = currentGrossRetailRevenue * (currentMargin / 100);
+
+            // Projected state with scalp consultations + AWARE
+            const projectedAttachRate = Math.min(currentAttachRate + ATTACH_RATE_INCREASE, 100);
+            const projectedRetailSalesCount = totalClientsPerYear * (projectedAttachRate / 100);
+            const projectedGrossRetailRevenue = projectedRetailSalesCount * avgRetailSale;
+            const projectedRetailProfit = projectedGrossRetailRevenue * AWARE_MARGIN;
+
+            // Opportunity breakdown
+            const additionalSalesCount = projectedRetailSalesCount - currentRetailSalesCount;
+            const revenueFromAttachIncrease = additionalSalesCount * avgRetailSale * AWARE_MARGIN;
+
+            // Margin gain on existing sales (if they switched to AWARE)
+            const marginDifference = AWARE_MARGIN - (currentMargin / 100);
+            const revenueFromMarginGain = currentGrossRetailRevenue * marginDifference;
+
+            // Total opportunity
+            const totalOpportunity = projectedRetailProfit - currentRetailProfit;
+
+            // Store calculation data
+            calculationData = {
+                isOwner,
+                numStylists,
+                clientsPerWeek,
+                totalClientsPerWeek,
+                avgTicket,
+                currentAttachRate,
+                projectedAttachRate,
+                avgRetailSale,
+                currentMargin,
+                currentRetailSalesCount: Math.round(currentRetailSalesCount),
+                projectedRetailSalesCount: Math.round(projectedRetailSalesCount),
+                additionalSalesCount: Math.round(additionalSalesCount),
+                currentRetailProfit,
+                projectedRetailProfit,
+                revenueFromAttachIncrease,
+                revenueFromMarginGain,
+                totalOpportunity
+            };
+
+            // Update UI
+            displayResults();
+        }
+
+        function displayResults() {
+            const d = calculationData;
+
+            // Key message 1 - Attach rate (static text)
+            document.getElementById('currentAttachDisplay').textContent = d.currentAttachRate + '%';
+            document.getElementById('projectedAttachDisplay').textContent = d.projectedAttachRate + '%';
+
+            // Key message 2 - Margin (static text)
+            const marginDiff = (AWARE_MARGIN - (d.currentMargin / 100)) * d.avgRetailSale;
+            const yearlyMarginGain = d.revenueFromMarginGain;
+
+            document.getElementById('marginMessageTitle').innerHTML =
+                `AWARE's 50% margin means $${marginDiff.toFixed(2)} more per sale`;
+            document.getElementById('marginMessageText').innerHTML =
+                `Most salon brands offer ${d.currentMargin}% margins. AWARE gives you 50%, meaning an extra $${marginDiff.toFixed(2)} profit on every sale. That adds up to <strong>${formatCurrency(yearlyMarginGain)}/year</strong> in pure margin gains.`;
+
+            // Assumptions
+            if (d.isOwner) {
+                document.getElementById('stylistsAssumption').style.display = 'list-item';
+                document.getElementById('stylistsAssumption').innerHTML =
+                    `Calculations based on ${d.numStylists} stylists`;
+            } else {
+                document.getElementById('stylistsAssumption').style.display = 'none';
+            }
+
+            // Show results screen first
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('results').classList.add('active');
+            progressContainer.style.display = 'none';
+            window.scrollTo(0, 0);
+
+            // Animate values after screen transition
+            setTimeout(function() {
+                // Hero values (animated)
+                animateValue(document.getElementById('opportunityValue'), d.totalOpportunity, 1200, '$', '');
+                animateValue(document.getElementById('currentRevDisplay'), d.currentRetailProfit, 900, '$', '');
+                animateValue(document.getElementById('projectedRevDisplay'), d.projectedRetailProfit, 1100, '$', '');
+
+                // Additional sales count
+                animateValue(document.getElementById('additionalSalesDisplay'), d.additionalSalesCount, 800, '', '');
+
+                // Breakdown values (animated)
+                animateValue(document.getElementById('breakdownCurrent'), d.currentRetailProfit, 700, '$', '');
+                animateValue(document.getElementById('breakdownAttachGain'), d.revenueFromAttachIncrease, 850, '+$', '');
+                animateValue(document.getElementById('breakdownMarginGain'), d.revenueFromMarginGain, 950, '+$', '');
+                animateValue(document.getElementById('breakdownProjected'), d.projectedRetailProfit, 1050, '$', '');
+
+                // Reveal elements with stagger
+                revealListItems('.comparison-item', 120);
+                setTimeout(function() {
+                    revealListItems('.breakdown-row', 80);
+                }, 300);
+            }, 200);
+        }
+
+        function formatCurrency(value) {
+            return '$' + Math.round(value).toLocaleString();
+        }
+
+        function submitEmail() {
+            const email = document.getElementById('emailInput').value;
+
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            // Klaviyo properties for this calculator
+            const klaviyoProperties = {
+                '$email': email,
+                'calculator_used': 'scalp_service_revenue',
+                'current_clients_week': calculationData.totalClientsPerWeek,
+                'current_attach_rate': calculationData.currentAttachRate,
+                'projected_annual_opportunity': Math.round(calculationData.totalOpportunity),
+                'num_stylists': calculationData.numStylists,
+                'is_salon_owner': calculationData.isOwner,
+                'avg_service_ticket': calculationData.avgTicket,
+                'avg_retail_sale': calculationData.avgRetailSale,
+                'current_margin': calculationData.currentMargin,
+                'projected_attach_rate': calculationData.projectedAttachRate,
+                'current_retail_profit': Math.round(calculationData.currentRetailProfit),
+                'projected_retail_profit': Math.round(calculationData.projectedRetailProfit),
+                'calculation_date': new Date().toISOString()
+            };
+
+            // Method 1: Klaviyo Onsite SDK (if loaded)
+            if (typeof klaviyo !== 'undefined') {
+                klaviyo.identify(klaviyoProperties);
+
+                klaviyo.track('Calculated Scalp Service Revenue', {
+                    current_clients_week: calculationData.totalClientsPerWeek,
+                    current_attach_rate: calculationData.currentAttachRate,
+                    projected_opportunity: Math.round(calculationData.totalOpportunity),
+                    is_salon_owner: calculationData.isOwner,
+                    num_stylists: calculationData.numStylists
+                });
+
+                console.log('Klaviyo: Profile identified and event tracked');
+            }
+
+            // Method 2: Klaviyo Client API (fallback)
+            fetch('https://a.klaviyo.com/client/subscriptions/?company_id=pk_1bcdfc5f9fa0dde4ab05653e3f64c5ebb5', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'revision': '2024-10-15'
+                },
+                body: JSON.stringify({
+                    data: {
+                        type: 'subscription',
+                        attributes: {
+                            custom_source: 'Pro Tools - Scalp Service Revenue Calculator',
+                            profile: {
+                                data: {
+                                    type: 'profile',
+                                    attributes: {
+                                        email: email,
+                                        properties: {
+                                            calculator_used: 'scalp_service_revenue',
+                                            current_clients_week: calculationData.totalClientsPerWeek,
+                                            current_attach_rate: calculationData.currentAttachRate,
+                                            projected_annual_opportunity: Math.round(calculationData.totalOpportunity),
+                                            num_stylists: calculationData.numStylists,
+                                            is_salon_owner: calculationData.isOwner,
+                                            avg_service_ticket: calculationData.avgTicket,
+                                            avg_retail_sale: calculationData.avgRetailSale,
+                                            current_margin: calculationData.currentMargin,
+                                            projected_attach_rate: calculationData.projectedAttachRate,
+                                            current_retail_profit: Math.round(calculationData.currentRetailProfit),
+                                            projected_retail_profit: Math.round(calculationData.projectedRetailProfit)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Klaviyo: Subscription created');
+                }
+            })
+            .catch(error => {
+                console.log('Klaviyo error (non-blocking):', error);
+            });
+
+            // Show success immediately
+            document.getElementById('emailForm').style.display = 'none';
+            document.getElementById('emailSuccess').classList.add('visible');
+
+            // Track event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'email_capture', {
+                    'calculator': 'scalp_service_revenue',
+                    'opportunity_value': Math.round(calculationData.totalOpportunity)
+                });
+            }
+        }
+
+        function downloadPDF() {
+            const element = document.getElementById('resultsContent');
+            const opt = {
+                margin: 10,
+                filename: `scalp-revenue-opportunity-${new Date().toISOString().split('T')[0]}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+
+            // Track event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'download_pdf', {
+                    'calculator': 'scalp_service_revenue'
+                });
+            }
+
+            // Klaviyo event
+            if (typeof klaviyo !== 'undefined') {
+                klaviyo.track('Downloaded PDF', {
+                    calculator: 'scalp_service_revenue',
+                    opportunity_value: Math.round(calculationData.totalOpportunity)
+                });
+            }
+        }
+
+        function shareResults() {
+            const opportunity = formatCurrency(calculationData.totalOpportunity);
+            const text = `I just calculated my scalp service revenue opportunity: ${opportunity}/year! Adding scalp consultations could boost my retail attach rate from ${calculationData.currentAttachRate}% to ${calculationData.projectedAttachRate}%. Calculate yours: `;
+            const url = window.location.href;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Scalp Service Revenue Opportunity',
+                    text: text,
+                    url: url
+                });
+            } else {
+                navigator.clipboard.writeText(text + url).then(() => {
+                    alert('Link copied to clipboard!');
+                });
+            }
+
+            // Track event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'share', {
+                    'calculator': 'scalp_service_revenue'
+                });
+            }
+        }
+
+        function startOver() {
+            // Reset form
+            document.querySelectorAll('input[type="number"]').forEach(input => {
+                input.value = input.placeholder || '';
+            });
+
+            document.getElementById('attachRate').value = 30;
+            document.getElementById('attachRateValue').textContent = '30%';
+            document.getElementById('currentMargin').value = 40;
+            document.getElementById('marginValue').textContent = '40%';
+
+            document.getElementById('stylist').checked = true;
+            toggleBusinessType();
+
+            // Reset animation states for next calculation
+            document.querySelectorAll('.breakdown-row, .comparison-item').forEach(function(el) {
+                el.classList.remove('visible');
+            });
+
+            // Reset to step 1
+            currentStep = 1;
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('step1').classList.add('active');
+            progressContainer.style.display = 'block';
+            updateProgress();
+
+            // Reset email capture
+            document.getElementById('emailForm').style.display = 'flex';
+            document.getElementById('emailSuccess').classList.remove('visible');
+
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWARE Hair - 2026 Awards Command Center</title>
+    <style>
+        :root {
+            --teal: #1a3a3a;
+            --teal-light: #2a5a5a;
+            --gold: #c9a961;
+            --gold-light: #e0c882;
+            --bg: #f5f3ef;
+            --card: #ffffff;
+            --text: #1a1a1a;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --success: #059669;
+            --success-bg: #ecfdf5;
+            --warning: #d97706;
+            --warning-bg: #fffbeb;
+            --danger: #dc2626;
+            --danger-bg: #fef2f2;
+            --info: #2563eb;
+            --info-bg: #eff6ff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--teal) 0%, var(--teal-light) 100%);
+            color: white;
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .header-left .subtitle {
+            font-size: 13px;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+
+        .header-right {
+            text-align: right;
+        }
+
+        .budget-summary {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .budget-amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .budget-bar-container {
+            width: 200px;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            margin-top: 6px;
+        }
+
+        .budget-bar {
+            height: 100%;
+            background: var(--gold);
+            border-radius: 3px;
+            transition: width 0.5s;
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            padding: 20px 32px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border-radius: 10px;
+            padding: 16px 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .stat-detail {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 0 32px 32px;
+        }
+
+        .main-grid.full-width {
+            grid-template-columns: 1fr;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .card-header:hover {
+            background: #fafafa;
+        }
+
+        .card-header h2 {
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-header .toggle {
+            font-size: 12px;
+            color: var(--text-muted);
+            transition: transform 0.2s;
+        }
+
+        .card-header .toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .card-body {
+            padding: 16px 20px;
+            transition: max-height 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card-body.collapsed {
+            max-height: 0;
+            padding: 0 20px;
+        }
+
+        /* Priority badges */
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-high { background: var(--danger-bg); color: var(--danger); }
+        .badge-medium { background: var(--warning-bg); color: var(--warning); }
+        .badge-free { background: var(--success-bg); color: var(--success); }
+        .badge-conditional { background: var(--info-bg); color: var(--info); }
+
+        /* Award cards */
+        .award-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+
+        .award-meta dt {
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .award-meta dd {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .award-meta a {
+            color: var(--teal);
+            text-decoration: none;
+        }
+
+        .award-meta a:hover {
+            text-decoration: underline;
+        }
+
+        /* Countdown */
+        .countdown {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .countdown.urgent { color: var(--danger); }
+        .countdown.soon { color: var(--warning); }
+        .countdown.ok { color: var(--success); }
+        .countdown.past { color: var(--text-muted); text-decoration: line-through; }
+
+        /* Checklists */
+        .checklist {
+            list-style: none;
+            margin-top: 8px;
+        }
+
+        .checklist li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 6px 0;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .checklist li:last-child { border-bottom: none; }
+
+        .checklist li:hover { background: #fafafa; margin: 0 -8px; padding: 6px 8px; border-radius: 4px; }
+
+        .checklist input[type="checkbox"] {
+            margin-top: 2px;
+            width: 16px;
+            height: 16px;
+            accent-color: var(--teal);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .checklist .checked-text {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        /* Progress bar */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--teal) 0%, var(--gold) 100%);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 4px;
+            bottom: 4px;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 16px;
+            font-size: 13px;
+        }
+
+        .timeline-item:last-child { padding-bottom: 0; }
+
+        .timeline-dot {
+            position: absolute;
+            left: -20px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: white;
+        }
+
+        .timeline-dot.active {
+            border-color: var(--gold);
+            background: var(--gold);
+        }
+
+        .timeline-dot.done {
+            border-color: var(--success);
+            background: var(--success);
+        }
+
+        .timeline-dot.urgent {
+            border-color: var(--danger);
+            background: var(--danger);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(220, 38, 38, 0); }
+        }
+
+        .timeline-date {
+            font-weight: 700;
+            color: var(--teal);
+        }
+
+        .timeline-label {
+            color: var(--text-muted);
+        }
+
+        .timeline-award {
+            display: inline-block;
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 3px;
+            margin-left: 4px;
+            font-weight: 600;
+        }
+
+        .timeline-award.mc { background: #fef2f2; color: #991b1b; }
+        .timeline-award.shape { background: #ecfdf5; color: #065f46; }
+        .timeline-award.cew { background: #eff6ff; color: #1e40af; }
+        .timeline-award.beacon { background: #fffbeb; color: #92400e; }
+
+        /* Products section */
+        .products-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .product-pill {
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            background: #f9fafb;
+            border: 1px solid var(--border);
+            font-size: 12px;
+        }
+
+        .product-pill .name {
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .product-pill .price {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* Budget table */
+        .budget-table {
+            width: 100%;
+            font-size: 13px;
+            border-collapse: collapse;
+        }
+
+        .budget-table th {
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            padding: 6px 0;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .budget-table td {
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .budget-table .amount {
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .budget-table tfoot td {
+            font-weight: 700;
+            border-top: 2px solid var(--teal);
+            border-bottom: none;
+            padding-top: 10px;
+        }
+
+        /* Quick Links */
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .quick-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: #f9fafb;
+            border: 1px solid var(--border);
+            text-decoration: none;
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.15s;
+        }
+
+        .quick-link:hover {
+            background: var(--teal);
+            color: white;
+            border-color: var(--teal);
+        }
+
+        .quick-link .icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .main-grid { grid-template-columns: 1fr; }
+            .products-row { grid-template-columns: 1fr; }
+            .quick-links { grid-template-columns: 1fr; }
+            .header { flex-direction: column; gap: 16px; }
+            .header-right { text-align: left; }
+            .award-meta { grid-template-columns: 1fr; }
+        }
+
+        /* Print */
+        @media print {
+            body { background: white; }
+            .header { background: var(--teal) !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+            .card { break-inside: avoid; }
+        }
+
+        /* Last updated */
+        .last-updated {
+            text-align: center;
+            padding: 16px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div class="header-left">
+        <h1>AWARE HAIR - 2026 Awards Command Center</h1>
+        <div class="subtitle">4 Awards | 3 Products | March - November 2026</div>
+    </div>
+    <div class="header-right">
+        <div class="budget-summary">Approved Budget</div>
+        <div class="budget-amount">$1,975</div>
+        <div class="budget-bar-container">
+            <div class="budget-bar" id="budgetBar" style="width: 0%"></div>
+        </div>
+        <div class="budget-summary" id="budgetSpent">$0 committed</div>
+    </div>
+</div>
+
+<!-- Stats Row -->
+<div class="stats-row">
+    <div class="stat-card">
+        <div class="stat-label">Next Deadline</div>
+        <div class="stat-value" id="nextDeadlineCountdown">-</div>
+        <div class="stat-detail" id="nextDeadlineLabel">-</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Submissions Complete</div>
+        <div class="stat-value" id="submissionsComplete">0/4</div>
+        <div class="stat-detail" id="submissionsDetail">4 remaining</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Checklist Progress</div>
+        <div class="stat-value" id="checklistProgress">0%</div>
+        <div class="stat-detail" id="checklistDetail">0 of 0 tasks done</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Potential Awards</div>
+        <div class="stat-value">11</div>
+        <div class="stat-detail">Across 4 programs</div>
+    </div>
+</div>
+
+<!-- Products -->
+<div style="padding: 0 32px 20px;">
+    <div class="products-row">
+        <div class="product-pill">
+            <div class="name">9.1 Professional Shampoo</div>
+            <div class="price">$55</div>
+            <div>Entered: MC, SHAPE, CEW, Beacon</div>
+        </div>
+        <div class="product-pill">
+            <div class="name">9.1 Professional Conditioner</div>
+            <div class="price">$55</div>
+            <div>Entered: MC, SHAPE, Beacon</div>
+        </div>
+        <div class="product-pill">
+            <div class="name">9.1 Professional Leave-In</div>
+            <div class="price">$60</div>
+            <div>Entered: MC, SHAPE, Beacon</div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Grid -->
+<div class="main-grid">
+
+    <!-- Marie Claire -->
+    <div class="card" id="card-mc">
+        <div class="card-header" onclick="toggleCard('mc')">
+            <h2>
+                <span style="color: var(--danger);">&#9679;</span>
+                Marie Claire US Beauty Awards
+                <span class="badge badge-high">HIGH</span>
+            </h2>
+            <span class="toggle" id="toggle-mc">&#9660;</span>
+        </div>
+        <div class="card-body" id="body-mc">
+            <dl class="award-meta">
+                <dt>Deadline</dt>
+                <dd><span class="countdown urgent" id="cd-mc"></span></dd>
+                <dt>Fee</dt>
+                <dd>$300/product ($900 total)</dd>
+                <dt>Products</dt>
+                <dd>Shampoo, Conditioner, Leave-In</dd>
+                <dt>Portal</dt>
+                <dd><a href="https://awards.marieclaire.com/" target="_blank">awards.marieclaire.com</a></dd>
+                <dt>Samples Due</dt>
+                <dd>March 26, 2026</dd>
+                <dt>Winners</dt>
+                <dd>Late June 2026</dd>
+            </dl>
+            <ul class="checklist" data-award="mc">
+                <li><input type="checkbox" data-key="mc-1"><span>Create account on awards.marieclaire.com</span></li>
+                <li><input type="checkbox" data-key="mc-2"><span>Submit Shampoo entry + $300 payment</span></li>
+                <li><input type="checkbox" data-key="mc-3"><span>Submit Conditioner entry + $300 payment</span></li>
+                <li><input type="checkbox" data-key="mc-4"><span>Submit Leave-In entry + $300 payment</span></li>
+                <li><input type="checkbox" data-key="mc-5"><span>Upload product images (check required specs)</span></li>
+                <li><input type="checkbox" data-key="mc-6"><span>Ship samples (all 3 products) by March 22</span></li>
+                <li><input type="checkbox" data-key="mc-7"><span>Include printed one-sheet with samples</span></li>
+                <li><input type="checkbox" data-key="mc-8"><span>Confirm sample delivery by March 26</span></li>
+            </ul>
+            <div class="progress-container">
+                <div class="progress-bar"><div class="progress-fill" id="progress-mc" style="width:0%"></div></div>
+                <span class="progress-label" id="plabel-mc">0/8</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SHAPE -->
+    <div class="card" id="card-shape">
+        <div class="card-header" onclick="toggleCard('shape')">
+            <h2>
+                <span style="color: var(--success);">&#9679;</span>
+                SHAPE Beauty Awards
+                <span class="badge badge-free">FREE</span>
+            </h2>
+            <span class="toggle" id="toggle-shape">&#9660;</span>
+        </div>
+        <div class="card-body" id="body-shape">
+            <dl class="award-meta">
+                <dt>Deadline</dt>
+                <dd><span class="countdown ok" id="cd-shape"></span></dd>
+                <dt>Fee</dt>
+                <dd>$0 (free Google Form)</dd>
+                <dt>Products</dt>
+                <dd>Shampoo, Conditioner, Leave-In</dd>
+                <dt>Portal</dt>
+                <dd><a href="https://docs.google.com/forms/d/e/1FAIpQLSev7eUcoyZgddk7nQuv3eyJ2tBSWJ8_1A2EDOepu_rgMyJoTg/viewform" target="_blank">Google Form</a></dd>
+                <dt>Winners</dt>
+                <dd>June 2026</dd>
+                <dt>Published</dt>
+                <dd>August 2026</dd>
+            </dl>
+            <ul class="checklist" data-award="shape">
+                <li><input type="checkbox" data-key="shape-1"><span>Submit Shampoo Google Form</span></li>
+                <li><input type="checkbox" data-key="shape-2"><span>Submit Conditioner Google Form</span></li>
+                <li><input type="checkbox" data-key="shape-3"><span>Submit Leave-In Google Form</span></li>
+                <li><input type="checkbox" data-key="shape-4"><span>Confirm all product page links work</span></li>
+                <li><input type="checkbox" data-key="shape-5"><span>Prepare samples (have inventory ready)</span></li>
+            </ul>
+            <div class="progress-container">
+                <div class="progress-bar"><div class="progress-fill" id="progress-shape" style="width:0%"></div></div>
+                <span class="progress-label" id="plabel-shape">0/5</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CEW -->
+    <div class="card" id="card-cew">
+        <div class="card-header" onclick="toggleCard('cew')">
+            <h2>
+                <span style="color: var(--info);">&#9679;</span>
+                CEW Beauty Awards - Indie Hair
+                <span class="badge badge-high">HIGH</span>
+            </h2>
+            <span class="toggle" id="toggle-cew">&#9660;</span>
+        </div>
+        <div class="card-body" id="body-cew">
+            <dl class="award-meta">
+                <dt>Deadline</dt>
+                <dd><span class="countdown" id="cd-cew"></span></dd>
+                <dt>Fee</dt>
+                <dd>$775 (Indie Hair) + $225 membership</dd>
+                <dt>Products</dt>
+                <dd>Shampoo (Indie Hair category)</dd>
+                <dt>Portal</dt>
+                <dd><a href="https://my.cew.org" target="_blank">my.cew.org</a></dd>
+                <dt>Finalists</dt>
+                <dd>Before September 17, 2026</dd>
+                <dt>Luncheon</dt>
+                <dd>November 10, 2026 (NYC)</dd>
+            </dl>
+            <ul class="checklist" data-award="cew">
+                <li><input type="checkbox" data-key="cew-1"><span>Create account at my.cew.org</span></li>
+                <li><input type="checkbox" data-key="cew-2"><span>Join CEW membership ($225/year)</span></li>
+                <li><input type="checkbox" data-key="cew-3"><span>Purchase Indie Hair entry ($775) in CEW Store</span></li>
+                <li><input type="checkbox" data-key="cew-4"><span>Complete Product Information Form</span></li>
+                <li><input type="checkbox" data-key="cew-5"><span>Upload 200x200px product image</span></li>
+                <li><input type="checkbox" data-key="cew-6"><span>Upload hi-res transparent background image</span></li>
+                <li><input type="checkbox" data-key="cew-7"><span>Upload one-sheet PDF</span></li>
+                <li><input type="checkbox" data-key="cew-8"><span>Ship 4 sample units to CEW</span></li>
+            </ul>
+            <div class="progress-container">
+                <div class="progress-bar"><div class="progress-fill" id="progress-cew" style="width:0%"></div></div>
+                <span class="progress-label" id="plabel-cew">0/8</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Beacon -->
+    <div class="card" id="card-beacon">
+        <div class="card-header" onclick="toggleCard('beacon')">
+            <h2>
+                <span style="color: var(--warning);">&#9679;</span>
+                Beacon Awards (Beauty Independent)
+                <span class="badge badge-medium">MEDIUM</span>
+            </h2>
+            <span class="toggle" id="toggle-beacon">&#9660;</span>
+        </div>
+        <div class="card-body" id="body-beacon">
+            <dl class="award-meta">
+                <dt>Opens</dt>
+                <dd><span class="countdown ok" id="cd-beacon"></span></dd>
+                <dt>Fee</dt>
+                <dd>$0-$99/nomination</dd>
+                <dt>Nominations</dt>
+                <dd>Product Launch, Formulation Innovation, Brand Launch</dd>
+                <dt>Portal</dt>
+                <dd><a href="https://www.beautyindependent.com/beacon-awards/" target="_blank">beautyindependent.com</a></dd>
+                <dt>Winners</dt>
+                <dd>~September 2026</dd>
+                <dt>Events</dt>
+                <dd>NYC + LA cocktail events</dd>
+            </dl>
+            <ul class="checklist" data-award="beacon">
+                <li><input type="checkbox" data-key="beacon-1"><span>Monitor BI website weekly for nomination opening</span></li>
+                <li><input type="checkbox" data-key="beacon-2"><span>Consider Beauty Independent subscription</span></li>
+                <li><input type="checkbox" data-key="beacon-3"><span>Submit Product Launch - Haircare nomination</span></li>
+                <li><input type="checkbox" data-key="beacon-4"><span>Submit Product Innovation - Formulation nomination</span></li>
+                <li><input type="checkbox" data-key="beacon-5"><span>Submit Brand Launch nomination</span></li>
+                <li><input type="checkbox" data-key="beacon-6"><span>Prepare media kit for evaluator review</span></li>
+            </ul>
+            <div class="progress-container">
+                <div class="progress-bar"><div class="progress-fill" id="progress-beacon" style="width:0%"></div></div>
+                <span class="progress-label" id="plabel-beacon">0/6</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Timeline & Budget Row -->
+<div class="main-grid" style="padding-top: 0;">
+    <!-- Timeline -->
+    <div class="card">
+        <div class="card-header" onclick="toggleCard('timeline')">
+            <h2>Timeline</h2>
+            <span class="toggle" id="toggle-timeline">&#9660;</span>
+        </div>
+        <div class="card-body" id="body-timeline">
+            <div class="timeline" id="timeline"></div>
+        </div>
+    </div>
+
+    <!-- Right column: Budget + Quick Links -->
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+        <!-- Budget Breakdown -->
+        <div class="card">
+            <div class="card-header" onclick="toggleCard('budget')">
+                <h2>Budget Breakdown</h2>
+                <span class="toggle" id="toggle-budget">&#9660;</span>
+            </div>
+            <div class="card-body" id="body-budget">
+                <table class="budget-table">
+                    <thead>
+                        <tr><th>Item</th><th style="text-align:right">Amount</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Marie Claire (3 products x $300)</td><td class="amount">$900</td></tr>
+                        <tr><td>CEW Indie Hair (1 entry)</td><td class="amount">$775</td></tr>
+                        <tr><td>CEW Membership</td><td class="amount">$225</td></tr>
+                        <tr><td>SHAPE (free)</td><td class="amount">$0</td></tr>
+                        <tr><td>Beacon (TBD, ~$0-297)</td><td class="amount">~$0</td></tr>
+                        <tr><td>Shipping / samples</td><td class="amount">~$75</td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr><td>Total Approved</td><td class="amount" style="color: var(--teal)">$1,975</td></tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="card">
+            <div class="card-header" onclick="toggleCard('links')">
+                <h2>Quick Links</h2>
+                <span class="toggle" id="toggle-links">&#9660;</span>
+            </div>
+            <div class="card-body" id="body-links">
+                <div class="quick-links">
+                    <a class="quick-link" href="https://awards.marieclaire.com/" target="_blank">
+                        <span class="icon">&#127942;</span> MC Entry Portal
+                    </a>
+                    <a class="quick-link" href="https://docs.google.com/forms/d/e/1FAIpQLSev7eUcoyZgddk7nQuv3eyJ2tBSWJ8_1A2EDOepu_rgMyJoTg/viewform" target="_blank">
+                        <span class="icon">&#128221;</span> SHAPE Form
+                    </a>
+                    <a class="quick-link" href="https://my.cew.org" target="_blank">
+                        <span class="icon">&#127941;</span> CEW Portal
+                    </a>
+                    <a class="quick-link" href="https://www.beautyindependent.com/beacon-awards/" target="_blank">
+                        <span class="icon">&#128161;</span> Beacon Awards
+                    </a>
+                    <a class="quick-link" href="one-sheet.html" target="_blank">
+                        <span class="icon">&#128196;</span> One-Sheet
+                    </a>
+                    <a class="quick-link" href="mailto:marieclaireawards@futurenet.com">
+                        <span class="icon">&#9993;</span> MC Contact
+                    </a>
+                    <a class="quick-link" href="mailto:beautyawards@cew.org">
+                        <span class="icon">&#9993;</span> CEW Contact
+                    </a>
+                    <a class="quick-link" href="https://awarehair.com" target="_blank">
+                        <span class="icon">&#127760;</span> awarehair.com
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="last-updated" id="lastUpdated"></div>
+
+<script>
+    // Deadlines
+    const DEADLINES = {
+        mc: new Date('2026-03-19T23:59:00-04:00'),
+        shape: new Date('2026-04-30T23:59:00-04:00'),
+        cew: new Date('2026-03-27T23:59:00-04:00'),
+        beacon: new Date('2026-04-15T00:00:00-04:00') // estimated opening
+    };
+
+    const DEADLINE_LABELS = {
+        mc: 'Marie Claire entries',
+        shape: 'SHAPE forms',
+        cew: 'CEW entry',
+        beacon: 'Beacon nominations (est.)'
+    };
+
+    // Timeline events
+    const TIMELINE_EVENTS = [
+        { date: '2026-03-09', label: 'CEW early deadline passed', award: 'cew', status: 'done' },
+        { date: '2026-03-12', label: 'Submit SHAPE forms (free)', award: 'shape', status: 'active' },
+        { date: '2026-03-14', label: 'Create CEW account + membership', award: 'cew', status: 'active' },
+        { date: '2026-03-15', label: 'Submit Marie Claire entries + pay $900', award: 'mc', status: 'active' },
+        { date: '2026-03-19', label: 'DEADLINE: Marie Claire hair entries', award: 'mc', status: 'urgent' },
+        { date: '2026-03-22', label: 'Ship MC product samples', award: 'mc', status: 'active' },
+        { date: '2026-03-24', label: 'Submit CEW Indie Hair + pay $775', award: 'cew', status: 'active' },
+        { date: '2026-03-26', label: 'DEADLINE: MC samples received', award: 'mc', status: 'urgent' },
+        { date: '2026-03-27', label: 'DEADLINE: CEW entries', award: 'cew', status: 'urgent' },
+        { date: '2026-04-15', label: 'Monitor for Beacon nominations opening', award: 'beacon', status: 'active' },
+        { date: '2026-04-30', label: 'DEADLINE: SHAPE submissions', award: 'shape', status: 'urgent' },
+        { date: '2026-06-01', label: 'MC winners notified (est.)', award: 'mc', status: '' },
+        { date: '2026-06-15', label: 'SHAPE winners selected (est.)', award: 'shape', status: '' },
+        { date: '2026-08-01', label: 'Beacon nominees announced (est.)', award: 'beacon', status: '' },
+        { date: '2026-09-01', label: 'MC winners coverage + event', award: 'mc', status: '' },
+        { date: '2026-09-17', label: 'CEW finalists notified / voting opens', award: 'cew', status: '' },
+        { date: '2026-09-15', label: 'Beacon winners announced (est.)', award: 'beacon', status: '' },
+        { date: '2026-11-10', label: 'CEW Beauty Awards Luncheon (NYC)', award: 'cew', status: '' }
+    ];
+
+    // Countdown helper
+    function formatCountdown(targetDate) {
+        const now = new Date();
+        const diff = targetDate - now;
+
+        if (diff < 0) return { text: 'Passed', class: 'past' };
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+        if (days === 0) return { text: `${hours}h left`, class: 'urgent' };
+        if (days <= 7) return { text: `${days}d ${hours}h`, class: 'urgent' };
+        if (days <= 21) return { text: `${days} days`, class: 'soon' };
+        return { text: `${days} days`, class: 'ok' };
+    }
+
+    function updateCountdowns() {
+        // Individual award countdowns
+        Object.keys(DEADLINES).forEach(key => {
+            const el = document.getElementById(`cd-${key}`);
+            if (!el) return;
+            const cd = formatCountdown(DEADLINES[key]);
+            el.textContent = cd.text;
+            el.className = `countdown ${cd.class}`;
+        });
+
+        // Next deadline stat
+        const now = new Date();
+        let nearest = null;
+        let nearestKey = null;
+
+        Object.entries(DEADLINES).forEach(([key, date]) => {
+            if (date > now && (!nearest || date < nearest)) {
+                nearest = date;
+                nearestKey = key;
+            }
+        });
+
+        if (nearest) {
+            const cd = formatCountdown(nearest);
+            document.getElementById('nextDeadlineCountdown').textContent = cd.text;
+            document.getElementById('nextDeadlineCountdown').style.color =
+                cd.class === 'urgent' ? 'var(--danger)' :
+                cd.class === 'soon' ? 'var(--warning)' : 'var(--success)';
+            document.getElementById('nextDeadlineLabel').textContent = DEADLINE_LABELS[nearestKey];
+        }
+    }
+
+    // Checklist persistence
+    function initChecklists() {
+        const saved = JSON.parse(localStorage.getItem('aware-awards-checklist') || '{}');
+
+        document.querySelectorAll('.checklist input[type="checkbox"]').forEach(cb => {
+            const key = cb.dataset.key;
+            if (saved[key]) {
+                cb.checked = true;
+                cb.nextElementSibling.classList.add('checked-text');
+            }
+
+            cb.addEventListener('change', () => {
+                const state = JSON.parse(localStorage.getItem('aware-awards-checklist') || '{}');
+                state[key] = cb.checked;
+                localStorage.setItem('aware-awards-checklist', JSON.stringify(state));
+
+                if (cb.checked) {
+                    cb.nextElementSibling.classList.add('checked-text');
+                } else {
+                    cb.nextElementSibling.classList.remove('checked-text');
+                }
+
+                updateProgress();
+            });
+        });
+
+        // Make entire li clickable
+        document.querySelectorAll('.checklist li').forEach(li => {
+            li.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'INPUT') {
+                    const cb = li.querySelector('input[type="checkbox"]');
+                    cb.checked = !cb.checked;
+                    cb.dispatchEvent(new Event('change'));
+                }
+            });
+        });
+    }
+
+    function updateProgress() {
+        const awards = ['mc', 'shape', 'cew', 'beacon'];
+        let totalChecked = 0;
+        let totalItems = 0;
+        let submissionsComplete = 0;
+
+        awards.forEach(award => {
+            const items = document.querySelectorAll(`.checklist[data-award="${award}"] input[type="checkbox"]`);
+            const checked = Array.from(items).filter(cb => cb.checked).length;
+            const total = items.length;
+
+            totalChecked += checked;
+            totalItems += total;
+
+            // Update per-award progress
+            const pct = total ? Math.round((checked / total) * 100) : 0;
+            const fill = document.getElementById(`progress-${award}`);
+            const label = document.getElementById(`plabel-${award}`);
+            if (fill) fill.style.width = `${pct}%`;
+            if (label) label.textContent = `${checked}/${total}`;
+
+            if (checked === total && total > 0) submissionsComplete++;
+        });
+
+        // Global stats
+        const globalPct = totalItems ? Math.round((totalChecked / totalItems) * 100) : 0;
+        document.getElementById('checklistProgress').textContent = `${globalPct}%`;
+        document.getElementById('checklistDetail').textContent = `${totalChecked} of ${totalItems} tasks done`;
+        document.getElementById('submissionsComplete').textContent = `${submissionsComplete}/4`;
+        document.getElementById('submissionsDetail').textContent =
+            submissionsComplete === 4 ? 'All done!' : `${4 - submissionsComplete} remaining`;
+
+        // Budget bar (committed = checked payment items)
+        updateBudgetBar();
+    }
+
+    function updateBudgetBar() {
+        const saved = JSON.parse(localStorage.getItem('aware-awards-checklist') || '{}');
+        let committed = 0;
+
+        // MC entries ($300 each)
+        if (saved['mc-2']) committed += 300;
+        if (saved['mc-3']) committed += 300;
+        if (saved['mc-4']) committed += 300;
+        // CEW
+        if (saved['cew-2']) committed += 225;
+        if (saved['cew-3']) committed += 775;
+
+        const pct = Math.min(100, Math.round((committed / 1975) * 100));
+        document.getElementById('budgetBar').style.width = `${pct}%`;
+        document.getElementById('budgetSpent').textContent = `$${committed.toLocaleString()} committed`;
+    }
+
+    // Timeline render
+    function renderTimeline() {
+        const container = document.getElementById('timeline');
+        const now = new Date();
+        const today = now.toISOString().split('T')[0];
+
+        container.innerHTML = TIMELINE_EVENTS.map(evt => {
+            const isPast = evt.date < today;
+            const isToday = evt.date === today;
+            let dotClass = '';
+
+            if (isPast || evt.status === 'done') dotClass = 'done';
+            else if (isToday || evt.status === 'urgent') dotClass = 'urgent';
+            else if (evt.status === 'active') dotClass = 'active';
+
+            const dateStr = new Date(evt.date + 'T12:00:00').toLocaleDateString('en-US', {
+                month: 'short', day: 'numeric'
+            });
+
+            return `
+                <div class="timeline-item">
+                    <div class="timeline-dot ${dotClass}"></div>
+                    <span class="timeline-date">${dateStr}</span>
+                    <span class="timeline-label"> - ${evt.label}</span>
+                    <span class="timeline-award ${evt.award}">${evt.award.toUpperCase()}</span>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // Collapsible sections
+    function toggleCard(id) {
+        const body = document.getElementById(`body-${id}`);
+        const toggle = document.getElementById(`toggle-${id}`);
+        if (body.classList.contains('collapsed')) {
+            body.classList.remove('collapsed');
+            toggle.classList.remove('collapsed');
+        } else {
+            body.classList.add('collapsed');
+            toggle.classList.add('collapsed');
+        }
+    }
+
+    // Last updated
+    function updateTimestamp() {
+        const now = new Date();
+        document.getElementById('lastUpdated').textContent =
+            `Last refreshed: ${now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} at ${now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
+    }
+
+    // Init
+    function init() {
+        initChecklists();
+        updateCountdowns();
+        updateProgress();
+        renderTimeline();
+        updateTimestamp();
+
+        // Update countdowns every minute
+        setInterval(updateCountdowns, 60000);
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>

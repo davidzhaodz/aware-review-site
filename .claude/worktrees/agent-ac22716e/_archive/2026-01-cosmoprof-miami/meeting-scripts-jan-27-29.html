@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmoprof Miami 2026 - Meeting Scripts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a1a2e;
+            --accent: #16213e;
+            --highlight: #0f3460;
+            --gold: #c9a227;
+            --light: #f8f9fa;
+            --text: #333;
+            --muted: #666;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header .subtitle {
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        .header .meta {
+            margin-top: 16px;
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .header .meta span {
+            background: var(--primary);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        /* Schedule Overview */
+        .schedule-overview {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .schedule-overview h2 {
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .schedule-table th {
+            text-align: left;
+            padding: 12px;
+            background: var(--light);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--muted);
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .schedule-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+
+        .schedule-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .time-badge {
+            background: var(--highlight);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .company-name {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .contact-name {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .meeting-type {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .type-retail { background: #e3f2fd; color: #1565c0; }
+        .type-spa { background: #f3e5f5; color: #7b1fa2; }
+        .type-cruise { background: #e8f5e9; color: #2e7d32; }
+        .type-distributor { background: #fff3e0; color: #e65100; }
+
+        /* Meeting Card */
+        .meeting-card {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+            page-break-inside: avoid;
+        }
+
+        .meeting-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px 24px;
+        }
+
+        .meeting-header .meeting-number {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            margin-bottom: 4px;
+        }
+
+        .meeting-header h2 {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .meeting-header .company {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .meeting-meta {
+            display: flex;
+            gap: 20px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .meeting-meta span {
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+        .meeting-body {
+            padding: 24px;
+        }
+
+        /* Company Background */
+        .company-background {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+
+        .company-background h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .company-background ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+        }
+
+        .company-background li {
+            font-size: 14px;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .company-background li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            border-radius: 50%;
+        }
+
+        /* Strategic Note */
+        .strategic-note {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+            border-left: 4px solid var(--gold);
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .strategic-note h4 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #856404;
+            margin-bottom: 8px;
+        }
+
+        .strategic-note p {
+            font-size: 14px;
+            color: #856404;
+        }
+
+        /* Script Section */
+        .script-section {
+            margin-bottom: 24px;
+        }
+
+        .script-section h3 {
+            font-size: 16px;
+            color: var(--primary);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #eee;
+        }
+
+        /* Dialogue */
+        .dialogue {
+            margin-bottom: 16px;
+        }
+
+        .dialogue-item {
+            margin-bottom: 16px;
+            padding-left: 0;
+        }
+
+        .speaker {
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .speaker.jade {
+            color: var(--highlight);
+        }
+
+        .speaker.other {
+            color: #7b1fa2;
+        }
+
+        .speech {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text);
+            padding-left: 16px;
+            border-left: 3px solid #e0e0e0;
+        }
+
+        .speaker.jade + .speech {
+            border-left-color: var(--highlight);
+            background: rgba(15, 52, 96, 0.03);
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .stage-direction {
+            font-style: italic;
+            color: var(--muted);
+            font-size: 14px;
+            margin: 20px 0;
+            padding: 12px 16px;
+            background: #f5f5f5;
+            border-radius: 6px;
+        }
+
+        /* Action Items */
+        .action-items {
+            background: #e8f5e9;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-top: 24px;
+        }
+
+        .action-items h4 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #2e7d32;
+            margin-bottom: 12px;
+        }
+
+        .action-items ul {
+            list-style: none;
+        }
+
+        .action-items li {
+            font-size: 14px;
+            padding: 8px 0 8px 28px;
+            position: relative;
+            border-bottom: 1px solid rgba(46, 125, 50, 0.15);
+        }
+
+        .action-items li:last-child {
+            border-bottom: none;
+        }
+
+        .action-items li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 12px;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #2e7d32;
+            border-radius: 3px;
+        }
+
+        /* Quick Reference */
+        .quick-reference {
+            background: var(--primary);
+            color: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 40px;
+        }
+
+        .quick-reference h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 16px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        .pricing-table th {
+            text-align: left;
+            padding: 10px 12px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .pricing-table td {
+            padding: 10px 12px;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .pricing-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Objection Table */
+        .objection-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 32px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .objection-section h2 {
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .objection-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .objection-table th {
+            text-align: left;
+            padding: 12px;
+            background: var(--light);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--muted);
+        }
+
+        .objection-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+
+        .objection-table td:first-child {
+            width: 30%;
+            font-weight: 600;
+            color: #c62828;
+        }
+
+        .objection-table td:last-child {
+            color: #2e7d32;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .meeting-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+            }
+
+            .meeting-header {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        /* Section Divider */
+        .section-divider {
+            text-align: center;
+            margin: 48px 0;
+            position: relative;
+        }
+
+        .section-divider::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 2px;
+            background: #e0e0e0;
+        }
+
+        .section-divider span {
+            background: var(--light);
+            padding: 0 20px;
+            position: relative;
+            color: var(--muted);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Cosmoprof Miami 2026</h1>
+            <p class="subtitle">Meeting Scripts for Jade Wong, AWARE Hair</p>
+            <div class="meta">
+                <span>January 27 & 29, 2026</span>
+                <span>Booth: BV 2630</span>
+                <span>4 Scheduled Meetings</span>
+            </div>
+        </div>
+
+        <!-- Schedule Overview -->
+        <div class="schedule-overview">
+            <h2>Meeting Schedule</h2>
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Contact & Company</th>
+                        <th>Type</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="time-badge">Jan 27, 2:00 PM</span></td>
+                        <td>
+                            <div class="company-name">BeautySpace</div>
+                            <div class="contact-name">Tiffany De Jesus, Head of BD</div>
+                        </td>
+                        <td><span class="meeting-type type-retail">Retail Intel</span></td>
+                        <td>BV 2630</td>
+                    </tr>
+                    <tr>
+                        <td><span class="time-badge">Jan 27, 2:30 PM</span></td>
+                        <td>
+                            <div class="company-name">Oceania / Regent Seven Seas</div>
+                            <div class="contact-name">Liz Correa, Mgr Onboard Revenue Spa</div>
+                        </td>
+                        <td><span class="meeting-type type-spa">Cruise Spa</span></td>
+                        <td>BV 2630</td>
+                    </tr>
+                    <tr>
+                        <td><span class="time-badge">Jan 27, 5:30 PM</span></td>
+                        <td>
+                            <div class="company-name">Starboard Group</div>
+                            <div class="contact-name">Yasemin Kuloglu</div>
+                        </td>
+                        <td><span class="meeting-type type-cruise">Cruise Retail</span></td>
+                        <td>BV 2630</td>
+                    </tr>
+                    <tr>
+                        <td><span class="time-badge">Jan 29, 10:30 AM</span></td>
+                        <td>
+                            <div class="company-name">Canrad Beauty</div>
+                            <div class="contact-name">Stuart Lapowich</div>
+                        </td>
+                        <td><span class="meeting-type type-distributor">Distributor</span></td>
+                        <td>Lounge, Table 4</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Meeting 1: BeautySpace -->
+        <div class="meeting-card">
+            <div class="meeting-header">
+                <div class="meeting-number">Meeting 1 of 4</div>
+                <h2>Tiffany De Jesus</h2>
+                <div class="company">BeautySpace - Head of Business Development</div>
+                <div class="meeting-meta">
+                    <span>Jan 27, 2:00-2:30 PM</span>
+                    <span>BV 2630 (Your Booth)</span>
+                </div>
+            </div>
+
+            <div class="meeting-body">
+                <div class="company-background">
+                    <h3>Company Background</h3>
+                    <ul>
+                        <li>900+ distribution points nationwide</li>
+                        <li>Partners: Bloomingdale's, Nordstrom, Dillard's, Macy's</li>
+                        <li>125+ beauty brands in portfolio</li>
+                        <li>Recently acquired by PCA Companies</li>
+                        <li>Focus: Retail distribution, department stores</li>
+                    </ul>
+                </div>
+
+                <div class="strategic-note">
+                    <h4>Strategic Angle</h4>
+                    <p>BeautySpace is retail-focused, not salon channel. This meeting is about building relationships, gathering intel on retail buyer expectations, and planting seeds for future expansion. Not an immediate distribution fit.</p>
+                </div>
+
+                <div class="script-section">
+                    <h3>Conversation Script</h3>
+
+                    <div class="stage-direction">[Opening - Tiffany arrives at booth]</div>
+
+                    <div class="dialogue">
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Tiffany, thank you so much for making time to meet. I'm Jade Wong, Co-Founder and COO of AWARE Hair. Welcome to our booth.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Tiffany</div>
+                            <div class="speech">Thanks for having me. I saw your brand on the show app and was intrigued by the scalp care positioning. Tell me more about what you're doing.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">AWARE Hair is a professional-exclusive scalp care line founded by Tina Mui - she's a master trichologist with 40 years of experience. She kept seeing the same unsolved problems in her chair: hard water damage, pollution stress, UV damage on the scalp. So she developed a patent-pending formulation using dual-weight hyaluronic acid and Tahitian microalgae to address environmental scalp health.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Tiffany</div>
+                            <div class="speech">Interesting. What's your distribution look like currently?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Right now we're exclusively in salons - 35+ professional partners across LA, Chicago, and NYC. Our focus has been proving product-market fit in the professional channel first. And the results have been incredible: 96% B2B repurchase rate, zero returns across our entire network, and an average reorder cycle of 28-35 days.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Tiffany</div>
+                            <div class="speech">96% repurchase? That's exceptionally high. What do you attribute that to?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Honestly - it works. Stylists see the results on their clients' scalps, clients feel the difference, and they keep asking for it. Our top salon does $12,000 annually with us, and they started with a $1,800 trial order. Within 90 days, they added scalp assessments to every new client consultation.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Tiffany</div>
+                            <div class="speech">So you're salon-exclusive currently. What brings you to talk with BeautySpace? We're primarily retail distribution.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Great question. I know BeautySpace has incredible reach - 900+ distribution points, relationships with Nordstrom, Bloomingdale's, and others. I wanted to understand a few things. First, how do retail buyers evaluate emerging brands in the scalp care space? And second, what would a brand like ours need to demonstrate before retail expansion makes sense?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Tiffany</div>
+                            <div class="speech">Smart approach. Most brands come to us too early - they want retail before they've proven anything. The fact that you're leading with salon is actually a strong foundation. Retail buyers want to see: consistent sales velocity, brand awareness or social proof, and a clear value proposition that stands out on shelf.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">That's helpful. We have 18 million organic social views with zero ad spend - the content resonates. But our thesis is that building professional credibility first creates pull demand. When someone gets a great scalp treatment at their salon, they go looking for the product.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Tiffany</div>
+                            <div class="speech">That's the Olaplex playbook, and it worked. What's your price point?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">$55-60 retail for our core products - shampoo, conditioner, and leave-in. Premium positioning, clean formulation - sulfate-free, paraben-free, silicone-free, vegan, cruelty-free.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Tiffany</div>
+                            <div class="speech">That's a strong price point. Clean and clinical is where the category is moving. Do you have any IP protection?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Yes - patent-pending on our formulation. The dual-weight hyaluronic acid technology is exclusive to us. We're not just another clean shampoo.</div>
+                        </div>
+                    </div>
+
+                    <div class="stage-direction">[Transition to Close]</div>
+
+                    <div class="dialogue">
+                        <div class="dialogue-item">
+                            <div class="speaker other">Tiffany</div>
+                            <div class="speech">This is a solid foundation. I think you're doing this the right way - building credibility before racing to retail. The salon-exclusive positioning actually makes you more attractive to retail buyers later, not less.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">That means a lot to hear. Can I ask - what would you recommend as our next steps? Not necessarily with BeautySpace specifically, but in building toward retail-readiness?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Tiffany</div>
+                            <div class="speech">A few things. First, keep building your salon base - the more professional endorsement, the better. Second, invest in brand awareness - even organic social helps. Third, when you're ready to have a retail conversation, come back with sell-through data from your professional accounts. Retail buyers love seeing velocity.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">That's incredibly helpful. Would you be open to staying in touch? I'd love to update you as we grow, and when the time is right, explore what a retail partnership could look like.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Tiffany</div>
+                            <div class="speech">Absolutely. Send me your deck and let's reconnect in Q3 or Q4. By then you'll have more data and we'll have a clearer sense of our 2027 planning.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Perfect. Here's my card and our one-pager. Can I send you some samples as well? Experiencing the product is really the best way to understand the difference.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-items">
+                    <h4>Post-Meeting Actions</h4>
+                    <ul>
+                        <li>Send samples within 48 hours</li>
+                        <li>Include brand deck, line sheet, and press highlights</li>
+                        <li>Add to CRM with "Future Retail - Q4 Follow-up" tag</li>
+                        <li>Calendar reminder for August 2026 check-in</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Meeting 2: Oceania/Regent -->
+        <div class="meeting-card">
+            <div class="meeting-header">
+                <div class="meeting-number">Meeting 2 of 4</div>
+                <h2>Liz Correa</h2>
+                <div class="company">Oceania / Regent Seven Seas - Manager, Onboard Revenue Spa</div>
+                <div class="meeting-meta">
+                    <span>Jan 27, 2:30-3:00 PM</span>
+                    <span>BV 2630 (Your Booth)</span>
+                </div>
+            </div>
+
+            <div class="meeting-body">
+                <div class="company-background">
+                    <h3>Company Background</h3>
+                    <ul>
+                        <li>Luxury cruise lines (Norwegian Cruise Line Holdings)</li>
+                        <li>Canyon Ranch spa partnership onboard</li>
+                        <li>Ultra-high-net-worth guest demographic</li>
+                        <li>Spa services = significant revenue center</li>
+                        <li>Treatments priced $150-400+</li>
+                    </ul>
+                </div>
+
+                <div class="strategic-note">
+                    <h4>Strategic Angle</h4>
+                    <p>Cruise spa channel opportunity. Head spa treatments differentiate their offering. Travel sizes perfect for onboard retail. Captive luxury audience with time and money. Professional education for spa teams creates stickiness.</p>
+                </div>
+
+                <div class="script-section">
+                    <h3>Conversation Script</h3>
+
+                    <div class="stage-direction">[Opening - Liz arrives at booth]</div>
+
+                    <div class="dialogue">
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Liz, welcome! I'm Jade Wong, Co-Founder of AWARE Hair. Thank you for taking time to meet with us.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Liz</div>
+                            <div class="speech">Of course. I manage spa revenue for Oceania and Regent Seven Seas, and scalp care is definitely on my radar. The head spa trend is exploding and our guests are asking about it.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">That's exactly why I wanted to connect. The head spa category is the fastest-growing spa trend - searches are up 233% year-over-year, and it's being called the #1 spa trend for 2025. Our founder, Tina Mui, is a master trichologist with 40 years of experience, and we've built a professional scalp care system specifically designed for treatment services.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Liz</div>
+                            <div class="speech">Tell me about your products and how they work in a spa treatment setting.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">We have three core products that work together as a scalp treatment system. The 9.1 Professional Shampoo preps the scalp with our patent-pending hyaluronic acid complex - it's been clinically shown to deliver 189x more hydration than placebo. The Conditioner strengthens with SymHair Force, reducing breakage by 82%. And the Leave-In provides ongoing environmental protection. For spa settings, we have backbar sizes - 1-liter formats - that are perfect for treatment rooms. Plus travel sizes that guests can purchase to continue their routine.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Liz</div>
+                            <div class="speech">What does a typical scalp treatment protocol look like?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">A full head spa treatment using AWARE products takes about 30-45 minutes and can retail for $150-250 depending on how you position it. The protocol includes scalp analysis and consultation, deep cleanse with the 9.1 Shampoo, scalp massage with targeted pressure points, conditioning treatment, and leave-in protection. We provide full training for spa teams - our founder Tina can do virtual education sessions, and we have comprehensive protocol guides.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Liz</div>
+                            <div class="speech">The cruise environment is unique. We have guests from all over the world, different water conditions at each port, sun exposure on deck. How does your product address that?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">That's actually our core positioning - environmental scalp health. The formula was specifically designed to address hard water damage, UV stress, and pollution. Your guests are exposed to different water qualities at every port, intense sun on deck, and air-conditioned environments that stress the scalp. Our products were built for exactly this use case.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Liz</div>
+                            <div class="speech">What about retail? Can guests purchase products after their treatment?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Absolutely. That's where the model becomes really powerful. After a guest has an incredible scalp treatment, they want to continue at home. We have travel-friendly sizes - 100ml shampoo and conditioner at $27.50 retail, 50ml leave-in at $30 - perfect for onboard retail and guest purchases. Your spa becomes a retail profit center, not just a service center.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Liz</div>
+                            <div class="speech">What are the margins looking like?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">We typically work with professional partners at 50% off retail, so your cost would be around $27.50 for the full-size products retailing at $55. For backbar, the 1-liter is $75 cost, $150 retail. We're flexible on terms for the right hospitality partners.</div>
+                        </div>
+                    </div>
+
+                    <div class="stage-direction">[Transition to Close]</div>
+
+                    <div class="dialogue">
+                        <div class="dialogue-item">
+                            <div class="speaker other">Liz</div>
+                            <div class="speech">This is interesting. Our guests are exactly the demographic for premium scalp care - they're health-conscious, they have money to spend, and they're looking for unique experiences. A dedicated head spa treatment could differentiate us from other cruise lines.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Exactly. And the beauty of cruise is you have a captive audience for 7-14 days. They can experience the treatment, see results, and purchase products all in one voyage. It's the perfect environment to introduce something new.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Liz</div>
+                            <div class="speech">What would a pilot look like?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">I'd suggest starting with 2-3 ships. We'd provide full product kits for the spa teams, comprehensive training either virtual or in-person, treatment protocols, and marketing materials. We could do a 90-day pilot and measure: treatment bookings, retail sales, and guest feedback.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Liz</div>
+                            <div class="speech">And the investment?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">For a pilot, we could put together a starter kit at a reduced initial order - maybe $2,500-3,500 per ship including backbar and retail inventory. We'd provide training at no additional cost. The goal is proving the concept works for your guests.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Liz</div>
+                            <div class="speech">Let me discuss with my team. Can you send me a formal proposal with product details, pricing, and training options?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Absolutely. I'll have that to you within 48 hours. Can I also send you samples so you can experience the product yourself? Once you feel the difference, I think you'll understand why our salons are so loyal.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-items">
+                    <h4>Post-Meeting Actions</h4>
+                    <ul>
+                        <li>Send formal proposal within 48 hours</li>
+                        <li>Include: Product catalog, pricing tiers, pilot structure, training outline</li>
+                        <li>Send full sample kit with protocol guide</li>
+                        <li>Research Canyon Ranch partnership details</li>
+                        <li>Follow up in 1 week to discuss proposal</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Meeting 3: Starboard Group -->
+        <div class="meeting-card">
+            <div class="meeting-header">
+                <div class="meeting-number">Meeting 3 of 4</div>
+                <h2>Yasemin Kuloglu</h2>
+                <div class="company">Starboard Group</div>
+                <div class="meeting-meta">
+                    <span>Jan 27, 5:30-6:00 PM</span>
+                    <span>BV 2630 (Your Booth)</span>
+                </div>
+            </div>
+
+            <div class="meeting-body">
+                <div class="company-background">
+                    <h3>Company Background</h3>
+                    <ul>
+                        <li>World's leading cruise ship retailer since 1958</li>
+                        <li>90+ ships across 14 cruise lines</li>
+                        <li>Partners: Royal Caribbean, Celebrity, Carnival, Princess, Virgin Voyages</li>
+                        <li>Luxury beauty shop-in-shops: Dior, Chanel, La Prairie, Clarins</li>
+                        <li>Focus: "Multisensory retail experiences"</li>
+                    </ul>
+                </div>
+
+                <div class="strategic-note">
+                    <h4>Strategic Angle</h4>
+                    <p>Starboard is duty-free retail, not spa services (different from Liz Correa's meeting). Travel sizes perfect for cruise retail. Luxury/premium positioning aligns with their brand partners. Duty-free pricing could be attractive for guests.</p>
+                </div>
+
+                <div class="script-section">
+                    <h3>Conversation Script</h3>
+
+                    <div class="stage-direction">[Opening - Yasemin arrives at booth]</div>
+
+                    <div class="dialogue">
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Yasemin, thank you for stopping by. I'm Jade Wong, Co-Founder of AWARE Hair. It's great to meet you.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Yasemin</div>
+                            <div class="speech">Likewise. Tell me about AWARE Hair - I don't think I've seen your brand before.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">We're a professional-exclusive scalp care brand, relatively young but growing fast. Founded by Tina Mui, a master trichologist with 40 years of experience. We focus on environmental scalp health - protecting the scalp from hard water damage, UV stress, and pollution. Currently we're in 35+ professional salons with a 96% repurchase rate.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Yasemin</div>
+                            <div class="speech">Interesting timing. Head spa and scalp care is definitely trending in our market intelligence. We've been looking at the category.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">I'm familiar with Starboard's incredible work in luxury beauty retail at sea - the Dior and Chanel shop-in-shops, the new Clarins boutique on Virgin Voyages. You're really elevating the cruise retail experience.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Yasemin</div>
+                            <div class="speech">Thank you - we're proud of what we've built. We try to bring the best of luxury retail to an environment that's actually perfect for discovery. Our guests have time to explore, try things, and they're in a vacation mindset.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">That's exactly why I wanted to connect. Your guests are the perfect demographic for premium scalp care - they're traveling, exposed to different water and sun conditions, and they value quality. The cruise environment actually creates the problems our products solve.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Yasemin</div>
+                            <div class="speech">Walk me through your products.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Three core products, premium positioning at $55-60 retail. The 9.1 Professional Shampoo and Conditioner use our patent-pending hyaluronic acid complex - clinically shown to deliver 189x more hydration. The Leave-In provides ongoing protection. All clean formulation - sulfate-free, paraben-free, vegan - and 100% natural fine fragrance. We also have travel sizes - 100ml shampoo and conditioner at $27.50, 50ml leave-in at $30 - which would be perfect for cruise retail.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Yasemin</div>
+                            <div class="speech">What makes you different from the scalp care we might already carry or be considering?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">A few things. First, we're salon-exclusive, which gives us professional credibility that mass-market brands don't have. When we say it works, we have 35+ professional stylists who stake their reputation on it. Second, our formulation is patent-pending - this isn't just a repositioned shampoo, it's purpose-built technology. Third, our positioning is unique: environmental scalp health. We're not targeting thinning hair or dandruff - we're addressing the everyday damage that travel creates.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Yasemin</div>
+                            <div class="speech">What's your brand awareness like? Our retail works best when guests already recognize the brand or are intrigued by strong positioning.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">We've built 18 million organic social views with zero ad spend - the content resonates. We're also used by Emmy-winning stylists in Hollywood productions and will be featured in an upcoming Seth Rogen and Anna Kendrick film. The professional credibility creates a story guests find compelling.</div>
+                        </div>
+                    </div>
+
+                    <div class="stage-direction">[Transition to Close]</div>
+
+                    <div class="dialogue">
+                        <div class="dialogue-item">
+                            <div class="speaker other">Yasemin</div>
+                            <div class="speech">This is worth exploring further. The scalp care category is growing, your positioning is differentiated, and the travel angle makes sense for our guests. I'd need to bring this to our buying team.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">I'd really appreciate that. What would be most helpful for me to send you?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Yasemin</div>
+                            <div class="speech">A brand overview, product catalog with pricing, your sales data and repurchase metrics, and any press or social proof. The 96% repurchase rate is compelling - we look for products that create loyalty.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">I'll have that to you within 48 hours. Can I also send you samples? The product really is the best selling tool.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Yasemin</div>
+                            <div class="speech">Yes, please. My card has the shipping address for our Miami office.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Perfect. Thank you so much, Yasemin. I think AWARE could be a great addition to Starboard's beauty portfolio - we bring something genuinely new to the cruise retail experience.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-items">
+                    <h4>Post-Meeting Actions</h4>
+                    <ul>
+                        <li>Send comprehensive brand package within 48 hours</li>
+                        <li>Include: Brand deck, product catalog, pricing, sales metrics, press clips</li>
+                        <li>Ship sample kit to Miami office</li>
+                        <li>Research Starboard buying process/timeline</li>
+                        <li>Follow up in 2 weeks with buying team introduction request</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Meeting 4: Canrad -->
+        <div class="meeting-card">
+            <div class="meeting-header" style="background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);">
+                <div class="meeting-number">Meeting 4 of 4 - Priority Meeting</div>
+                <h2>Stuart Lapowich</h2>
+                <div class="company">Canrad Beauty - B2B Distributor</div>
+                <div class="meeting-meta">
+                    <span>Jan 29, 10:30-11:00 AM</span>
+                    <span>Lounge - Table 4</span>
+                </div>
+            </div>
+
+            <div class="meeting-body">
+                <div class="company-background">
+                    <h3>Company Background</h3>
+                    <ul>
+                        <li>Fourth-generation family-owned (since 1912!)</li>
+                        <li>HQ: North York, Ontario, Canada</li>
+                        <li>38 salon consultants across Canada</li>
+                        <li>14 "Trade Only" stores + 8 educational facilities</li>
+                        <li>Carries: Moroccanoil, Paul Mitchell, Schwarzkopf</li>
+                        <li>"Premiere distributor of professional beauty products in Canada"</li>
+                    </ul>
+                </div>
+
+                <div class="strategic-note">
+                    <h4>Strategic Angle</h4>
+                    <p><strong>Strongest fit of all meetings.</strong> Traditional salon distributor aligns perfectly with AWARE's professional-exclusive strategy. Family-owned = faster decisions, relationship-driven. Education facilities suggest commitment to professional training. Canadian market = international expansion opportunity.</p>
+                </div>
+
+                <div class="script-section">
+                    <h3>Conversation Script</h3>
+
+                    <div class="stage-direction">[Meeting at Lounge Table 4 - Formal scheduled meeting]</div>
+
+                    <div class="dialogue">
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Stuart, thank you for scheduling time to meet. I'm Jade Wong, Co-Founder and COO of AWARE Hair.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Stuart</div>
+                            <div class="speech">Jade, nice to meet you. I saw your submission through the meeting scheduler - scalp care, salon-exclusive, LA-based. Caught my attention because scalp health is definitely growing in our market.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">I'm glad it resonated. And I have to say - Canrad's history is impressive. Fourth generation, over 100 years in the professional beauty industry. That kind of longevity speaks to how you treat your brand partners.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Stuart</div>
+                            <div class="speech">We pride ourselves on relationships. My great-grandfather started in wigs in 1912, and the Wise family has been building this business ever since. We've seen a lot of brands come and go - we know what works in the professional channel.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">That experience is exactly why I wanted to meet. AWARE is founder-led, and we're looking for distribution partners who understand long-term brand building, not just quick transactions.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Stuart</div>
+                            <div class="speech">Tell me about AWARE. What's the story?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Our founder, Tina Mui, is a master trichologist with 40 years of experience. She's founded 12 salons in her career and kept seeing the same unsolved problems: clients with scalp damage from hard water, pollution, UV exposure. Existing scalp care products were either medical-focused on thinning hair, or just marketed shampoos with no real technology. So she developed AWARE - a patent-pending formulation using dual-weight hyaluronic acid and Tahitian microalgae specifically for environmental scalp health. It's clinical without being clinical-looking, if that makes sense. Premium, clean, and it actually works.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Stuart</div>
+                            <div class="speech">What results are you seeing in market?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">35+ salon partners across LA, Chicago, and NYC. 96% B2B repurchase rate - 38 of 40 salons have reordered. Average reorder cycle is 28-35 days. Our top account does $12,000 annually, average is around $6,000. And zero returns across our entire network.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Stuart</div>
+                            <div class="speech">Zero returns? That's unusual. How?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">The product works. Stylists see results, clients feel the difference. We also don't oversell - we'd rather a salon start with a smaller order and reorder quickly than sit on inventory. Quality over quantity.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Stuart</div>
+                            <div class="speech">What's the product line look like?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Three core products: 9.1 Professional Shampoo, Conditioner, and Leave-In Styling Conditioner. Each comes in three sizes - retail (300ml shampoo/conditioner at $55, 250ml leave-in at $60), travel (100ml at $27.50, 50ml at $30), and backbar (1L at $150). All clean formulation - sulfate-free, paraben-free, silicone-free, vegan, cruelty-free. 100% natural fine fragrance. Made in LA at an FDA-registered, GMP-certified facility.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Stuart</div>
+                            <div class="speech">How do you support your distributors? Training, marketing, that sort of thing?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">This is important to us. Our founder Tina does virtual and in-person education - she brings 40 years of trichology expertise that stylists genuinely learn from. We provide protocol guides for scalp treatments, POS materials, social assets for salon partners to use, and sampling programs. I noticed Canrad has 8 educational facilities alongside your stores - we'd love to integrate AWARE into your education programming. Scalp health is an undertaught subject in cosmetology, and we can help fill that gap.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Stuart</div>
+                            <div class="speech">That's a good angle. Our stores and education centers work together - when consultants learn about a product, they can recommend it with confidence.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Exactly. And your 38 consultants calling on salons - that's the kind of infrastructure we need to scale in Canada. We've proven the model works with salon partners, but we need distribution reach to grow.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Stuart</div>
+                            <div class="speech">What's your current distribution situation?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Right now we're direct-to-salon in the US. We've done $125,000 in revenue over six months with no distribution, no sales team - just founder relationships. We're at Cosmoprof specifically to find the right distribution partners to scale.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Stuart</div>
+                            <div class="speech">Why Canada? Most US brands want to saturate their home market first.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">A few reasons. First, the Canadian professional beauty market is sophisticated - your salons appreciate quality and are willing to pay for it. Second, Canrad specifically has the infrastructure we need - consultants, education, trade stores. Third, family-owned businesses like ours and yours tend to work well together. We can move faster and make decisions that make sense, not just follow corporate playbooks.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Stuart</div>
+                            <div class="speech">What kind of partnership are you looking for?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Ideally, exclusive Canadian distribution with an active sales commitment. We'd provide competitive wholesale pricing - we work at 50% off retail for direct salons, and we're prepared to discuss distributor pricing that works for your model. Typical distributor structure would be 40-50% depending on volume. We'd want a meaningful opening order to ensure you have proper inventory, ongoing marketing support commitments from our side, and regular business reviews to make sure we're both winning.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Stuart</div>
+                            <div class="speech">What's the opening order look like?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">For a regional distributor of Canrad's size, we'd suggest a $10,000-15,000 opening order to properly stock your stores and give consultants inventory to sell against. Reorders at $2,500 minimum. We're flexible on payment terms for established distributors - Net 30 on approved credit.</div>
+                        </div>
+                    </div>
+
+                    <div class="stage-direction">[Transition to Close]</div>
+
+                    <div class="dialogue">
+                        <div class="dialogue-item">
+                            <div class="speaker other">Stuart</div>
+                            <div class="speech">This is a well-thought-out pitch. I like that you've done your homework on our business. The scalp care category is definitely one we're watching - we carry some products that touch on it, but nothing dedicated.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">That's the white space. You have great haircare brands, but no dedicated scalp care specialist. AWARE fills that gap without competing with your existing portfolio.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Stuart</div>
+                            <div class="speech">I'll need to bring this to my team. What's your timeline?</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">We're talking to distributors this week and want to make decisions in February. I'm not trying to create artificial urgency, but we will be selecting partners soon, and I'd love for Canrad to be part of that conversation.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Stuart</div>
+                            <div class="speech">Fair enough. Send me your full presentation - product details, pricing structure, marketing support, everything. I'll review with my buying team and we can schedule a follow-up call.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">I'll have that to you by end of day tomorrow. Can I send samples as well? Experiencing the product is really the best way to understand why our repurchase rates are so high.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker other">Stuart</div>
+                            <div class="speech">Yes, send them to our North York office. My assistant can give you the shipping details.</div>
+                        </div>
+
+                        <div class="dialogue-item">
+                            <div class="speaker jade">Jade</div>
+                            <div class="speech">Perfect. Stuart, thank you for your time today. I think AWARE and Canrad could build something great together in Canada.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-items">
+                    <h4>Post-Meeting Actions</h4>
+                    <ul>
+                        <li>Send comprehensive distributor package by EOD January 30</li>
+                        <li>Include: Brand deck, full pricing structure, distributor terms, marketing support overview, case studies</li>
+                        <li>Ship sample kit to North York office</li>
+                        <li>Calendar follow-up call for week of February 3</li>
+                        <li>Research Canadian regulatory requirements (Health Canada)</li>
+                        <li>Prepare draft distributor agreement for review</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Reference Card -->
+        <div class="quick-reference">
+            <h2>Quick Reference Card - Key Numbers</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">96%</div>
+                    <div class="stat-label">B2B Repurchase</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">35+</div>
+                    <div class="stat-label">Salon Partners</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">$125K</div>
+                    <div class="stat-label">6-Month Revenue</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">$12K</div>
+                    <div class="stat-label">Top Salon Annual</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">18M+</div>
+                    <div class="stat-label">Organic Views</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Returns</div>
+                </div>
+            </div>
+
+            <table class="pricing-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Size</th>
+                        <th>Retail</th>
+                        <th>Wholesale (50%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Shampoo / Conditioner</td>
+                        <td>300ml</td>
+                        <td>$55.00</td>
+                        <td>$27.50</td>
+                    </tr>
+                    <tr>
+                        <td>Leave-In Styling</td>
+                        <td>250ml</td>
+                        <td>$60.00</td>
+                        <td>$30.00</td>
+                    </tr>
+                    <tr>
+                        <td>Travel Shampoo/Cond</td>
+                        <td>100ml</td>
+                        <td>$27.50</td>
+                        <td>$13.75</td>
+                    </tr>
+                    <tr>
+                        <td>Backbar</td>
+                        <td>1L</td>
+                        <td>$150.00</td>
+                        <td>$75.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Objection Handling -->
+        <div class="objection-section">
+            <h2>Objection Handling Quick Reference</h2>
+            <table class="objection-table">
+                <thead>
+                    <tr>
+                        <th>They Say</th>
+                        <th>You Say</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>"You're too small/new"</td>
+                        <td>"That's the opportunity - we've proven product-market fit before building a competing DTC channel. You're getting in early."</td>
+                    </tr>
+                    <tr>
+                        <td>"We already have scalp care"</td>
+                        <td>"We're the salon-exclusive specialist. 96% repurchase means lower SKU churn than generalist brands. We complement, not compete."</td>
+                    </tr>
+                    <tr>
+                        <td>"What are your margins?"</td>
+                        <td>"40-50% for salon retail on $55-60 products. Premium positioning with proven velocity. 28-35 day reorder cycle."</td>
+                    </tr>
+                    <tr>
+                        <td>"Need more data/proof"</td>
+                        <td>"Happy to share everything. Our 96% repurchase across 35+ salons with zero returns is the strongest proof point."</td>
+                    </tr>
+                    <tr>
+                        <td>"Just send me info"</td>
+                        <td>"Absolutely - here's my one-pager. Can I also send samples? The product is the best selling tool."</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #e0e0e0; color: #999; font-size: 13px;">
+            Prepared January 26, 2026 | Good luck, Jade!
+        </div>
+    </div>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

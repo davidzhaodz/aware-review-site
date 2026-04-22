@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARE - Agent Health Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f4efe9;
+      color: #102B26;
+      line-height: 1.5;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+    /* Status Banner */
+    .status-banner {
+      background: #f5dbd8;
+      border-left: 4px solid #c0392b;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .status-banner h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #c0392b;
+    }
+    .status-banner .score {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #c0392b;
+    }
+    .status-banner .meta {
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+
+    /* Section */
+    .section {
+      background: #faf8f5;
+      border-radius: 6px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .section h2 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #D4A574;
+      margin-bottom: 16px;
+    }
+
+    /* Agent Grid */
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .agent-card {
+      background: #f4efe9;
+      border-radius: 4px;
+      padding: 14px;
+    }
+    .agent-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .agent-name {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .agent-meta {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      line-height: 1.6;
+    }
+    .missed { color: #c0392b; font-weight: 600; opacity: 1; }
+
+    /* Engine Table */
+    .engine-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+    }
+    .engine-table th {
+      text-align: left;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #D4A574;
+      padding: 8px 12px;
+      border-bottom: 1px solid #e8e3dc;
+    }
+    .engine-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #f0ece6;
+    }
+    .row-stale td { background: #fdf0ef; color: #c0392b; }
+    .row-approaching td { background: #fdf7ef; color: #b87c3a; }
+    .row-never td { opacity: 0.5; }
+
+    /* Issues */
+    .issue-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #f0ece6;
+      font-size: 0.875rem;
+    }
+    .issue-item:last-child { border-bottom: none; }
+    .badge {
+      display: inline-block;
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+    .badge-critical { background: #c0392b; color: #fff; }
+    .badge-warning { background: #D4A574; color: #fff; }
+    .badge-info { background: #7d8471; color: #fff; }
+    .downstream {
+      font-size: 0.75rem;
+      opacity: 0.6;
+      margin-top: 4px;
+    }
+    .remediation {
+      display: block;
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: #102B26;
+      color: #e8ede5;
+      border-radius: 3px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.75rem;
+      cursor: pointer;
+      word-break: break-all;
+    }
+    .remediation:hover { opacity: 0.9; }
+
+    /* Timeline */
+    .timeline-container { overflow-x: auto; }
+
+    /* Dependency Graph */
+    .dep-graph-container { overflow-x: auto; }
+
+    /* History */
+    .history-container {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      height: 80px;
+    }
+    .history-bar {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+    }
+    .bar-fill {
+      width: 100%;
+      min-width: 30px;
+      border-radius: 3px 3px 0 0;
+      transition: height 0.3s ease;
+      margin-top: auto;
+    }
+    .bar-label {
+      font-size: 0.625rem;
+      opacity: 0.6;
+      margin-top: 4px;
+    }
+
+    /* Two column layout */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.6875rem;
+      opacity: 0.4;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Status Banner -->
+    <div class="status-banner">
+      <div>
+        <h1>System CRITICAL</h1>
+        <div class="meta">Apr 17, 2026, 2:29 AM - 13 issue(s)</div>
+      </div>
+      <div class="score">0</div>
+    </div>
+
+    <!-- Agent Grid -->
+    <div class="section">
+      <h2>Agent Status</h2>
+      <div class="agent-grid">
+        
+      <div class="agent-card">
+        <div class="agent-header">
+          <span class="status-dot" style="background:#c0392b"></span>
+          <span class="agent-name">POSTMASTER</span>
+        </div>
+        <div class="agent-meta">
+          <div>Status: failed</div>
+          <div>Last: never</div>
+          <div>Next: Mon, Apr 20</div>
+          <div class="missed">Missed: 3</div>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-header">
+          <span class="status-dot" style="background:#7d8471"></span>
+          <span class="agent-name">CLOSER</span>
+        </div>
+        <div class="agent-meta">
+          <div>Status: healthy</div>
+          <div>Last: 2026-04-16</div>
+          <div>Next: Mon, Apr 20</div>
+          
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-header">
+          <span class="status-dot" style="background:#7d8471"></span>
+          <span class="agent-name">CHIEF</span>
+        </div>
+        <div class="agent-meta">
+          <div>Status: healthy</div>
+          <div>Last: 2026-04-16</div>
+          <div>Next: Mon, Apr 20</div>
+          
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-header">
+          <span class="status-dot" style="background:#c0392b"></span>
+          <span class="agent-name">STRATEGIST</span>
+        </div>
+        <div class="agent-meta">
+          <div>Status: failed</div>
+          <div>Last: 2026-04-01</div>
+          <div>Next: Wed, Apr 22</div>
+          <div class="missed">Missed: 2</div>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-header">
+          <span class="status-dot" style="background:#c0392b"></span>
+          <span class="agent-name">OPTIMIZER</span>
+        </div>
+        <div class="agent-meta">
+          <div>Status: failed</div>
+          <div>Last: never</div>
+          <div>Next: Sun, Apr 19</div>
+          <div class="missed">Missed: 3</div>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-header">
+          <span class="status-dot" style="background:#aaa"></span>
+          <span class="agent-name">MARKETER</span>
+        </div>
+        <div class="agent-meta">
+          <div>Status: on-demand</div>
+          <div>Last: 2026-04-16</div>
+          <div>On-demand</div>
+          
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-header">
+          <span class="status-dot" style="background:#aaa"></span>
+          <span class="agent-name">HERALD</span>
+        </div>
+        <div class="agent-meta">
+          <div>Status: on-demand</div>
+          <div>Last: 2026-04-14</div>
+          <div>On-demand</div>
+          
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-header">
+          <span class="status-dot" style="background:#aaa"></span>
+          <span class="agent-name">SUPPLIER</span>
+        </div>
+        <div class="agent-meta">
+          <div>Status: on-demand</div>
+          <div>Last: 2026-04-13</div>
+          <div>On-demand</div>
+          
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-header">
+          <span class="status-dot" style="background:#aaa"></span>
+          <span class="agent-name">STEWARD</span>
+        </div>
+        <div class="agent-meta">
+          <div>Status: on-demand</div>
+          <div>Last: 2026-04-16</div>
+          <div>On-demand</div>
+          
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-header">
+          <span class="status-dot" style="background:#aaa"></span>
+          <span class="agent-name">FUNNEL</span>
+        </div>
+        <div class="agent-meta">
+          <div>Status: on-demand</div>
+          <div>Last: 2026-04-11</div>
+          <div>On-demand</div>
+          
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-header">
+          <span class="status-dot" style="background:#aaa"></span>
+          <span class="agent-name">SCOUT-PLUS</span>
+        </div>
+        <div class="agent-meta">
+          <div>Status: on-demand</div>
+          <div>Last: never</div>
+          <div>On-demand</div>
+          
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- Engine Freshness -->
+      <div class="section">
+        <h2>Engine Data Freshness</h2>
+        <table class="engine-table">
+          <thead><tr><th>Engine</th><th>File</th><th>Age</th><th>Limit</th><th>Status</th></tr></thead>
+          <tbody><tr class="row-approaching">
+        <td>auditor</td>
+        <td>auditor.json</td>
+        <td>154h</td>
+        <td>170h</td>
+        <td>approaching</td>
+      </tr>
+<tr class="row-approaching">
+        <td>beacon</td>
+        <td>beacon.json</td>
+        <td>138h</td>
+        <td>170h</td>
+        <td>approaching</td>
+      </tr>
+<tr class="row-never">
+        <td>cashflow</td>
+        <td>cashflow.json</td>
+        <td>-</td>
+        <td>26h</td>
+        <td>never_run</td>
+      </tr>
+<tr class="">
+        <td>b2b-health</td>
+        <td>b2b-health.json</td>
+        <td>3h</td>
+        <td>26h</td>
+        <td>fresh</td>
+      </tr>
+<tr class="">
+        <td>account-health</td>
+        <td>account-health.json</td>
+        <td>3h</td>
+        <td>26h</td>
+        <td>fresh</td>
+      </tr>
+<tr class="">
+        <td>watchdog</td>
+        <td>watchdog.json</td>
+        <td>3h</td>
+        <td>26h</td>
+        <td>fresh</td>
+      </tr>
+<tr class="">
+        <td>competitor</td>
+        <td>competitor.json</td>
+        <td>0h</td>
+        <td>26h</td>
+        <td>fresh</td>
+      </tr>
+<tr class="">
+        <td>courier</td>
+        <td>courier.json</td>
+        <td>3h</td>
+        <td>50h</td>
+        <td>fresh</td>
+      </tr>
+<tr class="">
+        <td>capacity</td>
+        <td>capacity.json</td>
+        <td>3h</td>
+        <td>50h</td>
+        <td>fresh</td>
+      </tr>
+<tr class="">
+        <td>clarity</td>
+        <td>clarity.json</td>
+        <td>19h</td>
+        <td>26h</td>
+        <td>fresh</td>
+      </tr>
+<tr class="">
+        <td>optimizer</td>
+        <td>optimizer.json</td>
+        <td>4h</td>
+        <td>26h</td>
+        <td>fresh</td>
+      </tr>
+<tr class="">
+        <td>shepherd</td>
+        <td>shepherd.json</td>
+        <td>3h</td>
+        <td>26h</td>
+        <td>fresh</td>
+      </tr>
+<tr class="">
+        <td>suppressions</td>
+        <td>suppressions.json</td>
+        <td>38h</td>
+        <td>168h</td>
+        <td>fresh</td>
+      </tr>
+<tr class="">
+        <td>signal-results</td>
+        <td>signal-results.json</td>
+        <td>0h</td>
+        <td>26h</td>
+        <td>fresh</td>
+      </tr>
+<tr class="row-stale">
+        <td>quality-ratchet</td>
+        <td>quality-ratchet.json</td>
+        <td>338h</td>
+        <td>48h</td>
+        <td>stale</td>
+      </tr>
+<tr class="row-stale">
+        <td>seo-engine</td>
+        <td>seo-engine.json</td>
+        <td>284h</td>
+        <td>48h</td>
+        <td>stale</td>
+      </tr></tbody>
+        </table>
+      </div>
+
+      <!-- Issues -->
+      <div class="section">
+        <h2>Issues (13)</h2>
+        <div class="issue-item">
+      <span class="badge badge-warning">WARNING</span> <strong>gmail-oauth</strong>: No POSTMASTER logs found - cannot determine Gmail auth status
+      <div class="downstream">Impact: POSTMASTER may not be running</div>
+      <code class="remediation" onclick="navigator.clipboard.writeText(this.textContent)" title="Click to copy">Check POSTMASTER plist is loaded: launchctl list | grep postmaster</code>
+    </div>
+<div class="issue-item">
+      <span class="badge badge-warning">WARNING</span> <strong>quality-ratchet.json</strong>: Data 338h stale (threshold: 48h)
+      
+      <code class="remediation" onclick="navigator.clipboard.writeText(this.textContent)" title="Click to copy">Run: node engines/quality-ratchet-engine.mjs</code>
+    </div>
+<div class="issue-item">
+      <span class="badge badge-warning">WARNING</span> <strong>seo-engine.json</strong>: Data 284h stale (threshold: 48h)
+      
+      <code class="remediation" onclick="navigator.clipboard.writeText(this.textContent)" title="Click to copy">Run: node engines/seo-engine.mjs</code>
+    </div>
+<div class="issue-item">
+      <span class="badge badge-warning">WARNING</span> <strong>scheduling</strong>: Lock collision at Daily 21:00: generate-tasks, overnight-dispatch
+      
+      <code class="remediation" onclick="navigator.clipboard.writeText(this.textContent)" title="Click to copy">generate-tasks (15min expected) may still hold lock when overnight-dispatch starts. Gap: 60min.</code>
+    </div>
+<div class="issue-item">
+      <span class="badge badge-warning">WARNING</span> <strong>scheduling</strong>: Lock collision at Sun 22:00: agent-optimizer, overnight-dispatch
+      
+      <code class="remediation" onclick="navigator.clipboard.writeText(this.textContent)" title="Click to copy">overnight-dispatch (180min expected) may still hold lock when agent-optimizer starts. Gap: 60min.</code>
+    </div>
+<div class="issue-item">
+      <span class="badge badge-warning">WARNING</span> <strong>scheduling</strong>: Lock collision at Mon 08:00: agent-chief, weekly-goals
+      
+      <code class="remediation" onclick="navigator.clipboard.writeText(this.textContent)" title="Click to copy">Stagger by 15+ minutes. Move weekly-goals to 08:20.</code>
+    </div>
+<div class="issue-item">
+      <span class="badge badge-warning">WARNING</span> <strong>scheduling</strong>: Lock collision at Mon 07:15: compile-dashboard, morning-brief
+      
+      <code class="remediation" onclick="navigator.clipboard.writeText(this.textContent)" title="Click to copy">Stagger by 15+ minutes. Move compile-dashboard to 07:35.</code>
+    </div>
+<div class="issue-item">
+      <span class="badge badge-warning">WARNING</span> <strong>event-queue</strong>: 1933 pending events (possible backlog)
+      
+      <code class="remediation" onclick="navigator.clipboard.writeText(this.textContent)" title="Click to copy">Run: node -e &quot;import {archiveOldEvents} from './engines/event-bus.mjs'; console.log(archiveOldEvents(7))&quot;</code>
+    </div>
+<div class="issue-item">
+      <span class="badge badge-info">INFO</span> <strong>CHIEF dependency</strong>: CHIEF depends on POSTMASTER which has missed 3 run(s)
+      
+      <code class="remediation" onclick="navigator.clipboard.writeText(this.textContent)" title="Click to copy">Investigate POSTMASTER failures first</code>
+    </div>
+<div class="issue-item">
+      <span class="badge badge-info">INFO</span> <strong>CHIEF dependency</strong>: CHIEF depends on STRATEGIST which has missed 2 run(s)
+      
+      <code class="remediation" onclick="navigator.clipboard.writeText(this.textContent)" title="Click to copy">Investigate STRATEGIST failures first</code>
+    </div>
+<div class="issue-item">
+      <span class="badge badge-critical">CRITICAL</span> <strong>POSTMASTER</strong>: 3 missed run(s) since never
+      <div class="downstream">Impact: CHIEF digest may be incomplete</div>
+      <code class="remediation" onclick="navigator.clipboard.writeText(this.textContent)" title="Click to copy">Check LaunchD logs: grep &quot;postmaster&quot; ~/.config/aware-hair/logs/cron.log | tail -20</code>
+    </div>
+<div class="issue-item">
+      <span class="badge badge-critical">CRITICAL</span> <strong>STRATEGIST</strong>: 2 missed run(s) since 2026-04-01
+      <div class="downstream">Impact: CHIEF digest may be incomplete</div>
+      <code class="remediation" onclick="navigator.clipboard.writeText(this.textContent)" title="Click to copy">Check LaunchD logs: grep &quot;strategist&quot; ~/.config/aware-hair/logs/cron.log | tail -20</code>
+    </div>
+<div class="issue-item">
+      <span class="badge badge-critical">CRITICAL</span> <strong>OPTIMIZER</strong>: 3 missed run(s) since never
+      
+      <code class="remediation" onclick="navigator.clipboard.writeText(this.textContent)" title="Click to copy">Check LaunchD logs: grep &quot;optimizer&quot; ~/.config/aware-hair/logs/cron.log | tail -20</code>
+    </div>
+      </div>
+    </div>
+
+    <!-- Dependency Graph -->
+    <div class="section">
+      <h2>Dependency Graph</h2>
+      <div class="dep-graph-container">
+        <svg viewBox="0 0 900 384" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px"><circle cx="130" cy="40" r="8" fill="#7d8471" opacity="0.9"/><text x="50" y="44" text-anchor="start" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">b2b-health</text><circle cx="130" cy="76" r="8" fill="#7d8471" opacity="0.9"/><text x="50" y="80" text-anchor="start" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">account-health</text><circle cx="130" cy="112" r="8" fill="#7d8471" opacity="0.9"/><text x="50" y="116" text-anchor="start" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">watchdog</text><circle cx="130" cy="148" r="8" fill="#7d8471" opacity="0.9"/><text x="50" y="152" text-anchor="start" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">competitor</text><circle cx="130" cy="184" r="8" fill="#7d8471" opacity="0.9"/><text x="50" y="188" text-anchor="start" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">courier</text><circle cx="130" cy="220" r="8" fill="#7d8471" opacity="0.9"/><text x="50" y="224" text-anchor="start" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">capacity</text><circle cx="130" cy="256" r="8" fill="#7d8471" opacity="0.9"/><text x="50" y="260" text-anchor="start" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">optimizer</text><circle cx="130" cy="292" r="8" fill="#7d8471" opacity="0.9"/><text x="50" y="296" text-anchor="start" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">clarity</text><circle cx="130" cy="328" r="8" fill="#7d8471" opacity="0.9"/><text x="50" y="332" text-anchor="start" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">shepherd</text><circle cx="700" cy="40" r="10" fill="#c0392b" opacity="0.9"/><text x="718" y="44" text-anchor="start" font-size="11" font-weight="600" fill="#102B26" font-family="DM Sans,sans-serif">POSTMASTER</text><circle cx="700" cy="76" r="10" fill="#7d8471" opacity="0.9"/><text x="718" y="80" text-anchor="start" font-size="11" font-weight="600" fill="#102B26" font-family="DM Sans,sans-serif">CLOSER</text><circle cx="700" cy="112" r="10" fill="#7d8471" opacity="0.9"/><text x="718" y="116" text-anchor="start" font-size="11" font-weight="600" fill="#102B26" font-family="DM Sans,sans-serif">CHIEF</text><circle cx="700" cy="148" r="10" fill="#c0392b" opacity="0.9"/><text x="718" y="152" text-anchor="start" font-size="11" font-weight="600" fill="#102B26" font-family="DM Sans,sans-serif">STRATEGIST</text><circle cx="700" cy="184" r="10" fill="#c0392b" opacity="0.9"/><text x="718" y="188" text-anchor="start" font-size="11" font-weight="600" fill="#102B26" font-family="DM Sans,sans-serif">OPTIMIZER</text><circle cx="700" cy="220" r="10" fill="#aaa" opacity="0.9"/><text x="718" y="224" text-anchor="start" font-size="11" font-weight="600" fill="#102B26" font-family="DM Sans,sans-serif">MARKETER</text><circle cx="700" cy="256" r="10" fill="#aaa" opacity="0.9"/><text x="718" y="260" text-anchor="start" font-size="11" font-weight="600" fill="#102B26" font-family="DM Sans,sans-serif">STEWARD</text><circle cx="700" cy="292" r="10" fill="#aaa" opacity="0.9"/><text x="718" y="296" text-anchor="start" font-size="11" font-weight="600" fill="#102B26" font-family="DM Sans,sans-serif">FUNNEL</text><circle cx="700" cy="328" r="10" fill="#aaa" opacity="0.9"/><text x="718" y="332" text-anchor="start" font-size="11" font-weight="600" fill="#102B26" font-family="DM Sans,sans-serif">SCOUT-PLUS</text><line x1="138" y1="184" x2="690" y2="40" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="40" x2="690" y2="76" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="76" x2="690" y2="76" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="184" x2="690" y2="76" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="40" x2="690" y2="112" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="76" x2="690" y2="112" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="112" x2="690" y2="112" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="148" x2="690" y2="112" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="184" x2="690" y2="112" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="220" x2="690" y2="112" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="256" x2="690" y2="112" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="76" x2="690" y2="148" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="40" x2="690" y2="148" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="148" x2="690" y2="148" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="220" x2="690" y2="148" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="256" x2="690" y2="184" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="148" x2="690" y2="220" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="292" x2="690" y2="220" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="76" x2="690" y2="256" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="40" x2="690" y2="256" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="328" x2="690" y2="256" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="292" x2="690" y2="292" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><line x1="138" y1="148" x2="690" y2="328" stroke="#d0cbc4" stroke-width="1.5" stroke-dasharray="none" opacity="0.6"/><text x="450" y="374" text-anchor="middle" font-size="9" fill="#102B26" opacity="0.4" font-family="DM Sans,sans-serif">Engines (left) -> Agents (right) | Green=healthy, Gold=warning, Red=stale/failed, Grey=inactive</text></svg>
+      </div>
+    </div>
+
+    <!-- Scheduling Timeline -->
+    <div class="section">
+      <h2>24h Scheduling Timeline (Lock-Using Tasks)</h2>
+      <div class="timeline-container">
+        <svg viewBox="0 0 1100 312" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:1100px"><line x1="160" y1="20" x2="160" y2="292" stroke="#e8e3dc" stroke-width="1"/><text x="160" y="16" text-anchor="middle" font-size="10" fill="#102B26" opacity="0.5" font-family="DM Sans,sans-serif">00:00</text><line x1="236.66666666666666" y1="20" x2="236.66666666666666" y2="292" stroke="#e8e3dc" stroke-width="1"/><text x="236.66666666666666" y="16" text-anchor="middle" font-size="10" fill="#102B26" opacity="0.5" font-family="DM Sans,sans-serif">02:00</text><line x1="313.3333333333333" y1="20" x2="313.3333333333333" y2="292" stroke="#e8e3dc" stroke-width="1"/><text x="313.3333333333333" y="16" text-anchor="middle" font-size="10" fill="#102B26" opacity="0.5" font-family="DM Sans,sans-serif">04:00</text><line x1="390" y1="20" x2="390" y2="292" stroke="#e8e3dc" stroke-width="1"/><text x="390" y="16" text-anchor="middle" font-size="10" fill="#102B26" opacity="0.5" font-family="DM Sans,sans-serif">06:00</text><line x1="466.66666666666663" y1="20" x2="466.66666666666663" y2="292" stroke="#e8e3dc" stroke-width="1"/><text x="466.66666666666663" y="16" text-anchor="middle" font-size="10" fill="#102B26" opacity="0.5" font-family="DM Sans,sans-serif">08:00</text><line x1="543.3333333333334" y1="20" x2="543.3333333333334" y2="292" stroke="#e8e3dc" stroke-width="1"/><text x="543.3333333333334" y="16" text-anchor="middle" font-size="10" fill="#102B26" opacity="0.5" font-family="DM Sans,sans-serif">10:00</text><line x1="620" y1="20" x2="620" y2="292" stroke="#e8e3dc" stroke-width="1"/><text x="620" y="16" text-anchor="middle" font-size="10" fill="#102B26" opacity="0.5" font-family="DM Sans,sans-serif">12:00</text><line x1="696.6666666666667" y1="20" x2="696.6666666666667" y2="292" stroke="#e8e3dc" stroke-width="1"/><text x="696.6666666666667" y="16" text-anchor="middle" font-size="10" fill="#102B26" opacity="0.5" font-family="DM Sans,sans-serif">14:00</text><line x1="773.3333333333333" y1="20" x2="773.3333333333333" y2="292" stroke="#e8e3dc" stroke-width="1"/><text x="773.3333333333333" y="16" text-anchor="middle" font-size="10" fill="#102B26" opacity="0.5" font-family="DM Sans,sans-serif">16:00</text><line x1="850" y1="20" x2="850" y2="292" stroke="#e8e3dc" stroke-width="1"/><text x="850" y="16" text-anchor="middle" font-size="10" fill="#102B26" opacity="0.5" font-family="DM Sans,sans-serif">18:00</text><line x1="926.6666666666667" y1="20" x2="926.6666666666667" y2="292" stroke="#e8e3dc" stroke-width="1"/><text x="926.6666666666667" y="16" text-anchor="middle" font-size="10" fill="#102B26" opacity="0.5" font-family="DM Sans,sans-serif">20:00</text><line x1="1003.3333333333333" y1="20" x2="1003.3333333333333" y2="292" stroke="#e8e3dc" stroke-width="1"/><text x="1003.3333333333333" y="16" text-anchor="middle" font-size="10" fill="#102B26" opacity="0.5" font-family="DM Sans,sans-serif">22:00</text><line x1="1080" y1="20" x2="1080" y2="292" stroke="#e8e3dc" stroke-width="1"/><text x="1080" y="16" text-anchor="middle" font-size="10" fill="#102B26" opacity="0.5" font-family="DM Sans,sans-serif">24:00</text><text x="152" y="41" text-anchor="end" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">overnight-dispatch</text><rect x="965" y="30" width="115" height="14" rx="2" fill="#D4A574" opacity="0.8"/><text x="152" y="59" text-anchor="end" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">generate-tasks</text><rect x="926.6666666666667" y="48" width="9.583333333333332" height="14" rx="2" fill="#D4A574" opacity="0.8"/><text x="152" y="77" text-anchor="end" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">agent-postmaster</text><rect x="409.16666666666663" y="66" width="9.583333333333332" height="14" rx="2" fill="#102B26" opacity="0.8"/><text x="422.74999999999994" y="77" font-size="8" fill="#7d8471" font-family="DM Sans,sans-serif">Mon</text><text x="152" y="95" text-anchor="end" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">agent-closer</text><rect x="428.33333333333337" y="84" width="9.583333333333332" height="14" rx="2" fill="#102B26" opacity="0.8"/><text x="441.9166666666667" y="95" font-size="8" fill="#7d8471" font-family="DM Sans,sans-serif">Mon</text><text x="152" y="113" text-anchor="end" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">agent-chief</text><rect x="466.66666666666663" y="102" width="19.166666666666664" height="14" rx="2" fill="#102B26" opacity="0.8"/><text x="489.8333333333333" y="113" font-size="8" fill="#7d8471" font-family="DM Sans,sans-serif">Mon</text><text x="152" y="131" text-anchor="end" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">agent-strategist</text><rect x="543.3333333333334" y="120" width="12.777777777777777" height="14" rx="2" fill="#102B26" opacity="0.8"/><text x="560.1111111111112" y="131" font-size="8" fill="#7d8471" font-family="DM Sans,sans-serif">Wed</text><text x="152" y="149" text-anchor="end" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">agent-optimizer</text><rect x="1003.3333333333333" y="138" width="12.777777777777777" height="14" rx="2" fill="#102B26" opacity="0.8"/><text x="1020.1111111111111" y="149" font-size="8" fill="#7d8471" font-family="DM Sans,sans-serif">Sun</text><text x="152" y="167" text-anchor="end" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">weekly-goals</text><rect x="466.66666666666663" y="156" width="6.388888888888888" height="14" rx="2" fill="#D4A574" opacity="0.8"/><text x="477.05555555555554" y="167" font-size="8" fill="#7d8471" font-family="DM Sans,sans-serif">Mon</text><text x="152" y="185" text-anchor="end" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">morning-brief</text><rect x="437.91666666666663" y="174" width="6.388888888888888" height="14" rx="2" fill="#D4A574" opacity="0.8"/><text x="448.30555555555554" y="185" font-size="8" fill="#7d8471" font-family="DM Sans,sans-serif">Mon</text><text x="152" y="203" text-anchor="end" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">compile-dashboard</text><rect x="437.91666666666663" y="192" width="6.388888888888888" height="14" rx="2" fill="#D4A574" opacity="0.8"/><text x="152" y="221" text-anchor="end" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">midday-pulse</text><rect x="620" y="210" width="6.388888888888888" height="14" rx="2" fill="#D4A574" opacity="0.8"/><text x="152" y="239" text-anchor="end" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">pipeline-check</text><rect x="505" y="228" width="6.388888888888888" height="14" rx="2" fill="#D4A574" opacity="0.8"/><text x="152" y="257" text-anchor="end" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">end-day</text><rect x="824.4444444444445" y="246" width="6.388888888888888" height="14" rx="2" fill="#D4A574" opacity="0.8"/><text x="152" y="275" text-anchor="end" font-size="10" fill="#102B26" font-family="DM Sans,sans-serif">content-status</text><rect x="696.6666666666667" y="264" width="6.388888888888888" height="14" rx="2" fill="#D4A574" opacity="0.8"/></svg>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="section">
+      <h2>7-Day Health History</h2>
+      <div class="history-container">
+        <div class="history-bar" title="2026-04-15: 0/100, 13 issues">
+        <div class="bar-fill" style="height:0%;background:#c0392b"></div>
+        <div class="bar-label">04-15</div>
+      </div>
+<div class="history-bar" title="2026-04-17: 0/100, 13 issues">
+        <div class="bar-fill" style="height:0%;background:#c0392b"></div>
+        <div class="bar-label">04-17</div>
+      </div>
+      </div>
+    </div>
+
+    <div class="footer">AWARE Hair - Agent Health Dashboard - Generated by agent-health-engine</div>
+  </div>
+
+  <script>const HEALTH_DATA = {"checked_at":"2026-04-17T09:29:03.531Z","overall_health":"critical","health_score":0,"issues":[{"severity":"warning","component":"gmail-oauth","issue":"No POSTMASTER logs found - cannot determine Gmail auth status","last_successful":"unknown","remediation":"Check POSTMASTER plist is loaded: launchctl list | grep postmaster","downstream_impact":["POSTMASTER may not be running"]},{"severity":"warning","component":"quality-ratchet.json","issue":"Data 338h stale (threshold: 48h)","last_updated":"2026-04-03T07:06:11.342Z","remediation":"Run: node engines/quality-ratchet-engine.mjs","downstream_impact":[]},{"severity":"warning","component":"seo-engine.json","issue":"Data 284h stale (threshold: 48h)","last_updated":"2026-04-05T13:45:06.110Z","remediation":"Run: node engines/seo-engine.mjs","downstream_impact":[]},{"severity":"warning","component":"scheduling","issue":"Lock collision at Daily 21:00: generate-tasks, overnight-dispatch","remediation":"generate-tasks (15min expected) may still hold lock when overnight-dispatch starts. Gap: 60min.","downstream_impact":[]},{"severity":"warning","component":"scheduling","issue":"Lock collision at Sun 22:00: agent-optimizer, overnight-dispatch","remediation":"overnight-dispatch (180min expected) may still hold lock when agent-optimizer starts. Gap: 60min.","downstream_impact":[]},{"severity":"warning","component":"scheduling","issue":"Lock collision at Mon 08:00: agent-chief, weekly-goals","remediation":"Stagger by 15+ minutes. Move weekly-goals to 08:20.","downstream_impact":[]},{"severity":"warning","component":"scheduling","issue":"Lock collision at Mon 07:15: compile-dashboard, morning-brief","remediation":"Stagger by 15+ minutes. Move compile-dashboard to 07:35.","downstream_impact":[]},{"severity":"warning","component":"event-queue","issue":"1933 pending events (possible backlog)","remediation":"Run: node -e \"import {archiveOldEvents} from './engines/event-bus.mjs'; console.log(archiveOldEvents(7))\"","downstream_impact":[]},{"severity":"info","component":"CHIEF dependency","issue":"CHIEF depends on POSTMASTER which has missed 3 run(s)","remediation":"Investigate POSTMASTER failures first","downstream_impact":[]},{"severity":"info","component":"CHIEF dependency","issue":"CHIEF depends on STRATEGIST which has missed 2 run(s)","remediation":"Investigate STRATEGIST failures first","downstream_impact":[]},{"severity":"critical","component":"POSTMASTER","issue":"3 missed run(s) since never","last_successful":null,"remediation":"Check LaunchD logs: grep \"postmaster\" ~/.config/aware-hair/logs/cron.log | tail -20","downstream_impact":["CHIEF digest may be incomplete"]},{"severity":"critical","component":"STRATEGIST","issue":"2 missed run(s) since 2026-04-01","last_successful":"2026-04-01","remediation":"Check LaunchD logs: grep \"strategist\" ~/.config/aware-hair/logs/cron.log | tail -20","downstream_impact":["CHIEF digest may be incomplete"]},{"severity":"critical","component":"OPTIMIZER","issue":"3 missed run(s) since never","last_successful":null,"remediation":"Check LaunchD logs: grep \"optimizer\" ~/.config/aware-hair/logs/cron.log | tail -20","downstream_impact":[]}],"scheduling_collisions":[{"time":"Daily 21:00","components":["generate-tasks","overnight-dispatch"],"recommendation":"generate-tasks (15min expected) may still hold lock when overnight-dispatch starts. Gap: 60min."},{"time":"Sun 22:00","components":["agent-optimizer","overnight-dispatch"],"recommendation":"overnight-dispatch (180min expected) may still hold lock when agent-optimizer starts. Gap: 60min."},{"time":"Mon 08:00","components":["agent-chief","weekly-goals"],"recommendation":"Stagger by 15+ minutes. Move weekly-goals to 08:20."},{"time":"Mon 07:15","components":["compile-dashboard","morning-brief"],"recommendation":"Stagger by 15+ minutes. Move compile-dashboard to 07:35."}],"agent_status":{"postmaster":{"scheduled":true,"status":"failed","lastRun":null,"missedRuns":3,"nextExpected":"2026-04-20T13:30:00.000Z","heartbeat":null,"authOk":true},"closer":{"scheduled":true,"status":"healthy","lastRun":"2026-04-16","missedRuns":0,"nextExpected":"2026-04-20T14:00:00.000Z","heartbeat":"2026-03-29T19:16:15.064Z","authOk":true},"chief":{"scheduled":true,"status":"healthy","lastRun":"2026-04-16","missedRuns":0,"nextExpected":"2026-04-20T15:00:00.000Z","heartbeat":"2026-03-29T19:16:15.063Z","authOk":true},"strategist":{"scheduled":true,"status":"failed","lastRun":"2026-04-01","missedRuns":2,"nextExpected":"2026-04-22T17:00:00.000Z","heartbeat":null,"authOk":true},"optimizer":{"scheduled":true,"status":"failed","lastRun":null,"missedRuns":3,"nextExpected":"2026-04-20T05:00:00.000Z","heartbeat":null,"authOk":true},"marketer":{"scheduled":false,"status":"on-demand","lastRun":"2026-04-16","missedRuns":0,"nextExpected":null,"heartbeat":null,"authOk":true},"herald":{"scheduled":false,"status":"on-demand","lastRun":"2026-04-14","missedRuns":0,"nextExpected":null,"heartbeat":null,"authOk":true},"supplier":{"scheduled":false,"status":"on-demand","lastRun":"2026-04-13","missedRuns":0,"nextExpected":null,"heartbeat":null,"authOk":true},"steward":{"scheduled":false,"status":"on-demand","lastRun":"2026-04-16","missedRuns":0,"nextExpected":null,"heartbeat":null,"authOk":true},"funnel":{"scheduled":false,"status":"on-demand","lastRun":"2026-04-11","missedRuns":0,"nextExpected":null,"heartbeat":null,"authOk":true},"scout-plus":{"scheduled":false,"status":"on-demand","lastRun":null,"missedRuns":0,"nextExpected":null,"heartbeat":null,"authOk":true}},"data_freshness":{"b2b-health.json":{"file":"b2b-health.json","engine":"b2b-health","thresholdHours":26,"apiAuth":["shopify"],"ageHours":3,"lastModified":"2026-04-17T06:22:58.628Z","status":"fresh"},"account-health.json":{"file":"account-health.json","engine":"account-health","thresholdHours":26,"apiAuth":["shopify"],"ageHours":3,"lastModified":"2026-04-17T06:22:20.959Z","status":"fresh"},"watchdog.json":{"file":"watchdog.json","engine":"watchdog","thresholdHours":26,"apiAuth":["n8n","klaviyo"],"ageHours":3,"lastModified":"2026-04-17T06:26:58.787Z","status":"fresh"},"competitor.json":{"file":"competitor.json","engine":"competitor","thresholdHours":26,"apiAuth":[],"ageHours":0,"lastModified":"2026-04-17T09:00:51.233Z","status":"fresh"},"courier.json":{"file":"courier.json","engine":"courier","thresholdHours":50,"apiAuth":[],"ageHours":3,"lastModified":"2026-04-17T06:25:36.632Z","status":"fresh"},"capacity.json":{"file":"capacity.json","engine":"capacity","thresholdHours":50,"apiAuth":[],"ageHours":3,"lastModified":"2026-04-17T06:23:35.592Z","status":"fresh"},"clarity.json":{"file":"clarity.json","engine":"clarity","thresholdHours":26,"apiAuth":["clarity-api"],"ageHours":19,"lastModified":"2026-04-16T14:00:05.835Z","status":"fresh"},"optimizer.json":{"file":"optimizer.json","engine":"optimizer","thresholdHours":26,"apiAuth":[],"ageHours":4,"lastModified":"2026-04-17T05:00:01.587Z","status":"fresh"},"auditor.json":{"file":"auditor.json","engine":"auditor","thresholdHours":170,"apiAuth":[],"ageHours":154,"lastModified":"2026-04-10T23:30:04.719Z","status":"approaching"},"beacon.json":{"file":"beacon.json","engine":"beacon","thresholdHours":170,"apiAuth":[],"ageHours":138,"lastModified":"2026-04-11T15:00:10.450Z","status":"approaching"},"shepherd.json":{"file":"shepherd.json","engine":"shepherd","thresholdHours":26,"apiAuth":[],"ageHours":3,"lastModified":"2026-04-17T06:26:18.434Z","status":"fresh"},"cashflow.json":{"file":"cashflow.json","engine":"cashflow","thresholdHours":26,"apiAuth":["shopify"],"ageHours":null,"lastModified":null,"status":"never_run"},"suppressions.json":{"file":"suppressions.json","engine":"suppressions","thresholdHours":168,"apiAuth":[],"ageHours":38,"lastModified":"2026-04-15T19:06:54.576Z","status":"fresh"},"quality-ratchet.json":{"file":"quality-ratchet.json","engine":"quality-ratchet","thresholdHours":48,"apiAuth":[],"ageHours":338,"lastModified":"2026-04-03T07:06:11.342Z","status":"stale"},"seo-engine.json":{"file":"seo-engine.json","engine":"seo-engine","thresholdHours":48,"apiAuth":[],"ageHours":284,"lastModified":"2026-04-05T13:45:06.110Z","status":"stale"},"signal-results.json":{"file":"signal-results.json","engine":"signal-results","thresholdHours":26,"apiAuth":[],"ageHours":0,"lastModified":"2026-04-17T09:29:03.521Z","status":"fresh"}},"auth_status":{"claude":{"ok":true,"lastSuccess":"2026-04-16T23:39"},"gmail-oauth":{"ok":false,"severity":"warning","issue":"No POSTMASTER logs found - cannot determine Gmail auth status","remediation":"Check POSTMASTER plist is loaded: launchctl list | grep postmaster","downstreamImpact":["POSTMASTER may not be running"]},"shopify":{"ok":true},"klaviyo":{"ok":true}},"queue_stats":{"pending":1933,"claimed":0,"completed_today":0,"failed_today":0,"dead":0},"history":{"daily":[{"date":"2026-04-15","score":0,"issues_count":13},{"date":"2026-04-17","score":0,"issues_count":13}]}};</script>
+</body>
+</html>

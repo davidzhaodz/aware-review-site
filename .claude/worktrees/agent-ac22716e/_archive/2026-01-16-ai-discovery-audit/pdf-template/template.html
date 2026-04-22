@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Discovery Audit Report - {{SALON_NAME}}</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      color: #1a1a2e;
+      line-height: 1.6;
+      background: #ffffff;
+    }
+
+    .page {
+      width: 8.5in;
+      min-height: 11in;
+      padding: 0.75in;
+      page-break-after: always;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #e94560;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 4px;
+      color: #1a1a2e;
+    }
+
+    .report-title {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Score Circle */
+    .score-section {
+      text-align: center;
+      padding: 40px 0;
+    }
+
+    .score-circle {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 12px solid #e5e5e5;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .score-circle.tier-1 { border-color: #ef4444; }
+    .score-circle.tier-2 { border-color: #f97316; }
+    .score-circle.tier-3 { border-color: #eab308; }
+    .score-circle.tier-4 { border-color: #22c55e; }
+
+    .score-number {
+      font-size: 64px;
+      font-weight: bold;
+      line-height: 1;
+    }
+
+    .score-max {
+      font-size: 24px;
+      color: #999;
+    }
+
+    .tier-label {
+      font-size: 28px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .tier-1 .tier-label { color: #ef4444; }
+    .tier-2 .tier-label { color: #f97316; }
+    .tier-3 .tier-label { color: #eab308; }
+    .tier-4 .tier-label { color: #22c55e; }
+
+    .tier-description {
+      color: #666;
+      margin-top: 10px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Info Box */
+    .info-box {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 30px 0;
+    }
+
+    .info-box h3 {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    .info-box .value {
+      font-size: 36px;
+      font-weight: bold;
+      color: #e94560;
+    }
+
+    .info-box .subtext {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Section Headers */
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e5e5e5;
+    }
+
+    /* Score Breakdown */
+    .category {
+      margin-bottom: 30px;
+    }
+
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .category-name {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .category-score {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .score-bar {
+      height: 12px;
+      background: #e5e5e5;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 6px;
+    }
+
+    .score-bar-fill.low { background: #ef4444; }
+    .score-bar-fill.medium { background: #f97316; }
+    .score-bar-fill.good { background: #eab308; }
+    .score-bar-fill.excellent { background: #22c55e; }
+
+    .findings-list {
+      list-style: none;
+    }
+
+    .findings-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+      font-size: 14px;
+    }
+
+    .check {
+      color: #22c55e;
+      font-weight: bold;
+    }
+
+    .x {
+      color: #ef4444;
+      font-weight: bold;
+    }
+
+    /* Biggest Gap */
+    .biggest-gap {
+      border: 2px solid #e94560;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 30px 0;
+    }
+
+    .biggest-gap h3 {
+      color: #e94560;
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    /* Action Plan */
+    .action-item {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .action-item h4 {
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .action-item p {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .priority-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .priority-1 { background: #dcfce7; color: #166534; }
+    .priority-2 { background: #fef9c3; color: #854d0e; }
+    .priority-3 { background: #fee2e2; color: #991b1b; }
+
+    /* CTA Section */
+    .cta-section {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .cta-section h2 {
+      color: white;
+      border: none;
+    }
+
+    .cta-section p {
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 20px;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: #e94560;
+      color: white;
+      padding: 16px 40px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding-top: 30px;
+      margin-top: 30px;
+      border-top: 1px solid #e5e5e5;
+      color: #666;
+      font-size: 12px;
+    }
+
+    /* Salon Info */
+    .salon-info {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .salon-name {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .salon-location {
+      color: #666;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .stat-box {
+      text-align: center;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: bold;
+      color: #e94560;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1: Executive Summary -->
+  <div class="page">
+    <div class="header">
+      <div class="logo">AWARE</div>
+      <div class="report-title">AI Discovery Audit Report</div>
+    </div>
+
+    <div class="salon-info">
+      <div class="salon-name">{{SALON_NAME}}</div>
+      <div class="salon-location">{{CITY}}</div>
+      <div style="color: #999; font-size: 12px; margin-top: 8px;">Generated: {{DATE}}</div>
+    </div>
+
+    <div class="score-section tier-{{TIER_NUMBER}}">
+      <div class="score-circle tier-{{TIER_NUMBER}}">
+        <div class="score-number">{{SCORE}}</div>
+        <div class="score-max">/100</div>
+      </div>
+      <div class="tier-label">"{{TIER}}"</div>
+      <div class="tier-description">{{TIER_DESCRIPTION}}</div>
+    </div>
+
+    <div class="info-box" style="text-align: center;">
+      <h3>Estimated Invisible Clients</h3>
+      <div class="value">~{{INVISIBLE_CLIENTS}}/month</div>
+      <div class="subtext">Potential clients who can't find you via AI</div>
+    </div>
+
+    <div class="biggest-gap">
+      <h3>🎯 Your Biggest Opportunity</h3>
+      <p>{{BIGGEST_GAP_DESCRIPTION}}</p>
+    </div>
+
+    <h2>Top 3 Priority Actions</h2>
+    <div class="action-item">
+      <h4>1. {{ACTION_1_TITLE}}</h4>
+      <p>{{ACTION_1_DESC}}</p>
+    </div>
+    <div class="action-item">
+      <h4>2. {{ACTION_2_TITLE}}</h4>
+      <p>{{ACTION_2_DESC}}</p>
+    </div>
+    <div class="action-item">
+      <h4>3. {{ACTION_3_TITLE}}</h4>
+      <p>{{ACTION_3_DESC}}</p>
+    </div>
+  </div>
+
+  <!-- PAGE 2: Score Breakdown -->
+  <div class="page">
+    <div class="header">
+      <div class="logo">AWARE</div>
+      <div class="report-title">Score Breakdown</div>
+    </div>
+
+    <h2>Detailed Analysis</h2>
+
+    <div class="category">
+      <div class="category-header">
+        <span class="category-name">Google Business Foundation</span>
+        <span class="category-score">{{GB_SCORE}}/25</span>
+      </div>
+      <div class="score-bar">
+        <div class="score-bar-fill {{GB_BAR_CLASS}}" style="width: {{GB_PERCENT}}%"></div>
+      </div>
+      <ul class="findings-list">
+        <li><span class="check">✓</span> Profile exists and is claimed</li>
+        <li><span class="{{RATING_CLASS}}">{{RATING_ICON}}</span> Rating: {{GOOGLE_RATING}} stars</li>
+        <li><span class="check">✓</span> Hours and contact info complete</li>
+        <li><span class="x">✗</span> No recent Google Business posts</li>
+        <li><span class="x">✗</span> Services not listed in detail</li>
+      </ul>
+    </div>
+
+    <div class="category">
+      <div class="category-header">
+        <span class="category-name">Review Authority</span>
+        <span class="category-score">{{REVIEW_SCORE}}/25</span>
+      </div>
+      <div class="score-bar">
+        <div class="score-bar-fill {{REVIEW_BAR_CLASS}}" style="width: {{REVIEW_PERCENT}}%"></div>
+      </div>
+      <ul class="findings-list">
+        <li><span class="{{GOOGLE_REVIEWS_CLASS}}">{{GOOGLE_REVIEWS_ICON}}</span> Google reviews: {{GOOGLE_REVIEWS}}</li>
+        <li><span class="check">✓</span> Yelp reviews: {{YELP_REVIEWS}}</li>
+        <li><span class="check">✓</span> High average rating</li>
+        <li><span class="x">✗</span> Owner response rate needs improvement</li>
+      </ul>
+    </div>
+
+    <div class="category">
+      <div class="category-header">
+        <span class="category-name">Digital Footprint</span>
+        <span class="category-score">{{DIGITAL_SCORE}}/25</span>
+      </div>
+      <div class="score-bar">
+        <div class="score-bar-fill {{DIGITAL_BAR_CLASS}}" style="width: {{DIGITAL_PERCENT}}%"></div>
+      </div>
+      <ul class="findings-list">
+        <li><span class="check">✓</span> Website exists and loads</li>
+        <li><span class="{{IG_CLASS}}">{{IG_ICON}}</span> Instagram presence</li>
+        <li><span class="x">✗</span> No native booking system</li>
+        <li><span class="x">✗</span> Social links missing from website</li>
+      </ul>
+    </div>
+
+    <div class="category" style="border: 2px solid #e94560; padding: 20px; border-radius: 12px;">
+      <div class="category-header">
+        <span class="category-name">AI Recommendation Likelihood</span>
+        <span class="category-score">{{AI_SCORE}}/25</span>
+      </div>
+      <div class="score-bar">
+        <div class="score-bar-fill {{AI_BAR_CLASS}}" style="width: {{AI_PERCENT}}%"></div>
+      </div>
+      <ul class="findings-list">
+        <li><span class="{{SEARCH_CLASS}}">{{SEARCH_ICON}}</span> Appears in general salon searches</li>
+        <li><span class="x">✗</span> Not appearing in specialty searches</li>
+        <li><span class="x">✗</span> No scalp/treatment services listed</li>
+        <li><span class="x">✗</span> Limited structured data</li>
+      </ul>
+      <p style="margin-top: 16px; padding: 12px; background: #fee2e2; border-radius: 8px; color: #991b1b; font-size: 14px;">
+        <strong>← Your Biggest Gap:</strong> This is where you're losing the most potential clients.
+      </p>
+    </div>
+  </div>
+
+  <!-- PAGE 3: The AI Landscape -->
+  <div class="page">
+    <div class="header">
+      <div class="logo">AWARE</div>
+      <div class="report-title">The AI Landscape</div>
+    </div>
+
+    <h2>How AI is Changing Client Discovery</h2>
+
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-value">40%</div>
+        <div class="stat-label">of people under 35 ask AI for local recommendations</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">30%</div>
+        <div class="stat-label">of Google searches show AI Overview</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">2026</div>
+        <div class="stat-label">AI becomes primary discovery method</div>
+      </div>
+    </div>
+
+    <h2>What AI "Sees" When Recommending Salons</h2>
+
+    <p style="margin-bottom: 20px;">AI assistants synthesize information from multiple sources to make recommendations. Here's what they look for:</p>
+
+    <div class="action-item">
+      <h4>Google Business Profile Completeness</h4>
+      <p>Complete profiles with services, photos, and regular posts rank higher.</p>
+    </div>
+
+    <div class="action-item">
+      <h4>Review Volume AND Recency</h4>
+      <p>Recent reviews signal you're active and in-demand. Stale reviews hurt rankings.</p>
+    </div>
+
+    <div class="action-item">
+      <h4>Specialty Services Mentioned</h4>
+      <p>Salons with clear specialties are recommended for those specific queries.</p>
+    </div>
+
+    <div class="action-item">
+      <h4>Consistency Across Platforms</h4>
+      <p>Same name, address, and phone everywhere builds AI trust.</p>
+    </div>
+
+    <div class="biggest-gap" style="background: #f0fdf4; border-color: #22c55e;">
+      <h3 style="color: #166534;">💡 The Specialty Advantage</h3>
+      <p>Salons with clearly defined specialties (like scalp treatments) are <strong>2.3x more likely</strong> to be recommended for those specific queries. Generalist positioning means competing with everyone.</p>
+    </div>
+  </div>
+
+  <!-- PAGE 4: Action Plan -->
+  <div class="page">
+    <div class="header">
+      <div class="logo">AWARE</div>
+      <div class="report-title">Your Action Plan</div>
+    </div>
+
+    <h2>Priority 1: Quick Wins (This Week)</h2>
+    <span class="priority-badge priority-1">Low Effort • High Impact</span>
+
+    <div class="action-item">
+      <h4>Add detailed services to Google Business</h4>
+      <p>List every service you offer, especially specialties. AI pulls from this when making recommendations.</p>
+    </div>
+
+    <div class="action-item">
+      <h4>Post to Google Business</h4>
+      <p>Share a recent client transformation, tip, or seasonal offer. Shows AI you're active.</p>
+    </div>
+
+    <div class="action-item">
+      <h4>Add social links to your website</h4>
+      <p>Connect all your profiles. AI uses this to verify your legitimacy.</p>
+    </div>
+
+    <h2 style="margin-top: 30px;">Priority 2: Build Authority (This Month)</h2>
+    <span class="priority-badge priority-2">Medium Effort • High Impact</span>
+
+    <div class="action-item">
+      <h4>Boost Google reviews</h4>
+      <p>Text happy clients a direct link to your Google review page right after appointments.</p>
+    </div>
+
+    <div class="action-item">
+      <h4>Respond to all existing reviews</h4>
+      <p>Thank positive reviewers, address concerns professionally. Shows engagement.</p>
+    </div>
+
+    <div class="action-item">
+      <h4>Add native booking to your website</h4>
+      <p>Own the booking experience instead of sending clients to third parties.</p>
+    </div>
+
+    <h2 style="margin-top: 30px;">Priority 3: Differentiate (This Quarter)</h2>
+    <span class="priority-badge priority-3">Higher Effort • Highest Impact</span>
+
+    <div class="action-item">
+      <h4>Develop specialty positioning</h4>
+      <p>Scalp care is the fastest-growing salon service. Position yourself as the expert.</p>
+    </div>
+
+    <div class="action-item">
+      <h4>Create content around your specialty</h4>
+      <p>Blog posts, videos, social content that establishes your expertise.</p>
+    </div>
+  </div>
+
+  <!-- PAGE 5: AWARE Partnership -->
+  <div class="page">
+    <div class="header">
+      <div class="logo">AWARE</div>
+      <div class="report-title">Partnership Opportunity</div>
+    </div>
+
+    <h1 style="text-align: center; margin-bottom: 30px;">Ready to Become AI-Visible?</h1>
+
+    <p style="text-align: center; font-size: 18px; color: #666; margin-bottom: 40px;">
+      AWARE helps salons stand out in the AI era through scalp care positioning.
+    </p>
+
+    <h2>As an AWARE Pro Partner, You Get:</h2>
+
+    <div class="action-item">
+      <h4>✓ Specialty positioning in scalp care</h4>
+      <p>The fastest-growing salon service category, perfect for AI differentiation.</p>
+    </div>
+
+    <div class="action-item">
+      <h4>✓ Marketing materials and content</h4>
+      <p>Ready-to-use assets that position you as an expert.</p>
+    </div>
+
+    <div class="action-item">
+      <h4>✓ Training and certification</h4>
+      <p>"AWARE Certified" badge for your profiles and marketing.</p>
+    </div>
+
+    <div class="action-item">
+      <h4>✓ Listed in our salon locator (coming 2026)</h4>
+      <p>Direct referrals from AWARE's growing consumer audience.</p>
+    </div>
+
+    <div class="action-item">
+      <h4>✓ Quarterly AI visibility check-ins</h4>
+      <p>Track your progress and adjust strategy with our team.</p>
+    </div>
+
+    <div class="stats-grid" style="margin: 40px 0;">
+      <div class="stat-box">
+        <div class="stat-value">2.3x</div>
+        <div class="stat-label">Higher AI recommendation rate</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">40%</div>
+        <div class="stat-label">Higher average ticket</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">+25%</div>
+        <div class="stat-label">Client retention</div>
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <h2>Let's Talk About Your Score</h2>
+      <p>Free 20-minute strategy consultation to discuss your results and how AWARE can help.</p>
+      <a href="https://calendly.com/aware-hair/strategy" class="cta-button">Book Your Strategy Call</a>
+      <p style="margin-top: 20px; font-size: 12px;">No obligation • No pressure • Just a conversation</p>
+    </div>
+
+    <div class="footer">
+      <p style="font-size: 14px; margin-bottom: 8px;"><strong>AWARE</strong></p>
+      <p>awarehair.com | partners@awarehair.com | @awarehair</p>
+      <p style="margin-top: 8px;">© 2024 AWARE Hair. All rights reserved.</p>
+    </div>
+  </div>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

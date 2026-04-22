@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - GSC Deep Analytics Report</title>
+<link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #102B26;
+    --cream: #f4efe9;
+    --surface: #faf8f5;
+    --white: #ffffff;
+    --gold: #D4A574;
+    --gold-light: rgba(212,165,116,0.1);
+    --sage: #7d8471;
+    --sage-light: #a8b09e;
+    --border: #e2ddd6;
+    --text-secondary: #5a6b5e;
+    --red-soft: #c45d4a;
+    --green-soft: #4a8c6a;
+    --amber-soft: #c49a4a;
+    --font-heading: 'orpheus-pro', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-mono: 'DM Mono', 'SF Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-body); background: var(--cream); color: var(--teal); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  .header { background: var(--teal); color: var(--cream); padding: 48px 0 40px; position: relative; overflow: hidden; }
+  .header::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 20%, rgba(212,165,116,0.08) 0%, transparent 60%); pointer-events: none; }
+  .header-inner { max-width: 1120px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+  .header-eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .header h1 { font-family: var(--font-heading); font-size: 36px; font-weight: 400; letter-spacing: -0.3px; line-height: 1.2; }
+  .header-sub { font-size: 15px; color: var(--sage-light); margin-top: 6px; max-width: 640px; line-height: 1.5; }
+  .header-meta { display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; }
+  .header-meta-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--sage-light); }
+  .header-meta-item .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .dot-green { background: #6abf8a; }
+  .dot-gold { background: var(--gold); }
+  .dot-red { background: var(--red-soft); }
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 32px; }
+  .metrics-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); margin: -20px 32px 0; max-width: 1056px; margin-left: auto; margin-right: auto; border-radius: 8px; overflow: hidden; position: relative; z-index: 2; box-shadow: 0 1px 3px rgba(16,43,38,0.06), 0 8px 24px rgba(16,43,38,0.04); }
+  .metric-card { background: white; padding: 24px 20px; text-align: center; }
+  .metric-value { font-family: var(--font-heading); font-size: 32px; font-weight: 400; color: var(--teal); line-height: 1.1; }
+  .metric-value.gold { color: var(--gold); }
+  .metric-value.red { color: var(--red-soft); }
+  .metric-value.green { color: var(--green-soft); }
+  .metric-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--sage); margin-top: 6px; font-weight: 500; }
+  .metric-delta { font-family: var(--font-mono); font-size: 11px; margin-top: 4px; }
+  .metric-delta.up { color: var(--green-soft); }
+  .metric-delta.down { color: var(--red-soft); }
+  section { padding: 48px 0; }
+  section + section { border-top: 1px solid var(--border); }
+  .section-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+  .section-number { font-family: var(--font-mono); font-size: 12px; color: var(--gold); min-width: 20px; }
+  h2 { font-family: var(--font-heading); font-size: 24px; font-weight: 400; letter-spacing: -0.2px; }
+  .section-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; max-width: 720px; line-height: 1.6; }
+  .card { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 24px; }
+  .card-accent { border-left: 3px solid var(--gold); border-radius: 0 6px 6px 0; }
+  .card h3 { font-family: var(--font-heading); font-size: 18px; font-weight: 400; margin-bottom: 8px; }
+  .card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+  .hl { color: var(--teal); font-weight: 600; }
+  .table-wrap { background: white; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .table-bar { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .table-bar h3 { font-family: var(--font-heading); font-size: 15px; font-weight: 400; }
+  .table-bar .count { font-family: var(--font-mono); font-size: 12px; color: var(--sage); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--sage); font-weight: 500; text-align: left; padding: 10px 16px; border-bottom: 1px solid var(--border); background: var(--surface); }
+  thead th.r { text-align: right; }
+  tbody td { padding: 12px 16px; border-bottom: 1px solid #f0ebe5; vertical-align: top; }
+  tbody td.r { text-align: right; font-family: var(--font-mono); font-size: 12px; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(212,165,116,0.03); }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+  .b-branded { background: rgba(212,165,116,0.15); color: #a07840; }
+  .b-nonbrand { background: rgba(125,132,113,0.15); color: var(--sage); }
+  .b-quick { background: rgba(74,140,106,0.15); color: var(--green-soft); }
+  .b-urgent { background: rgba(196,93,74,0.15); color: var(--red-soft); }
+  .b-good { background: rgba(74,140,106,0.1); color: var(--green-soft); }
+  .b-warn { background: rgba(196,154,74,0.15); color: var(--amber-soft); }
+  .b-poor { background: rgba(196,93,74,0.1); color: var(--red-soft); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .callout { background: var(--teal); color: var(--cream); border-radius: 6px; padding: 32px; margin: 24px 0; }
+  .callout h3 { font-family: var(--font-heading); font-size: 20px; font-weight: 400; margin-bottom: 12px; }
+  .callout p { font-size: 14px; color: var(--sage-light); line-height: 1.7; }
+  .callout .hl { color: var(--gold); font-weight: 500; }
+  .callout ul { list-style: none; margin-top: 12px; }
+  .callout li { font-size: 14px; color: var(--sage-light); padding: 6px 0; padding-left: 20px; position: relative; }
+  .callout li::before { content: '\25C6'; color: var(--gold); position: absolute; left: 0; font-size: 10px; top: 8px; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 3px; height: 100px; padding: 12px 0; }
+  .cb-g { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
+  .cb { width: 100%; max-width: 36px; border-radius: 2px 2px 0 0; min-height: 2px; }
+  .cb-l { font-family: var(--font-mono); font-size: 9px; color: var(--sage); margin-top: 5px; }
+  .rec-card { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 24px; margin-bottom: 12px; }
+  .rec-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .rec-title { font-family: var(--font-heading); font-size: 17px; font-weight: 400; }
+  .rec-impact { font-family: var(--font-mono); font-size: 11px; padding: 4px 10px; border-radius: 100px; }
+  .impact-high { background: rgba(74,140,106,0.1); color: var(--green-soft); }
+  .impact-med { background: rgba(196,154,74,0.1); color: var(--amber-soft); }
+  .rec-body { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+  .rec-effort { font-family: var(--font-mono); font-size: 11px; color: var(--sage); margin-top: 8px; }
+  .footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; }
+  .footer p { font-size: 12px; color: var(--sage); }
+  @media (max-width: 768px) {
+    .metrics-strip { grid-template-columns: repeat(3, 1fr); }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .header h1 { font-size: 28px; }
+  }
+  @media print {
+    .header { padding: 24px 0; }
+    .metrics-strip { margin-top: 0; box-shadow: none; border: 1px solid var(--border); }
+    section { padding: 24px 0; }
+    .callout { background: var(--surface); color: var(--teal); border: 2px solid var(--teal); }
+    .callout p, .callout .hl, .callout li { color: var(--teal); }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="header-eyebrow">AWARE Hair / Search Intelligence</div>
+    <h1>GSC Deep Analytics Report</h1>
+    <div class="header-sub">
+      90-day Google Search Console performance analysis with period-over-period comparison, quick win identification, and strategic recommendations for awarehair.com.
+    </div>
+    <div class="header-meta">
+      <div class="header-meta-item"><span class="dot dot-green"></span> Live GSC Data</div>
+      <div class="header-meta-item"><span class="dot dot-gold"></span> Jan 5 - Apr 5, 2026</div>
+      <div class="header-meta-item">vs. Oct 7, 2025 - Jan 4, 2026</div>
+    </div>
+  </div>
+</header>
+
+<!-- Metrics Strip -->
+<div class="metrics-strip" style="max-width: 1056px;">
+  <div class="metric-card">
+    <div class="metric-value">1,280</div>
+    <div class="metric-label">Total Clicks</div>
+    <div class="metric-delta up">+48% vs prev</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value">47.5K</div>
+    <div class="metric-label">Impressions</div>
+    <div class="metric-delta up">+8% vs prev</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value">2.7%</div>
+    <div class="metric-label">Avg CTR</div>
+    <div class="metric-delta up">+37% vs prev</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value">6.4</div>
+    <div class="metric-label">Avg Position</div>
+    <div class="metric-delta up">Improved</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value">500</div>
+    <div class="metric-label">Queries Tracked</div>
+    <div class="metric-delta" style="color: var(--sage);">90-day window</div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- Section 1: Executive Summary -->
+<section>
+  <div class="section-header">
+    <span class="section-number">01</span>
+    <h2>Executive Summary</h2>
+  </div>
+  <p class="section-desc">AWARE Hair's organic search is growing but faces a structural problem: 77% of clicks come from branded queries. Non-branded visibility is dominated by a single accidental keyword family ("9 in 1 shampoo") with massive impressions but terrible click-through rates.</p>
+
+  <div class="callout">
+    <h3>The Core Insight</h3>
+    <p>Your <span class="hl">"9 in 1 shampoo"</span> product page has <span class="hl">22,242 impressions</span> at position 4.5, but only a <span class="hl">1.1% CTR</span>. That's ~220 potential clicks left on the table every 90 days. Optimizing the meta title and description for this one page is the single highest-leverage SEO action available right now.</p>
+    <ul>
+      <li>Combined "9 in 1" query variants: 15,000+ impressions, 180+ clicks</li>
+      <li>Blog content is ranking but not converting clicks (0.3% avg CTR)</li>
+      <li>Performance score is 0/100 - the site is critically slow (13.5MB payload)</li>
+      <li>ChatGPT still fabricates AWARE's identity when asked directly</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Section 2: Branded vs Non-Branded -->
+<section>
+  <div class="section-header">
+    <span class="section-number">02</span>
+    <h2>Branded vs Non-Branded Split</h2>
+  </div>
+  <p class="section-desc">A healthy brand builds non-branded discovery. Currently, AWARE is almost entirely a branded search destination, with one accidental non-branded winner.</p>
+
+  <div class="grid-2">
+    <div class="card card-accent">
+      <h3>Branded Search</h3>
+      <p style="font-family: var(--font-mono); font-size: 28px; color: var(--teal); margin: 12px 0;">77% of clicks</p>
+      <table style="margin-top: 12px;">
+        <tr><td style="padding: 4px 0; border: none;">Queries</td><td class="r" style="padding: 4px 0; border: none;">46</td></tr>
+        <tr><td style="padding: 4px 0; border: none;">Clicks</td><td class="r" style="padding: 4px 0; border: none;">652</td></tr>
+        <tr><td style="padding: 4px 0; border: none;">Impressions</td><td class="r" style="padding: 4px 0; border: none;">1,923</td></tr>
+        <tr><td style="padding: 4px 0; border: none;">CTR</td><td class="r" style="padding: 4px 0; border: none; color: var(--green-soft);">33.9%</td></tr>
+      </table>
+      <p style="margin-top: 12px; font-size: 13px;">Strong brand recognition. People searching "aware hair" are finding and clicking. This is healthy.</p>
+    </div>
+    <div class="card">
+      <h3>Non-Branded Search</h3>
+      <p style="font-family: var(--font-mono); font-size: 28px; color: var(--red-soft); margin: 12px 0;">23% of clicks</p>
+      <table style="margin-top: 12px;">
+        <tr><td style="padding: 4px 0; border: none;">Queries</td><td class="r" style="padding: 4px 0; border: none;">454</td></tr>
+        <tr><td style="padding: 4px 0; border: none;">Clicks</td><td class="r" style="padding: 4px 0; border: none;">199</td></tr>
+        <tr><td style="padding: 4px 0; border: none;">Impressions</td><td class="r" style="padding: 4px 0; border: none;">18,741</td></tr>
+        <tr><td style="padding: 4px 0; border: none;">CTR</td><td class="r" style="padding: 4px 0; border: none; color: var(--red-soft);">1.1%</td></tr>
+      </table>
+      <p style="margin-top: 12px; font-size: 13px;">Massive discovery gap. 18.7K impressions yielding only 199 clicks means titles/descriptions aren't compelling searchers to click.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Section 3: Top Queries -->
+<section>
+  <div class="section-header">
+    <span class="section-number">03</span>
+    <h2>Top Queries</h2>
+  </div>
+  <p class="section-desc">Top 20 queries by clicks over the 90-day period. Branded queries dominate the click leaderboard, while "9 in 1" variants dominate impressions.</p>
+
+  <div class="table-wrap">
+    <div class="table-bar">
+      <h3>Query Performance</h3>
+      <span class="count">500 total queries</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Query</th>
+          <th>Type</th>
+          <th class="r">Clicks</th>
+          <th class="r">Impressions</th>
+          <th class="r">CTR</th>
+          <th class="r">Position</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="r">1</td><td>aware hair</td><td><span class="badge b-branded">Branded</span></td><td class="r">421</td><td class="r">646</td><td class="r" style="color: var(--green-soft);">65.2%</td><td class="r">1.4</td></tr>
+        <tr><td class="r">2</td><td>aware hair care</td><td><span class="badge b-branded">Branded</span></td><td class="r">124</td><td class="r">161</td><td class="r" style="color: var(--green-soft);">77.0%</td><td class="r">1.1</td></tr>
+        <tr style="background: rgba(212,165,116,0.06);"><td class="r">3</td><td><strong>9 in 1 shampoo</strong></td><td><span class="badge b-quick">Quick Win</span></td><td class="r">121</td><td class="r"><strong>11,084</strong></td><td class="r" style="color: var(--red-soft);">1.1%</td><td class="r">4.7</td></tr>
+        <tr><td class="r">4</td><td>aware shampoo</td><td><span class="badge b-branded">Branded</span></td><td class="r">34</td><td class="r">59</td><td class="r" style="color: var(--green-soft);">57.6%</td><td class="r">1.0</td></tr>
+        <tr style="background: rgba(212,165,116,0.06);"><td class="r">5</td><td><strong>9 in one shampoo</strong></td><td><span class="badge b-quick">Quick Win</span></td><td class="r">26</td><td class="r"><strong>1,854</strong></td><td class="r" style="color: var(--red-soft);">1.4%</td><td class="r">4.1</td></tr>
+        <tr><td class="r">6</td><td>awarehair</td><td><span class="badge b-branded">Branded</span></td><td class="r">19</td><td class="r">25</td><td class="r" style="color: var(--green-soft);">76.0%</td><td class="r">2.1</td></tr>
+        <tr><td class="r">7</td><td>aware hair products</td><td><span class="badge b-branded">Branded</span></td><td class="r">14</td><td class="r">26</td><td class="r" style="color: var(--green-soft);">53.8%</td><td class="r">1.5</td></tr>
+        <tr><td class="r">8</td><td>aware hair reviews</td><td><span class="badge b-branded">Branded</span></td><td class="r">13</td><td class="r">70</td><td class="r">18.6%</td><td class="r">1.0</td></tr>
+        <tr><td class="r">9</td><td>aware products</td><td><span class="badge b-branded">Branded</span></td><td class="r">10</td><td class="r">525</td><td class="r" style="color: var(--red-soft);">1.9%</td><td class="r">4.5</td></tr>
+        <tr><td class="r">10</td><td>aware hair shampoo</td><td><span class="badge b-branded">Branded</span></td><td class="r">8</td><td class="r">12</td><td class="r" style="color: var(--green-soft);">66.7%</td><td class="r">1.0</td></tr>
+        <tr><td class="r">11</td><td>is 9 in 1 shampoo real</td><td><span class="badge b-nonbrand">Non-Brand</span></td><td class="r">5</td><td class="r">101</td><td class="r">5.0%</td><td class="r">2.0</td></tr>
+        <tr><td class="r">12</td><td>13 in 1 shampoo</td><td><span class="badge b-nonbrand">Non-Brand</span></td><td class="r">3</td><td class="r">36</td><td class="r">8.3%</td><td class="r">2.6</td></tr>
+        <tr><td class="r">13</td><td>hair aware</td><td><span class="badge b-branded">Branded</span></td><td class="r">3</td><td class="r">27</td><td class="r">11.1%</td><td class="r">3.7</td></tr>
+        <tr style="background: rgba(212,165,116,0.06);"><td class="r">14</td><td>shampoo 9 in 1</td><td><span class="badge b-quick">Quick Win</span></td><td class="r">2</td><td class="r"><strong>1,458</strong></td><td class="r" style="color: var(--red-soft);">0.1%</td><td class="r">5.6</td></tr>
+        <tr><td class="r">15</td><td>shampoo 9 en 1</td><td><span class="badge b-nonbrand">Non-Brand</span></td><td class="r">2</td><td class="r">512</td><td class="r" style="color: var(--red-soft);">0.4%</td><td class="r">4.7</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Section 4: Top Pages -->
+<section>
+  <div class="section-header">
+    <span class="section-number">04</span>
+    <h2>Top Pages</h2>
+  </div>
+  <p class="section-desc">Page-level performance reveals which URLs are driving visibility and where click-through optimization will have the biggest impact.</p>
+
+  <div class="table-wrap">
+    <div class="table-bar">
+      <h3>Page Performance</h3>
+      <span class="count">100 pages tracked</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Page</th>
+          <th class="r">Clicks</th>
+          <th class="r">Impressions</th>
+          <th class="r">CTR</th>
+          <th class="r">Position</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="r">1</td><td>/</td><td class="r">776</td><td class="r">5,712</td><td class="r" style="color: var(--green-soft);">13.6%</td><td class="r">8.1</td></tr>
+        <tr style="background: rgba(196,93,74,0.04);"><td class="r">2</td><td><strong>/products/aware-9-1-shampoo</strong></td><td class="r">253</td><td class="r"><strong>22,242</strong></td><td class="r" style="color: var(--red-soft);">1.1%</td><td class="r">4.5</td></tr>
+        <tr><td class="r">3</td><td>/collections/aware-9-1-collection</td><td class="r">63</td><td class="r">2,269</td><td class="r">2.8%</td><td class="r">4.1</td></tr>
+        <tr><td class="r">4</td><td>/products/aware-9-1-scalp-care-shampoo</td><td class="r">32</td><td class="r">2,434</td><td class="r" style="color: var(--red-soft);">1.3%</td><td class="r">5.2</td></tr>
+        <tr><td class="r">5</td><td>/products/aware-9-1-leave-in</td><td class="r">25</td><td class="r">2,837</td><td class="r" style="color: var(--red-soft);">0.9%</td><td class="r">8.9</td></tr>
+        <tr style="background: rgba(196,93,74,0.04);"><td class="r">6</td><td>/blogs/news/2025-haircare-tariffs...</td><td class="r">19</td><td class="r"><strong>4,217</strong></td><td class="r" style="color: var(--red-soft);">0.5%</td><td class="r">6.0</td></tr>
+        <tr><td class="r">7</td><td>/pages/about-us</td><td class="r">17</td><td class="r">1,506</td><td class="r">1.1%</td><td class="r">2.6</td></tr>
+        <tr style="background: rgba(196,93,74,0.04);"><td class="r">8</td><td>/pages/2026-professional-salon-trends...</td><td class="r">12</td><td class="r"><strong>3,060</strong></td><td class="r" style="color: var(--red-soft);">0.4%</td><td class="r">6.9</td></tr>
+        <tr><td class="r">9</td><td>/pages/our-formulations</td><td class="r">12</td><td class="r">1,718</td><td class="r">0.7%</td><td class="r">3.3</td></tr>
+        <tr><td class="r">10</td><td>/pages/about-aware</td><td class="r">10</td><td class="r">1,632</td><td class="r">0.6%</td><td class="r">5.2</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top: 24px;">
+    <div class="section-header" style="margin-bottom: 16px;">
+      <h3 style="font-family: var(--font-heading); font-size: 18px; font-weight: 400;">Content Cluster Performance</h3>
+    </div>
+    <div class="grid-3" style="grid-template-columns: repeat(5, 1fr);">
+      <div class="card" style="text-align: center;">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--sage); text-transform: uppercase; letter-spacing: 1px;">Homepage</div>
+        <div style="font-family: var(--font-heading); font-size: 24px; margin: 8px 0;">776</div>
+        <div style="font-size: 12px; color: var(--green-soft);">13.6% CTR</div>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--sage); text-transform: uppercase; letter-spacing: 1px;">Products</div>
+        <div style="font-family: var(--font-heading); font-size: 24px; margin: 8px 0;">352</div>
+        <div style="font-size: 12px; color: var(--red-soft);">1.1% CTR</div>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--sage); text-transform: uppercase; letter-spacing: 1px;">Info Pages</div>
+        <div style="font-family: var(--font-heading); font-size: 24px; margin: 8px 0;">105</div>
+        <div style="font-size: 12px; color: var(--amber-soft);">0.8% CTR</div>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--sage); text-transform: uppercase; letter-spacing: 1px;">Collections</div>
+        <div style="font-family: var(--font-heading); font-size: 24px; margin: 8px 0;">69</div>
+        <div style="font-size: 12px; color: var(--green-soft);">2.3% CTR</div>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--sage); text-transform: uppercase; letter-spacing: 1px;">Blog</div>
+        <div style="font-family: var(--font-heading); font-size: 24px; margin: 8px 0;">27</div>
+        <div style="font-size: 12px; color: var(--red-soft);">0.3% CTR</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 5: Quick Wins -->
+<section>
+  <div class="section-header">
+    <span class="section-number">05</span>
+    <h2>Quick Wins</h2>
+  </div>
+  <p class="section-desc">High-impression queries and pages with low CTR at achievable positions. These represent clicks you're already earning visibility for but failing to capture.</p>
+
+  <div class="callout">
+    <h3>The "9 in 1" Opportunity</h3>
+    <p>Aggregating all "9 in 1 shampoo" query variants (different spellings, languages, word orders), AWARE is appearing for <span class="hl">~16,000 impressions</span> at an average position of <span class="hl">4.5</span>. At a competitive 5% CTR (still conservative for position 4-5), that's <span class="hl">800 clicks per quarter</span> vs the current ~180. This single optimization could nearly double your non-branded traffic.</p>
+  </div>
+
+  <div class="table-wrap" style="margin-top: 24px;">
+    <div class="table-bar">
+      <h3>Query Quick Wins</h3>
+      <span class="count">Non-branded, >50 imp, <5% CTR, pos 4-20</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Query</th>
+          <th class="r">Impressions</th>
+          <th class="r">Clicks</th>
+          <th class="r">CTR</th>
+          <th class="r">Position</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>9 in 1 shampoo</td><td class="r">11,084</td><td class="r">121</td><td class="r" style="color: var(--red-soft);">1.1%</td><td class="r">4.7</td><td><span class="badge b-urgent">Priority 1</span></td></tr>
+        <tr><td>9 in one shampoo</td><td class="r">1,854</td><td class="r">26</td><td class="r" style="color: var(--red-soft);">1.4%</td><td class="r">4.1</td><td><span class="badge b-urgent">Same page</span></td></tr>
+        <tr><td>shampoo 9 in 1</td><td class="r">1,458</td><td class="r">2</td><td class="r" style="color: var(--red-soft);">0.1%</td><td class="r">5.6</td><td><span class="badge b-urgent">Same page</span></td></tr>
+        <tr><td>shampoo 9 en 1</td><td class="r">512</td><td class="r">2</td><td class="r" style="color: var(--red-soft);">0.4%</td><td class="r">4.7</td><td><span class="badge b-warn">Int'l variant</span></td></tr>
+        <tr><td>professional leave in conditioner</td><td class="r">258</td><td class="r">1</td><td class="r" style="color: var(--red-soft);">0.4%</td><td class="r">7.4</td><td><span class="badge b-quick">New query</span></td></tr>
+        <tr><td>aweare product line</td><td class="r">149</td><td class="r">0</td><td class="r" style="color: var(--red-soft);">0.0%</td><td class="r">6.5</td><td><span class="badge b-warn">Misspelling</span></td></tr>
+        <tr><td>9in1 shampoo</td><td class="r">144</td><td class="r">0</td><td class="r" style="color: var(--red-soft);">0.0%</td><td class="r">5.9</td><td><span class="badge b-urgent">Same page</span></td></tr>
+        <tr><td>scalp gua sha</td><td class="r">65</td><td class="r">1</td><td class="r" style="color: var(--red-soft);">1.5%</td><td class="r">4.6</td><td><span class="badge b-quick">New query</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-wrap" style="margin-top: 24px;">
+    <div class="table-bar">
+      <h3>Page Quick Wins</h3>
+      <span class="count">>500 imp, <2% CTR</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Page</th>
+          <th class="r">Impressions</th>
+          <th class="r">Clicks</th>
+          <th class="r">CTR</th>
+          <th class="r">Position</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background: rgba(196,93,74,0.04);"><td>/products/aware-9-1-shampoo</td><td class="r"><strong>22,242</strong></td><td class="r">253</td><td class="r" style="color: var(--red-soft);">1.1%</td><td class="r">4.5</td></tr>
+        <tr><td>/blogs/news/2025-haircare-tariffs...</td><td class="r">4,217</td><td class="r">19</td><td class="r" style="color: var(--red-soft);">0.5%</td><td class="r">6.0</td></tr>
+        <tr><td>/pages/2026-professional-salon-trends...</td><td class="r">3,060</td><td class="r">12</td><td class="r" style="color: var(--red-soft);">0.4%</td><td class="r">6.9</td></tr>
+        <tr><td>/products/aware-9-1-leave-in</td><td class="r">2,837</td><td class="r">25</td><td class="r" style="color: var(--red-soft);">0.9%</td><td class="r">8.9</td></tr>
+        <tr><td>/products/aware-9-1-conditioner</td><td class="r">2,638</td><td class="r">7</td><td class="r" style="color: var(--red-soft);">0.3%</td><td class="r">8.1</td></tr>
+        <tr><td>/blogs/news/winter-scalp-issues...</td><td class="r">2,249</td><td class="r">5</td><td class="r" style="color: var(--red-soft);">0.2%</td><td class="r">7.6</td></tr>
+        <tr><td>/pages/our-formulations</td><td class="r">1,718</td><td class="r">12</td><td class="r" style="color: var(--red-soft);">0.7%</td><td class="r">3.3</td></tr>
+        <tr><td>/pages/about-aware</td><td class="r">1,632</td><td class="r">10</td><td class="r" style="color: var(--red-soft);">0.6%</td><td class="r">5.2</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Section 6: Device & Geography -->
+<section>
+  <div class="section-header">
+    <span class="section-number">06</span>
+    <h2>Device & Geography</h2>
+  </div>
+  <p class="section-desc">Mobile accounts for 53% of clicks. Desktop users have slightly higher CTR but worse average position, suggesting SERP features (images, shopping) may be crowding desktop results.</p>
+
+  <div class="grid-2">
+    <div class="table-wrap">
+      <div class="table-bar"><h3>Device Split</h3></div>
+      <table>
+        <thead><tr><th>Device</th><th class="r">Clicks</th><th class="r">Impressions</th><th class="r">CTR</th><th class="r">Position</th></tr></thead>
+        <tbody>
+          <tr><td>Mobile</td><td class="r">684</td><td class="r">26,753</td><td class="r">2.6%</td><td class="r">5.0</td></tr>
+          <tr><td>Desktop</td><td class="r">580</td><td class="r">19,827</td><td class="r">2.9%</td><td class="r">7.8</td></tr>
+          <tr><td>Tablet</td><td class="r">16</td><td class="r">945</td><td class="r">1.7%</td><td class="r">7.2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-wrap">
+      <div class="table-bar"><h3>Top Countries</h3></div>
+      <table>
+        <thead><tr><th>Country</th><th class="r">Clicks</th><th class="r">Impressions</th></tr></thead>
+        <tbody>
+          <tr><td>United States</td><td class="r">956</td><td class="r">24,362</td></tr>
+          <tr><td>Canada</td><td class="r">58</td><td class="r">1,746</td></tr>
+          <tr><td>India</td><td class="r">27</td><td class="r">2,035</td></tr>
+          <tr><td>United Kingdom</td><td class="r">22</td><td class="r">1,534</td></tr>
+          <tr><td>Australia</td><td class="r">20</td><td class="r">711</td></tr>
+          <tr><td>France</td><td class="r">15</td><td class="r">348</td></tr>
+          <tr><td>Germany</td><td class="r">14</td><td class="r">1,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Section 7: Weekly Trend -->
+<section>
+  <div class="section-header">
+    <span class="section-number">07</span>
+    <h2>Weekly Trend</h2>
+  </div>
+  <p class="section-desc">Click volume has been relatively stable at 80-120 clicks/week with a spike in early February. No strong upward or downward trend, suggesting organic growth is steady but not accelerating.</p>
+
+  <div class="card">
+    <div class="chart-bars">
+      <div class="cb-g"><div class="cb" style="height: 54%; background: var(--sage-light);"></div><div class="cb-l">Jan 5</div></div>
+      <div class="cb-g"><div class="cb" style="height: 80%; background: var(--sage-light);"></div><div class="cb-l">12</div></div>
+      <div class="cb-g"><div class="cb" style="height: 63%; background: var(--sage-light);"></div><div class="cb-l">19</div></div>
+      <div class="cb-g"><div class="cb" style="height: 82%; background: var(--sage-light);"></div><div class="cb-l">26</div></div>
+      <div class="cb-g"><div class="cb" style="height: 100%; background: var(--gold);"></div><div class="cb-l">Feb 2</div></div>
+      <div class="cb-g"><div class="cb" style="height: 57%; background: var(--sage-light);"></div><div class="cb-l">9</div></div>
+      <div class="cb-g"><div class="cb" style="height: 58%; background: var(--sage-light);"></div><div class="cb-l">16</div></div>
+      <div class="cb-g"><div class="cb" style="height: 73%; background: var(--sage-light);"></div><div class="cb-l">23</div></div>
+      <div class="cb-g"><div class="cb" style="height: 65%; background: var(--sage-light);"></div><div class="cb-l">Mar 2</div></div>
+      <div class="cb-g"><div class="cb" style="height: 68%; background: var(--sage-light);"></div><div class="cb-l">9</div></div>
+      <div class="cb-g"><div class="cb" style="height: 69%; background: var(--sage-light);"></div><div class="cb-l">16</div></div>
+      <div class="cb-g"><div class="cb" style="height: 59%; background: var(--sage-light);"></div><div class="cb-l">23</div></div>
+      <div class="cb-g"><div class="cb" style="height: 43%; background: var(--sage-light);"></div><div class="cb-l">30</div></div>
+    </div>
+    <p style="font-size: 12px; color: var(--sage); text-align: center; margin-top: 8px;">Weekly clicks (Jan 5 - Apr 3, 2026). Gold bar = peak week (147 clicks).</p>
+  </div>
+</section>
+
+<!-- Section 8: Technical Health (Updated with deep analysis) -->
+<section>
+  <div class="section-header">
+    <span class="section-number">08</span>
+    <h2>Technical Health</h2>
+  </div>
+  <p class="section-desc">The Lighthouse 0/100 score is misleading. Root cause: 8 homepage videos prevent LCP measurement. Without throttling, FCP is 2.2s and TBT is 0ms - both good. The real issues are video weight (9MB) and third-party script bloat (1.9MB).</p>
+
+  <div class="callout">
+    <h3>Why Lighthouse Shows 0 But PageSpeed Looks Better</h3>
+    <p>The homepage has <span class="hl">8 embedded videos</span> (3 HD-1080p, 1 HD-720p, 4 SD-480p) totaling ~9MB. The hero video is the LCP element, but Lighthouse can't measure it because the video never fully loads in headless mode. When LCP returns null, the score collapses to 0. PageSpeed Insights uses real Chrome user data (CrUX) where users interact and videos load normally, so scores are higher.</p>
+    <ul>
+      <li>The scalp quiz popup is NOT the problem - it's ~3-4KB, loads async, well-built</li>
+      <li>Without throttling: FCP 2.2s (good), TBT 0ms (excellent), TTI 2.2s (excellent)</li>
+      <li>The real fix: lazy-load below-fold videos + audit third-party scripts</li>
+    </ul>
+  </div>
+
+  <div class="grid-2" style="margin-top: 24px;">
+    <div class="card">
+      <h3>Lighthouse Scores</h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+        <div style="text-align: center;">
+          <div style="font-family: var(--font-heading); font-size: 48px; color: var(--amber-soft);">0*</div>
+          <div style="font-size: 12px; color: var(--sage); text-transform: uppercase; letter-spacing: 1px;">Performance</div>
+          <div style="font-size: 11px; color: var(--sage); margin-top: 4px;">*LCP measurement failure</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-family: var(--font-heading); font-size: 48px; color: var(--green-soft);">92</div>
+          <div style="font-size: 12px; color: var(--sage); text-transform: uppercase; letter-spacing: 1px;">SEO</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Core Web Vitals (No Throttle)</h3>
+      <table style="margin-top: 12px;">
+        <tbody>
+          <tr><td style="padding: 6px 0; border-color: #f0ebe5;">First Contentful Paint</td><td class="r" style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-good">2.2s</span></td></tr>
+          <tr><td style="padding: 6px 0; border-color: #f0ebe5;">Total Blocking Time</td><td class="r" style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-good">0ms</span></td></tr>
+          <tr><td style="padding: 6px 0; border-color: #f0ebe5;">Time to Interactive</td><td class="r" style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-good">2.2s</span></td></tr>
+          <tr><td style="padding: 6px 0; border-color: #f0ebe5;">CLS</td><td class="r" style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-good">0.001</span></td></tr>
+          <tr><td style="padding: 6px 0; border-color: #f0ebe5;">Speed Index</td><td class="r" style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-warn">8.4s</span></td></tr>
+          <tr><td style="padding: 6px 0; border: none;">Total Payload</td><td class="r" style="padding: 6px 0; border: none;"><span class="badge b-poor">13.5 MB</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="table-wrap" style="margin-top: 24px;">
+    <div class="table-bar">
+      <h3>Third-Party Script Bloat</h3>
+      <span class="count">~3.6s execution, ~1.9MB</span>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Script</th><th class="r">Exec Time</th><th class="r">Size</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        <tr style="background: rgba(196,93,74,0.04);"><td>CustomerHub (Shopify app)</td><td class="r">1,787ms</td><td class="r">110KB</td><td><span class="badge b-urgent">Defer to acct pages</span></td></tr>
+        <tr><td>Gorgias Chat (4 chunks)</td><td class="r">~500ms</td><td class="r">~400KB</td><td><span class="badge b-warn">Lazy load</span></td></tr>
+        <tr><td>Google Tag Manager (5 scripts!)</td><td class="r">~460ms</td><td class="r">~730KB</td><td><span class="badge b-warn">Consolidate to 1</span></td></tr>
+        <tr><td>Microsoft Clarity</td><td class="r">267ms</td><td class="r">~30KB</td><td><span class="badge b-nonbrand">Keep</span></td></tr>
+        <tr><td>Theme.js</td><td class="r">241ms</td><td class="r">204KB</td><td><span class="badge b-nonbrand">Core - optimize later</span></td></tr>
+        <tr><td>Accessibly.app</td><td class="r">90ms</td><td class="r">222KB</td><td><span class="badge b-warn">Evaluate need</span></td></tr>
+        <tr><td>Pareto Limit Purchase</td><td class="r">87ms</td><td class="r">120KB</td><td><span class="badge b-warn">Evaluate need</span></td></tr>
+        <tr><td>Klaviyo Onsite</td><td class="r">87ms</td><td class="r">~50KB</td><td><span class="badge b-nonbrand">Keep</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top: 16px;">
+    <h3>Homepage Video Audit</h3>
+    <p style="margin-bottom: 12px;">8 videos loading simultaneously on homepage. Only 1 should load eagerly (hero). The rest should use poster images + lazy loading.</p>
+    <table>
+      <thead><tr><th>Video</th><th class="r">Quality</th><th class="r">Size</th></tr></thead>
+      <tbody>
+        <tr style="background: rgba(196,93,74,0.04);"><td>Hero video (ff04b64e)</td><td class="r">HD 1080p</td><td class="r">3,433KB</td></tr>
+        <tr><td>d43c0da1</td><td class="r">HD 720p</td><td class="r">2,163KB</td></tr>
+        <tr><td>f5e50cbb</td><td class="r">HD 1080p</td><td class="r">818KB</td></tr>
+        <tr><td>8f847d68</td><td class="r">SD 480p</td><td class="r">733KB</td></tr>
+        <tr><td>4 others (SD 480p)</td><td class="r">SD 480p</td><td class="r">~1,300KB</td></tr>
+      </tbody>
+      <tfoot><tr><td><strong>Total</strong></td><td></td><td class="r"><strong>~9MB</strong></td></tr></tfoot>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top: 16px;">
+    <h3>Key Issues</h3>
+    <table style="margin-top: 12px;">
+      <tbody>
+        <tr><td style="padding: 8px 0; border-color: #f0ebe5;"><span class="badge b-poor">Critical</span></td><td style="padding: 8px 0; border-color: #f0ebe5;">Total page weight is 13.5 MB - images, JS bundles, and fonts account for most of this. Target: under 3 MB.</td></tr>
+        <tr><td style="padding: 8px 0; border-color: #f0ebe5;"><span class="badge b-poor">Critical</span></td><td style="padding: 8px 0; border-color: #f0ebe5;">Main-thread work: 43.5s. JavaScript execution: 20.3s. Likely Shopify apps and third-party scripts.</td></tr>
+        <tr><td style="padding: 8px 0; border-color: #f0ebe5;"><span class="badge b-warn">Warning</span></td><td style="padding: 8px 0; border-color: #f0ebe5;">10 links without descriptive text (generic "Read more" or icon-only links).</td></tr>
+        <tr><td style="padding: 8px 0; border-color: #f0ebe5;"><span class="badge b-warn">Warning</span></td><td style="padding: 8px 0; border-color: #f0ebe5;">Render-blocking resources delaying first paint. Image delivery could save 272 KiB.</td></tr>
+        <tr><td style="padding: 8px 0; border: none;"><span class="badge b-warn">Warning</span></td><td style="padding: 8px 0; border: none;">Font display: 50ms savings available by adding font-display: swap.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top: 16px;">
+    <h3>Schema Audit Status (March 26)</h3>
+    <p style="margin-bottom: 12px;">14 bugs were found and fixed. 6 issues remain open (require Shopify Admin action).</p>
+    <table style="margin-top: 8px;">
+      <tbody>
+        <tr><td style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-poor">Open</span></td><td style="padding: 6px 0; border-color: #f0ebe5;">Product FAQPage schema empty (metafields unpopulated)</td></tr>
+        <tr><td style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-poor">Open</span></td><td style="padding: 6px 0; border-color: #f0ebe5;">Product HowTo schema empty (metafields unpopulated)</td></tr>
+        <tr><td style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-poor">Open</span></td><td style="padding: 6px 0; border-color: #f0ebe5;">llms.txt not at standard /llms.txt path (needs redirect)</td></tr>
+        <tr><td style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-warn">Open</span></td><td style="padding: 6px 0; border-color: #f0ebe5;">Product image URL malformed in schema</td></tr>
+        <tr><td style="padding: 6px 0; border: none;"><span class="badge b-warn">Open</span></td><td style="padding: 6px 0; border: none;">Article author listed as "AWARE Hair" (Person type) instead of Organization</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Section 9: AEO / AI Visibility -->
+<section>
+  <div class="section-header">
+    <span class="section-number">09</span>
+    <h2>AI Search Visibility</h2>
+  </div>
+  <p class="section-desc">As of March 26, ChatGPT fabricates AWARE's identity. Entity signals were fixed in the theme (Organization schema, founder schemas, sameAs links) but AI models need 2-4 weeks to reindex. April strategic pivot deprioritizes GEO busywork in favor of direct channels.</p>
+
+  <div class="grid-3" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="card" style="text-align: center;">
+      <div style="font-family: var(--font-mono); font-size: 11px; color: var(--sage); text-transform: uppercase; letter-spacing: 1px;">ChatGPT</div>
+      <div style="font-family: var(--font-heading); font-size: 28px; color: var(--red-soft); margin: 8px 0;">Fabricated</div>
+      <p style="font-size: 12px;">Called AWARE "European/Polish origin" - completely wrong</p>
+    </div>
+    <div class="card" style="text-align: center;">
+      <div style="font-family: var(--font-mono); font-size: 11px; color: var(--sage); text-transform: uppercase; letter-spacing: 1px;">Perplexity</div>
+      <div style="font-family: var(--font-heading); font-size: 28px; color: var(--amber-soft); margin: 8px 0;">Unknown</div>
+      <p style="font-size: 12px;">Not tested since entity fixes deployed</p>
+    </div>
+    <div class="card" style="text-align: center;">
+      <div style="font-family: var(--font-mono); font-size: 11px; color: var(--sage); text-transform: uppercase; letter-spacing: 1px;">Google AI Overview</div>
+      <div style="font-family: var(--font-heading); font-size: 28px; color: var(--amber-soft); margin: 8px 0;">Unknown</div>
+      <p style="font-size: 12px;">Not tested since entity fixes deployed</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 16px;">
+    <h3>Entity Signal Checklist</h3>
+    <table style="margin-top: 12px;">
+      <tbody>
+        <tr><td style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-good">Done</span></td><td style="padding: 6px 0; border-color: #f0ebe5;">Organization schema with @id anchor</td></tr>
+        <tr><td style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-good">Done</span></td><td style="padding: 6px 0; border-color: #f0ebe5;">Founder Person schemas (3 co-founders)</td></tr>
+        <tr><td style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-good">Done</span></td><td style="padding: 6px 0; border-color: #f0ebe5;">sameAs links (Instagram, TikTok, Facebook, YouTube)</td></tr>
+        <tr><td style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-good">Done</span></td><td style="padding: 6px 0; border-color: #f0ebe5;">robots.txt allows GPTBot, ClaudeBot, PerplexityBot + 4 more</td></tr>
+        <tr><td style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-good">Done</span></td><td style="padding: 6px 0; border-color: #f0ebe5;">llms.txt with /llms.txt redirect working (301)</td></tr>
+        <tr><td style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-good">Done</span></td><td style="padding: 6px 0; border-color: #f0ebe5;">Wikidata entry created (Q138796500)</td></tr>
+        <tr><td style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-good">Done</span></td><td style="padding: 6px 0; border-color: #f0ebe5;">LinkedIn company profile created (in sameAs)</td></tr>
+        <tr><td style="padding: 6px 0; border-color: #f0ebe5;"><span class="badge b-poor">Pending</span></td><td style="padding: 6px 0; border-color: #f0ebe5;">Google Business Profile not created</td></tr>
+        <tr><td style="padding: 6px 0; border: none;"><span class="badge b-poor">Pending</span></td><td style="padding: 6px 0; border: none;">Crunchbase profile not created</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Section 10: Recommendations -->
+<section>
+  <div class="section-header">
+    <span class="section-number">10</span>
+    <h2>Prioritized Recommendations</h2>
+  </div>
+  <p class="section-desc">Ranked by impact-to-effort ratio. Quick wins first, then medium-term plays, then strategic investments. All aligned with the April 2026 pivot (salon engine, head spa, trich network, TikTok seeding).</p>
+
+  <h3 style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px;">This Week</h3>
+
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-title">1. Rewrite "9 in 1 Shampoo" Meta Title & Description</div>
+      <span class="rec-impact impact-high">High Impact</span>
+    </div>
+    <div class="rec-body">
+      The product page <code>/products/aware-9-1-shampoo</code> has 22,242 impressions at position 4.5 with only 1.1% CTR. The current meta title likely doesn't match search intent. Rewrite to emphasize what makes this a true 9-in-1 (benefits, not just the name). Add social proof (48 reviews, 5.0 rating) to the meta description. Target: 3-5% CTR = 600-1,100 clicks/quarter.
+    </div>
+    <div class="rec-effort">Effort: 30 minutes / Impact: +400-800 clicks/quarter</div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-title">2. Optimize Blog Post Titles for CTR</div>
+      <span class="rec-impact impact-high">High Impact</span>
+    </div>
+    <div class="rec-body">
+      Two blog posts have strong impressions but terrible CTR: the tariff article (4,217 imp, 0.5% CTR) and the salon trends report (3,060 imp, 0.4% CTR). Rewrite meta titles to be more specific and benefit-driven. The tariff article title should mention the year and specific impact. The trends report should include a number ("7 Salon Trends Shaping 2026").
+    </div>
+    <div class="rec-effort">Effort: 1 hour / Impact: +50-100 clicks/quarter</div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-title">3. Fix Descriptive Link Text (10 links)</div>
+      <span class="rec-impact impact-med">Medium Impact</span>
+    </div>
+    <div class="rec-body">
+      Lighthouse flagged 10 links without descriptive text. These are likely "Read more" or icon-only links. Replace with specific anchor text that describes the destination. This directly impacts the SEO score and helps Google understand page relationships.
+    </div>
+    <div class="rec-effort">Effort: 30 minutes / Impact: SEO score improvement</div>
+  </div>
+
+  <h3 style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin: 32px 0 16px;">This Month</h3>
+
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-title">4. Optimize All Product Page Meta Descriptions</div>
+      <span class="rec-impact impact-high">High Impact</span>
+    </div>
+    <div class="rec-body">
+      Product pages collectively have 33,217 impressions but only 1.1% CTR. The leave-in (2,837 imp, 0.9%), conditioner (2,638 imp, 0.3%), and scalp care shampoo (2,434 imp, 1.3%) all need attention. Include key differentiators: "Professional scalp care", "9 benefits in 1", star rating, and a compelling value proposition in each meta description.
+    </div>
+    <div class="rec-effort">Effort: 2 hours / Impact: +100-300 clicks/quarter</div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-title">5. Create "Scalp Gua Sha" Blog Content</div>
+      <span class="rec-impact impact-med">Medium Impact</span>
+    </div>
+    <div class="rec-body">
+      "Scalp gua sha" is a new query (not in previous period) with 65 impressions at position 4.6. AWARE sells a sandalwood gua sha - this is a perfect content-to-product pipeline. Write a comprehensive guide: "How to Use a Scalp Gua Sha for Hair Growth" targeting this query plus related long-tails. Aligns with the head spa / trichologist network strategy.
+    </div>
+    <div class="rec-effort">Effort: 3-4 hours / Impact: New content pipeline + product discovery</div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-title">6. Populate Product FAQ & HowTo Schema</div>
+      <span class="rec-impact impact-med">Medium Impact</span>
+    </div>
+    <div class="rec-body">
+      Product FAQ and HowTo schemas are present in the theme but empty (metafields unpopulated). Fill these for all products. This enables rich results in Google (FAQ dropdowns, how-to steps) and provides structured data for AI search engines. Prioritize the shampoo page given its impression volume.
+    </div>
+    <div class="rec-effort">Effort: 2-3 hours / Impact: Rich results + AEO improvement</div>
+  </div>
+
+  <h3 style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin: 32px 0 16px;">This Quarter</h3>
+
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-title">7. Address Page Speed (Performance Score: 0)</div>
+      <span class="rec-impact impact-high">High Impact</span>
+    </div>
+    <div class="rec-body">
+      13.5MB total payload, 5.6s FCP, 22.8s Speed Index. This is suppressing rankings and killing mobile conversions. Audit Shopify apps (likely culprits for 20.3s JS execution time). Compress/lazy-load images. Consider whether the theme migration (deferred to Q2) should be prioritized given these numbers.
+    </div>
+    <div class="rec-effort">Effort: Multi-week project / Impact: Ranking improvement across all pages</div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-title">8. Publish Salon-Exclusive Content Pipeline</div>
+      <span class="rec-impact impact-med">Medium Impact</span>
+    </div>
+    <div class="rec-body">
+      The keyword research from March 23 identified 12 high-opportunity B2B keywords with low competition. "Professional scalp care for salons" (score 8.2), "salon exclusive brands 2026" (8.1), and "why salon exclusive matters" (7.8) are all uncontested. One article per month targeting these would build AWARE's non-branded discovery in the pro channel. Draft brief exists in the pipeline.
+    </div>
+    <div class="rec-effort">Effort: 4 hours/article / Impact: B2B organic discovery channel</div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-title">9. Complete Entity Profiles for AI Visibility</div>
+      <span class="rec-impact impact-med">Medium Impact</span>
+    </div>
+    <div class="rec-body">
+      Wikidata entry, Google Business Profile, and Crunchbase/LinkedIn company profiles are still pending. These are the external signals that AI models use to verify entity identity. Until they exist, ChatGPT will continue fabricating AWARE's identity. Low effort per profile, but collectively important.
+    </div>
+    <div class="rec-effort">Effort: 1-2 hours total / Impact: AI identity accuracy</div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-title">10. Create /llms.txt Redirect</div>
+      <span class="rec-impact impact-med">Medium Impact</span>
+    </div>
+    <div class="rec-body">
+      The llms.txt content is comprehensive but lives at /pages/llms-txt instead of the standard /llms.txt path. AI crawlers look for /llms.txt first. A simple Shopify URL redirect would fix this.
+    </div>
+    <div class="rec-effort">Effort: 5 minutes / Impact: AI crawler discoverability</div>
+  </div>
+</section>
+
+<!-- Section 11: claude-seo Tool Assessment -->
+<section>
+  <div class="section-header">
+    <span class="section-number">11</span>
+    <h2>Tool Assessment: claude-seo</h2>
+  </div>
+  <p class="section-desc">Installed from github.com/AgriciDaniel/claude-seo (v1.7.2). 17+ sub-commands covering technical audit, E-E-A-T analysis, GEO optimization, schema validation, and Google API integration.</p>
+
+  <div class="grid-2">
+    <div class="card card-accent">
+      <h3>Recommended Use</h3>
+      <p style="margin-top: 8px;">Use <code>/seo technical</code> and <code>/seo content</code> for periodic site audits. Use <code>/seo geo</code> to re-test AI search visibility after entity fixes propagate. Use <code>/seo google</code> as a quicker interface for GSC data than the custom REST API approach.</p>
+    </div>
+    <div class="card">
+      <h3>Overlap with Existing</h3>
+      <p style="margin-top: 8px;">Does NOT replace AWARE's custom SEO pipeline (keyword discovery, content briefs, Shopify publishing, AEO monitoring). Those are business-specific. claude-seo is a complementary audit tool.</p>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>AWARE Hair GSC Deep Analytics Report - Generated April 5, 2026</p>
+    <p style="margin-top: 4px;">Data source: Google Search Console API [LIVE: GSC 2026-04-05] / Lighthouse CLI / March 26 site audit</p>
+  </div>
+</footer>
+
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

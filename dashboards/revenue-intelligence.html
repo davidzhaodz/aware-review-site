@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARE Hair - B2B Revenue Intelligence</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://use.typekit.net/tmh4fvg.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --deep-teal: #102B26;
+      --cream: #f4efe9;
+      --surface: #faf8f5;
+      --gold: #D4A574;
+      --gold-light: #e8c9a8;
+      --sage: #7d8471;
+      --sage-light: #a8b09e;
+      --red-soft: #c45b4a;
+      --red-bg: #fdf2f0;
+      --amber-soft: #b8860b;
+      --amber-bg: #fdf8ed;
+      --green-soft: #4a8c6b;
+      --green-bg: #f0f8f4;
+      --border: #e5e0da;
+      --text-muted: rgba(16, 43, 38, 0.55);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--deep-teal);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    .header {
+      background: var(--deep-teal);
+      color: var(--cream);
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+    .header-eyebrow {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      font-family: 'orpheus-pro', serif;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .header-meta {
+      font-size: 0.8125rem;
+      opacity: 0.6;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Hero Stats */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: -24px auto 48px;
+      position: relative;
+      max-width: 1100px;
+    }
+    .hero-stat {
+      background: var(--surface);
+      padding: 28px 24px;
+      text-align: center;
+    }
+    .hero-stat-value {
+      font-family: 'orpheus-pro', serif;
+      font-size: 1.75rem;
+      font-weight: 400;
+      color: var(--deep-teal);
+      margin-bottom: 4px;
+    }
+    .hero-stat-label {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 48px;
+    }
+    .section-title {
+      font-family: 'orpheus-pro', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+      color: var(--deep-teal);
+    }
+    .section-subtitle {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 32px;
+      border: 1px solid var(--border);
+    }
+
+    /* Status badges */
+    .badge {
+      display: inline-block;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 3px;
+    }
+    .badge-green { background: var(--green-bg); color: var(--green-soft); }
+    .badge-amber { background: var(--amber-bg); color: var(--amber-soft); }
+    .badge-red { background: var(--red-bg); color: var(--red-soft); }
+    .badge-sage { background: #f0f2ee; color: var(--sage); }
+
+    /* Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+    }
+    .data-table th {
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 12px 16px;
+      border-bottom: 2px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .data-table th:hover { color: var(--deep-teal); }
+    .data-table th .sort-arrow { font-size: 0.625rem; margin-left: 4px; opacity: 0.4; }
+    .data-table th.sorted .sort-arrow { opacity: 1; color: var(--gold); }
+    .data-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: rgba(16, 43, 38, 0.02); }
+
+    /* Gauge */
+    .gauge-container {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      margin-bottom: 24px;
+    }
+    .gauge-visual {
+      flex: 0 0 160px;
+      text-align: center;
+    }
+    .gauge-info {
+      flex: 1;
+    }
+    .gauge-value {
+      font-family: 'orpheus-pro', serif;
+      font-size: 2.5rem;
+      font-weight: 400;
+    }
+    .gauge-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+    }
+
+    /* Callout */
+    .callout {
+      background: var(--amber-bg);
+      border-left: 3px solid var(--amber-soft);
+      padding: 16px 20px;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.875rem;
+      margin-top: 16px;
+    }
+    .callout-value {
+      font-family: 'orpheus-pro', serif;
+      font-size: 1.25rem;
+      color: var(--amber-soft);
+    }
+
+    /* Scenario cards */
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .scenario-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px;
+    }
+    .scenario-card h3 {
+      font-family: 'orpheus-pro', serif;
+      font-size: 1.125rem;
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+    .scenario-impact {
+      font-family: 'orpheus-pro', serif;
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+    }
+    .scenario-impact.positive { color: var(--green-soft); }
+    .scenario-impact.negative { color: var(--red-soft); }
+    .scenario-detail {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    /* Progress bar (growth path) */
+    .progress-container {
+      margin: 24px 0;
+    }
+    .progress-bar-bg {
+      background: var(--border);
+      border-radius: 6px;
+      height: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      background: linear-gradient(90deg, var(--deep-teal) 0%, var(--sage) 100%);
+      height: 100%;
+      border-radius: 6px;
+      transition: width 1s ease;
+    }
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+    .progress-current {
+      font-family: 'orpheus-pro', serif;
+      font-size: 1.125rem;
+      color: var(--deep-teal);
+      margin-bottom: 4px;
+    }
+
+    /* SKU Matrix */
+    .sku-matrix {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+    }
+    .sku-matrix th {
+      font-weight: 600;
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 10px 16px;
+      border-bottom: 2px solid var(--border);
+      text-align: center;
+    }
+    .sku-matrix th:first-child { text-align: left; }
+    .sku-matrix td {
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .sku-matrix td:first-child { text-align: left; font-weight: 500; }
+    .sku-confirmed {
+      display: inline-block;
+      width: 20px; height: 20px;
+      background: var(--green-soft);
+      border-radius: 4px;
+    }
+    .sku-inferred {
+      display: inline-block;
+      width: 20px; height: 20px;
+      background: var(--gold);
+      border-radius: 4px;
+      position: relative;
+    }
+    .sku-missing {
+      display: inline-block;
+      width: 20px; height: 20px;
+      background: var(--border);
+      border-radius: 4px;
+    }
+    .sku-legend {
+      display: flex;
+      gap: 20px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+    }
+    .sku-legend span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Chart containers */
+    .chart-container {
+      position: relative;
+      height: 300px;
+      margin: 16px 0;
+    }
+    .chart-container-wide {
+      height: 400px;
+    }
+
+    /* Grid layouts */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    /* Divider */
+    .divider {
+      text-align: center;
+      padding: 32px 0;
+      color: var(--gold);
+      font-size: 0.75rem;
+      letter-spacing: 0.5em;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 48px 24px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 80px 24px;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 768px) {
+      .two-col { grid-template-columns: 1fr; }
+      .gauge-container { flex-direction: column; text-align: center; }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .scenario-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="container">
+    <p class="header-eyebrow">Strategic Intelligence</p>
+    <h1>B2B Revenue Intelligence</h1>
+    <p class="header-meta" id="header-meta">Loading...</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Hero Stats -->
+  <div class="hero-stats" id="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-value" id="stat-revenue">-</div><div class="hero-stat-label">B2B Revenue</div></div>
+    <div class="hero-stat"><div class="hero-stat-value" id="stat-accounts">-</div><div class="hero-stat-label">Active Accounts</div></div>
+    <div class="hero-stat"><div class="hero-stat-value" id="stat-run-rate">-</div><div class="hero-stat-label">Annual Run Rate</div></div>
+    <div class="hero-stat"><div class="hero-stat-value" id="stat-avg-ltv">-</div><div class="hero-stat-label">Avg LTV</div></div>
+    <div class="hero-stat"><div class="hero-stat-value" id="stat-hhi">-</div><div class="hero-stat-label">Herfindahl Index</div></div>
+  </div>
+
+  <!-- 1. Concentration Risk -->
+  <div class="section" id="section-concentration">
+    <h2 class="section-title">Concentration Risk</h2>
+    <p class="section-subtitle">Revenue concentration across your salon portfolio, measured by the Herfindahl-Hirschman Index</p>
+    <div class="card">
+      <div class="gauge-container">
+        <div class="gauge-visual">
+          <div class="gauge-value" id="hhi-value">-</div>
+          <div class="gauge-label" id="hhi-label">-</div>
+        </div>
+        <div class="gauge-info">
+          <div style="font-size: 0.8125rem; margin-bottom: 12px;">
+            <div><strong>Top 3 share:</strong> <span id="top3-share">-</span></div>
+            <div><strong>Top 10 share:</strong> <span id="top10-share">-</span></div>
+            <div><strong>Biggest single exposure:</strong> <span id="max-exposure">-</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-container" id="concentration-chart-container">
+        <canvas id="concentration-chart"></canvas>
+      </div>
+      <div class="callout" id="concentration-callout"></div>
+    </div>
+  </div>
+
+  <div class="divider">&#9670; &#9670; &#9670;</div>
+
+  <!-- 2. Salon Rankings -->
+  <div class="section" id="section-rankings">
+    <h2 class="section-title">Salon Rankings</h2>
+    <p class="section-subtitle">Click any column header to sort</p>
+    <div class="card" style="padding: 0; overflow-x: auto;">
+      <table class="data-table" id="salon-table">
+        <thead>
+          <tr>
+            <th data-sort="name">Salon <span class="sort-arrow">&#9650;</span></th>
+            <th data-sort="total_revenue" data-type="num">LTV <span class="sort-arrow">&#9660;</span></th>
+            <th data-sort="total_orders" data-type="num">Orders <span class="sort-arrow">&#9660;</span></th>
+            <th data-sort="average_order_value" data-type="num">AOV <span class="sort-arrow">&#9660;</span></th>
+            <th data-sort="sku_count" data-type="num">SKUs <span class="sort-arrow">&#9660;</span></th>
+            <th data-sort="reorder_status">Status <span class="sort-arrow">&#9650;</span></th>
+            <th data-sort="churn_probability" data-type="num">Churn <span class="sort-arrow">&#9660;</span></th>
+            <th data-sort="ltv_trend">Trend <span class="sort-arrow">&#9650;</span></th>
+          </tr>
+        </thead>
+        <tbody id="salon-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider">&#9670; &#9670; &#9670;</div>
+
+  <!-- 3. Reorder Timeline -->
+  <div class="section" id="section-reorder">
+    <h2 class="section-title">Reorder Timeline</h2>
+    <p class="section-subtitle">Days until predicted next order (negative = overdue)</p>
+    <div class="card">
+      <div class="chart-container chart-container-wide">
+        <canvas id="reorder-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider">&#9670; &#9670; &#9670;</div>
+
+  <!-- 4. SKU Penetration Matrix -->
+  <div class="section" id="section-sku">
+    <h2 class="section-title">SKU Penetration Matrix</h2>
+    <p class="section-subtitle">Core product adoption across active salons</p>
+    <div class="card">
+      <table class="sku-matrix" id="sku-matrix">
+        <thead>
+          <tr>
+            <th>Salon</th>
+            <th>Shampoo</th>
+            <th>Conditioner</th>
+            <th>Gua Sha</th>
+          </tr>
+        </thead>
+        <tbody id="sku-tbody"></tbody>
+      </table>
+      <div class="sku-legend">
+        <span><span class="sku-confirmed" style="width:12px;height:12px;"></span> Confirmed purchase</span>
+        <span><span class="sku-inferred" style="width:12px;height:12px;"></span> Bundle-inferred</span>
+        <span><span class="sku-missing" style="width:12px;height:12px;"></span> Not purchased</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider">&#9670; &#9670; &#9670;</div>
+
+  <!-- 5. Cohort Analysis -->
+  <div class="section" id="section-cohorts">
+    <h2 class="section-title">Cohort Analysis</h2>
+    <p class="section-subtitle">Account acquisition cohorts by first-order quarter</p>
+    <div class="card">
+      <div class="chart-container">
+        <canvas id="cohort-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider">&#9670; &#9670; &#9670;</div>
+
+  <!-- 6. Scenario Modeling -->
+  <div class="section" id="section-scenarios">
+    <h2 class="section-title">Scenario Modeling</h2>
+    <p class="section-subtitle">What-if analysis for key strategic decisions</p>
+    <div class="scenario-grid" id="scenario-grid"></div>
+  </div>
+
+  <div class="divider">&#9670; &#9670; &#9670;</div>
+
+  <!-- 7. Growth Path -->
+  <div class="section" id="section-growth">
+    <h2 class="section-title">Road to $250K</h2>
+    <p class="section-subtitle">Annual revenue target progress and growth levers</p>
+    <div class="card">
+      <div class="progress-current" id="growth-current">-</div>
+      <div style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 16px;" id="growth-subtitle">-</div>
+      <div class="progress-container">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-labels">
+          <span>$0</span>
+          <span>$250,000</span>
+        </div>
+      </div>
+      <div id="growth-levers" style="margin-top: 24px; font-size: 0.875rem;"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>Generated by revenue-intelligence engine</p>
+  <p id="footer-timestamp"></p>
+</div>
+
+<script>
+// ── Data Loading ──────────────────────────────────────────────────
+async function loadData() {
+  if (window.__REVENUE_DATA__) return window.__REVENUE_DATA__;
+
+  // Try loading from sibling JSON file
+  try {
+    const resp = await fetch('revenue-intelligence-data.json');
+    if (resp.ok) return await resp.json();
+  } catch (e) { /* fallback below */ }
+
+  // Try loading from engine output directory
+  try {
+    const home = location.protocol === 'file:' ? '' : '';
+    const resp = await fetch(`${home}/Users/${location.pathname.split('/')[2] || 'dzhao'}/.config/aware-hair/data/revenue-intelligence.json`);
+    if (resp.ok) {
+      const d = await resp.json();
+      return { salons: d.data.salons, portfolio: d.data.portfolio, generated: d.timestamp };
+    }
+  } catch (e) { /* give up */ }
+
+  throw new Error('No data available. Run: node engines/revenue-intelligence-engine.mjs');
+}
+
+// ── Formatters ────────────────────────────────────────────────────
+const fmt = {
+  currency: (v) => v == null ? '-' : '$' + Math.round(v).toLocaleString(),
+  pct: (v) => v == null ? '-' : (v * 100).toFixed(1) + '%',
+  num: (v) => v == null ? '-' : v.toLocaleString(),
+};
+
+// ── Chart Colors ──────────────────────────────────────────────────
+const COLORS = {
+  teal: '#102B26',
+  gold: '#D4A574',
+  sage: '#7d8471',
+  cream: '#f4efe9',
+  redSoft: '#c45b4a',
+  greenSoft: '#4a8c6b',
+  amberSoft: '#b8860b',
+  border: '#e5e0da',
+  cohorts: ['#102B26', '#D4A574', '#7d8471', '#a8b09e', '#c45b4a', '#4a8c6b'],
+};
+
+// ── Status Helpers ────────────────────────────────────────────────
+function statusBadge(status) {
+  const map = {
+    on_track: ['On Track', 'green'],
+    approaching: ['Approaching', 'sage'],
+    late: ['Late', 'amber'],
+    at_risk: ['At Risk', 'red'],
+    churned: ['Churned', 'red'],
+  };
+  const [label, cls] = map[status] || [status, 'sage'];
+  return `<span class="badge badge-${cls}">${label}</span>`;
+}
+
+function trendLabel(trend) {
+  const map = { growing: '&#9650;', declining: '&#9660;', stable: '&#9644;' };
+  const colors = { growing: 'var(--green-soft)', declining: 'var(--red-soft)', stable: 'var(--text-muted)' };
+  return `<span style="color:${colors[trend] || 'inherit'}">${map[trend] || '-'} ${trend}</span>`;
+}
+
+// ── Render Functions ──────────────────────────────────────────────
+
+function renderHeroStats(portfolio) {
+  document.getElementById('stat-revenue').textContent = fmt.currency(portfolio.total_b2b_revenue);
+  document.getElementById('stat-accounts').textContent = portfolio.total_active_accounts;
+  document.getElementById('stat-run-rate').textContent = fmt.currency(portfolio.annual_run_rate);
+  document.getElementById('stat-avg-ltv').textContent = fmt.currency(portfolio.avg_ltv);
+  document.getElementById('stat-hhi').textContent = portfolio.herfindahl_index.toFixed(4);
+}
+
+function renderConcentration(salons, portfolio) {
+  // Gauge
+  const hhi = portfolio.herfindahl_index;
+  let level, levelColor;
+  if (hhi >= 0.25) { level = 'Dangerous'; levelColor = 'var(--red-soft)'; }
+  else if (hhi >= 0.15) { level = 'Concentrated'; levelColor = 'var(--red-soft)'; }
+  else if (hhi >= 0.10) { level = 'Moderate'; levelColor = 'var(--amber-soft)'; }
+  else { level = 'Diversified'; levelColor = 'var(--green-soft)'; }
+
+  document.getElementById('hhi-value').textContent = hhi.toFixed(4);
+  document.getElementById('hhi-value').style.color = levelColor;
+  document.getElementById('hhi-label').textContent = level;
+  document.getElementById('top3-share').textContent = fmt.pct(portfolio.top3_share);
+  document.getElementById('top10-share').textContent = fmt.pct(portfolio.top10_share);
+  document.getElementById('max-exposure').textContent = fmt.pct(portfolio.single_account_max_impact);
+
+  // Bar chart - top 10
+  const top10 = [...salons].sort((a, b) => b.total_revenue - a.total_revenue).slice(0, 10);
+  const ctx = document.getElementById('concentration-chart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: top10.map(s => s.name.length > 20 ? s.name.slice(0, 18) + '...' : s.name),
+      datasets: [{
+        data: top10.map(s => s.concentration_share * 100),
+        backgroundColor: top10.map((_, i) => i < 3 ? COLORS.gold : COLORS.sage),
+        borderRadius: 4,
+        barPercentage: 0.7,
+      }],
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `${ctx.raw.toFixed(1)}% of revenue ($${fmt.currency(top10[ctx.dataIndex].total_revenue).replace('$', '')})`,
+          },
+        },
+      },
+      scales: {
+        x: {
+          title: { display: true, text: 'Revenue Share (%)', font: { size: 11, family: 'DM Sans' }, color: '#102B26' },
+          ticks: { callback: v => v + '%', font: { family: 'DM Sans' } },
+          grid: { color: 'rgba(16,43,38,0.06)' },
+        },
+        y: {
+          ticks: { font: { family: 'DM Sans', size: 11 } },
+          grid: { display: false },
+        },
+      },
+    },
+  });
+
+  // Callout
+  const topSalon = top10[0];
+  document.getElementById('concentration-callout').innerHTML =
+    `<strong>Largest single loss exposure:</strong> If <strong>${topSalon.name}</strong> churns, ` +
+    `<span class="callout-value">${fmt.pct(topSalon.concentration_share)}</span> of B2B revenue ` +
+    `(${fmt.currency(topSalon.total_revenue)}) disappears.`;
+}
+
+function renderSalonTable(salons) {
+  const tbody = document.getElementById('salon-tbody');
+  let currentData = [...salons];
+  let sortCol = 'total_revenue';
+  let sortDir = -1;
+
+  function render() {
+    tbody.innerHTML = currentData.map(s => `
+      <tr>
+        <td style="font-weight:500">${s.name}</td>
+        <td>${fmt.currency(s.total_revenue)}</td>
+        <td>${s.total_orders}</td>
+        <td>${fmt.currency(s.average_order_value)}</td>
+        <td>${s.sku_count}/3</td>
+        <td>${statusBadge(s.reorder_status)}</td>
+        <td>${s.churn_probability != null ? (s.churn_probability * 100).toFixed(0) + '%' : '<span style="color:var(--text-muted)">N/A</span>'}</td>
+        <td>${trendLabel(s.ltv_trend)}</td>
+      </tr>
+    `).join('');
+  }
+
+  // Sorting
+  document.querySelectorAll('#salon-table th[data-sort]').forEach(th => {
+    th.addEventListener('click', () => {
+      const col = th.dataset.sort;
+      const isNum = th.dataset.type === 'num';
+      if (sortCol === col) sortDir *= -1;
+      else { sortCol = col; sortDir = isNum ? -1 : 1; }
+
+      document.querySelectorAll('#salon-table th').forEach(h => h.classList.remove('sorted'));
+      th.classList.add('sorted');
+
+      currentData.sort((a, b) => {
+        let va = a[col], vb = b[col];
+        if (va == null) va = isNum ? -Infinity : '';
+        if (vb == null) vb = isNum ? -Infinity : '';
+        if (isNum) return (va - vb) * sortDir;
+        return String(va).localeCompare(String(vb)) * sortDir;
+      });
+      render();
+    });
+  });
+
+  render();
+}
+
+function renderReorderTimeline(salons) {
+  const activeSalons = salons.filter(s => s.reorder_status !== 'churned' && s.predicted_next_order);
+  const todayStr = new Date().toISOString().slice(0, 10);
+
+  const data = activeSalons.map(s => {
+    const predicted = new Date(s.predicted_next_order);
+    const today = new Date(todayStr);
+    const daysUntil = Math.round((predicted - today) / (1000 * 60 * 60 * 24));
+    return { name: s.name, daysUntil, status: s.reorder_status };
+  }).sort((a, b) => a.daysUntil - b.daysUntil);
+
+  const ctx = document.getElementById('reorder-chart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.map(d => d.name.length > 18 ? d.name.slice(0, 16) + '...' : d.name),
+      datasets: [{
+        data: data.map(d => d.daysUntil),
+        backgroundColor: data.map(d => {
+          if (d.daysUntil < -30) return COLORS.redSoft;
+          if (d.daysUntil < 0) return COLORS.amberSoft;
+          return COLORS.greenSoft;
+        }),
+        borderRadius: 4,
+        barPercentage: 0.65,
+      }],
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const d = data[ctx.dataIndex];
+              return d.daysUntil >= 0
+                ? `Expected in ${d.daysUntil} days`
+                : `${Math.abs(d.daysUntil)} days overdue`;
+            },
+          },
+        },
+      },
+      scales: {
+        x: {
+          title: { display: true, text: 'Days Until Next Order', font: { size: 11, family: 'DM Sans' }, color: '#102B26' },
+          ticks: { font: { family: 'DM Sans' } },
+          grid: { color: 'rgba(16,43,38,0.06)' },
+        },
+        y: {
+          ticks: { font: { family: 'DM Sans', size: 11 } },
+          grid: { display: false },
+        },
+      },
+    },
+  });
+}
+
+function renderSKUMatrix(salons) {
+  const activeSalons = salons.filter(s => s.reorder_status !== 'churned')
+    .sort((a, b) => b.total_revenue - a.total_revenue);
+
+  const tbody = document.getElementById('sku-tbody');
+  tbody.innerHTML = activeSalons.map(s => {
+    const skuMap = {};
+    for (const sku of s.skus_purchased) {
+      skuMap[sku.sku] = sku.confirmed;
+    }
+
+    function cell(skuId) {
+      if (skuMap[skuId] === true) return '<span class="sku-confirmed" title="Confirmed purchase"></span>';
+      if (skuMap[skuId] === false) return '<span class="sku-inferred" title="Inferred from bundle"></span>';
+      return '<span class="sku-missing" title="Not purchased"></span>';
+    }
+
+    return `<tr>
+      <td>${s.name}</td>
+      <td>${cell('shampoo')}</td>
+      <td>${cell('conditioner')}</td>
+      <td>${cell('gua_sha')}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderCohorts(portfolio) {
+  const cohorts = portfolio.cohorts;
+  const quarters = Object.keys(cohorts).sort();
+
+  const ctx = document.getElementById('cohort-chart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: quarters,
+      datasets: [
+        {
+          label: 'Avg LTV',
+          data: quarters.map(q => cohorts[q].avg_ltv),
+          backgroundColor: COLORS.teal,
+          borderRadius: 4,
+          barPercentage: 0.6,
+          yAxisID: 'y',
+        },
+        {
+          label: 'Accounts',
+          data: quarters.map(q => cohorts[q].accounts),
+          backgroundColor: COLORS.gold,
+          borderRadius: 4,
+          barPercentage: 0.6,
+          yAxisID: 'y1',
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { font: { family: 'DM Sans', size: 11 }, padding: 16, usePointStyle: true },
+        },
+        tooltip: {
+          callbacks: {
+            afterBody: (items) => {
+              const q = quarters[items[0].dataIndex];
+              const c = cohorts[q];
+              return `Retained: ${c.retained}/${c.accounts} (${(c.retention_rate * 100).toFixed(0)}%)\nAvg Orders: ${c.avg_orders}`;
+            },
+          },
+        },
+      },
+      scales: {
+        y: {
+          title: { display: true, text: 'Avg LTV ($)', font: { size: 11, family: 'DM Sans' }, color: COLORS.teal },
+          ticks: { callback: v => '$' + v.toLocaleString(), font: { family: 'DM Sans' } },
+          grid: { color: 'rgba(16,43,38,0.06)' },
+        },
+        y1: {
+          position: 'right',
+          title: { display: true, text: 'Accounts', font: { size: 11, family: 'DM Sans' }, color: COLORS.gold },
+          ticks: { font: { family: 'DM Sans' } },
+          grid: { display: false },
+        },
+        x: {
+          ticks: { font: { family: 'DM Sans' } },
+          grid: { display: false },
+        },
+      },
+    },
+  });
+}
+
+function renderScenarios(portfolio) {
+  const grid = document.getElementById('scenario-grid');
+  const scenarios = portfolio.scenarios;
+
+  const cards = [
+    {
+      key: 'lose_top_3',
+      icon: '&#9888;',
+      desc: scenarios.lose_top_3.affected ? `Accounts: ${scenarios.lose_top_3.affected.join(', ')}` : '',
+    },
+    {
+      key: 'convert_20_new',
+      icon: '&#9650;',
+      desc: scenarios.convert_20_new.timeline_months
+        ? `At current acquisition rate, ~${scenarios.convert_20_new.timeline_months} months`
+        : 'Timeline depends on acquisition rate',
+    },
+    {
+      key: 'full_sku_penetration',
+      icon: '&#9733;',
+      desc: scenarios.full_sku_penetration.salons_affected
+        ? `${scenarios.full_sku_penetration.salons_affected} salons with room to expand`
+        : '',
+    },
+  ];
+
+  grid.innerHTML = cards.map(c => {
+    const s = scenarios[c.key];
+    const impactClass = s.revenue_impact >= 0 ? 'positive' : 'negative';
+    const impactSign = s.revenue_impact >= 0 ? '+' : '';
+    return `
+      <div class="scenario-card">
+        <h3>${s.label}</h3>
+        <div class="scenario-impact ${impactClass}">${impactSign}${fmt.currency(s.revenue_impact)}</div>
+        <div class="scenario-detail">New total: ${fmt.currency(s.new_total)}</div>
+        ${s.recovery_months ? `<div class="scenario-detail">Recovery: ~${s.recovery_months} months</div>` : ''}
+        ${s.timeline_months ? `<div class="scenario-detail">Timeline: ~${s.timeline_months} months</div>` : ''}
+        <div style="margin-top:12px; font-size:0.8125rem; color:var(--text-muted)">${c.desc}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderGrowthPath(portfolio) {
+  const target = 250000;
+  const current = portfolio.annual_run_rate;
+  const pct = Math.min(100, (current / target) * 100);
+
+  document.getElementById('growth-current').textContent = `${fmt.currency(current)} of ${fmt.currency(target)}`;
+  document.getElementById('growth-subtitle').textContent = `${pct.toFixed(1)}% of target, ${fmt.currency(portfolio.projected_gap_to_250k)} remaining`;
+
+  setTimeout(() => {
+    document.getElementById('progress-fill').style.width = pct + '%';
+  }, 100);
+
+  const levers = document.getElementById('growth-levers');
+  levers.innerHTML = `
+    <div style="margin-bottom:8px"><strong>Growth Levers:</strong></div>
+    <div style="margin-bottom:6px">&#8226; <strong>${portfolio.accounts_needed_for_250k} new salon accounts</strong> at current avg LTV (${fmt.currency(portfolio.avg_ltv)})</div>
+    <div style="margin-bottom:6px">&#8226; <strong>Full SKU penetration</strong> across existing salons: +${fmt.currency(portfolio.total_upsell_revenue_opportunity)}</div>
+    <div style="margin-bottom:6px">&#8226; <strong>Recent acquisition pace</strong>: ${portfolio.new_accounts_last_30d}/mo (30d), ${portfolio.new_accounts_last_90d} total (90d)</div>
+    <div style="margin-bottom:6px">&#8226; <strong>Monthly run rate</strong>: ${fmt.currency(portfolio.monthly_run_rate)}/mo</div>
+  `;
+}
+
+// ── Init ──────────────────────────────────────────────────────────
+async function init() {
+  try {
+    const data = await loadData();
+    const { salons, portfolio, generated } = data;
+
+    // Header
+    document.getElementById('header-meta').textContent =
+      `Generated ${generated ? new Date(generated).toLocaleString() : 'recently'} | ${salons.length} salons analyzed`;
+    document.getElementById('footer-timestamp').textContent =
+      `Data source: SENTINEL (b2b-health.json) | ${generated || ''}`;
+
+    // Render all panels
+    renderHeroStats(portfolio);
+    renderConcentration(salons, portfolio);
+    renderSalonTable(salons);
+    renderReorderTimeline(salons);
+    renderSKUMatrix(salons);
+    renderCohorts(portfolio);
+    renderScenarios(portfolio);
+    renderGrowthPath(portfolio);
+
+  } catch (err) {
+    document.querySelector('.container').innerHTML =
+      `<div class="loading"><p>Unable to load data</p><p style="margin-top:8px;font-size:0.8125rem">${err.message}</p></div>`;
+  }
+}
+
+init();
+</script>
+</body>
+</html>

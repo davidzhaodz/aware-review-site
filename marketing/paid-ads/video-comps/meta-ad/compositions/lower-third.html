@@ -1,0 +1,84 @@
+<template id="lower-third-template">
+  <div
+    data-composition-id="lower-third"
+    data-start="0"
+    data-duration="4"
+    data-width="1080"
+    data-height="1920"
+  >
+    <!-- 1080x1920 frame with transparent bg — only the bar is visible -->
+    <div class="lt-wrap">
+      <div class="lt-card">
+        <div id="lt-rule" class="lt-rule clip" data-start="0" data-duration="4" data-track-index="1"></div>
+        <div id="lt-name" class="lt-name clip" data-start="0" data-duration="4" data-track-index="2">
+          Tina Mui
+        </div>
+        <div id="lt-role" class="lt-role clip" data-start="0" data-duration="4" data-track-index="3">
+          Co-founder &nbsp;&#9670;&nbsp; Stylist + Trichologist
+        </div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="lower-third"] {
+        width: 1080px;
+        height: 1920px;
+        background: transparent;
+        font-family: "DM Sans", sans-serif;
+        position: relative;
+        overflow: hidden;
+      }
+      [data-composition-id="lower-third"] .lt-wrap {
+        position: absolute;
+        top: 520px;         /* below TikTok UI zone, above center */
+        left: 0;
+        width: 1080px;
+      }
+      [data-composition-id="lower-third"] .lt-card {
+        margin: 0 72px;
+        padding: 36px 48px;
+        background: rgba(244, 239, 233, 0.92);    /* cream with slight translucency */
+        backdrop-filter: blur(6px);
+        border-left: 6px solid #A37744;
+        box-shadow: 0 20px 60px rgba(16, 43, 38, 0.18);
+      }
+      [data-composition-id="lower-third"] .lt-rule {
+        width: 72px;
+        height: 2px;
+        background: #A37744;
+        margin-bottom: 20px;
+      }
+      [data-composition-id="lower-third"] .lt-name {
+        font-family: "DM Sans", sans-serif;
+        font-size: 72px;
+        font-weight: 500;
+        color: #102B26;
+        letter-spacing: -0.01em;
+        line-height: 1;
+      }
+      [data-composition-id="lower-third"] .lt-role {
+        margin-top: 16px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 26px;
+        font-weight: 400;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #102B26;
+        opacity: 0.82;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.from("#lt-rule", { scaleX: 0, transformOrigin: "left center", duration: 0.5, ease: "expo.out" }, 0.1);
+      tl.from("#lt-name", { x: -36, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.25);
+      tl.from("#lt-role", { y: 12, opacity: 0, duration: 0.5, ease: "power2.out" }, 0.45);
+      window.__timelines["lower-third"] = tl;
+    </script>
+  </div>
+</template>
+
+<!-- Hypothesis Annotation -->
+<script src="https://hypothes.is/embed.js" async></script>

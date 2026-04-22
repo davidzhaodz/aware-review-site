@@ -1,0 +1,2170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARE Hair - Press & Media Command Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0e14;
+  --surface: #14171f;
+  --surface-2: #1b1f2a;
+  --surface-3: #222736;
+  --border: #2a2f3e;
+  --border-light: #353b4d;
+  --text: #e8eaf0;
+  --text-secondary: #9ba1b5;
+  --text-muted: #6b7186;
+  --gold: #c9a96e;
+  --gold-dim: rgba(201,169,110,0.12);
+  --gold-medium: rgba(201,169,110,0.25);
+  --green: #3dd68c;
+  --green-dim: rgba(61,214,140,0.10);
+  --blue: #5b9cf5;
+  --blue-dim: rgba(91,156,245,0.10);
+  --amber: #e5a84b;
+  --amber-dim: rgba(229,168,75,0.10);
+  --red: #e5534b;
+  --red-dim: rgba(229,83,75,0.10);
+  --purple: #a78bfa;
+  --purple-dim: rgba(167,139,250,0.10);
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout */
+.container { max-width: 1440px; margin: 0 auto; padding: 28px 32px; }
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.header-left h1 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  margin-bottom: 4px;
+}
+.header-left h1 .accent { color: var(--gold); }
+.header-left .subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+.header-right {
+  text-align: right;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.header-right .status-line {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--amber);
+  margin-bottom: 2px;
+}
+
+/* Navigation */
+.nav {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 28px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 4px;
+  overflow-x: auto;
+}
+.nav-btn {
+  padding: 9px 20px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.15s ease;
+  border: none;
+  background: transparent;
+  white-space: nowrap;
+}
+.nav-btn:hover { color: var(--text-secondary); background: var(--surface-2); }
+.nav-btn.active { background: var(--surface-3); color: var(--gold); }
+
+/* KPI Row */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.kpi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.kpi::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.kpi.kpi-gold::before { background: var(--gold); }
+.kpi.kpi-green::before { background: var(--green); }
+.kpi.kpi-blue::before { background: var(--blue); }
+.kpi.kpi-amber::before { background: var(--amber); }
+.kpi.kpi-red::before { background: var(--red); }
+.kpi.kpi-purple::before { background: var(--purple); }
+.kpi-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.kpi-value {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.kpi-value.gold { color: var(--gold); }
+.kpi-value.green { color: var(--green); }
+.kpi-value.blue { color: var(--blue); }
+.kpi-value.amber { color: var(--amber); }
+.kpi-value.red { color: var(--red); }
+.kpi-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Sections */
+.section { display: none; }
+.section.active { display: block; }
+.section-title {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  letter-spacing: -0.2px;
+}
+.section-sub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  max-width: 680px;
+}
+
+/* Cards */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.card-header {
+  padding: 14px 20px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card-body { padding: 0; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+th {
+  text-align: left;
+  padding: 11px 16px;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--text-muted);
+  font-weight: 600;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+}
+td {
+  padding: 12px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(201,169,110,0.03); }
+.contact-name { font-weight: 600; color: var(--text); }
+.contact-detail { font-size: 11.5px; color: var(--text-muted); margin-top: 1px; }
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+.badge-tier1 { background: var(--gold-dim); color: var(--gold); }
+.badge-tier2 { background: var(--blue-dim); color: var(--blue); }
+.badge-tier3 { background: var(--amber-dim); color: var(--amber); }
+.badge-tier4 { background: var(--purple-dim); color: var(--purple); }
+.badge-tier5 { background: var(--green-dim); color: var(--green); }
+
+.badge-trade { background: rgba(91,156,245,0.12); color: var(--blue); }
+.badge-consumer { background: rgba(201,169,110,0.12); color: var(--gold); }
+.badge-podcast { background: rgba(167,139,250,0.12); color: var(--purple); }
+.badge-newsletter { background: rgba(61,214,140,0.12); color: var(--green); }
+.badge-freelance { background: rgba(229,168,75,0.12); color: var(--amber); }
+.badge-expert { background: rgba(201,169,110,0.15); color: var(--gold); border: 1px solid rgba(201,169,110,0.3); }
+
+/* Status dots */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+.status-dot.not-contacted { background: var(--text-muted); }
+.status-dot.pitched { background: var(--blue); }
+.status-dot.interested { background: var(--gold); }
+.status-dot.samples-sent { background: var(--amber); }
+.status-dot.published { background: var(--green); }
+.status-dot.ongoing { background: var(--purple); }
+
+/* Expandable rows */
+.expand-row { cursor: pointer; }
+.expand-row td:first-child { position: relative; padding-left: 24px; }
+.expand-row td:first-child::before { content: ''; display: inline-block; width: 0; height: 0; border-left: 5px solid var(--text-muted); border-top: 4px solid transparent; border-bottom: 4px solid transparent; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); transition: transform 0.15s; }
+.expand-row.open td:first-child::before { transform: translateY(-50%) rotate(90deg); }
+.detail-row { display: none; }
+.detail-row.open { display: table-row; }
+.detail-row td { background: var(--surface-2); padding: 20px 24px; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.detail-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.detail-section h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gold); margin-bottom: 8px; }
+.detail-section p, .detail-section li { font-size: 13px; color: var(--text-secondary); }
+.detail-section ul { list-style: none; padding: 0; }
+.detail-section li { padding: 3px 0; }
+.detail-section li::before { content: '-'; margin-right: 6px; color: var(--gold); }
+
+/* Contact cards grid */
+.contacts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+.contact-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  transition: border-color 0.15s;
+}
+.contact-card:hover { border-color: var(--border-light); }
+.contact-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.contact-card .role { font-size: 12px; color: var(--gold); margin-bottom: 10px; }
+.contact-card .info { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+.contact-card .info a { color: var(--blue); text-decoration: none; }
+.contact-card .info a:hover { text-decoration: underline; }
+.contact-card .badge-v { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; background: var(--green-dim); color: var(--green); }
+
+/* Search */
+.search-wrap { position: relative; margin-bottom: 12px; }
+.search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 9px 14px 9px 36px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.search-input:focus { border-color: var(--gold); }
+.search-input::placeholder { color: var(--text-muted); }
+.search-wrap::before {
+  content: '/';
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+.search-wrap .shortcut-hint {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Filter bar */
+.filter-bar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--border-light); color: var(--text-secondary); }
+.filter-btn.active { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+/* Results counter */
+.results-counter {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.results-counter strong { color: var(--text-secondary); }
+
+/* Funnel bar */
+.funnel-bar-container { margin-bottom: 16px; }
+.funnel-bar {
+  display: flex;
+  height: 32px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+.funnel-segment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  cursor: pointer;
+  transition: opacity 0.15s;
+  min-width: 24px;
+}
+.funnel-segment:hover { opacity: 0.8; }
+.funnel-segment.seg-not-contacted { background: var(--text-muted); }
+.funnel-segment.seg-pitched { background: var(--blue); }
+.funnel-segment.seg-interested { background: var(--gold); }
+.funnel-segment.seg-samples-sent { background: var(--amber); }
+.funnel-segment.seg-published { background: var(--green); }
+.funnel-segment.seg-ongoing { background: var(--purple); }
+.funnel-legend {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.funnel-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.funnel-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+/* Callout */
+.callout {
+  background: var(--gold-dim);
+  border: 1px solid var(--gold-medium);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.callout-icon {
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+  color: var(--gold);
+  font-weight: 700;
+}
+.callout-text { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.callout-text strong { color: var(--text); }
+
+/* Checklist */
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.check-item {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.check-status {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 1px;
+}
+.check-status.done { background: var(--green-dim); color: var(--green); }
+.check-status.partial { background: var(--amber-dim); color: var(--amber); }
+.check-status.todo { background: var(--red-dim); color: var(--red); }
+.check-info .check-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.check-info .check-note { font-size: 11.5px; color: var(--text-muted); }
+
+/* Sweetener / bullet list */
+.sweetener-list { list-style: none; padding: 16px 20px; }
+.sweetener-list li {
+  padding: 8px 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sweetener-list li:last-child { border-bottom: none; }
+.sw-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Email template blocks */
+.email-tpl {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.email-tpl .subj {
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+}
+
+/* Angle cards */
+.angle-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 12px;
+  transition: border-color 0.15s;
+}
+.angle-card:hover { border-color: var(--border-light); }
+.angle-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.angle-card .hook { font-size: 13px; color: var(--gold); font-style: italic; margin-bottom: 12px; }
+.angle-card .points { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+.angle-card .target-media { margin-top: 10px; }
+
+/* Sortable headers */
+th.sortable { cursor: pointer; user-select: none; }
+th.sortable:hover { color: var(--text-secondary); }
+th.sortable .sort-arrow { margin-left: 4px; font-size: 9px; opacity: 0.4; }
+th.sortable.sort-active .sort-arrow { opacity: 1; color: var(--gold); }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  background: var(--green);
+  z-index: 1100;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.2s;
+}
+.toast.visible { opacity: 1; transform: translateY(0); }
+
+/* Print */
+@media print {
+  body { background: #fff; color: #111; }
+  .nav, .filter-bar { display: none; }
+  .section { display: block !important; page-break-inside: avoid; margin-bottom: 32px; }
+  .card { border: 1px solid #ddd; }
+  .kpi { border: 1px solid #ddd; }
+  .kpi-value { color: #111 !important; }
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .kpi-row { grid-template-columns: repeat(3, 1fr); }
+  .checklist-grid { grid-template-columns: repeat(2, 1fr); }
+  .detail-grid-3 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .container { padding: 16px; }
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .checklist-grid { grid-template-columns: 1fr; }
+  .contacts-grid { grid-template-columns: 1fr; }
+  .detail-grid-3 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="header-left">
+      <h1><span class="accent">AWARE Hair</span> Press & Media Command Center</h1>
+      <div class="subtitle">PR outreach pipeline across trade, consumer, podcast, and newsletter channels</div>
+    </div>
+    <div class="header-right">
+      <div class="status-line">Phase: Building Pipeline</div>
+      <div>Created Feb 21, 2026 | Owner: David Zhao</div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-row" id="kpi-row"></div>
+
+  <!-- Navigation -->
+  <div class="nav">
+    <button class="nav-btn active" onclick="showSection('pipeline')">Pipeline</button>
+    <button class="nav-btn" onclick="showSection('contacts')">Contacts</button>
+    <button class="nav-btn" onclick="showSection('angles')">Story Angles</button>
+    <button class="nav-btn" onclick="showSection('materials')">Materials</button>
+    <button class="nav-btn" onclick="showSection('templates')">Pitch Templates</button>
+    <button class="nav-btn" onclick="showSection('calendar')">Editorial Calendar</button>
+    <button class="nav-btn" onclick="showSection('tracker')">Tracker</button>
+  </div>
+
+<!-- ===================== TAB: PIPELINE ===================== -->
+<div class="section active" id="sec-pipeline">
+  <h2 class="section-title">Media Pipeline</h2>
+  <p class="section-sub">All press and media contacts across tiers. Click any row to expand details. Use filters to narrow by tier, media type, or status.</p>
+
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="pipeline-search" placeholder="Search by name, publication, beat, status..." oninput="applyPipelineView()">
+    <span class="shortcut-hint">/</span>
+  </div>
+
+  <div class="filter-bar" id="pipeline-filters">
+    <button class="filter-btn active" data-filter="all" onclick="toggleFilter('all', this)">All</button>
+    <button class="filter-btn" data-filter="tier1" onclick="toggleFilter('tier1', this)">Tier 1</button>
+    <button class="filter-btn" data-filter="tier2" onclick="toggleFilter('tier2', this)">Tier 2</button>
+    <button class="filter-btn" data-filter="tier3" onclick="toggleFilter('tier3', this)">Tier 3</button>
+    <button class="filter-btn" data-filter="tier4" onclick="toggleFilter('tier4', this)">Tier 4</button>
+    <button class="filter-btn" data-filter="tier5" onclick="toggleFilter('tier5', this)">Tier 5</button>
+    <button class="filter-btn" data-filter="trade" onclick="toggleFilter('trade', this)">Trade</button>
+    <button class="filter-btn" data-filter="consumer" onclick="toggleFilter('consumer', this)">Consumer</button>
+    <button class="filter-btn" data-filter="podcast" onclick="toggleFilter('podcast', this)">Podcast</button>
+    <button class="filter-btn" data-filter="newsletter" onclick="toggleFilter('newsletter', this)">Newsletter</button>
+    <button class="filter-btn" data-filter="freelance" onclick="toggleFilter('freelance', this)">Freelance</button>
+    <button class="filter-btn" data-filter="expert" onclick="toggleFilter('expert', this)">Expert</button>
+  </div>
+
+  <div class="funnel-bar-container" id="pipeline-funnel"></div>
+  <div class="results-counter" id="results-counter"></div>
+
+  <div class="card">
+    <div class="card-body">
+      <table id="pipeline-table">
+        <thead>
+          <tr>
+            <th class="sortable" onclick="sortBy('name')">Contact <span class="sort-arrow">^</span></th>
+            <th class="sortable" onclick="sortBy('publication')">Publication <span class="sort-arrow">^</span></th>
+            <th>Beat</th>
+            <th class="sortable" onclick="sortBy('tier')">Tier <span class="sort-arrow">^</span></th>
+            <th>Type</th>
+            <th class="sortable" onclick="sortBy('status')">Status <span class="sort-arrow">^</span></th>
+          </tr>
+        </thead>
+        <tbody id="pipeline-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TAB: CONTACTS ===================== -->
+<div class="section" id="sec-contacts">
+  <h2 class="section-title">Contact Directory</h2>
+  <p class="section-sub">Card view of all press contacts organized by tier. Includes contact info, beat coverage, and best pitch angle for AWARE.</p>
+  <div class="contacts-grid" id="contacts-grid"></div>
+</div>
+
+<!-- ===================== TAB: STORY ANGLES ===================== -->
+<div class="section" id="sec-angles">
+  <h2 class="section-title">Story Angles</h2>
+  <p class="section-sub">Ready-to-use pitch angles for different media types. Each angle includes a headline hook, talking points, and target outlets.</p>
+
+  <div class="angle-card">
+    <h3>1. The Salon-Exclusive Counter-Trend</h3>
+    <div class="hook">"While beauty brands race to Amazon and DTC, this LA founder is doing the opposite"</div>
+    <div class="points">
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> AWARE Hair is professional-exclusive: no Amazon, no Sephora, no mass retail, ever</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> 50+ salon partners with 96% repurchase rate proves the model works</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Counter-narrative to the "everyone must be DTC" conventional wisdom</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Salons get 50% margins and channel protection, building real loyalty</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> $125K revenue in 6 months through B2B alone</li>
+      </ul>
+    </div>
+    <div class="target-media">
+      <span class="badge badge-trade">Trade Press</span>
+      <span class="badge badge-consumer">Consumer Beauty</span>
+      <span class="badge badge-newsletter">Newsletters</span>
+    </div>
+  </div>
+
+  <div class="angle-card">
+    <h3>2. Scalp Science Innovation</h3>
+    <div class="hook">"The skinification of hair is finally reaching your scalp, and salons are leading the charge"</div>
+    <div class="points">
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Scalp care category growing 19% YoY, projected $110-148B by 2030</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> AWARE's "scalp environment" approach treats the scalp like skin, not just hair</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Head spa movement driving consumer awareness of professional scalp treatments</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Proactive wellness vs. reactive treatment (not competing with Nioxin/Rogaine)</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Scalp Environment Report as a salon conversation starter</li>
+      </ul>
+    </div>
+    <div class="target-media">
+      <span class="badge badge-consumer">Consumer Beauty</span>
+      <span class="badge badge-podcast">Podcasts</span>
+    </div>
+  </div>
+
+  <div class="angle-card">
+    <h3>3. Founder Bootstrapping Story</h3>
+    <div class="hook">"From zero to 50 salons: how one founder built a premium haircare brand without outside funding"</div>
+    <div class="points">
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> David Zhao's journey building AWARE Hair from scratch in Los Angeles</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Bootstrapped to $125K revenue without VC funding or paid advertising</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> 18M+ organic social media views through authentic content</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Building genuine relationships with salon partners one at a time</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Lessons in choosing discipline over growth-at-all-costs</li>
+      </ul>
+    </div>
+    <div class="target-media">
+      <span class="badge badge-podcast">Podcasts</span>
+      <span class="badge badge-newsletter">Newsletters</span>
+    </div>
+  </div>
+
+  <div class="angle-card">
+    <h3>4. The 96% Repurchase Rate</h3>
+    <div class="hook">"The indie haircare brand with a 96% salon repurchase rate and 0% returns"</div>
+    <div class="points">
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> 96% B2B repurchase rate - nearly every salon reorders</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> 0% return rate across all channels</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> 52% sell-through rate in partner salons</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> What product-market fit actually looks like in professional beauty</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Data-driven proof that quality + channel protection = loyalty</li>
+      </ul>
+    </div>
+    <div class="target-media">
+      <span class="badge badge-trade">Trade Press</span>
+      <span class="badge badge-newsletter">Newsletters</span>
+    </div>
+  </div>
+
+  <div class="angle-card">
+    <h3>5. The B2B-First Beauty Brand</h3>
+    <div class="hook">"Why this scalp care brand built for salons first, consumers second"</div>
+    <div class="points">
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Inverted the typical beauty brand launch: B2B before DTC</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Salon stylists as trusted recommenders vs. influencer marketing</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Professional validation builds consumer trust authentically</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Lower CAC through salon referrals vs. paid social acquisition</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Distributor partnerships for scale without losing control</li>
+      </ul>
+    </div>
+    <div class="target-media">
+      <span class="badge badge-trade">Trade Press</span>
+      <span class="badge badge-consumer">Consumer Beauty</span>
+      <span class="badge badge-podcast">Podcasts</span>
+    </div>
+  </div>
+
+  <div class="angle-card">
+    <h3>6. Scalp Wellness as Self-Care</h3>
+    <div class="hook">"Head spas are trending, but the real scalp care revolution is happening in your salon chair"</div>
+    <div class="points">
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> "Head spa" searches up 400%+ on TikTok and Google</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Professional scalp treatments as a salon service add-on (revenue opportunity)</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Daily at-home scalp care routine bridging salon visits</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> The shift from reactive (hair loss) to proactive (scalp wellness)</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Seasonal hooks: summer UV damage, winter dryness, new year reset</li>
+      </ul>
+    </div>
+    <div class="target-media">
+      <span class="badge badge-consumer">Consumer Beauty</span>
+      <span class="badge badge-podcast">Podcasts</span>
+    </div>
+  </div>
+
+  <div class="angle-card">
+    <h3>7. Professional vs. Consumer Haircare Gap</h3>
+    <div class="hook">"Your shampoo label says 'salon quality' but your salon disagrees"</div>
+    <div class="points">
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Why professional-grade formulations actually differ from mass market</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Ingredient concentration and bioavailability in professional vs. consumer</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Channel protection ensures formulation integrity (no reformulating for mass)</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Salon diversion problem and why exclusivity matters</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> Education-first approach: stylists trained on scalp analysis</li>
+      </ul>
+    </div>
+    <div class="target-media">
+      <span class="badge badge-consumer">Consumer Beauty</span>
+      <span class="badge badge-trade">Trade Press</span>
+    </div>
+  </div>
+
+  <div class="angle-card">
+    <h3>8. Seasonal & Trend Tie-Ins</h3>
+    <div class="hook">Timely hooks tied to seasons, cultural moments, and beauty trends</div>
+    <div class="points">
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> <strong>Spring:</strong> Scalp renewal, post-winter recovery, "spring clean your scalp"</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> <strong>Summer:</strong> UV scalp protection, chlorine/salt damage, vacation haircare</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> <strong>Fall:</strong> Back-to-routine reset, seasonal shedding awareness, hydration prep</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> <strong>Winter:</strong> Dry scalp solutions, indoor heat damage, holiday gift guides</li>
+        <li style="padding:3px 0;"><span style="color:var(--gold);margin-right:6px;">-</span> <strong>Evergreen:</strong> Self-care Sundays, wellness trends, "skinification" movement</li>
+      </ul>
+    </div>
+    <div class="target-media">
+      <span class="badge badge-consumer">Consumer Beauty</span>
+      <span class="badge badge-freelance">Freelance</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TAB: MATERIALS ===================== -->
+<div class="section" id="sec-materials">
+  <h2 class="section-title">Press Materials Checklist</h2>
+  <p class="section-sub">Inventory of press materials by priority. Green = ready, amber = in progress, red = needs creation.</p>
+
+  <div class="callout">
+    <div class="callout-icon">i</div>
+    <div class="callout-text">Current state: AWARE has product photography and basic brand info. Most press-specific materials need to be created. <strong>P0 items are required before any press outreach begins.</strong></div>
+  </div>
+
+  <h3 style="font-size:14px;color:var(--red);margin-bottom:12px;font-weight:600;">P0 - Required Before Outreach</h3>
+  <div class="checklist-grid" style="margin-bottom:24px;">
+    <div class="check-item">
+      <div class="check-status todo">!</div>
+      <div class="check-info">
+        <div class="check-name">Press Kit One-Pager (PDF)</div>
+        <div class="check-note">Single-page overview: brand story, key products, proof points, hi-res image, contact info. Must be professionally designed.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status todo">!</div>
+      <div class="check-info">
+        <div class="check-name">Founder Bio</div>
+        <div class="check-note">Two versions: short (50 words) for bylines and long (200 words) for feature stories. Third-person, professional tone.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status todo">!</div>
+      <div class="check-info">
+        <div class="check-name">Brand Boilerplate</div>
+        <div class="check-note">Standard 2-3 sentence brand description for press releases and media mentions. Include founding year, positioning, and key differentiator.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-size:14px;color:var(--amber);margin-bottom:12px;font-weight:600;">P1 - High Priority</h3>
+  <div class="checklist-grid" style="margin-bottom:24px;">
+    <div class="check-item">
+      <div class="check-status partial">~</div>
+      <div class="check-info">
+        <div class="check-name">Product Photography (Hi-Res)</div>
+        <div class="check-note">Have basic product shots. Need: lifestyle imagery, texture close-ups, in-salon usage, founder portrait. 300dpi minimum for print.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status todo">!</div>
+      <div class="check-info">
+        <div class="check-name">Product Fact Sheets</div>
+        <div class="check-note">Per-SKU sheets: Shampoo, Conditioner, Leave-In. Include key ingredients, usage instructions, price point, salon margin.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status todo">!</div>
+      <div class="check-info">
+        <div class="check-name">Key Data Points Document</div>
+        <div class="check-note">$125K revenue, 50+ salons, 96% repurchase, 0% returns, 52% sell-through, 18M+ social views. Verified sources for each.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-size:14px;color:var(--blue);margin-bottom:12px;font-weight:600;">P2 - Important</h3>
+  <div class="checklist-grid" style="margin-bottom:24px;">
+    <div class="check-item">
+      <div class="check-status todo">!</div>
+      <div class="check-info">
+        <div class="check-name">Press FAQ</div>
+        <div class="check-note">Anticipated questions: why salon-exclusive, ingredient sourcing, pricing rationale, expansion plans, competitive positioning.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status todo">!</div>
+      <div class="check-info">
+        <div class="check-name">Salon Partner Testimonials</div>
+        <div class="check-note">3-5 salon owner quotes about AWARE products. Need written permission for press use. Include salon name and location.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status todo">!</div>
+      <div class="check-info">
+        <div class="check-name">Ingredient Story Document</div>
+        <div class="check-note">Deep dive on hero ingredients, sourcing story, formulation philosophy. For science-focused editors and long-form features.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-size:14px;color:var(--purple);margin-bottom:12px;font-weight:600;">P3 - Nice to Have</h3>
+  <div class="checklist-grid">
+    <div class="check-item">
+      <div class="check-status todo">!</div>
+      <div class="check-info">
+        <div class="check-name">Video B-Roll Package</div>
+        <div class="check-note">30-60 second clips: product pour, in-salon application, founder interview snippet. For broadcast and digital features.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status partial">~</div>
+      <div class="check-info">
+        <div class="check-name">Press Coverage Archive</div>
+        <div class="check-note">Have LA Times, Beauty Independent, NewBeauty mentions. Need: organized with links, pull quotes, and logos for "As Seen In" section.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status todo">!</div>
+      <div class="check-info">
+        <div class="check-name">Before/After Case Studies</div>
+        <div class="check-note">Client scalp improvement documentation with photos and timeline. Need proper consent forms for media use.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TAB: TEMPLATES ===================== -->
+<div class="section" id="sec-templates">
+  <h2 class="section-title">Pitch Templates</h2>
+  <p class="section-sub">Ready-to-customize email templates for different media outreach scenarios. Each includes a full cadence sequence with follow-ups. Personalize the [bracketed] fields before sending.</p>
+
+  <div class="callout">
+    <div class="callout-icon">i</div>
+    <div class="callout-text">Editorial relationships are different from B2B sales. Lead with the <strong>story</strong>, not the product. Be genuinely helpful. Respect their time. Never follow up more than twice unless they've responded.</div>
+  </div>
+
+  <h3 style="margin-bottom:4px;font-size:15px;">Template A: Beauty Editor Product Feature</h3>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">For consumer beauty editors at Allure, Byrdie, Well+Good, etc. Lead with the trend, offer the product.</p>
+  <div class="email-tpl"><span class="subj">Subject: The scalp care brand salons are keeping for themselves</span>
+Hi [Editor Name],
+
+I've been following your coverage of [recent relevant topic/article] at [Publication] and thought this might fit your radar.
+
+AWARE Hair is a salon-exclusive scalp care line that's taken a deliberately opposite approach to most indie beauty brands. No Amazon, no Sephora, no DTC push - just professional salons. The result: a 96% repurchase rate and 50+ salon partners in six months.
+
+The scalp wellness category is growing 19% year-over-year, and the "head spa" trend is driving consumer interest into professional channels. AWARE sits at that intersection - premium scalp science formulated for salon professionals, with a leave-in treatment that stylists are using as a service add-on.
+
+Would love to send you the three-product line to test. They're compact (shampoo, conditioner, leave-in) and the textures are genuinely different from anything else in the scalp care space.
+
+Happy to provide founder interviews, salon partner references, or product specs, whatever works best for your coverage.
+
+David Zhao
+Founder, AWARE Hair
+david@awarehair.com
+awarehair.com</div>
+
+  <h3 style="margin-bottom:4px;font-size:15px;margin-top:24px;">Day 7 Follow-Up</h3>
+  <div class="email-tpl"><span class="subj">Subject: Re: The scalp care brand salons are keeping for themselves</span>
+Hi [Editor Name],
+
+Just floating this back up in case it got buried. I know your inbox is relentless.
+
+Quick context if it helps: we just [recent milestone - e.g., crossed 50 salon partners / launched with a new distributor / hit a revenue milestone]. Happy to share details if that's a more interesting angle.
+
+Also happy to send samples with no strings - just genuinely think the formulations speak for themselves.
+
+David</div>
+
+  <h3 style="margin-bottom:4px;font-size:15px;margin-top:24px;">Day 14 Final Follow-Up</h3>
+  <div class="email-tpl"><span class="subj">Subject: Re: The scalp care brand salons are keeping for themselves</span>
+Hi [Editor Name],
+
+Last note from me on this. If the timing isn't right, completely understand - I'll keep an eye on your work and reach back out when we have something more relevant to share.
+
+If you're ever covering scalp care, salon-exclusive brands, or the head spa trend, I'm always available as a source.
+
+David Zhao
+david@awarehair.com</div>
+
+  <h3 style="margin-bottom:4px;font-size:15px;margin-top:36px;">Template B: Trade Publication Business Story</h3>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">For Modern Salon, Beauty Independent, American Salon, Salon Today. Lead with data and industry trend.</p>
+  <div class="email-tpl"><span class="subj">Subject: Salon-exclusive scalp care: $125K in 6 months, 96% repurchase</span>
+Hi [Editor Name],
+
+Reaching out because I think there's an underreported story in the professional beauty channel: the emergence of salon-exclusive scalp care as a category.
+
+I'm David Zhao, founder of AWARE Hair. Some numbers that might be relevant for your readers:
+- $125K revenue in our first 6 months (all B2B)
+- 50+ salon partners, 96% repurchase rate, 0% returns
+- 52% sell-through rate at partner salons
+- Zero paid advertising, 18M+ organic social views
+
+We've deliberately stayed out of DTC and mass retail. The thesis is that scalp care is a professional service category, not a consumer commodity, and the data so far supports it.
+
+I'm seeing an interesting shift where salons are adding scalp treatments as a service line (not just retail) using our Scalp Environment Report tool. It's creating a new revenue stream that doesn't cannibalize existing services.
+
+Would this be relevant for [Publication]? Happy to provide access to our salon partners for interviews, share detailed metrics, or discuss how the professional scalp care category is developing.
+
+David Zhao
+Founder, AWARE Hair
+david@awarehair.com
+awarehair.com</div>
+
+  <h3 style="margin-bottom:4px;font-size:15px;margin-top:36px;">Template C: Podcast Guest Pitch</h3>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">For beauty, business, and wellness podcasts. Lead with the story hook.</p>
+  <div class="email-tpl"><span class="subj">Subject: Podcast guest pitch: the beauty founder who said no to Amazon</span>
+Hi [Host Name],
+
+I'm a listener of [Podcast Name] and really enjoyed your recent episode on [recent relevant topic]. I think I have a story that would resonate with your audience.
+
+I'm David Zhao, founder of AWARE Hair, a scalp care brand that's done everything "wrong" by startup playbook standards - and it's working. No VC funding, no Amazon, no influencer deals, no paid ads. Just salon relationships built one at a time.
+
+A few potential episode angles:
+
+1. "The Anti-DTC Playbook" - Why staying salon-exclusive in 2026 is a competitive advantage, not a limitation. The economics, the strategy, and why every advisor told me I was wrong.
+
+2. "Scalp Care is the New Skincare" - The science behind the "skinification of hair" trend, what head spas actually do, and why your scalp deserves the same attention as your face.
+
+3. "Building a Beauty Brand on $0 Ad Spend" - 18M+ organic social views and $125K revenue without spending a dollar on paid acquisition. What works, what doesn't, and what I'd do differently.
+
+4. "96% Repurchase: What Product-Market Fit Actually Looks Like" - The metrics behind a product people can't stop rebuying, and why I think most beauty brands optimize for the wrong things.
+
+Happy to work with whatever format fits [Podcast Name] best. I can provide a one-sheet, product samples, or hop on a quick pre-interview call.
+
+David Zhao
+Founder, AWARE Hair
+david@awarehair.com
+awarehair.com</div>
+
+  <h3 style="margin-bottom:4px;font-size:15px;margin-top:36px;">Template D: Newsletter Feature</h3>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">For beauty and indie brand newsletters. Short, punchy, with a specific hook.</p>
+  <div class="email-tpl"><span class="subj">Subject: A salon-exclusive scalp care brand with a 96% repurchase rate</span>
+Hi [Editor Name],
+
+One line pitch: AWARE Hair is a salon-exclusive scalp care line that hit $125K revenue in 6 months with zero paid advertising, a 96% B2B repurchase rate, and a deliberate decision to never sell on Amazon.
+
+Why it matters for [Newsletter Name] readers: In an era where every beauty brand chases DTC scale, AWARE is proving that professional-channel-only can work. It's a counter-narrative to the "launch on Amazon, raise a round, burn cash" playbook that dominates indie beauty.
+
+Key proof points:
+- 50+ salon partners in 6 months
+- 0% return rate
+- 18M+ organic social views (no paid)
+- Scalp care category growing 19% YoY
+
+Happy to provide any additional info, quotes, or product samples. Whatever makes your workflow easiest.
+
+David Zhao
+Founder, AWARE Hair
+david@awarehair.com
+awarehair.com</div>
+
+  <h3 style="margin-bottom:4px;font-size:15px;margin-top:36px;">Template E: Sample Follow-Up Sequence</h3>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">After samples have been requested and sent. Day 3 / Day 10 / Day 21 cadence.</p>
+  <div class="email-tpl"><span class="subj">Subject: Your AWARE samples shipped - a few things to notice</span>
+Hi [Editor Name],
+
+Your AWARE Hair samples shipped today via [carrier] - should arrive by [date]. Tracking: [tracking number]
+
+A few things to look for when you test them:
+
+- The shampoo has an unusual gel-to-foam texture. It's designed to spend more time on the scalp than the hair. Try a 60-second scalp massage before rinsing.
+- The leave-in absorbs completely without weighing hair down. It works as a styling primer too.
+- Scent profile: bergamot + eucalyptus. Subtle enough for salon use, memorable enough for clients to comment on.
+
+No rush on timing - whenever you get to them. Happy to answer any ingredient or formulation questions.
+
+David</div>
+
+  <h3 style="margin-bottom:4px;font-size:15px;margin-top:24px;">Day 10 - Feedback Check</h3>
+  <div class="email-tpl"><span class="subj">Subject: Re: Your AWARE samples shipped</span>
+Hi [Editor Name],
+
+Checking in to see if the samples arrived and if you've had a chance to try them. Curious to hear your honest take, especially on the shampoo's scalp feel.
+
+If it helps for context, I can share what salon stylists are reporting from their clients - the feedback patterns have been interesting and might be useful for a review angle.
+
+David</div>
+
+  <h3 style="margin-bottom:4px;font-size:15px;margin-top:24px;">Day 21 - Gentle Close</h3>
+  <div class="email-tpl"><span class="subj">Subject: Re: Your AWARE samples shipped</span>
+Hi [Editor Name],
+
+Last check-in on the samples. If the timing isn't right for coverage, no worries at all - I appreciate you trying them.
+
+If you need anything in the future (quotes on scalp care trends, a salon owner perspective, product details for a roundup), I'm always available. Just flag me.
+
+David Zhao
+Founder, AWARE Hair
+david@awarehair.com</div>
+</div>
+
+<!-- ===================== TAB: EDITORIAL CALENDAR ===================== -->
+<div class="section" id="sec-calendar">
+  <h2 class="section-title">Editorial Calendar & Seasonal Angles</h2>
+  <p class="section-sub">Beauty publications plan 2-4 months ahead. Use this calendar to time pitches with editorial planning cycles.</p>
+
+  <div class="callout">
+    <div class="callout-icon">i</div>
+    <div class="callout-text"><strong>Lead time rule:</strong> Print magazines need 3-4 months lead time. Digital publications need 2-6 weeks. Podcasts need 4-8 weeks for scheduling. Newsletters can be 1-2 weeks.</div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px;">
+    <div class="card">
+      <div class="card-header">Q1: Jan - Mar</div>
+      <div class="card-body" style="padding:16px;">
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:5px 0;font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border);"><span style="color:var(--gold);margin-right:6px;">-</span> <strong style="color:var(--text);">New Year Wellness Reset</strong><br><span style="font-size:11px;color:var(--text-muted);">Pitch by: Nov-Dec prior</span></li>
+          <li style="padding:5px 0;font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border);"><span style="color:var(--gold);margin-right:6px;">-</span> <strong style="color:var(--text);">Winter Scalp Care</strong><br><span style="font-size:11px;color:var(--text-muted);">Dry air, flaking, indoor heat damage</span></li>
+          <li style="padding:5px 0;font-size:13px;color:var(--text-secondary);"><span style="color:var(--gold);margin-right:6px;">-</span> <strong style="color:var(--text);">Valentine's Self-Care</strong><br><span style="font-size:11px;color:var(--text-muted);">Gift guides, treat-yourself roundups</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">Q2: Apr - Jun</div>
+      <div class="card-body" style="padding:16px;">
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:5px 0;font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border);"><span style="color:var(--gold);margin-right:6px;">-</span> <strong style="color:var(--text);">Spring Scalp Renewal</strong><br><span style="font-size:11px;color:var(--text-muted);">Post-winter recovery, deep cleanse</span></li>
+          <li style="padding:5px 0;font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border);"><span style="color:var(--gold);margin-right:6px;">-</span> <strong style="color:var(--text);">Summer Prep Hair</strong><br><span style="font-size:11px;color:var(--text-muted);">Pitch by: Feb-Mar</span></li>
+          <li style="padding:5px 0;font-size:13px;color:var(--text-secondary);"><span style="color:var(--gold);margin-right:6px;">-</span> <strong style="color:var(--text);">Wedding Season</strong><br><span style="font-size:11px;color:var(--text-muted);">Bridal scalp prep, salon services</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">Q3: Jul - Sep</div>
+      <div class="card-body" style="padding:16px;">
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:5px 0;font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border);"><span style="color:var(--gold);margin-right:6px;">-</span> <strong style="color:var(--text);">Summer Scalp Protection</strong><br><span style="font-size:11px;color:var(--text-muted);">UV damage, chlorine, salt water</span></li>
+          <li style="padding:5px 0;font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border);"><span style="color:var(--gold);margin-right:6px;">-</span> <strong style="color:var(--text);">Back-to-Routine</strong><br><span style="font-size:11px;color:var(--text-muted);">September reset, new product launches</span></li>
+          <li style="padding:5px 0;font-size:13px;color:var(--text-secondary);"><span style="color:var(--gold);margin-right:6px;">-</span> <strong style="color:var(--text);">Fall Preview</strong><br><span style="font-size:11px;color:var(--text-muted);">Pitch by: May-Jun for print</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">Q4: Oct - Dec</div>
+      <div class="card-body" style="padding:16px;">
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:5px 0;font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border);"><span style="color:var(--gold);margin-right:6px;">-</span> <strong style="color:var(--text);">Holiday Gift Guides</strong><br><span style="font-size:11px;color:var(--text-muted);">Pitch by: Aug-Sep. Biggest opportunity.</span></li>
+          <li style="padding:5px 0;font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border);"><span style="color:var(--gold);margin-right:6px;">-</span> <strong style="color:var(--text);">Seasonal Shedding</strong><br><span style="font-size:11px;color:var(--text-muted);">Fall hair loss awareness, scalp health</span></li>
+          <li style="padding:5px 0;font-size:13px;color:var(--text-secondary);"><span style="color:var(--gold);margin-right:6px;">-</span> <strong style="color:var(--text);">Year-End Best Of</strong><br><span style="font-size:11px;color:var(--text-muted);">Best new products, brand discoveries</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <div class="card-header">Key Industry Events</div>
+    <div class="card-body">
+      <table>
+        <thead>
+          <tr>
+            <th>Event</th>
+            <th>Dates</th>
+            <th>Location</th>
+            <th>PR Relevance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="contact-name">America's Beauty Show</td>
+            <td>Apr 18-20, 2026</td>
+            <td>Chicago, IL</td>
+            <td>Trade press coverage, journalist networking, product debut angle</td>
+          </tr>
+          <tr>
+            <td class="contact-name">Premiere Orlando</td>
+            <td>May 30 - Jun 1, 2026</td>
+            <td>Orlando, FL</td>
+            <td>"First Look" emerging brand showcase, editor previews</td>
+          </tr>
+          <tr>
+            <td class="contact-name">Cosmoprof North America</td>
+            <td>Jul 13-15, 2026</td>
+            <td>Las Vegas, NV</td>
+            <td>Premier B2B event, press day, media lounge, pitch meetings</td>
+          </tr>
+          <tr>
+            <td class="contact-name">Indie Beauty Expo</td>
+            <td>TBD 2026</td>
+            <td>Various</td>
+            <td>Indie-focused press, buyer meetings, brand discovery features</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TAB: TRACKER ===================== -->
+<div class="section" id="sec-tracker">
+  <h2 class="section-title">Outreach Tracker</h2>
+  <p class="section-sub">Log of all press outreach activity. Update status as conversations progress.</p>
+
+  <div class="callout">
+    <div class="callout-icon">i</div>
+    <div class="callout-text">Track every touchpoint. PR is a long game - today's "no response" is next quarter's feature. <strong>Never burn a bridge by over-following-up.</strong> Max 2 follow-ups unless they respond.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <table>
+        <thead>
+          <tr>
+            <th>Contact</th>
+            <th>Publication</th>
+            <th>Template Used</th>
+            <th>Date Sent</th>
+            <th>Follow-Up 1</th>
+            <th>Follow-Up 2</th>
+            <th>Status</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="8" style="text-align:center;color:var(--text-muted);padding:40px;font-size:13px;">
+              No outreach sent yet. Pipeline is in building phase.<br>
+              <span style="font-size:12px;color:var(--gold);">Complete P0 materials, then begin with Tier 2-3 targets.</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+    <div class="card">
+      <div class="card-header">Recommended Outreach Order</div>
+      <div class="card-body">
+        <ul class="sweetener-list">
+          <li><span class="sw-icon" style="background:var(--green-dim);color:var(--green);">1</span> <strong style="color:var(--text);">Start with Tier 3</strong> - Indie beauty specialists and trade press are more accessible and build credibility for bigger pitches</li>
+          <li><span class="sw-icon" style="background:var(--blue-dim);color:var(--blue);">2</span> <strong style="color:var(--text);">Layer in Tier 4</strong> - Podcasts and newsletters have longer lead times, start pitching early</li>
+          <li><span class="sw-icon" style="background:var(--amber-dim);color:var(--amber);">3</span> <strong style="color:var(--text);">Then Tier 2</strong> - Mid-tier consumer beauty editors, with Tier 3 coverage as social proof</li>
+          <li><span class="sw-icon" style="background:var(--gold-dim);color:var(--gold);">4</span> <strong style="color:var(--text);">Finally Tier 1</strong> - Major nationals (Allure, Vogue) once you have coverage clips to reference</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">Outreach Best Practices</div>
+      <div class="card-body">
+        <ul class="sweetener-list">
+          <li><span class="sw-icon" style="background:var(--gold-dim);color:var(--gold);">*</span> Send pitches <strong style="color:var(--text);">Tue-Thu, 9-11am</strong> in the editor's timezone</li>
+          <li><span class="sw-icon" style="background:var(--gold-dim);color:var(--gold);">*</span> Personalize every pitch - reference their <strong style="color:var(--text);">recent work</strong></li>
+          <li><span class="sw-icon" style="background:var(--gold-dim);color:var(--gold);">*</span> Keep initial emails under <strong style="color:var(--text);">200 words</strong></li>
+          <li><span class="sw-icon" style="background:var(--gold-dim);color:var(--gold);">*</span> Always offer <strong style="color:var(--text);">samples with no obligation</strong></li>
+          <li><span class="sw-icon" style="background:var(--gold-dim);color:var(--gold);">*</span> Never pitch exclusively to competing publications <strong style="color:var(--text);">simultaneously</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== PRESS CONTACT DATA ====================
+const contacts = [
+  // TIER 1: Major Consumer Beauty Publications
+  {
+    id: 1, name: 'Jessica Cruel', publication: 'Allure',
+    beat: 'All beauty (Editor in Chief)',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/jessica-cruel-833808a/', recentArticle: '',
+    whyRelevant: 'Editor in Chief of Allure, the gold standard for beauty product coverage. A feature or Best of Beauty nod has massive reach. IG @jcruel (38K followers).',
+    bestAngle: 'Scalp Science Innovation, Product Feature',
+    notes: '[V] LinkedIn verified. Top editorial decision-maker.'
+  },
+  {
+    id: 2, name: 'Jenna Rosenstein', publication: 'Harper\'s Bazaar',
+    beat: 'Haircare, scalp treatments, beauty tech',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/jennarosenstein/', recentArticle: 'Harper\'s Bazaar Hair Awards 2026',
+    whyRelevant: 'Beauty Director running the Hair Awards 2026. Covers scalp treatments, LED hairbrushes, innovative haircare tech.',
+    bestAngle: 'Hair Awards submission, Scalp Treatment Innovation',
+    notes: '[V] LinkedIn verified. Just published Hair Awards - scalp treatment category is a natural fit.'
+  },
+  {
+    id: 3, name: 'Jamie Schneider', publication: 'Who What Wear',
+    beat: 'Hair trends, trend forecasting, beauty innovation',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/jamie-schneider/', recentArticle: '13 Biggest Hair Trends of 2026',
+    whyRelevant: 'Senior Beauty Editor specializing in trend forecasting. 7+ years experience. Recently published "13 Biggest Hair Trends of 2026" and wellness product roundups.',
+    bestAngle: 'Salon-Exclusive Counter-Trend, Scalp Wellness Trend',
+    notes: '[V] LinkedIn verified. Trend focus makes her ideal for the counter-narrative angle.'
+  },
+  {
+    id: 4, name: 'Kaitlyn McLintock', publication: 'Who What Wear',
+    beat: 'Wellness beauty, ingredients, scalp care',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/kaitlyn-mclintock/', recentArticle: 'In 2026, Skin Longevity Is In (2026)',
+    whyRelevant: 'Beauty Editor with 10 years editorial experience (Byrdie, InStyle, The Zoe Report, Bustle). Passionate about ingredient research and innovative treatments.',
+    bestAngle: 'Scalp Science, Skinification of Hair',
+    notes: '[V] LinkedIn verified. Ingredient research passion aligns with AwareBio Complex story.'
+  },
+  {
+    id: 5, name: 'Lauren Valenti', publication: 'InStyle',
+    beat: 'Haircare, curly hair, beauty',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/lauren-valenti-39786ba6/', recentArticle: '',
+    whyRelevant: 'Beauty Director at InStyle. Former Senior Beauty Editor at Vogue, also worked at Marie Claire. Brooklyn-based, strong haircare focus especially curly hair.',
+    bestAngle: 'Product Feature, Scalp Science',
+    notes: '[V] LinkedIn verified. IG @lauren_valenti.'
+  },
+  {
+    id: 6, name: 'Hannah Baxter', publication: 'Marie Claire',
+    beat: 'Beauty, wellness, features',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/hannahbaxter', recentArticle: '',
+    whyRelevant: 'Beauty Director at Marie Claire. Former Deputy Beauty Editor at The Zoe Report. Personal site: hannahbaxter.co. Beauty and wellness consultant.',
+    bestAngle: 'Founder Story, Product Feature',
+    notes: '[V] LinkedIn verified.'
+  },
+  {
+    id: 7, name: 'Karina Hoshikawa', publication: 'Refinery29',
+    beat: 'Beauty, wellness, scalp health, fragrance',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: 'Scalp health as 2026 priority',
+    whyRelevant: 'Senior Writer covering beauty and wellness. Tests products regularly. Has specifically discussed hair and scalp health as a 2026 priority.',
+    bestAngle: 'Scalp Wellness, Head Spa Trend',
+    notes: '[V] Byline verified. Explicitly covers scalp health in 2026.'
+  },
+  {
+    id: 8, name: 'Beth Gillette', publication: 'Cosmopolitan',
+    beat: 'Skincare, makeup, hair, nails',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/ebethgillette/', recentArticle: '2026 beauty trends (texture and color)',
+    whyRelevant: 'Beauty Editor covering all beauty categories for print + digital. Active 2026 trend coverage.',
+    bestAngle: 'Trend Piece, Product Feature',
+    notes: '[V] LinkedIn verified.'
+  },
+  {
+    id: 9, name: 'Kelli Acciardo', publication: 'Byrdie',
+    beat: 'Haircare products, scalp care, shampoo testing',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: 'Hair-revitalizing shampoo reviews (Jul 2025)',
+    whyRelevant: 'Beauty Editor specializing in hair-revitalizing shampoos and scalp care. Strong SEO presence for "best scalp care" queries.',
+    bestAngle: 'Product Review, Scalp Care Roundup',
+    notes: '[V] Byline verified. Scalp care specialty is a perfect match.'
+  },
+  {
+    id: 50, name: 'Margaux Anbouba', publication: 'Vogue',
+    beat: 'Beauty, haircare',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/margaux-anbouba-35243142', recentArticle: '',
+    whyRelevant: 'Senior Beauty Editor at Vogue. Prestigious placement opportunity.',
+    bestAngle: 'Product Feature, Scalp Innovation',
+    notes: '[V] LinkedIn verified.'
+  },
+
+  // TIER 2: Trade & Professional Beauty
+  {
+    id: 10, name: 'Taylor Bryant', publication: 'Beauty Independent',
+    beat: 'Indie beauty brands, business models',
+    tier: 'tier2', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: 'Newly appointed editor',
+    whyRelevant: 'Recently named Editor at Beauty Independent, THE publication for indie beauty. AWARE has existing relationship here (previous coverage).',
+    bestAngle: 'B2B-First Model, 96% Repurchase Rate, Founder Story',
+    notes: '[V] Announcement verified. WARM LEAD - existing relationship.'
+  },
+  {
+    id: 11, name: 'Jenny B. Fine', publication: 'WWD / Beauty Inc',
+    beat: 'Professional beauty industry, business',
+    tier: 'tier2', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Editor in Chief of Beauty Inc and Executive Editor of Beauty at WWD. Top editorial decision-maker for professional beauty coverage across Fairchild Media.',
+    bestAngle: 'Trade Business Story, Salon-Exclusive Model',
+    notes: '[V] Masthead verified. Key gatekeeper for professional beauty coverage.'
+  },
+  {
+    id: 12, name: 'Kathryn Hopkins', publication: 'WWD / Beauty Inc',
+    beat: 'Earnings, deals, industry trends',
+    tier: 'tier2', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Senior Beauty Editor covering the business side of beauty including professional channel deals and industry trends.',
+    bestAngle: 'Business Growth Story, Distribution Strategy',
+    notes: '[V] Byline verified.'
+  },
+  {
+    id: 13, name: 'Sara Spruch-Feiner', publication: 'Glossy (Digiday)',
+    beat: 'Indie brands, Gen Z beauty, emerging trends',
+    tier: 'tier2', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/sara-spruch-feiner/', recentArticle: 'Gen Alpha as beauty consumers (Jan 2026)',
+    whyRelevant: 'Senior Reporter at Glossy. Writes the Glossy Pop Newsletter (Fridays) and co-hosts The Glossy Beauty Podcast (bi-weekly). Covers indie brands, influencer marketing, Gen Z trends.',
+    bestAngle: 'Salon-Exclusive Counter-Trend, Indie Brand Discovery',
+    notes: '[V] LinkedIn + personal site verified. saraspruchfeiner.com. Also writes Glossy Pop Newsletter.'
+  },
+  {
+    id: 14, name: 'Katie Anderson', publication: 'Beauty Launchpad',
+    beat: 'Salon products, education, trends',
+    tier: 'tier2', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Editor of Beauty Launchpad, trade magazine for salons and stylists (6x/year). SalonCentric partnership (25 Under 50K contest).',
+    bestAngle: 'Product Launch, Scalp Science for Stylists',
+    notes: '[U] LinkedIn mention, needs confirmation.'
+  },
+  {
+    id: 15, name: 'James Manso', publication: 'WWD / Beauty Inc',
+    beat: 'Beauty market analysis',
+    tier: 'tier2', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Beauty Market Editor at WWD. Market-focused coverage of professional beauty sector.',
+    bestAngle: 'Market Analysis, Category Growth',
+    notes: '[V] Byline verified.'
+  },
+  {
+    id: 16, name: 'Kaleigh Werner', publication: 'WWD',
+    beat: 'Trending beauty, SEO, runway reporting',
+    tier: 'tier2', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/kaleigh-werner-15a016190/', recentArticle: '2026 beauty trends, fashion week beauty',
+    whyRelevant: 'Trending Beauty Reporter at WWD. 6 years experience in trend research. Active 2026 coverage.',
+    bestAngle: 'Scalp Care Trend, Category Growth',
+    notes: '[V] LinkedIn verified.'
+  },
+  {
+    id: 17, name: 'Erica La Sala', publication: 'Beauty Independent',
+    beat: 'Sephora trends, TikTok Shop, indie brands',
+    tier: 'tier2', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Contributor at Beauty Independent covering Sephora trends, TikTok Shop, and indie brand developments.',
+    bestAngle: 'Indie Brand Growth, Channel Strategy',
+    notes: '[V] Byline verified.'
+  },
+  {
+    id: 18, name: 'Emma Sandler', publication: 'Beauty Independent / Agenda',
+    beat: 'Industry news, brand stories, wellness',
+    tier: 'tier2', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/emma-sandler-0565176a/', recentArticle: '',
+    whyRelevant: 'Former Beauty & Wellness Editor at Glossy. Bylines at Beauty Independent, Forbes, BeautyMatter, Allure. Now also at Agenda covering corporate boards.',
+    bestAngle: 'Business Model, Wellness Positioning',
+    notes: '[V] LinkedIn verified. Multi-outlet presence amplifies coverage.'
+  },
+
+  // TIER 3: Indie Beauty & Emerging Brand Specialists
+  {
+    id: 20, name: 'Kelly Kovack', publication: 'BeautyMatter',
+    beat: 'Emerging brands, FUTURE50, industry analysis',
+    tier: 'tier3', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: 'FUTURE50 2026 list',
+    whyRelevant: 'Founder & CEO of BeautyMatter. Curates the FUTURE50 list (4th year in 2026) identifying emerging brands. Uses "data, insight, and a bit of intuition."',
+    bestAngle: 'FUTURE50 Consideration, Category Innovation',
+    notes: '[V] Verified. FUTURE50 submission is a priority opportunity.'
+  },
+  {
+    id: 21, name: 'Priya Rao', publication: 'Business of Fashion (BoF)',
+    beat: 'Beauty business, indie brands, retail disruption',
+    tier: 'tier3', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/priya-rao/', recentArticle: 'The tough state of beauty heading into 2026',
+    whyRelevant: 'Executive Editor of The Business of Beauty at BoF. Writes "Full Coverage" weekly newsletter covering indie beauty, retail disruption, new players.',
+    bestAngle: 'B2B-First Counter-Trend, Distribution Strategy',
+    notes: '[V] LinkedIn verified. Full Coverage newsletter is high-impact placement.'
+  },
+  {
+    id: 22, name: 'Rachel Strugatz', publication: 'Puck (Line Sheet)',
+    beat: 'Beauty business, influencer economy, Sephora',
+    tier: 'tier3', type: 'newsletter', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/rachel-strugatz-02816985/', recentArticle: 'Line Sheet Beauty Mailbag: 2026 Forecasting Edition (Jan 2026)',
+    whyRelevant: '"The beauty industry\'s leading business reporter." Contributing Beauty Correspondent at Puck. Line Sheet newsletter (beauty editions Wednesdays). Former BoF, longtime WWD editor.',
+    bestAngle: 'Salon-Exclusive Business Model, Anti-DTC Strategy',
+    notes: '[V] LinkedIn verified. Premium audience of beauty industry insiders.'
+  },
+  {
+    id: 23, name: 'Elana Drell Szyfer', publication: 'CEW (Cosmetic Executive Women)',
+    beat: 'Industry networking, trend reports',
+    tier: 'tier3', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '2026 Global Trend Report (Feb 5, 2026)',
+    whyRelevant: 'Newly named President of CEW (Jan 2026). Organization has 9,000+ beauty industry members. Second President in 71-year history.',
+    bestAngle: 'Emerging Brand, Industry Connection',
+    notes: '[V] Announcement verified. CEW membership could open networking doors.'
+  },
+
+  // TIER 4: Podcasts & Newsletters
+  {
+    id: 30, name: 'Jessica Matlin', publication: 'Fat Mascara Podcast',
+    beat: 'Beauty products, industry interviews, trends',
+    tier: 'tier4', type: 'podcast', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Co-host of award-winning Fat Mascara podcast (since 2016). Currently Beauty Director at Moda Operandi. Former Beauty Director at Harper\'s Bazaar.',
+    bestAngle: 'Founder Story, Scalp Science, Product Review',
+    notes: '[V] Verified. Wed = news/trends, Fri = interviews.'
+  },
+  {
+    id: 31, name: 'Jennifer G. Sullivan', publication: 'Fat Mascara Podcast',
+    beat: 'Beauty journalism, product reviews',
+    tier: 'tier4', type: 'podcast', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Co-host of Fat Mascara. Beauty journalist with bylines at Allure, Elle, The Cut, Women\'s Health.',
+    bestAngle: 'Product Feature, Scalp Care Trend',
+    notes: '[V] Verified.'
+  },
+  {
+    id: 32, name: 'Jill Dunn & Carlene Higgins', publication: 'Breaking Beauty Podcast',
+    beat: 'Beauty brand founders, breakthrough products',
+    tier: 'tier4', type: 'podcast', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: 'Sarah Michelle Gellar episode (Jan 2026)',
+    whyRelevant: 'Beauty editors-turned-podcasters on Dear Media network. Weekly episodes about breakthrough products and people. 2026 guests include Dr. David Kim (K-Beauty).',
+    bestAngle: 'Founder Story, Anti-DTC Playbook',
+    notes: '[V] Verified. Pitch via website submission form.'
+  },
+  {
+    id: 33, name: 'Kirbie Johnson & Sara Tan', publication: 'Gloss Angeles Podcast',
+    beat: 'LA beauty, pop culture, wellness',
+    tier: 'tier4', type: 'podcast', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '2026 beauty predictions, Sephora x Olive Young coverage',
+    whyRelevant: 'LA-based beauty podcast (since 2019). Tuesdays (headlines), Fridays (experts). 2026 beauty goal = hair and scalp health. Notable guests: Hailey Bieber, Halsey, Selena Gomez.',
+    bestAngle: 'LA Founder Story, Scalp Health Focus',
+    notes: '[V] Verified. PRIORITY - LA-based + 2026 scalp focus = natural fit.'
+  },
+  {
+    id: 34, name: 'Jackie Johnson', publication: 'Natch Beaut Podcast',
+    beat: 'Vegan beauty, cruelty-free, self-care',
+    tier: 'tier4', type: 'podcast', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Comedian and beauty expert hosting since March 2017. 4.9/5 rating, 2.6K reviews on Apple Podcasts. Covers indie brand owners and vegan/cruelty-free beauty. natchbeaut.com',
+    bestAngle: 'Scalp Wellness, Clean Formulation, Indie Brand',
+    notes: '[V] Verified.'
+  },
+  {
+    id: 35, name: 'Perry Romanowski & Valerie George', publication: 'The Beauty Brains Podcast',
+    beat: 'Cosmetic chemistry, beauty science, debunking',
+    tier: 'tier4', type: 'podcast', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: 'Jonathan Van Ness "Getting Curious" appearance (Nov 2024)',
+    whyRelevant: 'Cosmetic chemists explaining beauty science since Dec 2018. Perry has 25+ years developing personal care products, founder of Chemists Corner.',
+    bestAngle: 'Scalp Science Deep-Dive, AwareBio Complex, Ingredient Analysis',
+    notes: '[V] Verified. MUST lead with science, not marketing.'
+  },
+  {
+    id: 36, name: 'Jodi Katz', publication: 'WHERE BRAINS MEET BEAUTY Podcast',
+    beat: 'Beauty industry talent, brand building',
+    tier: 'tier4', type: 'podcast', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Founder & Creative Director of Base Beauty Creative Agency. Beauty industry talent interviews, agency perspective on brand building.',
+    bestAngle: 'Founder Story, Brand Building Strategy',
+    notes: '[V] Verified.'
+  },
+  {
+    id: 37, name: 'Sara Spruch-Feiner', publication: 'Glossy Pop Newsletter',
+    beat: 'Beauty trends, emerging brands',
+    tier: 'tier4', type: 'newsletter', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/sara-spruch-feiner/', recentArticle: '',
+    whyRelevant: 'Same contact as Glossy reporter. Glossy Pop Newsletter publishes Fridays covering beauty trends and brand discoveries.',
+    bestAngle: 'Brand Discovery, Scalp Care Trend',
+    notes: '[V] Same as Glossy. Pitch newsletter angle separately from news coverage.'
+  },
+
+  // TIER 5: Freelance Beauty Writers
+  {
+    id: 40, name: 'Fiorella Valdesolo', publication: 'WSJ, Vogue, Allure, NY Mag',
+    beat: 'Beauty, lifestyle, luxury',
+    tier: 'tier5', type: 'freelance', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'High-profile freelancer. Contributing Editor at Wall Street Journal. Bylines at Vogue, Town & Country, Allure, New York Magazine. Co-founder of Gather Journal. Author of "Pretty: The Nylon Book of Beauty." IG @fifival',
+    bestAngle: 'Founder Story, Brand Discovery Feature',
+    notes: '[V] IG + personal site verified. fiorellavaldesolo.com. High-impact placements.'
+  },
+  {
+    id: 41, name: 'Tatjana Freund', publication: 'ELLE, Marie Claire, Harper\'s Bazaar, Cosmo',
+    beat: 'Beauty commerce, haircare, skincare',
+    tier: 'tier5', type: 'freelance', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/tatjana-freund/', recentArticle: 'Writing for ELLE and Marie Claire Italia (2026)',
+    whyRelevant: 'Freelance Beauty Commerce Writer with 5+ years experience. Active in 2026 across ELLE, Marie Claire Italia, Harper\'s Bazaar, Cosmopolitan, Good Housekeeping.',
+    bestAngle: 'Product Feature, Commerce Roundup',
+    notes: '[V] LinkedIn verified. Commerce writer = product roundup placement.'
+  },
+  {
+    id: 42, name: 'Daley Quinn', publication: 'Various beauty/wellness',
+    beat: 'Beauty, wellness',
+    tier: 'tier5', type: 'freelance', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Boston-based freelance beauty and wellness journalist. Dedicated beauty/wellness coverage. daleyquinn.com',
+    bestAngle: 'Product Review, Wellness Angle',
+    notes: '[V] Website verified.'
+  },
+  {
+    id: 43, name: 'Maya Allen', publication: 'Various (formerly The Cut, NY Mag)',
+    beat: 'Beauty, style, haircare',
+    tier: 'tier5', type: 'freelance', status: 'not-contacted',
+    email: 'contact@mayaalena.com', emailConfidence: 'medium',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Former Director at The Cut. Previously InStyle, Marie Claire, Cosmopolitan. Extensive beauty editorial experience covering haircare. IG @mayaalenaa',
+    bestAngle: 'Brand Discovery, Haircare Feature',
+    notes: '[V] Email + IG verified. Multi-publication connections.'
+  },
+
+  // ====== DEEP DIVE ADDITIONS (Feb 22, 2026) ======
+
+  // NEW TIER 1: Consumer Publications
+  {
+    id: 60, name: 'Nicole Saunders', publication: 'Well+Good',
+    beat: 'Beauty commerce, product reviews',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/nicolealtdelete/', recentArticle: '',
+    whyRelevant: 'Commerce Editor and Beauty Writer at Well+Good. Also writes for NBC News, CNN, Cosmopolitan, Women\'s Health, Harper\'s Bazaar. NYC-based, 5+ years experience.',
+    bestAngle: 'Scalp Wellness, Product Feature',
+    notes: '[V] LinkedIn + personal site nicole-saunders.com verified.'
+  },
+  {
+    id: 61, name: 'Alanna Martine Kilkeary', publication: 'Glamour / Well+Good',
+    beat: 'Scalp serums, beauty commerce',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/alanna-martine-kilkeary-52528269/', recentArticle: '14 Best Scalp Serums 2025 (Glamour)',
+    whyRelevant: 'Wrote "14 Best Scalp Serums 2025, According to Dermatologists & Editors" for Glamour. Former L\'Oreal Makeup.com Beauty Editor. Also writes for PopSugar, Teen Vogue, The Cut.',
+    bestAngle: 'Scalp Serum Roundup, Product Review',
+    notes: '[V] Muck Rack + LinkedIn verified. PRIORITY - direct scalp care coverage.'
+  },
+  {
+    id: 62, name: 'Tembe Denton-Hurst', publication: 'The Strategist (NY Mag)',
+    beat: 'Beauty products, curly hair, scalp care',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: 'Beauty Aisle series',
+    whyRelevant: 'Staff Writer at The Strategist covering beauty and books. Beauty Aisle series interviewing hairstylists, aestheticians, dermatologists about products. Former Nylon, Elle. Author of "Homebodies."',
+    bestAngle: 'Beauty Aisle Interview Format, Scalp Care Products',
+    notes: '[V] Muck Rack verified. @tembae online.'
+  },
+  {
+    id: 63, name: 'Arielle Avila', publication: 'The Strategist (NY Mag)',
+    beat: 'Personal care, product recommendations',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: 'Beauty Aisle series',
+    whyRelevant: 'Writer at The Strategist covering wardrobe basics and personal care. Beauty Aisle series featuring affordable product picks from professionals.',
+    bestAngle: 'Product Recommendation, Professional Picks',
+    notes: '[V] Muck Rack verified.'
+  },
+  {
+    id: 64, name: 'Danielle Jackson', publication: 'Marie Claire',
+    beat: 'Scalp treatments, haircare for protective styles',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '12 Best Scalp Treatments for Dryness and Irritation',
+    whyRelevant: 'Senior Beauty Writer at Marie Claire. Wrote "12 Best Scalp Treatments" and covered Beyonce\'s scalp psoriasis/Cecred. Former Senior Beauty Editor at Women\'s Health. Brooklyn-based, nearly a decade experience.',
+    bestAngle: 'Scalp Treatment Roundup, Product Feature',
+    notes: '[V] Muck Rack + LinkedIn verified. PRIORITY - extensive scalp treatment coverage.'
+  },
+  {
+    id: 65, name: 'Taryn Brooke', publication: 'Bustle / Elite Daily',
+    beat: 'Scalp treatments, beauty trends',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: 'Derm-Approved Scalp Treatments (Bustle)',
+    whyRelevant: 'Contributing Beauty Writer at Bustle. Wrote "Want Stronger, Fuller Hair? These Derm-Approved Scalp Treatments Can Help." 10+ years digital media. Also writes for Allure, Byrdie, Well+Good, PopSugar.',
+    bestAngle: 'Scalp Treatment Feature, Product Review',
+    notes: '[V] Muck Rack + LinkedIn verified. "Always ready to try newest and buzziest treatments."'
+  },
+  {
+    id: 66, name: 'Julee Wilson', publication: 'TODAY.com',
+    beat: 'Beauty products, scalp tools',
+    tier: 'tier1', type: 'consumer', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: 'Top Beauty Drops with Julee Wilson (Feb 2026)',
+    whyRelevant: 'Beauty Expert at TODAY. "Top Beauty Drops" series (Feb 2026) featured scalp massager brush, scalp scaling shampoo, and bamboo tonic serum. Called products "a high-end facial for your scalp."',
+    bestAngle: 'Shop TODAY Product Feature, Top Beauty Drops',
+    notes: '[V] Byline verified. Already using scalp-as-facial messaging.'
+  },
+
+  // NEW TIER 2: Trade Publications
+  {
+    id: 70, name: 'Anne Moratto', publication: 'Modern Salon',
+    beat: 'Brand content, indie beauty, salon trends',
+    tier: 'tier2', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/anne-moratto-37151710/', recentArticle: '',
+    whyRelevant: 'Director, Brand Content Strategy and West Coast Beauty Editor at Modern Salon. NAHA and Wella TrendVision Awards judge. Launched Indie Pro Awards. LA-based.',
+    bestAngle: 'Indie Pro Awards, Salon-Exclusive Brand',
+    notes: '[V] LinkedIn verified. Indie Pro Awards could be a submission opportunity.'
+  },
+  {
+    id: 71, name: 'Stacey Soble', publication: 'Salon Today',
+    beat: 'Salon business, marketing, growth',
+    tier: 'tier2', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/stacey-soble-5308a310/', recentArticle: 'SALON TODAY 200 (Feb 2026)',
+    whyRelevant: 'Editor in Chief of Salon Today. 20+ years salon business journalism. Grew SALON TODAY 200 and SALONS OF THE YEAR programs. Speaker on salon business topics. Also contributes to Modern Salon.',
+    bestAngle: 'SALON TODAY 200, Salon Business Growth',
+    notes: '[V] LinkedIn + Muck Rack verified.'
+  },
+  {
+    id: 72, name: 'Eileen Loh', publication: 'American Salon',
+    beat: 'Beauty industry transformation, business journalism',
+    tier: 'tier2', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '3 Signs the Beauty Industry is on the Verge of Transformation (Oct 2025)',
+    whyRelevant: 'Editor/Content Director at American Salon. Honored 2025 for journalism excellence (Best Series, Best DEI Coverage). Former AP journalist. Revived iconic Lookbook publication.',
+    bestAngle: 'Industry Transformation, Indie Brand Innovation',
+    notes: '[V] Muck Rack + bylines verified.'
+  },
+  {
+    id: 73, name: 'Mary Rector-Gable', publication: 'Behind the Chair',
+    beat: 'Salon professional community, education',
+    tier: 'tier2', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/mary-rector-4b66796/', recentArticle: '',
+    whyRelevant: 'Founder, CEO, Creative Director of Behind the Chair (BTC). 25+ years building the world\'s largest salon professional community (10M+ professionals, 90 countries). Journalist and speaker.',
+    bestAngle: 'Salon Professional Education, Brand Partnership',
+    notes: '[V] LinkedIn + Muck Rack verified. IG @marybehindthechair.'
+  },
+  {
+    id: 74, name: 'Eve Oxberry', publication: 'Professional Beauty (UK)',
+    beat: 'Beauty, spa, aesthetics industry',
+    tier: 'tier2', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: 'https://www.linkedin.com/in/eveoxberry/', recentArticle: '',
+    whyRelevant: 'Head of Editorial at Professional Beauty, World Spa & Wellness, Aesthetic Medicine. 20+ years beauty/spa journalism. Hosts The Pro Beauty Pod podcast.',
+    bestAngle: 'Professional Scalp Care, UK Market Entry',
+    notes: '[V] LinkedIn + Muck Rack verified. London-based.'
+  },
+  {
+    id: 75, name: 'Nicole Johnson', publication: 'Modern Salon',
+    beat: 'Digital content, social media, events',
+    tier: 'tier2', type: 'trade', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Digital Content Strategist at Modern Salon. Manages web content and social media. Also contributes to Salon Today, Barbering Today, NAILS.',
+    bestAngle: 'Digital Content Partnership, Social Coverage',
+    notes: '[V] Bylines verified across Bobit publications.'
+  },
+
+  // NEW TIER 4: Podcasts & Newsletters
+  {
+    id: 80, name: 'Antony Whitaker', publication: 'Grow My Salon Business Podcast',
+    beat: 'Salon business growth, leadership',
+    tier: 'tier4', type: 'podcast', status: 'not-contacted',
+    email: 'antony@growmysalonbusiness.com', emailConfidence: 'high',
+    linkedin: '', recentArticle: '',
+    whyRelevant: '30+ years salon industry experience. Podcast features thought leaders on salon business. 4.9/5 (206 reviews). 11.7K Facebook, 14.1K Instagram.',
+    bestAngle: 'B2B Salon Brand, Business Growth Partnership',
+    notes: '[V] Website + podcast platforms verified.'
+  },
+  {
+    id: 81, name: 'Nina Tulio & J Ladner', publication: 'No Stylist Left Behind Podcast',
+    beat: 'Stylist empowerment, salon business',
+    tier: 'tier4', type: 'podcast', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: '190 episodes (2019-2025). 4.9/5 (107 reviews). Sponsored by Oligo Professionnel (proves they accept brand sponsors). Former salon owners focused on stylist growth.',
+    bestAngle: 'Salon-Exclusive Education, Stylist Empowerment',
+    notes: '[V] Websites ninatulio.com, jladner.com verified. Accepts brand sponsors.'
+  },
+  {
+    id: 82, name: 'Larissa Macleman', publication: 'Salon Owners Collective Podcast',
+    beat: 'Salon CEO coaching, million-dollar salons',
+    tier: 'tier4', type: 'podcast', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Host of Salon Owners Collective. Salon Mastery Program helping salon owners step into CEO role and build million-dollar businesses.',
+    bestAngle: 'Salon Brand Partnerships, Business Growth',
+    notes: '[V] Website salonownerscollective.com verified.'
+  },
+  {
+    id: 83, name: 'Jennifer Jade Alvarez', publication: 'Beauty Business Game-Changer Podcast',
+    beat: 'Salon management, branding, marketing',
+    tier: 'tier4', type: 'podcast', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Award-winning stylist and salon owner. Topics: salon management, delegation, client retention, lead generation. IG @jenniferjadealvarez (DM "GROW").',
+    bestAngle: 'Salon Product Partnerships, Client Retention',
+    notes: '[V] Website jenniferjadealvarez.com verified.'
+  },
+  {
+    id: 84, name: 'Gerard Scarpaci', publication: 'Hairbrained Conversations Podcast',
+    beat: 'Salon artists, educators, influencers',
+    tier: 'tier4', type: 'podcast', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Current host of Hairbrained Conversations. Deep dives with salon industry artists, educators, and influencers.',
+    bestAngle: 'Scalp Science Education, Professional Innovation',
+    notes: '[V] Hairbrained.me verified. Note: Gordon Miller was original host.'
+  },
+  {
+    id: 85, name: 'Jalila Levesque', publication: 'Future of Skincare Newsletter',
+    beat: 'Beauty innovation, brand discovery, cultural trends',
+    tier: 'tier4', type: 'newsletter', status: 'not-contacted',
+    email: 'jalila@futureofskin.care', emailConfidence: 'high',
+    linkedin: '', recentArticle: 'Powerlist: 100 Brands to Watch in 2026',
+    whyRelevant: 'Substack newsletter reaching 110+ countries. Weekly insights + "Beauty Signals." Published "100 Brands to Watch in 2026." CES 2026 coverage.',
+    bestAngle: '100 Brands to Watch Submission, Scalp Innovation',
+    notes: '[V] Substack + website futureofskin.care verified. PRIORITY - brand list submission.'
+  },
+  {
+    id: 86, name: 'Paul Munford', publication: 'Lean Luxe Newsletter',
+    beat: 'Modern luxury brands, consumer culture',
+    tier: 'tier4', type: 'newsletter', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Founder of Lean Luxe. Covers modern luxury brands targeting HENRY cohort (high earner not rich yet). Former PR exec. 2PM partnership.',
+    bestAngle: 'Premium Positioning, Modern Luxury Brand',
+    notes: '[V] Fast Company coverage verified.'
+  },
+  {
+    id: 87, name: 'Jessica DeFino', publication: 'FLESH WORLD (Substack)',
+    beat: 'Critical beauty industry reporting',
+    tier: 'tier4', type: 'newsletter', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: '100K+ readers. Former Kardashian-Jenner Apps editor. Critical beauty industry voice. Bylines: NYT, Vogue, Allure, Guardian. "The newsletter the beauty industry fears."',
+    bestAngle: 'Science-Backed Formulation (must withstand scrutiny)',
+    notes: '[V] Substack verified. CAUTION: critical voice, only approach if AWARE can survive tough questions on claims/ingredients.'
+  },
+  {
+    id: 88, name: 'Melanie Kopeikin', publication: 'Pro Beauty Talks Podcast',
+    beat: 'Beauty industry leaders, education',
+    tier: 'tier4', type: 'podcast', status: 'not-contacted',
+    email: 'meko@labapro.com', emailConfidence: 'high',
+    linkedin: '', recentArticle: '',
+    whyRelevant: '55 episodes. Information, education, inspiration from beauty industry leaders. Also hosts "Love, Lash, Brow" podcast. The Lash & Brow Academy.',
+    bestAngle: 'Founder Story, Industry Education',
+    notes: '[V] iHeart + Spotify verified.'
+  },
+
+  // NEW TIER 6: Trichologists & Dermatologists
+  {
+    id: 90, name: 'Bridgette Hill, WTS', publication: 'Root Cause Scalp Analysis (Freelance Media)',
+    beat: 'Scalp health, trichology, brand collaborations',
+    tier: 'tier5', type: 'expert', status: 'not-contacted',
+    email: 'meredithc@ba-reps.com', emailConfidence: 'high',
+    linkedin: '', recentArticle: '',
+    whyRelevant: '"The Scalp Therapist." Certified Trichologist (WTS 2016). 20+ years editorial stylist. Media: Forbes, Vogue, GQ, Cosmo, InStyle, Elle. Podcast: Fat Mascara, Breaking Beauty, Tamron Hall. Brand collabs: Dr. Barbara Sturm, Rene Furterer, Unilever, Dyson.',
+    bestAngle: 'Brand Collaboration, Expert Validation, Media Amplification',
+    notes: '[V] Website bridgettehill.com verified. IG @thescalptherapist. HIGHEST PRIORITY expert contact.'
+  },
+  {
+    id: 91, name: 'Penny James, IAT/IoT', publication: 'Penny James Trichology Center (Freelance Media)',
+    beat: 'Trichology, scalp diseases, luxury haircare',
+    tier: 'tier5', type: 'expert', status: 'not-contacted',
+    email: 'penny@pennyjamessalon.co', emailConfidence: 'high',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'NYC-based Certified Trichologist (IAT + IoT). First US trichologist to work with luxury haircare brand (Oribe Serene Scalp Collection). Media interviews with Glam.',
+    bestAngle: 'Expert Validation, Luxury Brand Credibility, NYC Press',
+    notes: '[V] Website pennyjamestrichologycenter.com verified. 212.644.7470.'
+  },
+  {
+    id: 92, name: 'Dr. Shani Francis, MD', publication: 'Various Media (Freelance)',
+    beat: 'Hair loss, holistic dermatology, scalp health',
+    tier: 'tier5', type: 'expert', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Board-certified dermatologist and hair loss specialist. Biochemical engineering + nanotechnology background. NASA research. MBA Auburn. Media: NYT, Good Housekeeping, Today.com, WebMD, US News, Doctors Radio.',
+    bestAngle: 'Science Validation, Expert Commentary for Press',
+    notes: '[V] Doximity + DevaCurl page verified.'
+  },
+
+  // NEW TIER 5: Freelance (scalp specialists)
+  {
+    id: 95, name: 'Marci Robin', publication: 'Allure (Contributing Editor)',
+    beat: 'Makeup, hair, skincare, spa treatments',
+    tier: 'tier5', type: 'freelance', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Contributing Editor at Allure. Former senior digital beauty editor at Good Housekeeping. Bylines: Glamour, InStyle, R29, Martha Stewart, People, Byrdie, Time, Health, Cosmo, Marie Claire, Elle, Harper\'s Bazaar.',
+    bestAngle: 'Multi-Publication Product Feature',
+    notes: '[V] Muck Rack + personal site verified. Extensive publication reach.'
+  },
+  {
+    id: 96, name: 'Kara Nesvig', publication: 'Allure, People, Sephora (Freelance)',
+    beat: 'Beauty, style, pop culture',
+    tier: 'tier5', type: 'freelance', status: 'not-contacted',
+    email: '', emailConfidence: '',
+    linkedin: '', recentArticle: '',
+    whyRelevant: 'Former lead copywriter at Aveda (Shorty Award winner). Bylines: Allure, Brides, People, Sephora, Teen Vogue. St. Paul, MN-based.',
+    bestAngle: 'Scalp Care Product Feature (Aveda background = scalp expertise)',
+    notes: '[V] Muck Rack + LinkedIn verified. Aveda background means she understands salon-exclusive positioning.'
+  }
+];
+
+// ==================== RENDER FUNCTIONS ====================
+
+let currentFilter = 'all';
+let currentSort = { field: 'tier', dir: 'asc' };
+
+function renderKPIs() {
+  const total = contacts.length;
+  const statuses = {};
+  contacts.forEach(c => { statuses[c.status] = (statuses[c.status] || 0) + 1; });
+  const types = {};
+  contacts.forEach(c => { types[c.type] = (types[c.type] || 0) + 1; });
+
+  document.getElementById('kpi-row').innerHTML = `
+    <div class="kpi kpi-gold">
+      <div class="kpi-label">Pipeline</div>
+      <div class="kpi-value gold">${total}</div>
+      <div class="kpi-sub">media contacts across all tiers</div>
+    </div>
+    <div class="kpi kpi-green">
+      <div class="kpi-label">Published</div>
+      <div class="kpi-value green">${statuses['published'] || 0}</div>
+      <div class="kpi-sub">coverage secured</div>
+    </div>
+    <div class="kpi kpi-blue">
+      <div class="kpi-label">Pitched</div>
+      <div class="kpi-value blue">${statuses['pitched'] || 0}</div>
+      <div class="kpi-sub">outreach sent</div>
+    </div>
+    <div class="kpi kpi-amber">
+      <div class="kpi-label">Interested</div>
+      <div class="kpi-value amber">${(statuses['interested'] || 0) + (statuses['samples-sent'] || 0)}</div>
+      <div class="kpi-sub">engaged or samples sent</div>
+    </div>
+    <div class="kpi kpi-red">
+      <div class="kpi-label">Not Contacted</div>
+      <div class="kpi-value red">${statuses['not-contacted'] || 0}</div>
+      <div class="kpi-sub">pipeline to work</div>
+    </div>
+    <div class="kpi kpi-purple">
+      <div class="kpi-label">Media Types</div>
+      <div class="kpi-value" style="color:var(--purple)">${Object.keys(types).length}</div>
+      <div class="kpi-sub">${Object.entries(types).map(([k,v]) => `${v} ${k}`).join(', ')}</div>
+    </div>
+  `;
+}
+
+function renderFunnel() {
+  const statuses = {};
+  contacts.forEach(c => { statuses[c.status] = (statuses[c.status] || 0) + 1; });
+  const total = contacts.length;
+  const stages = [
+    { key: 'not-contacted', label: 'Not Contacted', cls: 'seg-not-contacted' },
+    { key: 'pitched', label: 'Pitched', cls: 'seg-pitched' },
+    { key: 'interested', label: 'Interested', cls: 'seg-interested' },
+    { key: 'samples-sent', label: 'Samples Sent', cls: 'seg-samples-sent' },
+    { key: 'published', label: 'Published', cls: 'seg-published' },
+    { key: 'ongoing', label: 'Ongoing', cls: 'seg-ongoing' }
+  ];
+  let bar = '<div class="funnel-bar">';
+  stages.forEach(s => {
+    const count = statuses[s.key] || 0;
+    if (count > 0) {
+      const pct = Math.max((count / total) * 100, 5);
+      bar += `<div class="funnel-segment ${s.cls}" style="width:${pct}%" title="${s.label}: ${count}">${count}</div>`;
+    }
+  });
+  bar += '</div><div class="funnel-legend">';
+  stages.forEach(s => {
+    const count = statuses[s.key] || 0;
+    if (count > 0) {
+      bar += `<div class="funnel-legend-item"><div class="funnel-swatch" style="background:var(--${s.key === 'not-contacted' ? 'text-muted' : s.key === 'pitched' ? 'blue' : s.key === 'interested' ? 'gold' : s.key === 'samples-sent' ? 'amber' : s.key === 'published' ? 'green' : 'purple'})"></div>${s.label} (${count})</div>`;
+    }
+  });
+  bar += '</div>';
+  document.getElementById('pipeline-funnel').innerHTML = bar;
+}
+
+function getFilteredContacts() {
+  let filtered = [...contacts];
+  const search = document.getElementById('pipeline-search').value.toLowerCase();
+
+  if (currentFilter !== 'all') {
+    filtered = filtered.filter(c => c.tier === currentFilter || c.type === currentFilter);
+  }
+
+  if (search) {
+    filtered = filtered.filter(c =>
+      c.name.toLowerCase().includes(search) ||
+      c.publication.toLowerCase().includes(search) ||
+      c.beat.toLowerCase().includes(search) ||
+      c.status.toLowerCase().includes(search) ||
+      c.type.toLowerCase().includes(search) ||
+      (c.bestAngle && c.bestAngle.toLowerCase().includes(search))
+    );
+  }
+
+  // Sort
+  filtered.sort((a, b) => {
+    let av = a[currentSort.field] || '';
+    let bv = b[currentSort.field] || '';
+    if (typeof av === 'string') av = av.toLowerCase();
+    if (typeof bv === 'string') bv = bv.toLowerCase();
+    if (av < bv) return currentSort.dir === 'asc' ? -1 : 1;
+    if (av > bv) return currentSort.dir === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  return filtered;
+}
+
+function tierBadge(tier) {
+  const labels = { tier1: 'Tier 1', tier2: 'Tier 2', tier3: 'Tier 3', tier4: 'Tier 4', tier5: 'Tier 5', tier6: 'Tier 6' };
+  return `<span class="badge badge-${tier}">${labels[tier] || tier}</span>`;
+}
+
+function typeBadge(type) {
+  return `<span class="badge badge-${type}">${type.charAt(0).toUpperCase() + type.slice(1)}</span>`;
+}
+
+function statusHTML(status) {
+  const label = status.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  return `<span class="status-dot ${status}"></span>${label}`;
+}
+
+function applyPipelineView() {
+  const filtered = getFilteredContacts();
+  const tbody = document.getElementById('pipeline-body');
+  let html = '';
+
+  filtered.forEach(c => {
+    html += `<tr class="expand-row" onclick="toggleExpand(${c.id})">
+      <td><div class="contact-name">${c.name}</div></td>
+      <td>${c.publication}</td>
+      <td><span style="font-size:12px;color:var(--text-secondary)">${c.beat}</span></td>
+      <td>${tierBadge(c.tier)}</td>
+      <td>${typeBadge(c.type)}</td>
+      <td>${statusHTML(c.status)}</td>
+    </tr>
+    <tr class="detail-row" id="detail-${c.id}">
+      <td colspan="6">
+        <div class="detail-grid-3">
+          <div class="detail-section">
+            <h4>Contact Info</h4>
+            <p><strong>Email:</strong> ${c.email || '<span style="color:var(--red)">Needs research</span>'}</p>
+            <p><strong>LinkedIn:</strong> ${c.linkedin ? `<a href="${c.linkedin}" target="_blank">Profile</a>` : '<span style="color:var(--red)">Needs research</span>'}</p>
+            ${c.recentArticle ? `<p><strong>Recent Article:</strong> ${c.recentArticle}</p>` : ''}
+          </div>
+          <div class="detail-section">
+            <h4>Why Relevant</h4>
+            <p>${c.whyRelevant}</p>
+          </div>
+          <div class="detail-section">
+            <h4>Best Pitch Angle</h4>
+            <p style="color:var(--gold);">${c.bestAngle}</p>
+            ${c.notes ? `<p style="margin-top:8px;font-size:12px;color:var(--text-muted)"><strong>Notes:</strong> ${c.notes}</p>` : ''}
+          </div>
+        </div>
+      </td>
+    </tr>`;
+  });
+
+  tbody.innerHTML = html;
+  document.getElementById('results-counter').innerHTML = `Showing <strong>${filtered.length}</strong> of <strong>${contacts.length}</strong> contacts`;
+}
+
+function toggleExpand(id) {
+  const row = document.querySelector(`tr.expand-row[onclick="toggleExpand(${id})"]`);
+  const detail = document.getElementById(`detail-${id}`);
+  if (row && detail) {
+    row.classList.toggle('open');
+    detail.classList.toggle('open');
+  }
+}
+
+function toggleFilter(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('#pipeline-filters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyPipelineView();
+}
+
+function sortBy(field) {
+  if (currentSort.field === field) {
+    currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentSort = { field, dir: 'asc' };
+  }
+  document.querySelectorAll('th.sortable').forEach(th => {
+    th.classList.remove('sort-active');
+    th.querySelector('.sort-arrow').textContent = '^';
+  });
+  event.target.closest('th').classList.add('sort-active');
+  event.target.closest('th').querySelector('.sort-arrow').textContent = currentSort.dir === 'asc' ? '^' : 'v';
+  applyPipelineView();
+}
+
+function renderContactCards() {
+  const grid = document.getElementById('contacts-grid');
+  const tiers = ['tier1', 'tier2', 'tier3', 'tier4', 'tier5'];
+  const tierLabels = {
+    tier1: 'Tier 1: Major Consumer Publications',
+    tier2: 'Tier 2: Trade & Professional Beauty',
+    tier3: 'Tier 3: Indie Beauty Specialists',
+    tier4: 'Tier 4: Podcasts & Newsletters',
+    tier5: 'Tier 5: Freelance Writers'
+  };
+
+  let html = '';
+  tiers.forEach(tier => {
+    const tierContacts = contacts.filter(c => c.tier === tier);
+    if (tierContacts.length === 0) return;
+    html += `<div style="grid-column:1/-1;margin-top:16px;margin-bottom:8px;">
+      <h3 style="font-size:14px;font-weight:600;color:var(--gold);">${tierLabels[tier]} (${tierContacts.length})</h3>
+    </div>`;
+    tierContacts.forEach(c => {
+      html += `<div class="contact-card">
+        <h3>${c.name}</h3>
+        <div class="role">${c.publication} - ${c.beat}</div>
+        <div class="info">
+          <div>Email: ${c.email || '<span style="color:var(--red)">Needs research</span>'}</div>
+          <div>LinkedIn: ${c.linkedin ? `<a href="${c.linkedin}" target="_blank">Profile</a>` : '<span style="color:var(--red)">Needs research</span>'}</div>
+          <div style="margin-top:8px;color:var(--text-secondary);">${c.whyRelevant}</div>
+          <div style="margin-top:6px;"><strong style="color:var(--gold);">Best angle:</strong> ${c.bestAngle}</div>
+          <div style="margin-top:8px;">${tierBadge(c.tier)} ${typeBadge(c.type)}</div>
+        </div>
+      </div>`;
+    });
+  });
+  grid.innerHTML = html;
+}
+
+// ==================== SECTION NAVIGATION ====================
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ==================== KEYBOARD SHORTCUTS ====================
+document.addEventListener('keydown', function(e) {
+  if (e.key === '/' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)) {
+    e.preventDefault();
+    const searchInput = document.getElementById('pipeline-search');
+    if (searchInput) searchInput.focus();
+  }
+  if (e.key === 'Escape') {
+    const searchInput = document.getElementById('pipeline-search');
+    if (searchInput && document.activeElement === searchInput) {
+      searchInput.blur();
+    }
+  }
+});
+
+// ==================== TOAST ====================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('visible');
+  setTimeout(() => t.classList.remove('visible'), 2500);
+}
+
+// ==================== INITIAL RENDER ====================
+renderKPIs();
+renderFunnel();
+applyPipelineView();
+renderContactCards();
+</script>
+</body>
+</html>
